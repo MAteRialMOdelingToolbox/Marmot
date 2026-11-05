@@ -28,7 +28,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="49">$ d $</formula>. </para>
+<para>Spatial dimension <formula id="4">$ d $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -36,7 +36,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Desired completeness order <formula id="76">$ n $</formula>. </para>
+<para>Desired completeness order <formula id="77">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -148,7 +148,7 @@
           <declname>shapeFunctionValueGradients_ColMajor</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values <formula id="48">$ \Psi_A $</formula> and the implicit gradients <formula id="77">$ \Psi^{(i)}_A $</formula>. </para>
+<para>Compute the RK shape function values <formula id="3">$ \Psi_A $</formula> and the implicit gradients <formula id="78">$ \Psi^{(i)}_A $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -156,7 +156,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="50">$ \boldsymbol{x} $</formula> (length <formula id="49">$ d $</formula>). </para>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula> (length <formula id="4">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -164,7 +164,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="78">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="79">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -172,7 +172,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="78">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="50">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="79">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="5">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -180,7 +180,7 @@
 <parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Implicit gradients, column-major <formula id="79">$ d \times n_\mathrm{c} $</formula> (entry <formula id="80">$ i + d A $</formula> is <formula id="77">$ \Psi^{(i)}_A $</formula>); zero for non-covering candidates. </para>
+<para>Implicit gradients, column-major <formula id="80">$ d \times n_\mathrm{c} $</formula> (entry <formula id="81">$ i + d A $</formula> is <formula id="78">$ \Psi^{(i)}_A $</formula>); zero for non-covering candidates. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -204,13 +204,13 @@
 <para>Reproducing kernel approximation with implicit gradients. </para>
     </briefdescription>
     <detaileddescription>
-<para>The shape function values are those of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>. The gradients are not obtained by differentiating <formula id="48">$ \Psi_A $</formula> but are constructed directly as corrected kernels (implicit, or synchronized, gradients),     <formula id="66">\[  \Psi^{(i)}_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\,
+<para>The shape function values are those of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>. The gradients are not obtained by differentiating <formula id="3">$ \Psi_A $</formula> but are constructed directly as corrected kernels (implicit, or synchronized, gradients),     <formula id="67">\[  \Psi^{(i)}_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\,
   \boldsymbol{b}^{(i)}(\boldsymbol{x})\, \phi_A(\boldsymbol{x}),
   \qquad \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}^{(i)}(\boldsymbol{x}) = \boldsymbol{H}^{(i)}_0,
-\]</formula> with the same moment matrix <formula id="67">$ \boldsymbol{M} $</formula>. The right-hand side  <formula id="68">$ \boldsymbol{H}^{(i)}_0 =
--\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} $</formula> (the sign stems from the shifted argument <formula id="69">$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A $</formula>) is <formula id="70">$ -1 $</formula> at the position of the linear monomial <formula id="71">$ z_i $</formula> in <formula id="72">$ \boldsymbol{H} $</formula> and zero elsewhere (the position is found from Math::computeMonomialBasisGradient() at the origin, so it is correct for any order). This enforces the gradient reproducing conditions    <formula id="73">\[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
+\]</formula> with the same moment matrix <formula id="68">$ \boldsymbol{M} $</formula>. The right-hand side  <formula id="69">$ \boldsymbol{H}^{(i)}_0 =
+-\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} $</formula> (the sign stems from the shifted argument <formula id="70">$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A $</formula>) is <formula id="71">$ -1 $</formula> at the position of the linear monomial <formula id="72">$ z_i $</formula> in <formula id="73">$ \boldsymbol{H} $</formula> and zero elsewhere (the position is found from Math::computeMonomialBasisGradient() at the origin, so it is correct for any order). This enforces the gradient reproducing conditions    <formula id="74">\[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
   \frac{\partial \boldsymbol{x}^{\boldsymbol{\alpha}}}{\partial x_i}, \qquad |\boldsymbol{\alpha}| \le n,
-\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="48">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="74">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="75">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="67">$ \boldsymbol{M} $</formula>. </para>
+\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="3">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="75">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="76">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="68">$ \boldsymbol{M} $</formula>. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="3">

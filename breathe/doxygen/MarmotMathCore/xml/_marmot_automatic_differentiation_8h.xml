@@ -43,6 +43,7 @@
     <innernamespace refid="namespace_marmot_1_1_math">Marmot::Math</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation">Marmot::Math::Differentiation</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic">Marmot::Math::Differentiation::Automatic</innernamespace>
+    <innernamespace refid="namespaceautodiff">autodiff</innernamespace>
     <innernamespace refid="namespace_eigen">Eigen</innernamespace>
     <briefdescription>
     </briefdescription>

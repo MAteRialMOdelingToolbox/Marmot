@@ -26,9 +26,9 @@
 <para>Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the respective partial derivatives. </para>
         </briefdescription>
         <detaileddescription>
-<para>The Kirchoff stress is computed as   <formula id="63">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
-\]</formula> or in index notation   <formula id="64">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
-\]</formula> Additionally, the derivatives with respect to <formula id="65">$ \boldsymbol{S} $</formula> and <formula id="45">$ \boldsymbol{F} $</formula> are computed in index notation as <formula id="66">\[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \]</formula> and  <formula id="67">\[ \frac{\partial
+<para>The Kirchoff stress is computed as   <formula id="30">\[  \boldsymbol{\tau} = \boldsymbol{F}  \boldsymbol{S}  \boldsymbol{F}^T
+\]</formula> or in index notation   <formula id="31">\[\tau_{ij} = F_{iI} S_{IJ} F_{jJ}.
+\]</formula> Additionally, the derivatives with respect to <formula id="32">$ \boldsymbol{S} $</formula> and <formula id="33">$ \boldsymbol{F} $</formula> are computed in index notation as <formula id="34">\[ \frac{\partial \tau_{ij}}{\partial S_{IJ}} = F_{iI} F_{jJ} \]</formula> and  <formula id="35">\[ \frac{\partial
 \tau_{ij}}{\partial F_{kL}} = \delta_{ik} S_{LJ} F_{jJ} + F_{iI} S_{IL} \delta_{jk} \]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -56,7 +56,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>A tuple containing Kirchhoff stress and its derivatives w.r.t <formula id="68">$\boldsymbol{S}$</formula> and <formula id="23">$\boldsymbol{F}$</formula> </para>
+<simplesect kind="return"><para>A tuple containing Kirchhoff stress and its derivatives w.r.t <formula id="36">$\boldsymbol{S}$</formula> and <formula id="1">$\boldsymbol{F}$</formula> </para>
 </simplesect>
 </para>
         </detaileddescription>

@@ -79,15 +79,15 @@
 <para>Homogenizes per-microplane volumetric and deviatoric values to the macroscopic tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para>Evaluates the discrete virtual-work homogenization:    <formula id="378">\[  X_{jk} = \left( \sum_{m=1}^{n_{qp}} w^{(m)} X_V^{(m)} \right) \frac{\delta_{jk}}{3}
+<para>Evaluates the discrete virtual-work homogenization:    <formula id="353">\[  X_{jk} = \left( \sum_{m=1}^{n_{qp}} w^{(m)} X_V^{(m)} \right) \frac{\delta_{jk}}{3}
     + \sum_{m=1}^{n_{qp}} w^{(m)}\, Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
-\]</formula> Denoting the <formula id="379">$ i $</formula>-th component of <formula id="380">$ X_D^{(m)} $</formula> by <formula id="381">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as the kinematic projection <formula id="382">$ (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk} $</formula> documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>, contracted here on  <formula id="383">$i $</formula> instead of <formula id="384">$ j,k $</formula>). <formula id="385">$ Dev^{(m)} $</formula> is <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref> for microplane <formula id="386">$ m $</formula>. This is used both to homogenize stress ( <formula id="387">$ \boldsymbol{X} = \sig $</formula>) and to homogenize strain (  <formula id="388">$ \boldsymbol{X} = \eps
+\]</formula> Denoting the <formula id="354">$ i $</formula>-th component of <formula id="355">$ X_D^{(m)} $</formula> by <formula id="356">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as the kinematic projection <formula id="357">$ (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk} $</formula> documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>, contracted here on  <formula id="358">$i $</formula> instead of <formula id="359">$ j,k $</formula>). <formula id="360">$ Dev^{(m)} $</formula> is <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref> for microplane <formula id="361">$ m $</formula>. This is used both to homogenize stress ( <formula id="362">$ \boldsymbol{X} = \sig $</formula>) and to homogenize strain (  <formula id="363">$ \boldsymbol{X} = \eps
 $</formula>) - the method itself is agnostic to the physical meaning of <computeroutput>volValue</computeroutput> / <computeroutput>devValue</computeroutput>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>volValue</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane volumetric value <formula id="389">$ X_V^{(m)} $</formula>, size <formula id="349">$ n_{qp} \times 1 $</formula>. </para>
+<para>Per-microplane volumetric value <formula id="364">$ X_V^{(m)} $</formula>, size <formula id="324">$ n_{qp} \times 1 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -95,11 +95,11 @@ $</formula>) - the method itself is agnostic to the physical meaning of <compute
 <parametername>devValue</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane deviatoric value <formula id="380">$ X_D^{(m)} $</formula>, size <formula id="347">$ n_{qp} \times 3 $</formula>. </para>
+<para>Per-microplane deviatoric value <formula id="355">$ X_D^{(m)} $</formula>, size <formula id="322">$ n_{qp} \times 3 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Homogenized macroscopic tensor <formula id="390">$ X_{jk} $</formula> (3x3). </para>
+<simplesect kind="return"><para>Homogenized macroscopic tensor <formula id="365">$ X_{jk} $</formula> (3x3). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -129,13 +129,13 @@ $</formula>) - the method itself is agnostic to the physical meaning of <compute
 <para>Applies the projection tensors of a single microplane <computeroutput>m</computeroutput> to a volumetric/deviatoric value pair, without homogenizing over all microplanes. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes, the (unweighted) macroscopic-space contribution of microplane <computeroutput>m</computeroutput> alone:   <formula id="391">\[  X_{jk} = X_V^{(m)} \, V_{jk} + Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
-\]</formula> denoting the <formula id="379">$ i $</formula>-th component of <formula id="380">$ X_D^{(m)} $</formula> by <formula id="381">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" kindref="member">homogenize</ref> and the kinematic projection documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>). <parameterlist kind="param"><parameteritem>
+<para>Computes, the (unweighted) macroscopic-space contribution of microplane <computeroutput>m</computeroutput> alone:   <formula id="366">\[  X_{jk} = X_V^{(m)} \, V_{jk} + Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
+\]</formula> denoting the <formula id="354">$ i $</formula>-th component of <formula id="355">$ X_D^{(m)} $</formula> by <formula id="356">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" kindref="member">homogenize</ref> and the kinematic projection documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>volValue</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Volumetric value <formula id="389">$ X_V^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+<para>Volumetric value <formula id="364">$ X_V^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -143,7 +143,7 @@ $</formula>) - the method itself is agnostic to the physical meaning of <compute
 <parametername>devValue</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Deviatoric value <formula id="380">$ X_D^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+<para>Deviatoric value <formula id="355">$ X_D^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -155,7 +155,7 @@ $</formula>) - the method itself is agnostic to the physical meaning of <compute
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The 3x3 tensor contribution <formula id="390">$ X_{jk} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+<simplesect kind="return"><para>The 3x3 tensor contribution <formula id="365">$ X_{jk} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -185,7 +185,7 @@ $</formula>) - the method itself is agnostic to the physical meaning of <compute
 <para>Volumetric-deviatoric (V-D) split and projection tensors of the microplane theory, as used e.g. by damage-plasticity constitutive microplane models. </para>
     </briefdescription>
     <detaileddescription>
-<para>The macroscopic strain is decomposed on each microplane into a volumetric part <formula id="345">$ \varepsilon_V = \tfrac{1}{3}\operatorname{tr}(\eps) $</formula>, identical for every microplane, and a deviatoric microplane strain vector <formula id="346">$ \eps_D $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" kindref="member">pTensors</ref> holds the corresponding projection tensors (<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Vol</ref>, <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>) built from the hard-coded discretization (Discretization::get()), and the <computeroutput>homogenize*</computeroutput> methods perform the virtual-work homogenization of per-microplane volumetric/deviatoric quantities back to macroscopic 3x3 tensors. <parameterlist kind="templateparam"><parameteritem>
+<para>The macroscopic strain is decomposed on each microplane into a volumetric part <formula id="320">$ \varepsilon_V = \tfrac{1}{3}\operatorname{tr}(\eps) $</formula>, identical for every microplane, and a deviatoric microplane strain vector <formula id="321">$ \eps_D $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" kindref="member">pTensors</ref> holds the corresponding projection tensors (<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Vol</ref>, <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>) built from the hard-coded discretization (Discretization::get()), and the <computeroutput>homogenize*</computeroutput> methods perform the virtual-work homogenization of per-microplane volumetric/deviatoric quantities back to macroscopic 3x3 tensors. <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>scheme</parametername>
 </parameternamelist>

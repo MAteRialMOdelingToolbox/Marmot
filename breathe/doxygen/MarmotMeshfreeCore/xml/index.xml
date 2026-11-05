@@ -505,15 +505,15 @@
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kind="typedef"><name>Hex8</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
-    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
-    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
-    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
-    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" kind="function"><name>computeSizeOfMonomialBasisVector</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" kind="function"><name>_computeMonomialBasisRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" kind="function"><name>_computeMonomialBasisGradientRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" kind="function"><name>computeMonomialBasis</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" kind="function"><name>computeMonomialBasisGradient</name></member>
+    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
+    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
+    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
+    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>

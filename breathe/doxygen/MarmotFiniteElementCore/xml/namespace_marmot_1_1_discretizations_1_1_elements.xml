@@ -128,81 +128,6 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a98c08d5215757d34e1f1512070231093" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
-        <definition>const std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::Discretizations::Elements::makeNodeFieldLayout</definition>
-        <argsstring>(const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
-        <name>makeNodeFieldLayout</name>
-        <qualifiedname>Marmot::Discretizations::Elements::makeNodeFieldLayout</qualifiedname>
-        <param>
-          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
-          <declname>fieldSizes</declname>
-        </param>
-        <briefdescription>
-<para>Utilities for constructing DOF-layout structures in finite element assemblies. </para>
-        </briefdescription>
-        <detaileddescription>
-<para>Builds a node-field layout from a map of field names to their DOF dimensions.</para>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>fieldSizes</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Map from field name to a pair (dofsPerNode, nodesForField): the number of scalar components the field has at each of its nodes, and how many of the element&apos;s nodes carry that field (&lt;= the element&apos;s total node count for a reduced-order field, e.g. corner- only pressure in a mixed Taylor-Hood-style element). </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>A 2-D vector where each row corresponds to a node and each entry is a field name. </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="45" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="45" declcolumn="21"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a804b8a9246613f1b61b2d79200c0f01d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>std::vector&lt; int &gt;</type>
-        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</definition>
-        <argsstring>(const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
-        <name>makeBlockedLayoutPermutationPattern</name>
-        <qualifiedname>Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</qualifiedname>
-        <param>
-          <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
-          <declname>nodeFields</declname>
-        </param>
-        <param>
-          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
-          <declname>fieldSizes</declname>
-        </param>
-        <briefdescription>
-<para>Computes the DOF permutation pattern for a blocked (field-major) layout. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>nodeFields</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Node-field layout as returned by makeNodeFieldLayout(). </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>fieldSizes</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Map from field name to a pair (dofsPerNode, nodesForField); see makeNodeFieldLayout(). </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>Integer permutation vector that reorders DOFs from node-major to field-major order. </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="56" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="56" declcolumn="15"/>
-      </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a4c2217bb190e17d97dcd97e5318ab45b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">ElementShapes</ref></type>
         <definition>ElementShapes Marmot::Discretizations::Elements::getElementShapeByMetric</definition>
@@ -507,11 +432,86 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="128" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="128" declcolumn="19"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a98c08d5215757d34e1f1512070231093" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>const std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::Discretizations::Elements::makeNodeFieldLayout</definition>
+        <argsstring>(const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeNodeFieldLayout</name>
+        <qualifiedname>Marmot::Discretizations::Elements::makeNodeFieldLayout</qualifiedname>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+<para>Utilities for constructing DOF-layout structures in finite element assemblies. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Builds a node-field layout from a map of field names to their DOF dimensions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fieldSizes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Map from field name to a pair (dofsPerNode, nodesForField): the number of scalar components the field has at each of its nodes, and how many of the element&apos;s nodes carry that field (&lt;= the element&apos;s total node count for a reduced-order field, e.g. corner- only pressure in a mixed Taylor-Hood-style element). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 2-D vector where each row corresponds to a node and each entry is a field name. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="45" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="45" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a804b8a9246613f1b61b2d79200c0f01d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</definition>
+        <argsstring>(const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeBlockedLayoutPermutationPattern</name>
+        <qualifiedname>Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
+          <declname>nodeFields</declname>
+        </param>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+<para>Computes the DOF permutation pattern for a blocked (field-major) layout. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nodeFields</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Node-field layout as returned by makeNodeFieldLayout(). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fieldSizes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Map from field name to a pair (dofsPerNode, nodesForField); see makeNodeFieldLayout(). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Integer permutation vector that reorders DOFs from node-major to field-major order. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="56" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="56" declcolumn="15"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="39" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotConsistentMass.h" line="58" column="1"/>
   </compounddef>
 </doxygen>

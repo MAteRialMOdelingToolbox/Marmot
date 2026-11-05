@@ -104,7 +104,7 @@
 <parametername>isSymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by exploiting the identity  <formula id="32">$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
+<para>if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by exploiting the identity  <formula id="61">$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
  F/\partial T_{ji}\partial T_{lk}\partial T_{nm} $</formula>, which holds at a symmetric T for such functions (note: this mirrors all three index pairs simultaneously; mirroring any pair independently is in general NOT valid) </para>
 </parameterdescription>
 </parameteritem>

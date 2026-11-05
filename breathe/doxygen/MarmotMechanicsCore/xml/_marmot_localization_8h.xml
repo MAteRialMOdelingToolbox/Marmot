@@ -21,7 +21,7 @@
 <para>Localization (strain-softening band) analysis via the acoustic tensor. </para>
     </briefdescription>
     <detaileddescription>
-<para>Functions for checking material instability by evaluating whether the acoustic tensor <formula id="98">$\mathbf{Q}(\mathbf{n}) = \mathbf{n} \cdot \mathbb{C} \cdot \mathbf{n}$</formula> loses positive definiteness for some normal vector <formula id="99">$\mathbf{n}$</formula>. </para>
+<para>Functions for checking material instability by evaluating whether the acoustic tensor <formula id="140">$\mathbf{Q}(\mathbf{n}) = \mathbf{n} \cdot \mathbb{C} \cdot \mathbf{n}$</formula> loses positive definiteness for some normal vector <formula id="141">$\mathbf{n}$</formula>. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>

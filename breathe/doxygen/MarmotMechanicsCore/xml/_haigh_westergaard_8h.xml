@@ -136,7 +136,7 @@
 <para>Haigh–Westergaard stress and strain invariant coordinates. </para>
     </briefdescription>
     <detaileddescription>
-<para>Provides the <computeroutput>HaighWestergaardCoordinates</computeroutput> aggregate and functions for computing the hydrostatic component <formula id="42">$\xi$</formula>, deviatoric radius <formula id="43">$\rho$</formula>, and Lode angle <formula id="44">$\theta$</formula> from stress or strain tensors in Voigt notation. </para>
+<para>Provides the <computeroutput>HaighWestergaardCoordinates</computeroutput> aggregate and functions for computing the hydrostatic component <formula id="110">$\xi$</formula>, deviatoric radius <formula id="109">$\rho$</formula>, and Lode angle <formula id="101">$\theta$</formula> from stress or strain tensors in Voigt notation. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>

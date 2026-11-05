@@ -57,7 +57,7 @@
 <para>Strain increment from nodal displacement increments, without forming the B-operator. </para>
         </briefdescription>
         <detaileddescription>
-<para>The symmetric part of the incremental displacement gradient <formula id="32">$\partial_\mathbf{x} \Delta\mathbf{u} = \Delta\mathbf{U}\, \partial_\mathbf{x}\mathbf{N}^\mathsf{T}$</formula>, with the nodal increments <formula id="33">$\Delta\mathbf{U}$</formula> arranged as a nDim x nNodes matrix, in Voigt notation with engineering shear strains. This is <formula id="34">$\mathbf{B}\, \Delta\mathbf{\qu}$</formula> with a sixth (3D) of the data and half of the operations of the dense product. <parameterlist kind="templateparam"><parameteritem>
+<para>The symmetric part of the incremental displacement gradient <formula id="4">$\partial_\mathbf{x} \Delta\mathbf{u} = \Delta\mathbf{U}\, \partial_\mathbf{x}\mathbf{N}^\mathsf{T}$</formula>, with the nodal increments <formula id="5">$\Delta\mathbf{U}$</formula> arranged as a nDim x nNodes matrix, in Voigt notation with engineering shear strains. This is <formula id="6">$\mathbf{B}\, \Delta\mathbf{\qu}$</formula> with a sixth (3D) of the data and half of the operations of the dense product. <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
 </parameternamelist>
@@ -134,11 +134,11 @@
           <declname>J0xW</declname>
         </param>
         <briefdescription>
-<para>Add the internal force of a stress at a quadrature point,  <formula id="35">$\mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\,
+<para>Add the internal force of a stress at a quadrature point,  <formula id="7">$\mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\,
 J_0 w$</formula>, without forming the B-operator. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computed as <formula id="36">$(\boldsymbol{\sigma} J_0 w)\, \partial_\mathbf{x} \mathbf{N}$</formula>, a nDim x nNodes matrix of nodal forces (see strainIncrement()). <parameterlist kind="templateparam"><parameteritem>
+<para>Computed as <formula id="8">$(\boldsymbol{\sigma} J_0 w)\, \partial_\mathbf{x} \mathbf{N}$</formula>, a nDim x nNodes matrix of nodal forces (see strainIncrement()). <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
 </parameternamelist>

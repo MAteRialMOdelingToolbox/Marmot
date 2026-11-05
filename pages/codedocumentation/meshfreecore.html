@@ -563,15 +563,15 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4MathE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi"><code class="docutils literal notranslate"><span class="pre">B()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">B&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"><code class="docutils literal notranslate"><span class="pre">computeSizeOfMonomialBasisVector()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisRecursion()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisGradientRecursion()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasis()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasisGradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi"><code class="docutils literal notranslate"><span class="pre">B()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">B&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot8RegistryE"><code class="docutils literal notranslate"><span class="pre">Marmot::Registry</span></code></a></li>
@@ -6637,94 +6637,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math1BEddPKdi">
-<span id="_CPPv3I_iEN6Marmot4Math1BEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math1BEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the B-spline basis function <span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span> by the Cox–de Boor recursion. </p>
-<p><div class="math notranslate nohighlight">
-\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
-             + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
-\]</div>
- where a term is omitted ( <span class="math notranslate nohighlight">\( 0/0 := 0 \)</span>) if its knot difference is below <span class="math notranslate nohighlight">\( 10^{-14} \)</span> (repeated knots). The recursion ends at B&lt; 0 &gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline (order <span class="math notranslate nohighlight">\( p + 1 \)</span>). </p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi">
-<span id="_CPPv3I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the derivative <span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span> of a B-spline basis function. </p>
-<p>Differentiates the Cox–de Boor recursion of <a class="reference internal" href="#_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"><span class="std std-ref">B()</span></a> term by term,    <div class="math notranslate nohighlight">
-\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N'_{i,p-1}}{z_{i+p} - z_i}
-  + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N'_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
-\]</div>
- omitting terms with a knot difference below <span class="math notranslate nohighlight">\( 10^{-14} \)</span>. The recursion ends at dB_dU&lt; 0 &gt; <span class="math notranslate nohighlight">\( = 0 \)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline. </p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi">
-<span id="_CPPv3IEN6Marmot4Math1BIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math1BIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Degree-0 B-spline, the indicator function of the half-open knot span <span class="math notranslate nohighlight">\( [z_i, z_{i+1}) \)</span>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( 1 \)</span> if <span class="math notranslate nohighlight">\( z_i \le u &lt; z_{i+1} \)</span>, else <span class="math notranslate nohighlight">\( 0 \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi">
-<span id="_CPPv3IEN6Marmot4Math5dB_dUIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math5dB_dUIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Derivative of the degree-0 B-spline, which is zero (almost everywhere). </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span> (unused). </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector (unused). </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index of the basis function (unused). </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( 0 \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii">
 <span id="_CPPv3N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"></span><span id="_CPPv2N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"></span><span id="Marmot::Math::computeSizeOfMonomialBasisVector__i.i"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeSizeOfMonomialBasisVector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the size of the complete monomial basis of a given order. </p>
@@ -6812,6 +6724,94 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>x</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> (the dimension <span class="math notranslate nohighlight">\( d \)</span> is taken from its size). </p></li>
 <li><p><strong>res</strong> – <strong>[out]</strong> Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <span class="math notranslate nohighlight">\( \times d \)</span>. </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math1BEddPKdi">
+<span id="_CPPv3I_iEN6Marmot4Math1BEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math1BEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the B-spline basis function <span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span> by the Cox–de Boor recursion. </p>
+<p><div class="math notranslate nohighlight">
+\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+             + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
+\]</div>
+ where a term is omitted ( <span class="math notranslate nohighlight">\( 0/0 := 0 \)</span>) if its knot difference is below <span class="math notranslate nohighlight">\( 10^{-14} \)</span> (repeated knots). The recursion ends at B&lt; 0 &gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline (order <span class="math notranslate nohighlight">\( p + 1 \)</span>). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi">
+<span id="_CPPv3I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the derivative <span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span> of a B-spline basis function. </p>
+<p>Differentiates the Cox–de Boor recursion of <a class="reference internal" href="#_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"><span class="std std-ref">B()</span></a> term by term,    <div class="math notranslate nohighlight">
+\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N'_{i,p-1}}{z_{i+p} - z_i}
+  + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N'_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
+\]</div>
+ omitting terms with a knot difference below <span class="math notranslate nohighlight">\( 10^{-14} \)</span>. The recursion ends at dB_dU&lt; 0 &gt; <span class="math notranslate nohighlight">\( = 0 \)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi">
+<span id="_CPPv3IEN6Marmot4Math1BIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math1BIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Degree-0 B-spline, the indicator function of the half-open knot span <span class="math notranslate nohighlight">\( [z_i, z_{i+1}) \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( 1 \)</span> if <span class="math notranslate nohighlight">\( z_i \le u &lt; z_{i+1} \)</span>, else <span class="math notranslate nohighlight">\( 0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi">
+<span id="_CPPv3IEN6Marmot4Math5dB_dUIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math5dB_dUIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Derivative of the degree-0 B-spline, which is zero (almost everywhere). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span> (unused). </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector (unused). </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index of the basis function (unused). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( 0 \)</span>. </p>
 </dd>
 </dl>
 </dd></dl>

@@ -21,7 +21,7 @@
         <name>theExponential</name>
         <qualifiedname>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult::theExponential</qualifiedname>
         <briefdescription>
-<para>The matrix exponential <formula id="30">$\exp(\mathbf{A})$</formula>. </para>
+<para>The matrix exponential <formula id="23">$\exp(\mathbf{A})$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

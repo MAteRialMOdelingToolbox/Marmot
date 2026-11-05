@@ -14,8 +14,8 @@
 <para>Holds the deviatoric projection tensors for each microplane. </para>
         </briefdescription>
         <detaileddescription>
-<para>Projects the macroscopic strain tensor <formula id="369">$ \eps $</formula> onto the microplane deviatoric strain vector  <formula id="392">$\eps_D^{(m)} $</formula> of microplane <computeroutput>m:</computeroutput>   <formula id="393">\[  (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk}
-\]</formula> Built from the microplane normal vectors <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a5981583ac0b6c86122a143f1122a4601" kindref="member">nMatrix</ref> in initiateSystem(). For all <formula id="335">$ n_{qp} $</formula> microplanes, these are stored together in a single 4th-order tensor of size <formula id="394">$ n_{qp} \times 3 \times 3 \times 3 $</formula>, where the first index selects the microplane and <formula id="385">$ Dev^{(m)} $</formula> above denotes the corresponding 3rd-order slice. </para>
+<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane deviatoric strain vector  <formula id="367">$\eps_D^{(m)} $</formula> of microplane <computeroutput>m:</computeroutput>   <formula id="368">\[  (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk}
+\]</formula> Built from the microplane normal vectors <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a5981583ac0b6c86122a143f1122a4601" kindref="member">nMatrix</ref> in initiateSystem(). For all <formula id="310">$ n_{qp} $</formula> microplanes, these are stored together in a single 4th-order tensor of size <formula id="369">$ n_{qp} \times 3 \times 3 \times 3 $</formula>, where the first index selects the microplane and <formula id="360">$ Dev^{(m)} $</formula> above denotes the corresponding 3rd-order slice. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -28,10 +28,10 @@
         <name>VolT</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::VolT</qualifiedname>
         <briefdescription>
-<para>Volumetric projection tensor <formula id="395">$ V_{ij} = \delta_{ij}/3 $</formula>, tensor form of <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kindref="member">Vol</ref>. </para>
+<para>Volumetric projection tensor <formula id="370">$ V_{ij} = \delta_{ij}/3 $</formula>, tensor form of <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kindref="member">Vol</ref>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Projects the macroscopic strain tensor <formula id="369">$ \eps $</formula> onto the (microplane-independent) volumetric strain <formula id="396">$ \varepsilon_V $</formula>:   <formula id="397">\[  \varepsilon_V = V_{ij} \varepsilon_{ij} = \tfrac{1}{3} \operatorname{tr}( \eps )
+<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the (microplane-independent) volumetric strain <formula id="371">$ \varepsilon_V $</formula>:   <formula id="372">\[  \varepsilon_V = V_{ij} \varepsilon_{ij} = \tfrac{1}{3} \operatorname{tr}( \eps )
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -45,7 +45,7 @@
         <name>Vol</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Vol</qualifiedname>
         <briefdescription>
-<para>Volumetric projection tensor <formula id="395">$ V_{ij} = \delta_{ij}/3 $</formula>, matrix form; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1ab05e5d7e0e5c7b0f4030b70698335488" kindref="member">VolT</ref> for the kinematic projection <formula id="398">$ \varepsilon_V = V_{ij} \varepsilon_{ij} $</formula>. </para>
+<para>Volumetric projection tensor <formula id="370">$ V_{ij} = \delta_{ij}/3 $</formula>, matrix form; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1ab05e5d7e0e5c7b0f4030b70698335488" kindref="member">VolT</ref> for the kinematic projection <formula id="373">$ \varepsilon_V = V_{ij} \varepsilon_{ij} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -60,7 +60,7 @@
         <name>w</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::w</qualifiedname>
         <briefdescription>
-<para>Integration weights <formula id="348">$ w^{(m)} $</formula> for the chosen scheme; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kindref="member">Discretization::Data::weights</ref>. </para>
+<para>Integration weights <formula id="323">$ w^{(m)} $</formula> for the chosen scheme; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kindref="member">Discretization::Data::weights</ref>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -75,7 +75,7 @@
         <name>nMatrix</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::nMatrix</qualifiedname>
         <briefdescription>
-<para><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane" kindref="compound">Microplane</ref> normal vectors <formula id="337">$ n^{(m)} $</formula>, one per row; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" kindref="member">Discretization::Data::normals</ref>. </para>
+<para><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane" kindref="compound">Microplane</ref> normal vectors <formula id="312">$ n^{(m)} $</formula>, one per row; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" kindref="member">Discretization::Data::normals</ref>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

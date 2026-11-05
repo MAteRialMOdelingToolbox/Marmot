@@ -17,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="486" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="486" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="487" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="487" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1af08bbd77f886058495c65e5dab3fc89d" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a3b1acf8d2d01860fa7a97022a229b6d3" kindref="member">dNdXiSized</ref></type>
@@ -32,7 +32,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="489" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="489" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="490" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="490" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a39f73eb989f0103be82ac99282a111d1" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a6b233d32071d0e51876debddca56cfe2" kindref="member">SurfaceJacobianSized</ref></type>
@@ -47,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="492" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="492" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="493" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="493" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a8327f81766a4761731a73bdc1f6c9173" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1abce502afdf3f7e7a14bca5b4b201a52b" kindref="member">MetricSized</ref></type>
@@ -62,7 +62,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="495" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="495" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="496" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="496" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a6e5f17777a72609b12bfa5ea6245df0f" prot="public" static="no" mutable="no">
         <type>double</type>
@@ -77,7 +77,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="498" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="498" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="499" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="499" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1aa6f01f35629c3a64eebf5f4180cd411e" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1aa3299e62125a65f6a75b6245c8ef025e" kindref="member">GradSized</ref></type>
@@ -92,7 +92,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="501" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="501" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="502" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="502" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1ab4603840f3cb25210e00f975075e9610" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a98fe5114e06939e003b3b2e4f6c5db6a" kindref="member">VectorDim</ref></type>
@@ -107,7 +107,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="504" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="504" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="505" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="505" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1aec3a9b292d06acb238f2db15e9a7f338" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a85e7670b0133b71b2b0d587cfbfaf01d" kindref="member">TensorDim</ref></type>
@@ -122,7 +122,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="507" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="507" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="508" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="508" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1aad7b6bb10e57193cf109966e20711de7" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a85e7670b0133b71b2b0d587cfbfaf01d" kindref="member">TensorDim</ref></type>
@@ -137,7 +137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="510" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="510" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="511" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="511" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a403b7dc5b6a27a6460bea7cf5bbedfd3" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a86da9c6ac41653e02a190d1e0e244561" kindref="member">NMatrixSized</ref></type>
@@ -152,7 +152,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="513" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="513" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="514" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="514" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1ad71298155152d96b679365f324950bf0" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1aa549496643fc1c613e2c5d22bb341232" kindref="member">NJumpMatrixSized</ref></type>
@@ -167,7 +167,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="516" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="516" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="517" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="517" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a6cb3515f9640dc54717d716ca051a857" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a2fecad5df2a4099e70ceb731c0c78486" kindref="member">BSurfaceSized</ref></type>
@@ -182,7 +182,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="519" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="519" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="520" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="520" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1adab2a813c83fa268e73e07d0e13f9f05" prot="public" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ab070acd156f0a8523538084786809eb3" kindref="member">BAvgSurfaceSized</ref></type>
@@ -197,7 +197,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="522" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="522" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="523" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="523" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -206,7 +206,7 @@
     <detaileddescription>
 <para>The struct stores scalar shape functions, differential geometry terms, projection tensors, and interpolation operators needed by interface element assembly. All members are value types with compile-time dimensions. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="484" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="484" bodyend="523"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="485" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="485" bodyend="524"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1adab2a813c83fa268e73e07d0e13f9f05" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryInterfaceElement::QuadratureGeometry</scope><name>BmatAverage</name></member>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry_1a6cb3515f9640dc54717d716ca051a857" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryInterfaceElement::QuadratureGeometry</scope><name>BmatSide</name></member>

@@ -19,7 +19,7 @@
           <declname>F</declname>
         </param>
         <briefdescription>
-<para>Computes the right Cauchy-Green tensor <formula id="17">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="23">$\boldsymbol{F}$</formula>. </para>
+<para>Computes the right Cauchy-Green tensor <formula id="5">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="1">$\boldsymbol{F}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -42,9 +42,9 @@
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the right Cauchy-Green tensor C and its derivative with respect to F</para>
 </simplesect>
-The right Cauchy-Green deformation tensor is defined as:   <formula id="18">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
-\]</formula> or in index notation:   <formula id="19">\[  C_{IJ} = F_{iI} F_{iJ}
-\]</formula> The derivative of <formula id="17">$\boldsymbol{C}$</formula> with respect to <formula id="23">$\boldsymbol{F}$</formula> is given by:   <formula id="24">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+The right Cauchy-Green deformation tensor is defined as:   <formula id="6">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</formula> or in index notation:   <formula id="7">\[  C_{IJ} = F_{iI} F_{iJ}
+\]</formula> The derivative of <formula id="5">$\boldsymbol{C}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="11">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -67,7 +67,7 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="18">\[  
           <declname>F</declname>
         </param>
         <briefdescription>
-<para>Computes the left Cauchy-Green tensor <formula id="20">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="23">$\boldsymbol{F}$</formula>. </para>
+<para>Computes the left Cauchy-Green tensor <formula id="8">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="1">$\boldsymbol{F}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -90,9 +90,9 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="18">\[  
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the left Cauchy-Green tensor b and its derivative with respect to F</para>
 </simplesect>
-The left Cauchy-Green deformation tensor is defined as:   <formula id="21">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
-\]</formula> or in index notation:   <formula id="22">\[  b_{ij} = F_{iI} F_{jI}
-\]</formula> The derivative of <formula id="20">$\boldsymbol{b}$</formula> with respect to <formula id="23">$\boldsymbol{F}$</formula> is given by:   <formula id="25">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+The left Cauchy-Green deformation tensor is defined as:   <formula id="9">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</formula> or in index notation:   <formula id="10">\[  b_{ij} = F_{iI} F_{jI}
+\]</formula> The derivative of <formula id="8">$\boldsymbol{b}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="12">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -143,7 +143,7 @@ The left Cauchy-Green deformation tensor is defined as:   <formula id="21">\[  \
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the deformed normal vector and its derivative with respect to FInv</para>
 </simplesect>
-The deformed normal vector is defined as:   <formula id="26">\[  n_i = \frac{ F^{-1}_{Ii} N_{I} J dA_0 } { \| F^{-1}_{Ki} N_{K} J dA_0 \| }
+The deformed normal vector is defined as:   <formula id="13">\[  n_i = \frac{ F^{-1}_{Ii} N_{I} J dA_0 } { \| F^{-1}_{Ki} N_{K} J dA_0 \| }
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -194,7 +194,7 @@ The deformed normal vector is defined as:   <formula id="26">\[  n_i = \frac{ F^
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the deformed normal projection tensor and its derivative with respect to FInv</para>
 </simplesect>
-The deformed normal projection tensor is defined as:    <formula id="27">\[  N_{ij} = n_i n_j = \frac{ F^{-1}_{Ii} N_{I} J dA_0 \times F^{-1}_{Jj} N_{J} J dA_0} { \| F^{-1}_{Ki} N_{K} J
+The deformed normal projection tensor is defined as:    <formula id="14">\[  N_{ij} = n_i n_j = \frac{ F^{-1}_{Ii} N_{I} J dA_0 \times F^{-1}_{Jj} N_{J} J dA_0} { \| F^{-1}_{Ki} N_{K} J
 dA_0 \|^2 }
 \]</formula> </para>
         </detaileddescription>
@@ -234,8 +234,8 @@ dA_0 \|^2 }
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the inverse of the deformation gradient and its derivative with respect to F</para>
 </simplesect>
-The inverse of the deformation gradient is defined as:   <formula id="28">\[ \boldsymbol{F}^{-1}
-\]</formula> The derivative of <formula id="29">$\boldsymbol{F}^{-1}$</formula> with respect to <formula id="23">$\boldsymbol{F}$</formula> is given by:   <formula id="30">\[ \frac{\partial F^{-1}_{iK}}{\partial F_{jL}} = - F^{-1}_{iL} F^{-1}_{jK}
+The inverse of the deformation gradient is defined as:   <formula id="15">\[ \boldsymbol{F}^{-1}
+\]</formula> The derivative of <formula id="16">$\boldsymbol{F}^{-1}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="17">\[ \frac{\partial F^{-1}_{iK}}{\partial F_{jL}} = - F^{-1}_{iL} F^{-1}_{jK}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>

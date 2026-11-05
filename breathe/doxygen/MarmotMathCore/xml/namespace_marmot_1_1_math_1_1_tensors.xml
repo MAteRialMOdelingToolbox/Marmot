@@ -199,7 +199,7 @@
         <qualifiedname>Marmot::Math::Tensors::I2xI2</qualifiedname>
         <initializer>= Initialize_I2xI2()</initializer>
         <briefdescription>
-<para>Fourth-order tensor <formula id="33">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+<para>Fourth-order tensor <formula id="5">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -215,7 +215,7 @@
         <qualifiedname>Marmot::Math::Tensors::Isym</qualifiedname>
         <initializer>= Initialize_Isym()</initializer>
         <briefdescription>
-<para>Symmetric fourth-order identity tensor <formula id="35">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Symmetric fourth-order identity tensor <formula id="7">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -231,7 +231,7 @@
         <qualifiedname>Marmot::Math::Tensors::Iskew</qualifiedname>
         <initializer>= Initialize_Iskew()</initializer>
         <briefdescription>
-<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="37">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="9">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -247,7 +247,7 @@
         <qualifiedname>Marmot::Math::Tensors::IFourthOrder</qualifiedname>
         <initializer>= Initialize_IFourthOrder()</initializer>
         <briefdescription>
-<para>Fourth-order identity tensor <formula id="38">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+<para>Fourth-order identity tensor <formula id="10">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -263,7 +263,7 @@
         <qualifiedname>Marmot::Math::Tensors::IFourthOrderTranspose</qualifiedname>
         <initializer>= Initialize_IFourthOrderTranspose()</initializer>
         <briefdescription>
-<para>Transposed fourth-order identity tensor <formula id="39">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+<para>Transposed fourth-order identity tensor <formula id="11">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -279,7 +279,7 @@
         <qualifiedname>Marmot::Math::Tensors::dDeviatoricStress_dStress</qualifiedname>
         <initializer>= Initialize_dDeviatoricStress_dStress()</initializer>
         <briefdescription>
-<para>Derivative of the deviatoric stress with respect to stress   <formula id="41">$ \frac{\partial
+<para>Derivative of the deviatoric stress with respect to stress   <formula id="13">$ \frac{\partial
 s_{ij}}{\partial\sigma_{kl}} =
 \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
@@ -297,10 +297,10 @@ s_{ij}}{\partial\sigma_{kl}} =
         <qualifiedname>Marmot::Math::Tensors::LeviCivita3D</qualifiedname>
         <initializer>= Initialize_LeviCivita3D()</initializer>
         <briefdescription>
-<para>3D Levi-Civita permutation tensor <formula id="42">$E_{ijk}$</formula>. </para>
+<para>3D Levi-Civita permutation tensor <formula id="14">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric third-order tensor defined as        <formula id="43">\[  E_{ijk} =
+<para>A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -320,10 +320,10 @@ s_{ij}}{\partial\sigma_{kl}} =
         <qualifiedname>Marmot::Math::Tensors::LeviCivita2D</qualifiedname>
         <initializer>= Initialize_LeviCivita2D()</initializer>
         <briefdescription>
-<para>2D Levi-Civita permutation tensor <formula id="46">$\varepsilon_{ij}$</formula>. </para>
+<para>2D Levi-Civita permutation tensor <formula id="18">$\varepsilon_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric second-order tensor defined as        <formula id="45">\[  E_{ij} =
+<para>A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
@@ -346,7 +346,7 @@ s_{ij}}{\partial\sigma_{kl}} =
 <para>Second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="47">$ I_{ij} = \delta_{ij} $</formula>.    </para>
+<para><formula id="19">$ I_{ij} = \delta_{ij} $</formula>.    </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -361,7 +361,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_I2xI2</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_I2xI2</qualifiedname>
         <briefdescription>
-<para>Initializes the fourth-order tensor <formula id="33">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+<para>Initializes the fourth-order tensor <formula id="5">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -376,7 +376,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_Isym</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_Isym</qualifiedname>
         <briefdescription>
-<para>Initializes the symmetric fourth-order identity tensor  <formula id="34">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Initializes the symmetric fourth-order identity tensor  <formula id="6">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -391,7 +391,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_Iskew</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_Iskew</qualifiedname>
         <briefdescription>
-<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="36">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="8">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -406,7 +406,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_IFourthOrder</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_IFourthOrder</qualifiedname>
         <briefdescription>
-<para>Initializes the fourth-order identity tensor <formula id="38">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+<para>Initializes the fourth-order identity tensor <formula id="10">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -421,7 +421,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_IFourthOrderTranspose</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_IFourthOrderTranspose</qualifiedname>
         <briefdescription>
-<para>Initializes the transposed fourth-order identity tensor <formula id="39">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+<para>Initializes the transposed fourth-order identity tensor <formula id="11">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -436,7 +436,7 @@ s_{ij}}{\partial\sigma_{kl}} =
         <name>Initialize_dDeviatoricStress_dStress</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_dDeviatoricStress_dStress</qualifiedname>
         <briefdescription>
-<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="40">$ \frac{\partial
+<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="12">$ \frac{\partial
 s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
@@ -452,10 +452,10 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
         <name>Initialize_LeviCivita3D</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_LeviCivita3D</qualifiedname>
         <briefdescription>
-<para>Initializes the 3D Levi-Civita permutation tensor <formula id="42">$E_{ijk}$</formula>. </para>
+<para>Initializes the 3D Levi-Civita permutation tensor <formula id="14">$E_{ijk}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric third-order tensor defined as        <formula id="43">\[  E_{ijk} =
+<para>A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -474,10 +474,10 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
         <name>Initialize_LeviCivita2D</name>
         <qualifiedname>Marmot::Math::Tensors::Initialize_LeviCivita2D</qualifiedname>
         <briefdescription>
-<para>2D Levi-Civita permutation tensor <formula id="44">$E_{ij}$</formula>. </para>
+<para>2D Levi-Civita permutation tensor <formula id="16">$E_{ij}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>A fully antisymmetric second-order tensor defined as        <formula id="45">\[  E_{ij} =
+<para>A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
@@ -499,7 +499,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 <para>Initializes the second-order identity tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="47">$ I_{ij} = \delta_{ij} $</formula>. </para>
+<para><formula id="19">$ I_{ij} = \delta_{ij} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -558,7 +558,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 <para>Constructs an aux. matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by multiplication. </para>
         </briefdescription>
         <detaileddescription>
-<para>The transformation is defined as:   <formula id="48">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
+<para>The transformation is defined as:   <formula id="20">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
 \]</formula></para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -623,14 +623,14 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>The Levi-Civita tensor:<itemizedlist>
-<listitem><para>In 2D: <formula id="44">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="45">\[  E_{ij} =
+<listitem><para>In 2D: <formula id="16">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
   \begin{cases}
     +1 &amp; \text{if } (i,j) = (1,2), \\
     -1 &amp; \text{if } (i,j) = (2,1), \\
      0 &amp; \text{if } i=j.
   \end{cases}
 \]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.   </para>
-</listitem><listitem><para>In 3D: <formula id="42">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="43">\[  E_{ijk} =
+</listitem><listitem><para>In 3D: <formula id="14">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
   \begin{cases}
     +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
     -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
@@ -661,7 +661,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
           <declname>b</declname>
         </param>
         <briefdescription>
-<para>Kronecker delta function <formula id="49">$ \delta_{ab} $</formula>. </para>
+<para>Kronecker delta function <formula id="21">$ \delta_{ab} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>1 if a == b, otherwise 0. </para>
@@ -957,7 +957,7 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
 <para>Compute the dyadic (outer) product of two 3D vectors. </para>
         </briefdescription>
         <detaileddescription>
-<para>Forms a 3x3 matrix where each entry is given by <formula id="50">$ a_{ij} = b_i c_j $</formula>.</para>
+<para>Forms a 3x3 matrix where each entry is given by <formula id="22">$ a_{ij} = b_i c_j $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>vector1</parametername>
@@ -982,240 +982,6 @@ s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\
         <inbodydescription>
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="357" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="357" declcolumn="19"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const double &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>const double &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-<para>Converts various scalar types to double precision floating point numbers. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>value</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Input value of various numeric types </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>Converted value as double</para>
-</simplesect>
-This function converts input values of different numeric types, including:<itemizedlist>
-<listitem><para>double</para>
-</listitem><listitem><para>std::complex&lt;double&gt;</para>
-</listitem><listitem><para>autodiff::real</para>
-</listitem><listitem><para>autodiff::dual</para>
-</listitem><listitem><para>Eigen::Matrix with elements of any type convertible to double</para>
-</listitem></itemizedlist>
-</para>
-<para>The function is overloaded and templated to handle these different types appropriately. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="199" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="199" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const std::complex&lt; double &gt; &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>const std::complex&lt; double &gt; &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const autodiff::real &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>const autodiff::real &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="201" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="201" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>typename G</type>
-          </param>
-        </templateparamlist>
-        <type>double</type>
-        <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
-          <declname>number</declname>
-        </param>
-        <briefdescription>
-<para>Converts autodiff::dual numbers to double precision floating point numbers. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Underlying type of the autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>G</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Gradient type of the autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>number</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Input autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>Converted value as double</para>
-</simplesect>
-This function converts an autodiff::dual number to a double precision floating point number. It is templated to handle dual numbers with different underlying types. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="213" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="213" bodyend="216"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>int...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>Eigen::Matrix&lt; double, Rest... &gt;</type>
-        <definition>Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const Eigen::Matrix&lt; T, Rest... &gt; mat)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>const Eigen::Matrix&lt; T, Rest... &gt;</type>
-          <declname>mat</declname>
-        </param>
-        <briefdescription>
-<para>Extracts the real part of a arbitrary scalartype-valued Matrix. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>scalar type </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>Rest...</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>parameter pack for additional matrix information, e.g, dimensions </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>mat</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>T-valued matrix </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>double-valued matrix </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="225" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="225" bodyend="237"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-        </templateparamlist>
-        <type>Eigen::VectorXd</type>
-        <definition>Eigen::VectorXd Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
-        <param>
-          <type>Eigen::Vector&lt; T, Eigen::Dynamic &gt;</type>
-          <declname>in</declname>
-        </param>
-        <briefdescription>
-<para>Extracts the real part of a arbitrary scalartype-valued Vector. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>scalar type </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>in</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>T-valued vector </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>double-valued vector </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="245" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="245" bodyend="254"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a9b770ce8de913d0b9edf18670d93f684" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -2434,7 +2200,7 @@ This function is used to expand a displacement and/or rotation tensor in 2D to a
 </parameterlist>
 <simplesect kind="return"><para>the resulting scalar</para>
 </simplesect>
-This function computes the Einstein summation for two second order tensors A and B: <formula id="77">$ C = A_{ij} B_{ij} $</formula></para>
+This function computes the Einstein summation for two second order tensors A and B: <formula id="24">$ C = A_{ij} B_{ij} $</formula></para>
 <para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is autodiff::dual. </para>
 </simplesect>
 </para>
@@ -2836,7 +2602,7 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterlist>
 <simplesect kind="return"><para>the symmetric part of the tensor</para>
 </simplesect>
-It actually computes <formula id="78">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
+It actually computes <formula id="25">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -2881,7 +2647,7 @@ It actually computes <formula id="78">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji
 </parameterlist>
 <simplesect kind="return"><para>the deviatoric part of the tensor</para>
 </simplesect>
-It actually computes <formula id="79">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
+It actually computes <formula id="26">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -2921,7 +2687,7 @@ It actually computes <formula id="79">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}
 </parameterlist>
 <simplesect kind="return"><para>the inverse of the input tensor </para>
 </simplesect>
-<simplesect kind="note"><para>A minor symmetric fourth order tensor is a fourth order tensor that is symmetric with respect to the first and second pair of indices, i.e. <formula id="80">$ C_{ijkl} = C_{jikl} = C_{ijlk} $</formula>. It actually computes <formula id="81">$ C^{-1}_{ijkl} $</formula> such that <formula id="82">$ C^{-1}_{ijmn} C_{mnkl} = \delta_{ik}\delta_{jl} $</formula> using Mandel notation and Fastor&apos;s inverse function for second order tensors. </para>
+<simplesect kind="note"><para>A minor symmetric fourth order tensor is a fourth order tensor that is symmetric with respect to the first and second pair of indices, i.e. <formula id="27">$ C_{ijkl} = C_{jikl} = C_{ijlk} $</formula>. It actually computes <formula id="28">$ C^{-1}_{ijkl} $</formula> such that <formula id="29">$ C^{-1}_{ijmn} C_{mnkl} = \delta_{ik}\delta_{jl} $</formula> using Mandel notation and Fastor&apos;s inverse function for second order tensors. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -2929,11 +2695,245 @@ It actually computes <formula id="79">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="830" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" declline="830" declcolumn="30"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const double &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const double &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Converts various scalar types to double precision floating point numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input value of various numeric types </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Converted value as double</para>
+</simplesect>
+This function converts input values of different numeric types, including:<itemizedlist>
+<listitem><para>double</para>
+</listitem><listitem><para>std::complex&lt;double&gt;</para>
+</listitem><listitem><para>autodiff::real</para>
+</listitem><listitem><para>autodiff::dual</para>
+</listitem><listitem><para>Eigen::Matrix with elements of any type convertible to double</para>
+</listitem></itemizedlist>
+</para>
+<para>The function is overloaded and templated to handle these different types appropriately. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="199" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="199" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const std::complex&lt; double &gt; &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const std::complex&lt; double &gt; &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const autodiff::real &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::real &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="201" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="201" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+<para>Converts autodiff::dual numbers to double precision floating point numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Underlying type of the autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient type of the autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Converted value as double</para>
+</simplesect>
+This function converts an autodiff::dual number to a double precision floating point number. It is templated to handle dual numbers with different underlying types. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="213" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="213" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>int...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, Rest... &gt;</type>
+        <definition>Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, Rest... &gt; mat)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, Rest... &gt;</type>
+          <declname>mat</declname>
+        </param>
+        <briefdescription>
+<para>Extracts the real part of a arbitrary scalartype-valued Matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter pack for additional matrix information, e.g, dimensions </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>T-valued matrix </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>double-valued matrix </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="225" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="225" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>Eigen::Vector&lt; T, Eigen::Dynamic &gt;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Extracts the real part of a arbitrary scalartype-valued Vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>T-valued vector </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>double-valued vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="245" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="245" bodyend="254"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="87" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="40" column="1"/>
   </compounddef>
 </doxygen>

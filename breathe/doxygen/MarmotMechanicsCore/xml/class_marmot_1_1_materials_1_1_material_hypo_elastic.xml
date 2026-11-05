@@ -211,7 +211,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given linearized strain increment <formula id="81">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="82">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para>For a given linearized strain increment <formula id="1">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="2">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">state</parametername>
@@ -540,14 +540,14 @@ The default implementation computes the 3D algorithmic tangent and returns <comp
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="73">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="74">$ \sig $</formula>, the stretching rate tensor <formula id="75">$ \epsRate $</formula> and the time <formula id="76">$ t $</formula>.</para>
-<para><formula id="77">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="113">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="114">$ \sig $</formula>, the stretching rate tensor <formula id="115">$ \epsRate $</formula> and the time <formula id="116">$ t $</formula>.</para>
+<para><formula id="117">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="78">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
+<para><formula id="118">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="79">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
+<para><formula id="119">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
 <para>and the algorithmic tangent</para>
-<para><formula id="80">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
+<para><formula id="120">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
 <para>This formulation is compatible with an Abaqus interface. </para>
     </detaileddescription>
     <inheritancegraph>

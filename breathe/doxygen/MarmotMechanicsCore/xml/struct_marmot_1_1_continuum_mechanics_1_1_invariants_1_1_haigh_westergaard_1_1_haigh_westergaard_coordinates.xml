@@ -17,7 +17,7 @@
         <name>xi</name>
         <qualifiedname>Marmot::ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates::xi</qualifiedname>
         <briefdescription>
-<para>Hydrostatic component <formula id="42">$\xi$</formula>. </para>
+<para>Hydrostatic component <formula id="110">$\xi$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -32,7 +32,7 @@
         <name>rho</name>
         <qualifiedname>Marmot::ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates::rho</qualifiedname>
         <briefdescription>
-<para>Deviatoric radius <formula id="43">$\rho$</formula>. </para>
+<para>Deviatoric radius <formula id="109">$\rho$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -47,7 +47,7 @@
         <name>theta</name>
         <qualifiedname>Marmot::ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates::theta</qualifiedname>
         <briefdescription>
-<para>Lode angle <formula id="44">$\theta$</formula> specified in radian. </para>
+<para>Lode angle <formula id="101">$\theta$</formula> specified in radian. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -59,7 +59,7 @@
     <briefdescription>
     </briefdescription>
     <detaileddescription>
-<para>Aggregate of the Haigh-Westergaard coordinates (invariants) <formula id="42">$\xi$</formula>, <formula id="43">$\rho$</formula>, <formula id="44">$\theta$</formula>. </para>
+<para>Aggregate of the Haigh-Westergaard coordinates (invariants) <formula id="110">$\xi$</formula>, <formula id="109">$\rho$</formula>, <formula id="101">$\theta$</formula>. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" bodystart="46" bodyend="54"/>
     <listofallmembers>

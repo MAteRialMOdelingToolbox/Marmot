@@ -55,7 +55,7 @@
           <declname>shapeFunctionValues</declname>
         </param>
         <briefdescription>
-<para>Compute the shape function values <formula id="131">$ \Psi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Compute the shape function values <formula id="165">$ \Psi_A(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -63,7 +63,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="49">$ d $</formula>). </para>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -71,7 +71,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="76">$ n $</formula> candidate kernel functions. </para>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -79,7 +79,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="76">$ n $</formula>). </para>
+<para>Shape function values (length <formula id="77">$ n $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -110,7 +110,7 @@
           <declname>shapeFunctionValueGradients</declname>
         </param>
         <briefdescription>
-<para>Compute the shape function gradients <formula id="134">$ \partial \Psi_A / \partial x_i $</formula>. </para>
+<para>Compute the shape function gradients <formula id="168">$ \partial \Psi_A / \partial x_i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -118,7 +118,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -126,7 +126,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="76">$ n $</formula> candidate kernel functions. </para>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -134,7 +134,7 @@
 <parametername direction="out">shapeFunctionValueGradients</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function gradients, column-major <formula id="132">$ d \times n $</formula>. </para>
+<para>Shape function gradients, column-major <formula id="166">$ d \times n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -177,7 +177,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -185,7 +185,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="76">$ n $</formula> candidate kernel functions. </para>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -193,7 +193,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="76">$ n $</formula>). </para>
+<para>Shape function values (length <formula id="77">$ n $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -201,7 +201,7 @@
 <parametername direction="out">shapeFunctionValueGradients</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function gradients, column-major <formula id="132">$ d \times n $</formula>. </para>
+<para>Shape function gradients, column-major <formula id="166">$ d \times n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -216,8 +216,8 @@
 <para>Abstract interface of a meshfree approximation, which evaluates shape functions from a set of kernels. </para>
     </briefdescription>
     <detaileddescription>
-<para>Given an evaluation point <formula id="50">$ \boldsymbol{x} $</formula> and a list of <formula id="76">$ n $</formula> candidate kernel functions <formula id="129">$ \phi_A $</formula>, <formula id="130">$ A = 0, \dots, n-1 $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), an approximation computes the shape functions <formula id="131">$ \Psi_A(\boldsymbol{x}) $</formula> and/or their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <formula id="50">$ \boldsymbol{x} $</formula> get zero entries.</para>
-<para>The gradient output is a column-major <formula id="132">$ d \times n $</formula> array, i.e., entry <formula id="133">$ i + d\,A $</formula> holds <formula id="134">$ \partial \Psi_A / \partial x_i $</formula>, where <formula id="49">$ d $</formula> is the spatial dimension. </para>
+<para>Given an evaluation point <formula id="5">$ \boldsymbol{x} $</formula> and a list of <formula id="77">$ n $</formula> candidate kernel functions <formula id="163">$ \phi_A $</formula>, <formula id="164">$ A = 0, \dots, n-1 $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), an approximation computes the shape functions <formula id="165">$ \Psi_A(\boldsymbol{x}) $</formula> and/or their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <formula id="5">$ \boldsymbol{x} $</formula> get zero entries.</para>
+<para>The gradient output is a column-major <formula id="166">$ d \times n $</formula> array, i.e., entry <formula id="167">$ i + d\,A $</formula> holds <formula id="168">$ \partial \Psi_A / \partial x_i $</formula>, where <formula id="4">$ d $</formula> is the spatial dimension. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">

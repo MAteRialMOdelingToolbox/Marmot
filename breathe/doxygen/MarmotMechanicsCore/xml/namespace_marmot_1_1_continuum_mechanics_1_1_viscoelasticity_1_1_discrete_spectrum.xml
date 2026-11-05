@@ -116,10 +116,10 @@
           <declname>coefficientSign</declname>
         </param>
         <briefdescription>
-<para>Evaluate the Post-Widder formula of order <formula id="0">$k$</formula>. </para>
+<para>Evaluate the Post-Widder formula of order <formula id="12">$k$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes <formula id="35">$\pm \frac{(-k\tau)^k}{(k-1)!} \, f^{(k)}(k\tau)$</formula>, with the derivative of order <formula id="0">$k$</formula> obtained by automatic differentiation.</para>
+<para>Computes <formula id="13">$\pm \frac{(-k\tau)^k}{(k-1)!} \, f^{(k)}(k\tau)$</formula>, with the derivative of order <formula id="12">$k$</formula> obtained by automatic differentiation.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
@@ -154,7 +154,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the value of the approximated spectrum at <formula id="2">$\tau$</formula> </para>
+<simplesect kind="return"><para>the value of the approximated spectrum at <formula id="14">$\tau$</formula> </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -184,7 +184,7 @@
 <para>Generate logarithmically spaced relaxation or retardation times. </para>
         </briefdescription>
         <detaileddescription>
-<para>The times are <formula id="6">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="7">$i = 0, \dots, n-1$</formula>.</para>
+<para>The times are <formula id="15">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="16">$i = 0, \dots, n-1$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">n</parametername>
@@ -244,7 +244,7 @@
 <para>Compute the integration factors of the exponential algorithm for a Maxwell or Kelvin unit. </para>
         </briefdescription>
         <detaileddescription>
-<para>With <formula id="36">$x = \Delta t / \tau$</formula> the factors are <formula id="37">$\beta = e^{-x}$</formula> and <formula id="38">$\lambda = (1 - \beta) / x$</formula>. For very small and very large <formula id="39">$x$</formula> the limiting expressions are used (Jirasek and Bazant).</para>
+<para>With <formula id="17">$x = \Delta t / \tau$</formula> the factors are <formula id="18">$\beta = e^{-x}$</formula> and <formula id="19">$\lambda = (1 - \beta) / x$</formula>. For very small and very large <formula id="20">$x$</formula> the limiting expressions are used (Jirasek and Bazant).</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dT</parametername>
@@ -266,7 +266,7 @@
 <parametername direction="out">lambda</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>factor <formula id="40">$\lambda$</formula> </para>
+<para>factor <formula id="21">$\lambda$</formula> </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -274,7 +274,7 @@
 <parametername direction="out">beta</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>factor <formula id="41">$\beta$</formula> </para>
+<para>factor <formula id="22">$\beta$</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

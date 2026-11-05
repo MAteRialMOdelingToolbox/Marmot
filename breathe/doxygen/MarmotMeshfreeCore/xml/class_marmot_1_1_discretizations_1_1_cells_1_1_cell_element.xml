@@ -57,7 +57,7 @@
 <parametername direction="out">coordinates</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a808f7adb2b75965e2b3850959ca6b24b" kindref="member">getNMaterialPoints()</ref> <formula id="63">$ \times $</formula> nDim values, point by point. </para>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a808f7adb2b75965e2b3850959ca6b24b" kindref="member">getNMaterialPoints()</ref> <formula id="54">$ \times $</formula> nDim values, point by point. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

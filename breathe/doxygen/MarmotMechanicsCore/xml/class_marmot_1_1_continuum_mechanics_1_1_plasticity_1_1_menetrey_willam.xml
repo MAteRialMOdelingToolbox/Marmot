@@ -22,7 +22,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad7ff1f710cb1ffccdfe1779aae430292" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="405">$e$</formula>). </para>
+<para>Rankine failure criterion; only the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad7ff1f710cb1ffccdfe1779aae430292" kindref="member">ft</ref> has to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Rankine criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="102">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
@@ -40,7 +40,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad7ff1f710cb1ffccdfe1779aae430292" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a474a7e7c70acd233aa26ea1b850d47e1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="405">$e$</formula>). </para>
+<para>Drucker-Prager failure criterion; both the tensile strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad7ff1f710cb1ffccdfe1779aae430292" kindref="member">ft</ref> as well as the compressive strength <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a474a7e7c70acd233aa26ea1b850d47e1" kindref="member">fc</ref> have to be specified. <simplesect kind="note"><para>In deviatoric sections, compared to the original Mohr-Coulomb criterion the vertices are slightly rounded (specified by the eccentricity parameter <formula id="102">$e$</formula>). </para>
 </simplesect>
 </para>
           </detaileddescription>
@@ -96,7 +96,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Constructor that takes the uniaxial tensile strength <formula id="402">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efb" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="403">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam <computeroutput>param</computeroutput>. </para>
+<para>Constructor that takes the uniaxial tensile strength <formula id="98">$f_t$</formula> and two optional arguments consisting of the specific type of failure criterion <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efb" kindref="member">MenetreyWillamType</ref> and the uniaxial compressive strength <formula id="99">$f_c$</formula>. The call of the constructor automatically fills the corresponding Menetrey-Willam <computeroutput>param</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -147,7 +147,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="404">$r$</formula> from the Lode angle <formula id="44">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters <computeroutput>param</computeroutput>. </para>
+<para>Compute the polar radius <formula id="100">$r$</formula> from the Lode angle <formula id="101">$\theta$</formula>. The eccentricity parameter will be used from the chosen Menetrey-Willam parameters <computeroutput>param</computeroutput>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -171,7 +171,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Compute the polar radius <formula id="404">$r$</formula> and its derivative <formula id="406">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="44">$\theta$</formula>. The eccentricity parameter will be used from the <computeroutput>param</computeroutput> struct. </para>
+<para>Compute the polar radius <formula id="100">$r$</formula> and its derivative <formula id="103">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="101">$\theta$</formula>. The eccentricity parameter will be used from the <computeroutput>param</computeroutput> struct. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -200,7 +200,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the yield function <formula id="408">$f$</formula> depending on the Haigh-Westergaard stress coordinates <computeroutput>hw</computeroutput>. <formula id="409">$f&lt;0$</formula> means no yielding while <formula id="410">$f\geq0$</formula> means yielding. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
+<para>Evaluate the yield function <formula id="105">$f$</formula> depending on the Haigh-Westergaard stress coordinates <computeroutput>hw</computeroutput>. <formula id="106">$f&lt;0$</formula> means no yielding while <formula id="107">$f\geq0$</formula> means yielding. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded and thus a smooth failure criterion is obtained.</para>
 <para><simplesect kind="note"><para>The yield function can be also used as plastic potential function if needed. </para>
 </simplesect>
 </para>
@@ -232,7 +232,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="411">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
+<para>Evaluate the derivatives of the yield function with respect to the Haigh-Westergaard stress coordinates, i.e. <formula id="108">$df/d\xi,\,df/d\rho,\,df/d\theta$</formula>. When the optional fillet parameter <computeroutput>varEps</computeroutput> is given, a potential vertex along the hydrostatic axis is rounded. Thus, a smooth failure criterion is obtained, where derivatives can be calculated uniquely. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -262,7 +262,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="404">$r$</formula> from the Lode angle <formula id="44">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="405">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="100">$r$</formula> from the Lode angle <formula id="101">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="102">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -290,7 +290,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Static version for computing the polar radius <formula id="407">$r$$</formula> and its derivative <formula id="406">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="44">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="405">$e$</formula>. </para>
+<para>Static version for computing the polar radius <formula id="104">$r$$</formula> and its derivative <formula id="103">$\frac{dr}{d\theta}$</formula> from the Lode angle <formula id="101">$\theta$</formula> and a specified value for the eccentricity parameter <formula id="102">$e$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -497,9 +497,9 @@
     </briefdescription>
     <detaileddescription>
 <para>Implementation of the generalized failure criterion proposed by Menétrey and Willam</para>
-<para><formula id="399">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
+<para><formula id="95">\[ f(\xi,\rho,\theta) = \left(A_f\,\rho\right)^2+m\left(B_f\,\rho\,r(\theta,e)+C_f\,\xi\right) - 1
 \]</formula></para>
-<para>with the Haigh-Westergaard coordinates <formula id="400">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="401">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efb" kindref="member">MenetreyWillamType</ref>).</para>
+<para>with the Haigh-Westergaard coordinates <formula id="96">$\xi,\,\rho,\,\theta$</formula> and the parameters <formula id="97">$A_f,\,B_f,\,C_f,\,m,\,e$</formula> which are automatically evaluated dependent on the desired formulation (supported types see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efb" kindref="member">MenetreyWillamType</ref>).</para>
 <sect1 id="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1autotoc_md0">
 <title>Example</title><para>For a given pair of principal stress components in the Haigh-Westergaard stress space, evaluate the Mohr-Coulomb failure criterion: <programlisting><codeline><highlight class="preprocessor">#include<sp/>&lt;Marmot/MenetreyWillam.h&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;<ref refid="_haigh_westergaard_8h" kindref="compound">Marmot/HaighWestergaard.h</ref>&gt;</highlight><highlight class="normal"></highlight></codeline>

@@ -369,14 +369,14 @@
 <para>Return the result-file geometry keyword for this interface interpolation. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><computeroutput>"bar2"</computeroutput> for 2D line interfaces and <computeroutput>"hexa8"</computeroutput> for 3D quadrilateral interfaces.</para>
+<para><simplesect kind="return"><para><computeroutput>"quad4"</computeroutput> for 2D line interfaces and <computeroutput>"hexa8"</computeroutput> for 3D quadrilateral interfaces.</para>
 </simplesect>
-These are EnSight element names, not the computational interface shape. EnSight and ParaView do not understand an <computeroutput>"iline2"</computeroutput>/<computeroutput>"iquad4"</computeroutput> keyword, so a result file names the standard cell spanning the same nodes: a 3D interface writes its eight nodes as <computeroutput>"hexa8"</computeroutput>, a 2D interface as <computeroutput>"bar2"</computeroutput>. The element itself remains an interface element; only the geometry keyword written to result files is affected.</para>
+These are EnSight element names, not the computational interface shape. EnSight and ParaView do not understand an <computeroutput>"iline2"</computeroutput>/<computeroutput>"iquad4"</computeroutput> keyword, so a result file names the standard cell spanning the same nodes: a 3D interface writes its eight nodes as <computeroutput>"hexa8"</computeroutput>, a 2D interface its four nodes as <computeroutput>"quad4"</computeroutput>. The keyword names the cell of all nodes, not the shape of one face (<computeroutput>"bar2"</computeroutput> is a two-node cell, which made the geometry of a four-node 2D interface invalid). The element itself remains an interface element; only the geometry keyword written to result files is affected.</para>
 <para>A new interface interpolation is added by extending this map, next to the existing entries. The lookup uses at(), so an unmapped shape throws rather than writing an empty keyword to the file. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="174" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="174" bodyend="184"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="175" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="175" bodyend="185"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1abb75c010a785b9e722d7a389f1b27618" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -407,7 +407,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="194" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="194" bodyend="197"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="195" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="195" bodyend="198"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a19de2afefdb445e6ec47dbdce38da904" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a2adbe2acab40717580c5af69a94a34e7" kindref="member">NSized</ref></type>
@@ -440,7 +440,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="207" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="208" column="12"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ae56978c2a942fac3f3ffb954b502a81c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a3b1acf8d2d01860fa7a97022a229b6d3" kindref="member">dNdXiSized</ref></type>
@@ -473,7 +473,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="217" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="218" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a2c890728298657d9db5565dbc4ac5007" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a66d54a18a1e22be4bf444f7a69ba02c2" kindref="member">SideCoordinateVector</ref></type>
@@ -514,7 +514,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="227" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="227" bodyend="243"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="228" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="228" bodyend="244"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ace2ecda682c5c88bfac6e631384faab8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a6b233d32071d0e51876debddca56cfe2" kindref="member">SurfaceJacobianSized</ref></type>
@@ -558,7 +558,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="252" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="252" bodyend="270"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="253" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="253" bodyend="271"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1abde9fa57dd618f82ae2a6f1e9753fe63" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1abce502afdf3f7e7a14bca5b4b201a52b" kindref="member">MetricSized</ref></type>
@@ -589,7 +589,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="278" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="278" bodyend="278"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="279" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="279" bodyend="279"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a9a75de97c97544fe948c58f48d7eb836" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -629,7 +629,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="288" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="288" bodyend="297"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="289" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="289" bodyend="298"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ac6f073f98d05bf6a9ace96b34cf65261" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1aa3299e62125a65f6a75b6245c8ef025e" kindref="member">GradSized</ref></type>
@@ -672,7 +672,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="306" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="306" bodyend="322"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="307" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="307" bodyend="323"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1adc9771016da1b02ca82d5a84683fdc64" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a98fe5114e06939e003b3b2e4f6c5db6a" kindref="member">VectorDim</ref></type>
@@ -712,7 +712,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="333" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="333" bodyend="354"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="334" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="334" bodyend="355"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1acb84d4a721c0e94516374e773e0784de" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a85e7670b0133b71b2b0d587cfbfaf01d" kindref="member">TensorDim</ref></type>
@@ -743,7 +743,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="362" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="362" bodyend="362"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="363" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="363" bodyend="363"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a3914633a80ae4d41206cee0167e97888" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a85e7670b0133b71b2b0d587cfbfaf01d" kindref="member">TensorDim</ref></type>
@@ -774,7 +774,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="370" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="370" bodyend="370"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="371" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="371" bodyend="371"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1aa32a31c968c4e90b1501dd86abd970d6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a86da9c6ac41653e02a190d1e0e244561" kindref="member">NMatrixSized</ref></type>
@@ -805,7 +805,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="378" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="378" bodyend="381"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="379" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="379" bodyend="382"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a0e91dc1c712c51a7aa910245cfb86b88" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1aa549496643fc1c613e2c5d22bb341232" kindref="member">NJumpMatrixSized</ref></type>
@@ -836,7 +836,7 @@ These are EnSight element names, not the computational interface shape. EnSight 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="389" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="389" bodyend="405"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="390" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="390" bodyend="406"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a100f4329930fbfa8781a9c074aa66e4b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a2fecad5df2a4099e70ceb731c0c78486" kindref="member">BSurfaceSized</ref></type>
@@ -881,7 +881,7 @@ The operator stores the surface displacement gradient in row-major tensor order 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="429" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="429" bodyend="453"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="430" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="430" bodyend="454"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a345afad207a8f546d2327161adc724f5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ab070acd156f0a8523538084786809eb3" kindref="member">BAvgSurfaceSized</ref></type>
@@ -912,7 +912,7 @@ The operator stores the surface displacement gradient in row-major tensor order 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="461" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="461" bodyend="474"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="462" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="462" bodyend="475"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a0e53c1b0352134163374b409092328ad" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1_1_quadrature_geometry" kindref="compound">QuadratureGeometry</ref></type>
@@ -973,7 +973,7 @@ The operator stores the surface displacement gradient in row-major tensor order 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="536" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="536" bodyend="562"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="537" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="537" bodyend="563"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -1029,7 +1029,7 @@ The class evaluates shape functions, surface Jacobians, metric tensors, normals,
 </listitem></itemizedlist>
 </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="62" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="62" bodyend="563"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="62" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" bodystart="62" bodyend="564"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1abb75c010a785b9e722d7a389f1b27618" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryInterfaceElement</scope><name>assignNodeCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a345afad207a8f546d2327161adc724f5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryInterfaceElement</scope><name>BAverageSurfaceMatrix</name></member>

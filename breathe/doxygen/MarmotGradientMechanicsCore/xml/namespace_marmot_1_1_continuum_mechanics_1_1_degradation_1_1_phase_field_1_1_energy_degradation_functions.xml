@@ -43,7 +43,7 @@
 </parameterlist>
 <simplesect kind="return"><para>Degradation function value.</para>
 </simplesect>
-This function is defined as <formula id="18">\[ g(\phi) = (1 - \phi)^2,\]</formula> where <formula id="19">$\phi$</formula> is the phase field variable. It represents a quadratic degradation of the material stiffness as the phase field variable increases. </para>
+This function is defined as <formula id="5">\[ g(\phi) = (1 - \phi)^2,\]</formula> where <formula id="6">$\phi$</formula> is the phase field variable. It represents a quadratic degradation of the material stiffness as the phase field variable increases. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -88,7 +88,7 @@ This function is defined as <formula id="18">\[ g(\phi) = (1 - \phi)^2,\]</formu
 </parameterlist>
 <simplesect kind="return"><para>Degradation function value.</para>
 </simplesect>
-This function is defined as <formula id="20">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> where <formula id="19">$\phi$</formula> is the phase field variable. It represents a cubic degradation of the material stiffness as the phase field variable increases, providing a smoother transition compared to the quadratic function. </para>
+This function is defined as <formula id="7">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> where <formula id="6">$\phi$</formula> is the phase field variable. It represents a cubic degradation of the material stiffness as the phase field variable increases, providing a smoother transition compared to the quadratic function. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -133,7 +133,7 @@ This function is defined as <formula id="20">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - 
 </parameterlist>
 <simplesect kind="return"><para>Degradation function value.</para>
 </simplesect>
-This function is defined as <formula id="21">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> where <formula id="19">$\phi$</formula> is the phase field variable. It represents a quartic degradation of the material stiffness as the phase field variable increases, providing an even smoother transition compared to the cubic function. </para>
+This function is defined as <formula id="8">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> where <formula id="6">$\phi$</formula> is the phase field variable. It represents a quartic degradation of the material stiffness as the phase field variable increases, providing an even smoother transition compared to the cubic function. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -226,7 +226,7 @@ This function is defined as <formula id="21">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - 
 </parameterlist>
 <simplesect kind="return"><para>Degradation function value.</para>
 </simplesect>
-This function is defined as <formula id="22">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi (1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="19">$\phi$</formula> is the phase field variable, and <formula id="23">$p$</formula>, <formula id="24">$a_1$</formula>, <formula id="25">$a_2$</formula>, and <formula id="26">$a_3$</formula> are parameters that control the shape of the degradation function. This generic form allows for a wide range of degradation behaviors by adjusting the parameters accordingly. </para>
+This function is defined as <formula id="9">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi (1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="6">$\phi$</formula> is the phase field variable, and <formula id="10">$p$</formula>, <formula id="11">$a_1$</formula>, <formula id="12">$a_2$</formula>, and <formula id="13">$a_3$</formula> are parameters that control the shape of the degradation function. This generic form allows for a wide range of degradation behaviors by adjusting the parameters accordingly. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

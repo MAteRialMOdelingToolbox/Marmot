@@ -57,7 +57,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>A <formula id="63">$6 \times 3 \times 3$</formula> tensor representing the derivative of the Green-Lagrange strain tensor. </para>
+<simplesect kind="return"><para>A <formula id="130">$6 \times 3 \times 3$</formula> tensor representing the derivative of the Green-Lagrange strain tensor. </para>
 </simplesect>
 </para>
         </detaileddescription>

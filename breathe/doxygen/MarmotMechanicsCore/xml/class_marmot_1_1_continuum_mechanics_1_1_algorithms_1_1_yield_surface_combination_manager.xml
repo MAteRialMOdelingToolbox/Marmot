@@ -149,7 +149,7 @@
 <para>Tracks and iterates over yield-surface activity combinations for multi-surface plasticity. </para>
     </briefdescription>
     <detaileddescription>
-<para>Maintains a table of all <formula id="52">$2^n - 1$</formula> non-empty subsets of <computeroutput>nYieldSurfaces</computeroutput> yield surfaces and provides an interface to iterate over them during the return-mapping algorithm, marking already-tried combinations as used.</para>
+<para>Maintains a table of all <formula id="3">$2^n - 1$</formula> non-empty subsets of <computeroutput>nYieldSurfaces</computeroutput> yield surfaces and provides an interface to iterate over them during the return-mapping algorithm, marking already-tried combinations as used.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nYieldSurfaces</parametername>

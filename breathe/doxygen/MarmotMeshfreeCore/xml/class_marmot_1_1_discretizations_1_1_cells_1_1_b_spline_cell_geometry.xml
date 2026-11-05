@@ -118,7 +118,7 @@
         <name>_boundingBoxMin</name>
         <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::_boundingBoxMin</qualifiedname>
         <briefdescription>
-<para>Lower corner of the knot span, <formula id="55">$ u_p $</formula> per direction. </para>
+<para>Lower corner of the knot span, <formula id="219">$ u_p $</formula> per direction. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -133,7 +133,7 @@
         <name>_boundingBoxMax</name>
         <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::_boundingBoxMax</qualifiedname>
         <briefdescription>
-<para>Upper corner of the knot span, <formula id="56">$ u_{p+1} $</formula> per direction. </para>
+<para>Upper corner of the knot span, <formula id="220">$ u_{p+1} $</formula> per direction. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -205,7 +205,7 @@
 <parametername direction="in">knotVectors</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vectors ( <formula id="57">$ 2p+2 $</formula> knots per direction, direction by direction), in physical coordinates. </para>
+<para>Knot vectors ( <formula id="82">$ 2p+2 $</formula> knots per direction, direction by direction), in physical coordinates. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -234,7 +234,7 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
-<para>Knot span test <formula id="58">$ u_{p,i} \le x_i &lt; u_{p+1,i} $</formula> (half-open). </para>
+<para>Knot span test <formula id="221">$ u_{p,i} \le x_i &lt; u_{p+1,i} $</formula> (half-open). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -349,7 +349,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="59">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="144">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -380,7 +380,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="60">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="44">$ i $</formula>, column <formula id="61">$ a $</formula>). </para>
+<simplesect kind="return"><para><formula id="145">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="30">$ a $</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -411,7 +411,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="62">$ \det \boldsymbol{J}(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="66">$ \det \boldsymbol{J}(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -424,7 +424,7 @@
 <para>B-spline cell geometry (one knot span), a geometry policy for the MPM cells. </para>
     </briefdescription>
     <detaileddescription>
-<para>Wraps <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement</ref> for use as the <computeroutput>GeometryCell</computeroutput> of a cell (see <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>). The cell is the knot span <formula id="52">$ [u_{p}, u_{p+1}] $</formula> of each direction; the knot vectors are given in <bold>physical coordinates</bold>, so the parametric coordinate of a point is the point itself: <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kindref="member">findReferenceCoordinate()</ref> is the identity and <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" kindref="member">dNdX()</ref> returns the parametric derivatives unchanged. This is exact for a B-spline grid whose geometry map is the identity <formula id="53">$ \boldsymbol{X}(\boldsymbol{\xi}) = \boldsymbol{\xi} $</formula> (control points at the Greville abscissae, e.g. a uniform, axis-aligned background grid); the control point coordinates enter only <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" kindref="member">detJ()</ref>.</para>
+<para>Wraps <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement</ref> for use as the <computeroutput>GeometryCell</computeroutput> of a cell (see <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>). The cell is the knot span <formula id="217">$ [u_{p}, u_{p+1}] $</formula> of each direction; the knot vectors are given in <bold>physical coordinates</bold>, so the parametric coordinate of a point is the point itself: <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kindref="member">findReferenceCoordinate()</ref> is the identity and <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" kindref="member">dNdX()</ref> returns the parametric derivatives unchanged. This is exact for a B-spline grid whose geometry map is the identity <formula id="218">$ \boldsymbol{X}(\boldsymbol{\xi}) = \boldsymbol{\xi} $</formula> (control points at the Greville abscissae, e.g. a uniform, axis-aligned background grid); the control point coordinates enter only <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" kindref="member">detJ()</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
@@ -438,7 +438,7 @@
 <parametername>order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Polynomial degree <formula id="54">$ p $</formula> (1, 2 or 3 are registered). </para>
+<para>Polynomial degree <formula id="135">$ p $</formula> (1, 2 or 3 are registered). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

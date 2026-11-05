@@ -245,14 +245,14 @@
     <member refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da411cdcc5ae137d10f0823f5aab2a24cd" kind="enumvalue"><name>Hexa20</name></member>
     <member refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78dacdaecf236724a72a5815be6fb1e0c82b" kind="enumvalue"><name>Hexa27</name></member>
     <member refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da57fb180eaa3ccc779fad9635182b17b2" kind="enumvalue"><name>Hexa64</name></member>
-    <member refid="_marmot_dof_layout_tools_8h_1a98c08d5215757d34e1f1512070231093" kind="function"><name>makeNodeFieldLayout</name></member>
-    <member refid="_marmot_dof_layout_tools_8h_1a804b8a9246613f1b61b2d79200c0f01d" kind="function"><name>makeBlockedLayoutPermutationPattern</name></member>
     <member refid="_marmot_finite_element_8h_1a4c2217bb190e17d97dcd97e5318ab45b" kind="function"><name>getElementShapeByMetric</name></member>
     <member refid="_marmot_finite_element_8h_1acb650496b98651c0a532e189c54f1acb" kind="function"><name>NB</name></member>
     <member refid="_marmot_finite_element_8h_1aadc18ce31dc8208f8a8c009a5efb4680" kind="function"><name>NB</name></member>
     <member refid="_marmot_finite_element_8h_1af2edfffc9fb728f9cb28cdec52490e6a" kind="function"><name>Jacobian</name></member>
     <member refid="_marmot_finite_element_8h_1a963071c3bb1582ad43dcd54c2152d66c" kind="function"><name>Jacobian</name></member>
     <member refid="_marmot_finite_element_8h_1aa3cdab971a5ca6cf606eb53ecbce0e47" kind="function"><name>expandNodeIndicesToCoordinateIndices</name></member>
+    <member refid="_marmot_dof_layout_tools_8h_1a98c08d5215757d34e1f1512070231093" kind="function"><name>makeNodeFieldLayout</name></member>
+    <member refid="_marmot_dof_layout_tools_8h_1a804b8a9246613f1b61b2d79200c0f01d" kind="function"><name>makeBlockedLayoutPermutationPattern</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity" kind="namespace"><name>Marmot::Discretizations::Elements::BulkViscosity</name>
     <member refid="_marmot_bulk_viscosity_8h_1aa32b4d140c18cc5c28c2338868ca9b09" kind="function"><name>degradationFactor</name></member>

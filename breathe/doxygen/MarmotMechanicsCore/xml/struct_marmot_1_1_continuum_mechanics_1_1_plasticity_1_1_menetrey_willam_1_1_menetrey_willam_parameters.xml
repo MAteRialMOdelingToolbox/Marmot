@@ -13,7 +13,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>additional parameter to capture the influence of the deviatoric stress invariant <formula id="43">$\rho$</formula> </para>
+<para>additional parameter to capture the influence of the deviatoric stress invariant <formula id="109">$\rho$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -28,7 +28,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>addditional parameter to capture the influence of the deviatoric stress invariant <formula id="43">$\rho$</formula> and the lode angle </para>
+<para>addditional parameter to capture the influence of the deviatoric stress invariant <formula id="109">$\rho$</formula> and the lode angle </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -43,7 +43,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>addditional parameter to capture the influence of the hydrostatic stress invariant <formula id="42">$\xi$</formula> </para>
+<para>addditional parameter to capture the influence of the hydrostatic stress invariant <formula id="110">$\xi$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -58,7 +58,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Friction parameter <formula id="412">$m$</formula> </para>
+<para>Friction parameter <formula id="111">$m$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -73,7 +73,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Eccentricity parameter <formula id="405">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="413">$0.5\leq e
+<para>Eccentricity parameter <formula id="102">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="112">$0.5\leq e
 \leq 1$</formula> </para>
         </detaileddescription>
         <inbodydescription>

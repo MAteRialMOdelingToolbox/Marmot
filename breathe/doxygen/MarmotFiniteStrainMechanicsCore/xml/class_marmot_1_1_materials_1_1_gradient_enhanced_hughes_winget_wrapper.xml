@@ -297,7 +297,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Nonlocal viscosity <formula id="9">$ \eta $</formula>, the first entry (and only, since <computeroutput>BaseMaterialType</computeroutput> is templated on a single nonlocal variable) of the wrapped material&apos;s own <computeroutput><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a028bfe156fae6dcb619fff52c27426d6" kindref="member">getNonlocalViscosity()</ref></computeroutput>. </para>
+<simplesect kind="return"><para>Nonlocal viscosity <formula id="46">$ \eta $</formula>, the first entry (and only, since <computeroutput>BaseMaterialType</computeroutput> is templated on a single nonlocal variable) of the wrapped material&apos;s own <computeroutput><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a028bfe156fae6dcb619fff52c27426d6" kindref="member">getNonlocalViscosity()</ref></computeroutput>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -329,7 +329,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Nonlocal micro-inertia <formula id="11">$ m_k $</formula>, the first entry of the wrapped material&apos;s own <computeroutput><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3c24fa75abac26b59cb33a08213df6b" kindref="member">getNonlocalMicroInertia()</ref></computeroutput>. </para>
+<simplesect kind="return"><para>Nonlocal micro-inertia <formula id="48">$ m_k $</formula>, the first entry of the wrapped material&apos;s own <computeroutput><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3c24fa75abac26b59cb33a08213df6b" kindref="member">getNonlocalMicroInertia()</ref></computeroutput>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -353,7 +353,7 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
-<para>Initialise the state: <formula id="46">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="47">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, <formula id="103">$ \bar{N}^{(n)} = 0 $</formula>, plus the wrapped material&apos;s own state. </para>
+<para>Initialise the state: <formula id="62">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="63">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, <formula id="64">$ \bar{N}^{(n)} = 0 $</formula>, plus the wrapped material&apos;s own state. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -646,7 +646,7 @@
           <declname>dissipation</declname>
         </param>
         <briefdescription>
-<para>Recover  <formula id="49">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+<para>Recover  <formula id="65">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
        \partial\boldsymbol{\sigma}_{\text{rot}} $</formula> by forward differences. </para>
         </briefdescription>
         <detaileddescription>
@@ -799,7 +799,7 @@
           <declname>timeIncrement</declname>
         </param>
         <briefdescription>
-<para>Forward-difference the complete update with respect to <formula id="50">$ F $</formula> and <formula id="0">$ \bar{N} $</formula>. </para>
+<para>Forward-difference the complete update with respect to <formula id="66">$ F $</formula> and <formula id="37">$ \bar{N} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Every evaluation starts from a pristine copy of the incoming state and none of them commits: the caller runs the unperturbed update afterwards. This is the verification oracle for the analytic tangent, and it differentiates all four blocks.</para>
@@ -864,10 +864,10 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">HughesWingetWrapper</ref>, and it works the same way: the wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="37">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">HughesWingetWrapper</ref>, and it works the same way: the wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="54">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
                          \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
   \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
-\]</formula> split into <formula id="38">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="39">$ \Delta\boldsymbol{\Omega} $</formula>, with the stress of the previous increment rotated forward by the Cayley transform of <formula id="39">$ \Delta\boldsymbol{\Omega} $</formula> and the resulting Cauchy stress pushed to the Kirchhoff stress <formula id="7">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>.</para>
+\]</formula> split into <formula id="55">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="56">$ \Delta\boldsymbol{\Omega} $</formula>, with the stress of the previous increment rotated forward by the Cayley transform of <formula id="56">$ \Delta\boldsymbol{\Omega} $</formula> and the resulting Cauchy stress pushed to the Kirchhoff stress <formula id="44">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>.</para>
 <para>On top of that it carries the nonlocal field across the two interfaces:</para>
 <para><table rows="6" cols="2"><row>
 <entry thead="yes"><para>this interface reports  </para>
@@ -879,15 +879,15 @@ The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hugh
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>response.nonLocalRadius</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="98">$ \sqrt{c(0)} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="57">$ \sqrt{c(0)} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dTau_dN</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="99">$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="58">$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dL_dF</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="100">$ \partial K^{\text{local}}/\partial\Delta\boldsymbol{\varepsilon} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="59">$ \partial K^{\text{local}}/\partial\Delta\boldsymbol{\varepsilon} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dL_dN</computeroutput>  </para>
@@ -898,13 +898,13 @@ The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hugh
 <para><computeroutput>dL_dF</computeroutput> is chained through the Hughes-Winget kinematics. Each row is kept inside the 120-column limit deliberately: <computeroutput>ReflowComments</computeroutput> would otherwise wrap a longer one onto the next line and split the table in two.</para>
 <para><simplesect kind="note"><para>The wrapped material wants the nonlocal field <bold>and its increment</bold>, while this interface hands over only the total. The increment is therefore formed here, against a value of the last accepted increment carried in this wrapper&apos;s own state (<computeroutput>HughesWinget_N_n</computeroutput>) <ndash/> one slot more than the local sibling needs.</para>
 </simplesect>
-<simplesect kind="note"><para><bold>The wrapped material must be incremental in stress.</bold> It has to update the Cauchy stress it is handed, not recompute one from a stored strain: the wrapper&apos;s whole mechanism is to hand over the forward-rotated stress of the last increment, and a material that ignores that argument discards the rotation along with it. <computeroutput>AT2PhaseField</computeroutput> is a counter-example: it carries a six-component <computeroutput>strain</computeroutput> state (<computeroutput>AT2PhaseField.h:60</computeroutput>) and returns <formula id="101">$ g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon} $</formula> from it (<computeroutput>AT2PhaseField.cpp:71</computeroutput>), so its true <formula id="102">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is zero rather than the identity. Measured: wrapped, a rigid rotation on top of an anisotropic stretch leaves its Kirchhoff stress bit-for-bit <bold>unrotated</bold>. It is therefore deliberately not registered with this wrapper, and a total-strain-based model must not be either.</para>
+<simplesect kind="note"><para><bold>The wrapped material must be incremental in stress.</bold> It has to update the Cauchy stress it is handed, not recompute one from a stored strain: the wrapper&apos;s whole mechanism is to hand over the forward-rotated stress of the last increment, and a material that ignores that argument discards the rotation along with it. <computeroutput>AT2PhaseField</computeroutput> is a counter-example: it carries a six-component <computeroutput>strain</computeroutput> state (<computeroutput>AT2PhaseField.h:60</computeroutput>) and returns <formula id="60">$ g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon} $</formula> from it (<computeroutput>AT2PhaseField.cpp:71</computeroutput>), so its true <formula id="61">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is zero rather than the identity. Measured: wrapped, a rigid rotation on top of an anisotropic stretch leaves its Kirchhoff stress bit-for-bit <bold>unrotated</bold>. It is therefore deliberately not registered with this wrapper, and a total-strain-based model must not be either.</para>
 </simplesect>
 <simplesect kind="note"><para><bold>Only the stress is rotated.</bold> Tensor-valued internal variables of the wrapped material are passed through untouched and are therefore <emphasis>not</emphasis> objective under large incremental rotations. A model whose internal state is entirely scalar is unaffected.</para>
 </simplesect>
-<simplesect kind="note"><para>The interaction <formula id="5">$ c $</formula> is reported through its square root, and its derivative <formula id="8">$ \partial c/\partial\bar{N} $</formula> <bold>cannot be forwarded at all</bold>: the finite-strain interface has no slot for it. Harmless for a material whose <formula id="5">$ c $</formula> is constant (<computeroutput>AT2PhaseField</computeroutput> is); a material built on MarmotDecreasingInteractions would keep a correct residual but lose that term of its consistent tangent.</para>
+<simplesect kind="note"><para>The interaction <formula id="42">$ c $</formula> is reported through its square root, and its derivative <formula id="45">$ \partial c/\partial\bar{N} $</formula> <bold>cannot be forwarded at all</bold>: the finite-strain interface has no slot for it. Harmless for a material whose <formula id="42">$ c $</formula> is constant (<computeroutput>AT2PhaseField</computeroutput> is); a material built on MarmotDecreasingInteractions would keep a correct residual but lose that term of its consistent tangent.</para>
 </simplesect>
-<simplesect kind="note"><para>The nonlocal balance is formulated in the material configuration by the consumers of this interface, so <formula id="5">$ c $</formula> is handed over as the material constant the wrapped model reports, neither pushed forward nor weighted by <formula id="6">$ J $</formula>. </para>
+<simplesect kind="note"><para>The nonlocal balance is formulated in the material configuration by the consumers of this interface, so <formula id="42">$ c $</formula> is handed over as the material constant the wrapped model reports, neither pushed forward nor weighted by <formula id="43">$ J $</formula>. </para>
 </simplesect>
 </para>
     </detaileddescription>

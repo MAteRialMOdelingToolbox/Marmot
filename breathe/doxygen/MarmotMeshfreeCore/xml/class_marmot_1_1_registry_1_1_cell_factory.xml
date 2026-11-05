@@ -207,7 +207,7 @@
 <parametername direction="in">knotVectors</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vectors of the cell, <formula id="57">$ 2p+2 $</formula> knots per direction, direction by direction. </para>
+<para>Knot vectors of the cell, <formula id="82">$ 2p+2 $</formula> knots per direction, direction by direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
