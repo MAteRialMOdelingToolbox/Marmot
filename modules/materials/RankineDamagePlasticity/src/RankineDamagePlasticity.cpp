@@ -53,10 +53,9 @@ namespace Marmot::Materials {
     updateStress( state, dStress_dStrain, dStrain, timeInfo );
 
     // a diverging iterate (e.g., of an arc-length iteration) may overflow the results: request a cutback instead of
-    // passing non-finite values (e.g., NaN energy tangents from 0 * inf) to the solver
+    // passing non-finite values to the solver
     if ( !( state.stress.allFinite() && dStress_dStrain.allFinite() && std::isfinite( state.elasticEnergyDensity ) &&
-            std::isfinite( state.dissipation ) && state.dElasticEnergyDensity_dStrain.allFinite() &&
-            state.dDissipation_dStrain.allFinite() ) )
+            std::isfinite( state.dissipation ) ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
@@ -92,9 +91,7 @@ namespace Marmot::Materials {
 
     // handle zero strain increment
     if ( dE.isZero( 1e-14 ) ) {
-      dS_dE                               = integrityOld * Cel;
-      state.dElasticEnergyDensity_dStrain = integrityOld * effStressOld;
-      state.dDissipation_dStrain.setZero();
+      dS_dE = integrityOld * Cel;
       return;
     }
 
@@ -130,22 +127,14 @@ namespace Marmot::Materials {
 
     // free energy (1 - omega) psiEff, dissipation (1 - omega) effStress : dEp + psiEff dOmega
     state.elasticEnergyDensity += integrity * psiEff - integrityOld * psiEffOld;
-    state.dElasticEnergyDensity_dStrain = integrity * dEffStress_dE.transpose() * effElastStrain - psiEff * dOmega_dE;
 
-    if ( !plastic ) {
-      state.dDissipation_dStrain.setZero();
+    if ( !plastic )
       return;
-    }
 
     const double         dOmega         = integrityOld - integrity;
     const Math::Vector6d dStrainPlastic = dE - CelInv * ( effStress - effStressOld );
-    const Math::Matrix6d dEp_dE         = Math::Matrix6d::Identity() - CelInv * dEffStress_dE;
     const double         plasticWorkEff = effStress.dot( dStrainPlastic );
     state.dissipation += integrity * plasticWorkEff + psiEff * dOmega;
-    state.dDissipation_dStrain = -plasticWorkEff * dOmega_dE +
-                                 integrity *
-                                   ( dEffStress_dE.transpose() * dStrainPlastic + dEp_dE.transpose() * effStress ) +
-                                 dOmega * dEffStress_dE.transpose() * effElastStrain + psiEff * dOmega_dE;
   }
 
 } // namespace Marmot::Materials
