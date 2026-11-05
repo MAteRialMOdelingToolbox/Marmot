@@ -70,6 +70,10 @@ namespace Marmot::Discretizations::Elements {
       using Domain = ReferenceDomain;
       using Family = QuadratureFamily;
 
+      // abscissas of the 2- and 3-point Gauss-Legendre rules, 1/sqrt(3) and sqrt(3/5), correctly rounded
+      constexpr double gp2 = 0.577350269189625764509;
+      constexpr double gp3 = 0.774596669241483377036;
+
       // coordinates of the 4-point tetrahedron rule
       const double a = ( 5 - std::sqrt( 5 ) ) / 20;
       const double b = ( 5 + 3 * std::sqrt( 5 ) ) / 20;
@@ -193,35 +197,35 @@ namespace Marmot::Discretizations::Elements {
             { ( Vector3d() << +gp2, +gp2, +gp2 ).finished(),        1.0 },
             { ( Vector3d() << -gp2, +gp2, +gp2 ).finished(),        1.0 } } },
         { Domain::Hexahedron, Family::Gauss, 5, {
-            { ( Vector3d() << -gp3, -gp3, -gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << 0, -gp3, -gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << +gp3, -gp3, -gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << -gp3, 0, -gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << 0, 0, -gp3 ).finished(),              0.438957475994513 },
-            { ( Vector3d() << gp3, 0, -gp3 ).finished(),            0.274348422496571 },
-            { ( Vector3d() << -gp3, +gp3, -gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << 0, +gp3, -gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << +gp3, +gp3, -gp3 ).finished(),        0.171467764060357 },
+            { ( Vector3d() << -gp3, -gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, -gp3, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, -gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << -gp3, 0, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << 0, 0, -gp3 ).finished(),              320./729 },
+            { ( Vector3d() << gp3, 0, -gp3 ).finished(),            200./729 },
+            { ( Vector3d() << -gp3, +gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, +gp3, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, +gp3, -gp3 ).finished(),        125./729 },
 
-            { ( Vector3d() << -gp3, -gp3, 0 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << 0, -gp3, 0 ).finished(),              0.438957475994513 },
-            { ( Vector3d() << +gp3, -gp3, 0 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << -gp3, 0, 0 ).finished(),              0.438957475994513 },
-            { ( Vector3d() << 0, 0, 0 ).finished(),                 0.702331961591221 },
-            { ( Vector3d() << gp3, 0, 0 ).finished(),               0.438957475994513 },
-            { ( Vector3d() << -gp3, +gp3, 0 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << 0, +gp3, 0 ).finished(),              0.438957475994513 },
-            { ( Vector3d() << +gp3, +gp3, 0 ).finished(),           0.274348422496571 },
+            { ( Vector3d() << -gp3, -gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << 0, -gp3, 0 ).finished(),              320./729 },
+            { ( Vector3d() << +gp3, -gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << -gp3, 0, 0 ).finished(),              320./729 },
+            { ( Vector3d() << 0, 0, 0 ).finished(),                 512./729 },
+            { ( Vector3d() << gp3, 0, 0 ).finished(),               320./729 },
+            { ( Vector3d() << -gp3, +gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << 0, +gp3, 0 ).finished(),              320./729 },
+            { ( Vector3d() << +gp3, +gp3, 0 ).finished(),           200./729 },
 
-            { ( Vector3d() << -gp3, -gp3, +gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << 0, -gp3, +gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << +gp3, -gp3, +gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << -gp3, 0, +gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << 0, 0, +gp3 ).finished(),              0.438957475994513 },
-            { ( Vector3d() << gp3, 0, +gp3 ).finished(),            0.274348422496571 },
-            { ( Vector3d() << -gp3, +gp3, +gp3 ).finished(),        0.171467764060357 },
-            { ( Vector3d() << 0, +gp3, +gp3 ).finished(),           0.274348422496571 },
-            { ( Vector3d() << +gp3, +gp3, +gp3 ).finished(),        0.171467764060357 } } },
+            { ( Vector3d() << -gp3, -gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, -gp3, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, -gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << -gp3, 0, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << 0, 0, +gp3 ).finished(),              320./729 },
+            { ( Vector3d() << gp3, 0, +gp3 ).finished(),            200./729 },
+            { ( Vector3d() << -gp3, +gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, +gp3, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, +gp3, +gp3 ).finished(),        125./729 } } },
       };
       // clang-format on
 

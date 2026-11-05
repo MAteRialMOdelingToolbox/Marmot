@@ -742,8 +742,6 @@ namespace Marmot::Discretizations::Elements {
   };
 
   namespace Quadrature {
-    constexpr double gp2 = 0.577350269189625764509; ///< Gauss point abscissa for 2-point rule: @f$1/\sqrt{3}@f$.
-    constexpr double gp3 = 0.774596669241483;       ///< Gauss point abscissa for 3-point rule: @f$\sqrt{3/5}@f$.
 
     /**
      * @brief Natural coordinates and weight for one quadrature point.
