@@ -16,7 +16,7 @@ namespace Marmot::Materials {
 
   BergstromBoyce::BergstromBoyce( const double* materialProperties, int nMaterialProperties, int materialLabel )
     : MaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
-      hyperelasticBase( materialProperties[0] ),
+      hyperelasticBase( static_cast< int >( materialProperties[0] ) ),
       kappaA( materialProperties[1] ),
       kappaB( materialProperties[2] ),
       A1( materialProperties[3] ),

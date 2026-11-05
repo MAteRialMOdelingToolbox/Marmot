@@ -61,14 +61,14 @@ static const std::vector< PropsVariant > VARIANTS_3NET = {
 
 BergstromBoyce makeMaterial( const std::vector< double >& props )
 {
-  return BergstromBoyce( props.data(), props.size(), 1 );
+  return BergstromBoyce( props.data(), static_cast< int >( props.size() ), 1 );
 }
 
 std::vector< double > initialState( const std::vector< double >& props )
 {
   BergstromBoyce        mat = makeMaterial( props );
   std::vector< double > stateVars( mat.getNumberOfRequiredStateVars(), 0.0 );
-  mat.initializeYourself( stateVars.data(), stateVars.size() );
+  mat.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
   return stateVars;
 }
 
@@ -345,9 +345,9 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
   if ( hasC ) {
     props0[16] = 0.0; // c4 = 0
   }
-  BergstromBoyce        mat( props0.data(), props0.size(), 1 );
+  BergstromBoyce        mat( props0.data(), static_cast< int >( props0.size() ), 1 );
   std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
-  mat.initializeYourself( sv.data(), sv.size() );
+  mat.initializeYourself( sv.data(), static_cast< int >( sv.size() ) );
 
   std::vector< Tensor33d > Fhistory;
   for ( int i = 1; i <= 5; ++i ) {
@@ -398,7 +398,7 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
   BergstromBoyce        mat  = makeMaterial( variant.props );
   const bool            hasC = variant.props.size() >= 19;
   std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
-  mat.initializeYourself( sv.data(), sv.size() );
+  mat.initializeYourself( sv.data(), static_cast< int >( sv.size() ) );
 
   auto step = [&]( const Tensor33d& F, double dt ) {
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
@@ -477,7 +477,7 @@ void testObjectivity( const PropsVariant& variant )
   F_unrotated( 2, 2 )   = 0.99;
 
   std::vector< double > svUnrotated( mat.getNumberOfRequiredStateVars(), 0.0 );
-  mat.initializeYourself( svUnrotated.data(), svUnrotated.size() );
+  mat.initializeYourself( svUnrotated.data(), static_cast< int >( svUnrotated.size() ) );
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
@@ -487,7 +487,7 @@ void testObjectivity( const PropsVariant& variant )
 
   for ( int phi_deg = 0; phi_deg <= 180; phi_deg += 30 ) {
     std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
-    mat.initializeYourself( sv.data(), sv.size() );
+    mat.initializeYourself( sv.data(), static_cast< int >( sv.size() ) );
 
     double    phi = Marmot::Math::degToRad( phi_deg );
     Tensor33d Q( 0.0 );
@@ -540,7 +540,7 @@ void testIsotropy( const PropsVariant& variant )
   F_unrotated( 2, 2 )   = 0.99;
 
   std::vector< double > svUnrotated( mat.getNumberOfRequiredStateVars(), 0.0 );
-  mat.initializeYourself( svUnrotated.data(), svUnrotated.size() );
+  mat.initializeYourself( svUnrotated.data(), static_cast< int >( svUnrotated.size() ) );
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
@@ -560,7 +560,7 @@ void testIsotropy( const PropsVariant& variant )
     Tensor33d F_rotated = einsum< ik, kj, to_ij >( F_unrotated, R );
 
     std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
-    mat.initializeYourself( sv.data(), sv.size() );
+    mat.initializeYourself( sv.data(), static_cast< int >( sv.size() ) );
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F_rotated };
@@ -580,7 +580,10 @@ void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
 
   auto        solveropts = MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName    = "BERGSTROMBOYCE";
-  auto solver = MaterialPointSolverFiniteStrain( matName, variant.props.data(), variant.props.size(), solveropts );
+  auto        solver     = MaterialPointSolverFiniteStrain( matName,
+                                                 variant.props.data(),
+                                                 static_cast< int >( variant.props.size() ),
+                                                 solveropts );
 
   MaterialPointSolverFiniteStrain::Step rampStep;
   rampStep.gradUIncrementTarget                = Tensor33d( 0.0 );
@@ -717,8 +720,8 @@ void testNetworkCEquivalenceToNetworkB()
 
   std::vector< double > sv3( mat3.getNumberOfRequiredStateVars(), 0.0 );
   std::vector< double > sv2( mat2.getNumberOfRequiredStateVars(), 0.0 );
-  mat3.initializeYourself( sv3.data(), sv3.size() );
-  mat2.initializeYourself( sv2.data(), sv2.size() );
+  mat3.initializeYourself( sv3.data(), static_cast< int >( sv3.size() ) );
+  mat2.initializeYourself( sv2.data(), static_cast< int >( sv2.size() ) );
 
   // Apply a series of deformation steps with tension + shear + compaction
   std::vector< Tensor33d > Fsteps;
