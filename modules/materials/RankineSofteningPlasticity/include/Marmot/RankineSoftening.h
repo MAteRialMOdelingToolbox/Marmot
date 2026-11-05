@@ -40,9 +40,9 @@ namespace Marmot::Materials::RankineSoftening {
   using YieldSurfFlagArr               = YieldSurfaceCombinationManager::YieldSurfFlagArr;
 
   /**
-   * @brief Isotropic hardening/softening law of VonMisesModel,
-   * \f$ f_\mathrm{y}(\kappa) = f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa
-   *     + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp(-\delta\kappa)\right) \f$.
+   * @brief Isotropic hardening/softening law of VonMisesModel, with the yield stress floored at zero,
+   * \f$ f_\mathrm{y}(\kappa) = \max\left(f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa
+   *     + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp(-\delta\kappa)\right),\ 0\right) \f$.
    */
   struct Hardening {
     double fy0;
@@ -50,18 +50,27 @@ namespace Marmot::Materials::RankineSoftening {
     double deltaYieldStress;
     double delta;
 
+    /// yield stress without the floor at zero
     template < typename T >
-    T fy( const T& kappa ) const
+    T fyUnfloored( const T& kappa ) const
     {
       using std::exp;
       return fy0 + HLin * kappa + deltaYieldStress * ( 1. - exp( -delta * kappa ) );
     }
 
     template < typename T >
+    T fy( const T& kappa ) const
+    {
+      const T f = fyUnfloored( kappa );
+      return f > 0. ? f : T( 0. );
+    }
+
+    /// derivative of fy, zero where the yield stress is floored
+    template < typename T >
     T dfy_dKappa( const T& kappa ) const
     {
       using std::exp;
-      return HLin + deltaYieldStress * delta * exp( -delta * kappa );
+      return fyUnfloored( kappa ) > 0. ? T( HLin + deltaYieldStress * delta * exp( -delta * kappa ) ) : T( 0. );
     }
   };
 

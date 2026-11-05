@@ -7,6 +7,7 @@
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/RankineSofteningPlasticity.h"
 #include <Eigen/Eigenvalues>
+#include <algorithm>
 #include <stdexcept>
 
 using namespace Marmot;
@@ -94,7 +95,7 @@ namespace {
   // check that the returned stress satisfies all three Rankine yield conditions
   void checkAdmissibility( const MaterialPointState& state, const std::vector< double >& p )
   {
-    const double fy = p[2] + p[3] * state.kappa() + p[4] * ( 1. - std::exp( -p[5] * state.kappa() ) );
+    const double fy = std::max( p[2] + p[3] * state.kappa() + p[4] * ( 1. - std::exp( -p[5] * state.kappa() ) ), 0. );
     const Eigen::SelfAdjointEigenSolver< Eigen::Matrix3d > eigenSolver(
       Marmot::ContinuumMechanics::Voigt::voigtToStress( state.stress ) );
     throwExceptionOnFailure( eigenSolver.eigenvalues().maxCoeff() <= fy + 1e-10, "returned stress is not admissible" );
@@ -431,6 +432,52 @@ void testPropertiesAndZeroIncrement()
                            "zero increment: tangent is not the elastic stiffness" );
 }
 
+// linear softening beyond fy = 0: the yield stress is floored at zero
+void testYieldStressFlooredAtZero()
+{
+  const RankineSofteningPlasticity material( linearSofteningProperties.data(), 6, 1 );
+  const double                     threeK = 3. * lambda + 2. * G;
+  const double                     eps    = 1e-4;
+  const Math::Vector6d             dE     = ( Math::Vector6d() << eps, eps, eps, 0, 0, 0 ).finished();
+
+  // isotropic tension at the apex: sigma = 3K ( i eps - dLambda ) = fy( 3 dLambda ), with fy = 0 beyond kappa = fy0/|H|
+  MaterialPointState state;
+  for ( int i = 1; i <= 8; i++ ) {
+    if ( state.kappa() > fy0 / -H )
+      checkTangent( material, state, dE );
+
+    MaterialHypoElastic::state3D mpState( state.stress, 0., 0., state.stateVars.data() );
+    Math::Matrix6d               tangent;
+    material.computeStress( mpState, tangent, dE, { 0.0, 1.0 } );
+    const bool floored = state.kappa() > fy0 / -H;
+    state.stress       = mpState.stress;
+
+    const double dLambdaUnfloored = ( threeK * i * eps - fy0 ) / ( threeK + 3. * H );
+    const bool   positive         = fy0 + 3. * H * dLambdaUnfloored > 0.;
+    const double dLambda          = positive ? dLambdaUnfloored : i * eps;
+    const double sig              = positive ? fy0 + 3. * H * dLambda : 0.;
+    throwExceptionOnFailure( checkIfEqual( state.kappa(), 3. * dLambda, 1e-14 ),
+                             "floored yield stress: kappa mismatch" );
+    throwExceptionOnFailure( checkIfEqual< double >( state.stress,
+                                                     ( Math::Vector6d() << sig, sig, sig, 0, 0, 0 ).finished(),
+                                                     1e-11 ),
+                             "floored yield stress: comparison with analytical solution failed" );
+    // no plastic work at zero yield stress
+    if ( floored )
+      throwExceptionOnFailure( mpState.dissipation == 0., "floored yield stress: nonzero dissipation" );
+  }
+  throwExceptionOnFailure( state.kappa() > fy0 / -H, "floored yield stress: not reached" );
+
+  // compression from the floored state is elastic
+  const Math::Vector6d dECompression = ( Math::Vector6d() << -1e-4, 0, 0, 0, 0, 0 ).finished();
+  const auto [compressed, tangent]   = update( material, state, dECompression );
+  const Math::Matrix6d Cel           = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  throwExceptionOnFailure( compressed.acYield() == 0. && compressed.kappa() == state.kappa() &&
+                             checkIfEqual< double >( compressed.stress, state.stress + Cel * dECompression, 1e-12 ) &&
+                             tangent == Cel,
+                           "floored yield stress: compression is not elastic" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testUniaxialStrain,
@@ -444,7 +491,8 @@ int main()
                                                          testUniaxialStress,
                                                          testCoordinateInvariance,
                                                          testDivergedIterateRequestsCutback,
-                                                         testPropertiesAndZeroIncrement };
+                                                         testPropertiesAndZeroIncrement,
+                                                         testYieldStressFlooredAtZero };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

@@ -26,9 +26,9 @@ All notable changes to Marmot are documented in this file. The format follows
   `materials/GM7` (`GM7`), its gradient-enhanced nonlocal extension. The former standalone module repositories are
   superseded.
 - `materials/RankineSofteningPlasticity` (`RANKINESOFTENINGPLASTICITY`), multi-surface Rankine plasticity with the
-  isotropic hardening/softening law of VonMises; `materials/RankineDamagePlasticity` (`RANKINEDAMAGEPLASTICITY`),
-  perfect Rankine plasticity in the effective stress with exponential damage driven by the plastic strain (Grassl
-  and Jirásek, 2006); and `materials/RankineGradientDamagePlasticity` (`RANKINEGRADIENTDAMAGEPLASTICITY`), its
+  isotropic hardening/softening law of VonMises, the yield stress floored at zero;
+  `materials/RankineDamagePlasticity` (`RANKINEDAMAGEPLASTICITY`), perfect Rankine plasticity in the effective stress
+  with exponential damage driven by the plastic strain (Grassl and Jirásek, 2006); and `materials/RankineGradientDamagePlasticity` (`RANKINEGRADIENTDAMAGEPLASTICITY`), its
   implicit-gradient (over-)nonlocal extension. The hypoelastic models are also registered with the Hughes-Winget
   wrapper (`.../HUGHES-WINGET`). Imported with their history (`git subtree`); the module repositories are superseded.
 

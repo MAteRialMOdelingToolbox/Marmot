@@ -62,7 +62,13 @@ Three yield functions, one for each principal stress :math:`\sigma_A`, bound the
 with the yield stress
 
 .. math:: f_\mathrm{y}\left(\kappa\right)
-   = f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right).
+   = \max\left(f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right),\ 0\right).
+
+The yield stress is floored at zero: with linear softening, the material retains no tensile strength beyond
+:math:`\kappa = f_\mathrm{y}^0/|H_\mathrm{iso,lin}|` and deforms without plastic work, while compressive principal
+stresses remain admissible. A positive residual strength
+:math:`f_\mathrm{y}^0 + \Delta f_\mathrm{y}^{0,\infty}` follows from :math:`H_\mathrm{iso,lin} = 0` and
+:math:`-f_\mathrm{y}^0 < \Delta f_\mathrm{y}^{0,\infty} < 0`.
 
 Flow Rule
 ^^^^^^^^^
