@@ -192,8 +192,13 @@ namespace Marmot::Discretizations::Elements {
       const V3 r1   = x21 / ln;
       const V3 p    = 0.5 * ( Rg1.col( 1 ) + Rg2.col( 1 ) );
       V3       r3   = r1.cross( p );
-      r3            = r3 / sqrt( r3.dot( r3 ) );
-      const V3 r2   = r3.cross( r1 );
+      // undefined frame: the second axes of the end nodes cancel (relative twist pi) or align with the chord
+      if ( !( value( r3.dot( r3 ) ) > 1e-24 ) )
+        throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
+                                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                                     << ": the co-rotated frame is undefined (relative twist pi)" );
+      r3          = r3 / sqrt( r3.dot( r3 ) );
+      const V3 r2 = r3.cross( r1 );
       M3       Rr;
       Rr.col( 0 ) = r1, Rr.col( 1 ) = r2, Rr.col( 2 ) = r3;
       const M3                              R1 = Rr.transpose() * Rg1;
