@@ -6,6 +6,15 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+- Bond-slip of embedded reinforcement: the pluggable bond-slip law interface `Materials::BondSlipLaw` with its
+  `Registry::BondSlipLawFactory` (bond laws are modules in the materials category with their own factory), the laws
+  `materials/LinearElasticBondSlip` (`LINEARELASTICBONDSLIP`), `materials/ModelCode2010BondSlip`
+  (`MODELCODE2010BONDSLIP`: fib Model Code 2010 envelope, elastic un-/reloading, friction bound) and
+  `materials/ModelCode2010CoulombBondSlip` (`MODELCODE2010COULOMBBONDSLIP`: additionally pressure-dependent friction
+  and a normal crushing cap), and `elements/EmbeddedBondElement` (`EB<nDim>D<nBarNodes><host>`, e.g. `EB2D2Q4`,
+  `EB3D2H20`: the bond of a bar element to the host element it lies in, small slip, geometrically linear).
+
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
