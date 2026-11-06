@@ -6,6 +6,12 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Changed
+- **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
+  `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
+  them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
+  pulled before. Inputs keep their results by flipping the sign of the pressure.
+
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
@@ -20,6 +26,13 @@ All notable changes to Marmot are documented in this file. The format follows
 - Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
   element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
   faces, as `hexa8` for the 3D interfaces.
+- **Results:** `newmarkBetaIntegration` (`MarmotMechanicsCore`, used by all particles with the Newmark properties):
+  a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
+  is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
+  velocity produce an acceleration of order -v/(beta 1e-16). Increments of at least 1e-16 are unchanged.
+- **Results:** `newmarkBetaIntegration` with `beta = 0` (no time integration, a quasi-static analysis) sets the velocity
+  and the acceleration to zero: a quasi-static step after a dynamic one leaves the particles at rest. It used to keep
+  the velocity, advanced once by `dT (1 - gamma) a_n`. Analyses that are quasi-static from the start are unchanged.
 
 ## [v26.11] - 2026-11-02
 
