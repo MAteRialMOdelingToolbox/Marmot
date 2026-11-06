@@ -145,7 +145,7 @@ namespace Marmot::Discretizations::Elements {
           active( find( "active" ) ),
           coveredFraction( find( "covered fraction" ) ),
           materialStateVars( &find( "begin of material state" ),
-                             nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ) {};
+                             nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
     };
 
     /// A channel point
@@ -287,7 +287,7 @@ namespace Marmot::Discretizations::Elements {
     {
       const bool tet = hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra4 ||
                        hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra10;
-      VectorDim  xi  = tet ? VectorDim::Constant( 0.25 ) : VectorDim::Zero();
+      VectorDim xi = VectorDim::Constant( tet ? 0.25 : 0.0 );
       for ( int iteration = 0;; iteration++ ) {
         const VectorDim residual = hostGeometry.NB( hostGeometry.N( xi ) ) * hostGeometry.coordinates - X;
         const VectorDim dXi      = -hostGeometry.Jacobian( hostGeometry.dNdXi( xi ) ).inverse() * residual;
