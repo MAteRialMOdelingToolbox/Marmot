@@ -107,6 +107,19 @@ namespace {
                              Marmot::Utilities::MakeString() << what << ": " << value << " != " << expected );
   }
 
+  /// drive the beam from U = 0 to U in nSteps equal, accepted increments, as an analysis would: the material sees
+  /// moderate trial stresses (the return mapping of a nearly perfectly plastic material is then well conditioned on
+  /// every platform)
+  void loadInSteps( Beam& beam, const Eigen::VectorXd& U, int nSteps )
+  {
+    Eigen::VectorXd UOld = Eigen::VectorXd::Zero( U.size() );
+    for ( int i = 1; i <= nSteps; i++ ) {
+      const Eigen::VectorXd Ui = U * ( double( i ) / nSteps );
+      beam.kernels( Ui, UOld, true );
+      UOld = Ui;
+    }
+  }
+
   void checkTangent( Beam&                  beam,
                      const Eigen::VectorXd& U,
                      const Eigen::VectorXd& UOld,
@@ -499,7 +512,7 @@ void testPlasticTangents()
     Beam beam( "B2D2", { 0., 0., 60., 80. }, properties2D( rectanglePoints( -10, 10, -5, 5, 3, 1 ) ), "VONMISES", vm );
     Eigen::VectorXd UOld = Eigen::VectorXd::Zero( 6 ), U( 6 );
     U << 0., 0., 0.02, 0.15, 0.05, 0.06;
-    beam.kernels( U, UOld, true );
+    loadInSteps( beam, U, 20 );
     UOld = U;
     U << 0., 0., 0.025, 0.17, 0.06, 0.07;
     checkTangent( beam, U, UOld, 1e-8, 1e-5, "B23 von Mises" );
@@ -510,7 +523,7 @@ void testPlasticTangents()
     Beam beam( "B3D2", { 0., 0., 0., 60., 80., 0. }, properties3D( points, { 0., 0., 1. }, 4500. ), "VONMISES", vm );
     Eigen::VectorXd UOld = Eigen::VectorXd::Zero( 12 ), U( 12 );
     U << 0., 0., 0., 0., 0., 0., 0.15, 0.05, 0.1, 0.05, -0.02, 0.06;
-    beam.kernels( U, UOld, true );
+    loadInSteps( beam, U, 20 );
     UOld = U;
     U << 0., 0., 0., 0., 0., 0., 0.17, 0.06, 0.12, 0.06, -0.025, 0.07;
     checkTangent( beam, U, UOld, 1e-8, 1e-5, "B33 von Mises (bending, axial, torsion)" );
@@ -524,7 +537,7 @@ void testPlasticTangents()
                vm );
     Eigen::VectorXd UOld = Eigen::VectorXd::Zero( 18 ), U( 18 );
     U << 0., 0., 0., 0., 0., 0., 0.15, 0.05, 0.1, 0.005, -0.002, 0.006, 0.07, 0.04, 0.06, 0.003, -0.001, 0.003;
-    beam.kernels( U, UOld, true );
+    loadInSteps( beam, U, 20 );
     UOld = U;
     U( 7 ) += 0.02, U( 11 ) += 0.001, U( 15 ) += 0.0005;
     checkTangent( beam, U, UOld, 1e-8, 1e-5, "B3D3 von Mises" );
