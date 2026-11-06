@@ -28,3 +28,4 @@ This section contains the ready to use available material models.
   gradientenhancedhugheswinget
   gradientenhancedcompressibleneohookedamage
   gradientenhancedfinitestraindruckerprager
+  bondsliplaws
