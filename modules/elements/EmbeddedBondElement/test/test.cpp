@@ -112,10 +112,10 @@ void testAffineFieldGivesNoSlip()
   {
     // inclined bar, ends inside the quad8
     Bond            bond( "EB2D2Q8",
-                          concat( { 0.5, 0.3, 3.5, 2.8 }, quad8 ),
+               concat( { 0.5, 0.3, 3.5, 2.8 }, quad8 ),
                           { 1.0, -1.0, 1.0, 5 },
-                          "LINEARELASTICBONDSLIP",
-                          linearBond );
+               "LINEARELASTICBONDSLIP",
+               linearBond );
     Eigen::MatrixXd H( 2, 2 );
     H << 0.01, -0.03, 0.02, 0.005;
     auto [P, K] = bond.kernels( bond.affineField( Eigen::Vector2d( 0.3, -0.7 ), H ),
@@ -128,14 +128,14 @@ void testAffineFieldGivesNoSlip()
   {
     // a quadratic bar, curved, through the hexahedron
     Bond            bond( "EB3D3H8",
-                          concat( { 0.2, 0.3, 0.4, 1.7, 1.6, 1.5, 1.0, 0.8, 1.1 }, hexa8 ),
+               concat( { 0.2, 0.3, 0.4, 1.7, 1.6, 1.5, 1.0, 0.8, 1.1 }, hexa8 ),
                           { 2.0, -1.0, 1.0 },
-                          "LINEARELASTICBONDSLIP",
-                          linearBond );
+               "LINEARELASTICBONDSLIP",
+               linearBond );
     Eigen::MatrixXd H = Eigen::MatrixXd::Random( 3, 3 ) * 0.01;
     auto [P, K]       = bond.kernels( bond.affineField( Eigen::Vector3d( 0.3, -0.7, 0.1 ), H ),
-                                      Eigen::VectorXd::Zero( bond.nDof ),
-                                      true );
+                                Eigen::VectorXd::Zero( bond.nDof ),
+                                true );
     throwExceptionOnFailure( P.norm() < 1e-12,
                              Marmot::Utilities::MakeString()
                                << "EB3D3H8: affine field must not slip, |P|=" << P.norm() );
@@ -149,10 +149,10 @@ void testPullOutForce()
   // bar along x from 0.5 to 3.5 at y = 1.5 inside the quad8, only the part [-0.5, 0.75] of the bar is in this host
   const double perimeter = 0.7;
   Bond         bond( "EB2D2Q8",
-                     concat( { 0.5, 1.5, 3.5, 1.5 }, quad8 ),
+             concat( { 0.5, 1.5, 3.5, 1.5 }, quad8 ),
                      { perimeter, -0.5, 0.75, 3 },
-                     "LINEARELASTICBONDSLIP",
-                     linearBond );
+             "LINEARELASTICBONDSLIP",
+             linearBond );
   const double embeddedLength = 3.0 * ( 0.75 + 0.5 ) / 2;
 
   Eigen::VectorXd U = Eigen::VectorXd::Zero( bond.nDof );
@@ -258,10 +258,10 @@ void testLargeSlipPullOutLosesBond()
 {
   const std::vector< double > bar = { 0.5, 1.5, 3.5, 1.5 };
   Bond                        large( "EBLS2D2Q8W1",
-                                     concat( quad8, bar ),
+              concat( quad8, bar ),
                                      { 1.0, 0.0, 1.0, 1.0, 1.0, 3 },
-                                     "LINEARELASTICBONDSLIP",
-                                     linearBond );
+              "LINEARELASTICBONDSLIP",
+              linearBond );
   Eigen::VectorXd             U = Eigen::VectorXd::Zero( large.nDof );
   U( 16 ) = U( 18 ) = 1.0;
   const auto [P, K] = large.kernels( U, Eigen::VectorXd::Zero( large.nDof ), true );
