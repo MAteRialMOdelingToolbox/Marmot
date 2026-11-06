@@ -90,6 +90,11 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
 ### Fixed
+- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the trial stress norm
+  (`|g| <= tol * rho_trial`, same tolerances) instead of an absolute one. The absolute tolerance (1e-12 MPa for
+  `VonMises`) lies below the round-off of large trial stresses, so large strain increments failed to converge
+  depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Tests: a single large
+  strain increment of a perfectly plastic material ends on the yield surface (implicit and explicit).
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was

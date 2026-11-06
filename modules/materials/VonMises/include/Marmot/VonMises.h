@@ -34,8 +34,11 @@ namespace Marmot::Materials {
   public:
     /// @brief Numerical constants for the VonMises return-mapping algorithm.
     struct Constants {
-      static constexpr double innerNewtonTol        = 1e-12; ///< Convergence tolerance for the inner Newton iteration.
-      static constexpr int    nMaxInnerNewtonCycles = 15;    ///< Maximum number of inner Newton iterations.
+      /// Convergence tolerance of the inner Newton iteration, relative to the trial stress norm:
+      /// \f$|g| \leq \mathrm{tol}\, \rho_{\mathrm{trial}}\f$ (an absolute tolerance is below the round-off of large
+      /// trial stresses).
+      static constexpr double innerNewtonTol        = 1e-12;
+      static constexpr int    nMaxInnerNewtonCycles = 15; ///< Maximum number of inner Newton iterations.
     };
 
   public:
