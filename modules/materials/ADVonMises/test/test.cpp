@@ -1,6 +1,12 @@
+#include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <cmath>
+#include <memory>
+#include <utility>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
@@ -69,9 +75,51 @@ void testADVonMises()
   throwExceptionOnFailure( checkIfEqual< double >( history.back().stress, stressTarget, 1e-9 ),
                            "comparison with reference solution failed" );
 }
+/// a single, very large strain increment of a perfectly plastic material (trial stress ~ 1e5 f_y): the return mapping
+/// converges (relative tolerance; an absolute one is below the round-off of such trial stresses) and the stress lies on
+/// the yield surface
+void testLargeIncrementPerfectPlasticity()
+{
+  using MHE = Marmot::Materials::MaterialHypoElastic;
+  using Marmot::Utilities::MakeString;
+  const double                fy         = 235.;
+  const std::vector< double > properties = { 210000., 0.3, fy, 0., 0., 1., 7.85e-9 };
+  auto                        makePoint  = [&]() {
+    auto material = std::unique_ptr< MHE >(
+      Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "ADVONMISES",
+                                                                    properties.data(),
+                                                                    static_cast< int >( properties.size() ),
+                                                                    1 ) );
+    std::vector< double > stateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+    material->initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
+    return std::make_pair( std::move( material ), std::move( stateVars ) );
+  };
+  auto vonMisesStress = []( const Marmot::Math::Vector6d& s ) {
+    const double p = ( s( 0 ) + s( 1 ) + s( 2 ) ) / 3;
+    return std::sqrt(
+      1.5 * ( ( s( 0 ) - p ) * ( s( 0 ) - p ) + ( s( 1 ) - p ) * ( s( 1 ) - p ) + ( s( 2 ) - p ) * ( s( 2 ) - p ) ) +
+      3 * ( s( 3 ) * s( 3 ) + s( 4 ) * s( 4 ) + s( 5 ) * s( 5 ) ) );
+  };
+  Marmot::Math::Vector6d dStrain;
+  dStrain << 1.0, -0.3, 0.2, 0.5, -0.4, 0.3;
+
+  {
+    auto [material, stateVars] = makePoint();
+    MHE::state3D           state;
+    Marmot::Math::Matrix6d C;
+    state.stateVars = stateVars.data();
+    material->computeStress( state, C, dStrain, { 0.0, 1.0 } );
+    throwExceptionOnFailure( std::abs( vonMisesStress( state.stress ) / fy - 1 ) < 1e-10,
+                             MakeString()
+                               << "on the yield surface, sigma_eq / f_y = " << vonMisesStress( state.stress ) / fy );
+  }
+}
+
 int main()
 {
-  std::vector< std::function< void() > > tests = { testADVonMisesCoordinateInvariance, testADVonMises };
+  std::vector< std::function< void() > > tests = { testADVonMisesCoordinateInvariance,
+                                                   testADVonMises,
+                                                   testLargeIncrementPerfectPlasticity };
 
   executeTestsAndCollectExceptions( tests );
 
