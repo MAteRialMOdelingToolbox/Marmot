@@ -6,12 +6,12 @@ namespace {
   using namespace Marmot::Discretizations::Elements;
 
   template < class T,
-             Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-             typename T::SectionType                                         sectionType >
+             Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+             typename T::SectionType                                       sectionType >
   Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
   {
     return []( int elementID ) -> Marmot::Discretizations::Elements::Element* {
-      return new T( elementID, integrationType, sectionType );
+      return new T( elementID, quadratureRule, sectionType );
     };
   }
 
@@ -21,13 +21,13 @@ namespace {
   const static bool GCPE8UL_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "GCPE8UL",
                      makeFactoryFunction< GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >,
-                                          FullIntegration,
+                                          gauss( 4 ),
                                           GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >::PlaneStrain >() );
 
   const static bool GCPE8RUL_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "GCPE8RUL",
                      makeFactoryFunction< GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >,
-                                          ReducedIntegration,
+                                          gauss( 3 ),
                                           GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >::PlaneStrain >() );
 
   // 3D 8-node
@@ -35,7 +35,7 @@ namespace {
     registerElement( "GC3D8UL",
                      makeFactoryFunction<
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 8 >,
-                       FullIntegration,
+                       gauss( 2 ),
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 8 >::SectionType::Solid >() );
 
   // 3D 20-node
@@ -43,14 +43,14 @@ namespace {
     registerElement( "GC3D20UL",
                      makeFactoryFunction<
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 20 >,
-                       FullIntegration,
+                       gauss( 4 ),
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 20 >::SectionType::Solid >() );
 
   const static bool GC3D20RUL_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "GC3D20RUL",
                      makeFactoryFunction<
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 20 >,
-                       ReducedIntegration,
+                       gauss( 3 ),
                        GradientEnhancedFiniteStrainDisplacementElement< 3, 20 >::SectionType::Solid >() );
 
 } // namespace

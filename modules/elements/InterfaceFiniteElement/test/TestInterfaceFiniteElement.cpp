@@ -80,7 +80,7 @@ namespace {
     constexpr int nNodes = 8;
 
     const int  elId    = 3;
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
     const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
     auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -111,7 +111,7 @@ namespace {
     constexpr int nNodes = 4;
 
     const int  elId    = 2;
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
     const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
     auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -154,7 +154,7 @@ namespace {
     constexpr int nDim   = 3;
     constexpr int nNodes = 8;
 
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
     auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
 
     static std::array< double, nDim* nNodes > coordinates = {
@@ -194,7 +194,7 @@ namespace {
     constexpr int nNodes       = 8;
     constexpr int nElementDofs = nDim * nNodes;
 
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
     auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
 
     std::array< double, nElementDofs * nElementDofs > consistentInertia{};
@@ -381,7 +381,7 @@ void TestSingleInputFileElementGeometryMatrices()
   element->initializeYourself();
 
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 4,
-                           "IQuad4 full integration should have 4 Gauss points." );
+                           "IQuad4 with gauss( 2 ) should have 2x2 = 4 points." );
   throwExceptionOnFailure( element->getNDofPerElement() == totalNDof, "Unexpected number of interface element dofs." );
 
   const double tol = 1e-12;
@@ -500,8 +500,7 @@ void TestSurfaceGradientOperatorProjectsOnlyGradientDirection()
 
     auto element = std::make_unique<
       InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                  FullIntegration,
+                                                Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
                                                 InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
     static std::array< double, nDim* nNodes > nodeCoordsVec = { 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0 };
@@ -928,7 +927,7 @@ void TestAngledInterfaceKinematics()
   constexpr int nNodes = 4;
 
   const int  elId    = 1;
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
   const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
   auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -968,8 +967,7 @@ void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
   // update. This trapezoid makes sqrtDetG vary across the points.
   auto element = std::make_unique<
     InterfaceFiniteElement< nDim, nNodes > >( 7,
-                                              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                FullIntegration,
+                                              Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
                                               InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
   static std::array< double, nDim* nNodes > coordinates = {
@@ -1058,8 +1056,7 @@ void TestElementShapeKeywordsAreEnSightNames()
 
     auto element = std::make_unique<
       InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                  FullIntegration,
+                                                Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
                                                 InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
     throwExceptionOnFailure( element->getElementShape() == "quad4",
@@ -1214,9 +1211,7 @@ template < int nDim, int nNodes >
 void checkMaterialAssignmentThroughSection( const std::array< double, nDim * nNodes >& coordinates )
 {
   auto element = std::make_unique<
-    InterfaceFiniteElement< nDim, nNodes > >( 7,
-                                              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                FullIntegration );
+    InterfaceFiniteElement< nDim, nNodes > >( 7, Marmot::Discretizations::Elements::Quadrature::gauss( 2 ) );
   element->assignNodeCoordinates( coordinates.data() );
 
   throwExceptionOnFailure( element->getNumberOfRequiredStateVars() > 0,

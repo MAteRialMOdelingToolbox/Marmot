@@ -470,7 +470,7 @@ void testUnsupportedRequestsThrow()
   for ( auto section : { Element::PlaneStress, Element::Solid } ) {
     bool sectionThrew = false;
     try {
-      Element element( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, section );
+      Element element( 1, Marmot::Discretizations::Elements::Quadrature::gauss( 4 ), section );
     }
     catch ( const std::invalid_argument& ) {
       sectionThrew = true;
@@ -506,10 +506,8 @@ void testCenterOfLinearSimplices()
 {
   // the center is the centroid, not node 0 at the origin of the unit simplex
   using namespace Marmot::Discretizations::Elements;
-  const auto intType = Quadrature::IntegrationTypes::FullIntegration;
-
   GradientEnhancedFiniteStrainDisplacementElement< 2, 3 >
-                              tri( 1, intType, GradientEnhancedFiniteStrainDisplacementElement< 2, 3 >::PlaneStrain );
+    tri( 1, Quadrature::gauss( 2 ), GradientEnhancedFiniteStrainDisplacementElement< 2, 3 >::PlaneStrain );
   const std::vector< double > triCoordinates = { 0, 0, 2, 0, 0.5, 1 };
   tri.assignNodeCoordinates( triCoordinates.data() );
   const auto triCenter = tri.getCoordinatesAtCenter();
@@ -517,7 +515,7 @@ void testCenterOfLinearSimplices()
                            "The center of a triangle must be its centroid." );
 
   GradientEnhancedFiniteStrainDisplacementElement< 3, 4 >
-                              tet( 1, intType, GradientEnhancedFiniteStrainDisplacementElement< 3, 4 >::Solid );
+    tet( 1, Quadrature::gauss( 1 ), GradientEnhancedFiniteStrainDisplacementElement< 3, 4 >::Solid );
   const std::vector< double > tetCoordinates = { 0, 0, 0, 2, 0, 0, 0.5, 1, 0, 0, 0.5, 3 };
   tet.assignNodeCoordinates( tetCoordinates.data() );
   const auto tetCenter = tet.getCoordinatesAtCenter();

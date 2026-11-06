@@ -221,12 +221,12 @@ namespace Marmot::Discretizations::Elements {
 
     /** @brief Constructor of the displacement-based finite strain element
      * @param[in] elementID Element ID (label) of the element
-     * @param[in] integrationType Integration type of the element
+     * @param[in] quadratureRule Quadrature rule: family and degree of exactness.
      * @param[in] sectionType Section type of the element
      */
-    DisplacementFiniteStrainULElement( int                                                             elementID,
-                                       Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                                       SectionType                                                     sectionType );
+    DisplacementFiniteStrainULElement( int                                                           elementID,
+                                       Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+                                       SectionType                                                   sectionType );
 
     /// @brief Get the total number of required state variables of the element
     int getNumberOfRequiredStateVars() override;
@@ -472,9 +472,9 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   DisplacementFiniteStrainULElement< nDim, nNodes >::DisplacementFiniteStrainULElement(
-    int                                                             elementID,
-    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                                     sectionType )
+    int                                                           elementID,
+    Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                                   sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
@@ -482,7 +482,8 @@ namespace Marmot::Discretizations::Elements {
       hasEigenDeformation( false )
   {
     for ( const auto& qpInfo :
-          Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+          Marmot::Discretizations::Elements::Quadrature::getQuadraturePoints( this->referenceDomain,
+                                                                              quadratureRule ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }
