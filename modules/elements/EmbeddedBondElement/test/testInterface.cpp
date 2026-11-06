@@ -214,9 +214,13 @@ void testProperties()
     Bond bond( t, { 0.3, -1., 1., double( n ) } );
     throwExceptionOnFailure( bond.el->getNumberOfQuadraturePoints() == n, MakeString() << n << " integration points" );
   }
-  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() { Bond bond( t, { 0.3, -1., 1., 6. } ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() {
+                             Bond bond( t, { 0.3, -1., 1., 6. } );
+                           } ),
                            "6 integration points must be rejected" );
-  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() { Bond bond( t, { 0.3, -1. } ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() {
+                             Bond bond( t, { 0.3, -1. } );
+                           } ),
                            "missing properties must be rejected" );
 }
 
@@ -263,8 +267,8 @@ void testInterfaceLargeSlip()
     const Eigen::Vector3d normal = t.nDim == 2 ? Eigen::Vector3d( -d( 1 ), d( 0 ), 0. ).normalized()
                                                : Eigen::Vector3d( d.unitOrthogonal() );
     Eigen::VectorXd       U = Eigen::VectorXd::Zero( nDof ), P = Eigen::VectorXd::Zero( nDof ),
-                          PExplicit = Eigen::VectorXd::Zero( nDof );
-    Eigen::MatrixXd       K         = Eigen::MatrixXd::Zero( nDof, nDof );
+                    PExplicit = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
     for ( int n = nHost; n < nNodes; n++ )
       for ( int i = 0; i < t.nDim; i++ )
         U( n * t.nDim + i ) = 1e-3 * normal( i );
@@ -326,15 +330,19 @@ void testPropertiesLargeSlip()
     throwExceptionOnFailure( bond.el->getNumberOfQuadraturePoints() == n,
                              MakeString() << "large slip: " << n << " integration points" );
   }
-  throwExceptionOnFailure( throws< std::invalid_argument >(
-                             [&]() { Bond bond( t, { 0.3, 0., 1., 1., 1., 6. }, true ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() {
+                             Bond bond( t, { 0.3, 0., 1., 1., 1., 6. }, true );
+                           } ),
                            "large slip: 6 integration points must be rejected" );
-  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() { Bond bond( t, { 0.3, 0., 1., 1. }, true ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() {
+                             Bond bond( t, { 0.3, 0., 1., 1. }, true );
+                           } ),
                            "large slip: missing properties must be rejected" );
   Type outside = t;
   outside.bar  = { 0.2, 0.3, 2.8, 0.6 };
-  throwExceptionOnFailure( throws< std::invalid_argument >(
-                             [&]() { Bond bond( outside, { 0.3, 0., 1., 1., 1. }, true ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&]() {
+                             Bond bond( outside, { 0.3, 0., 1., 1., 1. }, true );
+                           } ),
                            "large slip: a channel outside of the host must be rejected" );
 }
 
