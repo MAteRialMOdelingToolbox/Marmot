@@ -6,6 +6,20 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (small strain, any hypoelastic
+  material in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (finite strain materials in the
+  co-rotated frame of the truss: rigid rotations are stress free, consistent material and geometric tangent);
+  property: the cross section area. E.g., for reinforcement bars embedded in continuum elements.
+- `Materials::MaterialFiniteStrain::computeUniaxialStress`: uniaxial stress reduction of finite strain materials
+  (Newton iteration on the lateral stretches with state reset, condensed tangent dτ11/dF11; not virtual).
+
+### Changed
+- **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
+  the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
+  response for hypoelastic materials; the quadrature point states are those of the truss element (`stress`,
+  `strain`, `normal force`, ...). `ElementSpatialWrapper` itself is unchanged.
+
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
