@@ -73,6 +73,66 @@ namespace Marmot::Discretizations::Elements {
       }
 
     } // end of namespace Quad4
+
+    namespace Tri3 {
+
+      NSized N( const Vector2d& xi )
+      {
+        /*
+         *   Shape functions
+         *    (2)
+         *     |\
+         *     | \
+         *     |__\
+         *    (0)  (1)
+         */
+
+        NSized N_;
+        N_ << 1. - xi( 0 ) - xi( 1 ), xi( 0 ), xi( 1 );
+        return N_;
+      }
+
+      dNdXiSized dNdXi( const Vector2d& )
+      {
+        dNdXiSized result;
+        // clang-format off
+          result << /*          (0)   (1)   (2) */
+                    /* ,xi1 */ -1.,   1.,   0.,
+                    /* ,xi2 */ -1.,   0.,   1.;
+        // clang-format on
+        return result;
+      }
+
+      Vector2i getBoundaryElementIndices( int faceID )
+      {
+        /*
+         *    (2)
+         *     |\
+         *     | \ face 2
+         *  face 3 \
+         *     |___\
+         *    (0)   (1)
+         *    face 1
+         *
+         * counter-clockwise, as for Quad4, so that the area vector of the boundary element points outward
+         * */
+        switch ( faceID ) {
+        case 1: {
+          return ( Vector2i() << 0, 1 ).finished();
+        }
+        case 2: {
+          return ( Vector2i() << 1, 2 ).finished();
+        }
+        case 3: {
+          return ( Vector2i() << 2, 0 ).finished();
+        }
+        default: {
+          throw std::invalid_argument( "Tri3: invalid face ID specifed" );
+        }
+        }
+      }
+
+    } // end of namespace Tri3
     namespace Quad8 {
       NSized N( const Vector2d& xi )
       {

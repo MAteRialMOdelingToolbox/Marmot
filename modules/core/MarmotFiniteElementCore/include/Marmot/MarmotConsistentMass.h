@@ -51,20 +51,26 @@
  * taken from the nearest of them in parent coordinates -- exact for a density that is constant
  * over the element, a piecewise-constant approximation otherwise.
  *
- * @note For the tetrahedra the "full" rules are the element rules themselves (1 point for Tetra4,
- * 4 for Tetra10), which are too low for a mass matrix as well. No tetrahedral element is currently
- * registered; one that is must be given a rule of sufficient order here first.
+ * @note For the tetrahedra the "full" rules are the element rules themselves, which are too low for a
+ * mass matrix as well. The linear tetrahedron (`C3D4`) therefore takes the 4-point rule, which is exact
+ * for the quadratic integrand \f$\mathbf{N}^\mathsf{T}\mathbf{N}\f$; its own 1-point rule would give a
+ * mass of rank 3 out of 12. The 4-point rule is still too low for Tetra10, which is not registered; a
+ * quadratic tetrahedron must be given a rule of sufficient order here first.
  */
 namespace Marmot::Discretizations::Elements::ConsistentMass {
 
   /**
    * @brief The quadrature rule the consistent mass of an element of the given shape is integrated
-   * with: the full Gauss rule of that shape.
+   * with: the full Gauss rule of that shape, and the 4-point rule for Tetra4.
    * @param shape The element shape.
    * @return The quadrature points and weights.
    */
   inline const std::vector< Quadrature::QuadraturePointInfo >& integrationRule( ElementShapes shape )
   {
+    // the Gauss rule of Tetra4 has 1 point for every integration type; the 4-point rule is exact for quadratics
+    if ( shape == ElementShapes::Tetra4 )
+      return Quadrature::Spatial3D::gaussPointListTetra10;
+
     return Quadrature::getGaussPointInfo( shape, Quadrature::IntegrationTypes::FullIntegration );
   }
 
