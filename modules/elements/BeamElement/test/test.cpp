@@ -244,7 +244,7 @@ void testCantilever2D()
   const Eigen::Vector2d t( 0.6, 0.8 ), n( -0.8, 0.6 );
   const std::vector< std::tuple< std::string, std::vector< std::array< double, 3 > >, double, double > > sections =
     { { "rectangle", rectanglePoints( -h / 2, h / 2, -b / 2, b / 2, 3, 1 ), b * h, b * h * h * h / 12 },
-      { "circle", circlePoints( d, 2, 8 ), std::numbers::pi * d * d / 4, std::numbers::pi * d * d * d * d / 64 } };
+      { "circle", circlePoints( d, 1, 16 ), std::numbers::pi * d * d / 4, std::numbers::pi * d * d * d * d / 64 } };
   for ( int nNodes : { 2, 3 } )
     for ( const auto& [name, points, A, I] : sections ) {
       const std::string type = "B2D" + std::to_string( nNodes );
@@ -255,7 +255,8 @@ void testCantilever2D()
 
       const double    P = 7.5, M = 1200., N = 3000.;
       Eigen::VectorXd f( 3 );
-      f << P * n, 0;
+      f.head< 2 >()     = P * n;
+      f( 2 )            = 0;
       Eigen::VectorXd u = beam.cantilever( f );
       check( u.head( 2 ).dot( n ), P * L * L * L / ( 3 * E * I ), 1e-10, what + "tip deflection (force)" );
       check( u( 2 ), P * L * L / ( 2 * E * I ), 1e-10, what + "tip rotation (force)" );
@@ -265,9 +266,10 @@ void testCantilever2D()
       Eigen::VectorXd U = Eigen::VectorXd::Zero( nDof );
       U.segment( 3, 3 ) = u;
       if ( nNodes == 3 ) {
-        const double vMid = P * ( L / 2 ) * ( L / 2 ) * ( 3 * L - L / 2 ) / ( 6 * E * I );
-        const double tMid = P * ( L / 2 ) * ( 2 * L - L / 2 ) / ( 2 * E * I );
-        U.segment( 6, 3 ) << vMid * n, tMid;
+        const double vMid   = P * ( L / 2 ) * ( L / 2 ) * ( 3 * L - L / 2 ) / ( 6 * E * I );
+        const double tMid   = P * ( L / 2 ) * ( 2 * L - L / 2 ) / ( 2 * E * I );
+        U.segment< 2 >( 6 ) = vMid * n;
+        U( 8 )              = tMid;
       }
       beam.kernels( U, Eigen::VectorXd::Zero( nDof ), true );
       const auto xs = beam.element->getCoordinatesAtQuadraturePoints();
@@ -293,8 +295,9 @@ void testCantilever2D()
       check( u.head( 2 ).dot( n ), M * L * L / ( 2 * E * I ), 1e-10, what + "tip deflection (moment)" );
       check( u( 2 ), M * L / ( E * I ), 1e-10, what + "tip rotation (moment)" );
 
-      f << N * t, 0;
-      u = beam.cantilever( f );
+      f.head< 2 >() = N * t;
+      f( 2 )        = 0;
+      u             = beam.cantilever( f );
       check( u.head( 2 ).dot( t ), N * L / ( E * A ), 1e-10, what + "axial elongation" );
       throwExceptionOnFailure( std::abs( u( 2 ) ) < 1e-14, what + "no rotation (axial)" );
 
@@ -328,7 +331,7 @@ void testCantilever3D()
                    b * h * h * h / 12,
                    2500. },
                  { "circle",
-                   circlePoints( d, 2, 8 ),
+                   circlePoints( d, 1, 16 ),
                    std::numbers::pi * d * d * d * d / 64,
                    std::numbers::pi * d * d * d * d / 64,
                    std::numbers::pi * d * d * d * d / 32 } };
@@ -344,20 +347,23 @@ void testCantilever3D()
       const double      P = 5., Tq = 2000.;
 
       Eigen::VectorXd f( 6 ), u;
-      f << P * e2, Eigen::Vector3d::Zero();
+      f.head< 3 >() = P * e2;
+      f.tail< 3 >().setZero();
       u = beam.cantilever( f );
       check( u.head( 3 ).dot( e2 ), P * L * L * L / ( 3 * E * Iz ), 1e-10, what + "deflection along e2" );
       check( u.tail( 3 ).dot( e3 ), P * L * L / ( 2 * E * Iz ), 1e-10, what + "rotation about e3" );
       throwExceptionOnFailure( std::abs( u.head( 3 ).dot( e3 ) ) + std::abs( u.tail( 3 ).dot( e2 ) ) < 1e-12,
                                what + "no coupling e2 -> e3" );
 
-      f << P * e3, Eigen::Vector3d::Zero();
+      f.head< 3 >() = P * e3;
+      f.tail< 3 >().setZero();
       u = beam.cantilever( f );
       check( u.head( 3 ).dot( e3 ), P * L * L * L / ( 3 * E * Iy ), 1e-10, what + "deflection along e3" );
       check( u.tail( 3 ).dot( e2 ), -P * L * L / ( 2 * E * Iy ), 1e-10, what + "rotation about e2" );
 
-      f << Eigen::Vector3d::Zero(), Tq * t;
-      u = beam.cantilever( f );
+      f.head< 3 >().setZero();
+      f.tail< 3 >() = Tq * t;
+      u             = beam.cantilever( f );
       check( u.tail( 3 ).dot( t ), Tq * L / ( G * J ), 1e-10, what + "twist" );
       throwExceptionOnFailure( u.head( 3 ).norm() < 1e-12, what + "no displacement under torsion" );
 
@@ -437,8 +443,11 @@ void testRigidBodyMotions()
                linearElastic );
     const Eigen::Vector3d c( 0.3, -0.2, 0.1 ), w( 1e-3, -2e-3, 0.5e-3 );
     Eigen::VectorXd       U( 12 );
-    U << c + w.cross( Eigen::Vector3d( 1., 2., 3. ) ), w, c + w.cross( Eigen::Vector3d( 41., 32., -7. ) ), w;
-    const auto P = beam.kernels( U, Eigen::VectorXd::Zero( 12 ), false ).first;
+    U.segment< 3 >( 0 ) = c + w.cross( Eigen::Vector3d( 1., 2., 3. ) );
+    U.segment< 3 >( 3 ) = w;
+    U.segment< 3 >( 6 ) = c + w.cross( Eigen::Vector3d( 41., 32., -7. ) );
+    U.segment< 3 >( 9 ) = w;
+    const auto P        = beam.kernels( U, Eigen::VectorXd::Zero( 12 ), false ).first;
     throwExceptionOnFailure( P.norm() < 1e-10,
                              Marmot::Utilities::MakeString() << "B33 rigid body motion: |P| = " << P.norm() );
   }
@@ -450,9 +459,13 @@ void testRigidBodyMotions()
                linearElastic );
     const Eigen::Vector3d c( 0.3, -0.2, 0.1 ), w( 1e-3, -2e-3, 0.5e-3 );
     Eigen::VectorXd       U( 18 );
-    U << c + w.cross( Eigen::Vector3d( 1., 2., 3. ) ), w, c + w.cross( Eigen::Vector3d( 41., 32., -7. ) ), w,
-      c + w.cross( Eigen::Vector3d( 21., 17., -2. ) ), w;
-    const auto P = beam.kernels( U, Eigen::VectorXd::Zero( 18 ), false ).first;
+    U.segment< 3 >( 0 )  = c + w.cross( Eigen::Vector3d( 1., 2., 3. ) );
+    U.segment< 3 >( 3 )  = w;
+    U.segment< 3 >( 6 )  = c + w.cross( Eigen::Vector3d( 41., 32., -7. ) );
+    U.segment< 3 >( 9 )  = w;
+    U.segment< 3 >( 12 ) = c + w.cross( Eigen::Vector3d( 21., 17., -2. ) );
+    U.segment< 3 >( 15 ) = w;
+    const auto P         = beam.kernels( U, Eigen::VectorXd::Zero( 18 ), false ).first;
     throwExceptionOnFailure( P.norm() < 1e-8,
                              Marmot::Utilities::MakeString() << "B3D3 rigid body motion: |P| = " << P.norm() );
   }
@@ -532,8 +545,10 @@ void testPlasticLimits()
   Beam            beam( "B2D2", { 0., 0., L, 0. }, properties2D( points ), "VONMISES", vm );
   const double    kappaMax = 200 * 2 * fy / ( E * 20 ); // all points yielded
   Eigen::VectorXd UOld     = Eigen::VectorXd::Zero( 6 );
-  for ( int i = 1; i <= 50; i++ ) {
-    const double    Theta = 0.5 * i / 50. * kappaMax * L;
+  // small steps (outer fibre strain increment 0.5 eps_y): the return mapping of a perfectly plastic material stays
+  // well conditioned on every platform
+  for ( int i = 1; i <= 100; i++ ) {
+    const double    Theta = 0.5 * i / 100. * kappaMax * L;
     Eigen::VectorXd U( 6 );
     U << 0, 0, -Theta, 0, 0, Theta;
     beam.kernels( U, UOld, true );
@@ -657,20 +672,21 @@ void testPlasticHingeCantilever()
 {
   const double L = 1000, fy = 235;
 
-  // the limit load with 8 and 16 elements; it converges linearly with the element size (the hinge forms at the root
-  // quadrature point), so the extrapolation 2 P_16 - P_8 must match M_p / L
-  auto check =
+  // the limit load with nCoarse and 2 nCoarse elements; it converges linearly with the element size (the hinge forms at
+  // the root quadrature point), so the extrapolation 2 P_fine - P_coarse must match M_p / L
+  const int nCoarse = 4;
+  auto      check =
     [&]( const std::string& name, const std::vector< std::array< double, 3 > >& points, double PLimit, double height ) {
       const double vMax = 10 * 2 * fy / ( E * height ) * L * L / 3;
-      const double r8   = cantileverLimitLoad( 8, points, L, fy, vMax ) / PLimit;
-      const double r16  = cantileverLimitLoad( 16, points, L, fy, vMax ) / PLimit;
-      std::cout << name << ": P / (f_y Z / L) = " << r8 << " (8 elements), " << r16 << " (16 elements), extrapolated "
-                << 2 * r16 - r8 << "\n";
-      throwExceptionOnFailure( std::abs( r16 - 1 ) < 0.6 * std::abs( r8 - 1 ),
+      const double rC   = cantileverLimitLoad( nCoarse, points, L, fy, vMax ) / PLimit;
+      const double rF   = cantileverLimitLoad( 2 * nCoarse, points, L, fy, vMax ) / PLimit;
+      std::cout << name << ": P / (f_y Z / L) = " << rC << " (" << nCoarse << " elements), " << rF << " ("
+                << 2 * nCoarse << " elements), extrapolated " << 2 * rF - rC << "\n";
+      throwExceptionOnFailure( std::abs( rF - 1 ) < 0.6 * std::abs( rC - 1 ),
                                Marmot::Utilities::MakeString() << name << " plastic hinge: no convergence" );
-      throwExceptionOnFailure( std::abs( 2 * r16 - r8 - 1 ) < 1e-2,
+      throwExceptionOnFailure( std::abs( 2 * rF - rC - 1 ) < 1e-2,
                                Marmot::Utilities::MakeString()
-                                 << name << " plastic hinge: extrapolated P/P_lim = " << 2 * r16 - r8 );
+                                 << name << " plastic hinge: extrapolated P/P_lim = " << 2 * rF - rC );
     };
 
   // rectangle: the 2 x 2 Gauss points per cell give Z = b h^2 / 4 exactly
@@ -678,7 +694,7 @@ void testPlasticHingeCantilever()
   check( "rectangle", rectanglePoints( -h / 2, h / 2, -b / 2, b / 2, 2, 1 ), fy * b * h * h / 4 / L, h );
 
   const double d = 40;
-  check( "circle", circlePoints( d, 6, 16 ), fy * d * d * d / 6 / L, d );
+  check( "circle", circlePoints( d, 1, 16 ), fy * d * d * d / 6 / L, d );
 
   // T-section: flange y in [hw, hw + tf] x width bf, web y in [0, hw] x width tw; centroid on the axis. The plastic
   // neutral axis is the equal-area axis, not the centroidal one: the free axial dof lets it shift
@@ -692,8 +708,8 @@ void testPlasticHingeCantilever()
   };
   const double Z = Zpart( hw, hw + tf, bf, yp ) + Zpart( 0, hw, tw, yp );
   check( "T-section",
-         shifted( concat( rectanglePoints( hw, hw + tf, -bf / 2, bf / 2, 8, 1 ),
-                          rectanglePoints( 0, hw, -tw / 2, tw / 2, 10, 1 ) ),
+         shifted( concat( rectanglePoints( hw, hw + tf, -bf / 2, bf / 2, 4, 1 ),
+                          rectanglePoints( 0, hw, -tw / 2, tw / 2, 6, 1 ) ),
                   -yc,
                   0 ),
          fy * Z / L,

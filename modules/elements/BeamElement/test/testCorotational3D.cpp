@@ -435,7 +435,7 @@ void testInPlaneEqualsB2D2CR()
   const auto   sec3 = rectangle3D( h, b, 2, 1, 1., { 0, 1, 0 } );
   const auto   sec2 = rectangle2D( h, b, 2 );
   {
-    const int nEl = 20;
+    const int nEl = 10;
     Chain     c3( "B3D2CR", straightNodes( nEl, L, 3 ), sec3, "LINEARELASTIC", linearElastic );
     Chain     c2( "B2D2CR", straightNodes( nEl, L, 2 ), sec2, "LINEARELASTIC", linearElastic );
     for ( int part = 1; part <= 3; part++ ) {
@@ -460,8 +460,8 @@ void testInPlaneEqualsB2D2CR()
     const auto   s3  = rectangle3D( 1, 1, 1, 1, 1., { 0, 1, 0 } );
     const auto   s2  = rectangle2D( 1, 1, 1 );
     const double EI1 = E / 12;
-    Chain        c3( "B3D2CR", straightNodes( 40, L, 3 ), s3, "LINEARELASTIC", linearElastic );
-    Chain        c2( "B2D2CR", straightNodes( 40, L, 2 ), s2, "LINEARELASTIC", linearElastic );
+    Chain        c3( "B3D2CR", straightNodes( 20, L, 3 ), s3, "LINEARELASTIC", linearElastic );
+    Chain        c2( "B2D2CR", straightNodes( 20, L, 2 ), s2, "LINEARELASTIC", linearElastic );
     for ( double lambda : { 1., 5., 10. } ) {
       const double    P  = lambda * EI1 / ( L * L );
       const auto      rf = elastica( lambda );
@@ -503,7 +503,7 @@ void testBend45()
   for ( double P : { 300., 450., 600. } ) {
     Eigen::VectorXd F = Eigen::VectorXd::Zero( 6 );
     F( 2 )            = P;
-    its += chain.solve( F, 10, 1e-9 );
+    its += chain.solve( F, 5, 1e-9 );
     const auto t = chain.tip();
     // tip displacements in the frame of Bathe: u along the tangent direction... reported as global x, y, z changes
     std::cout << std::setprecision( 6 ) << "45 deg bend P = " << P << ": tip displacement (" << t( 0 ) << ", " << t( 1 )
