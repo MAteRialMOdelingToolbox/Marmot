@@ -219,12 +219,12 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Construct element with ID, quadrature rule and section assumption.
      * @param elementID Unique element label.
-     * @param integrationType Integration (quadrature) rule.
+     * @param quadratureRule Quadrature rule: family and degree of exactness.
      * @param sectionType Section assumption (1D/2D/3D).
      */
-    DisplacementFiniteElement( int                                                     elementID,
-                               Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                               SectionType                                             sectionType );
+    DisplacementFiniteElement( int                                                   elementID,
+                               Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+                               SectionType                                           sectionType );
 
     /** @brief Total number of required state variables for this element (sum over all quadrature points). */
     int getNumberOfRequiredStateVars() override;
@@ -460,16 +460,16 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   DisplacementFiniteElement< nDim, nNodes >::DisplacementFiniteElement(
-    int                                                     elementID,
-    Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                             sectionType )
+    int                                                   elementID,
+    Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                           sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
     for ( const auto& qpInfo :
-          Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+          Discretizations::Elements::Quadrature::getQuadraturePoints( this->referenceDomain, quadratureRule ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }

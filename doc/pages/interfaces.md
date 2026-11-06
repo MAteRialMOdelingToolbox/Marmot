@@ -87,20 +87,25 @@ For instance, the 4-node plane strain displacement finite element "CPE4" is regi
 #include "Marmot/MarmotElementFactory.h"
 
 template < class T,
-           Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-           typename T::SectionType                             sectionType >
+           Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+           typename T::SectionType                                     sectionType >
 Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
 {
-    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, integrationType, sectionType ); };
+    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, quadratureRule, sectionType ); };
 }
 
 const static bool CPE4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "CPE4",
                      makeFactoryFunction< DisplacementFiniteElement< 2, 4 >,
-                                          FullIntegration,
+                                          gauss( 2 ),
                                           DisplacementFiniteElement< 2, 4 >::PlaneStrain >() );
 ```
 making use of an auxiliary factory function generator.
+The quadrature rule is requested by its family and the polynomial degree it must integrate exactly:
+`gauss( 2 )` is the Gauss rule with the fewest points that is exact for degree 2, i.e. 2x2 points on the
+quadrilateral, and `newtonCotes( 1 )` places one point at each node of a linear element (`Bar2`, `Tri3` and
+`Quad4`), for nodal integration.
+The available rules are listed in `Marmot::Discretizations::Elements::Quadrature::quadratureRules()`.
 
 Creating a specific element instance and computing the kernel is straightforward:
 ```cpp
