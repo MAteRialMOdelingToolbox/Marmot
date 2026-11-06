@@ -99,6 +99,10 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial2D::gaussPointList1x1/2x2/3x3` | `getQuadraturePoints( ReferenceDomain::Quadrilateral, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
+- Large slip of embedded reinforcement: `EmbeddedLargeSlipBondElement` (`EBLS<nDim>D<nBarNodes><host>W<n>`, e.g.
+  `EBLS2D2Q4W3`): the bond is integrated over the channel fixed in the host element and each channel point searches
+  its current partner in a window of `n` bar elements, so the bar can slide out of its host and the bonded length
+  shrinks as it is pulled out.
 
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
