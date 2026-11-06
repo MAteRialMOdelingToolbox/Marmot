@@ -415,6 +415,24 @@ namespace {
       throwExceptionOnFailure( err < 1e-6,
                                Marmot::Utilities::MakeString()
                                  << name << ": pressure load tangent inconsistent, " << err );
+
+      // as for the elements, a positive pressure pushes on the face: in the undeformed configuration, the residual
+      // of the load (P = -f_ext, summed over the nodes by the partition of unity) is p |face| n, with the outward
+      // normal n of the axis-aligned face pointing from the particle center to the face center
+      using Vec = Eigen::Matrix< double, nDim, 1 >;
+      Vec center, faceCenter, PSum = Vec::Zero();
+      s.particle->getCenterCoordinates( center.data() );
+      s.particle->getFaceCoordinates( 1, faceCenter.data() );
+      const Vec    n           = ( faceCenter - center ).normalized();
+      const double faceArea    = std::pow( 0.6, nDim - 1 );
+      const auto   PUndeformed = load( Eigen::VectorXd::Zero( s.nDof() ) ).first;
+      s.stateVars              = backup;
+      for ( int A = 0; A < s.nNodes(); A++ )
+        PSum += PUndeformed.template segment< nDim >( A * nDim );
+      throwExceptionOnFailure( ( PSum - p * faceArea * n ).norm() < 1e-10 * p * faceArea,
+                               Marmot::Utilities::MakeString()
+                                 << name << ": a positive pressure must push on the face, P = " << PSum.transpose()
+                                 << " != p |face| n = " << ( p * faceArea * n ).transpose() );
     }
   }
 
