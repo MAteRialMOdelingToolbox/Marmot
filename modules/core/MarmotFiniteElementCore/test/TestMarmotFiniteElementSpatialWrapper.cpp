@@ -15,8 +15,8 @@ namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 // ---------------------------------------------------------------------------------------------
 // All tests below embed a 2-node 1D truss (DisplacementFiniteElement<1,2>, UniaxialStress) into
-// 2D ambient space, exactly matching the production "T2D2" element registered in
-// DisplacementFiniteElementRegistration.cpp: Marmot::Discretizations::Elements::ElementSpatialWrapper(nDim=2,
+// 2D ambient space (the configuration formerly registered as "T2D2"; that name now belongs to the TrussElement
+// module): Marmot::Discretizations::Elements::ElementSpatialWrapper(nDim=2,
 // nDimChild=1, nNodes=2, nRhsChild=2, rhsIndicesToBeWrapped={0,1}, nIndicesToBeWrapped=2, child).
 // ---------------------------------------------------------------------------------------------
 
