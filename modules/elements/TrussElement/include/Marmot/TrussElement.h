@@ -309,9 +309,11 @@ namespace Marmot::Discretizations::Elements {
           auto& sv = *qp.managedStateVars;
           sv.lateralStretches.setOnes();
           if ( qp.materialHypoElastic )
-            qp.materialHypoElastic->initializeYourself( sv.materialStateVars.data(), sv.materialStateVars.size() );
+            qp.materialHypoElastic->initializeYourself( sv.materialStateVars.data(),
+                                                        static_cast< int >( sv.materialStateVars.size() ) );
           else
-            qp.materialFiniteStrain->initializeYourself( sv.materialStateVars.data(), sv.materialStateVars.size() );
+            qp.materialFiniteStrain->initializeYourself( sv.materialStateVars.data(),
+                                                         static_cast< int >( sv.materialStateVars.size() ) );
         }
         break;
       }

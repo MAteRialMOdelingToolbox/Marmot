@@ -24,7 +24,10 @@ namespace {
   {
     const auto& properties = propertyStorage.emplace_back( properties_ );
     return std::unique_ptr< Material >(
-      Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( name, properties.data(), properties.size(), 1 ) );
+      Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( name,
+                                                                     properties.data(),
+                                                                     static_cast< int >( properties.size() ),
+                                                                     1 ) );
   }
 
   /// One uniaxial stress update at the axial stretch lambda, starting from the given state
