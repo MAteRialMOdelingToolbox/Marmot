@@ -24,6 +24,9 @@ This section contains the ready to use available material models.
   gm7
   vonmises
   advonmises
+  rankinesofteningplasticity
+  rankinedamageplasticity
+  rankinegradientdamageplasticity
   hugheswinget
   gradientenhancedhugheswinget
   gradientenhancedcompressibleneohookedamage
