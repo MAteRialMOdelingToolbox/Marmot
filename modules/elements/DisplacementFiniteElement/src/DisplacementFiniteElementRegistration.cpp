@@ -1,7 +1,6 @@
 #include "Marmot/DisplacementFiniteElement.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotFiniteElement.h"
-#include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 
 namespace {
   using namespace Marmot::Discretizations::Elements;
@@ -83,21 +82,4 @@ namespace {
                                           Quadrature::gaussExactToDegree( 3 ),
                                           DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
 
-  Marmot::Discretizations::Elements::Element* generateT2D2( int elementID )
-  {
-    auto uelT2D2 = std::unique_ptr< Marmot::Discretizations::Elements::Element >(
-      new DisplacementFiniteElement< 1, 2 >( elementID,
-                                             Quadrature::gaussExactToDegree( 2 ),
-                                             DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress ) );
-    constexpr static int indicesToBeWrapped[] = { 0, 1 };
-    constexpr static int nIndicesToBeWrapped  = 2;
-    return new Marmot::Discretizations::Elements::ElementSpatialWrapper( 2,
-                                                                         1,
-                                                                         2,
-                                                                         2,
-                                                                         indicesToBeWrapped,
-                                                                         nIndicesToBeWrapped,
-                                                                         std::move( uelT2D2 ) );
-  }
-  const static bool T2D2_isRegistered = Marmot::Registry::ElementFactory::registerElement( "T2D2", generateT2D2 );
 } // namespace

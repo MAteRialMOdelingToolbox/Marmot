@@ -1,0 +1,2 @@
+marmot_add_module(TrussElement
+    REQUIRES MarmotFiniteElementCore MarmotFiniteStrainMechanicsCore)
