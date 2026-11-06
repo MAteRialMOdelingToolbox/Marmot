@@ -4,6 +4,8 @@
 #include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotVoigt.h"
+#include <algorithm>
+#include <array>
 
 using namespace Eigen;
 
@@ -131,6 +133,70 @@ void Marmot::Materials::MaterialHypoElastic::computeUniaxialStress( state1D&    
 
   dStress_dStrain1D_ = ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( dStress_dStrain3D );
 }
+void Marmot::Materials::MaterialHypoElastic::computeBeamStress( stateBeam&                    stateBeam_,
+                                                                Marmot::Math::Matrix3d&       dStress_dStrainBeam,
+                                                                const Marmot::Math::Vector3d& dStrainBeam,
+                                                                const timeInfo&               timeInfo ) const
+{
+  using namespace Marmot::Math;
+  // prescribed: eps11, gamma12, gamma13; free: sigma22 = sigma33 = sigma23 = 0
+  static constexpr std::array< int, 3 > p = { 0, 3, 4 };
+  static constexpr std::array< int, 3 > f = { 1, 2, 5 };
+
+  Map< VectorXd > stateVars( stateBeam_.stateVars, stateLayout.totalSize() );
+  const VectorXd  stateVarsOld = stateVars;
+
+  Vector6d dStrain = Vector6d::Zero();
+  for ( int i = 0; i < 3; i++ )
+    dStrain( p[i] ) = dStrainBeam( i );
+
+  const double stressScale = std::max( 1.0, stateBeam_.stress.cwiseAbs().maxCoeff() );
+  Matrix6d     C;
+  state3D      state;
+  for ( int iteration = 0;; iteration++ ) {
+    stateVars    = stateVarsOld;
+    state.stress = Vector6d::Zero();
+    for ( int i = 0; i < 3; i++ )
+      state.stress( p[i] ) = stateBeam_.stress( i );
+    state.elasticEnergyDensity = stateBeam_.elasticEnergyDensity;
+    state.dissipation          = stateBeam_.dissipation;
+    state.stateVars            = stateVars.data();
+
+    C.setZero();
+    computeStress( state, C, dStrain, timeInfo );
+
+    Vector3d r, sP;
+    Matrix3d Cff, Cfp, Cpf, Cpp;
+    for ( int i = 0; i < 3; i++ ) {
+      r( i )  = state.stress( f[i] );
+      sP( i ) = state.stress( p[i] );
+      for ( int j = 0; j < 3; j++ ) {
+        Cff( i, j ) = C( f[i], f[j] );
+        Cfp( i, j ) = C( f[i], p[j] );
+        Cpf( i, j ) = C( p[i], f[j] );
+        Cpp( i, j ) = C( p[i], p[j] );
+      }
+    }
+    const auto   CffLU    = Cff.fullPivLu();
+    const double scale    = std::max( stressScale, sP.cwiseAbs().maxCoeff() );
+    const double residual = r.cwiseAbs().maxCoeff();
+    if ( residual <= 1e-12 * scale || ( iteration > 7 && residual <= 1e-9 * scale ) ) {
+      stateBeam_.stress               = sP;
+      stateBeam_.elasticEnergyDensity = state.elasticEnergyDensity;
+      stateBeam_.dissipation          = state.dissipation;
+      dStress_dStrainBeam             = Cpp - Cpf * CffLU.solve( Cfp );
+      return;
+    }
+    if ( iteration >= 15 || !CffLU.isInvertible() ) {
+      Marmot::Utilities::Journal::warningToMSG( "BeamStressWrapper requires cutback" );
+      throw Marmot::Utilities::StressUpdateFailed( "beam stress iteration did not converge" );
+    }
+    const Vector3d ddStrain = CffLU.solve( r );
+    for ( int i = 0; i < 3; i++ )
+      dStrain( f[i] ) -= ddStrain( i );
+  }
+}
+
 double Marmot::Materials::MaterialHypoElastic::getMaximumWaveSpeed( const state3D& state ) const
 {
   const int nStateVars = getNumberOfRequiredStateVars();
