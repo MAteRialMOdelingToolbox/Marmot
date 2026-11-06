@@ -70,7 +70,7 @@ namespace Marmot::Materials {
       dual   dLambda( 0.0 );
       double dg_ddKappa( 0.0 );
 
-      while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > Constants::innerNewtonTol ) {
+      while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > Constants::innerNewtonTol * (double)rhoTrial ) {
 
         if ( counter == Constants::nMaxInnerNewtonCycles ) {
           throw Marmot::Utilities::StressUpdateFailed(
