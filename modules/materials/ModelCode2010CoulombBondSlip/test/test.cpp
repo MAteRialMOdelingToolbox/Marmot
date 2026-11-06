@@ -5,6 +5,8 @@
 #include "Marmot/ModelCode2010CoulombBondSlip.h"
 #include <cmath>
 #include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot;
@@ -143,15 +145,35 @@ void testTangents()
 
 void testInvalidPropertiesThrow()
 {
-  const double bad[] = { tauMax, 1.0, 2.0, 10.0, 0.4, 0.4 * tauMax, 200., Kn, -0.1, pMax };
-  bool         threw = false;
-  try {
-    create( bad );
+  const std::vector< double > good = { tauMax, 1.0, 2.0, 10.0, 0.4, 0.4 * tauMax, 200., Kn, 0.5, pMax };
+  std::vector< std::pair< std::string, std::vector< double > > > cases = {
+    { "too few properties", { tauMax, 1.0, 2.0, 10.0, 0.4, 0.4 * tauMax, 200., Kn } },
+  };
+  auto with = [&]( int index, double value ) {
+    auto p   = good;
+    p[index] = value;
+    return p;
+  };
+  cases.push_back( { "s1 <= 0", with( 1, 0.0 ) } );
+  cases.push_back( { "s2 >= s3", with( 2, 20.0 ) } );
+  cases.push_back( { "alpha > 1", with( 4, 1.5 ) } );
+  cases.push_back( { "tauF > tauMax", with( 5, 2 * tauMax ) } );
+  cases.push_back( { "K0 <= tauMax / s1", with( 6, 0.5 * tauMax ) } );
+  cases.push_back( { "Kn <= 0", with( 7, 0.0 ) } );
+  cases.push_back( { "mu < 0", with( 8, -0.1 ) } );
+  for ( const auto& [what, props] : cases ) {
+    bool threw = false;
+    try {
+      Marmot::Registry::BondSlipLawFactory::createBondSlipLaw( "MODELCODE2010COULOMBBONDSLIP",
+                                                               props.data(),
+                                                               static_cast< int >( props.size() ),
+                                                               1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, what + " must be rejected" );
   }
-  catch ( const std::invalid_argument& ) {
-    threw = true;
-  }
-  throwExceptionOnFailure( threw, "mu < 0 must be rejected" );
 }
 
 int main()

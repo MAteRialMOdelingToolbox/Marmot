@@ -40,8 +40,23 @@ void testUnknownBondSlipLawThrows()
   throwExceptionOnFailure( threw, "an unknown bond-slip law must be rejected" );
 }
 
+/// too few properties are rejected
+void testTooFewPropertiesThrow()
+{
+  const double props[] = { 200. };
+  bool         threw   = false;
+  try {
+    Marmot::Registry::BondSlipLawFactory::createBondSlipLaw( "LINEARELASTICBONDSLIP", props, 1, 1 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "too few properties must be rejected" );
+}
+
 int main()
 {
-  executeTestsAndCollectExceptions( { testLinearElasticBondSlip, testUnknownBondSlipLawThrows } );
+  executeTestsAndCollectExceptions(
+    { testLinearElasticBondSlip, testUnknownBondSlipLawThrows, testTooFewPropertiesThrow } );
   return 0;
 }
