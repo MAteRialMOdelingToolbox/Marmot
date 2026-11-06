@@ -43,7 +43,7 @@ namespace Marmot::Materials {
    * Bond-slip laws are pluggable: they live as modules in the materials category and register themselves in the
    * Marmot::Registry::BondSlipLawFactory, from which bond elements create them by name.
    */
-  class MARMOT_API BondSlipLaw {
+  class BondSlipLaw {
 
   protected:
     const double* materialProperties;  ///< Pointer to the array of material properties
