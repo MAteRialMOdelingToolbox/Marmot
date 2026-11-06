@@ -26,6 +26,7 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+#include <cmath>
 #include <iostream>
 #include <map>
 
@@ -67,13 +68,17 @@ namespace Marmot::Discretizations::Elements {
 
     /*Properties*/
     Eigen::Map< const CoordinateVector > coordinates; ///< Map into the externally-owned nodal-coordinate array.
-    const Marmot::Discretizations::Elements::ElementShapes
-      shape;                                          ///< Element shape determined from @p nDim and @p nNodes.
+
+    /// @brief Element shape determined from @p nDim and @p nNodes, at compile time.
+    static constexpr ElementShapes shape = getElementShapeByMetric( nDim, nNodes );
+    /// @brief Reference domain of the shape: the cube [-1, 1]^nDim, the line [-1, 1] or the unit simplex.
+    static constexpr ReferenceDomain referenceDomain = getReferenceDomain( shape );
+    /// @brief Polynomial order of the shape functions.
+    static constexpr int interpolationOrder = getInterpolationOrder( shape );
 
     /*Methods*/
-    /// @brief Default constructor. Initialises the coordinate map to @c nullptr and deduces the element shape.
-    GeometryElement()
-      : coordinates( nullptr ), shape( Marmot::Discretizations::Elements::getElementShapeByMetric( nDim, nNodes ) ){};
+    /// @brief Default constructor. Initialises the coordinate map to @c nullptr.
+    GeometryElement() : coordinates( nullptr ){};
 
     /// @brief Returns an Ensight Gold shape string (e.g. @c quad4, @c hexa8) for this element.
     std::string getElementShape() const
@@ -140,6 +145,84 @@ namespace Marmot::Discretizations::Elements {
     JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q ) const
     {
       return Marmot::Discretizations::Elements::Jacobian< nDim, nNodes >( dNdX, Q ) + JacobianSized::Identity();
+    }
+
+    /*Element geometry depending on the reference domain: the only place that distinguishes the cube from the simplex,
+     * so the elements do not have to*/
+
+    /// @brief The natural coordinates of the centroid of the reference domain: the origin of the cube [-1, 1]^nDim,
+    /// ( 1 / ( nDim + 1 ), ... ) for the unit simplex.
+    static XiSized referenceCentroid()
+    {
+      return XiSized::Constant( getReferenceCentroidCoordinate( referenceDomain ) );
+    }
+
+    /// @brief The physical coordinates of the element center, the image of the centroid of the reference domain.
+    Eigen::Matrix< double, nDim, 1 > center() const { return NB( N( referenceCentroid() ) ) * coordinates; }
+
+    /**
+     * @brief The characteristic element length \f$L_e\f$ at the natural coordinates @p xi, for the stable time
+     * increment \f$\Delta t = f\, L_e / c\f$ of explicit dynamics, with the wave speed \f$c\f$ and a factor \f$f\f$
+     * for the lumped mass distribution (see MassLumping::timeStepFactorFromMassDistribution).
+     *
+     * @details
+     * - Quadrilateral, hexahedron and line: \f$L_e = 2\,\sigma_\mathrm{min}(\mathbf{J})\f$, twice the smallest
+     *   singular value of the Jacobian. The Jacobian maps the cube \f$[-1,1]^{n_\mathrm{dim}}\f$ onto the element, so
+     *   this is the element's smallest physical extent.
+     * - Linear simplex: \f$L_e = 1 / \sqrt{\sum_i |\nabla N_i|^2} = 1 / \sqrt{\sum_i h_i^{-2}}\f$, with the constant
+     *   shape function gradients \f$\nabla N_i\f$ and the altitude \f$h_i\f$ opposite node \f$i\f$. Unlike the
+     *   Jacobian of the unit simplex, it does not depend on the node numbering.
+     *
+     * Quadratic simplices (Tri6, Tetra10) have no derived length; using one is a compile error.
+     *
+     * @param[in] xi Natural coordinates; irrelevant for a linear simplex, whose gradients are constant.
+     */
+    double characteristicLengthForCriticalTimeStepAt( const XiSized& xi ) const
+    {
+      static_assert( !isSimplex( referenceDomain ) || interpolationOrder == 1,
+                     "The characteristic element length of a quadratic simplex is not derived." );
+
+      const dNdXiSized    dNdXi_ = dNdXi( xi );
+      const JacobianSized J      = Jacobian( dNdXi_ );
+
+      if constexpr ( isSimplex( referenceDomain ) ) {
+        // the squared Frobenius norm of the nDim x nNodes gradient matrix is the sum over i of |grad N_i|^2
+        return 1.0 / std::sqrt( dNdX( dNdXi_, J.inverse() ).squaredNorm() );
+      }
+      else {
+        // A Jacobian with non-finite entries, from invalid nodal coordinates, leaves the singular values unset
+        // (InvalidInput), so they are read only after a successful decomposition.
+        const Eigen::JacobiSVD< JacobianSized > svd( J );
+        if ( svd.info() != Eigen::Success )
+          throw std::invalid_argument(
+            "GeometryElement::characteristicLengthForCriticalTimeStepAt(): the Jacobian is not finite; "
+            "check the nodal coordinates." );
+        return 2.0 * svd.singularValues().minCoeff();
+      }
+    }
+
+    /**
+     * @brief The volume-equivalent length \f$(V_\mathrm{ref} \det\mathbf{J})^{1/n_\mathrm{dim}}\f$: the side of the
+     * square or cube with the measure the element would have if its Jacobian were @p detJ everywhere.
+     *
+     * @details \f$V_\mathrm{ref}\f$ is the measure of the reference domain (getReferenceMeasure()): 2, 4 and 8 for the
+     * line and the cubes \f$[-1,1]^{n_\mathrm{dim}}\f$, 1/2 and 1/6 for the unit triangle and tetrahedron, for
+     * elements of any order on that domain. For an element with straight edges \f$\det\mathbf{J}\f$ is constant and
+     * this is exactly \f$\sqrt{A}\f$ or \f$\sqrt[3]{V}\f$; for a curved or distorted one it is the measure the element
+     * would have with the Jacobian at that point. Elements pass it to their materials as the regularisation length of
+     * softening laws.
+     *
+     * @param[in] detJ Determinant of the Jacobian, e.g. at a quadrature point.
+     */
+    static double volumeEquivalentLength( double detJ )
+    {
+      const double measure = getReferenceMeasure( referenceDomain ) * detJ;
+      if constexpr ( nDim == 3 )
+        return std::cbrt( measure );
+      else if constexpr ( nDim == 2 )
+        return std::sqrt( measure );
+      else
+        return measure;
     }
   };
 

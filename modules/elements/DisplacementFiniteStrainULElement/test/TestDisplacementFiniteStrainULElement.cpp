@@ -1325,9 +1325,31 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
                              std::to_string( rBottom ) + ", " + std::to_string( rTop ) + ")." );
 }
 
+void testCenterOfLinearSimplices()
+{
+  // the center is the centroid, not node 0 at the origin of the unit simplex
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+
+  DisplacementFiniteStrainULElement< 2, 3 > tri( 1, intType, DisplacementFiniteStrainULElement< 2, 3 >::PlaneStrain );
+  const std::vector< double >               triCoordinates = { 0, 0, 2, 0, 0.5, 1 };
+  tri.assignNodeCoordinates( triCoordinates.data() );
+  const auto triCenter = tri.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( triCenter[0] - 2.5 / 3 ) < 1e-14 && std::abs( triCenter[1] - 1. / 3 ) < 1e-14,
+                           "The center of a triangle must be its centroid." );
+
+  DisplacementFiniteStrainULElement< 3, 4 > tet( 1, intType, DisplacementFiniteStrainULElement< 3, 4 >::Solid );
+  const std::vector< double >               tetCoordinates = { 0, 0, 0, 2, 0, 0, 0.5, 1, 0, 0, 0.5, 3 };
+  tet.assignNodeCoordinates( tetCoordinates.data() );
+  const auto tetCenter = tet.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( tetCenter[0] - 2.5 / 4 ) < 1e-14 && std::abs( tetCenter[1] - 1.5 / 4 ) < 1e-14 &&
+                             std::abs( tetCenter[2] - 3. / 4 ) < 1e-14,
+                           "The center of a tetrahedron must be its centroid." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
+    testCenterOfLinearSimplices,
     testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass,
     testLumpedInertiaQuad8FullIntegrationMatchesAnalyticValues,
     testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues,

@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
+#include <stdexcept>
 #include <vector>
 
 /**
@@ -57,8 +58,167 @@ namespace Marmot::Discretizations::Elements {
    * @param[in] nDim   Number of spatial dimensions.
    * @param[in] nNodes Number of element nodes.
    * @return Matching @ref Marmot::Discretizations::Elements::ElementShapes enumerator.
+   * @throws std::invalid_argument For an unknown combination; in a constant expression that is a compile error.
    */
-  ElementShapes getElementShapeByMetric( int nDim, int nNodes );
+  constexpr ElementShapes getElementShapeByMetric( int nDim, int nNodes )
+  {
+    switch ( nDim ) {
+    case 1: {
+      switch ( nNodes ) {
+      case 2: return ElementShapes::Bar2;
+      case 3: return ElementShapes::Bar3;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=1" );
+      }
+    }
+    case 2: {
+      switch ( nNodes ) {
+      case 3: return ElementShapes::Tri3;
+      case 4: return ElementShapes::Quad4;
+      case 8: return ElementShapes::Quad8;
+      case 9: return ElementShapes::Quad9;
+      case 16: return ElementShapes::Quad16;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=2" );
+      }
+    }
+    case 3: {
+      switch ( nNodes ) {
+      case 4: return ElementShapes::Tetra4;
+      case 10: return ElementShapes::Tetra10;
+      case 8: return ElementShapes::Hexa8;
+      case 20: return ElementShapes::Hexa20;
+      case 27: return ElementShapes::Hexa27;
+      case 64: return ElementShapes::Hexa64;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
+      }
+    }
+    default: throw std::invalid_argument( "Invalid dimension specified" );
+    }
+  }
+
+  /**
+   * @brief Reference domains on which shape functions and quadrature rules are defined.
+   */
+  enum class ReferenceDomain {
+    Line,          ///< [-1, 1]
+    Triangle,      ///< unit triangle, vertices (0, 0), (1, 0), (0, 1)
+    Quadrilateral, ///< [-1, 1]^2
+    Tetrahedron,   ///< unit tetrahedron, vertices (0, 0, 0), (1, 0, 0), (0, 1, 0), (0, 0, 1)
+    Hexahedron,    ///< [-1, 1]^3
+  };
+
+  /**
+   * @brief The reference domain of an element shape.
+   * @param[in] shape Element shape.
+   * @return Line for bars, Triangle, Quadrilateral, Tetrahedron or Hexahedron.
+   */
+  constexpr ReferenceDomain getReferenceDomain( ElementShapes shape )
+  {
+    switch ( shape ) {
+    case ElementShapes::Bar2:
+    case ElementShapes::Bar3: return ReferenceDomain::Line;
+    case ElementShapes::Tri3: return ReferenceDomain::Triangle;
+    case ElementShapes::Quad4:
+    case ElementShapes::Quad8:
+    case ElementShapes::Quad9:
+    case ElementShapes::Quad16: return ReferenceDomain::Quadrilateral;
+    case ElementShapes::Tetra4:
+    case ElementShapes::Tetra10: return ReferenceDomain::Tetrahedron;
+    case ElementShapes::Hexa8:
+    case ElementShapes::Hexa20:
+    case ElementShapes::Hexa27:
+    case ElementShapes::Hexa64: return ReferenceDomain::Hexahedron;
+    }
+    throw std::invalid_argument( "getReferenceDomain(): invalid element shape" );
+  }
+
+  /**
+   * @brief The number of corner nodes of a reference domain, i.e. the nodes of its linear element.
+   * @param[in] domain Reference domain.
+   * @return 2 for Line, 3 for Triangle, 4 for Quadrilateral and Tetrahedron, 8 for Hexahedron.
+   */
+  constexpr int getNumberOfCornerNodes( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line: return 2;
+    case ReferenceDomain::Triangle: return 3;
+    case ReferenceDomain::Quadrilateral:
+    case ReferenceDomain::Tetrahedron: return 4;
+    case ReferenceDomain::Hexahedron: return 8;
+    }
+    throw std::invalid_argument( "getNumberOfCornerNodes(): invalid reference domain" );
+  }
+
+  /**
+   * @brief The polynomial order p of the shape functions of an element shape.
+   * @param[in] shape Element shape.
+   * @return 1 for Bar2, Tri3, Quad4, Tetra4 and Hexa8; 2 for Bar3, Quad8, Quad9, Tetra10, Hexa20 and Hexa27; 3 for
+   * Quad16 and Hexa64.
+   */
+  constexpr int getInterpolationOrder( ElementShapes shape )
+  {
+    switch ( shape ) {
+    case ElementShapes::Bar2:
+    case ElementShapes::Tri3:
+    case ElementShapes::Quad4:
+    case ElementShapes::Tetra4:
+    case ElementShapes::Hexa8: return 1;
+    case ElementShapes::Bar3:
+    case ElementShapes::Quad8:
+    case ElementShapes::Quad9:
+    case ElementShapes::Tetra10:
+    case ElementShapes::Hexa20:
+    case ElementShapes::Hexa27: return 2;
+    case ElementShapes::Quad16:
+    case ElementShapes::Hexa64: return 3;
+    }
+    throw std::invalid_argument( "getInterpolationOrder(): invalid element shape" );
+  }
+
+  /**
+   * @brief Whether a reference domain is a simplex, the unit triangle or the unit tetrahedron.
+   * @param[in] domain Reference domain.
+   * @return true for Triangle and Tetrahedron; false for Line and for the cubes Quadrilateral and Hexahedron.
+   */
+  constexpr bool isSimplex( ReferenceDomain domain )
+  {
+    return domain == ReferenceDomain::Triangle || domain == ReferenceDomain::Tetrahedron;
+  }
+
+  /**
+   * @brief The length, area or volume of a reference domain.
+   * @param[in] domain Reference domain.
+   * @return 2 for Line, 4 for Quadrilateral and 8 for Hexahedron (the cube [-1, 1]^nDim); 1/2 for Triangle and 1/6 for
+   * Tetrahedron (the unit simplex, 1 / nDim!). An element's measure is this times det J, where J is constant.
+   */
+  constexpr double getReferenceMeasure( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line: return 2.0;
+    case ReferenceDomain::Triangle: return 1.0 / 2.0;
+    case ReferenceDomain::Quadrilateral: return 4.0;
+    case ReferenceDomain::Tetrahedron: return 1.0 / 6.0;
+    case ReferenceDomain::Hexahedron: return 8.0;
+    }
+    throw std::invalid_argument( "getReferenceMeasure(): invalid reference domain" );
+  }
+
+  /**
+   * @brief Each natural coordinate of the centroid of a reference domain; all of them are equal.
+   * @param[in] domain Reference domain.
+   * @return 0 for the cubes and the line, whose centroid is the origin; 1 / ( nDim + 1 ) for the unit simplex, i.e.
+   * 1/3 for Triangle and 1/4 for Tetrahedron, where all shape functions of the linear element are equal.
+   */
+  constexpr double getReferenceCentroidCoordinate( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line:
+    case ReferenceDomain::Quadrilateral:
+    case ReferenceDomain::Hexahedron: return 0.0;
+    case ReferenceDomain::Triangle: return 1.0 / 3.0;
+    case ReferenceDomain::Tetrahedron: return 1.0 / 4.0;
+    }
+    throw std::invalid_argument( "getReferenceCentroidCoordinate(): invalid reference domain" );
+  }
 
   /**
    * @brief Compute the expanded interpolation operator N_B (dynamic version).
