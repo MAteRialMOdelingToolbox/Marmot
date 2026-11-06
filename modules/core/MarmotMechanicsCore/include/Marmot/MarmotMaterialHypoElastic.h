@@ -144,6 +144,23 @@ namespace Marmot::Materials {
       state1D() : stress( 0.0 ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr ) {}
     };
 
+    /// @brief Structure holding the material state at a material point (fiber) of a beam: the axial and the
+    /// transverse shear stresses, \f$[ \sigma_{11}, \sigma_{12}, \sigma_{13} ]\f$, all other stresses vanish.
+    struct stateBeam {
+      Marmot::Math::Vector3d stress;               ///< [sigma11, sigma12, sigma13]
+      double                 elasticEnergyDensity; ///< Elastic strain energy density
+      double                 dissipation;          ///< Dissipation
+      double*                stateVars;            ///< Pointer to array of state variables
+
+      stateBeam()
+        : stress( Marmot::Math::Vector3d::Zero() ),
+          elasticEnergyDensity( 0.0 ),
+          dissipation( 0.0 ),
+          stateVars( nullptr )
+      {
+      }
+    };
+
     /// @brief Structure carrying (pseudo-)time information passed to the material routines.
     struct timeInfo {
       double time; ///< Current (pseudo-)time
@@ -257,6 +274,27 @@ namespace Marmot::Materials {
      * @return Mass density of the material
      */
     virtual double getDensity( const double* stateVars ) const = 0;
+
+    /**
+     * Beam stress implementation of @ref computeStress. The stress state of a fiber of a beam, with the prescribed
+     * axial strain and transverse shear strains \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12}, \Delta\gamma_{13} ]\f$
+     * and \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$, found by a Newton iteration on the free strain components
+     * (the state variables are reset before every evaluation). The tangent is the condensed 3x3 tangent
+     * \f$\partial [ \sigma_{11}, \sigma_{12}, \sigma_{13} ] / \partial [ \varepsilon_{11}, \gamma_{12}, \gamma_{13}
+     * ]\f$. Throws StressUpdateFailed if the iteration does not converge.
+     *
+     * @param[in,out] stateBeam           stresses, energy, dissipation and state variables of the fiber
+     * @param[out]    dStress_dStrainBeam the condensed tangent
+     * @param[in]     dStrainBeam         the increment \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12},
+     * \Delta\gamma_{13} ]\f$
+     * @param[in]     timeInfo            (pseudo-)time and its increment
+     *
+     * @note Declared last, so that the virtual table of the existing interface is not shifted.
+     */
+    virtual void computeBeamStress( stateBeam&                    stateBeam,
+                                    Marmot::Math::Matrix3d&       dStress_dStrainBeam,
+                                    const Marmot::Math::Vector3d& dStrainBeam,
+                                    const timeInfo&               timeInfo ) const;
   };
 
 } // namespace Marmot::Materials
