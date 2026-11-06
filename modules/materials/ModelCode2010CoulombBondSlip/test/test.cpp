@@ -161,12 +161,12 @@ void testInvalidPropertiesThrow()
   cases.push_back( { "K0 <= tauMax / s1", with( 6, 0.5 * tauMax ) } );
   cases.push_back( { "Kn <= 0", with( 7, 0.0 ) } );
   cases.push_back( { "mu < 0", with( 8, -0.1 ) } );
-  for ( const auto& [what, props] : cases ) {
+  for ( const auto& [what, badProps] : cases ) {
     bool threw = false;
     try {
       Marmot::Registry::BondSlipLawFactory::createBondSlipLaw( "MODELCODE2010COULOMBBONDSLIP",
-                                                               props.data(),
-                                                               static_cast< int >( props.size() ),
+                                                               badProps.data(),
+                                                               static_cast< int >( badProps.size() ),
                                                                1 );
     }
     catch ( const std::invalid_argument& ) {
