@@ -193,12 +193,14 @@ namespace Marmot::Discretizations::Elements {
       }
 
       /**
-       * @brief The element's smallest physical extent at this quadrature point.
+       * @brief The characteristic length for the critical time step at this quadrature point,
+       * GeometryElement::characteristicLengthForCriticalTimeStepAt: the smallest physical extent of a quadrilateral or
+       * hexahedron, 1 / |grad N|_F of a linear simplex.
        * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
        * whereas the stable time increment that shares the definition is asked for rarely. The
        * element's nodal coordinates do not change, so the cached value cannot go stale.
        */
-      double characteristicElementLength = 0.0;
+      double characteristicLengthForCriticalTimeStep = 0.0;
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
@@ -392,16 +394,6 @@ namespace Marmot::Discretizations::Elements {
 
     /** @brief The named properties this element understands. */
     std::vector< std::string > getPropertyNames() const override;
-
-    /**
-     * @brief The element's smallest physical extent at a parent coordinate.
-     * @param xi Parent coordinate to evaluate the Jacobian at.
-     * @return Twice the smallest singular value of the local geometry element's Jacobian.
-     * @details Shared by the stable time increment and the artificial bulk viscosity so that the
-     * two cannot drift apart: both scale their result to the highest frequency the element can
-     * carry.
-     */
-    double characteristicElementLengthAt( const XiSized& xi );
 
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
     void assignNodeCoordinates( const double* coordinates ) override;
@@ -805,14 +797,6 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
-  double GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    characteristicElementLengthAt( const XiSized& xi )
-  {
-    const JacobianSized J = localGeometryElement.Jacobian( localGeometryElement.dNdXi( xi ) );
-    return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
-  }
-
-  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   std::vector< std::vector< std::string > > GeneralGradientEnhancedDisplacementFiniteElement<
     nDim,
     nNodes,
@@ -882,7 +866,8 @@ namespace Marmot::Discretizations::Elements {
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
 
-      qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      qp.characteristicLengthForCriticalTimeStep = localGeometryElement.characteristicLengthForCriticalTimeStepAt(
+        qp.xi );
       qp.referenceWaveSpeed.reset();
 
       if constexpr ( !nonLocalSharesShapeFunctions ) {
@@ -1134,7 +1119,7 @@ namespace Marmot::Discretizations::Elements {
                                              quadraturePoint.material->getDensity(
                                                quadraturePoint.managedStateVars->materialStateVars.data() ),
                                              referenceWaveSpeed,
-                                             quadraturePoint.characteristicElementLength,
+                                             quadraturePoint.characteristicLengthForCriticalTimeStep,
                                              bulkViscosityCoefficients );
       };
 
@@ -1171,18 +1156,8 @@ namespace Marmot::Discretizations::Elements {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
         }
 
-#if defined( __GNUC__ ) && !defined( __clang__ )
-// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
-// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
-// (observed with GCC 14 at x86-64-v3).
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Warray-bounds"
-#endif
         if ( bulkViscosityCoefficients.areActive() )
-          S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic pop
-#endif
+          S.template head< nNormalComponents >().array() += bulkViscousStressAt( qp, res, K );
 
         Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
 
@@ -1259,8 +1234,8 @@ namespace Marmot::Discretizations::Elements {
         qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
-        Me.bottomRightCorner( sizeDoFK, sizeDoFK )
-          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * J0xW * m_k[n];
+        Me.template bottomRightCorner< sizeDoFK, sizeDoFK >()
+          .template block< nNonLocalNodes, nNonLocalNodes >( idx, idx ) += N_K.transpose() * N_K * J0xW * m_k[n];
       }
     }
   }
@@ -1290,7 +1265,7 @@ namespace Marmot::Discretizations::Elements {
     static_assert( nNodes == nNonLocalNodes || nNonLocalNodes == nNodesLinear,
                    "GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia requires the "
                    "non-local field to use either the displacement interpolation order (nNonLocalNodes == "
-                   "nNodes) or linear corner-node interpolation (nNonLocalNodes == 2^nDim)." );
+                   "nNodes) or linear corner-node interpolation (nNonLocalNodes == the number of corner nodes)." );
 
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
@@ -1307,7 +1282,7 @@ namespace Marmot::Discretizations::Elements {
       const auto N_lin = linGeometryEl.N( qp.xi );
 
       Eigen::VectorXd N_weighted = weight * ( N_ );
-      N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
+      N_weighted.template head< nNodesLinear >() += ( 1.0 - weight ) * N_lin;
 
       // when nNodes == nNonlocalNodes
       Eigen::VectorXd N_weighted_nonlocal;
@@ -1364,7 +1339,7 @@ namespace Marmot::Discretizations::Elements {
     static_assert( nNodes == nNonLocalNodes || nNonLocalNodes == nNodesLinear,
                    "GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping requires the "
                    "non-local field to use either the displacement interpolation order (nNonLocalNodes == "
-                   "nNodes) or linear corner-node interpolation (nNonLocalNodes == 2^nDim)." );
+                   "nNodes) or linear corner-node interpolation (nNonLocalNodes == the number of corner nodes)." );
 
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
@@ -1381,7 +1356,7 @@ namespace Marmot::Discretizations::Elements {
       const auto N_lin = linGeometryEl.N( qp.xi );
 
       Eigen::VectorXd N_weighted = weight * ( N_ );
-      N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
+      N_weighted.template head< nNodesLinear >() += ( 1.0 - weight ) * N_lin;
 
       Eigen::VectorXd N_weighted_nonlocal;
       if constexpr ( nNodes != nNonLocalNodes )
@@ -1444,19 +1419,9 @@ namespace Marmot::Discretizations::Elements {
 
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {
-      /* The characteristic length has to be the element's SMALLEST physical extent, not a
-       * volume-averaged one. cbrt( 8 * detJ ) and its lower-dimensional analogues are volume
-       * based: for a sliver -- thin in one direction but not the others -- the volume stays
-       * moderate while the thin dimension collapses, so they OVERESTIMATE the length and hence
-       * the stable time step. Refining a distorted parent element is precisely how slivers are
-       * produced, so an h-adaptive explicit run integrates its most distorted elements above
-       * their stability limit and diverges thousands of increments later, with nothing in the
-       * log connecting the divergence to the refinement that caused it.
-       *
-       * The Jacobian maps the natural cube [-1,1]^nDim onto the element, so twice its smallest
-       * singular value IS that smallest physical extent. For a well-shaped element this
-       * reproduces the previous expressions exactly -- a cube of side h gives h either way --
-       * so the estimate is tightened only where it was previously wrong.
+      /* The characteristic element length of GeometryElement: the smallest physical extent of a
+       * quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
+       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
        *
        * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
        * bulk viscosity already needs this value on every explicit increment and caches it for that
@@ -1464,7 +1429,7 @@ namespace Marmot::Discretizations::Elements {
        * would only disagree with the cached one under floating-point noise, never under a real
        * update.
        */
-      const double characteristicElementLength = qp.characteristicElementLength;
+      const double characteristicLengthForCriticalTimeStep = qp.characteristicLengthForCriticalTimeStep;
       response     waveSpeedResponse;
       waveSpeedResponse.stress = qp.managedStateVars->stress;
       waveSpeedResponse.KLocal.setZero();
@@ -1476,7 +1441,7 @@ namespace Marmot::Discretizations::Elements {
       const double c = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
       if ( c <= 0.0 )
         throw std::runtime_error( "Material returned non-positive wave speed, cannot compute critical time step" );
-      const double& l  = characteristicElementLength;
+      const double& l  = characteristicLengthForCriticalTimeStep;
       double        dt = lumpedMassTimeStepFactor * l / c;
       if ( dt < criticalTimeStep )
         criticalTimeStep = dt;
@@ -1748,8 +1713,7 @@ namespace Marmot::Discretizations::Elements {
     std::vector< double > coords( nDim );
 
     Eigen::Map< XiSized > coordsMap( &coords[0] );
-    const auto            centerXi = XiSized::Zero();
-    coordsMap = localGeometryElement.NB( localGeometryElement.N( centerXi ) ) * localGeometryElement.coordinates;
+    coordsMap = localGeometryElement.center();
     return coords;
   }
 

@@ -25,6 +25,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotFiniteElement.h"
 #include <Eigen/Core>
 #include <algorithm>
 #include <cmath>
@@ -37,16 +38,17 @@ namespace Marmot::Discretizations::Elements::MassLumping {
    *
    * @tparam nDim   Number of spatial dimensions.
    * @tparam nNodes Number of element nodes.
-   * @return @p nNodes for a linear simplex (bar2, tri3, tetra4), which is its own linear counterpart, and
-   *         \f$2^{n_{dim}}\f$ (the bilinear quadrilateral or trilinear hexahedron) otherwise.
+   * @return The number of corner nodes of the reference domain of the element: e.g. 2 for bar3, 3 for tri3, 4 for
+   *         quad8 and tetra10, 8 for hexa20. A linear element is its own linear counterpart.
    *
-   * @details The linear counterpart must not have more nodes than the element itself: the blend adds its row sums to
-   * the first nodes of the element. A tri3 or tetra4 paired with a quad4 or hexa8 would write past the end of them.
+   * @details The blend adds the row sums of the linear element to the first nodes of the element, so the corner
+   * nodes must come first in the node order, as in the Abaqus convention. An unknown combination of @p nDim and
+   * @p nNodes is a compile error.
    */
   template < int nDim, int nNodes >
   constexpr int nLinearNodes()
   {
-    return nNodes == nDim + 1 ? nNodes : 1 << nDim;
+    return getNumberOfCornerNodes( getReferenceDomain( getElementShapeByMetric( nDim, nNodes ) ) );
   }
 
   /**

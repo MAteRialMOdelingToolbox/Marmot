@@ -3,41 +3,6 @@
 
 using namespace Eigen;
 namespace Marmot::Discretizations::Elements {
-  ElementShapes getElementShapeByMetric( int nDim, int nNodes )
-  {
-
-    switch ( nDim ) {
-    case ( 1 ): {
-      switch ( nNodes ) {
-      case 2: return ElementShapes::Bar2;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=1" );
-      }
-    }
-
-    case ( 2 ): {
-      switch ( nNodes ) {
-      case 3: return ElementShapes::Tri3;
-      case 4: return ElementShapes::Quad4;
-      case 8: return ElementShapes::Quad8;
-      case 9: return ElementShapes::Quad9;
-      case 16: return ElementShapes::Quad16;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=2" );
-      }
-    }
-    case ( 3 ): {
-      switch ( nNodes ) {
-      case 4: return ElementShapes::Tetra4;
-      case 10: return ElementShapes::Tetra10;
-      case 8: return ElementShapes::Hexa8;
-      case 20: return ElementShapes::Hexa20;
-      case 27: return ElementShapes::Hexa27;
-      case 64: return ElementShapes::Hexa64;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
-      }
-    }
-    default: throw std::invalid_argument( "Invalid dimension specified" );
-    }
-  }
   // create a large N matrix dependent on the degrees of freedom per node
   MatrixXd NB( const VectorXd& N, const int nDoFPerNode )
   {
