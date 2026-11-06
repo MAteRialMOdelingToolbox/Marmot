@@ -422,12 +422,15 @@ void testPropertiesAndZeroIncrement()
                                                         1 );
   throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
 
-  // a zero increment returns the elastic stiffness and leaves the state unchanged
+  // a zero increment from a plastic state returns the elastic stiffness, leaves the state unchanged and is not
+  // flagged as plastic
   MaterialPointState stateOld;
   stateOld.stress << 1., 0.5, 0., 0.2, 0., 0.;
+  stateOld.stateVars << 1e-4, 1.;
   const auto [state, tangent] = update( material, stateOld, Math::Vector6d::Zero() );
-  throwExceptionOnFailure( state.stress == stateOld.stress && state.stateVars == stateOld.stateVars,
+  throwExceptionOnFailure( state.stress == stateOld.stress && state.kappa() == stateOld.kappa(),
                            "zero increment: state changed" );
+  throwExceptionOnFailure( state.acYield() == 0., "zero increment: flagged as plastic" );
   throwExceptionOnFailure( tangent == ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu ),
                            "zero increment: tangent is not the elastic stiffness" );
 }

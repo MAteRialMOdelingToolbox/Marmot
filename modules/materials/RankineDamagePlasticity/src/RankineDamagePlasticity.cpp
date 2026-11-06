@@ -91,7 +91,8 @@ namespace Marmot::Materials {
 
     // handle zero strain increment
     if ( dE.isZero( 1e-14 ) ) {
-      dS_dE = integrityOld * Cel;
+      dS_dE   = integrityOld * Cel;
+      acYield = 0;
       return;
     }
 

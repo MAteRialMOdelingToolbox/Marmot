@@ -65,6 +65,11 @@ namespace Marmot::Materials {
 
   void RankineGradientDamagePlasticity::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
+    // a non-finite nonlocal field would not enter the checked results, since the history maximum ignores it
+    if ( !inc.K.allFinite() )
+      throw Utilities::StressUpdateFailed( Utilities::MakeString()
+                                           << __PRETTY_FUNCTION__ << ": non-finite nonlocal field" );
+
     updateStress( res, tan, inc );
 
     // a diverging iterate may overflow the results (e.g., the energies to inf or 0 * inf = NaN): request a cutback
@@ -116,6 +121,7 @@ namespace Marmot::Materials {
     Math::Vector6d effStress     = effStressOld;
     Math::Matrix6d dEffStress_dE = Cel;
     bool           plastic       = false;
+    acYield                      = 0;
     if ( !dE.isZero( 1e-14 ) ) {
       Vector2d                     effectiveStateVars( kappaD, acYield );
       MaterialHypoElastic::state3D effectiveState( effStressOld, 0., 0., effectiveStateVars.data() );

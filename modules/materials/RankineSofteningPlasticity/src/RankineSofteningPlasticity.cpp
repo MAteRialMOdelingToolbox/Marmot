@@ -78,15 +78,16 @@ namespace Marmot::Materials {
     // compute elastic stiffness
     const Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-    // handle zero strain increment
-    if ( dE.isZero( 1e-14 ) ) {
-      dS_dE = Cel;
-      return;
-    }
-
     // get current hardening variable and yield flag
     double& kappa   = stateLayout.getAs< double& >( state.stateVars, "kappa" );
     double& acYield = stateLayout.getAs< double& >( state.stateVars, "acYield" );
+
+    // handle zero strain increment
+    if ( dE.isZero( 1e-14 ) ) {
+      dS_dE   = Cel;
+      acYield = 0;
+      return;
+    }
 
     const Math::Matrix6d CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
     const double         psiOld = 0.5 * S.dot( CelInv * S );

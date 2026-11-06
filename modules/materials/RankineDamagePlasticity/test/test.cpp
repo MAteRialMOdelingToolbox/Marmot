@@ -414,13 +414,15 @@ void testPropertiesAndZeroIncrement()
   const RankineDamagePlasticity materialWithDensity( withDensity.data(), static_cast< int >( withDensity.size() ), 1 );
   throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
 
-  // a zero increment from a damaged state returns the damaged elastic stiffness and leaves the state unchanged
+  // a zero increment from a damaged plastic state returns the damaged elastic stiffness, leaves the state unchanged
+  // and is not flagged as plastic
   const auto damaged = update( material, MaterialPointState(), ( Math::Vector6d() << 4e-4, 0, 0, 0, 0, 0 ).finished() )
                          .state;
   const auto result = update( material, damaged, Math::Vector6d::Zero() );
-  throwExceptionOnFailure( damaged.omega() > 0. && result.state.stress == damaged.stress &&
-                             result.state.stateVars == damaged.stateVars,
+  throwExceptionOnFailure( damaged.omega() > 0. && damaged.acYield() == 1. && result.state.stress == damaged.stress &&
+                             result.state.kappaD() == damaged.kappaD() && result.state.omega() == damaged.omega(),
                            "zero increment: state changed" );
+  throwExceptionOnFailure( result.state.acYield() == 0., "zero increment: flagged as plastic" );
   throwExceptionOnFailure( checkIfEqual< double >( result.tangent,
                                                    ( 1. - damaged.omega() ) *
                                                      ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E,

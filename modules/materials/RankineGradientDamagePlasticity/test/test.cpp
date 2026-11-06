@@ -9,6 +9,7 @@
 #include "Marmot/RankineDamagePlasticity.h"
 #include "Marmot/RankineGradientDamagePlasticity.h"
 #include <algorithm>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 
@@ -289,6 +290,23 @@ void testZeroStrainIncrement()
                                                    ( 1. - r.state.omega() ) / ( 1. - state.omega() ) * state.stress,
                                                    1e-12 ),
                            "zero increment: effective stress changed" );
+
+  // a nonlocal-only update right after a plastic increment evolves the damage, but is not flagged as plastic
+  const auto plastic   = update( material, MaterialPointState(), increments[0] * 3, 1e-4 ).state;
+  const auto rNonlocal = update( material, plastic, Math::Vector6d::Zero(), 3e-4 );
+  throwExceptionOnFailure( plastic.acYield() == 1. && rNonlocal.state.kappaD() == plastic.kappaD() &&
+                             rNonlocal.state.omega() > plastic.omega(),
+                           "nonlocal-only update: unexpected state" );
+  throwExceptionOnFailure( rNonlocal.state.acYield() == 0., "nonlocal-only update: flagged as plastic" );
+
+  // a non-finite nonlocal field requests a cutback, also where it would leave the history maximum unchanged
+  throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >( [&] {
+                             update( material,
+                                     MaterialPointState(),
+                                     Math::Vector6d::Zero(),
+                                     std::numeric_limits< double >::quiet_NaN() );
+                           } ),
+                           "non-finite nonlocal field did not request a cutback" );
 }
 
 void testPropertiesAndFactory()
