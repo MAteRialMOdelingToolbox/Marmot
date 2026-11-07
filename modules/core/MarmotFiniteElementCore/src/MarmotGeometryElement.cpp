@@ -17,6 +17,13 @@ Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::NSized Marmot::Discr
 {
   return Marmot::Discretizations::Elements::Spatial1D::Bar2::N( xi( 0 ) );
 }
+// Tri3
+template <>
+Marmot::Discretizations::Elements::GeometryElement< 2, 3 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 3 >::N( const XiSized& xi ) const
+{
+  return Marmot::Discretizations::Elements::Spatial2D::Tri3::N( xi );
+}
 // Quad4
 template <>
 Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::NSized Marmot::Discretizations::Elements::
@@ -68,6 +75,13 @@ Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::dNdXiSized Marmot::D
   GeometryElement< 1, 2 >::dNdXi( const XiSized& xi ) const
 {
   return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( xi( 0 ) );
+}
+// Tri3
+template <>
+Marmot::Discretizations::Elements::GeometryElement< 2, 3 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 3 >::dNdXi( const XiSized& xi ) const
+{
+  return Marmot::Discretizations::Elements::Spatial2D::Tri3::dNdXi( xi );
 }
 // Quad4
 template <>
@@ -129,6 +143,13 @@ typename Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::BSized Marm
   GeometryElement< 1, 2 >::B( const dNdXiSized& dNdX ) const
 {
   return dNdX;
+}
+// Tri3
+template <>
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 3 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 3 >::B( const dNdXiSized& dNdX ) const
+{
+  return Marmot::Discretizations::Elements::Spatial2D::B< 3 >( dNdX );
 }
 // Quad4
 template <>
@@ -204,6 +225,13 @@ typename Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::BSized Marm
   GeometryElement< 1, 2 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
   return dNdX * F( 0, 0 );
+}
+// Tri3
+template <>
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 3 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 3 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
+{
+  return Marmot::Discretizations::Elements::Spatial2D::BGreen< 3 >( dNdX, F );
 }
 // Quad4
 template <>

@@ -221,12 +221,12 @@ namespace Marmot::Discretizations::Elements {
 
     /** @brief Constructor of the displacement-based finite strain element
      * @param[in] elementID Element ID (label) of the element
-     * @param[in] integrationType Integration type of the element
+     * @param[in] quadratureRule Quadrature rule: family and degree of exactness.
      * @param[in] sectionType Section type of the element
      */
-    DisplacementFiniteStrainULElement( int                                                             elementID,
-                                       Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                                       SectionType                                                     sectionType );
+    DisplacementFiniteStrainULElement( int                                                           elementID,
+                                       Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+                                       SectionType                                                   sectionType );
 
     /// @brief Get the total number of required state variables of the element
     int getNumberOfRequiredStateVars() override;
@@ -472,9 +472,9 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   DisplacementFiniteStrainULElement< nDim, nNodes >::DisplacementFiniteStrainULElement(
-    int                                                             elementID,
-    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                                     sectionType )
+    int                                                           elementID,
+    Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                                   sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
@@ -482,7 +482,8 @@ namespace Marmot::Discretizations::Elements {
       hasEigenDeformation( false )
   {
     for ( const auto& qpInfo :
-          Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+          Marmot::Discretizations::Elements::Quadrature::getQuadraturePoints( this->referenceDomain,
+                                                                              quadratureRule ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }
@@ -995,9 +996,7 @@ namespace Marmot::Discretizations::Elements {
      * actually assembled is exactly the kind of inconsistency that surfaces as an unexplained
      * instability rather than as a clean failure.
      */
-    // 2^nDim. std::pow is not constexpr in the standard (libstdc++ offers it as an
-    // extension, libc++ does not), so compute it with a shift to stay portable.
-    constexpr int   nNodesLinear     = ( 1 << nDim );
+    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
@@ -1013,7 +1012,7 @@ namespace Marmot::Discretizations::Elements {
       const auto N_lin = linGeometryEl.N( qp.xi );
 
       Eigen::VectorXd N_weighted = weight * ( N_ );
-      N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
+      N_weighted.template head< nNodesLinear >() += ( 1.0 - weight ) * N_lin;
 
       const double    rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       Eigen::VectorXd m_  = N_weighted * qp.J0xW * rho;
@@ -1053,7 +1052,7 @@ namespace Marmot::Discretizations::Elements {
      * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
      * tighter limit than its volume alone suggests.
      */
-    constexpr int   nNodesLinear     = ( 1 << nDim );
+    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
@@ -1071,30 +1070,11 @@ namespace Marmot::Discretizations::Elements {
 
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {
-      /* The characteristic length has to be the element's SMALLEST physical extent, not a
-       * volume-averaged one. cbrt( 8 * detJ ) and its lower-dimensional analogues are volume
-       * based: for a sliver -- thin in one direction but not the others -- the volume stays
-       * moderate while the thin dimension collapses, so they OVERESTIMATE the length and hence
-       * the stable time step. Refining a distorted parent element is precisely how slivers are
-       * produced, so an h-adaptive explicit run integrates its most distorted elements above
-       * their stability limit and diverges thousands of increments later.
-       *
-       * The Jacobian maps the natural cube [-1,1]^nDim onto the element, so twice its smallest
-       * singular value IS that smallest physical extent. For a well-shaped element this
-       * reproduces the previous expressions exactly -- a cube of side h gives h either way --
-       * so the estimate is tightened only where it was previously wrong.
+      /* The characteristic element length of GeometryElement in the reference configuration: the smallest physical
+       * extent of a quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
+       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
        */
-      const JacobianSized J_ = this->Jacobian( this->dNdXi( qp.xi ) );
-      // GCC reports a spurious -Wmaybe-uninitialized from inside Eigen's small fixed-size JacobiSVD.
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
-      const double characteristicElementLength = 2.0 *
-                                                 Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic pop
-#endif
+      const double characteristicLengthForCriticalTimeStep = this->characteristicLengthForCriticalTimeStepAt( qp.xi );
 
       using namespace Marmot::Math::Tensors::FastorIndices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
@@ -1113,7 +1093,7 @@ namespace Marmot::Discretizations::Elements {
       if ( c <= 0.0 ) {
         throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
       }
-      const double dt = lumpedMassTimeStepFactor * characteristicElementLength / c;
+      const double dt = lumpedMassTimeStepFactor * characteristicLengthForCriticalTimeStep / c;
       if ( dt < criticalTimeStep )
         criticalTimeStep = dt;
     }
@@ -1134,8 +1114,7 @@ namespace Marmot::Discretizations::Elements {
     std::vector< double > coords( nDim );
 
     Eigen::Map< XiSized > coordsMap( &coords[0] );
-    const auto            centerXi = XiSized::Zero();
-    coordsMap                      = this->NB( this->N( centerXi ) ) * this->coordinates;
+    coordsMap = this->center();
     return coords;
   }
 

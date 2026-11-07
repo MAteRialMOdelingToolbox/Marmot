@@ -6,6 +6,75 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+- Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
+  strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
+  point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
+  regularisation length come from `GeometryElement` (below).
+- `Tri3` shape: shape functions, the 1-point (reduced) and 3-point (full, exact for quadratics) Gauss rules, the
+  `GeometryElement<2, 3>` specialisations and the EnSight shape `tria3`.
+- Distributed loads (pressure, surface traction) on `Tetra4` and `Tri3` elements (`C3D4`, `CPS3`, `CPE3`). This adds
+  the face definitions `Tetra4::getBoundaryElementIndices` (Abaqus faces S1–S4; previously a stub that always threw)
+  and `Tri3::getBoundaryElementIndices`, and `BoundaryElement` support for both parent shapes.
+- `getReferenceDomain( shape )`, `getInterpolationOrder( shape )` (the order p of the shape functions) and
+  `getNumberOfCornerNodes( domain )`, all `constexpr` like `getElementShapeByMetric`, which moved into the header
+  and now also knows `Bar3` (1D, 3 nodes). Further facts of a `ReferenceDomain`: `isSimplex( domain )`,
+  `getReferenceMeasure( domain )` (2^nDim for the cube [-1, 1]^nDim, 1 / nDim! for the unit simplex) and
+  `getReferenceCentroidCoordinate( domain )`.
+- Element geometry that depends on the reference domain, in `GeometryElement`, so the elements do not have to
+  distinguish the cube from the simplex: the compile-time `shape` (previously a
+  member initialised at construction), `referenceDomain` and `interpolationOrder`,
+  - `center()`: the image of the centroid of the reference domain; the origin of the unit simplex is its node 0;
+  - `characteristicLengthForCriticalTimeStepAt( xi )`: the length L_e of the stable time increment L_e / c, twice the smallest
+    singular value of the Jacobian for quadrilaterals and hexahedra (their smallest extent), 1 / sqrt( sum_i
+    |grad N_i|^2 ) for linear simplices. The latter does not depend on the node numbering and stays below the exact
+    stable increment of the element; the singular values assume the reference cube and would exceed it by up to 4
+    times;
+  - `volumeEquivalentLength( detJ )`: the regularisation length for softening materials, sqrt( A ) or cbrt( V ).
+
+  `characteristicLengthForCriticalTimeStepAt` is not derived for quadratic simplices (`Tri6`, `Tetra10`); asking for it is a
+  compile error.
+- Nodal integration with closed Newton-Cotes rules (`Quadrature::newtonCotes( degree )`) on `Line`, `Quadrilateral`
+  and `Triangle`: the rules of degree 1 have the corners of the domain as points, i.e. one point at each node of the
+  linear element (`Bar2`, `Quad4`, `Tri3`) in node order, with the integral of its shape function as weight.
+- Gauss rules of degree 5 on simplices: the 7-point triangle rule (Radon 1948) and the 14-point tetrahedron rule
+  (Walkington 2000), both with positive weights and interior points. The 14-point rule makes the consistent mass of
+  a quadratic tetrahedron (`gauss( 4 )`) available.
+
+### Changed
+- `DisplacementFiniteElement`, `GeneralGradientEnhancedDisplacementFiniteElement`, `DisplacementFiniteStrainULElement`
+  and `GradientEnhancedFiniteStrainDisplacementElement` take their center, characteristic length for the critical time step and (the
+  first) regularisation length from `GeometryElement`. The results of the quadrilaterals, hexahedra and bars are
+  unchanged; instantiated for linear simplices (not registered yet, except `CPS3`, `CPE3` and `C3D4`), the
+  gradient-enhanced and the finite-strain elements now also have the right center and length. The element methods
+  `characteristicElementLengthAt( xi )` of `DisplacementFiniteElement` and
+  `GeneralGradientEnhancedDisplacementFiniteElement` are replaced by `GeometryElement::characteristicLengthForCriticalTimeStepAt( xi )`
+  (for the latter through its member `localGeometryElement`), so the name no longer collides with the material's
+  `characteristicElementLength`, the regularisation length.
+- **Breaking:** quadrature rules are requested by family and degree of exactness instead of `FullIntegration` /
+  `ReducedIntegration`, whose meaning differed from shape to shape. All rules are kept in one catalogue,
+  `Quadrature::quadratureRules()`, each entry with its reference domain (`Line`, `Triangle`, `Quadrilateral`,
+  `Tetrahedron`, `Hexahedron`), its family (`Gauss`, `NewtonCotes`) and the degree it integrates exactly.
+  `Quadrature::getQuadraturePoints( domain, rule )` returns the rule with the fewest points on the reference domain
+  that reaches the requested degree, and throws if there is none; `getQuadraturePoints( shape, rule )` does the same
+  on the reference domain of an element shape. Elements take a
+  `Quadrature::QuadratureRule`, built by `gauss( degree )` or `newtonCotes( degree )`, instead of `IntegrationTypes`;
+  the registrations state the degree their stiffness needs (e.g. `CPS4` `gauss( 2 )`, `CPS8R` `gauss( 3 )`). The
+  consistent mass asks for `gauss( 2p )` (N^T N) and the faces of distributed loads for `gauss( 3p - 1 )` of the face
+  shape (N times the area vector of the face). Every registered element keeps its points, in the same order, so
+  results are unchanged. Migration:
+
+  | Old | New |
+  |---|---|
+  | `IntegrationTypes::FullIntegration` | `gauss( 2p )`; for `Tetra4` `gauss( 1 )`, for `Tetra10` `gauss( 2 )` |
+  | `IntegrationTypes::ReducedIntegration` | `gauss( 2p - 1 )`; for `Tetra4` `gauss( 1 )`, for `Tetra10` `gauss( 2 )` |
+  | `getGaussPointInfo( shape, type )` | `getQuadraturePoints( shape, rule )` |
+  | `getNumGaussPoints( shape, type )` | `getQuadraturePoints( shape, rule ).size()` |
+  | `Spatial1D::gaussPointList1/2/3` | `getQuadraturePoints( ReferenceDomain::Line, gauss( 1/3/5 ) )` |
+  | `Spatial2D::gaussPointList1x1/2x2/3x3` | `getQuadraturePoints( ReferenceDomain::Quadrilateral, gauss( 1/3/5 ) )` |
+  | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gauss( 1/3/5 ) )` |
+  | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gauss( 1/2 ) )` |
+
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
@@ -20,6 +89,21 @@ All notable changes to Marmot are documented in this file. The format follows
 - Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
   element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
   faces, as `hexa8` for the 3D interfaces.
+- Lumped inertia and critical time step of the linear simplices `CPS3`, `CPE3` and `C3D4`. The manifold-based mass
+  lumping blended in the shape functions of a quadrilateral or hexahedron and wrote past the end of the nodal
+  vectors, which corrupted the heap of an explicit analysis. A linear simplex is now its own linear counterpart
+  (`MassLumping::nLinearNodes()`, also used by the finite-strain and the gradient-enhanced elements), with the
+  mass / nNodes at each node. `MassLumping::nLinearNodes()` is the number of corner nodes of the reference domain,
+  which also corrects `Tetra10` (4 instead of 8; not registered).
+- Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
+  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule (`gauss( 2 )`), which is
+  exact for the quadratic integrand.
+- **Results:** precision of the 3-point Gauss rules. The abscissa sqrt(3/5) was tabulated 4 ulp off and the 3x3x3
+  weights up to 12 ulp off (their sum missed 8 by 7e-15); both are now correctly rounded, the weights as exact fractions
+  over 729. The abscissas are no longer public (`Quadrature::gp2`, `Quadrature::gp3`); like all rule data they live in
+  `quadratureRules()`. This changes the last digits (about 1e-15 relative) of all elements and faces that use the
+  3-point, 3x3 or 3x3x3 rule: the full-integration Quad8 and Hexa20 elements, pressure on Quad8 and Hexa20 faces, and
+  the consistent mass of Quad8 and Hexa20.
 
 ## [v26.11] - 2026-11-02
 

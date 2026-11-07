@@ -316,11 +316,11 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Construct an interface finite element.
      * @param[in] elementID Element label.
-     * @param[in] integrationType Quadrature rule type.
+     * @param[in] quadratureRule Quadrature rule: family and degree of exactness.
      * @param[in] sectionType Interface section type.
      */
-    InterfaceFiniteElement( int                                                             elementID,
-                            Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
+    InterfaceFiniteElement( int                                                           elementID,
+                            Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
                             SectionType sectionType = SectionType::Interface );
 
     /**
@@ -472,16 +472,16 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   InterfaceFiniteElement< nDim, nNodes >::InterfaceFiniteElement(
-    int                                                             elementID,
-    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                                     sectionType )
+    int                                                           elementID,
+    Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                                   sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
-    const auto qpInfos = Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape,
-                                                                                           integrationType );
+    const auto qpInfos = Marmot::Discretizations::Elements::Quadrature::getQuadraturePoints( this->shape,
+                                                                                             quadratureRule );
 
     for ( const auto& qpInfo : qpInfos ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
