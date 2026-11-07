@@ -878,7 +878,7 @@ namespace Marmot::Discretizations::Elements {
                                                                      nDim,
                                                                      this->coordinates );
 
-      const XiSized tractionVector( load );
+      const Eigen::Map< const Eigen::VectorXd > tractionVector( load, nDim );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
       if constexpr ( nDim == 2 )
