@@ -39,13 +39,18 @@ namespace Marmot::Materials {
    * \mathbf{E}_A \f$). Softening results from the scalar damage only,
    * \f[
    *   \boldsymbol{\sigma} = (1-\omega)\,\bar{\boldsymbol{\sigma}}, \qquad
-   *   \omega = 1 - \exp(-\kappa_\mathrm{d}/\varepsilon_\mathrm{f}), \qquad
+   *   \omega = \omega_\mathrm{max} \left[1 - \exp\left(-\frac{\kappa_\mathrm{d}}{\omega_\mathrm{max}\,
+   *     \varepsilon_\mathrm{f}}\right)\right], \qquad
    *   \Delta\kappa_\mathrm{d} = \Delta\varepsilon^\mathrm{p}_\mathrm{V}/x_\mathrm{s}
    *     = \mathrm{tr}\,\Delta\boldsymbol{\varepsilon}^\mathrm{p} = \sum_A \Delta\lambda_A,
    * \f]
    * since all principal plastic strain increments are nonnegative for the Rankine surfaces (ductility measure
-   * \f$ x_\mathrm{s} = 1 \f$). Hence \f$ \kappa_\mathrm{d} \f$ and \f$ \omega \f$ never decrease, and under uniaxial
-   * tension \f$ \sigma = f_\mathrm{t} \exp(-\varepsilon^\mathrm{p}/\varepsilon_\mathrm{f}) \f$. The free energy is
+   * \f$ x_\mathrm{s} = 1 \f$). The damage threshold \f$ 0 < \omega_\mathrm{max} \le 1 \f$ bounds the damage without
+   * changing its initial slope \f$ 1/\varepsilon_\mathrm{f} \f$; \f$ \omega_\mathrm{max} = 1 \f$ gives the exponential
+   * law \f$ \omega = 1 - \exp(-\kappa_\mathrm{d}/\varepsilon_\mathrm{f}) \f$. Hence \f$ \kappa_\mathrm{d} \f$ and
+   * \f$ \omega \f$ never decrease, and under uniaxial tension \f$ \sigma = (1-\omega)\,f_\mathrm{t} \f$ with
+   * \f$ \kappa_\mathrm{d} = \varepsilon^\mathrm{p} \f$, approaching \f$ (1-\omega_\mathrm{max})\,f_\mathrm{t} \f$.
+   * The free energy is
    * \f$ \psi = (1-\omega)\,\bar\psi_\mathrm{el} \f$ with \f$ \bar\psi_\mathrm{el} = \frac12\bar{\boldsymbol{\sigma}}
    * :\mathbb{C}^{-1}:\bar{\boldsymbol{\sigma}} \f$, and the dissipation increment is \f$ (1-\omega)\,
    * \bar{\boldsymbol{\sigma}}:\Delta\boldsymbol{\varepsilon}^\mathrm{p} + \bar\psi_\mathrm{el}\,\Delta\omega \f$
@@ -54,7 +59,8 @@ namespace Marmot::Materials {
    * \f$ \partial\kappa_\mathrm{d}/\partial\Delta\boldsymbol{\varepsilon} = \boldsymbol{1} -
    * \bar{\mathbb{C}}^{\mathrm{ep},T}:\mathbb{C}^{-1}:\boldsymbol{1} \f$.
    *
-   * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f} \f$ and optionally the density.
+   * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, \omega_\mathrm{max} \f$ and optionally the
+   * density.
    * \f$ \varepsilon_\mathrm{f} \f$ is a material parameter (no regularization by the element size);
    * \f$ \varepsilon_\mathrm{f} = \infty \f$ recovers perfect Rankine plasticity.
    */

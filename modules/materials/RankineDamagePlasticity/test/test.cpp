@@ -26,10 +26,21 @@ namespace {
   const double G        = E / ( 2. * ( 1. + nu ) );
   const double lambda   = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
 
-  // E, nu, ft, epsilonF
-  std::vector< double > properties = { E, nu, ft, epsilonF };
+  // E, nu, ft, epsilonF, damage threshold omegaMax
+  std::vector< double > propertiesWith( double omegaMax )
+  {
+    return { E, nu, ft, epsilonF, omegaMax };
+  }
+  std::vector< double > properties = propertiesWith( 1. );
   // without damage
-  std::vector< double > noDamageProperties = { E, nu, ft, std::numeric_limits< double >::infinity() };
+  std::vector< double > noDamageProperties = { E, nu, ft, std::numeric_limits< double >::infinity(), 1. };
+
+  // damage law with threshold omegaMax
+  double damage( double kappaD, double omegaMax = 1. )
+  {
+    return omegaMax * ( 1. - std::exp( -kappaD / ( omegaMax * epsilonF ) ) );
+  }
+
   // perfectly plastic RankineSofteningPlasticity
   std::vector< double > perfectlyPlasticProperties = { E, nu, ft, 0., 0., 0. };
 
@@ -105,13 +116,13 @@ namespace {
   }
 
   // check that the effective stress satisfies all three Rankine yield conditions
-  void checkAdmissibility( const MaterialPointState& state )
+  void checkAdmissibility( const MaterialPointState& state, double omegaMax = 1. )
   {
     const Eigen::SelfAdjointEigenSolver< Eigen::Matrix3d > eigenSolver(
       Marmot::ContinuumMechanics::Voigt::voigtToStress( state.stress ) );
     throwExceptionOnFailure( eigenSolver.eigenvalues().maxCoeff() <= ( 1. - state.omega() ) * ft * ( 1. + 1e-10 ),
                              "returned stress is not admissible" );
-    throwExceptionOnFailure( checkIfEqual( state.omega(), 1. - std::exp( -state.kappaD() / epsilonF ), 1e-15 ),
+    throwExceptionOnFailure( checkIfEqual( state.omega(), damage( state.kappaD(), omegaMax ), 1e-14 ),
                              "damage inconsistent with kappaD" );
   }
 
@@ -301,9 +312,10 @@ void testTangentGeneralLoadingPath()
   throwExceptionOnFailure( state.omega() > omega, "general path: no further damage on reloading" );
 }
 
-void testEnergyBalance()
+void checkEnergyBalance( double omegaMax )
 {
-  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
+  const auto                    props = propertiesWith( omegaMax );
+  const RankineDamagePlasticity material( props.data(), static_cast< int >( props.size() ), 1 );
 
   // uniaxial strain from first yield: the effective stress is constant, so the backward Euler update satisfies the
   // energy balance sigma_n+1 : dE = dPsi + dDissipation exactly
@@ -325,7 +337,80 @@ void testEnergyBalance()
   throwExceptionOnFailure( checkIfEqual( psi, psiTotal, 1e-13 ), "energy balance: elastic energy mismatch" );
   throwExceptionOnFailure( checkIfEqual( work + 0.5 * ft * epsYield, psi + dissipation, 1e-12 ),
                            "energy balance violated" );
-  throwExceptionOnFailure( dissipation > 0.9 * ( ft * epsilonF ), "energy balance: dissipation too small" );
+  throwExceptionOnFailure( dissipation > 0.9 * omegaMax * ( ft * epsilonF ), "energy balance: dissipation too small" );
+}
+
+void testEnergyBalance()
+{
+  for ( const double omegaMax : { 1., 0.9 } )
+    checkEnergyBalance( omegaMax );
+}
+
+/// Damage threshold omegaMax < 1: initial slope 1 / epsilonF, damage bounded by omegaMax with the residual stress
+/// (1 - omegaMax) ft under uniaxial stress, consistent tangents, and no complete damage for large kappaD.
+void testDamageThreshold()
+{
+  const double omegaMax = 0.9;
+  auto         props    = propertiesWith( omegaMax );
+
+  // uniaxial stress far into the softening regime: sigma = (1 - omega(kappaD)) ft with kappaD = eps - ft / E
+  std::string matName = "RANKINEDAMAGEPLASTICITY";
+  auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
+                                                           props.data(),
+                                                           static_cast< int >( props.size() ),
+                                                           MaterialPointSolverHypoElastic::SolverOptions() );
+  solver.addStep( uniaxialStressStep( 5e-3, 0. ) );
+  solver.solve();
+  for ( const auto& entry : solver.getHistory() ) {
+    const double eps    = entry.strain( 0 );
+    const double kappaD = entry.stateVars( 0 );
+    if ( eps > ft / E ) {
+      throwExceptionOnFailure( checkIfEqual( kappaD, eps - ft / E, 1e-13 ), "threshold: kappaD mismatch" );
+      throwExceptionOnFailure( checkIfEqual( entry.stress( 0 ), ( 1. - damage( kappaD, omegaMax ) ) * ft, 1e-10 ),
+                               "threshold: softening law violated" );
+    }
+    throwExceptionOnFailure( entry.stateVars( 2 ) < omegaMax, "threshold: damage exceeds omegaMax" );
+  }
+  const double residualStress = solver.getHistory().back().stress( 0 );
+  throwExceptionOnFailure( residualStress > ( 1. - omegaMax ) * ft && residualStress < 1.001 * ( 1. - omegaMax ) * ft,
+                           "threshold: no residual stress (1 - omegaMax) ft" );
+
+  // initial slope d omega / d kappaD = 1 / epsilonF, independent of omegaMax
+  const double epsYield = ft / ( lambda + 2. * G );
+  for ( const double w : { 1., omegaMax } ) {
+    const auto                    p = propertiesWith( w );
+    const RankineDamagePlasticity material( p.data(), static_cast< int >( p.size() ), 1 );
+    const auto                    state = update( material,
+                               MaterialPointState(),
+                               ( Math::Vector6d() << epsYield + 1e-9, 0, 0, 0, 0, 0 ).finished() )
+                         .state;
+    throwExceptionOnFailure( checkIfEqual( state.omega() / state.kappaD(), 1. / epsilonF, 1e-5 ),
+                             "threshold: initial slope is not 1 / epsilonF" );
+  }
+
+  // consistent tangents with one, two and three active surfaces
+  const RankineDamagePlasticity material( props.data(), static_cast< int >( props.size() ), 1 );
+  for ( const auto& dE : { ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
+                           ( Math::Vector6d() << 6e-5, 6e-5, 0, 0, 0, 0 ).finished(),
+                           ( Math::Vector6d() << 5e-5, 5e-5, 5e-5, 0, 0, 0 ).finished() } ) {
+    MaterialPointState state;
+    for ( int i = 0; i < 6; i++ ) {
+      checkTangent( material, state, dE );
+      state = update( material, state, dE ).state;
+      checkAdmissibility( state, omegaMax );
+    }
+  }
+
+  // large kappaD: the damage saturates at omegaMax, whereas omegaMax = 1 means complete damage (cutback)
+  const Math::Vector6d dELarge = ( Math::Vector6d() << 1., 0, 0, 0, 0, 0 ).finished();
+  const auto           large   = update( material, MaterialPointState(), dELarge );
+  throwExceptionOnFailure( checkIfEqual( large.state.omega(), omegaMax, 1e-15 ) &&
+                             checkIfEqual( large.state.stress( 0 ), ( 1. - omegaMax ) * ft, 1e-12 ),
+                           "threshold: damage does not saturate at omegaMax" );
+  const RankineDamagePlasticity unbounded( properties.data(), static_cast< int >( properties.size() ), 1 );
+  throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >(
+                             [&] { update( unbounded, MaterialPointState(), dELarge ); } ),
+                           "threshold: complete damage without threshold did not request a cutback" );
 }
 
 void testCoordinateInvariance()
@@ -352,7 +437,7 @@ void testCoordinateInvariance()
 /// damage at the plastic point) and must request a cutback instead of returning non-finite results.
 void testDivergedIterateRequestsCutback()
 {
-  const std::vector< double >   props = { 210000., 0.3, 693., 3.3 };
+  const std::vector< double >   props = { 210000., 0.3, 693., 3.3, 1. };
   const RankineDamagePlasticity material( props.data(), static_cast< int >( props.size() ), 1 );
 
   struct Case {
@@ -399,18 +484,24 @@ void testDivergedIterateRequestsCutback()
 
 void testPropertiesAndZeroIncrement()
 {
-  throwExceptionOnFailure( throws< std::runtime_error >( [] { RankineDamagePlasticity( properties.data(), 3, 1 ); } ),
+  throwExceptionOnFailure( throws< std::runtime_error >( [] { RankineDamagePlasticity( properties.data(), 4, 1 ); } ),
                            "properties: missing properties not detected" );
-  const std::vector< double > noSoftening = { E, nu, ft, 0. };
+  const std::vector< double > noSoftening = { E, nu, ft, 0., 1. };
   throwExceptionOnFailure( throws< std::invalid_argument >( [&] {
                              RankineDamagePlasticity( noSoftening.data(), static_cast< int >( noSoftening.size() ), 1 );
                            } ),
                            "properties: nonpositive epsilonF not detected" );
+  for ( const double omegaMax : { 0., -0.1, 1.1 } ) {
+    const auto p = propertiesWith( omegaMax );
+    throwExceptionOnFailure( throws< std::invalid_argument >(
+                               [&] { RankineDamagePlasticity( p.data(), static_cast< int >( p.size() ), 1 ); } ),
+                             "properties: damage threshold outside (0, 1] not detected" );
+  }
 
-  const RankineDamagePlasticity material( properties.data(), 4, 1 );
+  const RankineDamagePlasticity material( properties.data(), 5, 1 );
   throwExceptionOnFailure( throws< std::runtime_error >( [&] { material.getDensity( nullptr ); } ),
                            "properties: missing density not detected" );
-  const std::vector< double >   withDensity = { E, nu, ft, epsilonF, 2.4e-9 };
+  const std::vector< double >   withDensity = { E, nu, ft, epsilonF, 1., 2.4e-9 };
   const RankineDamagePlasticity materialWithDensity( withDensity.data(), static_cast< int >( withDensity.size() ), 1 );
   throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
 
@@ -454,6 +545,7 @@ int main()
                                                          testTangentSingleAndMultiSurface,
                                                          testTangentGeneralLoadingPath,
                                                          testEnergyBalance,
+                                                         testDamageThreshold,
                                                          testCoordinateInvariance,
                                                          testDivergedIterateRequestsCutback,
                                                          testPropertiesAndZeroIncrement };

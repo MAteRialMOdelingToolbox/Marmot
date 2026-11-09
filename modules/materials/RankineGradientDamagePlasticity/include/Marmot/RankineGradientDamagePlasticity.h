@@ -46,11 +46,15 @@ namespace Marmot::Materials {
    * over-nonlocal, \f$ m = 0 \f$: local)
    * \f[
    *   \hat\kappa = m\,\bar\kappa_\mathrm{d} + (1-m)\,\kappa_\mathrm{d}, \qquad
-   *   \omega = 1 - \exp(-\hat\kappa_\mathrm{max}/\varepsilon_\mathrm{f}), \qquad
+   *   \omega = \omega_\mathrm{max} \left[1 - \exp\left(-\frac{\hat\kappa_\mathrm{max}}{\omega_\mathrm{max}\,
+   *     \varepsilon_\mathrm{f}}\right)\right], \qquad
    *   \hat\kappa_\mathrm{max} = \max_{\tau \le t} \hat\kappa(\tau), \qquad
    *   \boldsymbol{\sigma} = (1-\omega)\,\bar{\boldsymbol{\sigma}}.
    * \f]
-   * The history maximum keeps the damage irreversible also for \f$ m > 1 \f$, where \f$ \hat\kappa \f$ may decrease.
+   * The damage threshold \f$ 0 < \omega_\mathrm{max} \le 1 \f$ bounds the damage without changing its initial slope
+   * (\f$ \omega_\mathrm{max} = 1 \f$: exponential law \f$ \omega = 1 - \exp(-\hat\kappa_\mathrm{max}/
+   * \varepsilon_\mathrm{f}) \f$). The history maximum keeps the damage irreversible also for \f$ m > 1 \f$, where
+   * \f$ \hat\kappa \f$ may decrease.
    * Since the effective stress does not depend on the damage, \f$ \kappa_\mathrm{d} \f$ does not depend on
    * \f$ \bar\kappa_\mathrm{d} \f$. Free energy \f$ (1-\omega)\,\bar\psi_\mathrm{el} \f$ and dissipation increment
    * \f$ (1-\omega)\,\bar{\boldsymbol{\sigma}}:\Delta\boldsymbol{\varepsilon}^\mathrm{p} + \bar\psi_\mathrm{el}\,
@@ -62,11 +66,11 @@ namespace Marmot::Materials {
    * \f$, \f$ \partial\boldsymbol{\sigma}/\partial\bar\kappa_\mathrm{d} = -m\,\omega'\,\bar{\boldsymbol{\sigma}} \f$,
    * \f$ \partial\kappa_\mathrm{d}/\partial\Delta\boldsymbol{\varepsilon} = \boldsymbol{1} -
    * \bar{\mathbb{C}}^{\mathrm{ep},T}:\mathbb{C}^{-1}:\boldsymbol{1} \f$ and \f$ \partial\kappa_\mathrm{d}/\partial
-   * \bar\kappa_\mathrm{d} = 0 \f$, with \f$ \omega' = \exp(-\hat\kappa/\varepsilon_\mathrm{f})/\varepsilon_\mathrm{f}
-   * \f$ while \f$ \hat\kappa \f$ exceeds its history maximum, and zero otherwise.
+   * \bar\kappa_\mathrm{d} = 0 \f$, with \f$ \omega' = \exp(-\hat\kappa/(\omega_\mathrm{max}\,\varepsilon_\mathrm{f}))/
+   * \varepsilon_\mathrm{f} \f$ while \f$ \hat\kappa \f$ exceeds its history maximum, and zero otherwise.
    *
-   * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, l, m \f$, optionally the density and the
-   * nonlocal viscosity (default zero, for explicit dynamics only).
+   * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, \omega_\mathrm{max}, l, m \f$, optionally
+   * the density and the nonlocal viscosity (default zero, for explicit dynamics only).
    */
   class RankineGradientDamagePlasticity : public MaterialGradientEnhancedHypoElastic< 1 > {
 

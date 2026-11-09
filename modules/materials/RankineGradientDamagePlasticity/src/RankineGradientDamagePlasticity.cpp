@@ -12,10 +12,10 @@ namespace Marmot::Materials {
   using namespace Marmot;
 
   namespace {
-    // E, nu, ft, epsilonF, nonlocal length, over-nonlocal parameter m
-    constexpr int nRequiredProperties  = 6;
-    constexpr int idxDensity           = 6;
-    constexpr int idxNonlocalViscosity = 7;
+    // E, nu, ft, epsilonF, damage threshold omegaMax, nonlocal length, over-nonlocal parameter m
+    constexpr int nRequiredProperties  = 7;
+    constexpr int idxDensity           = 7;
+    constexpr int idxNonlocalViscosity = 8;
   } // namespace
 
   RankineGradientDamagePlasticity::RankineGradientDamagePlasticity( const double* materialProperties,
@@ -29,7 +29,10 @@ namespace Marmot::Materials {
         if ( !( materialProperties[3] > 0. ) )
           throw std::invalid_argument( Utilities::MakeString()
                                        << __PRETTY_FUNCTION__ << ": epsilonF must be positive." );
-        if ( !( materialProperties[4] >= 0. ) )
+        if ( !( materialProperties[4] > 0. && materialProperties[4] <= 1. ) )
+          throw std::invalid_argument( Utilities::MakeString()
+                                       << __PRETTY_FUNCTION__ << ": omegaMax must be in (0, 1]." );
+        if ( !( materialProperties[5] >= 0. ) )
           throw std::invalid_argument( Utilities::MakeString()
                                        << __PRETTY_FUNCTION__ << ": nonlocal length must be >= 0." );
         // E, nu, ft, no hardening
@@ -54,7 +57,7 @@ namespace Marmot::Materials {
   {
     if ( nMaterialProperties <= idxDensity )
       throw std::runtime_error( Utilities::MakeString()
-                                << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." );
+                                << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8." );
     return materialProperties[idxDensity];
   }
 
@@ -86,8 +89,9 @@ namespace Marmot::Materials {
     const double& E              = materialProperties[0];
     const double& nu             = materialProperties[1];
     const double& epsilonF       = materialProperties[3];
-    const double& nonlocalLength = materialProperties[4];
-    const double& m              = materialProperties[5];
+    const double& omegaMax       = materialProperties[4];
+    const double& nonlocalLength = materialProperties[5];
+    const double& m              = materialProperties[6];
 
     Math::mVector6d S( res.stress.data() );
     const auto      dE = Map< const Math::Vector6d >( inc.dStrain.data() );
@@ -107,8 +111,9 @@ namespace Marmot::Materials {
     const Math::Matrix6d Cel    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
     const Math::Matrix6d CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
 
-    // integrity 1 - omega, evaluated from the history variable to retain its relative accuracy for omega -> 1
-    const double integrityOld = std::exp( -kappaDWeightedMax / epsilonF );
+    // integrity 1 - omega = 1 - omegaMax + omegaMax exp(-kappa / (omegaMax epsilonF)), evaluated from the history
+    // variable to retain its relative accuracy for omega -> 1
+    const double integrityOld = ( 1. - omegaMax ) + omegaMax * std::exp( -kappaDWeightedMax / ( omegaMax * epsilonF ) );
     if ( !( integrityOld > 0. ) )
       throw Utilities::StressUpdateFailed( Utilities::MakeString()
                                            << __PRETTY_FUNCTION__ << ": complete damage, effective stress undefined" );
@@ -142,8 +147,9 @@ namespace Marmot::Materials {
     const bool   loading            = kappaDWeighted > kappaDWeightedMax;
     kappaDWeightedMax               = std::max( kappaDWeightedMax, kappaDWeighted );
     kappaDNonlocal                  = K;
-    const double integrity          = std::exp( -kappaDWeightedMax / epsilonF );
-    const double dOmega_dKappaDWeig = loading ? integrity / epsilonF : 0.;
+    const double decay              = std::exp( -kappaDWeightedMax / ( omegaMax * epsilonF ) );
+    const double integrity          = ( 1. - omegaMax ) + omegaMax * decay;
+    const double dOmega_dKappaDWeig = loading ? decay / epsilonF : 0.;
     omega                           = 1. - integrity;
     // complete damage only from a diverging iterate (e.g., at a snap-through): request a cutback
     if ( !( integrity > 0. ) )

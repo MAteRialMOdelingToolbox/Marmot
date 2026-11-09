@@ -26,15 +26,18 @@ stress with isotropic damage driven by a nonlocal variable, for the general grad
      - :math:`\varepsilon_\mathrm{f}`
      - Softening parameter of the damage law (positive)
    * - 4
+     - :math:`\omega_\mathrm{max}`
+     - Damage threshold, the maximum damage :math:`0 < \omega_\mathrm{max} \le 1` (1: unbounded exponential law)
+   * - 5
      - :math:`l`
      - Nonlocal length (nonnegative)
-   * - 5
+   * - 6
      - :math:`m`
      - Over-nonlocal weight (0: local, 1: nonlocal, > 1: over-nonlocal)
-   * - 6
+   * - 7
      - :math:`\rho`
      - Density (optional)
-   * - 7
+   * - 8
      - :math:`\eta`
      - Nonlocal viscosity (optional, default 0; explicit dynamics only)
 
@@ -74,10 +77,13 @@ Helmholtz equation solved by the element,
 The damage follows from the over-nonlocal combination
 
 .. math:: \hat\kappa = m\,\bar\kappa_\mathrm{d} + (1-m)\,\kappa_\mathrm{d}, \qquad
-   \omega = 1 - \exp\left(-\hat\kappa_\mathrm{max}/\varepsilon_\mathrm{f}\right), \qquad
+   \omega = \omega_\mathrm{max}\left[1 - \exp\left(-\frac{\hat\kappa_\mathrm{max}}{\omega_\mathrm{max}\,
+   \varepsilon_\mathrm{f}}\right)\right], \qquad
    \hat\kappa_\mathrm{max} = \max_{\tau \le t} \hat\kappa(\tau), \qquad
    \boldsymbol{\sigma} = (1-\omega)\,\bar{\boldsymbol{\sigma}}.
 
+The damage threshold :math:`\omega_\mathrm{max}` bounds the damage without changing its initial slope, as in the
+:ref:`rankineDamagePlasticity`.
 The history maximum keeps the damage irreversible also for :math:`m > 1`, where :math:`\hat\kappa` may decrease.
 Since the effective stress does not depend on the damage, :math:`\kappa_\mathrm{d}` does not depend on
 :math:`\bar\kappa_\mathrm{d}`.
@@ -91,7 +97,8 @@ Consistent Algorithmic Tangent Operator
    \frac{\partial\boldsymbol{\sigma}}{\partial\bar\kappa_\mathrm{d}} = -m\,\omega'\,\bar{\boldsymbol{\sigma}}, \qquad
    \frac{\partial\kappa_\mathrm{d}}{\partial\bar\kappa_\mathrm{d}} = 0,
 
-with :math:`\omega' = \exp\left(-\hat\kappa/\varepsilon_\mathrm{f}\right)/\varepsilon_\mathrm{f}` while
+with :math:`\omega' = \exp\left(-\hat\kappa/(\omega_\mathrm{max}\,\varepsilon_\mathrm{f})\right)/\varepsilon_\mathrm{f}`
+while
 :math:`\hat\kappa` exceeds its history maximum, and zero otherwise.
 
 The model is registered as ``RANKINEGRADIENTDAMAGEPLASTICITY`` in the gradient-enhanced hypoelastic factory with one

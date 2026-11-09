@@ -11,11 +11,11 @@ namespace Marmot::Materials {
 
   double RankineDamagePlasticity::getDensity( const double* stateVars ) const
   {
-    if ( this->nMaterialProperties < 5 ) {
+    if ( this->nMaterialProperties < 6 ) {
       throw std::runtime_error( std::string(
-        Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 5." ) );
+        Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 6." ) );
     }
-    return this->materialProperties[4];
+    return this->materialProperties[5];
   }
 
   RankineDamagePlasticity::RankineDamagePlasticity( const double* materialProperties,
@@ -23,12 +23,15 @@ namespace Marmot::Materials {
                                                     const int     materialLabel )
     : MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       effectiveProperties( [&] {
-        if ( nMaterialProperties < 4 )
+        if ( nMaterialProperties < 5 )
           throw std::runtime_error( Utilities::MakeString()
                                     << __PRETTY_FUNCTION__ << ": Insufficient material properties." );
         if ( !( materialProperties[3] > 0. ) )
           throw std::invalid_argument( Utilities::MakeString()
                                        << __PRETTY_FUNCTION__ << ": epsilonF must be positive." );
+        if ( !( materialProperties[4] > 0. && materialProperties[4] <= 1. ) )
+          throw std::invalid_argument( Utilities::MakeString()
+                                       << __PRETTY_FUNCTION__ << ": omegaMax must be in (0, 1]." );
         // E, nu, ft, no hardening
         return std::array< double, 6 >{ materialProperties[0],
                                         materialProperties[1],
@@ -68,6 +71,7 @@ namespace Marmot::Materials {
     const double& E        = this->materialProperties[0];
     const double& nu       = this->materialProperties[1];
     const double& epsilonF = this->materialProperties[3];
+    const double& omegaMax = this->materialProperties[4];
 
     Math::mVector6d S( state.stress.data() );
     Math::mMatrix6d dS_dE( dStress_dStrain.data() );
@@ -80,8 +84,9 @@ namespace Marmot::Materials {
     const Math::Matrix6d Cel    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
     const Math::Matrix6d CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
 
-    // integrity 1 - omega, evaluated directly to retain its relative accuracy for omega -> 1
-    const double integrityOld = std::exp( -kappaD / epsilonF );
+    // integrity 1 - omega = 1 - omegaMax + omegaMax exp(-kappaD / (omegaMax epsilonF)), evaluated directly to retain
+    // its relative accuracy for omega -> 1
+    const double integrityOld = ( 1. - omegaMax ) + omegaMax * std::exp( -kappaD / ( omegaMax * epsilonF ) );
     if ( !( integrityOld > 0. ) )
       throw Utilities::StressUpdateFailed( Utilities::MakeString()
                                            << __PRETTY_FUNCTION__ << ": complete damage, effective stress undefined" );
@@ -107,8 +112,9 @@ namespace Marmot::Materials {
     kappaD             = effectiveStateVars( 0 );
     acYield            = effectiveStateVars( 1 );
 
-    const double integrity      = std::exp( -kappaD / epsilonF );
-    const double dOmega_dKappaD = integrity / epsilonF;
+    const double decay          = std::exp( -kappaD / ( omegaMax * epsilonF ) );
+    const double integrity      = ( 1. - omegaMax ) + omegaMax * decay;
+    const double dOmega_dKappaD = decay / epsilonF;
     omega                       = 1. - integrity;
     // complete damage only from a diverging iterate: request a cutback
     if ( !( integrity > 0. ) )

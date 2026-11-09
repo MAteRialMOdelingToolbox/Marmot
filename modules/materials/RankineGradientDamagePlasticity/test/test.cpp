@@ -27,12 +27,21 @@ namespace {
   const double G              = E / ( 2. * ( 1. + nu ) );
   const double lambda         = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
 
-  // E, nu, ft, epsilonF, nonlocal length, m
-  std::vector< double > propertiesWith( double m )
+  // E, nu, ft, epsilonF, damage threshold omegaMax, nonlocal length, m, density, nonlocal viscosity
+  std::vector< double > propertiesWith( double m, double omegaMax = 1. )
   {
-    return { E, nu, ft, epsilonF, nonlocalLength, m, 7.85e-9, 1e-3 };
+    return { E, nu, ft, epsilonF, omegaMax, nonlocalLength, m, 7.85e-9, 1e-3 };
   }
-  std::vector< double > localProperties = { E, nu, ft, epsilonF };
+  std::vector< double > localPropertiesWith( double omegaMax )
+  {
+    return { E, nu, ft, epsilonF, omegaMax };
+  }
+
+  // damage law with threshold omegaMax
+  double damage( double kappa, double omegaMax = 1. )
+  {
+    return omegaMax * ( 1. - std::exp( -kappa / ( omegaMax * epsilonF ) ) );
+  }
 
   using Material = RankineGradientDamagePlasticity;
 
@@ -151,14 +160,13 @@ namespace {
 
 } // namespace
 
-/// With the nonlocal variable equal to the local one (the limit of a vanishing nonlocal length, where the Helmholtz
-/// equation gives K = kappaD), the model reproduces RankineDamagePlasticity for any m, including the total tangent.
-void testLocalLimit()
+void checkLocalLimit( double omegaMax )
 {
-  const RankineDamagePlasticity local( localProperties.data(), static_cast< int >( localProperties.size() ), 1 );
+  const auto                    localProps = localPropertiesWith( omegaMax );
+  const RankineDamagePlasticity local( localProps.data(), static_cast< int >( localProps.size() ), 1 );
 
   for ( const double m : { 0., 0.5, 1., 2. } ) {
-    const auto     props = propertiesWith( m );
+    const auto     props = propertiesWith( m, omegaMax );
     const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
     for ( const auto& dE : increments ) {
@@ -194,7 +202,7 @@ void testLocalLimit()
   }
 
   // m = 0: purely local damage for any nonlocal field, no coupling
-  const auto     props = propertiesWith( 0. );
+  const auto     props = propertiesWith( 0., omegaMax );
   const Material material( props.data(), static_cast< int >( props.size() ), 1 );
   const auto     rl = updateLocal( local, Math::Vector6d::Zero(), Eigen::Vector3d::Zero(), increments[0] * 5 );
   const auto     r  = update( material, MaterialPointState(), increments[0] * 5, 123. );
@@ -202,36 +210,55 @@ void testLocalLimit()
                            "m = 0: not the local model" );
 }
 
+/// With the nonlocal variable equal to the local one (the limit of a vanishing nonlocal length, where the Helmholtz
+/// equation gives K = kappaD), the model reproduces RankineDamagePlasticity for any m and damage threshold, including
+/// the total tangent.
+void testLocalLimit()
+{
+  for ( const double omegaMax : { 1., 0.9 } )
+    checkLocalLimit( omegaMax );
+}
+
 /// Uniaxial strain from the virgin state with a given nonlocal variable: closed form solution.
 void testUniaxialStrain()
 {
-  for ( const double m : { 1., 2. } ) {
-    const auto     props = propertiesWith( m );
-    const Material material( props.data(), static_cast< int >( props.size() ), 1 );
+  for ( const double omegaMax : { 1., 0.9 } )
+    for ( const double m : { 1., 2. } ) {
+      const auto     props = propertiesWith( m, omegaMax );
+      const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
-    const double eps = 4e-4;
-    const double K   = 2e-4;
-    const auto   r = update( material, MaterialPointState(), ( Math::Vector6d() << eps, 0, 0, 0, 0, 0 ).finished(), K );
-    const double dLambda = eps - ft / ( lambda + 2. * G );
-    const double omega   = 1. - std::exp( -( m * K + ( 1. - m ) * dLambda ) / epsilonF );
-    const Math::Vector6d
-      target = ( 1. - omega ) *
-               ( Math::Vector6d() << ft, lambda * ( eps - dLambda ), lambda * ( eps - dLambda ), 0, 0, 0 ).finished();
-    throwExceptionOnFailure( checkIfEqual( r.KLocal, dLambda, 1e-15 ) && checkIfEqual( r.state.omega(), omega, 1e-14 ),
-                             "uniaxial strain: damage mismatch" );
-    throwExceptionOnFailure( checkIfEqual< double >( r.state.stress, target, 1e-11 ),
-                             "uniaxial strain: comparison with analytical solution failed" );
-    throwExceptionOnFailure( checkIfEqual< double >( r.tan.dStressddK, -m / epsilonF * target, 1e-9 ),
-                             "uniaxial strain: dStress/dK mismatch" );
-  }
+      const double eps = 4e-4;
+      const double K   = 2e-4;
+      const auto r = update( material, MaterialPointState(), ( Math::Vector6d() << eps, 0, 0, 0, 0, 0 ).finished(), K );
+      const double         dLambda       = eps - ft / ( lambda + 2. * G );
+      const double         kappaWeighted = m * K + ( 1. - m ) * dLambda;
+      const double         omega         = damage( kappaWeighted, omegaMax );
+      const double         dOmega_dKappa = std::exp( -kappaWeighted / ( omegaMax * epsilonF ) ) / epsilonF;
+      const Math::Vector6d effStress     = ( Math::Vector6d() << ft,
+                                         lambda * ( eps - dLambda ),
+                                         lambda * ( eps - dLambda ),
+                                         0,
+                                         0,
+                                         0 )
+                                         .finished();
+      throwExceptionOnFailure( checkIfEqual( r.KLocal, dLambda, 1e-15 ) &&
+                                 checkIfEqual( r.state.omega(), omega, 1e-14 ),
+                               "uniaxial strain: damage mismatch" );
+      throwExceptionOnFailure( checkIfEqual< double >( r.state.stress, ( 1. - omega ) * effStress, 1e-11 ),
+                               "uniaxial strain: comparison with analytical solution failed" );
+      throwExceptionOnFailure( checkIfEqual< double >( r.tan.dStressddK, -m * dOmega_dKappa * effStress, 1e-9 ),
+                               "uniaxial strain: dStress/dK mismatch" );
+    }
 }
 
 /// Consistent tangents incl. the coupling blocks: one, two and three active surfaces and general loading, with the
-/// damage growing, for the standard (m = 1) and the over-nonlocal (m = 2) formulation.
+/// damage growing, for the standard (m = 1) and the over-nonlocal (m = 2) formulation, without and with a damage
+/// threshold.
 void testTangents()
 {
-  for ( const double m : { 1., 2. } ) {
-    const auto     props = propertiesWith( m );
+  for ( const auto& [m, omegaMax] :
+        std::vector< std::pair< double, double > >{ { 1., 1. }, { 2., 1. }, { 1., 0.9 }, { 2., 0.9 } } ) {
+    const auto     props = propertiesWith( m, omegaMax );
     const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
     for ( const auto& dE : increments ) {
@@ -318,23 +345,29 @@ void testPropertiesAndFactory()
                                                                                static_cast< int >( props.size() ),
                                                                                1 ) );
   throwExceptionOnFailure( material->getNumberOfRequiredStateVars() == 5, "factory: wrong number of state variables" );
-  throwExceptionOnFailure( material->getDensity( nullptr ) == props[6], "factory: wrong density" );
-  throwExceptionOnFailure( material->getNonlocalViscosity( nullptr )[0] == props[7], "factory: wrong viscosity" );
+  throwExceptionOnFailure( material->getDensity( nullptr ) == props[7], "factory: wrong density" );
+  throwExceptionOnFailure( material->getNonlocalViscosity( nullptr )[0] == props[8], "factory: wrong viscosity" );
 
-  const Material withoutOptional( props.data(), 6, 1 );
+  const Material withoutOptional( props.data(), 7, 1 );
   throwExceptionOnFailure( withoutOptional.getNonlocalViscosity( nullptr )[0] == 0.,
                            "factory: nonlocal viscosity default is not zero" );
 
   // invalid properties
-  for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, nonlocalLength } } )
+  for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, 1., nonlocalLength } } )
     throwExceptionOnFailure( throws< std::runtime_error >(
                                [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: missing properties not detected" );
-  for ( const auto& p : { std::vector< double >{ E, nu, ft, 0., nonlocalLength, 1. },
-                          std::vector< double >{ E, nu, ft, epsilonF, -1., 1. } } )
+  for ( const auto& p : { std::vector< double >{ E, nu, ft, 0., 1., nonlocalLength, 1. },
+                          std::vector< double >{ E, nu, ft, epsilonF, 1., -1., 1. } } )
     throwExceptionOnFailure( throws< std::invalid_argument >(
                                [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: nonpositive epsilonF or negative nonlocal length not detected" );
+  for ( const double omegaMax : { 0., -0.1, 1.1 } ) {
+    const auto p = propertiesWith( 1., omegaMax );
+    throwExceptionOnFailure( throws< std::invalid_argument >(
+                               [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
+                             "properties: damage threshold outside (0, 1] not detected" );
+  }
   throwExceptionOnFailure( throws< std::runtime_error >( [&] { withoutOptional.getDensity( nullptr ); } ),
                            "properties: missing density not detected" );
 }
@@ -462,6 +495,14 @@ void testCompleteDamageThrows()
   throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >(
                              [&] { update( material, completelyDamaged, Math::Vector6d::Zero(), 1e6 ); } ),
                            "complete damage of the old state did not throw" );
+
+  // with a damage threshold, the damage saturates at omegaMax instead
+  const double   omegaMax       = 0.9;
+  const auto     propsThreshold = propertiesWith( 1., omegaMax );
+  const Material threshold( propsThreshold.data(), static_cast< int >( propsThreshold.size() ), 1 );
+  const auto     r = update( threshold, MaterialPointState(), increments[0], 1e6 );
+  throwExceptionOnFailure( checkIfEqual( r.state.omega(), omegaMax, 1e-15 ) && r.state.stress.allFinite(),
+                           "damage threshold: damage does not saturate at omegaMax" );
 }
 
 /// Strain increments of a diverged iterate (about 1e288, from a dissipation-controlled run at the onset of
