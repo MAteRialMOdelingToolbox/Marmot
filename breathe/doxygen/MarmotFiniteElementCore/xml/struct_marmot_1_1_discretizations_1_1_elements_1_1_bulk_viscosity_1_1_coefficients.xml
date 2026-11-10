@@ -14,7 +14,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Linear coefficient <formula id="47">$b_1$</formula>, active in compression and in expansion. </para>
+<para>Linear coefficient <formula id="63">$b_1$</formula>, active in compression and in expansion. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -30,7 +30,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Quadratic coefficient <formula id="71">$b_2$</formula>, active in compression only. </para>
+<para>Quadratic coefficient <formula id="86">$b_2$</formula>, active in compression only. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -46,7 +46,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Exponent <formula id="48">$n$</formula> of the optional degradation with the material&apos;s loss of stiffness; see degradationFactor(). Zero <ndash/> the default <ndash/> disables it entirely, which is both the pre-existing behaviour and the cheap one. </para>
+<para>Exponent <formula id="64">$n$</formula> of the optional degradation with the material&apos;s loss of stiffness; see degradationFactor(). Zero <ndash/> the default <ndash/> disables it entirely, which is both the pre-existing behaviour and the cheap one. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -89,7 +89,7 @@
 <para><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients" kindref="compound">Coefficients</ref> of the artificial bulk viscosity. </para>
     </briefdescription>
     <detaileddescription>
-<para>Both are dimensionless and default to zero, i.e. inactive. <formula id="45">$b_1 = 0.06$</formula>, <formula id="46">$b_2 = 1.2$</formula> are the values Abaqus/Explicit applies <ndash/> a common choice, not the default, and a recommendation rather than a physical parameter: <formula id="47">$b_1$</formula> is sized to damp the mesh&apos;s highest resolvable frequency, not to model dissipation. </para>
+<para>Both are dimensionless and default to zero, i.e. inactive. <formula id="61">$b_1 = 0.06$</formula>, <formula id="62">$b_2 = 1.2$</formula> are the values Abaqus/Explicit applies <ndash/> a common choice, not the default, and a recommendation rather than a physical parameter: <formula id="63">$b_1$</formula> is sized to damp the mesh&apos;s highest resolvable frequency, not to model dissipation. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="41" bodyend="58"/>
     <listofallmembers>

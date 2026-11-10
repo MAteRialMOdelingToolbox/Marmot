@@ -34,7 +34,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="570" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="570" bodyend="573"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="747" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="747" bodyend="750"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="var">
@@ -46,13 +46,13 @@
         <qualifiedname>Marmot::Discretizations::Elements::Quadrature::gp2</qualifiedname>
         <initializer>= 0.577350269189625764509</initializer>
         <briefdescription>
-<para>Gauss point abscissa for 2-point rule: <formula id="42">$1/\sqrt{3}$</formula>. </para>
+<para>Gauss point abscissa for 2-point rule: <formula id="58">$1/\sqrt{3}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="564" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="564" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="741" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="741" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="_marmot_finite_element_8h_1a57dd3d5ab8b99ce2cced367a3aadfdae" prot="public" static="no" constexpr="yes" mutable="no">
         <type>double</type>
@@ -62,13 +62,13 @@
         <qualifiedname>Marmot::Discretizations::Elements::Quadrature::gp3</qualifiedname>
         <initializer>= 0.774596669241483</initializer>
         <briefdescription>
-<para>Gauss point abscissa for 3-point rule: <formula id="43">$\sqrt{3/5}$</formula>. </para>
+<para>Gauss point abscissa for 3-point rule: <formula id="59">$\sqrt{3/5}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="565" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="565" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="742" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="742" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -113,7 +113,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="590" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="590" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="767" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="767" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1ad194b8128b2efcf06fc860945e6b0ce0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -156,13 +156,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="599" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="599" declcolumn="9"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="776" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="776" declcolumn="9"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="563" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="740" column="3"/>
   </compounddef>
 </doxygen>

@@ -1,9 +1,0 @@
-<map id="%1" name="%1">
-<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotConsistentMass.h" alt="" coords="5,101,1178,149"/>
-<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" alt="" coords="1221,5,2378,53"/>
-<area shape="poly" id="edge1" title="include" alt="" coords="1485,55,893,103,893,98,1480,55"/>
-<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" alt="" coords="1202,101,2397,149"/>
-<area shape="poly" id="edge2" title="include" alt="" coords="1801,67,1801,103,1798,99,1798,71"/>
-<area shape="rect" id="node4" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" alt="" coords="2421,101,3701,149"/>
-<area shape="poly" id="edge3" title="include" alt="" coords="2129,52,2749,101,2743,101,2129,58"/>
-</map>

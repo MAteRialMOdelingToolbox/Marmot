@@ -37,6 +37,14 @@
           <detaileddescription>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78dac07a88b2ffcd56dc4e061e8fca43bb38" prot="public">
+          <name>Tri3</name>
+          <briefdescription>
+<para>2-D 3-node triangle </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
         <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da70c9ce7e668ebd139d178d3d4e86fbba" prot="public">
           <name>Quad4</name>
           <briefdescription>
@@ -124,7 +132,60 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="39" bodyend="52"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="40" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="40" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="enum" id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>ReferenceDomain</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ReferenceDomain</qualifiedname>
+        <enumvalue id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037a4803e6b9e63dabf04de980788d6a13c4" prot="public">
+          <name>Line</name>
+          <briefdescription>
+<para>[-1, 1] </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037a5e5500cb2b82eb72d550de644bd1b64b" prot="public">
+          <name>Triangle</name>
+          <briefdescription>
+<para>unit triangle, vertices (0, 0), (1, 0), (0, 1) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037ab1aa854f21a681be6412a6df6340ab00" prot="public">
+          <name>Quadrilateral</name>
+          <briefdescription>
+<para>[-1, 1]^2 </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037ae029cf63d8d01a489974f9289b50dc80" prot="public">
+          <name>Tetrahedron</name>
+          <briefdescription>
+<para>unit tetrahedron, vertices (0, 0, 0), (1, 0, 0), (0, 1, 0), (0, 0, 1) </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037a9f9ee7eff41b83c79fb8cce4168c5af6" prot="public">
+          <name>Hexahedron</name>
+          <briefdescription>
+<para>[-1, 1]^3 </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Reference domains on which shape functions and quadrature rules are defined. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="101" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="101" bodyend="107"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -203,7 +264,7 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="56" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="56" declcolumn="15"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_finite_element_8h_1a4c2217bb190e17d97dcd97e5318ab45b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_finite_element_8h_1ada5e3207066d4cafb1c0deeeb7eadaa7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">ElementShapes</ref></type>
         <definition>ElementShapes Marmot::Discretizations::Elements::getElementShapeByMetric</definition>
         <argsstring>(int nDim, int nNodes)</argsstring>
@@ -240,11 +301,206 @@
 </parameterlist>
 <simplesect kind="return"><para>Matching <ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">Marmot::Discretizations::Elements::ElementShapes</ref> enumerator. </para>
 </simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>For an unknown combination; in a constant expression that is a compile error. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="60" column="17" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="60" declcolumn="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="63" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="63" bodyend="96"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1af4723cb90e4a3659f8a8fe0e3e8c546a" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref></type>
+        <definition>ReferenceDomain Marmot::Discretizations::Elements::getReferenceDomain</definition>
+        <argsstring>(ElementShapes shape)</argsstring>
+        <name>getReferenceDomain</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getReferenceDomain</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">ElementShapes</ref></type>
+          <declname>shape</declname>
+        </param>
+        <briefdescription>
+<para>The reference domain of an element shape. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">shape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> shape. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Line for bars, Triangle, Quadrilateral, Tetrahedron or Hexahedron. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="114" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="114" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1afc5444ef06b176eeeaef534ac63947a6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::getNumberOfCornerNodes</definition>
+        <argsstring>(ReferenceDomain domain)</argsstring>
+        <name>getNumberOfCornerNodes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getNumberOfCornerNodes</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref></type>
+          <declname>domain</declname>
+        </param>
+        <briefdescription>
+<para>The number of corner nodes of a reference domain, i.e. the nodes of its linear element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">domain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>2 for Line, 3 for Triangle, 4 for Quadrilateral and Tetrahedron, 8 for Hexahedron. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="139" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="139" bodyend="149"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a9f90e571c4a9aa9ae7998cd96cfe33ec" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::getInterpolationOrder</definition>
+        <argsstring>(ElementShapes shape)</argsstring>
+        <name>getInterpolationOrder</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getInterpolationOrder</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">ElementShapes</ref></type>
+          <declname>shape</declname>
+        </param>
+        <briefdescription>
+<para>The polynomial order p of the shape functions of an element shape. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">shape</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> shape. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>1 for Bar2, Tri3, Quad4, Tetra4 and Hexa8; 2 for Bar3, Quad8, Quad9, Tetra10, Hexa20 and Hexa27; 3 for Quad16 and Hexa64. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="157" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="157" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a0cbecf044f3edd4f51ac0d1356b44c92" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Elements::isSimplex</definition>
+        <argsstring>(ReferenceDomain domain)</argsstring>
+        <name>isSimplex</name>
+        <qualifiedname>Marmot::Discretizations::Elements::isSimplex</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref></type>
+          <declname>domain</declname>
+        </param>
+        <briefdescription>
+<para>Whether a reference domain is a simplex, the unit triangle or the unit tetrahedron. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">domain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true for Triangle and Tetrahedron; false for Line and for the cubes Quadrilateral and Hexahedron. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="182" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="182" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a84f7a732379ec65262c588d5011c3d81" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::getReferenceMeasure</definition>
+        <argsstring>(ReferenceDomain domain)</argsstring>
+        <name>getReferenceMeasure</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getReferenceMeasure</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref></type>
+          <declname>domain</declname>
+        </param>
+        <briefdescription>
+<para>The length, area or volume of a reference domain. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">domain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>2 for Line, 4 for Quadrilateral and 8 for Hexahedron (the cube [-1, 1]^nDim); 1/2 for Triangle and 1/6 for Tetrahedron (the unit simplex, 1 / nDim!). An element&apos;s measure is this times det J, where J is constant. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="193" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="193" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a5d182befaee43f18a1b9b509be18ccb6" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::getReferenceCentroidCoordinate</definition>
+        <argsstring>(ReferenceDomain domain)</argsstring>
+        <name>getReferenceCentroidCoordinate</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getReferenceCentroidCoordinate</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref></type>
+          <declname>domain</declname>
+        </param>
+        <briefdescription>
+<para>Each natural coordinate of the centroid of a reference domain; all of them are equal. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">domain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>0 for the cubes and the line, whose centroid is the origin; 1 / ( nDim + 1 ) for the unit simplex, i.e. 1/3 for Triangle and 1/4 for Tetrahedron, where all shape functions of the linear element are equal. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="211" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="211" bodyend="221"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1acb650496b98651c0a532e189c54f1acb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -287,7 +543,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="68" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="68" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="229" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="229" declcolumn="19"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1aadc18ce31dc8208f8a8c009a5efb4680" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -347,7 +603,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="79" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="79" bodyend="89"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="240" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="240" bodyend="250"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1af2edfffc9fb728f9cb28cdec52490e6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -390,7 +646,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="97" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="97" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="258" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="258" declcolumn="19"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a963071c3bb1582ad43dcd54c2152d66c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -462,7 +718,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="109" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="109" bodyend="120"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="270" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="270" bodyend="281"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1aa3cdab971a5ca6cf606eb53ecbce0e47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::VectorXi</type>
@@ -505,7 +761,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="128" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="128" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="289" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="289" declcolumn="19"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

@@ -3,6 +3,53 @@
   <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_mass_lumping" kind="namespace" language="C++">
     <compoundname>Marmot::Discretizations::Elements::MassLumping</compoundname>
     <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_mass_lumping_8h_1a9c4f1ff6593e33bb081458f1ed1fc197" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::MassLumping::nLinearNodes</definition>
+        <argsstring>()</argsstring>
+        <name>nLinearNodes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::MassLumping::nLinearNodes</qualifiedname>
+        <briefdescription>
+<para>The number of nodes of the linear element whose shape functions are blended in. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of corner nodes of the reference domain of the element: e.g. 2 for bar3, 3 for tri3, 4 for quad8 and tetra10, 8 for hexa20. A linear element is its own linear counterpart.</para>
+</simplesect>
+The blend adds the row sums of the linear element to the first nodes of the element, so the corner nodes must come first in the node order, as in the Abaqus convention. An unknown combination of <computeroutput>nDim</computeroutput> and <computeroutput>nNodes</computeroutput> is a compile error. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="49" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="49" bodyend="52"/>
+      </memberdef>
       <memberdef kind="function" id="_marmot_mass_lumping_8h_1a61aea4a3753f3cd38f9851545af41547" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
         <definition>double Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight</definition>
@@ -72,7 +119,7 @@ The scheme is manifold-based lumping:</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="102" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="102" bodyend="119"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="121" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="121" bodyend="138"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_mass_lumping_8h_1a8bfa3c0532ac554105d008afa0d36964" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>Eigen::VectorXd</type>
@@ -134,7 +181,7 @@ Density-free on purpose: positivity and the mass <emphasis>distribution</emphasi
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="156" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="156" bodyend="168"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="175" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="175" bodyend="187"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_mass_lumping_8h_1a1d4a1407f4b89eae150b4180321204c0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -175,13 +222,13 @@ The usual estimate <formula id="26">$\Delta t = l / c$</formula> is the stable i
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="205" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="205" bodyend="215"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="224" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" bodystart="224" bodyend="234"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="33" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" line="34" column="1"/>
   </compounddef>
 </doxygen>
