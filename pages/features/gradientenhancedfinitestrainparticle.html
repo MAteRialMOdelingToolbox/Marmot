@@ -155,7 +155,8 @@ r^N_A &amp;= \Bigl( T_A\,\Delta\bar N + c\,\frac{\partial T_A}{\partial X_i}\,\f
 increment of the nonlocal field, with the change <span class="math notranslate nohighlight">\(\Delta L\)</span> of the local driving force as its source. The
 acceleration <span class="math notranslate nohighlight">\(\boldsymbol a\)</span> follows from the Newmark-beta update of <span class="math notranslate nohighlight">\(\Delta\boldsymbol u\)</span> with the particle
 properties <code class="docutils literal notranslate"><span class="pre">newmark-beta</span> <span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">newmark-beta</span> <span class="pre">gamma</span></code>; <span class="math notranslate nohighlight">\(\beta = 0\)</span> switches the inertia off
-(<span class="math notranslate nohighlight">\(\boldsymbol a = \boldsymbol 0\)</span>).</p>
+and the particle is at rest (<span class="math notranslate nohighlight">\(\boldsymbol v = \boldsymbol a = \boldsymbol 0\)</span>). A zero-length increment adds no inertia: <span class="math notranslate nohighlight">\(\boldsymbol v\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol a\)</span>
+are left as they are, and the inertia tangent is zero (see <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a>).</p>
 </section>
 <section id="tangent">
 <h3>Tangent<a class="headerlink" href="#tangent" title="Link to this heading"></a></h3>

@@ -58,7 +58,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Friction parameter <formula id="412">$m$</formula> </para>
+<para>Friction parameter <formula id="428">$m$</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -73,7 +73,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Eccentricity parameter <formula id="405">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="413">$0.5\leq e
+<para>Eccentricity parameter <formula id="421">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="429">$0.5\leq e
 \leq 1$</formula> </para>
         </detaileddescription>
         <inbodydescription>

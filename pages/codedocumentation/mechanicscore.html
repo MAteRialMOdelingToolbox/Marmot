@@ -5826,33 +5826,31 @@ l_j^{(m)} n_i^{(m)}) \)</span> in Voigt notation, one column per microplane. </p
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot18ContinuumMechanics15TimeIntegration22newmarkBetaIntegrationEvPKdPdPddddPd">
 <span id="_CPPv3I_iEN6Marmot18ContinuumMechanics15TimeIntegration22newmarkBetaIntegrationEPKdPdPddddPd"></span><span id="_CPPv2I_iEN6Marmot18ContinuumMechanics15TimeIntegration22newmarkBetaIntegrationEPKdPdPddddPd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_newmark_beta_integrator_8h_1acefc537ef15c5a11cd75bc81c8e2266f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">newmarkBetaIntegration</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">du</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">v</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">a</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">newmarkBeta</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">newmarkGamma</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">da_ddu</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot18ContinuumMechanics15TimeIntegration22newmarkBetaIntegrationEvPKdPdPddddPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Newmark-Beta time integration. </p>
-<p>This function implements the Newmark-Beta time integration method for linear dynamic problems. It updates the velocity and acceleration vectors based on the displacement increment and the time step. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The function assumes that the input vectors are of size nDim. </p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The function also assumes that the time step is positive and that the Newmark-Beta parameter is not zero. </p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The function uses a small value (1e-16) to avoid division by zero </p>
-</div>
+<dd><p>Newmark-beta time integration at one point: the acceleration and the velocity at the end of an increment from the displacement increment. </p>
+<p>Solves the Newmark relations     <div class="math notranslate nohighlight">
+\[  \Delta u = \Delta t\, v_n + \tfrac{\Delta t^2}{2} \left[ (1 - 2\beta)\, a_n + 2\beta\, a_{n+1} \right],
+  \qquad
+  v_{n+1} = v_n + \Delta t \left[ (1 - \gamma)\, a_n + \gamma\, a_{n+1} \right]
+\]</div>
+ for <span class="math notranslate nohighlight">\( a_{n+1} \)</span> and <span class="math notranslate nohighlight">\( v_{n+1} \)</span>, component by component, and returns the derivative <span class="math notranslate nohighlight">\( \partial a_{n+1} / \partial \Delta u = 1 / (\beta \Delta t^2) \)</span>, which the host’s tangent needs for the inertia term.</p>
+<p>Two cases add no inertia:<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( \beta = 0 \)</span>: no time integration (a quasi-static analysis), which is at rest: the velocity and the acceleration are zero, whatever they were before (e.g. after a dynamic step), and so is the derivative.</p></li>
+<li><p>A zero-length increment, <span class="math notranslate nohighlight">\( \Delta t = 0 \)</span>: nothing moves in zero time, so the velocity and the acceleration are left as they are ( <span class="math notranslate nohighlight">\( v_{n+1} = v_n \)</span>, <span class="math notranslate nohighlight">\( a_{n+1} = a_n \)</span>), whatever <span class="math notranslate nohighlight">\( \Delta u \)</span> is, and the derivative is zero. The inertial force of the unchanged acceleration remains in the host’s residual. A host that integrates in time skips such an increment, or evaluates at it only to compute a state at rest in time (e.g. the acceleration of its own nodes from equilibrium).</p></li>
+</ul>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>nDim</strong> – Number of dimensions (2D or 3D) </p>
+<dd class="field-odd"><p><strong>nDim</strong> – Number of components. </p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>du</strong> – Displacement increment vector </p></li>
-<li><p><strong>v</strong> – Velocity vector </p></li>
-<li><p><strong>a</strong> – Acceleration vector </p></li>
-<li><p><strong>dT</strong> – Time step </p></li>
-<li><p><strong>newmarkBeta</strong> – Newmark-Beta parameter (0.25 for linear problems) </p></li>
-<li><p><strong>newmarkGamma</strong> – Newmark-Gamma parameter (0.5 for linear problems) </p></li>
-<li><p><strong>da_ddu</strong> – Derivative of acceleration with respect to displacement </p></li>
+<li><p><strong>du</strong> – <strong>[in]</strong> Displacement increment <span class="math notranslate nohighlight">\( \Delta u \)</span>, nDim components. </p></li>
+<li><p><strong>v</strong> – <strong>[inout]</strong> Velocity: <span class="math notranslate nohighlight">\( v_n \)</span> on entry, <span class="math notranslate nohighlight">\( v_{n+1} \)</span> on return. </p></li>
+<li><p><strong>a</strong> – <strong>[inout]</strong> Acceleration: <span class="math notranslate nohighlight">\( a_n \)</span> on entry, <span class="math notranslate nohighlight">\( a_{n+1} \)</span> on return. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment <span class="math notranslate nohighlight">\( \Delta t \geq 0 \)</span>. </p></li>
+<li><p><strong>newmarkBeta</strong> – <strong>[in]</strong> Newmark parameter <span class="math notranslate nohighlight">\( \beta \)</span> (1/4 with <span class="math notranslate nohighlight">\( \gamma = 1/2 \)</span>: the average acceleration rule; 0: no time integration). </p></li>
+<li><p><strong>newmarkGamma</strong> – <strong>[in]</strong> Newmark parameter <span class="math notranslate nohighlight">\( \gamma \)</span>. </p></li>
+<li><p><strong>da_ddu</strong> – <strong>[out]</strong> Derivative <span class="math notranslate nohighlight">\( \partial a_{n+1} / \partial \Delta u \)</span>, an nDim x nDim matrix (column major); only its diagonal is written. </p></li>
 </ul>
 </dd>
 </dl>
@@ -8646,21 +8644,7 @@ The transformation convention used is:  <span class="math notranslate nohighligh
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="_newmark_beta_integrator_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">NewmarkBetaIntegrator.h</span></span></dt>
-<dd><div class="docutils container">
-<em>#include &lt;algorithm&gt;</em></div>
-<p>Include dependency graph for NewmarkBetaIntegrator.h:</p>
-<figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-42a7faa3f92c41363265e3416690466a2e9fd12f.png" alt="digraph {
-    graph [bgcolor=&quot;#00000000&quot;]
-    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
-    edge [color=&quot;#1414CE&quot;]
-    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
-}" class="graphviz" /></div>
-</div>
-</figure>
-</dd></dl>
+<dd></dd></dl>
 
 <dl>
 <dt class="sig sig-object cpp">

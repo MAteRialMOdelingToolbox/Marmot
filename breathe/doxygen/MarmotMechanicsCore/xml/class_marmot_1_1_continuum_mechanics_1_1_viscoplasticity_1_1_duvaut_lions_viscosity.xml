@@ -63,7 +63,7 @@
 <parametername>viscosity</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Viscosity parameter <formula id="414">$\eta$</formula> for the Duvaut-Lions regularisation. </para>
+<para>Viscosity parameter <formula id="430">$\eta$</formula> for the Duvaut-Lions regularisation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -94,7 +94,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="415">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and t= <formula id="431">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -121,7 +121,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="415">$\infty$</formula>, and timestep dt </para>
+<para>Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and t= <formula id="431">$\infty$</formula>, and timestep dt </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -144,7 +144,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="415">$\infty$</formula>, and timestep dt</para>
+<para>Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0 (trialState) and t= <formula id="431">$\infty$</formula>, and timestep dt</para>
 <para><xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Check if application to inverse can be replaced by application to non-inverse in general </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>

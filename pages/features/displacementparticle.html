@@ -143,8 +143,12 @@ is written with the Kirchhoff stress <span class="math notranslate nohighlight">
   + \rho_0\,\frac{\partial a_j}{\partial \Delta u_k}\,T_A\,N_B\,V_0 .\]</div>
 <p>The acceleration <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> follows from a Newmark-beta integration of the displacement increment
 <span class="math notranslate nohighlight">\(\Delta\boldsymbol{u}\)</span> of the integration point, with the properties <code class="docutils literal notranslate"><span class="pre">newmark-beta</span> <span class="pre">beta</span></code> and
-<code class="docutils literal notranslate"><span class="pre">newmark-beta</span> <span class="pre">gamma</span></code>; for <span class="math notranslate nohighlight">\(\beta = 0\)</span> (the default) the scheme returns <span class="math notranslate nohighlight">\(\boldsymbol{a} = \boldsymbol{0}\)</span>,
-i.e., a quasi-static analysis. The particles also provide a lumped mass <span class="math notranslate nohighlight">\(\rho_0\,T_A\,V_0\)</span> and a lumped momentum
+<code class="docutils literal notranslate"><span class="pre">newmark-beta</span> <span class="pre">gamma</span></code>; for <span class="math notranslate nohighlight">\(\beta = 0\)</span> (the default) the scheme returns <span class="math notranslate nohighlight">\(\boldsymbol{v} = \boldsymbol{a} = \boldsymbol{0}\)</span>,
+i.e., a quasi-static analysis, which is at rest, also after a dynamic step. A zero-length increment (<span class="math notranslate nohighlight">\(\Delta t = 0\)</span>) adds no inertia: nothing moves in zero
+time, so <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}\)</span> are left as they are, whatever <span class="math notranslate nohighlight">\(\Delta\boldsymbol{u}\)</span>
+is, and <span class="math notranslate nohighlight">\(\partial \boldsymbol{a} / \partial \Delta\boldsymbol{u} = \boldsymbol{0}\)</span>; the inertial force of the
+unchanged acceleration stays in the residual. A host that integrates in time therefore does not solve a zero-length
+increment for a displacement (EdelweissFE’s implicit dynamic solver skips it). The particles also provide a lumped mass <span class="math notranslate nohighlight">\(\rho_0\,T_A\,V_0\)</span> and a lumped momentum
 <span class="math notranslate nohighlight">\(\rho_0\,T_A\,V_0\,\boldsymbol{v}\)</span> for explicit schemes.</p>
 </section>
 <section id="integration-schemes">

@@ -174,7 +174,7 @@
         <name>getRotationIncrement</name>
         <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::getRotationIncrement</qualifiedname>
         <briefdescription>
-<para>Returns the incremental rotation matrix <formula id="102">$\Delta\mathbf{R}$</formula>. </para>
+<para>Returns the incremental rotation matrix <formula id="118">$\Delta\mathbf{R}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -232,7 +232,7 @@
           <declname>dChauchyDEps</declname>
         </param>
         <briefdescription>
-<para>Compute the consistent tangent contribution <formula id="103">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
+<para>Compute the consistent tangent contribution <formula id="119">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Given the current Cauchy stress, the inverse deformation gradient, and the Cauchy-stress/strain tangent, returns the third-order tensor mapping variations of the deformation gradient to variations of the Cauchy stress.</para>
@@ -261,7 +261,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The 6×3×3 tangent tensor <formula id="103">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
+<simplesect kind="return"><para>The 6×3×3 tangent tensor <formula id="119">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -284,7 +284,7 @@
           <declname>dScalarDEps</declname>
         </param>
         <briefdescription>
-<para>Compute the consistent tangent <formula id="104">$\frac{d\phi}{d\mathbf{F}}$</formula> for a scalar quantity. </para>
+<para>Compute the consistent tangent <formula id="120">$\frac{d\phi}{d\mathbf{F}}$</formula> for a scalar quantity. </para>
         </briefdescription>
         <detaileddescription>
 <para>Given the inverse deformation gradient and the derivative of a scalar (e.g., an internal variable) with respect to the strain in Voigt notation, returns the corresponding 3×3 matrix mapping variations of the deformation gradient.</para>
@@ -305,7 +305,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The 3×3 sensitivity matrix <formula id="104">$\frac{d\phi}{d\mathbf{F}}$</formula>. </para>
+<simplesect kind="return"><para>The 3×3 sensitivity matrix <formula id="120">$\frac{d\phi}{d\mathbf{F}}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
