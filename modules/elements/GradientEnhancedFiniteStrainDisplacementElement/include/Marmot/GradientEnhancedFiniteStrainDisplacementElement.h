@@ -867,8 +867,7 @@ namespace Marmot::Discretizations::Elements {
     std::vector< double > coords( nDim );
 
     Eigen::Map< XiSized > coordsMap( &coords[0] );
-    const auto            centerXi = XiSized::Zero();
-    coordsMap                      = this->NB( this->N( centerXi ) ) * this->coordinates;
+    coordsMap = this->center();
     return coords;
   }
 

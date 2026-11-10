@@ -2788,9 +2788,38 @@ void testFieldDependentGradientCoefficientQuad4PlaneStrain()
                                         "Quad4 variable gradient coefficient" );
 }
 
+void testCenterAndCharacteristicLengthOfLinearSimplices()
+{
+  // the center is the centroid, not node 0 at the origin of the unit simplex, and the characteristic element length is
+  // 1 / sqrt( sum_i h_i^-2 ) with the altitudes h_i: 2 / sqrt( 3.25 ), 2 / sqrt( 1.25 ) and 1 for this triangle of area
+  // 1
+  using Tri3 = GeneralGradientEnhancedDisplacementFiniteElement< 2, 3, 1 >;
+  Tri3 tri( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, Tri3::PlaneStrain );
+  const std::vector< double > triCoordinates = { 0, 0, 2, 0, 0.5, 1 };
+  tri.assignNodeCoordinates( triCoordinates.data() );
+  const auto triCenter = tri.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( triCenter[0] - 2.5 / 3 ) < 1e-14 && std::abs( triCenter[1] - 1. / 3 ) < 1e-14,
+                           "The center of a triangle must be its centroid." );
+  throwExceptionOnFailure( checkIfEqual( tri.localGeometryElement.characteristicLengthForCriticalTimeStepAt(
+                                           Tri3::XiSized::Zero() ),
+                                         1.0 / std::sqrt( 2.125 ),
+                                         1e-14 ),
+                           "The characteristic element length of a triangle must be 1 / sqrt( sum h^-2 )." );
+
+  using Tetra4 = GeneralGradientEnhancedDisplacementFiniteElement< 3, 4, 1 >;
+  Tetra4 tet( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, Tetra4::Solid );
+  const std::vector< double > tetCoordinates = { 0, 0, 0, 2, 0, 0, 0.5, 1, 0, 0, 0.5, 3 };
+  tet.assignNodeCoordinates( tetCoordinates.data() );
+  const auto tetCenter = tet.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( tetCenter[0] - 2.5 / 4 ) < 1e-14 && std::abs( tetCenter[1] - 1.5 / 4 ) < 1e-14 &&
+                             std::abs( tetCenter[2] - 3. / 4 ) < 1e-14,
+                           "The center of a tetrahedron must be its centroid." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
+    testCenterAndCharacteristicLengthOfLinearSimplices,
     testBasicPropertiesQuad4PlaneStress,
     testBasicPropertiesQuad8PlaneStrain,
     testBasicPropertiesHex8Solid,

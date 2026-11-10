@@ -27,6 +27,13 @@ namespace Marmot::Discretizations::Elements {
        *
        * */
 
+    case Tri3: {
+      boundaryShape             = Bar2;
+      nNodes                    = Spatial1D::Bar2::nNodes;
+      mapBoundaryToParentScalar = VectorXi( Spatial2D::Tri3::getBoundaryElementIndices( parentFaceNumber ) );
+      break;
+    }
+
     case Quad4: {
       boundaryShape             = Bar2;
       nNodes                    = Spatial1D::Bar2::nNodes;
@@ -38,6 +45,12 @@ namespace Marmot::Discretizations::Elements {
       boundaryShape             = Bar3;
       nNodes                    = Spatial1D::Bar3::nNodes;
       mapBoundaryToParentScalar = VectorXi( Spatial2D::Quad8::getBoundaryElementIndices( parentFaceNumber ) );
+      break;
+    }
+    case Tetra4: {
+      boundaryShape             = Tri3;
+      nNodes                    = Spatial2D::Tri3::nNodes;
+      mapBoundaryToParentScalar = VectorXi( Spatial3D::Tetra4::getBoundaryElementIndices( parentFaceNumber ) );
       break;
     }
     case Hexa8: {
@@ -90,6 +103,11 @@ namespace Marmot::Discretizations::Elements {
       case Bar3: {
         qp.N     = Spatial1D::Bar3::N( qp.xi( 0 ) );
         qp.dNdXi = Spatial1D::Bar3::dNdXi( qp.xi( 0 ) );
+        break;
+      }
+      case Tri3: {
+        qp.N     = Spatial2D::Tri3::N( qp.xi );
+        qp.dNdXi = Spatial2D::Tri3::dNdXi( qp.xi );
         break;
       }
       case Quad4: {

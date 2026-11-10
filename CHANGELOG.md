@@ -6,11 +6,50 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+- Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
+  strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
+  point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
+  regularisation length come from `GeometryElement` (below).
+- `Tri3` shape: shape functions, the 1-point (reduced) and 3-point (full, exact for quadratics) Gauss rules, the
+  `GeometryElement<2, 3>` specialisations and the EnSight shape `tria3`.
+- Distributed loads (pressure, surface traction) on `Tetra4` and `Tri3` elements (`C3D4`, `CPS3`, `CPE3`). This adds
+  the face definitions `Tetra4::getBoundaryElementIndices` (Abaqus faces S1–S4; previously a stub that always threw)
+  and `Tri3::getBoundaryElementIndices`, and `BoundaryElement` support for both parent shapes.
+- `getReferenceDomain( shape )`, `getInterpolationOrder( shape )` (the order p of the shape functions) and
+  `getNumberOfCornerNodes( domain )`, all `constexpr` like `getElementShapeByMetric`, which moved into the header
+  and now also knows `Bar3` (1D, 3 nodes). Further facts of a `ReferenceDomain`: `isSimplex( domain )`,
+  `getReferenceMeasure( domain )` (2^nDim for the cube [-1, 1]^nDim, 1 / nDim! for the unit simplex) and
+  `getReferenceCentroidCoordinate( domain )`.
+- Element geometry that depends on the reference domain, in `GeometryElement`, so the elements do not have to
+  distinguish the cube from the simplex: the compile-time `shape` (previously a member initialised at construction),
+  `referenceDomain` and `interpolationOrder`,
+  - `center()`: the image of the centroid of the reference domain; the origin of the unit simplex is its node 0;
+  - `characteristicLengthForCriticalTimeStepAt( xi )`: the length L_e of the stable time increment L_e / c, twice the
+    smallest singular value of the Jacobian for quadrilaterals and hexahedra (their smallest extent), 1 / sqrt( sum_i
+    |grad N_i|^2 ) for linear simplices. The latter does not depend on the node numbering and stays below the exact
+    stable increment of the element; the singular values assume the reference cube and would exceed it by up to 4
+    times;
+  - `volumeEquivalentLength( detJ )`: the regularisation length for softening materials, sqrt( A ) or cbrt( V ).
+
+  `characteristicLengthForCriticalTimeStepAt` is not derived for quadratic simplices (`Tri6`, `Tetra10`); asking for
+  it is a compile error.
+
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
   them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
   pulled before. Inputs keep their results by flipping the sign of the pressure.
+- `DisplacementFiniteElement`, `GeneralGradientEnhancedDisplacementFiniteElement`,
+  `DisplacementFiniteStrainULElement` and `GradientEnhancedFiniteStrainDisplacementElement` take their center,
+  characteristic length for the critical time step and (the first) regularisation length from `GeometryElement`. The
+  results of the quadrilaterals, hexahedra and bars are unchanged; instantiated for linear simplices (not registered
+  yet, except `CPS3`, `CPE3` and `C3D4`), the gradient-enhanced and the finite-strain elements now also have the right
+  center and length. The element methods `characteristicElementLengthAt( xi )` of `DisplacementFiniteElement` and
+  `GeneralGradientEnhancedDisplacementFiniteElement` are replaced by
+  `GeometryElement::characteristicLengthForCriticalTimeStepAt( xi )` (for the latter through its member
+  `localGeometryElement`), so the name no longer collides with the material's `characteristicElementLength`, the
+  regularisation length.
 
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
@@ -26,6 +65,15 @@ All notable changes to Marmot are documented in this file. The format follows
 - Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
   element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
   faces, as `hexa8` for the 3D interfaces.
+- Lumped inertia and critical time step of the linear simplices `CPS3`, `CPE3` and `C3D4`. The manifold-based mass
+  lumping blended in the shape functions of a quadrilateral or hexahedron and wrote past the end of the nodal
+  vectors, which corrupted the heap of an explicit analysis. A linear simplex is now its own linear counterpart
+  (`MassLumping::nLinearNodes()`, also used by the finite-strain and the gradient-enhanced elements), with the
+  mass / nNodes at each node. `MassLumping::nLinearNodes()` is the number of corner nodes of the reference domain,
+  which also corrects `Tetra10` (4 instead of 8; not registered).
+- Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
+  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule, which is exact for the
+  quadratic integrand.
 
 ## [v26.11] - 2026-11-02
 
