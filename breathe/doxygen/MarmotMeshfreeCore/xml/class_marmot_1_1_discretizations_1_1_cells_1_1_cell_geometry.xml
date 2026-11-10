@@ -132,7 +132,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Parametric coordinates <formula id="61">$ \boldsymbol{\xi} $</formula>. </para>
+<simplesect kind="return"><para>Parametric coordinates <formula id="41">$ \boldsymbol{\xi} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -163,7 +163,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="50">$ N_A(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="42">$ N_A(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -194,7 +194,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="108">$ \partial N_A / \partial X_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="1">$ A $</formula>). </para>
+<simplesect kind="return"><para><formula id="43">$ \partial N_A / \partial X_i $</formula> (row <formula id="44">$ i $</formula>, column <formula id="9">$ A $</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -225,7 +225,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="109">$ \det(\partial \boldsymbol{X}/\partial\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="45">$ \det(\partial \boldsymbol{X}/\partial\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

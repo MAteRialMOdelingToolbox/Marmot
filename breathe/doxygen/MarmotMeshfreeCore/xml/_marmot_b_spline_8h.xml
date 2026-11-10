@@ -39,7 +39,7 @@
 <para>B-spline basis functions of arbitrary degree and their derivatives (Cox<ndash/>de Boor recursion). </para>
     </briefdescription>
     <detaileddescription>
-<para>The functions evaluate the <formula id="65">$ i $</formula>-th B-spline basis function <formula id="148">$ N_{i,p}(u) $</formula> of degree <formula id="135">$ p $</formula> over a non-decreasing knot vector <formula id="149">$ \{z_0, z_1, \dots\} $</formula>, and its derivative <formula id="150">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. The degree is a template parameter, so the recursion is resolved at compile time. They are declared in the global namespace. </para>
+<para>The functions evaluate the <formula id="44">$ i $</formula>-th B-spline basis function <formula id="203">$ N_{i,p}(u) $</formula> of degree <formula id="54">$ p $</formula> over a non-decreasing knot vector <formula id="204">$ \{z_0, z_1, \dots\} $</formula>, and its derivative <formula id="205">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. The degree is a template parameter, so the recursion is resolved at compile time. They are declared in the global namespace. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>

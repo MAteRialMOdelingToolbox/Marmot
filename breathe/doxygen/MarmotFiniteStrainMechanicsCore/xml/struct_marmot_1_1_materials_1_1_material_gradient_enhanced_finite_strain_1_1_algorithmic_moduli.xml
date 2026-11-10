@@ -19,7 +19,7 @@
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dTau_dF</qualifiedname>
         <initializer>= 0.0</initializer>
         <briefdescription>
-<para><formula id="50">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> </para>
+<para><formula id="13">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -35,7 +35,7 @@
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dTau_dN</qualifiedname>
         <initializer>= 0.0</initializer>
         <briefdescription>
-<para><formula id="51">$ \partial\boldsymbol{\tau}/\partial\bar{N} $</formula> </para>
+<para><formula id="14">$ \partial\boldsymbol{\tau}/\partial\bar{N} $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -51,7 +51,7 @@
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dF</qualifiedname>
         <initializer>= 0.0</initializer>
         <briefdescription>
-<para><formula id="52">$ \partial L/\partial\boldsymbol{F} $</formula> </para>
+<para><formula id="15">$ \partial L/\partial\boldsymbol{F} $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -67,7 +67,7 @@
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dN</qualifiedname>
         <initializer>= 0.0</initializer>
         <briefdescription>
-<para><formula id="53">$ \partial L/\partial\bar{N} $</formula> </para>
+<para><formula id="16">$ \partial L/\partial\bar{N} $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

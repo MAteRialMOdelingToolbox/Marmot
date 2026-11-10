@@ -33,9 +33,9 @@
 <para>Hyperelastic Energy Density Function Wa acc. Pence &amp; Gou (2015), Eq. (2.11). </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="67">$W_a$</formula> is given as   <formula id="68">\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
-\]</formula> where <formula id="69">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="71">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="72">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="69">$W_a$</formula> is given as   <formula id="70">\[   W_a = \frac{G}{2} (I_1 - 3) + \left(\frac{K}{2} - \frac{G}{3}\right) (J - 1)^2 - G \ln(J)
+\]</formula> where <formula id="71">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="72">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="73">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="74">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -105,9 +105,9 @@
 <para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12). </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="73">$W_b$</formula> is given as   <formula id="74">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-\]</formula> where <formula id="69">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="71">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="72">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="75">$W_b$</formula> is given as   <formula id="76">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="71">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="72">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="73">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="74">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -177,9 +177,9 @@
 <para>Hyperelastic Energy Density Function Wc acc. Pence &amp; Gou (2015), Eq. (2.13). </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="75">$W_c$</formula> is given as   <formula id="76">\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
-\]</formula> where <formula id="69">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="71">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="72">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>The energy density function <formula id="77">$W_c$</formula> is given as   <formula id="78">\[   W_c = \frac{G}{2} (I_1 - 3) + \frac{3 G^2}{3 K - 2 G} \left(J^{\frac{2}{3} - \frac{K}{G}} - 1\right)
+\]</formula> where <formula id="71">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="72">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="73">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="74">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -250,13 +250,13 @@
           <declname>D1</declname>
         </param>
         <briefdescription>
-<para>Mooney-Rivlin Hyperelastic Energy Density Function The energy density function <formula id="77">$W_{MR}$</formula> is given as. </para>
+<para>Mooney-Rivlin Hyperelastic Energy Density Function The energy density function <formula id="79">$W_{MR}$</formula> is given as. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="78">\[  W_{MR} = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_2 - 3) + \frac{1}{D_1} (J - 1)^2
-\]</formula> where <formula id="79">$ \bar{I}_1 = I_1 J^{-\frac{2}{3}} $</formula> and <formula id="80">$ \bar{I}_2 = I_2 J^{-\frac{4}{3}} $</formula> are the first and second invariant of the isochoric right Cauchy-Green tensor, respectively,  <formula id="81">$ I_1 =
-\text{tr}(\boldsymbol{C}) $</formula> and <formula id="82">$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) $</formula> are the first and second invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="83">$ J
-= \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and  <formula id="84">$C_1, C_2, D_1 $</formula> are material parameters.</para>
+<para><formula id="80">\[  W_{MR} = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_2 - 3) + \frac{1}{D_1} (J - 1)^2
+\]</formula> where <formula id="81">$ \bar{I}_1 = I_1 J^{-\frac{2}{3}} $</formula> and <formula id="82">$ \bar{I}_2 = I_2 J^{-\frac{4}{3}} $</formula> are the first and second invariant of the isochoric right Cauchy-Green tensor, respectively,  <formula id="83">$ I_1 =
+\text{tr}(\boldsymbol{C}) $</formula> and <formula id="84">$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) $</formula> are the first and second invariant of the right Cauchy-Green tensor <formula id="72">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="85">$ J
+= \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and  <formula id="86">$C_1, C_2, D_1 $</formula> are material parameters.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -342,9 +342,9 @@
 <para>Yeoh hyperelastic energy density function. </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function is given as    <formula id="85">\[   W = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_1 - 3)^2 + C_3 (\bar{I}_1 - 3)^3 + \frac{1}{D_1}\left(
+<para>The energy density function is given as    <formula id="87">\[   W = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_1 - 3)^2 + C_3 (\bar{I}_1 - 3)^3 + \frac{1}{D_1}\left(
    \frac{J^2 - 1}{2} - \ln J \right)
-\]</formula> where <formula id="86">$\bar{I}_1 = I_1 J^{-2/3}$</formula>, <formula id="87">$I_1 = \mathrm{tr}(\boldsymbol{C})$</formula>, and <formula id="88">$J = \sqrt{\det(\boldsymbol{C})}$</formula>.</para>
+\]</formula> where <formula id="88">$\bar{I}_1 = I_1 J^{-2/3}$</formula>, <formula id="89">$I_1 = \mathrm{tr}(\boldsymbol{C})$</formula>, and <formula id="90">$J = \sqrt{\det(\boldsymbol{C})}$</formula>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -427,7 +427,7 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Standard compressible Neo-Hooke energy density function in terms of <formula id="5">$\boldsymbol{C}$</formula>. </para>
+<para>Standard compressible Neo-Hooke energy density function in terms of <formula id="17">$\boldsymbol{C}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>

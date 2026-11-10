@@ -7,9 +7,9 @@
     <includes refid="_marmot_particle_8h" local="no">MarmotParticle.h</includes>
     <sectiondef kind="user-defined">
       <header>Variationally consistent integration (VCI)</header>
-      <description><para>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <formula id="13">$ \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C $</formula>, such that the integration by parts is exact under the numerical integration for a polynomial basis <formula id="14">$ P_C(Y) $</formula> (the complete monomials up to the VCI order); <formula id="15">$ \chi_A $</formula> is the indicator of the support of kernel function <formula id="1">$ A $</formula>,    <formula id="16">\[  \int_\Omega \frac{\partial T_A}{\partial Y_i} P_C \, dV + \int_\Omega T_A \frac{\partial P_C}{\partial Y_i} \,
+      <description><para>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <formula id="6">$ \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C $</formula>, such that the integration by parts is exact under the numerical integration for a polynomial basis <formula id="7">$ P_C(Y) $</formula> (the complete monomials up to the VCI order); <formula id="8">$ \chi_A $</formula> is the indicator of the support of kernel function <formula id="9">$ A $</formula>,    <formula id="10">\[  \int_\Omega \frac{\partial T_A}{\partial Y_i} P_C \, dV + \int_\Omega T_A \frac{\partial P_C}{\partial Y_i} \,
 dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
-\]</formula> The particles provide their local contributions to these integrals, all arrays are row-major, sized <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> (index <formula id="18">$ AiC $</formula>) or <formula id="19">$ n_{\text{nodes}} \times n_C \times n_C $</formula> (index <formula id="20">$ ACD $</formula>), and contributions are accumulated (+=). The host framework assembles them over all particles per node <formula id="1">$ A $</formula> and solves <formula id="21">$ \sum_D M_{ACD}\, \eta_{AiD} = R_{AiC} $</formula> with the residual  <formula id="22">$ R_{AiC} = \int_{\partial\Omega} T_A P_C n_i\,dA - \int_\Omega \partial_i T_A\, P_C\,dV
+\]</formula> The particles provide their local contributions to these integrals, all arrays are row-major, sized <formula id="11">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> (index <formula id="12">$ AiC $</formula>) or <formula id="13">$ n_{\text{nodes}} \times n_C \times n_C $</formula> (index <formula id="14">$ ACD $</formula>), and contributions are accumulated (+=). The host framework assembles them over all particles per node <formula id="9">$ A $</formula> and solves <formula id="15">$ \sum_D M_{ACD}\, \eta_{AiD} = R_{AiC} $</formula> with the residual  <formula id="16">$ R_{AiC} = \int_{\partial\Omega} T_A P_C n_i\,dA - \int_\Omega \partial_i T_A\, P_C\,dV
 - \int_\Omega T_A\, \partial_i P_C\,dV $</formula>. </para>
 </description>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
@@ -21,7 +21,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774">vci_getNumberOfConstraints</reimplementedby>
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e">vci_getNumberOfConstraints</reimplementedby>
         <briefdescription>
-<para>Get the number of VCI constraints <formula id="23">$ n_C $</formula> (the size of the polynomial basis). </para>
+<para>Get the number of VCI constraints <formula id="17">$ n_C $</formula> (the size of the polynomial basis). </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>The number of VCI constraints. </para>
@@ -53,7 +53,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Accumulate the boundary integral <formula id="24">$ \int_{\partial\Omega} T_A P_C n_i \, dA $</formula> of a boundary face. </para>
+<para>Accumulate the boundary integral <formula id="18">$ \int_{\partial\Omega} T_A P_C n_i \, dA $</formula> of a boundary face. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -61,7 +61,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="11">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -69,7 +69,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="in">boundarySurfaceVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Outward boundary surface vector <formula id="25">$ n\,dA $</formula> given by the host. </para>
+<para>Outward boundary surface vector <formula id="19">$ n\,dA $</formula> given by the host. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -100,7 +100,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>R_AiC_RowMajow</declname>
         </param>
         <briefdescription>
-<para>Accumulate the volume integral <formula id="26">$ \int_\Omega \partial T_A / \partial Y_i \, P_C \, dV $</formula>. </para>
+<para>Accumulate the volume integral <formula id="20">$ \int_\Omega \partial T_A / \partial Y_i \, P_C \, dV $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -108,7 +108,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajow</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="11">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -131,7 +131,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate the volume integral <formula id="27">$ \int_\Omega T_A \, \partial P_C / \partial Y_i \, dV $</formula>. </para>
+<para>Accumulate the volume integral <formula id="21">$ \int_\Omega T_A \, \partial P_C / \partial Y_i \, dV $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -139,7 +139,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="11">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -162,7 +162,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>M_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate the moment matrix <formula id="28">$ M_{ACD} = \int_\Omega \chi_A P_C P_D \, dV $</formula> of the correction. </para>
+<para>Accumulate the moment matrix <formula id="22">$ M_{ACD} = \int_\Omega \chi_A P_C P_D \, dV $</formula> of the correction. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -170,7 +170,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">M_ACD_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="19">$ n_{\text{nodes}} \times n_C \times n_C $</formula>. </para>
+<para>Row-major array <formula id="13">$ n_{\text{nodes}} \times n_C \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -201,7 +201,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="in">eta_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> of the coefficients <formula id="29">$ \eta_{AiC} $</formula> for the nodes of this particle. </para>
+<para>Row-major array <formula id="11">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> of the coefficients <formula id="23">$ \eta_{AiC} $</formula> for the nodes of this particle. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -448,7 +448,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Accept the current state after a converged increment and move the particle to the new configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para>The configuration reached becomes the reference intermediate configuration <formula id="10">$ Y $</formula> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). </para>
+<para>The configuration reached becomes the reference intermediate configuration <formula id="3">$ Y $</formula> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -812,7 +812,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">fInt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Internal force vector of size <formula id="11">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>. </para>
+<para>Internal force vector of size <formula id="4">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -1385,7 +1385,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="out">vec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Array of <formula id="12">$ n_{\text{nodes}} $</formula> shape function values. </para>
+<para>Array of <formula id="5">$ n_{\text{nodes}} $</formula> shape function values. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -1534,8 +1534,8 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Abstract interface of a particle of the reproducing kernel particle method (RKPM). </para>
     </briefdescription>
     <detaileddescription>
-<para>A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain, commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the meshfree kernel functions (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), via the shape functions of a meshfree approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose support covers the particle and hands them over with <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>; the particle then evaluates the shape functions <formula id="7">$ N_A $</formula> and (possibly smoothed) gradients <formula id="8">$ \partial N_A / \partial Y $</formula> of these <formula id="9">$ A = 1 \dots n_{\text{nodes}} $</formula> nodes.</para>
-<para>Similar to finite elements, a particle computes the internal forces and their derivatives (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>), body loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>) and distributed loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>). Concrete particles work in an updated Lagrangian setting: gradients are taken with respect to the coordinates <formula id="10">$ Y $</formula> of the last accepted (reference intermediate) configuration, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> moves the particle to the new configuration at the end of a converged increment.</para>
+<para>A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain, commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the meshfree kernel functions (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), via the shape functions of a meshfree approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose support covers the particle and hands them over with <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>; the particle then evaluates the shape functions <formula id="0">$ N_A $</formula> and (possibly smoothed) gradients <formula id="1">$ \partial N_A / \partial Y $</formula> of these <formula id="2">$ A = 1 \dots n_{\text{nodes}} $</formula> nodes.</para>
+<para>Similar to finite elements, a particle computes the internal forces and their derivatives (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>), body loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>) and distributed loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>). Concrete particles work in an updated Lagrangian setting: gradients are taken with respect to the coordinates <formula id="3">$ Y $</formula> of the last accepted (reference intermediate) configuration, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> moves the particle to the new configuration at the end of a converged increment.</para>
 <para>A typical life cycle driven by the host framework is<orderedlist>
 <listitem><para>creation via <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kindref="member">Marmot::Registry::ParticleFactory::createParticle()</ref>,</para>
 </listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" kindref="member">setProperties()</ref> (e.g., the order of the variationally consistent integration and time integration parameters),</para>
@@ -1544,7 +1544,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 </listitem></orderedlist>
 </para>
 <para><bold>State contract:</bold> the state variable block is a <emphasis>trial</emphasis> copy. Before every call of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>, the host restores it to the values committed by the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, and <computeroutput>dQ</computeroutput> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> and back in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
-<para>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, ...], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <formula id="11">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>.</para>
+<para>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, ...], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <formula id="4">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>.</para>
 <para>For the stiffness matrix, a column-major layout is used.</para>
 <para>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_... methods. The global assembly and solution of the VCI correction is done by the host framework. </para>
     </detaileddescription>

@@ -46,7 +46,7 @@
         <qualifiedname>Marmot::Discretizations::Elements::Quadrature::gp2</qualifiedname>
         <initializer>= 0.577350269189625764509</initializer>
         <briefdescription>
-<para>Gauss point abscissa for 2-point rule: <formula id="9">$1/\sqrt{3}$</formula>. </para>
+<para>Gauss point abscissa for 2-point rule: <formula id="42">$1/\sqrt{3}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -62,7 +62,7 @@
         <qualifiedname>Marmot::Discretizations::Elements::Quadrature::gp3</qualifiedname>
         <initializer>= 0.774596669241483</initializer>
         <briefdescription>
-<para>Gauss point abscissa for 3-point rule: <formula id="10">$\sqrt{3/5}$</formula>. </para>
+<para>Gauss point abscissa for 3-point rule: <formula id="43">$\sqrt{3/5}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

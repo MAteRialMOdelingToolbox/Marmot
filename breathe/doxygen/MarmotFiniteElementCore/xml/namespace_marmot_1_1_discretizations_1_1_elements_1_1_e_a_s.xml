@@ -99,7 +99,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Transformation matrix <formula id="70">$\mathbf{F}$</formula> for mapping EAS modes. </para>
+<simplesect kind="return"><para>Transformation matrix <formula id="37">$\mathbf{F}$</formula> for mapping EAS modes. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -142,7 +142,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>EAS interpolation matrix <formula id="71">$\mathbf{M}$</formula>. </para>
+<simplesect kind="return"><para>EAS interpolation matrix <formula id="44">$\mathbf{M}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

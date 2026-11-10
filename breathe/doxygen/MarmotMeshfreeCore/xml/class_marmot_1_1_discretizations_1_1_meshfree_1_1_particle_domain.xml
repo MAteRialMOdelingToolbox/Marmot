@@ -25,7 +25,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="211">$ \boldsymbol{F}_s = \boldsymbol{I} $</formula>: the smoothing domain keeps its undeformed shape and is only translated. </para>
+<para><formula id="32">$ \boldsymbol{F}_s = \boldsymbol{I} $</formula>: the smoothing domain keeps its undeformed shape and is only translated. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a1dbd11277d9b8f323785b95820886f11" prot="public">
@@ -33,7 +33,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="212">$ \boldsymbol{F}_s = \boldsymbol{F} $</formula>: the smoothing domain deforms with the particle (it coincides with the deformed geometry). </para>
+<para><formula id="33">$ \boldsymbol{F}_s = \boldsymbol{F} $</formula>: the smoothing domain deforms with the particle (it coincides with the deformed geometry). </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a79cd9054614bf9e1a0d189e93101ad1d" prot="public">
@@ -41,7 +41,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="213">$ \boldsymbol{F}_s = \boldsymbol{R} $</formula>, the rotation of the polar decomposition <formula id="214">$ \boldsymbol{F} = \boldsymbol{R}\boldsymbol{U} $</formula> (from an SVD). </para>
+<para><formula id="34">$ \boldsymbol{F}_s = \boldsymbol{R} $</formula>, the rotation of the polar decomposition <formula id="35">$ \boldsymbol{F} = \boldsymbol{R}\boldsymbol{U} $</formula> (from an SVD). </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a9bd8a9db7a0f98c29b4e93598bd292c9" prot="public">
@@ -49,15 +49,15 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="215">$ \boldsymbol{F}_s = \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T
-                               &lt; \boldsymbol{F}) $</formula>: the rotation and the diagonal entries of <formula id="216">$ \boldsymbol{U} $</formula> in the global basis. </para>
+<para><formula id="36">$ \boldsymbol{F}_s = \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T
+                               &lt; \boldsymbol{F}) $</formula>: the rotation and the diagonal entries of <formula id="37">$ \boldsymbol{U} $</formula> in the global basis. </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
 <para>Defines how the smoothing domain follows the deformation of the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para>The smoothing domain is mapped with the tensor <formula id="207">$ \boldsymbol{F}_s $</formula> computed by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a003c549ec08c0aa23af1d25e6b762328" kindref="member">_computeSmoothingDomainDeformationTensorTotal()</ref>; in all cases it is translated by the center displacement. The registered particle names encode the choice (e.g., SQCNI: DeformationGradient, SNNI: None, suffix _R or prefix R-: RotationOnly, suffix _RU or prefix RS-: RotationAndPrincipalStretch). </para>
+<para>The smoothing domain is mapped with the tensor <formula id="28">$ \boldsymbol{F}_s $</formula> computed by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a003c549ec08c0aa23af1d25e6b762328" kindref="member">_computeSmoothingDomainDeformationTensorTotal()</ref>; in all cases it is translated by the center displacement. The registered particle names encode the choice (e.g., SQCNI: DeformationGradient, SNNI: None, suffix _R or prefix R-: RotationOnly, suffix _RU or prefix RS-: RotationAndPrincipalStretch). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -224,7 +224,7 @@
         <name>_deformationCenter</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleDomain::_deformationCenter</qualifiedname>
         <briefdescription>
-<para>Fixed point <formula id="204">$ \boldsymbol{X}_c $</formula> of the homogeneous deformation. </para>
+<para>Fixed point <formula id="25">$ \boldsymbol{X}_c $</formula> of the homogeneous deformation. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -543,7 +543,7 @@
 <para>Returns the boundary surface vector for a given face ID, from the <emphasis>deformed geometry</emphasis>. This is typically used for distributed loads. </para>
         </briefdescription>
         <detaileddescription>
-<para>The vector is the outward normal scaled by the face area (edge length in 2D),  <formula id="208">$ \boldsymbol{n}\,dA
+<para>The vector is the outward normal scaled by the face area (edge length in 2D),  <formula id="29">$ \boldsymbol{n}\,dA
 $</formula>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">faceID</parametername>
@@ -630,7 +630,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         <name>getGeometrySecondMoments</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleDomain::getGeometrySecondMoments</qualifiedname>
         <briefdescription>
-<para>Returns the second moments of area/volume for the deformed geometry, <formula id="209">$ \int (\boldsymbol{x} - \boldsymbol{x}_c) \otimes (\boldsymbol{x} - \boldsymbol{x}_c)\, dV $</formula> about the centroid (Gauss quadrature on the cell). </para>
+<para>Returns the second moments of area/volume for the deformed geometry, <formula id="30">$ \int (\boldsymbol{x} - \boldsymbol{x}_c) \otimes (\boldsymbol{x} - \boldsymbol{x}_c)\, dV $</formula> about the centroid (Gauss quadrature on the cell). </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>An Eigen matrix representing the second moments. </para>
@@ -659,8 +659,8 @@ $</formula>. <parameterlist kind="param"><parameteritem>
 <para>Updates the particle&apos;s position and volume to the reference intermediate configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para>The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,  <formula id="210">$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
-         \boldsymbol{u}_c $</formula> ( <formula id="204">$ \boldsymbol{X}_c $</formula>: the centroid, of the parent domain for a subdomain), with <formula id="206">$ \boldsymbol{F} $</formula> = <computeroutput>F_physics</computeroutput> for the geometry and <formula id="207">$ \boldsymbol{F}_s $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>) for the smoothing domain. The vertex displacements are updated accordingly. <parameterlist kind="param"><parameteritem>
+<para>The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,  <formula id="31">$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+         \boldsymbol{u}_c $</formula> ( <formula id="25">$ \boldsymbol{X}_c $</formula>: the centroid, of the parent domain for a subdomain), with <formula id="27">$ \boldsymbol{F} $</formula> = <computeroutput>F_physics</computeroutput> for the geometry and <formula id="28">$ \boldsymbol{F}_s $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>) for the smoothing domain. The vertex displacements are updated accordingly. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">F_physics</parametername>
 </parameternamelist>
@@ -778,7 +778,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
           <declname>F_physics</declname>
         </param>
         <briefdescription>
-<para>Computes the total deformation tensor <formula id="207">$ \boldsymbol{F}_s $</formula> for the smoothing domain based on the configured update type (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>). </para>
+<para>Computes the total deformation tensor <formula id="28">$ \boldsymbol{F}_s $</formula> for the smoothing domain based on the configured update type (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -804,14 +804,14 @@ $</formula>. <parameterlist kind="param"><parameteritem>
     </briefdescription>
     <detaileddescription>
 <para>A particle domain is a Lagrangian cell (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>, e.g., a 4-node quadrilateral or an 8-node hexahedron) that is kept in three versions:<itemizedlist>
-<listitem><para>the <bold>undeformed geometry</bold> with the vertices <formula id="203">$ \boldsymbol{X}_v $</formula> and the centroid <formula id="204">$ \boldsymbol{X}_c $</formula> given at construction,</para>
+<listitem><para>the <bold>undeformed geometry</bold> with the vertices <formula id="24">$ \boldsymbol{X}_v $</formula> and the centroid <formula id="25">$ \boldsymbol{X}_c $</formula> given at construction,</para>
 </listitem><listitem><para>the <bold>deformed geometry</bold> (the geometry in the reference intermediate configuration, i.e., the last accepted configuration), used for the particle position, the face centers, the boundary surface vectors of distributed loads and the second moments of the NSNI stabilization,</para>
 </listitem><listitem><para>the <bold>smoothing domain</bold>, over whose boundary the smoothed shape function gradients are integrated (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle" kindref="compound">GenericSDIParticle</ref> and the SQCNI particles).</para>
 </listitem></itemizedlist>
 </para>
-<para>Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the centroid plus the displacement of the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">acceptStateAndPosition()</ref>),    <formula id="205">\[  \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
+<para>Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the centroid plus the displacement of the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">acceptStateAndPosition()</ref>),    <formula id="26">\[  \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
   + \boldsymbol{u}_c ,
-\]</formula> where <formula id="204">$ \boldsymbol{X}_c $</formula> is the centroid of the particle; for the subdomains of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">uniformSubdivided()</ref> it is the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent. with the total deformation gradient <formula id="206">$ \boldsymbol{F} $</formula> of the particle for the deformed geometry, and a tensor <formula id="207">$ \boldsymbol{F}_s $</formula> derived from it according to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref> for the smoothing domain. Face IDs are 1-based and follow the Abaqus convention of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>.</para>
+\]</formula> where <formula id="25">$ \boldsymbol{X}_c $</formula> is the centroid of the particle; for the subdomains of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">uniformSubdivided()</ref> it is the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent. with the total deformation gradient <formula id="27">$ \boldsymbol{F} $</formula> of the particle for the deformed geometry, and a tensor <formula id="28">$ \boldsymbol{F}_s $</formula> derived from it according to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref> for the smoothing domain. Face IDs are 1-based and follow the Abaqus convention of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
