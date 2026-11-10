@@ -11,6 +11,7 @@ This section contains the ready to use available material models.
   compressibleneohooke
   adcompressibleneohooke
   compressiblefinitestrainlinearviscoelasticity
+  compressiblefinitestrainfractionalschapery
   finitestrainisotropicbiotviscoelasticity
   finitestrainj2plasticity
   finitestrainorthotropicbiotviscoelasticity
