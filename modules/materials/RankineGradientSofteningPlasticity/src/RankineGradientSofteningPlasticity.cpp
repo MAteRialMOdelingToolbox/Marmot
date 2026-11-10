@@ -246,8 +246,7 @@ namespace Marmot::Materials {
     tan.dStressddStrain = flatToVoigt * dSig_dSigTrial * voigtToFlat * Cel;
     tan.dStressddK      = flatToVoigt * ( basis.E * dSig_dK );
 
-    // dKappa = tr( dE - Cel^-1 dStress ), since the flow directions have unit trace
-    const Math::Vector6d I       = ( Math::Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
+    // dKappa = tr( dE - Cel^-1 dStress ), since the flow directions have unit trace; I is the Voigt identity
     res.KLocal( 0 )              = kappa;
     tan.dKLocalddStrain.row( 0 ) = ( I - tan.dStressddStrain.transpose() * ( CelInv * I ) ).transpose();
     tan.dKLocalddK( 0, 0 )       = dKappa_dK;
