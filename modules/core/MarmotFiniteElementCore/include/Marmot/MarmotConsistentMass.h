@@ -65,7 +65,8 @@ namespace Marmot::Discretizations::Elements::ConsistentMass {
    */
   inline const std::vector< Quadrature::QuadraturePointInfo >& integrationRule( ElementShapes shape )
   {
-    return Quadrature::getQuadraturePoints( shape, Quadrature::gauss( 2 * getInterpolationOrder( shape ) ) );
+    return Quadrature::getQuadraturePoints( shape,
+                                            Quadrature::gaussExactToDegree( 2 * getInterpolationOrder( shape ) ) );
   }
 
   /**

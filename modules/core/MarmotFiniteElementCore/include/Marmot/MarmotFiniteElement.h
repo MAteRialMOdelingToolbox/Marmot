@@ -770,10 +770,10 @@ namespace Marmot::Discretizations::Elements {
      * Tetrahedron.
      */
     struct QuadratureRuleData {
-      ReferenceDomain                    domain; ///< Reference domain the points are given on.
-      QuadratureFamily                   family; ///< Gauss or Newton-Cotes.
-      int                                degree; ///< Degree of exactness.
-      std::vector< QuadraturePointInfo > points; ///< Points and weights, in a fixed order.
+      ReferenceDomain                    domain;            ///< Reference domain the points are given on.
+      QuadratureFamily                   family;            ///< Gauss or Newton-Cotes.
+      int                                degreeOfExactness; ///< Degree of exactness.
+      std::vector< QuadraturePointInfo > points;            ///< Points and weights, in a fixed order.
     };
 
     /**
@@ -808,11 +808,11 @@ namespace Marmot::Discretizations::Elements {
      * @brief The quadrature rule an element asks for: a family and the degree of exactness it needs.
      *
      * @details A structural type, so that element registrations can pass it as a template argument. It is built
-     * with gauss() or newtonCotes().
+     * with gaussExactToDegree() or newtonCotesExactToDegree().
      */
     struct QuadratureRule {
-      QuadratureFamily family; ///< Gauss or Newton-Cotes.
-      int              degree; ///< Degree of exactness required.
+      QuadratureFamily family;            ///< Gauss or Newton-Cotes.
+      int              degreeOfExactness; ///< Degree of exactness required.
 
       /**
        * @brief Memberwise comparison, as required for a structural type.
@@ -827,7 +827,7 @@ namespace Marmot::Discretizations::Elements {
      * 2p for the consistent mass of an element with shape functions of order p.
      * @return The request.
      */
-    constexpr QuadratureRule gauss( int degree )
+    constexpr QuadratureRule gaussExactToDegree( int degree )
     {
       return { QuadratureFamily::Gauss, degree };
     }
@@ -839,7 +839,7 @@ namespace Marmot::Discretizations::Elements {
      * points of the rule.
      * @return The request.
      */
-    constexpr QuadratureRule newtonCotes( int degree )
+    constexpr QuadratureRule newtonCotesExactToDegree( int degree )
     {
       return { QuadratureFamily::NewtonCotes, degree };
     }
@@ -847,7 +847,8 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief The quadrature points of a requested rule on a reference domain.
      * @param[in] domain Reference domain.
-     * @param[in] rule   Requested family and degree of exactness, e.g. gauss( 3 ) or newtonCotes( 1 ).
+     * @param[in] rule   Requested family and degree of exactness, e.g. gaussExactToDegree( 3 ) or
+     * newtonCotesExactToDegree( 1 ).
      * @return The points and weights of the first rule of quadratureRules() on the domain that reaches the requested
      * degree, i.e. the one with the fewest points.
      * @throws std::invalid_argument If the catalogue holds no such rule.
@@ -857,7 +858,8 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief The quadrature points of a requested rule on the reference domain of an element shape.
      * @param[in] shape Element shape; it selects the reference domain (getReferenceDomain()).
-     * @param[in] rule  Requested family and degree of exactness, e.g. gauss( 3 ) or newtonCotes( 1 ).
+     * @param[in] rule  Requested family and degree of exactness, e.g. gaussExactToDegree( 3 ) or
+     * newtonCotesExactToDegree( 1 ).
      * @return getQuadraturePoints() on the reference domain of the shape: all shapes of a domain get the same rule.
      * @throws std::invalid_argument If the catalogue holds no such rule.
      */

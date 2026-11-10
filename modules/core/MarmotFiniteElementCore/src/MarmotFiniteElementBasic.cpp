@@ -94,9 +94,9 @@ namespace Marmot::Discretizations::Elements {
 
       // Within each domain and family, the rules MUST be sorted by increasing number of points and degree:
       // getQuadraturePoints() returns the first rule that reaches the requested degree, so a rule placed too early
-      // would be returned for requests a cheaper rule would serve, e.g. 3x3x3 points for gauss( 1 ). A new rule goes
-      // to its place in this order (checked by testCatalogueIsSortedByNumberOfPointsAndDegree). The points of a
-      // Newton-Cotes rule of degree 1 are the corners of the domain in corner order (see ReferenceDomain).
+      // would be returned for requests a cheaper rule would serve, e.g. 3x3x3 points for gaussExactToDegree( 1 ). A new
+      // rule goes to its place in this order (checked by testCatalogueIsSortedByNumberOfPointsAndDegree). The points of
+      // a Newton-Cotes rule of degree 1 are the corners of the domain in corner order (see ReferenceDomain).
       // clang-format off
       static const std::vector< QuadratureRuleData > rules = {
         // ------------------------------------------------------------------------------------------------ Line
@@ -236,14 +236,15 @@ namespace Marmot::Discretizations::Elements {
     {
       // the first match is the cheapest, since the catalogue is sorted by number of points within domain and family
       for ( const auto& entry : quadratureRules() )
-        if ( entry.domain == domain && entry.family == rule.family && entry.degree >= rule.degree )
+        if ( entry.domain == domain && entry.family == rule.family &&
+             entry.degreeOfExactness >= rule.degreeOfExactness )
           return entry.points;
 
       static const char* domainNames[] = { "Line", "Triangle", "Quadrilateral", "Tetrahedron", "Hexahedron" };
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << "getQuadraturePoints(): there is no "
                                    << ( rule.family == QuadratureFamily::Gauss ? "Gauss" : "Newton-Cotes" )
-                                   << " rule of degree " << rule.degree << " on the reference domain "
+                                   << " rule of degree " << rule.degreeOfExactness << " on the reference domain "
                                    << domainNames[static_cast< int >( domain )] << "." );
     }
 

@@ -29,7 +29,7 @@ namespace {
   {
     auto child = std::make_unique<
       DisplacementFiniteElement< 1, 2 > >( 1,
-                                           Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                           Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                            DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress );
 
     static constexpr int indicesToBeWrapped[] = { 0, 1 };
@@ -96,7 +96,7 @@ void testBasicAccessorsDelegateToChild()
   const auto expectedPropertyNames = DisplacementFiniteElement<
                                        1,
                                        2 >( 1,
-                                            Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                            Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                             DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress )
                                        .getPropertyNames();
   throwExceptionOnFailure( wrapper->getPropertyNames() == expectedPropertyNames,

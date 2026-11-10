@@ -204,7 +204,7 @@ namespace {
   std::vector< std::vector< int > > exponentsOfPolynomialSpace( const QuadratureRuleData& rule )
   {
     const int  nDim    = static_cast< int >( rule.points.front().xi.size() );
-    const int  degree  = rule.degree;
+    const int  degree  = rule.degreeOfExactness;
     const bool simplex = isSimplex( rule.domain );
 
     std::vector< std::vector< int > > exponents;
@@ -329,7 +329,7 @@ void testEveryRuleOfTheCatalogueIntegratesItsDegreeExactly()
         integral += value;
       }
       throwExceptionOnFailure( checkIfEqual( integral, exactIntegralOfMonomial( rule.domain, e ), 1e-14 ),
-                               "A rule of degree " + std::to_string( rule.degree ) + " with " +
+                               "A rule of degree " + std::to_string( rule.degreeOfExactness ) + " with " +
                                  std::to_string( rule.points.size() ) +
                                  " points does not integrate a monomial of its polynomial space exactly." );
     }
@@ -347,7 +347,7 @@ void testGaussRulesHavePositiveWeightsAndInteriorPoints()
       const bool inside = isSimplex( rule.domain ) ? qp.xi.minCoeff() > 0 && qp.xi.sum() < 1
                                                    : qp.xi.cwiseAbs().maxCoeff() < 1;
       throwExceptionOnFailure( qp.weight > 0 && inside,
-                               "The Gauss rule of degree " + std::to_string( rule.degree ) + " with " +
+                               "The Gauss rule of degree " + std::to_string( rule.degreeOfExactness ) + " with " +
                                  std::to_string( rule.points.size() ) +
                                  " points has a non-positive weight or a point outside its reference domain." );
     }
@@ -360,7 +360,8 @@ void testCatalogueIsSortedByNumberOfPointsAndDegree()
   for ( size_t i = 0; i < rules.size(); i++ )
     for ( size_t j = i + 1; j < rules.size(); j++ )
       if ( rules[i].domain == rules[j].domain && rules[i].family == rules[j].family )
-        throwExceptionOnFailure( rules[i].points.size() < rules[j].points.size() && rules[i].degree < rules[j].degree,
+        throwExceptionOnFailure( rules[i].points.size() < rules[j].points.size() &&
+                                   rules[i].degreeOfExactness < rules[j].degreeOfExactness,
                                  "The rules of one domain and family must be sorted by increasing number of points "
                                  "and degree, so that the lookup finds the cheapest rule first." );
 }
@@ -377,33 +378,33 @@ void testGetQuadraturePointsReturnsTheCheapestRule()
     { ReferenceDomain::Tetrahedron, 3, 14 },  // a gap in the catalogue: the next rule has degree 5
   };
   for ( const auto& [domain, degree, nPoints] : expected )
-    throwExceptionOnFailure( getQuadraturePoints( domain, gauss( degree ) ).size() == nPoints,
+    throwExceptionOnFailure( getQuadraturePoints( domain, gaussExactToDegree( degree ) ).size() == nPoints,
                              "getQuadraturePoints() must return the Gauss rule with the fewest points for degree " +
                                std::to_string( degree ) + "." );
 
   // the shape overload looks up the reference domain of the shape: all shapes on it get the same rule, Newton-Cotes
   // rules included
-  throwExceptionOnFailure( &getQuadraturePoints( Hexa8, gauss( 3 ) ) ==
-                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gauss( 3 ) ) &&
-                             &getQuadraturePoints( Hexa20, gauss( 3 ) ) ==
-                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gauss( 3 ) ),
+  throwExceptionOnFailure( &getQuadraturePoints( Hexa8, gaussExactToDegree( 3 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 3 ) ) &&
+                             &getQuadraturePoints( Hexa20, gaussExactToDegree( 3 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 3 ) ),
                            "Hexa8 and Hexa20 must get the Gauss rule of the hexahedron." );
-  throwExceptionOnFailure( &getQuadraturePoints( Quad4, newtonCotes( 1 ) ) ==
-                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotes( 1 ) ) &&
-                             &getQuadraturePoints( Quad8, newtonCotes( 1 ) ) ==
-                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotes( 1 ) ),
+  throwExceptionOnFailure( &getQuadraturePoints( Quad4, newtonCotesExactToDegree( 1 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotesExactToDegree( 1 ) ) &&
+                             &getQuadraturePoints( Quad8, newtonCotesExactToDegree( 1 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotesExactToDegree( 1 ) ),
                            "Quad4 and Quad8 must get the Newton-Cotes rule of the quadrilateral." );
 }
 
 void testGetQuadraturePointsThrowsWithoutAMatchingRule()
 {
-  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, gauss( 6 ) ); } ),
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, gaussExactToDegree( 6 ) ); } ),
                            "There is no Gauss rule of degree 6 on a quadrilateral." );
-  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Tetra10, gauss( 6 ) ); } ),
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Tetra10, gaussExactToDegree( 6 ) ); } ),
                            "There is no Gauss rule of degree 6 on a tetrahedron." );
-  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Hexa8, newtonCotes( 1 ) ); } ),
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Hexa8, newtonCotesExactToDegree( 1 ) ); } ),
                            "There is no Newton-Cotes rule on a hexahedron." );
-  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, newtonCotes( 2 ) ); } ),
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, newtonCotesExactToDegree( 2 ) ); } ),
                            "There is no Newton-Cotes rule of degree 2 on a quadrilateral." );
 }
 
@@ -411,17 +412,18 @@ void testEveryNewtonCotesRuleIsTheNodalQuadratureOfItsLinearElement()
 {
   // the points of a Newton-Cotes rule of degree 1 are the nodes of the linear element of its domain, in node order
   // (N_i(xi_j) = delta_ij), its weights are the integrals of their shape functions, which must be positive, and
-  // newtonCotes( 1 ) finds it for that element
+  // newtonCotesExactToDegree( 1 ) finds it for that element
   for ( const auto& rule : quadratureRules() ) {
     if ( rule.family != QuadratureFamily::NewtonCotes )
       continue;
     const ElementShapes shape = linearShape( rule.domain );
-    const std::string   name  = "The Newton-Cotes rule of degree " + std::to_string( rule.degree ) + " of shape " +
-                             std::to_string( shape );
+    const std::string   name  = "The Newton-Cotes rule of degree " + std::to_string( rule.degreeOfExactness ) +
+                             " of shape " + std::to_string( shape );
     const auto& points = rule.points;
 
-    throwExceptionOnFailure( &getQuadraturePoints( shape, newtonCotes( rule.degree ) ) == &points,
-                             name + " must be the one newtonCotes() returns for the shape." );
+    throwExceptionOnFailure( &getQuadraturePoints( shape, newtonCotesExactToDegree( rule.degreeOfExactness ) ) ==
+                               &points,
+                             name + " must be the one newtonCotesExactToDegree() returns for the shape." );
 
     for ( size_t j = 0; j < points.size(); j++ ) {
       const Eigen::VectorXd Nj = shapeFunctions( shape, points[j].xi );
@@ -434,7 +436,7 @@ void testEveryNewtonCotesRuleIsTheNodalQuadratureOfItsLinearElement()
     }
 
     Eigen::VectorXd integralOfN = Eigen::VectorXd::Zero( static_cast< Eigen::Index >( points.size() ) );
-    for ( const auto& qp : getQuadraturePoints( shape, gauss( 2 * getInterpolationOrder( shape ) ) ) )
+    for ( const auto& qp : getQuadraturePoints( shape, gaussExactToDegree( 2 * getInterpolationOrder( shape ) ) ) )
       integralOfN += qp.weight * shapeFunctions( shape, qp.xi );
 
     for ( size_t i = 0; i < points.size(); i++ ) {
@@ -467,7 +469,7 @@ void testEveryShapeListsTheCornersOfItsDomainFirstInCornerOrder()
 
   // the Newton-Cotes rules of degree 1 have the corners as points, in corner order
   for ( const auto& rule : quadratureRules() ) {
-    if ( rule.family != QuadratureFamily::NewtonCotes || rule.degree != 1 )
+    if ( rule.family != QuadratureFamily::NewtonCotes || rule.degreeOfExactness != 1 )
       continue;
     const auto corners_ = corners( rule.domain );
     throwExceptionOnFailure( rule.points.size() == corners_.size(),

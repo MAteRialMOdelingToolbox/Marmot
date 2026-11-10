@@ -28,7 +28,7 @@ void testBasicPropertiesQuad4PlaneStress()
   constexpr int nNodes        = 4;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 1;
-  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStress );
@@ -45,7 +45,7 @@ void testBasicPropertiesQuad4PlaneStress()
   throwExceptionOnFailure( element->getElementShape() == "quad4",
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
-  // gauss( 2 ) on Quad4 has 2x2 = 4 points
+  // gaussExactToDegree( 2 ) on Quad4 has 2x2 = 4 points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 4,
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
@@ -58,7 +58,7 @@ void testBasicPropertiesQuad8PlaneStrain()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 2;
-  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gauss( 4 );
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 );
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStrain );
@@ -75,7 +75,7 @@ void testBasicPropertiesQuad8PlaneStrain()
   throwExceptionOnFailure( element->getElementShape() == "quad8",
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
-  // gauss( 4 ) on Quad8 has 3x3 = 9 points
+  // gaussExactToDegree( 4 ) on Quad8 has 3x3 = 9 points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 9,
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
@@ -88,7 +88,7 @@ void testBasicPropertiesHex8Solid()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 3;
-  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::Solid );
@@ -105,7 +105,7 @@ void testBasicPropertiesHex8Solid()
   throwExceptionOnFailure( element->getElementShape() == "hexa8",
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
-  // gauss( 2 ) on Hex8 has 2x2x2 = 8 points
+  // gaussExactToDegree( 2 ) on Hex8 has 2x2x2 = 8 points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 8,
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
@@ -123,7 +123,7 @@ void testDofIndicesPermutationPatternQuad4()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
@@ -149,7 +149,7 @@ void testDofIndicesPermutationPatternQuad4TwoNonlocalVars()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
@@ -174,7 +174,7 @@ void testNodeFieldsOneNonlocalVar()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
@@ -202,7 +202,7 @@ void testCoordinatesAtCenter()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -227,7 +227,7 @@ void testCoordinatesAtQuadraturePoints()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -324,8 +324,8 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
   element->computeLumpedInertia( M.data() );
 
   // Reference values (see TestDisplacementFiniteElement.cpp for the SymPy derivation): corners
-  // = 1/12, midsides = 1/6. Because the geometry map is affine here, both gauss( 4 ) (3x3) and
-  // gauss( 3 ) (2x2) integrate this exactly, so both rules reproduce the same values.
+  // = 1/12, midsides = 1/6. Because the geometry map is affine here, both gaussExactToDegree( 4 ) (3x3) and
+  // gaussExactToDegree( 3 ) (2x2) integrate this exactly, so both rules reproduce the same values.
   const double expectedCorner  = 1.0 / 12.0;
   const double expectedMidside = 1.0 / 6.0;
 
@@ -378,12 +378,14 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
 
 void testLumpedInertiaQuad8Gauss3x3MatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gauss( 4 ), "gauss( 4 )" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ),
+                                  "gaussExactToDegree( 4 )" );
 }
 
 void testLumpedInertiaQuad8Gauss2x2MatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gauss( 3 ), "gauss( 3 )" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ),
+                                  "gaussExactToDegree( 3 )" );
 }
 
 void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::QuadratureRule intType,
@@ -536,12 +538,14 @@ void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrat
 
 void testLumpedInertiaHexa20Gauss3x3x3MatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gauss( 4 ), "gauss( 4 )" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ),
+                                   "gaussExactToDegree( 4 )" );
 }
 
 void testLumpedInertiaHexa20Gauss2x2x2MatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gauss( 3 ), "gauss( 3 )" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ),
+                                   "gaussExactToDegree( 3 )" );
 }
 
 void testNodeFieldsTwoNonlocalVars()
@@ -554,7 +558,7 @@ void testNodeFieldsTwoNonlocalVars()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
@@ -591,7 +595,7 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -653,7 +657,7 @@ void testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::PlaneStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -714,7 +718,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -776,7 +780,7 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
     auto element = std::make_unique< ElemType >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                                 Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                  ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -820,7 +824,7 @@ void testComputeKernelsThrowsForMismatchedSectionType()
                                                   0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
     auto element = std::make_unique< ElemType >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                                 Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                  ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -858,7 +862,7 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -920,7 +924,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::PlaneStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -982,7 +986,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = ElemType::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1042,7 +1046,7 @@ void testComputeKernelsExplicitThrowsForMismatchedSectionType()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1088,7 +1092,7 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1136,7 +1140,7 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1165,7 +1169,7 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
 
   bool threwForStateVars = false;
@@ -1235,7 +1239,7 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
     matPropsStorage = std::move( matProps );
 
     element = std::make_unique< ElemType >( 1,
-                                            Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                            Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                             ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1301,10 +1305,11 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
                            "computeConsistentInertia() does not conserve the total non-local micro-inertia." );
 }
 
-// The consistent inertia is integrated with its own rule gauss( 2p ), whatever the rule of the element (see
-// Marmot::Discretizations::Elements::ConsistentMass): on a distorted Hexa20, GC3D20R (gauss( 3 )) and GC3D20
-// (gauss( 4 )) must produce the same, positive definite matrix, displacement block and micro-inertia block alike.
-// With the 8 points of gauss( 3 ) the displacement block would have rank 24 out of 60.
+// The consistent inertia is integrated with its own rule gaussExactToDegree( 2p ), whatever the rule of the element
+// (see Marmot::Discretizations::Elements::ConsistentMass): on a distorted Hexa20, GC3D20R (gaussExactToDegree( 3 )) and
+// GC3D20 (gaussExactToDegree( 4 )) must produce the same, positive definite matrix, displacement block and
+// micro-inertia block alike. With the 8 points of gaussExactToDegree( 3 ) the displacement block would have rank 24 out
+// of 60.
 void testConsistentInertiaHexa20IsIndependentOfTheElementRule()
 {
   using ElemType = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20 >;
@@ -1351,15 +1356,18 @@ void testConsistentInertiaHexa20IsIndependentOfTheElementRule()
     return Eigen::MatrixXd( Eigen::Map< Eigen::MatrixXd >( M.data(), nDof, nDof ) );
   };
 
-  const Eigen::MatrixXd withGauss3 = consistentInertia( Marmot::Discretizations::Elements::Quadrature::gauss( 3 ) );
-  const Eigen::MatrixXd withGauss4 = consistentInertia( Marmot::Discretizations::Elements::Quadrature::gauss( 4 ) );
+  const Eigen::MatrixXd withGauss3 = consistentInertia(
+    Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ) );
+  const Eigen::MatrixXd withGauss4 = consistentInertia(
+    Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ) );
 
   throwExceptionOnFailure( ( withGauss3 - withGauss4 ).norm() <= 1e-13 * withGauss4.norm(),
-                           "the consistent inertia of the gauss( 3 ) element differs from the gauss( 4 ) one." );
+                           "the consistent inertia of the gaussExactToDegree( 3 ) element differs from the "
+                           "gaussExactToDegree( 4 ) one." );
 
   const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( withGauss3 ).eigenvalues();
   throwExceptionOnFailure( eigenvalues.minCoeff() > 1e-6 * eigenvalues.maxCoeff(),
-                           "the consistent inertia of the gauss( 3 ) element is not positive definite." );
+                           "the consistent inertia of the gaussExactToDegree( 3 ) element is not positive definite." );
 }
 
 void testComputeBodyForceConservesTotalForcePerDirection()
@@ -1372,7 +1380,7 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1432,7 +1440,7 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1488,7 +1496,7 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1539,7 +1547,7 @@ void testGetStateViewVariants()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1607,7 +1615,7 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1669,7 +1677,7 @@ double criticalTimeStepOfCube( double edgeLength, double microInertia, double no
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 1;
-  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   const double                h             = edgeLength;
@@ -1727,7 +1735,7 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1772,7 +1780,7 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
                                                 0.0, 0.0, h,   h, 0.0, h,   h, h, h,   0.0, h, h };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -1826,7 +1834,7 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
 
   Marmot::Discretizations::Elements::Element* base = element.get();
@@ -1859,7 +1867,7 @@ void testBulkViscosityDamageDegradationIsValidated()
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
 
   // reached through the base pointer, the way the EdelweissFE wrapper reaches it
@@ -1976,7 +1984,7 @@ namespace {
     constexpr int nNonlocalVars = 1;
     using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::gauss( 2 );
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     const auto secType = ElemType::SectionType::Solid;
 
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -2176,7 +2184,7 @@ namespace {
     const std::vector< double > bulkViscosity = { 0.06, 1.2 };
 
     auto element = std::make_unique< ElemType >( 1,
-                                                 Discretizations::Elements::Quadrature::gauss( 2 ),
+                                                 Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                  ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
     Marmot::Discretizations::MaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL",
@@ -2374,7 +2382,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   // asks every quadrature point's material for its density, and a quadrature point without one
   // has no material to ask.
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
   Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
@@ -2445,7 +2453,7 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
   auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gauss( 2 ),
+                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
@@ -2599,7 +2607,7 @@ void checkKernelsAreConsistent(
 {
   using ElemType = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNonLocalNodes >;
 
-  const auto intType = Discretizations::Elements::Quadrature::gauss(
+  const auto intType = Discretizations::Elements::Quadrature::gaussExactToDegree(
     2 * Discretizations::Elements::getInterpolationOrder(
           Discretizations::Elements::getElementShapeByMetric( nDim, nNodes ) ) );
 
@@ -2764,7 +2772,7 @@ void testCenterAndCharacteristicLengthOfLinearSimplices()
   // 1 / sqrt( sum_i h_i^-2 ) with the altitudes h_i: 2 / sqrt( 3.25 ), 2 / sqrt( 1.25 ) and 1 for this triangle of area
   // 1
   using Tri3 = GeneralGradientEnhancedDisplacementFiniteElement< 2, 3, 1 >;
-  Tri3                        tri( 1, Marmot::Discretizations::Elements::Quadrature::gauss( 2 ), Tri3::PlaneStrain );
+  Tri3 tri( 1, Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ), Tri3::PlaneStrain );
   const std::vector< double > triCoordinates = { 0, 0, 2, 0, 0.5, 1 };
   tri.assignNodeCoordinates( triCoordinates.data() );
   const auto triCenter = tri.getCoordinatesAtCenter();
@@ -2777,7 +2785,7 @@ void testCenterAndCharacteristicLengthOfLinearSimplices()
                            "The characteristic element length of a triangle must be 1 / sqrt( sum h^-2 )." );
 
   using Tetra4 = GeneralGradientEnhancedDisplacementFiniteElement< 3, 4, 1 >;
-  Tetra4                      tet( 1, Marmot::Discretizations::Elements::Quadrature::gauss( 1 ), Tetra4::Solid );
+  Tetra4 tet( 1, Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 1 ), Tetra4::Solid );
   const std::vector< double > tetCoordinates = { 0, 0, 0, 2, 0, 0, 0.5, 1, 0, 0, 0.5, 3 };
   tet.assignNodeCoordinates( tetCoordinates.data() );
   const auto tetCenter = tet.getCoordinatesAtCenter();

@@ -23,18 +23,16 @@ namespace {
     };
   }
 
-  using namespace Marmot::Discretizations::Elements::Quadrature;
-
   const static bool ILINE2_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "ILINE2",
                      makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
-                                          gauss( 2 ),
+                                          Quadrature::gaussExactToDegree( 2 ),
                                           InterfaceFiniteElement< 2, 4 >::SectionType::Interface >() );
 
   const static bool IQUAD4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "IQUAD4",
                      makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
-                                          gauss( 2 ),
+                                          Quadrature::gaussExactToDegree( 2 ),
                                           InterfaceFiniteElement< 3, 8 >::SectionType::Interface >() );
 
 } // namespace

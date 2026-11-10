@@ -79,12 +79,12 @@ namespace Marmot::Discretizations::Elements {
     // quadrilateral face, N has degree p and the area vector a = dx/dxi_1 x dx/dxi_2 degree 2p - 1 in each
     // coordinate, since dx/dxi_1 has degree p - 1 in xi_1 and p in xi_2, and dx/dxi_2 vice versa. On a triangular
     // face both factors have total degree p - 1, so N * a has total degree 3p - 2 only, and the request is one
-    // higher than needed: for Tri3 faces a single point would be exact, but gauss( 2 ) keeps the 3-point rule the
-    // faces have always used. In 2D, a is dx/dxi_1 rotated (degree p - 1), so N * a has degree 2p - 1;
+    // higher than needed: for Tri3 faces a single point would be exact, but gaussExactToDegree( 2 ) keeps the 3-point
+    // rule the faces have always used. In 2D, a is dx/dxi_1 rotated (degree p - 1), so N * a has degree 2p - 1;
     // axisymmetric elements multiply by the radius r = N * x (degree p), which gives 3p - 1 again.
     namespace Quadrature = Marmot::Discretizations::Elements::Quadrature;
     const auto& faceRule = Quadrature::getQuadraturePoints( boundaryShape,
-                                                            Quadrature::gauss(
+                                                            Quadrature::gaussExactToDegree(
                                                               3 * getInterpolationOrder( boundaryShape ) - 1 ) );
 
     // compute for each quadraturePoint the
