@@ -56,7 +56,8 @@ i.e. the Helmholtz equation :math:`\bar N - c\,\nabla_X^2\bar N = L` is solved i
 increment of the nonlocal field, with the change :math:`\Delta L` of the local driving force as its source. The
 acceleration :math:`\boldsymbol a` follows from the Newmark-beta update of :math:`\Delta\boldsymbol u` with the particle
 properties ``newmark-beta beta`` and ``newmark-beta gamma``; :math:`\beta = 0` switches the inertia off
-(:math:`\boldsymbol a = \boldsymbol 0`).
+and the particle is at rest (:math:`\boldsymbol v = \boldsymbol a = \boldsymbol 0`). A zero-length increment adds no inertia: :math:`\boldsymbol v` and :math:`\boldsymbol a`
+are left as they are, and the inertia tangent is zero (see :doc:`displacementparticle`).
 
 Tangent
 ^^^^^^^
