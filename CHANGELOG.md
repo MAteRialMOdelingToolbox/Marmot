@@ -6,6 +6,12 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Changed
+- **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
+  `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
+  them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
+  pulled before. Inputs keep their results by flipping the sign of the pressure.
+
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:

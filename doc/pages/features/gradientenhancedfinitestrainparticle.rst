@@ -188,8 +188,9 @@ all faces cancel the displacement residual (exactly so after deformation only fo
 update, whose smoothing domain coincides with the particle).
 
 **Pressure.** ``PRESSURE`` (SQCNI particles, per face, ``load[0]`` = :math:`p`) is a follower load,
-:math:`\boldsymbol f = \Delta J\,\Delta\boldsymbol F^{-\mathsf T}\,p\,\boldsymbol N\,dA_Y`,
-:math:`f_{Ai} \mathrel{-}= T_A(\boldsymbol Y_f)\,f_i`, with its load stiffness. For ``DeformationGradient`` the face
+:math:`\boldsymbol f = -\Delta J\,\Delta\boldsymbol F^{-\mathsf T}\,p\,\boldsymbol N\,dA_Y`,
+:math:`f_{Ai} \mathrel{-}= T_A(\boldsymbol Y_f)\,f_i`, with its load stiffness. As for the finite elements, a positive
+pressure pushes on the face (against the outward normal). For ``DeformationGradient`` the face
 geometry is that of the current smoothing domain; for the other update types the undeformed surface vector is mapped by
 Nanson's formula with :math:`\boldsymbol F_n`, and the undeformed face center is translated by the particle
 displacement. Neither load acts on the nonlocal field.

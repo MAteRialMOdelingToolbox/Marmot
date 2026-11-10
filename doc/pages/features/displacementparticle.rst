@@ -127,7 +127,9 @@ with :math:`\partial f_j/\partial\Delta F_{kL}\,\partial N_B/\partial Y_L` in th
 
   .. math::
 
-     \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y ;
+     \boldsymbol{f} = -\Delta J\,\Delta\boldsymbol{F}^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y ;
+
+  as for the finite elements, a positive pressure pushes on the face (against the outward normal);
 
 - ``CWFCORRECTION`` (SQCNI, SNNI and NSNI particles; no load value): the consistent weak form correction, the
   Cauchy traction of the particle's own stress on the face,
