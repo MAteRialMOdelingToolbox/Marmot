@@ -31,6 +31,9 @@ All notable changes to Marmot are documented in this file. The format follows
   with exponential damage driven by the plastic strain (Grassl and Jirásek, 2006), bounded by a damage threshold; and `materials/RankineGradientDamagePlasticity` (`RANKINEGRADIENTDAMAGEPLASTICITY`), its
   implicit-gradient (over-)nonlocal extension. The hypoelastic models are also registered with the Hughes-Winget
   wrapper (`.../HUGHES-WINGET`). Imported with their history (`git subtree`); the module repositories are superseded.
+- `materials/RankineGradientSofteningPlasticity` (`RANKINEGRADIENTSOFTENINGPLASTICITY`), the implicit-gradient
+  over-nonlocal extension of `RankineSofteningPlasticity` (Vermeer and Brinkgreve, 1994): the yield stress depends on
+  a combination of the local and the nonlocal softening variable.
 
 ### Changed
 - **Breaking:** complete namespace rework. All code now lives in the global `Marmot` namespace with a closed set
