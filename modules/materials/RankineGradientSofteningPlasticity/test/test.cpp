@@ -321,9 +321,9 @@ void testPropertiesAndFactory()
 template < int nNodes >
 void checkElementStiffness( double m )
 {
-  using Element      = Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement< 3, nNodes >;
-  const auto intType = nNodes == 20 ? Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration
-                                    : Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  using Element = Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement< 3, nNodes >;
+  // quadrature rules of GC3D20R and GC3D8
+  const auto intType = Discretizations::Elements::Quadrature::gaussExactToDegree( nNodes == 20 ? 3 : 2 );
   Element    element( 1, intType, Element::SectionType::Solid );
 
   const std::vector< Eigen::Vector3d > corners = { { 0, 0, 0 },
