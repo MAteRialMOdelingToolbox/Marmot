@@ -2471,7 +2471,13 @@ void testBulkViscosityRejectsNegativeCoefficients()
 namespace {
   using AxisymmetricIntegration = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes;
 
-  constexpr double axisymmetricDensity = 2.5;
+  constexpr double axisymmetricYoungsModulus = 10000.0;
+  constexpr double axisymmetricPoissonsRatio = 0.2;
+  constexpr double axisymmetricDensity       = 2.5;
+  // E, nu, density; at namespace scope, as the material keeps a pointer to them
+  const std::vector< double > axisymmetricMaterialProperties = { axisymmetricYoungsModulus,
+                                                                 axisymmetricPoissonsRatio,
+                                                                 axisymmetricDensity };
   // volume of the ring r in [1, 2], z in [0, 1]
   const double axisymmetricRingVolume = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 );
 
@@ -2483,19 +2489,17 @@ namespace {
   template < int nNodes >
   std::unique_ptr< AxiSymmetricDisplacementFiniteElement< nNodes > > makeAxisymmetricQuad(
     std::vector< double >&  stateVars,
-    AxisymmetricIntegration integrationType,
-    double                  E  = 10000.0,
-    double                  nu = 0.2 )
+    AxisymmetricIntegration integrationType )
   {
     using ElementType = AxiSymmetricDisplacementFiniteElement< nNodes >;
 
     auto element = std::make_unique< ElementType >( 1, integrationType, ElementType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( axisymmetricQuadCoordinates.data() );
 
-    const std::vector< double >              matProps = { E, nu, axisymmetricDensity };
     Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC",
-                                                              matProps.data(),
-                                                              static_cast< int >( matProps.size() ) );
+                                                              axisymmetricMaterialProperties.data(),
+                                                              static_cast< int >(
+                                                                axisymmetricMaterialProperties.size() ) );
     element->assignProperty( materialSection );
 
     const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -2547,11 +2551,11 @@ namespace {
   template < int nNodes >
   void checkAxisymmetricUniformStrainField( AxisymmetricIntegration integrationType, const std::string& name )
   {
-    const double E = 10000.0, nu = 0.2;
+    const double E = axisymmetricYoungsModulus, nu = axisymmetricPoissonsRatio;
     const double a = 1e-3, b = -2e-3; // u_r = a r, u_z = b z
 
     std::vector< double > stateVars;
-    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType, E, nu );
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType );
 
     const auto&     coordinates = axisymmetricQuadCoordinates;
     const int       nDof        = element->getNDofPerElement();
