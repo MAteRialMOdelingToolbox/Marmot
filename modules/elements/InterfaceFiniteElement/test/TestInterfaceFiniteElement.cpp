@@ -498,10 +498,9 @@ void TestSurfaceGradientOperatorProjectsOnlyGradientDirection()
     constexpr int nDim   = 2;
     constexpr int nNodes = 4;
 
-    auto element = std::make_unique<
-      InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
     static std::array< double, nDim* nNodes > nodeCoordsVec = { 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0 };
     element->assignNodeCoordinates( nodeCoordsVec.data() );
@@ -965,10 +964,9 @@ void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
   // An IRREGULAR quad. A parallelogram has a constant surface Jacobian, so its quadrature points
   // all share one characteristic length and a shared material could not reveal a missing per-point
   // update. This trapezoid makes sqrtDetG vary across the points.
-  auto element = std::make_unique<
-    InterfaceFiniteElement< nDim, nNodes > >( 7,
-                                              Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                              InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+  auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 7, quadratureRule, sectionType );
 
   static std::array< double, nDim* nNodes > coordinates = {
     0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1054,10 +1052,9 @@ void TestElementShapeKeywordsAreEnSightNames()
     constexpr int nDim   = 2;
     constexpr int nNodes = 4;
 
-    auto element = std::make_unique<
-      InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
     throwExceptionOnFailure( element->getElementShape() == "quad4",
                              "2D interface element must report the EnSight keyword \"quad4\", got \"" +

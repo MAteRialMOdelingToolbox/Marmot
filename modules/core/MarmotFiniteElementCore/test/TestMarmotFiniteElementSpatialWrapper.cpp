@@ -27,10 +27,9 @@ namespace {
     const std::vector< double >& matProps,
     std::vector< double >&       stateVarsOut )
   {
-    auto child = std::make_unique<
-      DisplacementFiniteElement< 1, 2 > >( 1,
-                                           Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                           DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress;
+    auto       child          = std::make_unique< DisplacementFiniteElement< 1, 2 > >( 1, quadratureRule, sectionType );
 
     static constexpr int indicesToBeWrapped[] = { 0, 1 };
 

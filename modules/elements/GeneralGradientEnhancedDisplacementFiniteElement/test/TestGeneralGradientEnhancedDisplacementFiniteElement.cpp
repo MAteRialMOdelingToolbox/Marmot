@@ -122,9 +122,8 @@ void testDofIndicesPermutationPatternQuad4()
   const int     elId          = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( elId,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( elId, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
   const std::vector< int > expected = { 0, 1, 3, 4, 6, 7, 9, 10, 2, 5, 8, 11 };
@@ -148,9 +147,8 @@ void testDofIndicesPermutationPatternQuad4TwoNonlocalVars()
   const int     elId          = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( elId,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( elId, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
   const std::vector< int > expected = { 0, 1, 4, 5, 8, 9, 12, 13, 2, 6, 10, 14, 3, 7, 11, 15 };
@@ -173,9 +171,8 @@ void testNodeFieldsOneNonlocalVar()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes,
@@ -201,9 +198,8 @@ void testCoordinatesAtCenter()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   element->assignNodeCoordinates( nodeCoords.data() );
@@ -226,9 +222,8 @@ void testCoordinatesAtQuadraturePoints()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   element->assignNodeCoordinates( nodeCoords.data() );
@@ -557,9 +552,8 @@ void testNodeFieldsTwoNonlocalVars()
   constexpr int nNonlocalVars = 2;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes,
@@ -779,9 +773,8 @@ void testComputeKernelsThrowsForMismatchedSectionType()
 
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-    auto element = std::make_unique< ElemType >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                                 ElemType::SectionType::Solid );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -823,9 +816,8 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                   0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-    auto element = std::make_unique< ElemType >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                                 ElemType::SectionType::PlaneStrain );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1045,9 +1037,8 @@ void testComputeKernelsExplicitThrowsForMismatchedSectionType()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1091,9 +1082,8 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1139,9 +1129,8 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1168,9 +1157,8 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
 
   bool threwForStateVars = false;
   try {
@@ -1238,9 +1226,8 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
     element.reset();
     matPropsStorage = std::move( matProps );
 
-    element = std::make_unique< ElemType >( 1,
-                                            Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                            ElemType::SectionType::PlaneStrain );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    element = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
@@ -1379,9 +1366,8 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1439,9 +1425,8 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1495,9 +1480,8 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1546,9 +1530,8 @@ void testGetStateViewVariants()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1614,9 +1597,8 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1734,9 +1716,8 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
@@ -1779,9 +1760,8 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, h, 0.0, 0.0, h, h, 0.0, 0.0, h, 0.0,
                                                 0.0, 0.0, h,   h, 0.0, h,   h, h, h,   0.0, h, h };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // eta = 1 admits any micro-inertia up to 1/4, so the value below is far inside the bound.
@@ -1833,9 +1813,8 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
 
   Marmot::Discretizations::Elements::Element* base = element.get();
 
@@ -1866,9 +1845,8 @@ void testBulkViscosityDamageDegradationIsValidated()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
 
   // reached through the base pointer, the way the EdelweissFE wrapper reaches it
   Marmot::Discretizations::Elements::Element* base = element.get();
@@ -2183,9 +2161,8 @@ namespace {
     const std::vector< double > matProps      = { 20000.0, 0.2, density, 1.0e-6 };
     const std::vector< double > bulkViscosity = { 0.06, 1.2 };
 
-    auto element = std::make_unique< ElemType >( 1,
-                                                 Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                                 ElemType::SectionType::Solid );
+    const auto quadratureRule = Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
     Marmot::Discretizations::MaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL",
                                                               matProps.data(),
@@ -2381,9 +2358,8 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   // Fully built, because the assembled inertia is read back at the end: computeLumpedInertia()
   // asks every quadrature point's material for its density, and a quadrature point without one
   // has no material to ask.
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
   Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
                                                             matProps.data(),
@@ -2452,9 +2428,8 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
-                                               ElemType::SectionType::Solid );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // eta = 1 here rather than the 2e-7 above, so the tiny value is admissible by a wide margin: what
