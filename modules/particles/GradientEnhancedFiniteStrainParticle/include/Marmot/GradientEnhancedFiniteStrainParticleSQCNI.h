@@ -283,8 +283,9 @@ namespace Marmot::Discretizations::Meshfree {
      * displacement increment:
      *
      * - `PRESSURE` (follower pressure @f$ p @f$ = `load[0]`):
-     *   @f$ \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,p\,\boldsymbol{N}\,dA_Y @f$,
-     *   @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,f_i @f$.
+     *   @f$ \boldsymbol{f} = -\Delta J\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,p\,\boldsymbol{N}\,dA_Y @f$,
+     *   @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,f_i @f$; as for the elements, a positive pressure pushes on
+     *   the face (against the outward normal).
      * - `CWFCORRECTION` (consistent weak form correction): the boundary term of the momentum weak
      *   form, @f$ \boldsymbol{t} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,\boldsymbol{N}\,dA_Y / J_Y
      *   @f$ with @f$ J_Y = \det\boldsymbol{F}_n @f$, @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,t_i @f$; its
@@ -457,7 +458,8 @@ namespace Marmot::Discretizations::Meshfree {
 
       const auto [N_dAY, Y_N] = getIntermediateConfBoundaryVector( boundaryFaceID );
 
-      TensorD fY = N_dAY * load_[0];
+      // a positive pressure pushes on the face: the traction acts against the outward normal
+      TensorD fY = -load_[0] * N_dAY;
 
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );

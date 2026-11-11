@@ -11,7 +11,7 @@ name: conda
 
 on:
   push:
-    branches: [master, "next_v*"]
+    branches: [master]
     tags: ["v*"]
   pull_request:
   workflow_dispatch:

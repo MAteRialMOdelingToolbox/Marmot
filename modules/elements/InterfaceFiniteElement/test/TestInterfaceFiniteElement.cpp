@@ -285,19 +285,9 @@ namespace {
 
       const int nTensor = static_cast< int >( Bside.rows() );
 
-#if defined( __GNUC__ ) && !defined( __clang__ )
-// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
-// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
-// (observed with GCC 14 at x86-64-v3).
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Warray-bounds"
-#endif
       Eigen::VectorXd dUGp( 2 * nDim );
-      dUGp.segment( 0, nDim )    = Nside * dU.segment( halfNDof, halfNDof );
-      dUGp.segment( nDim, nDim ) = Nside * dU.segment( 0, halfNDof );
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic pop
-#endif
+      dUGp.segment< nDim >( 0 )    = Nside * dU.segment( halfNDof, halfNDof );
+      dUGp.segment< nDim >( nDim ) = Nside * dU.segment( 0, halfNDof );
 
       Eigen::VectorXd dSurfaceStrainGp( 2 * nTensor );
       dSurfaceStrainGp.segment( 0, nTensor )       = Bside * dU.segment( halfNDof, halfNDof );
@@ -1072,8 +1062,8 @@ void TestElementShapeKeywordsAreEnSightNames()
                                                   FullIntegration,
                                                 InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
-    throwExceptionOnFailure( element->getElementShape() == "bar2",
-                             "2D interface element must report the EnSight keyword \"bar2\", got \"" +
+    throwExceptionOnFailure( element->getElementShape() == "quad4",
+                             "2D interface element must report the EnSight keyword \"quad4\", got \"" +
                                element->getElementShape() + "\"." );
   }
 }
@@ -1308,7 +1298,7 @@ void TestFactoryCreatesRegisteredInterfaceElements()
 {
   std::cout << "\n--- TestFactoryCreatesRegisteredInterfaceElements ---\n";
 
-  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "bar2" } };
+  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "quad4" } };
   for ( const auto& [name, shape] : registered ) {
     std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
       Marmot::Registry::ElementFactory::createElement( name, 1 ) );

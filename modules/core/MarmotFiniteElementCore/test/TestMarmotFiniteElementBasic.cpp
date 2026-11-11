@@ -1,7 +1,10 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
+#include "Marmot/MarmotMassLumping.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
+#include <cmath>
+#include <tuple>
 
 using namespace Marmot;
 using namespace Marmot::Testing;
@@ -14,6 +17,8 @@ using namespace Marmot::Discretizations::Elements;
 void testGetElementShapeByMetricAllValidCombinations()
 {
   throwExceptionOnFailure( getElementShapeByMetric( 1, 2 ) == Bar2, "nDim=1, nNodes=2 must be Bar2." );
+  throwExceptionOnFailure( getElementShapeByMetric( 1, 3 ) == Bar3, "nDim=1, nNodes=3 must be Bar3." );
+  throwExceptionOnFailure( getElementShapeByMetric( 2, 3 ) == Tri3, "nDim=2, nNodes=3 must be Tri3." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 4 ) == Quad4, "nDim=2, nNodes=4 must be Quad4." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 8 ) == Quad8, "nDim=2, nNodes=8 must be Quad8." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 9 ) == Quad9, "nDim=2, nNodes=9 must be Quad9." );
@@ -29,7 +34,7 @@ void testGetElementShapeByMetricAllValidCombinations()
 void testGetElementShapeByMetricThrowsForInvalidCombinations()
 {
   const std::vector< std::pair< int, int > > invalidCombinations = {
-    { 1, 3 }, // no 3-node 1D shape
+    { 1, 4 }, // no 4-node 1D shape
     { 2, 5 }, // no 5-node 2D shape
     { 3, 5 }, // no 5-node 3D shape
     { 4, 8 }, // no 4-D shapes at all
@@ -90,10 +95,75 @@ void testDynamicJacobianMatchesTemplatedJacobianForQuad4()
 }
 
 // ---------------------------------------------------------------------------------------------
+// getReferenceDomain() / getInterpolationOrder()
+// ---------------------------------------------------------------------------------------------
+
+void testReferenceDomainAndInterpolationOrderOfAllShapes()
+{
+  const std::vector< std::tuple< ElementShapes, ReferenceDomain, int > > expected = {
+    { Bar2, ReferenceDomain::Line, 1 },
+    { Bar3, ReferenceDomain::Line, 2 },
+    { Tri3, ReferenceDomain::Triangle, 1 },
+    { Quad4, ReferenceDomain::Quadrilateral, 1 },
+    { Quad8, ReferenceDomain::Quadrilateral, 2 },
+    { Quad9, ReferenceDomain::Quadrilateral, 2 },
+    { Quad16, ReferenceDomain::Quadrilateral, 3 },
+    { Tetra4, ReferenceDomain::Tetrahedron, 1 },
+    { Tetra10, ReferenceDomain::Tetrahedron, 2 },
+    { Hexa8, ReferenceDomain::Hexahedron, 1 },
+    { Hexa20, ReferenceDomain::Hexahedron, 2 },
+    { Hexa27, ReferenceDomain::Hexahedron, 2 },
+    { Hexa64, ReferenceDomain::Hexahedron, 3 },
+  };
+  for ( const auto& [shape, domain, order] : expected ) {
+    throwExceptionOnFailure( getReferenceDomain( shape ) == domain,
+                             "getReferenceDomain() is wrong for shape " + std::to_string( shape ) + "." );
+    throwExceptionOnFailure( getInterpolationOrder( shape ) == order,
+                             "getInterpolationOrder() is wrong for shape " + std::to_string( shape ) + "." );
+  }
+}
+
+void testNumberOfCornerNodesOfAllReferenceDomains()
+{
+  const std::vector< std::pair< ReferenceDomain, int > > expected = { { ReferenceDomain::Line, 2 },
+                                                                      { ReferenceDomain::Triangle, 3 },
+                                                                      { ReferenceDomain::Quadrilateral, 4 },
+                                                                      { ReferenceDomain::Tetrahedron, 4 },
+                                                                      { ReferenceDomain::Hexahedron, 8 } };
+  for ( const auto& [domain, nCorners] : expected )
+    throwExceptionOnFailure( getNumberOfCornerNodes( domain ) == nCorners,
+                             "getNumberOfCornerNodes() is wrong for reference domain " +
+                               std::to_string( static_cast< int >( domain ) ) + "." );
+}
+
+// ---------------------------------------------------------------------------------------------
+// MassLumping::nLinearNodes(): the linear element blended into the manifold-based lumping has the corner nodes of
+// the element; checked at compile time, since the callers use it as a template argument
+// ---------------------------------------------------------------------------------------------
+
+namespace {
+  using Marmot::Discretizations::Elements::MassLumping::nLinearNodes;
+
+  static_assert( nLinearNodes< 1, 2 >() == 2, "Bar2 is its own linear element." );
+  static_assert( nLinearNodes< 1, 3 >() == 2, "The linear element of Bar3 is Bar2." );
+  static_assert( nLinearNodes< 2, 3 >() == 3, "Tri3 is its own linear element." );
+  static_assert( nLinearNodes< 2, 4 >() == 4, "Quad4 is its own linear element." );
+  static_assert( nLinearNodes< 2, 8 >() == 4, "The linear element of Quad8 is Quad4." );
+  static_assert( nLinearNodes< 2, 9 >() == 4, "The linear element of Quad9 is Quad4." );
+  static_assert( nLinearNodes< 2, 16 >() == 4, "The linear element of Quad16 is Quad4." );
+  static_assert( nLinearNodes< 3, 4 >() == 4, "Tetra4 is its own linear element." );
+  static_assert( nLinearNodes< 3, 10 >() == 4, "The linear element of Tetra10 is Tetra4, not Hexa8." );
+  static_assert( nLinearNodes< 3, 8 >() == 8, "Hexa8 is its own linear element." );
+  static_assert( nLinearNodes< 3, 20 >() == 8, "The linear element of Hexa20 is Hexa8." );
+  static_assert( nLinearNodes< 3, 27 >() == 8, "The linear element of Hexa27 is Hexa8." );
+  static_assert( nLinearNodes< 3, 64 >() == 8, "The linear element of Hexa64 is Hexa8." );
+} // namespace
+
+// ---------------------------------------------------------------------------------------------
 // Quadrature::getGaussPointInfo() / getNumGaussPoints(): the branches actually reached by every
 // existing element and boundary test all use FullIntegration for Bar3/Tetra4/Tetra10 (or, for
-// Bar2/Quad4, never use ReducedIntegration) and never construct a Tetra4/Tetra10 element (there is
-// no registered element type using either shape) or pass an unsupported shape at all.
+// Bar2/Quad4, never use ReducedIntegration) and never construct a Tetra10 element (there is no
+// registered element type using that shape) or pass an unsupported shape at all.
 // ---------------------------------------------------------------------------------------------
 
 void testGetGaussPointInfoReducedIntegrationBranches()
@@ -150,6 +220,8 @@ int main()
     testGetElementShapeByMetricThrowsForInvalidCombinations,
     testDynamicNBMatchesTemplatedNBForQuad4,
     testDynamicJacobianMatchesTemplatedJacobianForQuad4,
+    testReferenceDomainAndInterpolationOrderOfAllShapes,
+    testNumberOfCornerNodesOfAllReferenceDomains,
     testGetGaussPointInfoReducedIntegrationBranches,
     testGetGaussPointInfoTetrahedralShapes,
     testGetGaussPointInfoThrowsForUnsupportedShape,

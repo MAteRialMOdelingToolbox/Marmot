@@ -101,7 +101,7 @@ Rules:
 - **Framework Logging**: Use `Utilities::Journal::warningToMSG(...)` and `notificationToMSG(...)` instead of `std::cout`/`std::cerr`.
 - **Test Every Feature**: Register standalone executables in `test.cmake`. Verify against **analytical solutions** and validate tangents via `MarmotMathCore`'s `numdiff`/`autodiff`.
 - **Zero Warnings**: No new compiler or documentation warnings on GCC, clang, MSVC or Doxygen/Sphinx — see [Warning-Free Builds](#warning-free-builds).
-- **Linting & Commits**: Format with `pre-commit run --all-files`. Commits follow [Conventional Commits](https://www.conventionalcommits.org). PRs target active `next_v<YY>.<MM>` branch.
+- **Linting & Commits**: Format with `pre-commit run --all-files`. Commits follow [Conventional Commits](https://www.conventionalcommits.org). PRs target `master`, the development branch.
 
 ## Workspace Skills (`.agents/skills/`)
 

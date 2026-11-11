@@ -7,6 +7,104 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
+  strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
+  point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
+  regularisation length come from `GeometryElement` (below).
+- `Tri3` shape: shape functions, the 1-point (reduced) and 3-point (full, exact for quadratics) Gauss rules, the
+  `GeometryElement<2, 3>` specialisations and the EnSight shape `tria3`.
+- Distributed loads (pressure, surface traction) on `Tetra4` and `Tri3` elements (`C3D4`, `CPS3`, `CPE3`). This adds
+  the face definitions `Tetra4::getBoundaryElementIndices` (Abaqus faces S1–S4; previously a stub that always threw)
+  and `Tri3::getBoundaryElementIndices`, and `BoundaryElement` support for both parent shapes.
+- `getReferenceDomain( shape )`, `getInterpolationOrder( shape )` (the order p of the shape functions) and
+  `getNumberOfCornerNodes( domain )`, all `constexpr` like `getElementShapeByMetric`, which moved into the header
+  and now also knows `Bar3` (1D, 3 nodes). Further facts of a `ReferenceDomain`: `isSimplex( domain )`,
+  `getReferenceMeasure( domain )` (2^nDim for the cube [-1, 1]^nDim, 1 / nDim! for the unit simplex) and
+  `getReferenceCentroidCoordinate( domain )`.
+- Element geometry that depends on the reference domain, in `GeometryElement`, so the elements do not have to
+  distinguish the cube from the simplex: the compile-time `shape` (previously a member initialised at construction),
+  `referenceDomain` and `interpolationOrder`,
+  - `center()`: the image of the centroid of the reference domain; the origin of the unit simplex is its node 0;
+  - `characteristicLengthForCriticalTimeStepAt( xi )`: the length L_e of the stable time increment L_e / c, twice the
+    smallest singular value of the Jacobian for quadrilaterals and hexahedra (their smallest extent), 1 / sqrt( sum_i
+    |grad N_i|^2 ) for linear simplices. The latter does not depend on the node numbering and stays below the exact
+    stable increment of the element; the singular values assume the reference cube and would exceed it by up to 4
+    times;
+  - `volumeEquivalentLength( detJ )`: the regularisation length for softening materials, sqrt( A ) or cbrt( V ).
+
+  `characteristicLengthForCriticalTimeStepAt` is not derived for quadratic simplices (`Tri6`, `Tetra10`); asking for
+  it is a compile error.
+
+### Changed
+- **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
+  `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
+  them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
+  pulled before. Inputs keep their results by flipping the sign of the pressure.
+- `DisplacementFiniteElement`, `GeneralGradientEnhancedDisplacementFiniteElement`,
+  `DisplacementFiniteStrainULElement` and `GradientEnhancedFiniteStrainDisplacementElement` take their center,
+  characteristic length for the critical time step and (the first) regularisation length from `GeometryElement`. The
+  results of the quadrilaterals, hexahedra and bars are unchanged; instantiated for linear simplices (not registered
+  yet, except `CPS3`, `CPE3` and `C3D4`), the gradient-enhanced and the finite-strain elements now also have the right
+  center and length. The element methods `characteristicElementLengthAt( xi )` of `DisplacementFiniteElement` and
+  `GeneralGradientEnhancedDisplacementFiniteElement` are replaced by
+  `GeometryElement::characteristicLengthForCriticalTimeStepAt( xi )` (for the latter through its member
+  `localGeometryElement`), so the name no longer collides with the material's `characteristicElementLength`, the
+  regularisation length.
+
+### Fixed
+- **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
+  `MaterialHypoElasticAD`. The fixes:
+  - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
+    zero.
+  - `ADLinearElastic` accumulated ½ Δε : Δσ without the stress at the start of the increment, so it was too small
+    by about the number of increments.
+  - `MaterialHypoElasticAD::computeStress` returned only the stress of `computeStressAD` and dropped its energy and
+    dissipation.
+  - Both linear elastic laws now integrate W by the trapezoidal rule, which is exact for linear elasticity.
+  - Tests compare W with ½ ε : C : ε after a non-proportional strain path in 3D and in plane stress.
+- Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
+  element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
+  faces, as `hexa8` for the 3D interfaces.
+- Lumped inertia and critical time step of the linear simplices `CPS3`, `CPE3` and `C3D4`. The manifold-based mass
+  lumping blended in the shape functions of a quadrilateral or hexahedron and wrote past the end of the nodal
+  vectors, which corrupted the heap of an explicit analysis. A linear simplex is now its own linear counterpart
+  (`MassLumping::nLinearNodes()`, also used by the finite-strain and the gradient-enhanced elements), with the
+  mass / nNodes at each node. `MassLumping::nLinearNodes()` is the number of corner nodes of the reference domain,
+  which also corrects `Tetra10` (4 instead of 8; not registered).
+- Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
+  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule, which is exact for the
+  quadratic integrand.
+- **Results:** `newmarkBetaIntegration` (`MarmotMechanicsCore`, used by all particles with the Newmark properties):
+  a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
+  is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
+  velocity produce an acceleration of order -v/(beta 1e-16). Increments of at least 1e-16 are unchanged.
+- **Results:** `newmarkBetaIntegration` with `beta = 0` (no time integration, a quasi-static analysis) sets the velocity
+  and the acceleration to zero: a quasi-static step after a dynamic one leaves the particles at rest. It used to keep
+  the velocity, advanced once by `dT (1 - gamma) a_n`. Analyses that are quasi-static from the start are unchanged.
+
+## [v26.11] - 2026-11-02
+
+This changelog was started late in the v26.11 cycle. The entries below cover October 2026 onwards; the main
+changes from earlier in the cycle, since v25.11, were:
+
+- Refactored material interfaces (#25) and a new element internal-force sign convention without `pNewDT` and
+  `stepTime` (#50). **Breaking**
+- Finite-strain materials: a material point solver (#30), automatic-differentiation materials (#36), a substepper
+  (#32), linear viscoelasticity (#35), the Hughes-Winget co-rotational wrapper (#64) and the gradient-enhanced
+  finite-strain interface (#98).
+- Explicit dynamics: artificial bulk viscosity, nonlocal micro-inertia, mass lumping and the critical time step (#45,
+  #81, #84).
+- The general gradient-enhanced displacement element with multiple nonlocal fields, and the AT2 phase-field model.
+- Interface elements and materials (#40).
+- A Python interface to the material point solvers (#53), an element named-property interface (#54) and custom
+  material and solver exceptions (#43).
+- Builds: one CMake target per module with package export (#47, #113, #114), Windows DLLs with MSVC (#110),
+  macOS/arm64 (#57), Eigen 5 (#107), free-threading-safe statics (#55), a conda package (#121), and a coverage
+  pipeline (#83).
+- Fixes that change results: `projectVoigtStressToPlane` shear column (#90), the Hughes-Winget rotation (#89), the
+  consistent mass integration (#101) and Hexa20 lumped corner masses (#74). **Results**
+
+### Added
 - The meshfree layer in-tree, imported from the BOKU-CMP-MEC-MAT repositories with their full history
   (`git subtree`): `core/MarmotMeshfreeCore` (reproducing kernel approximations, kernel functions, cells, particle
   domains, factories), `materialpoints/DisplacementMaterialPoint`,
@@ -114,3 +212,6 @@ All notable changes to Marmot are documented in this file. The format follows
 - Uninitialized intermediate second moments of the SQCNIxNSNI particles in the first increment.
 - The inverse isoparametric map of distorted Lagrangian cells (it threw) and their point location test.
 - Stack overflows of the 64-node B-spline cells on Windows (1 MB default stack).
+
+[Unreleased]: https://github.com/MAteRialMOdelingToolbox/Marmot/compare/v26.11...HEAD
+[v26.11]: https://github.com/MAteRialMOdelingToolbox/Marmot/compare/v25.11...v26.11

@@ -119,9 +119,9 @@ Get Fastor:
    :caption: Step 6
 
     cd $MARMOTROOT
-    git clone https://github.com/romeric/Fastor.git
+    git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
     cd Fastor
-    cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
+    cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
     make install
     cd ../
 
