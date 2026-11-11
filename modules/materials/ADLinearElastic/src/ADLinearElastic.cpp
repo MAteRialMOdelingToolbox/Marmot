@@ -33,8 +33,9 @@ namespace Marmot::Materials {
   {
 
     const Marmot::Math::Vector6dual dStress = C * dStrain;
+
+    state.elasticEnergyDensity += Math::Tensors::makeReal( dStrain.dot( state.stress + 0.5 * dStress ) );
     state.stress += dStress;
-    state.elasticEnergyDensity += 0.5 * Math::Tensors::makeReal( dStrain.dot( dStress ) );
     state.dissipation = 0.0;
   }
 } // namespace Marmot::Materials

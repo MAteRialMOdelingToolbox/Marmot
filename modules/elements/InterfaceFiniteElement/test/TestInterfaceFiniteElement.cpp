@@ -80,7 +80,7 @@ namespace {
     constexpr int nNodes = 8;
 
     const int  elId    = 3;
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
     auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -111,7 +111,7 @@ namespace {
     constexpr int nNodes = 4;
 
     const int  elId    = 2;
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
     auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -154,7 +154,7 @@ namespace {
     constexpr int nDim   = 3;
     constexpr int nNodes = 8;
 
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
 
     static std::array< double, nDim* nNodes > coordinates = {
@@ -194,7 +194,7 @@ namespace {
     constexpr int nNodes       = 8;
     constexpr int nElementDofs = nDim * nNodes;
 
-    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 3, intType );
 
     std::array< double, nElementDofs * nElementDofs > consistentInertia{};
@@ -285,19 +285,9 @@ namespace {
 
       const int nTensor = static_cast< int >( Bside.rows() );
 
-#if defined( __GNUC__ ) && !defined( __clang__ )
-// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
-// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
-// (observed with GCC 14 at x86-64-v3).
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Warray-bounds"
-#endif
       Eigen::VectorXd dUGp( 2 * nDim );
-      dUGp.segment( 0, nDim )    = Nside * dU.segment( halfNDof, halfNDof );
-      dUGp.segment( nDim, nDim ) = Nside * dU.segment( 0, halfNDof );
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic pop
-#endif
+      dUGp.segment< nDim >( 0 )    = Nside * dU.segment( halfNDof, halfNDof );
+      dUGp.segment< nDim >( nDim ) = Nside * dU.segment( 0, halfNDof );
 
       Eigen::VectorXd dSurfaceStrainGp( 2 * nTensor );
       dSurfaceStrainGp.segment( 0, nTensor )       = Bside * dU.segment( halfNDof, halfNDof );
@@ -391,7 +381,7 @@ void TestSingleInputFileElementGeometryMatrices()
   element->initializeYourself();
 
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 4,
-                           "IQuad4 full integration should have 4 Gauss points." );
+                           "IQuad4 with gaussExactToDegree( 2 ) should have 2x2 = 4 points." );
   throwExceptionOnFailure( element->getNDofPerElement() == totalNDof, "Unexpected number of interface element dofs." );
 
   const double tol = 1e-12;
@@ -508,11 +498,9 @@ void TestSurfaceGradientOperatorProjectsOnlyGradientDirection()
     constexpr int nDim   = 2;
     constexpr int nNodes = 4;
 
-    auto element = std::make_unique<
-      InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                  FullIntegration,
-                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
     static std::array< double, nDim* nNodes > nodeCoordsVec = { 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0 };
     element->assignNodeCoordinates( nodeCoordsVec.data() );
@@ -938,7 +926,7 @@ void TestAngledInterfaceKinematics()
   constexpr int nNodes = 4;
 
   const int  elId    = 1;
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
 
   auto element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -976,11 +964,9 @@ void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
   // An IRREGULAR quad. A parallelogram has a constant surface Jacobian, so its quadrature points
   // all share one characteristic length and a shared material could not reveal a missing per-point
   // update. This trapezoid makes sqrtDetG vary across the points.
-  auto element = std::make_unique<
-    InterfaceFiniteElement< nDim, nNodes > >( 7,
-                                              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                FullIntegration,
-                                              InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+  auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 7, quadratureRule, sectionType );
 
   static std::array< double, nDim* nNodes > coordinates = {
     0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1066,14 +1052,12 @@ void TestElementShapeKeywordsAreEnSightNames()
     constexpr int nDim   = 2;
     constexpr int nNodes = 4;
 
-    auto element = std::make_unique<
-      InterfaceFiniteElement< nDim, nNodes > >( 1,
-                                                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                  FullIntegration,
-                                                InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface;
+    auto       element = std::make_unique< InterfaceFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
-    throwExceptionOnFailure( element->getElementShape() == "bar2",
-                             "2D interface element must report the EnSight keyword \"bar2\", got \"" +
+    throwExceptionOnFailure( element->getElementShape() == "quad4",
+                             "2D interface element must report the EnSight keyword \"quad4\", got \"" +
                                element->getElementShape() + "\"." );
   }
 }
@@ -1225,8 +1209,7 @@ void checkMaterialAssignmentThroughSection( const std::array< double, nDim * nNo
 {
   auto element = std::make_unique<
     InterfaceFiniteElement< nDim, nNodes > >( 7,
-                                              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                FullIntegration );
+                                              Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ) );
   element->assignNodeCoordinates( coordinates.data() );
 
   throwExceptionOnFailure( element->getNumberOfRequiredStateVars() > 0,
@@ -1308,7 +1291,7 @@ void TestFactoryCreatesRegisteredInterfaceElements()
 {
   std::cout << "\n--- TestFactoryCreatesRegisteredInterfaceElements ---\n";
 
-  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "bar2" } };
+  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "quad4" } };
   for ( const auto& [name, shape] : registered ) {
     std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
       Marmot::Registry::ElementFactory::createElement( name, 1 ) );

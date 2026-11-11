@@ -25,12 +25,31 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotFiniteElement.h"
 #include <Eigen/Core>
 #include <algorithm>
 #include <cmath>
 #include <limits>
 
 namespace Marmot::Discretizations::Elements::MassLumping {
+
+  /**
+   * @brief The number of nodes of the linear element whose shape functions are blended in.
+   *
+   * @tparam nDim   Number of spatial dimensions.
+   * @tparam nNodes Number of element nodes.
+   * @return The number of corner nodes of the reference domain of the element: e.g. 2 for bar3, 3 for tri3, 4 for
+   *         quad8 and tetra10, 8 for hexa20. A linear element is its own linear counterpart.
+   *
+   * @details The blend adds the row sums of the linear element to the first nodes of the element, so the corner
+   * nodes must come first in the node order, as in the Abaqus convention. An unknown combination of @p nDim and
+   * @p nNodes is a compile error.
+   */
+  template < int nDim, int nNodes >
+  constexpr int nLinearNodes()
+  {
+    return getNumberOfCornerNodes( getReferenceDomain( getElementShapeByMetric( nDim, nNodes ) ) );
+  }
 
   /**
    * @brief The blend weight of the manifold-based mass lumping scheme.

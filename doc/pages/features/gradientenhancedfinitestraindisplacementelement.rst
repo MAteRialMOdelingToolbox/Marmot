@@ -38,19 +38,19 @@ Registered elements:
 
    * - Name
      - Shape
-     - Integration
+     - Quadrature rule
      - Section
    * - ``GCPE8UL`` / ``GCPE8RUL``
      - Quad8
-     - full / reduced
+     - ``gauss( 4 )`` (3x3) / ``gauss( 3 )`` (2x2)
      - plane strain
    * - ``GC3D8UL``
      - Hexa8
-     - full
+     - ``gauss( 2 )`` (2x2x2)
      - solid
    * - ``GC3D20UL`` / ``GC3D20RUL``
      - Hexa20
-     - full / reduced
+     - ``gauss( 4 )`` (3x3x3) / ``gauss( 3 )`` (2x2x2)
      - solid
 
 The nodal fields are ``displacement`` and ``nonlocal damage``. A material that stores a plastic deformation gradient

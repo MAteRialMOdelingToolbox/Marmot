@@ -44,28 +44,29 @@
  * of an implicit dynamic analysis -- the system is singular, and the modes of the null space carry
  * no inertia at all.
  *
- * The consistent mass is therefore always integrated with the FULL Gauss rule of the element's
- * shape, whatever rule the element uses otherwise. For a full-integration element that is its own
- * rule, and the result is unchanged. The density (and any other inertia coefficient) is a material
- * quantity that lives at the element's own quadrature points; at a point of the mass rule it is
- * taken from the nearest of them in parent coordinates -- exact for a density that is constant
- * over the element, a piecewise-constant approximation otherwise.
- *
- * @note For the tetrahedra the "full" rules are the element rules themselves (1 point for Tetra4,
- * 4 for Tetra10), which are too low for a mass matrix as well. No tetrahedral element is currently
- * registered; one that is must be given a rule of sufficient order here first.
+ * The consistent mass is therefore integrated with its own Gauss rule, whatever rule the element
+ * uses otherwise: for shape functions of order p the integrand \f$\mathbf{N}^\mathsf{T}\mathbf{N}\f$
+ * is a polynomial of degree 2p (on an undistorted element), so the rule of degree 2p integrates it
+ * exactly -- e.g. 2x2 points for Quad4, 3x3x3 for Hexa20, 4 points for Tetra4 and 14 for Tetra10. The density (and
+ * any other inertia coefficient) is a material quantity that lives at the element's own quadrature
+ * points; at a point of the mass rule it is taken from the nearest of them in parent coordinates --
+ * exact for a density that is constant over the element, a piecewise-constant approximation
+ * otherwise.
  */
 namespace Marmot::Discretizations::Elements::ConsistentMass {
 
   /**
    * @brief The quadrature rule the consistent mass of an element of the given shape is integrated
-   * with: the full Gauss rule of that shape.
+   * with: the Gauss rule of degree 2p, with p the order of its shape functions.
    * @param shape The element shape.
    * @return The quadrature points and weights.
+   * @throws std::invalid_argument If there is no Gauss rule of degree 2p for the shape, e.g. for the cubic Quad16 and
+   * Hexa64.
    */
   inline const std::vector< Quadrature::QuadraturePointInfo >& integrationRule( ElementShapes shape )
   {
-    return Quadrature::getGaussPointInfo( shape, Quadrature::IntegrationTypes::FullIntegration );
+    return Quadrature::getQuadraturePoints( shape,
+                                            Quadrature::gaussExactToDegree( 2 * getInterpolationOrder( shape ) ) );
   }
 
   /**

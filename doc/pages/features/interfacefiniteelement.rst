@@ -64,10 +64,14 @@ Elements
    * - Name
      - Nodes
      - Description
+   * - ``ILINE2``
+     - 4
+     - Two-dimensional interface element between two linear lines (2 bottom and 2 top nodes), Gauss rule
+       ``gauss( 2 )`` (2 points)
    * - ``IQUAD4``
      - 8
-     - Three-dimensional interface element between two bilinear quadrilaterals (4 bottom and 4 top nodes),
-       full integration
+     - Three-dimensional interface element between two bilinear quadrilaterals (4 bottom and 4 top nodes), Gauss
+       rule ``gauss( 2 )`` (2x2 points)
 
 The class is a template in the spatial dimension and the number of nodes. Besides the registered
 three-dimensional ``IQUAD4``, a two-dimensional instantiation embeds its quadrature-point state in the

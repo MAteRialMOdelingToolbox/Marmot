@@ -64,7 +64,27 @@ namespace Marmot::Discretizations::Elements::Spatial3D {
 
     Vector3i getBoundaryElementIndices( int faceID )
     {
-      throw std::invalid_argument( "Tetra4: invalid face ID specifed" );
+      /*
+       * faces as in Abaqus (S1: 1-2-3, S2: 1-4-2, S3: 2-4-3, S4: 3-4-1), each in reversed order (as for Hexa8),
+       * so that the area vector of the boundary element points outward
+       * */
+      switch ( faceID ) {
+      case 1: {
+        return ( Vector3i() << 2, 1, 0 ).finished();
+      }
+      case 2: {
+        return ( Vector3i() << 1, 3, 0 ).finished();
+      }
+      case 3: {
+        return ( Vector3i() << 2, 3, 1 ).finished();
+      }
+      case 4: {
+        return ( Vector3i() << 0, 3, 2 ).finished();
+      }
+      default: {
+        throw std::invalid_argument( "Tetra4: invalid face ID specifed" );
+      }
+      }
     }
 
   } // namespace Tetra4
@@ -173,7 +193,7 @@ namespace Marmot::Discretizations::Elements::Spatial3D {
 
     Vector3i getBoundaryElementIndices( int faceID )
     {
-      throw std::invalid_argument( "Tetra4: invalid face ID specifed" );
+      throw std::invalid_argument( "Tetra10: invalid face ID specifed" );
     }
 
   } // namespace Tetra10

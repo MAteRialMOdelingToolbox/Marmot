@@ -1,42 +1,11 @@
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <cmath>
+#include <stdexcept>
 
 using namespace Eigen;
 namespace Marmot::Discretizations::Elements {
-  ElementShapes getElementShapeByMetric( int nDim, int nNodes )
-  {
-
-    switch ( nDim ) {
-    case ( 1 ): {
-      switch ( nNodes ) {
-      case 2: return ElementShapes::Bar2;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=1" );
-      }
-    }
-
-    case ( 2 ): {
-      switch ( nNodes ) {
-      case 4: return ElementShapes::Quad4;
-      case 8: return ElementShapes::Quad8;
-      case 9: return ElementShapes::Quad9;
-      case 16: return ElementShapes::Quad16;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=2" );
-      }
-    }
-    case ( 3 ): {
-      switch ( nNodes ) {
-      case 4: return ElementShapes::Tetra4;
-      case 10: return ElementShapes::Tetra10;
-      case 8: return ElementShapes::Hexa8;
-      case 20: return ElementShapes::Hexa20;
-      case 27: return ElementShapes::Hexa27;
-      case 64: return ElementShapes::Hexa64;
-      default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
-      }
-    }
-    default: throw std::invalid_argument( "Invalid dimension specified" );
-    }
-  }
   // create a large N matrix dependent on the degrees of freedom per node
   MatrixXd NB( const VectorXd& N, const int nDoFPerNode )
   {
@@ -95,69 +64,188 @@ namespace Marmot::Discretizations::Elements {
   }
 
   namespace Quadrature {
-    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::Discretizations::Elements::ElementShapes shape,
-                                                                 IntegrationTypes integrationType )
+
+    const std::vector< QuadratureRuleData >& quadratureRules()
     {
-      using Marmot::Discretizations::Elements::ElementShapes;
-      switch ( shape ) {
-      case ( ElementShapes::Bar2 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial1D::gaussPointList2;
-        else
-          return Spatial1D::gaussPointList1;
-      }
+      using Domain = ReferenceDomain;
+      using Family = QuadratureFamily;
 
-      case ( ElementShapes::Bar3 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial1D::gaussPointList3;
-        else
-          return Spatial1D::gaussPointList2;
-      }
+      // abscissas of the 2- and 3-point Gauss-Legendre rules, 1/sqrt(3) and sqrt(3/5), correctly rounded
+      constexpr double gp2 = 0.577350269189625764509;
+      constexpr double gp3 = 0.774596669241483377036;
 
-      case ( ElementShapes::Quad4 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial2D::gaussPointList2x2;
-        else
-          return Spatial2D::gaussPointList1x1;
-      }
+      // coordinates of the 4-point tetrahedron rule
+      const double a = ( 5 - std::sqrt( 5 ) ) / 20;
+      const double b = ( 5 + 3 * std::sqrt( 5 ) ) / 20;
 
-      case ( ElementShapes::Quad8 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial2D::gaussPointList3x3;
-        else
-          return Spatial2D::gaussPointList2x2;
-      }
+      // the 7-point triangle rule of degree 5 (Radon 1948): the centroid and two orbits (t, t, 1 - 2t)
+      const double s15 = std::sqrt( 15. );
+      const double t1  = ( 6 - s15 ) / 21;
+      const double t2  = ( 6 + s15 ) / 21;
+      const double v1  = ( 155 - s15 ) / 2400;
+      const double v2  = ( 155 + s15 ) / 2400;
 
-      case ( ElementShapes::Tetra4 ): {
-        return Spatial3D::gaussPointListTetra4;
-      }
-      case ( ElementShapes::Tetra10 ): {
-        return Spatial3D::gaussPointListTetra10;
-      }
+      // the 14-point tetrahedron rule of degree 5 (Walkington 2000): two orbits (a, a, a, 1 - 3a) and one orbit
+      // (c, c, 1/2 - c, 1/2 - c), all weights positive; solved to 50 digits from the moment equations
+      const double a1 = 0.0927352503108912264023239, w1 = 0.0122488405193936582572850;
+      const double a2 = 0.310885919263300609797346, w2 = 0.0187813209530026417998643;
+      const double c3 = 0.0455037041256496494918805, w3 = 0.00709100346284691107301157;
+      const double r1 = 1 - 3 * a1, r2 = 1 - 3 * a2, r3 = 0.5 - c3;
 
-      case ( ElementShapes::Hexa8 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial3D::gaussPointList2x2x2;
-        else
-          return Spatial3D::gaussPointList1x1x1;
-      }
+      // Within each domain and family, the rules MUST be sorted by increasing number of points and degree:
+      // getQuadraturePoints() returns the first rule that reaches the requested degree, so a rule placed too early
+      // would be returned for requests a cheaper rule would serve, e.g. 3x3x3 points for gaussExactToDegree( 1 ). A new
+      // rule goes to its place in this order (checked by testCatalogueIsSortedByNumberOfPointsAndDegree). The points of
+      // a Newton-Cotes rule of degree 1 are the corners of the domain in corner order (see ReferenceDomain).
+      // clang-format off
+      static const std::vector< QuadratureRuleData > rules = {
+        // ------------------------------------------------------------------------------------------------ Line
+        { Domain::Line, Family::Gauss, 1, {
+            { ( VectorXd( 1 ) << 0 ).finished(),                    2.0 } } },
+        { Domain::Line, Family::Gauss, 3, {
+            { ( VectorXd( 1 ) << -gp2 ).finished(),                 1.0 },
+            { ( VectorXd( 1 ) << +gp2 ).finished(),                 1.0 } } },
+        { Domain::Line, Family::Gauss, 5, {
+            { ( VectorXd( 1 ) << -gp3 ).finished(),                 5./9 },
+            { ( VectorXd( 1 ) << 0. ).finished(),                   8./9 },
+            { ( VectorXd( 1 ) << +gp3 ).finished(),                 5./9 } } },
+        // trapezoidal rule = 2-point Gauss-Lobatto rule
+        { Domain::Line, Family::NewtonCotes, 1, {
+            { ( VectorXd( 1 ) << -1. ).finished(),                  1.0 },
+            { ( VectorXd( 1 ) << +1. ).finished(),                  1.0 } } },
 
-      case ( ElementShapes::Hexa20 ): {
-        if ( integrationType == IntegrationTypes::FullIntegration )
-          return Spatial3D::gaussPointList3x3x3;
-        else
-          return Spatial3D::gaussPointList2x2x2;
-      }
+        // ------------------------------------------------------------------------------------------------ Triangle
+        { Domain::Triangle, Family::Gauss, 1, {
+            { ( Vector2d() << 1./3, 1./3 ).finished(),              1./2 } } },
+        { Domain::Triangle, Family::Gauss, 2, {
+            { ( Vector2d() << 1./6, 1./6 ).finished(),              1./6 },
+            { ( Vector2d() << 2./3, 1./6 ).finished(),              1./6 },
+            { ( Vector2d() << 1./6, 2./3 ).finished(),              1./6 } } },
+        { Domain::Triangle, Family::Gauss, 5, {
+            { ( Vector2d() << 1./3, 1./3 ).finished(),              9./80 },
+            { ( Vector2d() << t1, t1 ).finished(),                  v1 },
+            { ( Vector2d() << 1 - 2 * t1, t1 ).finished(),          v1 },
+            { ( Vector2d() << t1, 1 - 2 * t1 ).finished(),          v1 },
+            { ( Vector2d() << t2, t2 ).finished(),                  v2 },
+            { ( Vector2d() << 1 - 2 * t2, t2 ).finished(),          v2 },
+            { ( Vector2d() << t2, 1 - 2 * t2 ).finished(),          v2 } } },
+        // vertex rule; there is no Lobatto counterpart on triangles
+        { Domain::Triangle, Family::NewtonCotes, 1, {
+            { ( Vector2d() << 0., 0. ).finished(),                  1./6 },
+            { ( Vector2d() << 1., 0. ).finished(),                  1./6 },
+            { ( Vector2d() << 0., 1. ).finished(),                  1./6 } } },
 
-      default: {
-        throw std::invalid_argument( "Invalid shape/integrationType combination" );
-      }
-      }
+        // ------------------------------------------------------------------------------------------------ Quadrilateral
+        { Domain::Quadrilateral, Family::Gauss, 1, {
+            { Vector2d::Zero(),                                     4. } } },
+        { Domain::Quadrilateral, Family::Gauss, 3, {
+            { ( Vector2d() << +gp2, +gp2 ).finished(),              1.0 },
+            { ( Vector2d() << -gp2, +gp2 ).finished(),              1.0 },
+            { ( Vector2d() << -gp2, -gp2 ).finished(),              1.0 },
+            { ( Vector2d() << +gp2, -gp2 ).finished(),              1.0 } } },
+        { Domain::Quadrilateral, Family::Gauss, 5, {
+            { ( Vector2d() << 0, 0. ).finished(),                   64./81 },
+            { ( Vector2d() << -gp3, -gp3 ).finished(),              25./81 },
+            { ( Vector2d() << +gp3, -gp3 ).finished(),              25./81 },
+            { ( Vector2d() << +gp3, +gp3 ).finished(),              25./81 },
+            { ( Vector2d() << -gp3, +gp3 ).finished(),              25./81 },
+            { ( Vector2d() << 0, -gp3 ).finished(),                 40./81 },
+            { ( Vector2d() << gp3, 0. ).finished(),                 40./81 },
+            { ( Vector2d() << 0, +gp3 ).finished(),                 40./81 },
+            { ( Vector2d() << -gp3, 0. ).finished(),                40./81 } } },
+        // tensor product of the trapezoidal rule
+        { Domain::Quadrilateral, Family::NewtonCotes, 1, {
+            { ( Vector2d() << -1., -1. ).finished(),                1.0 },
+            { ( Vector2d() << +1., -1. ).finished(),                1.0 },
+            { ( Vector2d() << +1., +1. ).finished(),                1.0 },
+            { ( Vector2d() << -1., +1. ).finished(),                1.0 } } },
+
+        // ------------------------------------------------------------------------------------------------ Tetrahedron
+        { Domain::Tetrahedron, Family::Gauss, 1, {
+            { ( Vector3d() << 1./4, 1./4, 1./4 ).finished(),        1./6 } } },
+        { Domain::Tetrahedron, Family::Gauss, 2, {
+            { ( Vector3d() << a, a, a ).finished(),                 1./24 },
+            { ( Vector3d() << a, a, b ).finished(),                 1./24 },
+            { ( Vector3d() << a, b, a ).finished(),                 1./24 },
+            { ( Vector3d() << b, a, a ).finished(),                 1./24 } } },
+        { Domain::Tetrahedron, Family::Gauss, 5, {
+            { ( Vector3d() << a1, a1, a1 ).finished(),              w1 },
+            { ( Vector3d() << a1, a1, r1 ).finished(),              w1 },
+            { ( Vector3d() << a1, r1, a1 ).finished(),              w1 },
+            { ( Vector3d() << r1, a1, a1 ).finished(),              w1 },
+            { ( Vector3d() << a2, a2, a2 ).finished(),              w2 },
+            { ( Vector3d() << a2, a2, r2 ).finished(),              w2 },
+            { ( Vector3d() << a2, r2, a2 ).finished(),              w2 },
+            { ( Vector3d() << r2, a2, a2 ).finished(),              w2 },
+            { ( Vector3d() << c3, c3, r3 ).finished(),              w3 },
+            { ( Vector3d() << c3, r3, c3 ).finished(),              w3 },
+            { ( Vector3d() << r3, c3, c3 ).finished(),              w3 },
+            { ( Vector3d() << c3, r3, r3 ).finished(),              w3 },
+            { ( Vector3d() << r3, c3, r3 ).finished(),              w3 },
+            { ( Vector3d() << r3, r3, c3 ).finished(),              w3 } } },
+
+        // ------------------------------------------------------------------------------------------------ Hexahedron
+        { Domain::Hexahedron, Family::Gauss, 1, {
+            { Vector3d::Zero(),                                     8.0 } } },
+        { Domain::Hexahedron, Family::Gauss, 3, {
+            { ( Vector3d() << -gp2, -gp2, -gp2 ).finished(),        1.0 },
+            { ( Vector3d() << +gp2, -gp2, -gp2 ).finished(),        1.0 },
+            { ( Vector3d() << +gp2, +gp2, -gp2 ).finished(),        1.0 },
+            { ( Vector3d() << -gp2, +gp2, -gp2 ).finished(),        1.0 },
+            { ( Vector3d() << -gp2, -gp2, +gp2 ).finished(),        1.0 },
+            { ( Vector3d() << +gp2, -gp2, +gp2 ).finished(),        1.0 },
+            { ( Vector3d() << +gp2, +gp2, +gp2 ).finished(),        1.0 },
+            { ( Vector3d() << -gp2, +gp2, +gp2 ).finished(),        1.0 } } },
+        { Domain::Hexahedron, Family::Gauss, 5, {
+            { ( Vector3d() << -gp3, -gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, -gp3, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, -gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << -gp3, 0, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << 0, 0, -gp3 ).finished(),              320./729 },
+            { ( Vector3d() << gp3, 0, -gp3 ).finished(),            200./729 },
+            { ( Vector3d() << -gp3, +gp3, -gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, +gp3, -gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, +gp3, -gp3 ).finished(),        125./729 },
+
+            { ( Vector3d() << -gp3, -gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << 0, -gp3, 0 ).finished(),              320./729 },
+            { ( Vector3d() << +gp3, -gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << -gp3, 0, 0 ).finished(),              320./729 },
+            { ( Vector3d() << 0, 0, 0 ).finished(),                 512./729 },
+            { ( Vector3d() << gp3, 0, 0 ).finished(),               320./729 },
+            { ( Vector3d() << -gp3, +gp3, 0 ).finished(),           200./729 },
+            { ( Vector3d() << 0, +gp3, 0 ).finished(),              320./729 },
+            { ( Vector3d() << +gp3, +gp3, 0 ).finished(),           200./729 },
+
+            { ( Vector3d() << -gp3, -gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, -gp3, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, -gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << -gp3, 0, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << 0, 0, +gp3 ).finished(),              320./729 },
+            { ( Vector3d() << gp3, 0, +gp3 ).finished(),            200./729 },
+            { ( Vector3d() << -gp3, +gp3, +gp3 ).finished(),        125./729 },
+            { ( Vector3d() << 0, +gp3, +gp3 ).finished(),           200./729 },
+            { ( Vector3d() << +gp3, +gp3, +gp3 ).finished(),        125./729 } } },
+      };
+      // clang-format on
+
+      return rules;
     }
 
-    int getNumGaussPoints( Marmot::Discretizations::Elements::ElementShapes shape, IntegrationTypes integrationType )
+    const std::vector< QuadraturePointInfo >& getQuadraturePoints( ReferenceDomain domain, QuadratureRule rule )
     {
-      return static_cast< int >( getGaussPointInfo( shape, integrationType ).size() );
+      // the first match is the cheapest, since the catalogue is sorted by number of points within domain and family
+      for ( const auto& entry : quadratureRules() )
+        if ( entry.domain == domain && entry.family == rule.family &&
+             entry.degreeOfExactness >= rule.degreeOfExactness )
+          return entry.points;
+
+      static const char* domainNames[] = { "Line", "Triangle", "Quadrilateral", "Tetrahedron", "Hexahedron" };
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << "getQuadraturePoints(): there is no "
+                                   << ( rule.family == QuadratureFamily::Gauss ? "Gauss" : "Newton-Cotes" )
+                                   << " rule of degree " << rule.degreeOfExactness << " on the reference domain "
+                                   << domainNames[static_cast< int >( domain )] << "." );
     }
 
   } // namespace Quadrature
