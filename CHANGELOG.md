@@ -34,6 +34,12 @@ All notable changes to Marmot are documented in this file. The format follows
 
   `characteristicLengthForCriticalTimeStepAt` is not derived for quadratic simplices (`Tri6`, `Tetra10`); asking for
   it is a compile error.
+- Nodal integration with closed Newton-Cotes rules (`Quadrature::newtonCotesExactToDegree( degree )`) on `Line`, `Quadrilateral`
+  and `Triangle`: the rules of degree 1 have the corners of the domain as points, i.e. one point at each node of the
+  linear element (`Bar2`, `Quad4`, `Tri3`) in node order, with the integral of its shape function as weight.
+- Gauss rules of degree 5 on simplices: the 7-point triangle rule (Radon 1948) and the 14-point tetrahedron rule
+  (Walkington 2000), both with positive weights and interior points. The 14-point rule makes the consistent mass of
+  a quadratic tetrahedron (`gaussExactToDegree( 4 )`) available.
 
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
@@ -50,6 +56,29 @@ All notable changes to Marmot are documented in this file. The format follows
   `GeometryElement::characteristicLengthForCriticalTimeStepAt( xi )` (for the latter through its member
   `localGeometryElement`), so the name no longer collides with the material's `characteristicElementLength`, the
   regularisation length.
+- **Breaking:** quadrature rules are requested by family and degree of exactness instead of `FullIntegration` /
+  `ReducedIntegration`, whose meaning differed from shape to shape. All rules are kept in one catalogue,
+  `Quadrature::quadratureRules()`, each entry with its reference domain (`Line`, `Triangle`, `Quadrilateral`,
+  `Tetrahedron`, `Hexahedron`), its family (`Gauss`, `NewtonCotes`) and the degree it integrates exactly.
+  `Quadrature::getQuadraturePoints( domain, rule )` returns the rule with the fewest points on the reference domain
+  that reaches the requested degree, and throws if there is none; `getQuadraturePoints( shape, rule )` does the same
+  on the reference domain of an element shape. Elements take a
+  `Quadrature::QuadratureRule`, built by `gaussExactToDegree( degree )` or `newtonCotesExactToDegree( degree )`, instead of `IntegrationTypes`;
+  the registrations state the degree their stiffness needs (e.g. `CPS4` `gaussExactToDegree( 2 )`, `CPS8R` `gaussExactToDegree( 3 )`). The
+  consistent mass asks for `gaussExactToDegree( 2p )` (N^T N) and the faces of distributed loads for `gaussExactToDegree( 3p - 1 )` of the face
+  shape (N times the area vector of the face). Every registered element keeps its points, in the same order, so
+  results are unchanged. Migration:
+
+  | Old | New |
+  |---|---|
+  | `IntegrationTypes::FullIntegration` | `gaussExactToDegree( 2p )`; for `Tetra4` `gaussExactToDegree( 1 )`, for `Tetra10` `gaussExactToDegree( 2 )` |
+  | `IntegrationTypes::ReducedIntegration` | `gaussExactToDegree( 2p - 1 )`; for `Tetra4` `gaussExactToDegree( 1 )`, for `Tetra10` `gaussExactToDegree( 2 )` |
+  | `getGaussPointInfo( shape, type )` | `getQuadraturePoints( shape, rule )` |
+  | `getNumGaussPoints( shape, type )` | `getQuadraturePoints( shape, rule ).size()` |
+  | `Spatial1D::gaussPointList1/2/3` | `getQuadraturePoints( ReferenceDomain::Line, gaussExactToDegree( 1/3/5 ) )` |
+  | `Spatial2D::gaussPointList1x1/2x2/3x3` | `getQuadraturePoints( ReferenceDomain::Quadrilateral, gaussExactToDegree( 1/3/5 ) )` |
+  | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 1/3/5 ) )` |
+  | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
 ### Fixed
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
@@ -72,8 +101,8 @@ All notable changes to Marmot are documented in this file. The format follows
   mass / nNodes at each node. `MassLumping::nLinearNodes()` is the number of corner nodes of the reference domain,
   which also corrects `Tetra10` (4 instead of 8; not registered).
 - Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
-  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule, which is exact for the
-  quadratic integrand.
+  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule (`gaussExactToDegree( 2 )`), which is
+  exact for the quadratic integrand.
 - **Results:** `newmarkBetaIntegration` (`MarmotMechanicsCore`, used by all particles with the Newmark properties):
   a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
   is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
@@ -81,6 +110,12 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Results:** `newmarkBetaIntegration` with `beta = 0` (no time integration, a quasi-static analysis) sets the velocity
   and the acceleration to zero: a quasi-static step after a dynamic one leaves the particles at rest. It used to keep
   the velocity, advanced once by `dT (1 - gamma) a_n`. Analyses that are quasi-static from the start are unchanged.
+- **Results:** precision of the 3-point Gauss rules. The abscissa sqrt(3/5) was tabulated 4 ulp off and the 3x3x3
+  weights up to 12 ulp off (their sum missed 8 by 7e-15); both are now correctly rounded, the weights as exact fractions
+  over 729. The abscissas are no longer public (`Quadrature::gp2`, `Quadrature::gp3`); like all rule data they live in
+  `quadratureRules()`. This changes the last digits (about 1e-15 relative) of all elements and faces that use the
+  3-point, 3x3 or 3x3x3 rule: the full-integration Quad8 and Hexa20 elements, pressure on Quad8 and Hexa20 faces, and
+  the consistent mass of Quad8 and Hexa20.
 
 ## [v26.11] - 2026-11-02
 

@@ -22,7 +22,7 @@ void testDefaultNamedPropertyInterface()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
 
   auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( elId, intType, secType );
@@ -82,7 +82,7 @@ void testInstantiationAndBasicProperties()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   const auto                  secType       = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
@@ -132,7 +132,7 @@ void testStiffnessMatrixCalculationPlaneStress()
 {
   // Test setup:
   // Element Type: 2D Quad4
-  // Integration: Full (2x2 Gauss)
+  // Quadrature rule: gaussExactToDegree( 2 ) (2x2 points)
   // Section Type: Plane Stress
   // Node Coordinates: (0,0), (6,0), (8,6), (2,6) - forms a general quadrilateral
   // Material: Linear Elastic (E=10000, nu=0.2, density=1)
@@ -141,7 +141,7 @@ void testStiffnessMatrixCalculationPlaneStress()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
 
   // Node coordinates defining a general quadrilateral
   const std::vector< double > nodeCoordsVec = { 0.0,
@@ -223,7 +223,7 @@ void testInitializeYourselfAndShapeFunctions()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
 
   // Unit square coordinates
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -320,7 +320,7 @@ void testLumpedInertiaQuad4RegularElementIsPositiveAndConservesMass()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4 (linear)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 }; // unit square
@@ -360,7 +360,7 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8; // Hexa8 (linear)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   // Unit cube; node ordering per MarmotFiniteElement3D.cpp Hexa8::N.
@@ -394,8 +394,8 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
   }
 }
 
-void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
-                                     const std::string&                                              label )
+void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::QuadratureRule intType,
+                                     const std::string&                                            label )
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 8; // Quad8 (quadratic serendipity)
@@ -446,8 +446,8 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
   // Reference values from an independent symbolic (SymPy) double integration of
   // 0.5*N_serendipity + 0.5*N_bilinear over the reference square: corners = 1/12,
   // midsides = 1/6. Because the geometry map is affine here (straight edges, midsides at
-  // exact midpoints), both full (3x3) and reduced (2x2) Gauss integrate the (low-degree)
-  // integrand exactly, so both integration types must reproduce these same values.
+  // exact midpoints), both gaussExactToDegree( 4 ) (3x3) and gaussExactToDegree( 3 ) (2x2) integrate the (low-degree)
+  // integrand exactly, so both rules must reproduce these same values.
   const double expectedCorner  = 1.0 / 12.0;
   const double expectedMidside = 1.0 / 6.0;
 
@@ -466,21 +466,20 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
                            label + ": Quad8 lumped mass does not conserve the total element mass." );
 }
 
-void testLumpedInertiaQuad8FullIntegrationMatchesAnalyticValues()
+void testLumpedInertiaQuad8Gauss3x3MatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
-                                  "FullIntegration" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ),
+                                  "gaussExactToDegree( 4 )" );
 }
 
-void testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues()
+void testLumpedInertiaQuad8Gauss2x2MatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
-                                  "ReducedIntegration" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ),
+                                  "gaussExactToDegree( 3 )" );
 }
 
-void checkQuad8DistortedElementStaysNonSingular(
-  Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
-  const std::string&                                              label )
+void checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::QuadratureRule intType,
+                                                 const std::string&                                            label )
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 8;
@@ -552,22 +551,20 @@ void checkQuad8DistortedElementStaysNonSingular(
                            label + ": distorted Quad8 lumped mass does not conserve the total element mass." );
 }
 
-void testLumpedInertiaQuad8DistortedElementFullIntegrationStaysNonSingular()
+void testLumpedInertiaQuad8DistortedElementGauss3x3StaysNonSingular()
 {
-  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                FullIntegration,
-                                              "FullIntegration" );
+  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ),
+                                              "gaussExactToDegree( 4 )" );
 }
 
-void testLumpedInertiaQuad8DistortedElementReducedIntegrationStaysNonSingular()
+void testLumpedInertiaQuad8DistortedElementGauss2x2StaysNonSingular()
 {
-  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                ReducedIntegration,
-                                              "ReducedIntegration" );
+  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ),
+                                              "gaussExactToDegree( 3 )" );
 }
 
-void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
-                                      const std::string&                                              label )
+void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::QuadratureRule intType,
+                                      const std::string&                                            label )
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 20; // Hexa20 (quadratic serendipity)
@@ -662,8 +659,8 @@ void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrat
 
   // Reference values from an independent symbolic (SymPy) double integration of
   // 1/3*N_serendipity + 2/3*N_trilinear over the reference cube: corners = 1/24,
-  // edges = 1/18. Both full (3x3x3) and reduced (2x2x2) Gauss integrate this exactly for a
-  // regular (affinely-mapped) element, so both integration types must reproduce these values.
+  // edges = 1/18. Both gaussExactToDegree( 4 ) (3x3x3) and gaussExactToDegree( 3 ) (2x2x2) integrate this exactly for a
+  // regular (affinely-mapped) element, so both rules must reproduce these values.
   //
   // REGRESSION GUARD: the default 1/2-1/2 split (used for every other element) makes the
   // negative corner contribution of the Hexa20 serendipity shape function EXACTLY cancel the
@@ -689,16 +686,16 @@ void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrat
                            label + ": Hexa20 lumped mass does not conserve the total element mass." );
 }
 
-void testLumpedInertiaHexa20FullIntegrationMatchesAnalyticValues()
+void testLumpedInertiaHexa20Gauss3x3x3MatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
-                                   "FullIntegration" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ),
+                                   "gaussExactToDegree( 4 )" );
 }
 
-void testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues()
+void testLumpedInertiaHexa20Gauss2x2x2MatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
-                                   "ReducedIntegration" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 3 ),
+                                   "gaussExactToDegree( 3 )" );
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -736,7 +733,7 @@ void testCriticalTimeStepQuad4RegularElementMatchesUnitMassDistributionFactor()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4 (linear)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 }; // unit square
@@ -772,7 +769,7 @@ void testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8; // Hexa8 (linear)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
@@ -806,7 +803,7 @@ void testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFacto
   constexpr int nDim    = 2;
   constexpr int nNodes  = 8; // Quad8 (quadratic serendipity)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   // Unit square with midside nodes at exact edge midpoints (straight edges); same geometry as
@@ -860,7 +857,7 @@ void testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFact
   constexpr int nDim    = 3;
   constexpr int nNodes  = 20; // Hexa20 (quadratic serendipity)
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   // Unit cube with edge-midside nodes at exact midpoints (straight edges); same geometry as
@@ -914,7 +911,7 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -973,7 +970,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1336,7 +1333,10 @@ void checkRegularisationLengthOfLinearSimplex( const std::vector< double >& coor
   // factors 4 and 8 of the reference cube [-1, 1]^nDim gave sqrt( 8 A ) and cbrt( 48 V ) for a linear simplex
   using Simplex          = DisplacementFiniteElement< nDim, nDim + 1 >;
   const auto sectionType = nDim == 2 ? Simplex::PlaneStrain : Simplex::Solid;
-  Simplex element( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, sectionType );
+  // the former full integration: 3 points on the triangle, 1 point on the tetrahedron
+  Simplex element( 1,
+                   Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( nDim == 2 ? 2 : 1 ),
+                   sectionType );
   element.assignNodeCoordinates( coordinates.data() );
 
   const std::vector< double > thickness = { 1.0 };
@@ -1395,7 +1395,7 @@ void testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 1;
   constexpr int nNodes  = 2;
   const int     elId    = 1;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::UniaxialStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 1.0 }; // unit-length bar
@@ -1456,11 +1456,9 @@ void testComputeKernelsExplicitThrowsForUniaxialStress()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 1.0 };
 
-  auto element = std::make_unique< DisplacementFiniteElement<
-    nDim,
-    nNodes > >( 1,
-                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
-                DisplacementFiniteElement< nDim, nNodes >::SectionType::UniaxialStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = DisplacementFiniteElement< nDim, nNodes >::SectionType::UniaxialStress;
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 10000.0, 0.2, 1.0 };
@@ -1495,7 +1493,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1554,7 +1552,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1611,7 +1609,7 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1656,7 +1654,7 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1686,11 +1684,9 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
   constexpr int nDim   = 2;
   constexpr int nNodes = 4;
 
-  auto element = std::make_unique<
-    DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                   FullIntegration,
-                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
   bool threwForStateVars = false;
   try {
@@ -1721,7 +1717,7 @@ void testComputeConsistentInertiaConservesTotalMass()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1763,11 +1759,11 @@ void testComputeConsistentInertiaConservesTotalMass()
   }
 }
 
-// The consistent mass of a reduced-integration element: integrated with the FULL rule of its shape,
-// never with the element's own reduced rule, which cannot give a mass of full rank (8 points for a
-// Hexa20 give rank 24 out of 60). On a distorted element with a constant density, the reduced and
-// the full-integration element must therefore produce the same matrix, and it must be positive
-// definite. See Marmot::Discretizations::Elements::ConsistentMass.
+// The consistent mass is integrated with its own rule gaussExactToDegree( 2p ), never with the rule of the element,
+// which for a reduced-integration element cannot give a mass of full rank (gaussExactToDegree( 3 ), i.e. 2x2x2 points,
+// gives a Hexa20 rank 24 out of 60). On a distorted element with a constant density, the gaussExactToDegree( 3 ) and
+// the gaussExactToDegree( 4 ) element must therefore produce the same matrix, and it must be positive definite. See
+// Marmot::Discretizations::Elements::ConsistentMass.
 
 /// Nodal parent coordinates of a Quad8 (0-3 corners, 4-7 midsides 0-1, 1-2, 2-3, 3-0).
 const std::vector< std::vector< double > > quad8ParentNodes =
@@ -1799,7 +1795,7 @@ std::vector< double > distortedNodeCoordinates( const std::vector< std::vector< 
 }
 
 template < int nDim, int nNodes >
-Eigen::MatrixXd consistentMassOf( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
+Eigen::MatrixXd consistentMassOf( Marmot::Discretizations::Elements::Quadrature::QuadratureRule   intType,
                                   typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
                                   const std::vector< double >&                                    nodeCoordinates )
 {
@@ -1827,58 +1823,57 @@ Eigen::MatrixXd consistentMassOf( Marmot::Discretizations::Elements::Quadrature:
   return Eigen::Map< Eigen::MatrixXd >( M.data(), nDof, nDof );
 }
 
-void checkReducedIntegrationConsistentMassIsTheFullOne( const Eigen::MatrixXd& reduced,
-                                                        const Eigen::MatrixXd& full,
-                                                        const std::string&     label )
+void checkConsistentMassIsIndependentOfTheElementRule( const Eigen::MatrixXd& withGauss3,
+                                                       const Eigen::MatrixXd& withGauss4,
+                                                       const std::string&     label )
 {
-  throwExceptionOnFailure( ( reduced - full ).norm() <= 1e-13 * full.norm(),
-                           label + ": the reduced-integration consistent mass differs from the full-integration one." );
+  throwExceptionOnFailure( ( withGauss3 - withGauss4 ).norm() <= 1e-13 * withGauss4.norm(),
+                           label + ": the consistent mass of the gaussExactToDegree( 3 ) element differs from the "
+                                   "gaussExactToDegree( 4 ) one." );
 
-  const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( reduced ).eigenvalues();
+  const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( withGauss3 ).eigenvalues();
   throwExceptionOnFailure( eigenvalues.minCoeff() > 1e-6 * eigenvalues.maxCoeff(),
-                           label + ": the reduced-integration consistent mass is not positive definite (smallest " +
+                           label +
+                             ": the consistent mass of the gaussExactToDegree( 3 ) element is not positive definite "
+                             "(smallest " +
                              "eigenvalue " + std::to_string( eigenvalues.minCoeff() ) + ")." );
 }
 
-void testConsistentInertiaQuad8ReducedIntegrationIsIntegratedWithTheFullRule()
+void testConsistentInertiaQuad8IsIndependentOfTheElementRule()
 {
   using Element     = DisplacementFiniteElement< 2, 8 >;
   const auto coords = distortedNodeCoordinates( quad8ParentNodes );
-  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::
-                                                                                 Quadrature::IntegrationTypes::
-                                                                                   ReducedIntegration,
-                                                                               Element::SectionType::PlaneStrain,
-                                                                               coords ),
-                                                     consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::
-                                                                                 Quadrature::IntegrationTypes::
-                                                                                   FullIntegration,
-                                                                               Element::SectionType::PlaneStrain,
-                                                                               coords ),
-                                                     "Quad8" );
+  checkConsistentMassIsIndependentOfTheElementRule( consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::
+                                                                                Quadrature::gaussExactToDegree( 3 ),
+                                                                              Element::SectionType::PlaneStrain,
+                                                                              coords ),
+                                                    consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::
+                                                                                Quadrature::gaussExactToDegree( 4 ),
+                                                                              Element::SectionType::PlaneStrain,
+                                                                              coords ),
+                                                    "Quad8" );
 }
 
-void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
+void testConsistentInertiaHexa20IsIndependentOfTheElementRule()
 {
   using Element     = DisplacementFiniteElement< 3, 20 >;
   const auto coords = distortedNodeCoordinates( hexa20ParentNodes );
-  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::
-                                                                                  Quadrature::IntegrationTypes::
-                                                                                    ReducedIntegration,
-                                                                                Element::SectionType::Solid,
-                                                                                coords ),
-                                                     consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::
-                                                                                  Quadrature::IntegrationTypes::
-                                                                                    FullIntegration,
-                                                                                Element::SectionType::Solid,
-                                                                                coords ),
-                                                     "Hexa20" );
+  checkConsistentMassIsIndependentOfTheElementRule( consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::
+                                                                                 Quadrature::gaussExactToDegree( 3 ),
+                                                                               Element::SectionType::Solid,
+                                                                               coords ),
+                                                    consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::
+                                                                                 Quadrature::gaussExactToDegree( 4 ),
+                                                                               Element::SectionType::Solid,
+                                                                               coords ),
+                                                    "Hexa20" );
 }
 
 void testComputeBodyForceConservesTotalForcePerDirection()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1927,7 +1922,7 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1981,7 +1976,7 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -2030,7 +2025,7 @@ void testGetStateViewVariants()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -2094,11 +2089,9 @@ void testGetCoordinatesAtQuadraturePoints()
   constexpr int nDim   = 2;
   constexpr int nNodes = 4;
 
-  auto element = std::make_unique<
-    DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                   FullIntegration,
-                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   element->assignNodeCoordinates( nodeCoords.data() );
@@ -2119,11 +2112,9 @@ void testGetNodeFieldsAndDofIndicesPermutationPattern()
   constexpr int nDim   = 2;
   constexpr int nNodes = 4;
 
-  auto element = std::make_unique<
-    DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                                   FullIntegration,
-                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
+  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const auto sectionType    = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, quadratureRule, sectionType );
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes, "getNodeFields() size mismatch." );
@@ -2157,7 +2148,7 @@ namespace {
   {
     constexpr int nDim    = 3;
     constexpr int nNodes  = 8;
-    const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+    const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
     const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
     // Unit cube; node ordering per MarmotFiniteElement3D.cpp Hexa8::N.
@@ -2244,10 +2235,8 @@ namespace {
     const std::vector< double > matProps      = { 10000.0, 0.2, density };
     const std::vector< double > bulkViscosity = { 0.06, 1.2 };
 
-    auto
-      element = std::make_unique< ElemType >( 1,
-                                              Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
-                                              ElemType::SectionType::Solid );
+    const auto quadratureRule = Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
     Marmot::Discretizations::MaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGLINEARELASTIC",
                                                               matProps.data(),
@@ -2449,7 +2438,7 @@ void testBulkViscosityRejectsNegativeCoefficients()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
@@ -2477,12 +2466,12 @@ int main()
     testInitializeYourselfAndShapeFunctions,
     testLumpedInertiaQuad4RegularElementIsPositiveAndConservesMass,
     testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass,
-    testLumpedInertiaQuad8FullIntegrationMatchesAnalyticValues,
-    testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues,
-    testLumpedInertiaQuad8DistortedElementFullIntegrationStaysNonSingular,
-    testLumpedInertiaQuad8DistortedElementReducedIntegrationStaysNonSingular,
-    testLumpedInertiaHexa20FullIntegrationMatchesAnalyticValues,
-    testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues,
+    testLumpedInertiaQuad8Gauss3x3MatchesAnalyticValues,
+    testLumpedInertiaQuad8Gauss2x2MatchesAnalyticValues,
+    testLumpedInertiaQuad8DistortedElementGauss3x3StaysNonSingular,
+    testLumpedInertiaQuad8DistortedElementGauss2x2StaysNonSingular,
+    testLumpedInertiaHexa20Gauss3x3x3MatchesAnalyticValues,
+    testLumpedInertiaHexa20Gauss2x2x2MatchesAnalyticValues,
     testCriticalTimeStepQuad4RegularElementMatchesUnitMassDistributionFactor,
     testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor,
     testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFactor,
@@ -2508,8 +2497,8 @@ int main()
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
     testComputeConsistentInertiaConservesTotalMass,
-    testConsistentInertiaQuad8ReducedIntegrationIsIntegratedWithTheFullRule,
-    testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule,
+    testConsistentInertiaQuad8IsIndependentOfTheElementRule,
+    testConsistentInertiaHexa20IsIndependentOfTheElementRule,
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,

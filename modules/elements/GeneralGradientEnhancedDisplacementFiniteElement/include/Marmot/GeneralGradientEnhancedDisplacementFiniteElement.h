@@ -331,13 +331,13 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Construct element with ID, quadrature rule and section assumption.
      * @param elementID Unique element label.
-     * @param integrationType Integration (quadrature) rule.
+     * @param quadratureRule Quadrature rule: family and degree of exactness.
      * @param sectionType Section assumption (1D/2D/3D).
      */
     GeneralGradientEnhancedDisplacementFiniteElement(
-      int                                                     elementID,
-      Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-      SectionType                                             sectionType );
+      int                                                   elementID,
+      Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+      SectionType                                           sectionType );
 
     /** @brief Total number of required state variables for this element (sum over all quadrature points). */
     int getNumberOfRequiredStateVars() override;
@@ -651,13 +651,14 @@ namespace Marmot::Discretizations::Elements {
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     GeneralGradientEnhancedDisplacementFiniteElement(
-      int                                                     elementID,
-      Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-      SectionType                                             sectionType )
+      int                                                   elementID,
+      Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+      SectionType                                           sectionType )
     : elementProperties( nullptr, 0 ), elLabel( elementID ), sectionType( sectionType )
   {
     for ( const auto& qpInfo :
-          Discretizations::Elements::Quadrature::getGaussPointInfo( localGeometryElement.shape, integrationType ) ) {
+          Discretizations::Elements::Quadrature::getQuadraturePoints( localGeometryElement.referenceDomain,
+                                                                      quadratureRule ) ) {
       qps.emplace_back( qpInfo.xi, qpInfo.weight );
     }
   }

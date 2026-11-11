@@ -1,3 +1,4 @@
+#include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotMassLumping.h"
@@ -160,57 +161,345 @@ namespace {
 } // namespace
 
 // ---------------------------------------------------------------------------------------------
-// Quadrature::getGaussPointInfo() / getNumGaussPoints(): the branches actually reached by every
-// existing element and boundary test all use FullIntegration for Bar3/Tetra4/Tetra10 (or, for
-// Bar2/Quad4, never use ReducedIntegration) and never construct a Tetra10 element (there is no
-// registered element type using that shape) or pass an unsupported shape at all.
+// Quadrature: the catalogue quadratureRules() and the lookup getQuadraturePoints()
 // ---------------------------------------------------------------------------------------------
 
-void testGetGaussPointInfoReducedIntegrationBranches()
-{
+namespace {
   using namespace Marmot::Discretizations::Elements::Quadrature;
 
-  throwExceptionOnFailure( getGaussPointInfo( Bar2, ReducedIntegration ).size() == 1,
-                           "Bar2 reduced integration must use the 1-point rule." );
-  throwExceptionOnFailure( getGaussPointInfo( Bar3, ReducedIntegration ).size() == 2,
-                           "Bar3 reduced integration must use the 2-point rule." );
-  throwExceptionOnFailure( getGaussPointInfo( Quad4, ReducedIntegration ).size() == 1,
-                           "Quad4 reduced integration must use the 1x1-point rule." );
-}
-
-void testGetGaussPointInfoTetrahedralShapes()
-{
-  using namespace Marmot::Discretizations::Elements::Quadrature;
-
-  // Tetra4/Tetra10 quadrature rules don't distinguish integration type; both calls must succeed
-  // and return a non-empty rule.
-  throwExceptionOnFailure( getGaussPointInfo( Tetra4, FullIntegration ).size() > 0,
-                           "Tetra4 must return a non-empty quadrature rule." );
-  throwExceptionOnFailure( getGaussPointInfo( Tetra10, ReducedIntegration ).size() > 0,
-                           "Tetra10 must return a non-empty quadrature rule." );
-}
-
-void testGetGaussPointInfoThrowsForUnsupportedShape()
-{
-  using namespace Marmot::Discretizations::Elements::Quadrature;
-
-  bool threw = false;
-  try {
-    getGaussPointInfo( Quad9, FullIntegration );
+  double factorial( int n )
+  {
+    return n <= 1 ? 1.0 : n * factorial( n - 1 );
   }
-  catch ( const std::invalid_argument& ) {
-    threw = true;
+
+  /// exact integral of the monomial xi^e[0] * eta^e[1] * zeta^e[2] over a reference domain
+  double exactIntegralOfMonomial( ReferenceDomain domain, const std::vector< int >& e )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line:
+    case ReferenceDomain::Quadrilateral:
+    case ReferenceDomain::Hexahedron: {
+      double result = 1;
+      for ( const int a : e )
+        result *= a % 2 == 0 ? 2.0 / ( a + 1 ) : 0.0;
+      return result;
+    }
+    case ReferenceDomain::Triangle:
+    case ReferenceDomain::Tetrahedron: {
+      // a! b! (c!) / ( a + b (+ c) + nDim )!
+      double numerator = 1;
+      int    sum       = 0;
+      for ( const int a : e ) {
+        numerator *= factorial( a );
+        sum += a;
+      }
+      return numerator / factorial( sum + static_cast< int >( e.size() ) );
+    }
+    }
+    throw std::invalid_argument( "invalid reference domain" );
   }
-  throwExceptionOnFailure( threw, "getGaussPointInfo() must throw for an unsupported shape (Quad9)." );
+
+  /// all exponents of the monomials of the polynomial space a rule claims: Q_degree on tensor-product domains,
+  /// P_degree on simplices
+  std::vector< std::vector< int > > exponentsOfPolynomialSpace( const QuadratureRuleData& rule )
+  {
+    const int  nDim    = static_cast< int >( rule.points.front().xi.size() );
+    const int  degree  = rule.degreeOfExactness;
+    const bool simplex = isSimplex( rule.domain );
+
+    std::vector< std::vector< int > > exponents;
+    std::vector< int >                e( nDim, 0 );
+    while ( true ) {
+      int sum = 0;
+      for ( const int a : e )
+        sum += a;
+      if ( !simplex || sum <= degree )
+        exponents.push_back( e );
+
+      // next combination with every exponent in [0, degree]
+      int i = 0;
+      while ( i < nDim && e[i] == degree )
+        e[i++] = 0;
+      if ( i == nDim )
+        break;
+      e[i]++;
+    }
+    return exponents;
+  }
+
+  int dimension( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line: return 1;
+    case ReferenceDomain::Triangle:
+    case ReferenceDomain::Quadrilateral: return 2;
+    case ReferenceDomain::Tetrahedron:
+    case ReferenceDomain::Hexahedron: return 3;
+    }
+    throw std::invalid_argument( "invalid reference domain" );
+  }
+
+  /// the linear element of a reference domain, whose nodes are the corners of the domain
+  ElementShapes linearShape( ReferenceDomain domain )
+  {
+    return getElementShapeByMetric( dimension( domain ), getNumberOfCornerNodes( domain ) );
+  }
+
+  /// a fixed-size row of shape function values as a dynamic column vector
+  /// @details Copied value by value: assigning a fixed-size row of fewer than four values to a dynamic vector with
+  /// Eigen makes GCC 14 at x86-64-v3 warn about the AVX packet loop (-Warray-bounds), although it never runs.
+  template < typename Derived >
+  Eigen::VectorXd asColumn( const Eigen::MatrixBase< Derived >& N )
+  {
+    Eigen::VectorXd column( N.size() );
+    for ( Eigen::Index i = 0; i < N.size(); i++ )
+      column( i ) = N( i );
+    return column;
+  }
+
+  /// the shape functions of every shape that implements them, as a column vector
+  Eigen::VectorXd shapeFunctions( ElementShapes shape, const Eigen::VectorXd& xi )
+  {
+    namespace Elements = Marmot::Discretizations::Elements;
+    switch ( shape ) {
+    case Bar2: return asColumn( Elements::Spatial1D::Bar2::N( xi( 0 ) ) );
+    case Bar3: return asColumn( Elements::Spatial1D::Bar3::N( xi( 0 ) ) );
+    case Tri3: return asColumn( Elements::Spatial2D::Tri3::N( xi ) );
+    case Quad4: return asColumn( Elements::Spatial2D::Quad4::N( xi ) );
+    case Quad8: return asColumn( Elements::Spatial2D::Quad8::N( xi ) );
+    case Tetra4: return asColumn( Elements::Spatial3D::Tetra4::N( xi ) );
+    case Tetra10: return asColumn( Elements::Spatial3D::Tetra10::N( xi ) );
+    case Hexa8: return asColumn( Elements::Spatial3D::Hexa8::N( xi ) );
+    case Hexa20: return asColumn( Elements::Spatial3D::Hexa20::N( xi ) );
+    default: throw std::invalid_argument( "no shape functions for this shape" );
+    }
+  }
+
+  /// the corners of a reference domain in corner order, written out independently of the catalogue
+  std::vector< Eigen::VectorXd > corners( ReferenceDomain domain )
+  {
+    auto v = []( std::initializer_list< double > c ) {
+      Eigen::VectorXd x( static_cast< Eigen::Index >( c.size() ) );
+      Eigen::Index    i = 0;
+      for ( const double a : c )
+        x( i++ ) = a;
+      return x;
+    };
+    switch ( domain ) {
+    case ReferenceDomain::Line: return { v( { -1 } ), v( { 1 } ) };
+    case ReferenceDomain::Triangle: return { v( { 0, 0 } ), v( { 1, 0 } ), v( { 0, 1 } ) };
+    case ReferenceDomain::Quadrilateral: return { v( { -1, -1 } ), v( { 1, -1 } ), v( { 1, 1 } ), v( { -1, 1 } ) };
+    case ReferenceDomain::Tetrahedron:
+      return { v( { 0, 0, 0 } ), v( { 1, 0, 0 } ), v( { 0, 1, 0 } ), v( { 0, 0, 1 } ) };
+    case ReferenceDomain::Hexahedron:
+      return { v( { -1, -1, -1 } ),
+               v( { 1, -1, -1 } ),
+               v( { 1, 1, -1 } ),
+               v( { -1, 1, -1 } ),
+               v( { -1, -1, 1 } ),
+               v( { 1, -1, 1 } ),
+               v( { 1, 1, 1 } ),
+               v( { -1, 1, 1 } ) };
+    }
+    throw std::invalid_argument( "invalid reference domain" );
+  }
+
+  template < typename Call >
+  bool throwsInvalidArgument( Call call )
+  {
+    try {
+      call();
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  }
+} // namespace
+
+void testEveryRuleOfTheCatalogueIntegratesItsDegreeExactly()
+{
+  for ( const auto& rule : quadratureRules() ) {
+    for ( const auto& e : exponentsOfPolynomialSpace( rule ) ) {
+      double integral = 0;
+      for ( const auto& qp : rule.points ) {
+        double value = qp.weight;
+        for ( size_t i = 0; i < e.size(); i++ )
+          value *= std::pow( qp.xi( i ), e[i] );
+        integral += value;
+      }
+      throwExceptionOnFailure( checkIfEqual( integral, exactIntegralOfMonomial( rule.domain, e ), 1e-14 ),
+                               "A rule of degree " + std::to_string( rule.degreeOfExactness ) + " with " +
+                                 std::to_string( rule.points.size() ) +
+                                 " points does not integrate a monomial of its polynomial space exactly." );
+    }
+  }
 }
 
-void testGetNumGaussPointsMatchesGaussPointInfoSize()
+void testGaussRulesHavePositiveWeightsAndInteriorPoints()
 {
-  using namespace Marmot::Discretizations::Elements::Quadrature;
+  // a negative weight can make the consistent mass indefinite, and a point outside the domain breaks the evaluation
+  // of the material there; the Newton-Cotes rules have their points on the boundary by construction
+  for ( const auto& rule : quadratureRules() ) {
+    if ( rule.family != QuadratureFamily::Gauss )
+      continue;
+    for ( const auto& qp : rule.points ) {
+      const bool inside = isSimplex( rule.domain ) ? qp.xi.minCoeff() > 0 && qp.xi.sum() < 1
+                                                   : qp.xi.cwiseAbs().maxCoeff() < 1;
+      throwExceptionOnFailure( qp.weight > 0 && inside,
+                               "The Gauss rule of degree " + std::to_string( rule.degreeOfExactness ) + " with " +
+                                 std::to_string( rule.points.size() ) +
+                                 " points has a non-positive weight or a point outside its reference domain." );
+    }
+  }
+}
 
-  throwExceptionOnFailure( getNumGaussPoints( Hexa8, FullIntegration ) ==
-                             static_cast< int >( getGaussPointInfo( Hexa8, FullIntegration ).size() ),
-                           "getNumGaussPoints() must match getGaussPointInfo().size()." );
+void testCatalogueIsSortedByNumberOfPointsAndDegree()
+{
+  const auto& rules = quadratureRules();
+  for ( size_t i = 0; i < rules.size(); i++ )
+    for ( size_t j = i + 1; j < rules.size(); j++ )
+      if ( rules[i].domain == rules[j].domain && rules[i].family == rules[j].family )
+        throwExceptionOnFailure( rules[i].points.size() < rules[j].points.size() &&
+                                   rules[i].degreeOfExactness < rules[j].degreeOfExactness,
+                                 "The rules of one domain and family must be sorted by increasing number of points "
+                                 "and degree, so that the lookup finds the cheapest rule first." );
+}
+
+void testGetQuadraturePointsReturnsTheCheapestRule()
+{
+  // domain, degree, expected number of points; together with the sorted catalogue this covers the lookup
+  const std::vector< std::tuple< ReferenceDomain, int, size_t > > expected = {
+    { ReferenceDomain::Line, 0, 1 },          // degree 0 takes the first rule
+    { ReferenceDomain::Line, 2, 2 },          // a degree between two rules is rounded up
+    { ReferenceDomain::Quadrilateral, 2, 4 }, // degree in each coordinate (Q_2): 2x2 points ...
+    { ReferenceDomain::Triangle, 2, 3 },      // ... total degree (P_2) on simplices: 3 points
+    { ReferenceDomain::Tetrahedron, 2, 4 },   // the consistent mass of C3D4
+    { ReferenceDomain::Tetrahedron, 3, 14 },  // a gap in the catalogue: the next rule has degree 5
+  };
+  for ( const auto& [domain, degree, nPoints] : expected )
+    throwExceptionOnFailure( getQuadraturePoints( domain, gaussExactToDegree( degree ) ).size() == nPoints,
+                             "getQuadraturePoints() must return the Gauss rule with the fewest points for degree " +
+                               std::to_string( degree ) + "." );
+
+  // the shape overload looks up the reference domain of the shape: all shapes on it get the same rule, Newton-Cotes
+  // rules included
+  throwExceptionOnFailure( &getQuadraturePoints( Hexa8, gaussExactToDegree( 3 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 3 ) ) &&
+                             &getQuadraturePoints( Hexa20, gaussExactToDegree( 3 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 3 ) ),
+                           "Hexa8 and Hexa20 must get the Gauss rule of the hexahedron." );
+  throwExceptionOnFailure( &getQuadraturePoints( Quad4, newtonCotesExactToDegree( 1 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotesExactToDegree( 1 ) ) &&
+                             &getQuadraturePoints( Quad8, newtonCotesExactToDegree( 1 ) ) ==
+                               &getQuadraturePoints( ReferenceDomain::Quadrilateral, newtonCotesExactToDegree( 1 ) ),
+                           "Quad4 and Quad8 must get the Newton-Cotes rule of the quadrilateral." );
+}
+
+void testGetQuadraturePointsThrowsWithoutAMatchingRule()
+{
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, gaussExactToDegree( 6 ) ); } ),
+                           "There is no Gauss rule of degree 6 on a quadrilateral." );
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Tetra10, gaussExactToDegree( 6 ) ); } ),
+                           "There is no Gauss rule of degree 6 on a tetrahedron." );
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Hexa8, newtonCotesExactToDegree( 1 ) ); } ),
+                           "There is no Newton-Cotes rule on a hexahedron." );
+  throwExceptionOnFailure( throwsInvalidArgument( [] { getQuadraturePoints( Quad4, newtonCotesExactToDegree( 2 ) ); } ),
+                           "There is no Newton-Cotes rule of degree 2 on a quadrilateral." );
+}
+
+void testEveryNewtonCotesRuleIsTheNodalQuadratureOfItsLinearElement()
+{
+  // the points of a Newton-Cotes rule of degree 1 are the nodes of the linear element of its domain, in node order
+  // (N_i(xi_j) = delta_ij), its weights are the integrals of their shape functions, which must be positive, and
+  // newtonCotesExactToDegree( 1 ) finds it for that element
+  for ( const auto& rule : quadratureRules() ) {
+    if ( rule.family != QuadratureFamily::NewtonCotes )
+      continue;
+    const ElementShapes shape = linearShape( rule.domain );
+    const std::string   name  = "The Newton-Cotes rule of degree " + std::to_string( rule.degreeOfExactness ) +
+                             " of shape " + std::to_string( shape );
+    const auto& points = rule.points;
+
+    throwExceptionOnFailure( &getQuadraturePoints( shape, newtonCotesExactToDegree( rule.degreeOfExactness ) ) ==
+                               &points,
+                             name + " must be the one newtonCotesExactToDegree() returns for the shape." );
+
+    for ( size_t j = 0; j < points.size(); j++ ) {
+      const Eigen::VectorXd Nj = shapeFunctions( shape, points[j].xi );
+      throwExceptionOnFailure( Nj.size() == static_cast< Eigen::Index >( points.size() ),
+                               name + " must have one point per node." );
+      for ( size_t i = 0; i < points.size(); i++ )
+        throwExceptionOnFailure( checkIfEqual( Nj( i ), i == j ? 1.0 : 0.0, 1e-15 ),
+                                 name + " must have point " + std::to_string( j ) + " at node " + std::to_string( j ) +
+                                   "." );
+    }
+
+    Eigen::VectorXd integralOfN = Eigen::VectorXd::Zero( static_cast< Eigen::Index >( points.size() ) );
+    for ( const auto& qp : getQuadraturePoints( shape, gaussExactToDegree( 2 * getInterpolationOrder( shape ) ) ) )
+      integralOfN += qp.weight * shapeFunctions( shape, qp.xi );
+
+    for ( size_t i = 0; i < points.size(); i++ ) {
+      throwExceptionOnFailure( checkIfEqual( points[i].weight, integralOfN( i ), 1e-15 ),
+                               name + " must have the integral of N_" + std::to_string( i ) + " as weight " +
+                                 std::to_string( i ) + "." );
+      throwExceptionOnFailure( points[i].weight > 0, name + " must have positive weights." );
+    }
+  }
+}
+
+void testEveryShapeListsTheCornersOfItsDomainFirstInCornerOrder()
+{
+  // Node i < nCorners of every shape is corner i of its reference domain (the node order of the linear element):
+  // N_i(corner_j) = delta_ij for all nodes i. The manifold-based mass lumping blends the linear element into the
+  // first nodes, and the Newton-Cotes rules of degree 1 have the corners as points, so both rely on this.
+  //
+  // Tetra10 is left out: its shape functions number the corners (0, 1, 0), (0, 0, 1), (0, 0, 0), (1, 0, 0), a
+  // permutation of the corner order. No registered element uses Tetra10; it must be renumbered before one does.
+  for ( const ElementShapes shape : { Bar2, Bar3, Tri3, Quad4, Quad8, Tetra4, Hexa8, Hexa20 } ) {
+    const auto corners_ = corners( getReferenceDomain( shape ) );
+    for ( size_t j = 0; j < corners_.size(); j++ ) {
+      const Eigen::VectorXd N = shapeFunctions( shape, corners_[j] );
+      for ( Eigen::Index i = 0; i < N.size(); i++ )
+        throwExceptionOnFailure( checkIfEqual( N( i ), i == static_cast< Eigen::Index >( j ) ? 1.0 : 0.0, 1e-15 ),
+                                 "Node " + std::to_string( j ) + " of shape " + std::to_string( shape ) +
+                                   " must be corner " + std::to_string( j ) + " of its reference domain." );
+    }
+  }
+
+  // the Newton-Cotes rules of degree 1 have the corners as points, in corner order
+  for ( const auto& rule : quadratureRules() ) {
+    if ( rule.family != QuadratureFamily::NewtonCotes || rule.degreeOfExactness != 1 )
+      continue;
+    const auto corners_ = corners( rule.domain );
+    throwExceptionOnFailure( rule.points.size() == corners_.size(),
+                             "A Newton-Cotes rule of degree 1 must have one point per corner." );
+    for ( size_t j = 0; j < corners_.size(); j++ )
+      throwExceptionOnFailure( rule.points[j].xi == corners_[j],
+                               "Point " + std::to_string( j ) + " of a Newton-Cotes rule of degree 1 must be corner " +
+                                 std::to_string( j ) + "." );
+  }
+}
+
+void testConsistentMassRuleIsOfDegree2p()
+{
+  // the consistent mass N^T N has degree 2p, whatever rule the element uses otherwise
+  using Marmot::Discretizations::Elements::ConsistentMass::integrationRule;
+  const std::vector< std::pair< ElementShapes, size_t > > expected = {
+    { Bar3, 3 },     // degree 4 on the line: 3 points
+    { Quad4, 4 },    // degree 2 in each coordinate: 2x2
+    { Quad8, 9 },    // degree 4 in each coordinate: 3x3
+    { Tetra4, 4 },   // total degree 2: 4 points, where the element rule of C3D4 has 1
+    { Tetra10, 14 }, // total degree 4: the 14-point rule of degree 5
+    { Hexa20, 27 },  // 3x3x3
+  };
+  for ( const auto& [shape, nPoints] : expected )
+    throwExceptionOnFailure( integrationRule( shape ).size() == nPoints,
+                             "The consistent mass of shape " + std::to_string( shape ) + " must be integrated with " +
+                               std::to_string( nPoints ) + " points." );
+
+  throwExceptionOnFailure( throwsInvalidArgument( [] { integrationRule( Hexa64 ); } ),
+                           "There is no Gauss rule of degree 6 for the consistent mass of the cubic Hexa64." );
 }
 
 int main()
@@ -222,10 +511,14 @@ int main()
     testDynamicJacobianMatchesTemplatedJacobianForQuad4,
     testReferenceDomainAndInterpolationOrderOfAllShapes,
     testNumberOfCornerNodesOfAllReferenceDomains,
-    testGetGaussPointInfoReducedIntegrationBranches,
-    testGetGaussPointInfoTetrahedralShapes,
-    testGetGaussPointInfoThrowsForUnsupportedShape,
-    testGetNumGaussPointsMatchesGaussPointInfoSize,
+    testEveryRuleOfTheCatalogueIntegratesItsDegreeExactly,
+    testGaussRulesHavePositiveWeightsAndInteriorPoints,
+    testCatalogueIsSortedByNumberOfPointsAndDegree,
+    testGetQuadraturePointsReturnsTheCheapestRule,
+    testGetQuadraturePointsThrowsWithoutAMatchingRule,
+    testEveryNewtonCotesRuleIsTheNodalQuadratureOfItsLinearElement,
+    testEveryShapeListsTheCornersOfItsDomainFirstInCornerOrder,
+    testConsistentMassRuleIsOfDegree2p,
   };
 
   executeTestsAndCollectExceptions( tests );
