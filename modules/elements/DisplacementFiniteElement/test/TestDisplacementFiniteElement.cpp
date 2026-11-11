@@ -2468,184 +2468,302 @@ void testBulkViscosityRejectsNegativeCoefficients()
   }
 }
 
-// CAX8R on r in [1, 2], z in [0, 1] with linear elastic material
-std::unique_ptr< AxiSymmetricDisplacementFiniteElement< 8 > > makeAxisymmetricQuad8( std::vector< double >& stateVars,
-                                                                                     double                 E,
-                                                                                     double                 nu )
-{
-  using Element = AxiSymmetricDisplacementFiniteElement< 8 >;
+namespace {
+  using AxisymmetricIntegration = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes;
 
-  // static, as the element keeps a view on the coordinates
-  static const std::vector< double > nodeCoordsVec =
+  constexpr double axisymmetricDensity = 2.5;
+  // volume of the ring r in [1, 2], z in [0, 1]
+  const double axisymmetricRingVolume = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 );
+
+  // nodes of a quad8 on r in [1, 2], z in [0, 1], the first four those of the quad4; the element keeps a view on them
+  const std::vector< double > axisymmetricQuadCoordinates =
     { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.5, 0.0, 2.0, 0.5, 1.5, 1.0, 1.0, 0.5 };
 
-  auto element = std::make_unique<
-    Element >( 1,
-               Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
-               Element::SectionType::PlaneStrain );
-  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  // axisymmetric quad with linear elastic material
+  template < int nNodes >
+  std::unique_ptr< AxiSymmetricDisplacementFiniteElement< nNodes > > makeAxisymmetricQuad(
+    std::vector< double >&  stateVars,
+    AxisymmetricIntegration integrationType,
+    double                  E  = 10000.0,
+    double                  nu = 0.2 )
+  {
+    using ElementType = AxiSymmetricDisplacementFiniteElement< nNodes >;
 
-  const std::vector< double >              matProps = { E, nu, 1.0 }; // E, nu, density
-  Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
-  element->assignProperty( materialSection );
+    auto element = std::make_unique< ElementType >( 1, integrationType, ElementType::SectionType::PlaneStrain );
+    element->assignNodeCoordinates( axisymmetricQuadCoordinates.data() );
 
-  const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
-  stateVars.assign( nStateVarsTotal, 0.0 );
-  element->assignStateVars( stateVars.data(), nStateVarsTotal );
-  element->initializeYourself();
+    const std::vector< double >              matProps = { E, nu, axisymmetricDensity };
+    Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    element->assignProperty( materialSection );
 
-  return element;
+    const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
+    stateVars.assign( nStateVarsTotal, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVarsTotal );
+    element->initializeYourself();
+
+    return element;
+  }
+
+  // sum of the radial and of the axial entries of a nodal vector
+  Eigen::Vector2d sumPerDirection( const Eigen::VectorXd& P )
+  {
+    return Eigen::Vector2d( P( Eigen::seq( 0, Eigen::last, 2 ) ).sum(), P( Eigen::seq( 1, Eigen::last, 2 ) ).sum() );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricTangent( AxisymmetricIntegration integrationType, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType );
+
+    const int  nDof       = element->getNDofPerElement();
+    const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+    Eigen::VectorXd Q0( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      Q0[i] = 0.01 * std::sin( 1.3 * ( i + 1 ) );
+
+    resetState();
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+      resetState();
+      Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+      element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+      return Ptmp;
+    };
+
+    const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+
+    throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
+                             name + ": stiffness does not match the numerical tangent." );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricUniformStrainField( AxisymmetricIntegration integrationType, const std::string& name )
+  {
+    const double E = 10000.0, nu = 0.2;
+    const double a = 1e-3, b = -2e-3; // u_r = a r, u_z = b z
+
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType, E, nu );
+
+    const auto&     coordinates = axisymmetricQuadCoordinates;
+    const int       nDof        = element->getNDofPerElement();
+    Eigen::VectorXd Q( nDof );
+    for ( int i = 0; i < nNodes; i++ ) {
+      Q[2 * i]     = a * coordinates[2 * i];
+      Q[2 * i + 1] = b * coordinates[2 * i + 1];
+    }
+
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    // strains rr = tt = a, zz = b, rz = 0 give a uniform stress
+    const double lambda = E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
+    const double mu     = E / ( 2 * ( 1 + nu ) );
+    const double sRR    = lambda * ( 2 * a + b ) + 2 * mu * a;
+    const double sZZ    = lambda * ( 2 * a + b ) + 2 * mu * b;
+
+    Marmot::Math::Vector6d stress;
+    stress << sRR, sZZ, sRR, 0.0, 0.0, 0.0;
+
+    double volume = 0.0;
+    for ( int i = 0; i < element->getNumberOfQuadraturePoints(); i++ ) {
+      const Eigen::Map< const Marmot::Math::Vector6d > stressAtQp( element->getStateView( "stress", i ).stateLocation );
+      throwExceptionOnFailure( ( stressAtQp - stress ).norm() < 1e-9, name + ": uniform stress field not reproduced." );
+      volume += element->qps[i].J0xW;
+    }
+
+    throwExceptionOnFailure( checkIfEqual( volume, axisymmetricRingVolume, 1e-10 ),
+                             name + ": quadrature weights do not integrate the ring volume." );
+
+    // axial resultant of the nodes on the top face z = 1
+    double topForce = 0.0;
+    for ( int i = 0; i < nNodes; i++ )
+      if ( coordinates[2 * i + 1] == 1.0 )
+        topForce += P[2 * i + 1];
+    throwExceptionOnFailure( checkIfEqual( topForce, sZZ * axisymmetricRingVolume, 1e-9 ),
+                             name + ": axial resultant does not match stress times ring area." );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricExplicitMatchesImplicit( AxisymmetricIntegration integrationType, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType );
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd Q( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      Q[i] = 0.01 * std::cos( 0.7 * ( i + 1 ) );
+
+    Eigen::VectorXd PImplicit = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+
+    std::fill( stateVars.begin(), stateVars.end(), 0.0 );
+    Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( nDof );
+    element->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+
+    throwExceptionOnFailure( ( PImplicit - PExplicit ).norm() < 1e-10,
+                             name + ": explicit residual differs from the implicit one." );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricDistributedLoad( AxisymmetricIntegration integrationType, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType );
+
+    const int       nDof      = element->getNDofPerElement();
+    const int       outerFace = 2; // r = 2, lateral area 2 pi r h = 4 pi
+    const int       topFace   = 3; // z = 1, area of the ring
+    const double    outerArea = 4.0 * Marmot::Math::Constants::Pi;
+    Eigen::VectorXd QTotal    = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+
+    const auto load =
+      [&]( Marmot::Discretizations::Elements::Element::DistributedLoadTypes type, int face, const double* values ) {
+        Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+        element->computeDistributedLoad( type, P.data(), K.data(), face, values, QTotal.data(), 0.0, 1.0 );
+        return sumPerDirection( P );
+      };
+
+    // pressure acts against the outward normal, +z on the top and +r on the outer face
+    const double          pressure = 2.5;
+    const Eigen::Vector2d onTop    = load( Marmot::Discretizations::Elements::Element::Pressure, topFace, &pressure );
+    throwExceptionOnFailure( checkIfEqual( onTop( 0 ), 0.0, 1e-12 ) &&
+                               checkIfEqual( onTop( 1 ), -pressure * axisymmetricRingVolume, 1e-12 ),
+                             name + ": pressure resultant on the top face." );
+
+    const Eigen::Vector2d onOuter = load( Marmot::Discretizations::Elements::Element::Pressure, outerFace, &pressure );
+    throwExceptionOnFailure( checkIfEqual( onOuter( 0 ), -pressure * outerArea, 1e-10 ) &&
+                               checkIfEqual( onOuter( 1 ), 0.0, 1e-10 ),
+                             name + ": pressure resultant on the outer face." );
+
+    const Eigen::Vector2d traction( 0.7, -1.3 );
+    const Eigen::Vector2d tractionOnTop = load( Marmot::Discretizations::Elements::Element::SurfaceTraction,
+                                                topFace,
+                                                traction.data() );
+    throwExceptionOnFailure( ( tractionOnTop - traction * axisymmetricRingVolume ).norm() < 1e-12,
+                             name + ": traction resultant on the top face." );
+
+    bool threw = false;
+    try {
+      load( Marmot::Discretizations::Elements::Element::SurfaceTorsion, topFace, traction.data() );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, name + ": an unhandled load type must throw." );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricMassAndBodyForce( AxisymmetricIntegration integrationType, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, integrationType );
+
+    const int    nDof = element->getNDofPerElement();
+    const double mass = axisymmetricDensity * axisymmetricRingVolume;
+
+    // the shape functions sum to one, so the entries of a direction sum to the mass of the ring
+    Eigen::MatrixXd M = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeConsistentInertia( M.data() );
+    const double consistentMass = M( Eigen::seq( 0, Eigen::last, 2 ), Eigen::seq( 0, Eigen::last, 2 ) ).sum();
+    throwExceptionOnFailure( checkIfEqual( consistentMass, mass, 1e-10 ),
+                             name + ": consistent mass is not the mass of the ring." );
+    throwExceptionOnFailure( ( M - M.transpose() ).norm() < 1e-10, name + ": consistent mass must be symmetric." );
+
+    Eigen::VectorXd lumped = Eigen::VectorXd::Zero( nDof );
+    element->computeLumpedInertia( lumped.data() );
+    throwExceptionOnFailure( ( sumPerDirection( lumped ) - Eigen::Vector2d::Constant( mass ) ).norm() < 1e-10,
+                             name + ": lumped mass is not the mass of the ring." );
+
+    const Eigen::Vector2d bodyForce( 0.3, -9.81 );
+    Eigen::VectorXd       P      = Eigen::VectorXd::Zero( nDof );
+    Eigen::VectorXd       QTotal = Eigen::VectorXd::Zero( nDof );
+    element->computeBodyForce( P.data(), M.data(), bodyForce.data(), QTotal.data(), 0.0, 1.0 );
+    throwExceptionOnFailure( ( sumPerDirection( P ) - bodyForce * axisymmetricRingVolume ).norm() < 1e-10,
+                             name + ": body force resultant is not the force on the ring." );
+  }
+} // namespace
+
+void testAxisymmetricElementsAreRegistered()
+{
+  for ( const auto& [name, nNodes, nQuadraturePoints] :
+        { std::make_tuple( "CAX4", 4, 4 ), std::make_tuple( "CAX8R", 8, 4 ), std::make_tuple( "CAX8", 8, 9 ) } ) {
+    const std::string                                             elementName( name );
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+      Marmot::Registry::ElementFactory::createElement( elementName, 1 ) );
+    throwExceptionOnFailure( element->getNNodes() == nNodes, elementName + ": number of nodes." );
+    throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == nQuadraturePoints,
+                             elementName + ": number of quadrature points." );
+  }
 }
 
 void testComputeKernelsAxisymmetricTangentMatchesNumericalDifferentiation()
 {
-  std::vector< double > stateVars;
-  auto                  element = makeAxisymmetricQuad8( stateVars, 10000.0, 0.2 );
-
-  const int  nDof       = element->getNDofPerElement();
-  const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
-
-  Eigen::VectorXd Q0( nDof );
-  for ( int i = 0; i < nDof; i++ )
-    Q0[i] = 0.01 * std::sin( 1.3 * ( i + 1 ) );
-
-  resetState();
-  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
-  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
-  element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
-
-  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
-    resetState();
-    Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
-    Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
-    element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
-    return Ptmp;
-  };
-
-  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
-
-  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
-                           "computeKernels() stiffness matrix does not match the numerical tangent "
-                           "(axisymmetric)." );
+  checkAxisymmetricTangent< 4 >( AxisymmetricIntegration::FullIntegration, "CAX4" );
+  checkAxisymmetricTangent< 8 >( AxisymmetricIntegration::ReducedIntegration, "CAX8R" );
+  checkAxisymmetricTangent< 8 >( AxisymmetricIntegration::FullIntegration, "CAX8" );
 }
 
 void testComputeKernelsAxisymmetricReproducesUniformStrainField()
 {
-  const double E = 10000.0, nu = 0.2;
-  const double a = 1e-3, b = -2e-3; // u_r = a r, u_z = b z
-
-  std::vector< double > stateVars;
-  auto                  element = makeAxisymmetricQuad8( stateVars, E, nu );
-
-  const std::vector< double > nodeCoordsVec =
-    { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.5, 0.0, 2.0, 0.5, 1.5, 1.0, 1.0, 0.5 };
-  const int       nDof = element->getNDofPerElement();
-  Eigen::VectorXd Q( nDof );
-  for ( int i = 0; i < 8; i++ ) {
-    Q[2 * i]     = a * nodeCoordsVec[2 * i];
-    Q[2 * i + 1] = b * nodeCoordsVec[2 * i + 1];
-  }
-
-  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
-  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
-  element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
-
-  // strains rr = tt = a, zz = b, rz = 0 give a uniform stress
-  const double lambda = E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
-  const double mu     = E / ( 2 * ( 1 + nu ) );
-  const double sRR    = lambda * ( 2 * a + b ) + 2 * mu * a;
-  const double sZZ    = lambda * ( 2 * a + b ) + 2 * mu * b;
-
-  double volume = 0.0;
-  for ( int i = 0; i < element->getNumberOfQuadraturePoints(); i++ ) {
-    const auto             view = element->getStateView( "stress", i );
-    Marmot::Math::Vector6d stress;
-    stress << sRR, sZZ, sRR, 0.0, 0.0, 0.0;
-    throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd(
-                                             Eigen::Map< const Marmot::Math::Vector6d >( view.stateLocation ) ),
-                                           Eigen::MatrixXd( stress ),
-                                           1e-9 ),
-                             "Axisymmetric element does not reproduce the uniform stress field." );
-    volume += element->qps[i].J0xW;
-  }
-
-  const double ringArea = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 );
-  throwExceptionOnFailure( checkIfEqual( volume, ringArea * 1.0, 1e-10 ),
-                           "Axisymmetric quadrature weights do not integrate the ring volume." );
-
-  // axial resultant on the top face, nodes 3, 4 and 7
-  const double topForce = P[2 * 2 + 1] + P[2 * 3 + 1] + P[2 * 6 + 1];
-  throwExceptionOnFailure( checkIfEqual( topForce, sZZ * ringArea, 1e-9 ),
-                           "Axisymmetric axial resultant does not match stress times ring area." );
+  checkAxisymmetricUniformStrainField< 4 >( AxisymmetricIntegration::FullIntegration, "CAX4" );
+  checkAxisymmetricUniformStrainField< 8 >( AxisymmetricIntegration::ReducedIntegration, "CAX8R" );
+  checkAxisymmetricUniformStrainField< 8 >( AxisymmetricIntegration::FullIntegration, "CAX8" );
 }
 
 void testComputeKernelsExplicitMatchesImplicitResidualAxisymmetric()
 {
-  std::vector< double > stateVars;
-  auto                  element = makeAxisymmetricQuad8( stateVars, 10000.0, 0.2 );
-
-  const int       nDof = element->getNDofPerElement();
-  Eigen::VectorXd Q( nDof );
-  for ( int i = 0; i < nDof; i++ )
-    Q[i] = 0.01 * std::cos( 0.7 * ( i + 1 ) );
-
-  Eigen::VectorXd PImplicit = Eigen::VectorXd::Zero( nDof );
-  Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
-  element->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
-
-  std::fill( stateVars.begin(), stateVars.end(), 0.0 );
-  Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( nDof );
-  element->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
-
-  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( PImplicit ), Eigen::MatrixXd( PExplicit ), 1e-10 ),
-                           "computeKernelsExplicit() residual differs from computeKernels() (axisymmetric)." );
+  checkAxisymmetricExplicitMatchesImplicit< 4 >( AxisymmetricIntegration::FullIntegration, "CAX4" );
+  checkAxisymmetricExplicitMatchesImplicit< 8 >( AxisymmetricIntegration::ReducedIntegration, "CAX8R" );
+  checkAxisymmetricExplicitMatchesImplicit< 8 >( AxisymmetricIntegration::FullIntegration, "CAX8" );
 }
 
 void testComputeDistributedLoadAxisymmetricIntegratesOverTheRing()
 {
+  checkAxisymmetricDistributedLoad< 4 >( AxisymmetricIntegration::FullIntegration, "CAX4" );
+  checkAxisymmetricDistributedLoad< 8 >( AxisymmetricIntegration::ReducedIntegration, "CAX8R" );
+  checkAxisymmetricDistributedLoad< 8 >( AxisymmetricIntegration::FullIntegration, "CAX8" );
+}
+
+void testAxisymmetricMassAndBodyForceAreThoseOfTheRing()
+{
+  checkAxisymmetricMassAndBodyForce< 4 >( AxisymmetricIntegration::FullIntegration, "CAX4" );
+  checkAxisymmetricMassAndBodyForce< 8 >( AxisymmetricIntegration::ReducedIntegration, "CAX8R" );
+  checkAxisymmetricMassAndBodyForce< 8 >( AxisymmetricIntegration::FullIntegration, "CAX8" );
+}
+
+void testComputeKernelsExplicitAxisymmetricRejectsBulkViscosity()
+{
   std::vector< double > stateVars;
-  auto                  element = makeAxisymmetricQuad8( stateVars, 10000.0, 0.2 );
+  auto                  element = makeAxisymmetricQuad< 4 >( stateVars, AxisymmetricIntegration::FullIntegration );
 
-  const int       nDof     = element->getNDofPerElement();
-  const int       topFace  = 3; // nodes 3, 4 and 7 at z = 1
-  const double    ringArea = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 );
-  Eigen::VectorXd QTotal   = Eigen::VectorXd::Zero( nDof );
-  Eigen::MatrixXd K        = Eigen::MatrixXd::Zero( nDof, nDof );
+  const std::vector< double > coefficients = { 0.06, 1.2 };
+  element->assignProperty( "bulk viscosity", coefficients.data(), static_cast< int >( coefficients.size() ) );
 
-  const auto sumPerDirection = []( const Eigen::VectorXd& P ) {
-    return Eigen::Vector2d( P( Eigen::seq( 0, Eigen::last, 2 ) ).sum(), P( Eigen::seq( 1, Eigen::last, 2 ) ).sum() );
-  };
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd Q    = Eigen::VectorXd::Zero( nDof );
+  Eigen::VectorXd P    = Eigen::VectorXd::Zero( nDof );
 
-  // pressure acts against the outward normal +z
-  const double    pressure = 2.5;
-  Eigen::VectorXd P        = Eigen::VectorXd::Zero( nDof );
-  element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::Pressure,
-                                   P.data(),
-                                   K.data(),
-                                   topFace,
-                                   &pressure,
-                                   QTotal.data(),
-                                   0.0,
-                                   1.0 );
-  const Eigen::Vector2d pressureResultant = sumPerDirection( P );
-  throwExceptionOnFailure( checkIfEqual( pressureResultant( 0 ), 0.0, 1e-12 ) &&
-                             checkIfEqual( pressureResultant( 1 ), -pressure * ringArea, 1e-12 ),
-                           "Axisymmetric pressure resultant does not match pressure times ring area." );
-
-  const Eigen::Vector2d traction( 0.7, -1.3 );
-  P.setZero();
-  element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::SurfaceTraction,
-                                   P.data(),
-                                   K.data(),
-                                   topFace,
-                                   traction.data(),
-                                   QTotal.data(),
-                                   0.0,
-                                   1.0 );
-  const Eigen::Vector2d tractionResultant = sumPerDirection( P );
-  throwExceptionOnFailure( checkIfEqual( tractionResultant( 0 ), traction( 0 ) * ringArea, 1e-12 ) &&
-                             checkIfEqual( tractionResultant( 1 ), traction( 1 ) * ringArea, 1e-12 ),
-                           "Axisymmetric traction resultant does not match traction times ring area." );
+  bool threw = false;
+  try {
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "Axisymmetric elements must reject an active bulk viscosity." );
 }
 
 int main()
@@ -2684,10 +2802,13 @@ int main()
     testComputeKernelsExplicitThrowsForUniaxialStress,
     testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain,
     testComputeKernelsExplicitMatchesImplicitResidualSolid3D,
+    testAxisymmetricElementsAreRegistered,
     testComputeKernelsAxisymmetricTangentMatchesNumericalDifferentiation,
     testComputeKernelsAxisymmetricReproducesUniformStrainField,
     testComputeKernelsExplicitMatchesImplicitResidualAxisymmetric,
     testComputeDistributedLoadAxisymmetricIntegratesOverTheRing,
+    testAxisymmetricMassAndBodyForceAreThoseOfTheRing,
+    testComputeKernelsExplicitAxisymmetricRejectsBulkViscosity,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,

@@ -61,10 +61,22 @@ namespace {
                                           FullIntegration,
                                           DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
+  const static bool CAX4_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX4",
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 4 >,
+                                          FullIntegration,
+                                          AxiSymmetricDisplacementFiniteElement< 4 >::PlaneStrain >() );
+
   const static bool CAX8R_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "CAX8R",
                      makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 8 >,
                                           ReducedIntegration,
+                                          AxiSymmetricDisplacementFiniteElement< 8 >::PlaneStrain >() );
+
+  const static bool CAX8_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX8",
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 8 >,
+                                          FullIntegration,
                                           AxiSymmetricDisplacementFiniteElement< 8 >::PlaneStrain >() );
 
   const static bool C3D4_isRegistered = Marmot::Registry::ElementFactory::

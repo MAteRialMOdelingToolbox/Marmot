@@ -1235,7 +1235,7 @@ namespace Marmot::Discretizations::Elements {
    * @brief Small-strain axisymmetric variant of DisplacementFiniteElement, with \f$r = x_1\f$ and \f$z = x_2\f$.
    * @details Adds the hoop strain \f$\varepsilon_{\theta\theta} = u_r / r\f$ and integrates over the full
    * revolution, \f$J_0 w = w \det\mathbf{J}\, 2\pi r\f$, so internal forces and energies are those of the full
-   * ring; this includes body forces and distributed loads. Artificial bulk viscosity is not supported.
+   * ring; this includes body forces, distributed loads and the mass. Artificial bulk viscosity is not supported.
    */
   template < int nNodes >
   class AxiSymmetricDisplacementFiniteElement : public DisplacementFiniteElement< 2, nNodes > {
@@ -1250,25 +1250,29 @@ namespace Marmot::Discretizations::Elements {
     std::vector< BSizedAxisymmetric > BAxisymmetric;
 
     /** @brief Precompute the axisymmetric B-operator and \f$J_0 w = w \det\mathbf{J}\, 2\pi r\f$. */
-    void initializeYourself();
+    void initializeYourself() override;
 
     /** @brief Internal force and consistent tangent \f$\mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \mathbf{C}
      * \mathbf{B}\, J_0 w\f$ with the 4-component axisymmetric strain. */
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
     /** @brief Internal force only, with the 4-component axisymmetric strain. */
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
+
+    /** @brief Consistent mass of the ring, \f$2\pi r\f$ evaluated at each point of the full Gauss rule. */
+    void computeConsistentInertia( double* M ) override;
 
     /** @brief Pressure and traction loads on a boundary face, integrated over the ring (\f$2\pi r\,
      * \mathrm{d}\Gamma\f$). */
     void computeDistributedLoad( Element::DistributedLoadTypes loadType,
                                  double*                       P,
                                  double*                       K,
-                                 const int                     elementFace,
+                                 int                           elementFace,
                                  const double*                 load,
                                  const double*                 QTotal,
                                  double                        time,
-                                 double                        dT );
+                                 double                        dT ) override;
 
   private:
     // material update at one quadrature point; returns the stress and, if C is given, the tangent in axisymmetric
@@ -1293,9 +1297,9 @@ namespace Marmot::Discretizations::Elements {
       const auto                     N     = this->N( qp.xi );
       const typename Parent::XiSized x     = this->NB( N ) * this->coordinates;
 
-      qp.detJ                        = J.determinant();
-      qp.B                           = this->B( dNdX );
-      qp.characteristicElementLength = this->characteristicElementLengthAt( qp.xi );
+      qp.detJ                                    = J.determinant();
+      qp.B                                       = this->B( dNdX );
+      qp.characteristicLengthForCriticalTimeStep = this->characteristicLengthForCriticalTimeStepAt( qp.xi );
       qp.referenceWaveSpeed.reset();
       qp.J0xW = qp.weight * qp.detJ * 2 * Math::Constants::Pi * x( 0 );
 
@@ -1394,10 +1398,28 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nNodes >
+  void AxiSymmetricDisplacementFiniteElement< nNodes >::computeConsistentInertia( double* M )
+  {
+    Eigen::Map< typename Parent::KeSizedMatrix > Me( M );
+    Me.setZero();
+
+    for ( const auto& point : ConsistentMass::integrationRule( this->shape ) ) {
+      const typename Parent::XiSized xi   = point.xi;
+      const auto&                    qp   = this->qps[ConsistentMass::nearestQuadraturePoint( point.xi, this->qps )];
+      const double                   rho  = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      const double                   detJ = this->Jacobian( this->dNdXi( xi ) ).determinant();
+      const auto                     N_   = this->NB( this->N( xi ) );
+      // the radius at the point of the mass rule, not at the nearest quadrature point of the element
+      const typename Parent::XiSized x = N_ * this->coordinates;
+      Me += N_.transpose() * N_ * ( point.weight * detJ * 2 * Math::Constants::Pi * x( 0 ) ) * rho;
+    }
+  }
+
+  template < int nNodes >
   void AxiSymmetricDisplacementFiniteElement< nNodes >::computeDistributedLoad( Element::DistributedLoadTypes loadType,
                                                                                 double*                       P,
                                                                                 double*                       K,
-                                                                                const int     elementFace,
+                                                                                int           elementFace,
                                                                                 const double* load,
                                                                                 const double* QTotal,
                                                                                 double        time,

@@ -34,6 +34,13 @@ All notable changes to Marmot are documented in this file. The format follows
 
   `characteristicLengthForCriticalTimeStepAt` is not derived for quadratic simplices (`Tri6`, `Tetra10`); asking for
   it is a compile error.
+- Small-strain axisymmetric elements in `elements/DisplacementFiniteElement`: `CAX4` (4 nodes, full integration),
+  `CAX8` (8 nodes, full integration) and `CAX8R` (8 nodes, reduced integration), with r = x_1 and z = x_2. The class
+  `AxiSymmetricDisplacementFiniteElement` adds the hoop strain u_r / r and integrates over the full ring (2 pi r), so
+  internal forces, energies, masses, body forces and distributed loads are those of the full revolution. Artificial
+  bulk viscosity is not supported.
+- `BoundaryElement::computeVectorialLoadVectorForAxisymmetricElements`: the load vector of a surface traction on an
+  axisymmetric element, integrated over the ring.
 
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
