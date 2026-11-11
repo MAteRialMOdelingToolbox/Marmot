@@ -233,6 +233,17 @@
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ae709f3a67d6a6f355ddfb299f571ed3e" kind="variable"><name>xi</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ab451d32e0131afbf5048fa3ecc9a9742" kind="variable"><name>weight</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kind="struct"><name>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1ab913c089d817c6f1d8c3755863350af1" kind="variable"><name>family</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a8c19c397c9f5766c7521cf79f2c4f857" kind="variable"><name>degreeOfExactness</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a87867d667ddca66688ae4733739e2a43" kind="function"><name>operator==</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data" kind="struct"><name>Marmot::Discretizations::Elements::Quadrature::QuadratureRuleData</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data_1a046290f2c0de942242937fa31cb53880" kind="variable"><name>domain</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data_1a2e3d9b8870f89039be1206ac833b0917" kind="variable"><name>family</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data_1abb2bedb8ac8ef95828707d065acb7362" kind="variable"><name>degreeOfExactness</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data_1a2e25857975ce0df8290f54bfd3f0c2e4" kind="variable"><name>points</name></member>
+  </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations" kind="namespace"><name>Marmot::Discretizations</name>
@@ -301,36 +312,24 @@
     <member refid="_marmot_mass_lumping_8h_1a1d4a1407f4b89eae150b4180321204c0" kind="function"><name>timeStepFactorFromMassDistribution</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature" kind="namespace"><name>Marmot::Discretizations::Elements::Quadrature</name>
-    <member refid="_marmot_finite_element_8h_1a5031e1370199822a68e4285ca78be9c8" kind="enum"><name>IntegrationTypes</name></member>
-    <member refid="_marmot_finite_element_8h_1a5031e1370199822a68e4285ca78be9c8a4464f5397345c9e5f47bf659d5e6815a" kind="enumvalue"><name>FullIntegration</name></member>
-    <member refid="_marmot_finite_element_8h_1a5031e1370199822a68e4285ca78be9c8a8331e761157e4aaa6f62360feb2bff7f" kind="enumvalue"><name>ReducedIntegration</name></member>
-    <member refid="_marmot_finite_element_8h_1a41d94b6e85c60f85f1d7e3138ed5a940" kind="variable"><name>gp2</name></member>
-    <member refid="_marmot_finite_element_8h_1a57dd3d5ab8b99ce2cced367a3aadfdae" kind="variable"><name>gp3</name></member>
-    <member refid="_marmot_finite_element_8h_1a0e2f2cc1ae0d83397e987232e7d6a82a" kind="function"><name>getGaussPointInfo</name></member>
-    <member refid="_marmot_finite_element_8h_1ad194b8128b2efcf06fc860945e6b0ce0" kind="function"><name>getNumGaussPoints</name></member>
+    <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694b" kind="enum"><name>QuadratureFamily</name></member>
+    <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694baedc41fb7bf8bdac012523d1bcd949a4f" kind="enumvalue"><name>Gauss</name></member>
+    <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694baa96016246f4f1e3b5470d19bae942579" kind="enumvalue"><name>NewtonCotes</name></member>
+    <member refid="_marmot_finite_element_8h_1a9400325d3d210b4a464b576a6d7bf8a5" kind="function"><name>quadratureRules</name></member>
+    <member refid="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" kind="function"><name>gaussExactToDegree</name></member>
+    <member refid="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" kind="function"><name>newtonCotesExactToDegree</name></member>
+    <member refid="_marmot_finite_element_8h_1a19945e9a4ca3fe5cdd84aa2ce56af67f" kind="function"><name>getQuadraturePoints</name></member>
+    <member refid="_marmot_finite_element_8h_1a2e98afe11b4aaf32e9ca67484403d975" kind="function"><name>getQuadraturePoints</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_spatial1_d" kind="namespace"><name>Marmot::Discretizations::Elements::Quadrature::Spatial1D</name>
     <member refid="_marmot_finite_element_8h_1a543ab7a5e7f74942ef64eb5e6be67a8e" kind="variable"><name>nDim</name></member>
-    <member refid="_marmot_finite_element_8h_1ae0828a6bd1528206c3c878578d7d8052" kind="variable"><name>gaussPointList1</name></member>
-    <member refid="_marmot_finite_element_8h_1aeb65a23a501a238469f0db5c10d20adf" kind="variable"><name>gaussPointList2</name></member>
-    <member refid="_marmot_finite_element_8h_1a45afcdf75472962ec9605ecee9ca2344" kind="variable"><name>gaussPointList3</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_spatial2_d" kind="namespace"><name>Marmot::Discretizations::Elements::Quadrature::Spatial2D</name>
     <member refid="_marmot_finite_element_8h_1ae921a71f05085fde99bdd257dbf758c8" kind="variable"><name>nDim</name></member>
-    <member refid="_marmot_finite_element_8h_1a690f8a2971dc026503a2bed1e40156fc" kind="variable"><name>gaussPointList1x1</name></member>
-    <member refid="_marmot_finite_element_8h_1a842ec8da1d41c5553d6d2aa17a792fbb" kind="variable"><name>gaussPointList2x2</name></member>
-    <member refid="_marmot_finite_element_8h_1a177b286360e3a86f187d7a26a97ff598" kind="variable"><name>gaussPointList3x3</name></member>
-    <member refid="_marmot_finite_element_8h_1a6b1767890b93b819875d8214823a7dbf" kind="variable"><name>gaussPointListTri1</name></member>
-    <member refid="_marmot_finite_element_8h_1a7a34fc4376bafb0b700589b4a384e8f4" kind="variable"><name>gaussPointListTri3</name></member>
     <member refid="_marmot_finite_element_8h_1a2576e07ff8f8e40551c90e35f79637a8" kind="function"><name>modifyCharElemLengthAbaqusLike</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_spatial3_d" kind="namespace"><name>Marmot::Discretizations::Elements::Quadrature::Spatial3D</name>
     <member refid="_marmot_finite_element_8h_1a9dfdcfc3e9389f0d902d6ad0d99f3943" kind="variable"><name>nDim</name></member>
-    <member refid="_marmot_finite_element_8h_1a4cf05a580dd3dc4415e47c78eaf6b033" kind="variable"><name>gaussPointList1x1x1</name></member>
-    <member refid="_marmot_finite_element_8h_1a4609c06f1d5b130e46eb69df189c9f0f" kind="variable"><name>gaussPointListTetra4</name></member>
-    <member refid="_marmot_finite_element_8h_1a03aa69c52b0e3ade2f02786d04303e99" kind="variable"><name>gaussPointListTetra10</name></member>
-    <member refid="_marmot_finite_element_8h_1a967b42f2541e37b5a0bb49da3ea353c5" kind="variable"><name>gaussPointList2x2x2</name></member>
-    <member refid="_marmot_finite_element_8h_1af4c8a4ead875386b5cfaf6ae26469660" kind="variable"><name>gaussPointList3x3x3</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_small_strain" kind="namespace"><name>Marmot::Discretizations::Elements::SmallStrain</name>
     <member refid="_marmot_small_strain_kinematics_8h_1a35c07c89b450d37749b5e78c39bdaa7c" kind="typedef"><name>Voigt</name></member>

@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="672" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="672" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="676" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="676" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1ac25f32cc47217118f2d12826ddf2824e" prot="public" static="no" mutable="no">
         <type>double</type>
@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="673" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="673" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="677" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="677" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a35c01f3c6ad1519cae9b4dae06b3739a" prot="public" static="no" mutable="no">
         <type>Eigen::VectorXd</type>
@@ -46,7 +46,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="674" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="674" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="678" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="678" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a9630414fc4d5ee1c4ca56a496ee3d902" prot="public" static="no" mutable="no">
         <type>Eigen::VectorXd</type>
@@ -61,7 +61,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="675" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="675" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="679" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="679" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a1c78964633e5c08cca084bd03a9fa2c6" prot="public" static="no" mutable="no">
         <type>Eigen::MatrixXd</type>
@@ -76,7 +76,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="676" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="676" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="680" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="680" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1ae91a2de90bf551d98a77e73394ded271" prot="public" static="no" mutable="no">
         <type>Eigen::MatrixXd</type>
@@ -91,7 +91,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="677" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="677" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="681" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="681" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a00032b2c687cc7c467622bff08374115" prot="public" static="no" mutable="no">
         <type>Eigen::VectorXd</type>
@@ -106,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="678" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="678" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="682" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="682" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -114,7 +114,7 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="671" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="671" bodyend="679"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="675" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="675" bodyend="683"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a00032b2c687cc7c467622bff08374115" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>areaVector</name></member>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a1c78964633e5c08cca084bd03a9fa2c6" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BoundaryElement::BoundaryElementQuadraturePoint</scope><name>dNdXi</name></member>

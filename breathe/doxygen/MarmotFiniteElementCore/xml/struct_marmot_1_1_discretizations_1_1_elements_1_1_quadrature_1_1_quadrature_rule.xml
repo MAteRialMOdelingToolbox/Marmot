@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</compoundname>
+    <includes refid="_marmot_finite_element_8h" local="no">MarmotFiniteElement.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1ab913c089d817c6f1d8c3755863350af1" prot="public" static="no" mutable="no">
+        <type><ref refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694b" kindref="member">QuadratureFamily</ref></type>
+        <definition>QuadratureFamily Marmot::Discretizations::Elements::Quadrature::QuadratureRule::family</definition>
+        <argsstring></argsstring>
+        <name>family</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::QuadratureRule::family</qualifiedname>
+        <briefdescription>
+<para>Gauss or Newton-Cotes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="814" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="814" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a8c19c397c9f5766c7521cf79f2c4f857" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::Quadrature::QuadratureRule::degreeOfExactness</definition>
+        <argsstring></argsstring>
+        <name>degreeOfExactness</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::QuadratureRule::degreeOfExactness</qualifiedname>
+        <briefdescription>
+<para>Degree of exactness required. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="815" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="815" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a87867d667ddca66688ae4733739e2a43" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Elements::Quadrature::QuadratureRule::operator==</definition>
+        <argsstring>(const QuadratureRule &amp;) const =default</argsstring>
+        <name>operator==</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::QuadratureRule::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>Memberwise comparison, as required for a structural type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Whether family and degree are equal. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="821" column="22"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The quadrature rule an element asks for: a family and the degree of exactness it needs. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A structural type, so that element registrations can pass it as a template argument. It is built with <ref refid="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" kindref="member">gaussExactToDegree()</ref> or <ref refid="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" kindref="member">newtonCotesExactToDegree()</ref>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="813" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="813" bodyend="822"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a8c19c397c9f5766c7521cf79f2c4f857" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</scope><name>degreeOfExactness</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1ab913c089d817c6f1d8c3755863350af1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</scope><name>family</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a87867d667ddca66688ae4733739e2a43" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</scope><name>operator==</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

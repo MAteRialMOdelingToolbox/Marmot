@@ -47,14 +47,14 @@
 <parametername>exponent</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The exponent <formula id="64">$n$</formula>. Zero returns exactly one. </para>
+<para>The exponent <formula id="62">$n$</formula>. Zero returns exactly one. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="65">$\left(c/c_0\right)^n$</formula>, clamped to <formula id="66">$[0,1]$</formula>.</para>
+<simplesect kind="return"><para><formula id="63">$\left(c/c_0\right)^n$</formula>, clamped to <formula id="64">$[0,1]$</formula>.</para>
 </simplesect>
-A fully cracked element carries no real stress, but the linear term keeps transmitting <formula id="67">$b_1\rho c_0 L_e \dot{\varepsilon}_\mathrm{vol}$</formula> across the crack. Being active in expansion, it resists the crack OPENING and never relaxes, and its work is charged to the fracture energy: measured on a gradient-damage bar, bulk viscosity at the Abaqus/Explicit coefficients inflated <formula id="68">$G_f$</formula> by 27 to 55 percent, while applying it everywhere EXCEPT the damaged elements changed <formula id="68">$G_f$</formula> by -1.6 percent. This is the argument that already restricts the quadratic term to compression, applied to the STATE rather than to the sign of the rate.</para>
-<para>The wave-speed ratio is the square root of the tangent-stiffness ratio, so for a tangent degrading as <formula id="69">$(1-\omega)\,\mathbb{C}_0$</formula>: <formula id="70">$n = 1$</formula> scales with <formula id="71">$\sqrt{1-\omega}$</formula>, <formula id="72">$n = 2$</formula> with <formula id="73">$1-\omega$</formula> itself, and <formula id="74">$n = 0$</formula> never evaluates the current wave speed at all.</para>
+A fully cracked element carries no real stress, but the linear term keeps transmitting <formula id="65">$b_1\rho c_0 L_e \dot{\varepsilon}_\mathrm{vol}$</formula> across the crack. Being active in expansion, it resists the crack OPENING and never relaxes, and its work is charged to the fracture energy: measured on a gradient-damage bar, bulk viscosity at the Abaqus/Explicit coefficients inflated <formula id="66">$G_f$</formula> by 27 to 55 percent, while applying it everywhere EXCEPT the damaged elements changed <formula id="66">$G_f$</formula> by -1.6 percent. This is the argument that already restricts the quadratic term to compression, applied to the STATE rather than to the sign of the rate.</para>
+<para>The wave-speed ratio is the square root of the tangent-stiffness ratio, so for a tangent degrading as <formula id="67">$(1-\omega)\,\mathbb{C}_0$</formula>: <formula id="68">$n = 1$</formula> scales with <formula id="69">$\sqrt{1-\omega}$</formula>, <formula id="70">$n = 2$</formula> with <formula id="71">$1-\omega$</formula> itself, and <formula id="72">$n = 0$</formula> never evaluates the current wave speed at all.</para>
 <para><simplesect kind="warning"><para>It degrades with the current TANGENT, not with a damage variable <ndash/> no material interface here reports damage. For a quasi-brittle material in tension the two coincide; for one that merely yields, the viscous stress is degraded by plastic flow rather than cracking.</para>
 </simplesect>
 <simplesect kind="note"><para>Not free: the current wave speed is asked of the material on every quadrature point on every increment, which is why the reference is cached and why this is opt-in. With the material interface&apos;s default <computeroutput>getMaximumWaveSpeed()</computeroutput> that query is a full constitutive evaluation <ndash/> about the cost of the stress update itself on a non-yielding point <ndash/> so a damage model meant to run with this should override it with its closed form, and check the override against the default with Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault(). </para>
@@ -100,7 +100,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>volumetricStrainRate</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Trace of the strain rate,  <formula id="75">$\dot{\varepsilon}_\mathrm{vol} =
+<para>Trace of the strain rate,  <formula id="73">$\dot{\varepsilon}_\mathrm{vol} =
        \mathrm{tr}(\dot{\boldsymbol{\varepsilon}})$</formula>. Negative in compression. </para>
 </parameterdescription>
 </parameteritem>
@@ -109,7 +109,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>density</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Current mass density <formula id="76">$\rho$</formula>. If the run is mass scaled, this is the SCALED density, which is correct: the term exists to damp the modes of the system that is actually being integrated, and mass scaling changes those. </para>
+<para>Current mass density <formula id="74">$\rho$</formula>. If the run is mass scaled, this is the SCALED density, which is correct: the term exists to damp the modes of the system that is actually being integrated, and mass scaling changes those. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -117,7 +117,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>waveSpeed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Dilatational wave speed <formula id="77">$c_d$</formula> of the material. </para>
+<para>Dilatational wave speed <formula id="75">$c_d$</formula> of the material. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -137,10 +137,10 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The scalar <formula id="78">$\sigma_\mathrm{bv}$</formula> to ADD to <formula id="79">$\sigma_{xx}$</formula>, <formula id="80">$\sigma_{yy}$</formula> and <formula id="81">$\sigma_{zz}$</formula> (i.e.  <formula id="82">$\boldsymbol{\sigma}_\mathrm{bv} = \sigma_\mathrm{bv}\,
+<simplesect kind="return"><para>The scalar <formula id="76">$\sigma_\mathrm{bv}$</formula> to ADD to <formula id="77">$\sigma_{xx}$</formula>, <formula id="78">$\sigma_{yy}$</formula> and <formula id="79">$\sigma_{zz}$</formula> (i.e.  <formula id="80">$\boldsymbol{\sigma}_\mathrm{bv} = \sigma_\mathrm{bv}\,
         \mathbf{I}$</formula>). Deviatoric components are untouched.</para>
 </simplesect>
-<formula id="83">\[  \sigma_\mathrm{bv} = b_1\,\rho\,c_d\,L_e\,\dot{\varepsilon}_\mathrm{vol}
+<formula id="81">\[  \sigma_\mathrm{bv} = b_1\,\rho\,c_d\,L_e\,\dot{\varepsilon}_\mathrm{vol}
                      - \rho\,(b_2 L_e)^2\,\dot{\varepsilon}_\mathrm{vol}^2
                        \,H(-\dot{\varepsilon}_\mathrm{vol})
 \]</formula></para>
@@ -210,7 +210,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>timeIncrement</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The time increment <formula id="84">$\Delta t$</formula> it was taken over. </para>
+<para>The time increment <formula id="82">$\Delta t$</formula> it was taken over. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -218,7 +218,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>density</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Current mass density <formula id="76">$\rho$</formula>. </para>
+<para>Current mass density <formula id="74">$\rho$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -226,7 +226,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <parametername>waveSpeed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Dilatational wave speed <formula id="77">$c_d$</formula> of the material. </para>
+<para>Dilatational wave speed <formula id="75">$c_d$</formula> of the material. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -246,9 +246,9 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The scalar <formula id="78">$\sigma_\mathrm{bv}$</formula> to add to the normal stress components.</para>
+<simplesect kind="return"><para>The scalar <formula id="76">$\sigma_\mathrm{bv}$</formula> to add to the normal stress components.</para>
 </simplesect>
-Convenience overload for an explicit element, which has the strain increment at hand and not the rate. A non-positive <formula id="84">$\Delta t$</formula> yields exactly zero rather than an infinity: an explicit solver legitimately calls its elements with <formula id="85">$\Delta t = 0$</formula> to prime the internal force at the start of a step, and a viscous stress is not defined there. </para>
+Convenience overload for an explicit element, which has the strain increment at hand and not the rate. A non-positive <formula id="82">$\Delta t$</formula> yields exactly zero rather than an infinity: an explicit solver legitimately calls its elements with <formula id="83">$\Delta t = 0$</formula> to prime the internal force at the start of a step, and a viscous stress is not defined there. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
