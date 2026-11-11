@@ -40,6 +40,15 @@ All notable changes to Marmot are documented in this file. The format follows
 - Gauss rules of degree 5 on simplices: the 7-point triangle rule (Radon 1948) and the 14-point tetrahedron rule
   (Walkington 2000), both with positive weights and interior points. The 14-point rule makes the consistent mass of
   a quadratic tetrahedron (`gaussExactToDegree( 4 )`) available.
+- `materials/RankineSofteningPlasticity` (`RANKINESOFTENINGPLASTICITY`), multi-surface Rankine plasticity with the
+  isotropic hardening/softening law of VonMises, the yield stress floored at zero;
+  `materials/RankineDamagePlasticity` (`RANKINEDAMAGEPLASTICITY`), perfect Rankine plasticity in the effective stress
+  with exponential damage driven by the plastic strain (Grassl and Jirásek, 2006), bounded by a damage threshold; and `materials/RankineGradientDamagePlasticity` (`RANKINEGRADIENTDAMAGEPLASTICITY`), its
+  implicit-gradient (over-)nonlocal extension. The hypoelastic models are also registered with the Hughes-Winget
+  wrapper (`.../HUGHES-WINGET`). Imported with their history (`git subtree`); the module repositories are superseded.
+- `materials/RankineGradientSofteningPlasticity` (`RANKINEGRADIENTSOFTENINGPLASTICITY`), the implicit-gradient
+  over-nonlocal extension of `RankineSofteningPlasticity` (Vermeer and Brinkgreve, 1994): the yield stress depends on
+  a combination of the local and the nonlocal softening variable.
 
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
@@ -158,15 +167,6 @@ changes from earlier in the cycle, since v25.11, were:
 - `materials/MicroplaneM7` (`MICROPLANEM7`), the microplane model M7 for concrete (Caner and Bažant, 2013), and
   `materials/GM7` (`GM7`), its gradient-enhanced nonlocal extension. The former standalone module repositories are
   superseded.
-- `materials/RankineSofteningPlasticity` (`RANKINESOFTENINGPLASTICITY`), multi-surface Rankine plasticity with the
-  isotropic hardening/softening law of VonMises, the yield stress floored at zero;
-  `materials/RankineDamagePlasticity` (`RANKINEDAMAGEPLASTICITY`), perfect Rankine plasticity in the effective stress
-  with exponential damage driven by the plastic strain (Grassl and Jirásek, 2006), bounded by a damage threshold; and `materials/RankineGradientDamagePlasticity` (`RANKINEGRADIENTDAMAGEPLASTICITY`), its
-  implicit-gradient (over-)nonlocal extension. The hypoelastic models are also registered with the Hughes-Winget
-  wrapper (`.../HUGHES-WINGET`). Imported with their history (`git subtree`); the module repositories are superseded.
-- `materials/RankineGradientSofteningPlasticity` (`RANKINEGRADIENTSOFTENINGPLASTICITY`), the implicit-gradient
-  over-nonlocal extension of `RankineSofteningPlasticity` (Vermeer and Brinkgreve, 1994): the yield stress depends on
-  a combination of the local and the nonlocal softening variable.
 
 ### Changed
 - **Breaking:** complete namespace rework. All code now lives in the global `Marmot` namespace with a closed set
