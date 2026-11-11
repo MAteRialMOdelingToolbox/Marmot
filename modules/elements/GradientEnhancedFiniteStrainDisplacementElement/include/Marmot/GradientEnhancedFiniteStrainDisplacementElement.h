@@ -209,14 +209,14 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Construct the element.
      * @param[in] elementID Element label.
-     * @param[in] integrationType Full or reduced integration.
+     * @param[in] quadratureRule Quadrature rule: family and degree of exactness.
      * @param[in] sectionType Section type: PlaneStrain for nDim = 2, Solid for nDim = 3.
      * @throws std::invalid_argument for a section type that does not match nDim, e.g. plane stress.
      */
     GradientEnhancedFiniteStrainDisplacementElement(
-      int                                                             elementID,
-      Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-      SectionType                                                     sectionType );
+      int                                                           elementID,
+      Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+      SectionType                                                   sectionType );
 
     /// @brief Number of state variables of the element (of all quadrature points).
     int getNumberOfRequiredStateVars() override;
@@ -386,9 +386,9 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::GradientEnhancedFiniteStrainDisplacementElement(
-    int                                                             elementID,
-    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                                     sectionType )
+    int                                                           elementID,
+    Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                                   sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
@@ -402,7 +402,8 @@ namespace Marmot::Discretizations::Elements {
                                    << ": only plane strain (2D) and solid (3D) sections are supported" );
 
     for ( const auto& qpInfo :
-          Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+          Marmot::Discretizations::Elements::Quadrature::getQuadraturePoints( this->referenceDomain,
+                                                                              quadratureRule ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight, this->N( qpInfo.xi ) );
       qps.push_back( std::move( qp ) );
     }
@@ -776,7 +777,7 @@ namespace Marmot::Discretizations::Elements {
                                                                      nDim,
                                                                      this->coordinates );
 
-      const XiSized tractionVector( load );
+      const Eigen::Map< const Eigen::VectorXd > tractionVector( load, nDim );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
       if constexpr ( nDim == 2 )

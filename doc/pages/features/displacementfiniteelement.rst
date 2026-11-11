@@ -32,8 +32,9 @@ where :math:`\mathbf{M}_e` is the consistent mass matrix, :math:`\rho` the mass 
 :math:`\mathbf{N}` the shape-function matrix of the displacement field, and
 :math:`\mathbf{f}` the body-force vector per unit volume.
 
-The consistent mass is integrated with the **full** Gauss rule of the element's shape (3x3x3 for a
-20-node hexahedron, 3x3 for an 8-node quadrilateral), also for a reduced-integration element: its
+The consistent mass is integrated with its own Gauss rule, exact for degree 2p with p the order of the
+shape functions (``gauss( 2p )``: 3x3x3 for a 20-node hexahedron, 3x3 for an 8-node quadrilateral, 4 points
+for a linear tetrahedron), also for a reduced-integration element: its
 own rule cannot produce a mass matrix of full rank -- 8 points give a 20-node hexahedron a mass of
 rank 24 out of 60 -- and a singular mass leaves the modes of its null space without inertia and
 makes an equilibrium solve for the initial acceleration, :math:`\mathbf{M}\,\mathbf{a}_0 = \mathbf{R}`,

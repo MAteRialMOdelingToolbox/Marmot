@@ -27,11 +27,9 @@ namespace {
     const std::vector< double >& matProps,
     std::vector< double >&       stateVarsOut )
   {
-    auto child = std::make_unique<
-      DisplacementFiniteElement< 1, 2 > >( 1,
-                                           Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
-                                             FullIntegration,
-                                           DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress );
+    const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+    const auto sectionType    = DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress;
+    auto       child          = std::make_unique< DisplacementFiniteElement< 1, 2 > >( 1, quadratureRule, sectionType );
 
     static constexpr int indicesToBeWrapped[] = { 0, 1 };
 
@@ -94,13 +92,12 @@ void testBasicAccessorsDelegateToChild()
   // Delegation is what this asserts, so it is asserted against the child's own answer rather than
   // against emptiness: DisplacementFiniteElement reports the bulk-viscosity properties now, and a
   // test that reads "empty" would be testing the child's property list instead of the wrapper.
-  const auto
-    expectedPropertyNames = DisplacementFiniteElement<
-                              1,
-                              2 >( 1,
-                                   Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
-                                   DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress )
-                              .getPropertyNames();
+  const auto expectedPropertyNames = DisplacementFiniteElement<
+                                       1,
+                                       2 >( 1,
+                                            Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ),
+                                            DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress )
+                                       .getPropertyNames();
   throwExceptionOnFailure( wrapper->getPropertyNames() == expectedPropertyNames,
                            "getPropertyNames() must delegate to the child." );
 

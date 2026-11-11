@@ -219,12 +219,12 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Construct element with ID, quadrature rule and section assumption.
      * @param elementID Unique element label.
-     * @param integrationType Integration (quadrature) rule.
+     * @param quadratureRule Quadrature rule: family and degree of exactness.
      * @param sectionType Section assumption (1D/2D/3D).
      */
-    DisplacementFiniteElement( int                                                     elementID,
-                               Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                               SectionType                                             sectionType );
+    DisplacementFiniteElement( int                                                   elementID,
+                               Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+                               SectionType                                           sectionType );
 
     /** @brief Total number of required state variables for this element (sum over all quadrature points). */
     int getNumberOfRequiredStateVars() override;
@@ -460,16 +460,16 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   DisplacementFiniteElement< nDim, nNodes >::DisplacementFiniteElement(
-    int                                                     elementID,
-    Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                             sectionType )
+    int                                                   elementID,
+    Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
+    SectionType                                           sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
     for ( const auto& qpInfo :
-          Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+          Discretizations::Elements::Quadrature::getQuadraturePoints( this->referenceDomain, quadratureRule ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }
@@ -1036,7 +1036,7 @@ namespace Marmot::Discretizations::Elements {
 
       Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
-      const XiSized tractionVector( load );
+      const Eigen::Map< const Eigen::VectorXd > tractionVector( load, nDim );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
       if constexpr ( nDim == 2 )
@@ -1260,7 +1260,8 @@ namespace Marmot::Discretizations::Elements {
     /** @brief Internal force only, with the 4-component axisymmetric strain. */
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
-    /** @brief Consistent mass of the ring, \f$2\pi r\f$ evaluated at each point of the full Gauss rule. */
+    /** @brief Consistent mass of the ring, \f$2\pi r\f$ evaluated at each point of the Gauss rule of degree
+     * \f$2p + 1\f$: the radius raises the degree \f$2p\f$ of \f$\mathbf{N}^\mathsf{T}\mathbf{N}\f$ by one. */
     void computeConsistentInertia( double* M ) override;
 
     /** @brief Pressure and traction loads on a boundary face, integrated over the ring (\f$2\pi r\,
@@ -1403,7 +1404,11 @@ namespace Marmot::Discretizations::Elements {
     Eigen::Map< typename Parent::KeSizedMatrix > Me( M );
     Me.setZero();
 
-    for ( const auto& point : ConsistentMass::integrationRule( this->shape ) ) {
+    const auto& massRule = Quadrature::getQuadraturePoints( this->referenceDomain,
+                                                            Quadrature::gaussExactToDegree(
+                                                              2 * this->interpolationOrder + 1 ) );
+
+    for ( const auto& point : massRule ) {
       const typename Parent::XiSized xi   = point.xi;
       const auto&                    qp   = this->qps[ConsistentMass::nearestQuadraturePoint( point.xi, this->qps )];
       const double                   rho  = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
