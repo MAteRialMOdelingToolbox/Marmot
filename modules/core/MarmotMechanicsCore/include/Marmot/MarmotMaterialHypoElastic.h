@@ -29,7 +29,6 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <vector>
 
 namespace Marmot::Materials {
@@ -90,14 +89,6 @@ namespace Marmot::Materials {
       double                 elasticEnergyDensity; ///< Elastic strain energy density
       double                 dissipation;          ///< Dissipation
       double*                stateVars;            ///< Pointer to array of state variables
-      /// Derivative of the updated elastic energy density wrt the strain increment (Voigt, engineering shear
-      /// strains); NaN unless provided by the material
-      Marmot::Math::Vector6d dElasticEnergyDensity_dStrain = Marmot::Math::Vector6d::Constant(
-        std::numeric_limits< double >::quiet_NaN() );
-      /// Derivative of the updated dissipation wrt the strain increment (Voigt, engineering shear strains); NaN
-      /// unless provided by the material
-      Marmot::Math::Vector6d dDissipation_dStrain = Marmot::Math::Vector6d::Constant(
-        std::numeric_limits< double >::quiet_NaN() );
       /**
        * @brief Default constructor for state3D
        * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.

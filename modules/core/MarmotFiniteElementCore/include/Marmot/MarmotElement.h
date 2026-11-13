@@ -305,26 +305,6 @@ namespace Marmot::Discretizations::Elements {
      * failing on the one call that is new.
      */
     virtual void computeLumpedDamping( double* C ) { static_cast< void >( C ); };
-
-    /**
-     * @brief Gradients of the element's elastic energy and dissipation wrt its dofs, for the state of the last
-     * computeKernels() call.
-     * @param[out] dElasticEnergy_dQ Gradient of the elastic energy, in the element's dof order.
-     * @param[out] dDissipation_dQ Gradient of the dissipation, in the element's dof order.
-     * @details Consistent with the algorithmic update, e.g., for dissipation based arc length control. Requires a
-     * material that provides the energy tangents. The energies and their tangents are computed by the material
-     * during computeKernels(); this method only assembles the tangents stored at the quadrature points.
-     * @note Declared last for the same reason as computeLumpedDamping().
-     * @todo Interim solution: the energy gradients should become an output of the element evaluation
-     * (computeKernels() or a variant of it), so that frameworks can assemble them in their element loop together
-     * with the residual instead of in a second pass over all elements. This requires an interface change.
-     */
-    virtual void computeEnergyGradients( double* dElasticEnergy_dQ, double* dDissipation_dQ )
-    {
-      static_cast< void >( dElasticEnergy_dQ );
-      static_cast< void >( dDissipation_dQ );
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
-    };
   };
 
 } // namespace Marmot::Discretizations::Elements

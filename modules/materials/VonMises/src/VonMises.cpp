@@ -31,8 +31,34 @@ namespace Marmot::Materials {
                                      Marmot::Math::Matrix6d&       dStress_dStrain,
                                      const Marmot::Math::Vector6d& dStrain,
                                      const timeInfo&               timeInfo ) const
-
   {
+    computeStressImplicit( state, dStress_dStrain, dStrain, timeInfo, nullptr, nullptr );
+  }
+
+  void VonMisesModel::computeStressWithEnergyTangents( state3D&                      state,
+                                                       Marmot::Math::Matrix6d&       dStress_dStrain,
+                                                       const Marmot::Math::Vector6d& dStrain,
+                                                       const timeInfo&               timeInfo,
+                                                       Marmot::Math::Vector6d&       dElasticEnergyDensity_dStrain,
+                                                       Marmot::Math::Vector6d&       dDissipation_dStrain ) const
+  {
+    computeStressImplicit( state,
+                           dStress_dStrain,
+                           dStrain,
+                           timeInfo,
+                           &dElasticEnergyDensity_dStrain,
+                           &dDissipation_dStrain );
+  }
+
+  void VonMisesModel::computeStressImplicit( state3D&                      state,
+                                             Marmot::Math::Matrix6d&       dStress_dStrain,
+                                             const Marmot::Math::Vector6d& dStrain,
+                                             const timeInfo&               timeInfo,
+                                             Marmot::Math::Vector6d*       dPsi_dE,
+                                             Marmot::Math::Vector6d*       dD_dE ) const
+  {
+    const bool energyTangents = dPsi_dE && dD_dE;
+
     // elasticity parameters
     const double& E  = this->materialProperties[0];
     const double& nu = this->materialProperties[1];
@@ -53,9 +79,11 @@ namespace Marmot::Materials {
 
     // handle zero strain increment
     if ( dE.isZero( 1e-14 ) ) {
-      dS_dE                               = Cel;
-      state.dElasticEnergyDensity_dStrain = S;
-      state.dDissipation_dStrain.setZero();
+      dS_dE = Cel;
+      if ( energyTangents ) {
+        *dPsi_dE = S;
+        dD_dE->setZero();
+      }
       return;
     }
 
@@ -136,18 +164,22 @@ namespace Marmot::Materials {
       state.dissipation += fy( kappa ) * dKappa;
 
       // energy tangents; dKappa follows from g = 0 with d rhoTrial / d dE = 2 G n
-      const double dDKappa_dRhoTrial      = 1. / ( Marmot::Math::Constants::sqrt6 * G +
-                                              Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa ) );
-      state.dElasticEnergyDensity_dStrain = dS_dE.transpose() * ( CelInv * S );
-      state.dDissipation_dStrain = ( fy( kappa ) + dfy_ddKappa( kappa ) * dKappa ) * dDKappa_dRhoTrial * 2. * G * n;
+      if ( energyTangents ) {
+        const double dDKappa_dRhoTrial = 1. / ( Marmot::Math::Constants::sqrt6 * G +
+                                                Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa ) );
+        *dPsi_dE                       = dS_dE.transpose() * ( CelInv * S );
+        *dD_dE = ( fy( kappa ) + dfy_ddKappa( kappa ) * dKappa ) * dDKappa_dRhoTrial * 2. * G * n;
+      }
     }
     else {
       // elastic step
       S     = trialStress;
       dS_dE = Cel;
       state.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
-      state.dElasticEnergyDensity_dStrain = S;
-      state.dDissipation_dStrain.setZero();
+      if ( energyTangents ) {
+        *dPsi_dE = S;
+        dD_dE->setZero();
+      }
     }
   }
 

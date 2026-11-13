@@ -27,6 +27,7 @@
 #include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
@@ -35,6 +36,7 @@
 #include "Marmot/MarmotMassLumping.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
+#include "Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotSmallStrainKinematics.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
@@ -65,7 +67,9 @@ namespace Marmot::Discretizations::Elements {
    * residuals and tangents, taking non-local effects into account.
    */
   template < int nDim, int nNodes, int nNonlocalVariables = 1, int nNonLocalNodes = nNodes >
-  class GeneralGradientEnhancedDisplacementFiniteElement : public Marmot::Discretizations::Elements::Element {
+  class GeneralGradientEnhancedDisplacementFiniteElement
+    : public Marmot::Discretizations::Elements::Element,
+      public Marmot::Discretizations::Elements::EnergyGradientProvider {
 
   public:
     /**
@@ -105,6 +109,9 @@ namespace Marmot::Discretizations::Elements {
     using KSizedVector          = Eigen::Matrix< double, sizeDoFK, 1 >;
     using CSized = Eigen::Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
     using Voigt  = Eigen::Matrix< double, ParentGeometryElement::voigtSize, 1 >;
+
+    using EnergyTangentProvider = Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider<
+      nNonlocalVariables >;
 
     using ParentGeometryElementK = Marmot::Discretizations::Elements::GeometryElement< nDim, nNonLocalNodes >;
     using JacobianSizedK         = typename ParentGeometryElementK::JacobianSized;
@@ -219,17 +226,6 @@ namespace Marmot::Discretizations::Elements {
        */
       std::optional< double > referenceWaveSpeed;
 
-      /// energy density tangents wrt the strain and the nonlocal variables of the last computeKernels() call; NaN
-      /// unless provided by the material
-      Voigt dElasticEnergyDensity_dStrain = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
-      Voigt dDissipation_dStrain          = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
-      Eigen::Vector< double, nNonlocalVariables >
-        dElasticEnergyDensity_dK = Eigen::Vector< double, nNonlocalVariables >::Constant(
-          std::numeric_limits< double >::quiet_NaN() );
-      Eigen::Vector< double, nNonlocalVariables >
-        dDissipation_dK = Eigen::Vector< double, nNonlocalVariables >::Constant(
-          std::numeric_limits< double >::quiet_NaN() );
-
       /**
        * @brief Manager for per-quadrature-point state variables.
        * @details Provides named accessors to stress \f$\sigma\f$, strain \f$\varepsilon\f$
@@ -272,6 +268,9 @@ namespace Marmot::Discretizations::Elements {
       std::unique_ptr< QPStateVarManager > managedStateVars;
 
       std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables > > material;
+
+      /// The material's energy tangent capability, nullptr if it has none
+      const EnergyTangentProvider* energyTangentProvider = nullptr;
 
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
@@ -627,10 +626,14 @@ namespace Marmot::Discretizations::Elements {
     void computeInternalEnergy( double& internalEnergy ) override;
 
     /**
-     * @brief Gradients of the elastic energy and the dissipation of the element wrt its dofs, for the state of the last
-     * computeKernels() call (solid and plane strain sections; throws if the material provides no energy tangents).
+     * @brief Assign the arrays computeKernels() writes the energy gradients to, see EnergyGradientProvider.
+     * @param dElasticEnergy_dQ Gradient of the elastic energy; nullptr, together with @p dDissipation_dQ, stops it.
+     * @param dDissipation_dQ Gradient of the dissipation.
+     * @details Supported for all sections with a material that is a
+     * Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider. In plane stress, the energy tangents are
+     * condensed with the out-of-plane strain.
      */
-    void computeEnergyGradients( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
+    void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
     /**
      * @brief Access a named state view at a quadrature point.
@@ -664,6 +667,14 @@ namespace Marmot::Discretizations::Elements {
 
     /** @brief Number of quadrature points of this element. */
     int getNumberOfQuadraturePoints() override;
+
+  private:
+    /// Outputs of the energy gradients, see assignEnergyGradientOutput()
+    double* dElasticEnergy_dQOutput = nullptr;
+    double* dDissipation_dQOutput   = nullptr;
+
+    // throws unless the material provides the energy gradients
+    void checkEnergyGradientSupport() const;
   };
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -717,7 +728,11 @@ namespace Marmot::Discretizations::Elements {
       qp.material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables > >(
         Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< nNonlocalVariables >::
           createMaterial( section.materialName, section.materialProperties, section.nMaterialProperties, elLabel ) );
+      qp.energyTangentProvider = dynamic_cast< const EnergyTangentProvider* >( qp.material.get() );
     }
+
+    if ( dElasticEnergy_dQOutput )
+      checkEnergyGradientSupport();
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -942,9 +957,19 @@ namespace Marmot::Discretizations::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::Voigt;
 
-    using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using tangents  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::tangents;
-    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
+    using Material  = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
+    using response  = typename Material::response;
+    using tangents  = typename Material::tangents;
+    using increment = typename Material::increment;
+
+    // energy gradients, if assigned
+    const bool             energyGradients = dElasticEnergy_dQOutput != nullptr;
+    Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQOutput );
+    Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQOutput );
+    if ( energyGradients ) {
+      dElasticEnergy_dQ.setZero();
+      dDissipation_dQ.setZero();
+    }
 
     for ( size_t i = 0; i < this->qps.size(); i++ ) {
 
@@ -971,6 +996,15 @@ namespace Marmot::Discretizations::Elements {
       response  res;
       tangents  tan;
       increment inc;
+
+      // energy density tangents: wrt the strain in the element's Voigt notation, and wrt the nonlocal variables
+      typename EnergyTangentProvider::energyTangents energyTan;
+      Voigt                                          dElasticEnergyDensity_dStrain = Voigt::Zero();
+      Voigt                                          dDissipation_dStrain          = Voigt::Zero();
+      const auto computeStressWithEnergyTangents = [&]( response& res_, tangents& tan_, const increment& inc_ ) {
+        qp.energyTangentProvider->computeStressWithEnergyTangents( res_, tan_, inc_, energyTan );
+      };
+
       if constexpr ( nDim == 2 ) {
         Marmot::Math::Vector6d dE6 = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
         res.stress                 = qp.managedStateVars->stress;
@@ -982,7 +1016,14 @@ namespace Marmot::Discretizations::Elements {
         Voigt  S                   = Voigt::Zero();
 
         if ( sectionType == SectionType::PlaneStress ) {
-          qp.material->computePlaneStress( res, tan, inc );
+          if ( energyGradients )
+            Material::iteratePlaneStress( qp.material->getNumberOfRequiredStateVars(),
+                                          res,
+                                          tan,
+                                          inc,
+                                          computeStressWithEnergyTangents );
+          else
+            qp.material->computePlaneStress( res, tan, inc );
           S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
           C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
 
@@ -1005,17 +1046,23 @@ namespace Marmot::Discretizations::Elements {
             dg_dE += dg_dE( 2 ) * dE33_dE.transpose();
             return ContinuumMechanics::Voigt::voigtToPlaneVoigt( dg_dE );
           };
-          qp.dElasticEnergyDensity_dStrain = condense( tan.dElasticEnergyDensityddStrain,
-                                                       tan.dElasticEnergyDensityddK );
-          qp.dDissipation_dStrain          = condense( tan.dDissipationddStrain, tan.dDissipationddK );
+          if ( energyGradients ) {
+            dElasticEnergyDensity_dStrain = condense( energyTan.dElasticEnergyDensityddStrain,
+                                                      energyTan.dElasticEnergyDensityddK );
+            dDissipation_dStrain          = condense( energyTan.dDissipationddStrain, energyTan.dDissipationddK );
+          }
         }
         else if ( sectionType == SectionType::PlaneStrain ) {
-          qp.material->computeStress( res, tan, inc );
+          if ( energyGradients ) {
+            computeStressWithEnergyTangents( res, tan, inc );
+            dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
+              energyTan.dElasticEnergyDensityddStrain );
+            dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt( energyTan.dDissipationddStrain );
+          }
+          else
+            qp.material->computeStress( res, tan, inc );
           S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
           C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( tan.dStressddStrain );
-          qp.dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-            tan.dElasticEnergyDensityddStrain );
-          qp.dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt( tan.dDissipationddStrain );
         }
         else {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
@@ -1052,9 +1099,13 @@ namespace Marmot::Discretizations::Elements {
           res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
           res.stateVars            = qp.managedStateVars->materialStateVars.data();
           inc                      = { dE, K, dK, time, dT };
-          qp.material->computeStress( res, tan, inc );
-          qp.dElasticEnergyDensity_dStrain = tan.dElasticEnergyDensityddStrain;
-          qp.dDissipation_dStrain          = tan.dDissipationddStrain;
+          if ( energyGradients ) {
+            computeStressWithEnergyTangents( res, tan, inc );
+            dElasticEnergyDensity_dStrain = energyTan.dElasticEnergyDensityddStrain;
+            dDissipation_dStrain          = energyTan.dDissipationddStrain;
+          }
+          else
+            qp.material->computeStress( res, tan, inc );
 
           Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, res.stress, qp.J0xW );
           kUU += B.transpose() * tan.dStressddStrain * B * qp.J0xW;
@@ -1080,8 +1131,18 @@ namespace Marmot::Discretizations::Elements {
         else
           throw std::invalid_argument( "Invalid section type for 3D element! Must be Solid" );
       }
-      qp.dElasticEnergyDensity_dK              = tan.dElasticEnergyDensityddK;
-      qp.dDissipation_dK                       = tan.dDissipationddK;
+
+      if ( energyGradients ) {
+        dElasticEnergy_dQ.head( sizeDoFU ) += B.transpose() * dElasticEnergyDensity_dStrain * qp.J0xW;
+        dDissipation_dQ.head( sizeDoFU ) += B.transpose() * dDissipation_dStrain * qp.J0xW;
+        for ( int n = 0; n < nNonlocalVariables; n++ ) {
+          const Eigen::Index idx = sizeDoFU + n * nNonLocalNodes;
+          dElasticEnergy_dQ.segment( idx, nNonLocalNodes ) += N_K.transpose() *
+                                                              energyTan.dElasticEnergyDensityddK( n ) * qp.J0xW;
+          dDissipation_dQ.segment( idx, nNonLocalNodes ) += N_K.transpose() * energyTan.dDissipationddK( n ) * qp.J0xW;
+        }
+      }
+
       qp.managedStateVars->stress              = res.stress;
       qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
       qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
@@ -1656,30 +1717,34 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    computeEnergyGradients( double* dElasticEnergy_dQ, double* dDissipation_dQ )
+    assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ )
   {
-    using NonlocalSized = Eigen::Vector< double, nNonlocalVariables >;
-    auto assemble =
-      [&]( Voigt QuadraturePoint::*dEnergy_dStrain, NonlocalSized QuadraturePoint::*dEnergy_dK, double* g_ ) {
-        Eigen::Map< RhsSized > g( g_ );
-        g.setZero();
-        for ( const auto& qp : qps ) {
-          if ( ( qp.*dEnergy_dStrain ).hasNaN() || ( qp.*dEnergy_dK ).hasNaN() )
-            throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                         << __PRETTY_FUNCTION__
-                                         << ": energy tangents not provided by the material or the section" );
-          const BSized B = localGeometryElement.B( qp.dNdX );
-          g.head( sizeDoFU ) += B.transpose() * ( qp.*dEnergy_dStrain ) * qp.J0xW;
-          for ( int n = 0; n < nNonlocalVariables; n++ )
-            g.tail( sizeDoFK ).segment( n * nNonLocalNodes, nNonLocalNodes ) += qp.N_K().transpose() *
-                                                                                ( qp.*dEnergy_dK )(n)*qp.J0xW;
-        }
-      };
+    if ( ( dElasticEnergy_dQ == nullptr ) != ( dDissipation_dQ == nullptr ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": assign both energy gradient outputs, or none." );
 
-    assemble( &QuadraturePoint::dElasticEnergyDensity_dStrain,
-              &QuadraturePoint::dElasticEnergyDensity_dK,
-              dElasticEnergy_dQ );
-    assemble( &QuadraturePoint::dDissipation_dStrain, &QuadraturePoint::dDissipation_dK, dDissipation_dQ );
+    if ( dElasticEnergy_dQ )
+      checkEnergyGradientSupport();
+
+    dElasticEnergy_dQOutput = dElasticEnergy_dQ;
+    dDissipation_dQOutput   = dDissipation_dQ;
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    checkEnergyGradientSupport() const
+  {
+    for ( const auto& qp : qps ) {
+      if ( !qp.material )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                     << ": assign the material section before the energy gradient outputs." );
+      if ( !qp.energyTangentProvider )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                     << ": the material provides no energy tangents "
+                                        "(Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider)." );
+    }
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >

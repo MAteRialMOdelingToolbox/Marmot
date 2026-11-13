@@ -31,7 +31,6 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -133,18 +132,6 @@ namespace Marmot::Materials {
       /// @brief Second derivative of nonlocal interaction parameters with respect to nonlocal variables.
       Eigen::Matrix< double, nNonlocalVariables, nNonlocalVariables >
         d2cddK2 = Eigen::Matrix< double, nNonlocalVariables, nNonlocalVariables >::Zero();
-      /// @brief Derivatives of the updated elastic energy density and dissipation wrt the strain increment and the
-      /// nonlocal variables (NaN unless provided by the material).
-      Marmot::Math::Vector6d dElasticEnergyDensityddStrain = Marmot::Math::Vector6d::Constant(
-        std::numeric_limits< double >::quiet_NaN() );
-      Marmot::Math::Vector6d dDissipationddStrain = Marmot::Math::Vector6d::Constant(
-        std::numeric_limits< double >::quiet_NaN() );
-      Eigen::Vector< double, nNonlocalVariables >
-        dElasticEnergyDensityddK = Eigen::Vector< double, nNonlocalVariables >::Constant(
-          std::numeric_limits< double >::quiet_NaN() );
-      Eigen::Vector< double, nNonlocalVariables >
-        dDissipationddK = Eigen::Vector< double, nNonlocalVariables >::Constant(
-          std::numeric_limits< double >::quiet_NaN() );
     };
 
     /**
@@ -200,10 +187,37 @@ namespace Marmot::Materials {
      */
     virtual void computePlaneStress( response& res, tangents& tan, const increment& inc ) const
     {
+      iteratePlaneStress( stateLayout.totalSize(),
+                          res,
+                          tan,
+                          inc,
+                          [this]( response& res_, tangents& tan_, const increment& inc_ ) {
+                            computeStress( res_, tan_, inc_ );
+                          } );
+    }
+
+    /**
+     * @brief The plane stress iteration of computePlaneStress() around a given 3D stress update.
+     * @tparam ComputeStress3D Callable with the signature of computeStress().
+     * @param nStateVars Number of state variables of the material.
+     * @param[in,out] res Response, as for computePlaneStress().
+     * @param[in,out] tan Tangents of the last call of @p computeStress3D, i.e., of the converged 3D state.
+     * @param[in] inc Increment, as for computePlaneStress().
+     * @param computeStress3D The 3D stress update, e.g., a variant of computeStress() with additional outputs.
+     * @details The last call of @p computeStress3D is the one at the converged out-of-plane strain, so additional
+     * outputs of the callable refer to the converged 3D state.
+     */
+    template < typename ComputeStress3D >
+    static void iteratePlaneStress( int               nStateVars,
+                                    response&         res,
+                                    tangents&         tan,
+                                    const increment&  inc,
+                                    ComputeStress3D&& computeStress3D )
+    {
       using namespace Marmot;
       using namespace Eigen;
 
-      Map< VectorXd > stateVars( res.stateVars, stateLayout.totalSize() );
+      Map< VectorXd > stateVars( res.stateVars, nStateVars );
 
       VectorXd  stateVarsOld = stateVars;
       response  resTemp = { res.stress, res.KLocal, res.c, res.stateVars, res.elasticEnergyDensity, res.dissipation };
@@ -228,7 +242,7 @@ namespace Marmot::Materials {
         // set old state variables
         stateVars = stateVarsOld;
         // compute stress
-        computeStress( resTemp, tan, incTemp );
+        computeStress3D( resTemp, tan, incTemp );
 
         // evauate residual
         residual = std::abs( resTemp.stress.array().abs()[2] /
