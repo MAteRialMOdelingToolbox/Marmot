@@ -2,6 +2,7 @@
 #include "Marmot/LinearElastic.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
@@ -2021,6 +2022,193 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
                            "computeInternalEnergy() does not match the sum over quadrature points." );
 }
 
+// energy gradients of computeKernels() against central differences of the summed quadrature point energies, from a
+// plastic state
+template < int nDim, int nNodes >
+void checkEnergyGradients( typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
+                           const std::vector< double >&                                    nodeCoordsVec )
+{
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  // von Mises with exponential softening
+  const std::vector< double >                matProps = { 210000., 0.3, 200., 0., -150., 500. };
+  Marmot::Discretizations::MaterialSection   materialSection( "VONMISES",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVars = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVars, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVars );
+  element->initializeYourself();
+
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd P( nDof ), dQ1( nDof ), dQ2( nDof ), dPsi_dQ( nDof ), dD_dQ( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  for ( int i = 0; i < nDof; i++ ) {
+    dQ1[i] = 4e-3 * std::sin( 1.5 * ( i + 1 ) );
+    dQ2[i] = 5e-4 * std::cos( 0.7 * ( i + 1 ) );
+  }
+
+  // first increment into plasticity without energy gradients, then evaluate the second one always from that state
+  P.setZero();
+  K.setZero();
+  element->computeKernels( dQ1.data(), dQ1.data(), P.data(), K.data(), 0.0, 1.0 );
+  const std::vector< double > stateVarsOld = stateVars;
+
+  auto evaluate = [&]( const Eigen::VectorXd& dQ ) -> std::pair< double, double > {
+    std::copy( stateVarsOld.begin(), stateVarsOld.end(), stateVars.begin() );
+    const Eigen::VectorXd Q = dQ1 + dQ;
+    P.setZero();
+    K.setZero();
+    element->computeKernels( Q.data(), dQ.data(), P.data(), K.data(), 0.0, 1.0 );
+    double psi = 0.0, dissipation = 0.0;
+    for ( const auto& qp : element->qps ) {
+      psi += qp.managedStateVars->elasticStrainEnergy;
+      dissipation += qp.managedStateVars->dissipation;
+    }
+    return { psi, dissipation };
+  };
+
+  // the outputs leave the residual and the stiffness unchanged
+  evaluate( dQ2 );
+  const Eigen::VectorXd PPlain = P;
+  const Eigen::MatrixXd KPlain = K;
+
+  element->assignEnergyGradientOutput( dPsi_dQ.data(), dD_dQ.data() );
+  const auto            reference        = evaluate( dQ2 );
+  const Eigen::VectorXd dPsi_dQReference = dPsi_dQ, dD_dQReference = dD_dQ;
+  throwExceptionOnFailure( reference.second > 0.0, "no dissipation in the energy gradient test" );
+  throwExceptionOnFailure( P == PPlain && K == KPlain,
+                           "computeKernels(): the energy gradient outputs change the residual or the stiffness." );
+
+  Eigen::VectorXd dPsiNumerical( nDof ), dDNumerical( nDof );
+  const double    h = 1e-9;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd perturbation = Eigen::VectorXd::Zero( nDof );
+    perturbation[j]              = h;
+    const auto plus              = evaluate( dQ2 + perturbation );
+    const auto minus             = evaluate( dQ2 - perturbation );
+    dPsiNumerical[j]             = ( plus.first - minus.first ) / ( 2. * h );
+    dDNumerical[j]               = ( plus.second - minus.second ) / ( 2. * h );
+  }
+
+  const double scale = std::max( dPsi_dQReference.cwiseAbs().maxCoeff(), dD_dQReference.cwiseAbs().maxCoeff() );
+  throwExceptionOnFailure( ( dPsi_dQReference - dPsiNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeKernels(): elastic energy gradient does not match central differences." );
+  throwExceptionOnFailure( ( dD_dQReference - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeKernels(): dissipation gradient does not match central differences." );
+
+  // nullptr stops the output
+  element->assignEnergyGradientOutput( nullptr, nullptr );
+  dPsi_dQ.setConstant( 7.0 );
+  dD_dQ.setConstant( 7.0 );
+  evaluate( dQ2 );
+  throwExceptionOnFailure( ( dPsi_dQ.array() == 7.0 ).all() && ( dD_dQ.array() == 7.0 ).all(),
+                           "computeKernels() writes energy gradients after the outputs were reset." );
+}
+
+void testEnergyGradients()
+{
+  checkEnergyGradients< 3, 8 >( DisplacementFiniteElement< 3, 8 >::SectionType::Solid,
+                                { 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1 } );
+  checkEnergyGradients< 2, 4 >( DisplacementFiniteElement< 2, 4 >::SectionType::PlaneStrain,
+                                { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } );
+}
+
+// true if assignEnergyGradientOutput() throws std::invalid_argument
+bool rejectsEnergyGradientOutput( EnergyGradientProvider& element, double* dPsi_dQ, double* dD_dQ )
+{
+  bool rejected = false;
+  try {
+    element.assignEnergyGradientOutput( dPsi_dQ, dD_dQ );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  return rejected;
+}
+
+// coordinates and thickness of a CPE4 or CPS4 element, and optionally its material section
+void setUpQuad4( DisplacementFiniteElement< 2, 4 >& element, const Marmot::Discretizations::MaterialSection* section )
+{
+  static const std::vector< double >               nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  static const std::vector< double >               elPropsVec    = { 1.0 };
+  const Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(),
+                                                            static_cast< int >( elPropsVec.size() ) );
+
+  element.assignNodeCoordinates( nodeCoordsVec.data() );
+  element.assignProperty( elProps );
+  if ( section )
+    element.assignProperty( *section );
+}
+
+// assignEnergyGradientOutput() rejects unsupported setups
+void testEnergyGradientOutputIsRejectedWithoutSupport()
+{
+  using ElemType = DisplacementFiniteElement< 2, 4 >;
+
+  const std::vector< double >                    linearElasticProps = { 10000.0, 0.2, 1.0 };
+  const std::vector< double >                    vonMisesProps      = { 210000., 0.3, 200., 0., -150., 500. };
+  const Marmot::Discretizations::MaterialSection linearElastic( "LINEARELASTIC",
+                                                                linearElasticProps.data(),
+                                                                static_cast< int >( linearElasticProps.size() ) );
+  const Marmot::Discretizations::MaterialSection vonMises( "VONMISES",
+                                                           vonMisesProps.data(),
+                                                           static_cast< int >( vonMisesProps.size() ) );
+
+  const auto      rule = Quadrature::gaussExactToDegree( 2 );
+  Eigen::VectorXd dPsi_dQ( 8 ), dD_dQ( 8 );
+
+  // no material yet
+  ElemType withoutMaterial( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( withoutMaterial, nullptr );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( withoutMaterial, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject an element without a material." );
+
+  // material without the capability
+  ElemType linearElasticElement( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( linearElasticElement, &linearElastic );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( linearElasticElement, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject a material without energy tangents." );
+
+  // unsupported section
+  ElemType planeStress( 1, rule, ElemType::SectionType::PlaneStress );
+  setUpQuad4( planeStress, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStress, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject the plane stress section." );
+
+  // only one of the outputs
+  ElemType planeStrain( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( planeStrain, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), nullptr ),
+                           "assignEnergyGradientOutput() must reject a single output." );
+
+  // a material without the capability, assigned while the outputs are active
+  throwExceptionOnFailure( !rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must accept von Mises in plane strain." );
+  bool threw = false;
+  try {
+    planeStrain.assignProperty( linearElastic );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "assignProperty() must reject a material without energy tangents while the energy "
+                           "gradient outputs are assigned." );
+
+  // the element is found through the capability interface
+  Element& asElement = planeStress;
+  throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( &asElement ) != nullptr,
+                           "DisplacementFiniteElement is not an EnergyGradientProvider." );
+}
+
 void testGetStateViewVariants()
 {
   constexpr int nDim    = 2;
@@ -2502,6 +2690,8 @@ int main()
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
+    testEnergyGradients,
+    testEnergyGradientOutputIsRejectedWithoutSupport,
     testGetStateViewVariants,
     testGetCoordinatesAtQuadraturePoints,
     testGetNodeFieldsAndDofIndicesPermutationPattern,

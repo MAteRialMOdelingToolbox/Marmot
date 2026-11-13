@@ -55,6 +55,35 @@ namespace {
     return { stateNew, tangent };
   }
 
+  struct EnergyResult {
+    // increments of elastic energy density and dissipation, and their derivatives wrt the strain increment
+    double         dPsi, dDissipation;
+    Math::Vector6d dPsi_dE, dDissipation_dE;
+  };
+
+  // energies of a single stress update with their tangents; the energy variant gives the update of computeStress
+  EnergyResult updateEnergies( const RankineSofteningPlasticity& material,
+                               const MaterialPointState&         stateOld,
+                               const Math::Vector6d&             dStrain )
+  {
+    const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
+    MaterialPointState                  plain = stateOld, withTangents = stateOld;
+    MaterialHypoElastic::state3D        statePlain( stateOld.stress, 0., 0., plain.stateVars.data() );
+    MaterialHypoElastic::state3D        state( stateOld.stress, 0., 0., withTangents.stateVars.data() );
+    Math::Matrix6d                      tangentPlain, tangent;
+    EnergyResult                        r{ 0., 0., Math::Vector6d::Zero(), Math::Vector6d::Zero() };
+    material.computeStress( statePlain, tangentPlain, dStrain, tInfo );
+    material.computeStressWithEnergyTangents( state, tangent, dStrain, tInfo, r.dPsi_dE, r.dDissipation_dE );
+    throwExceptionOnFailure( state.stress == statePlain.stress && tangent == tangentPlain &&
+                               withTangents.stateVars == plain.stateVars &&
+                               state.elasticEnergyDensity == statePlain.elasticEnergyDensity &&
+                               state.dissipation == statePlain.dissipation,
+                             "computeStress() and computeStressWithEnergyTangents() differ" );
+    r.dPsi         = state.elasticEnergyDensity;
+    r.dDissipation = state.dissipation;
+    return r;
+  }
+
   // true if f throws an exception of type Ex
   template < typename Ex, typename F >
   bool throws( F&& f )
@@ -90,6 +119,26 @@ namespace {
                             std::max( tangent.cwiseAbs().maxCoeff(), 1e-3 * E );
     throwExceptionOnFailure( relError < 1e-6,
                              Utilities::MakeString() << "tangent check failed, relative error " << relError );
+
+    // energy tangents, each relative to its own scale, floored since they may vanish
+    const auto            energies                = updateEnergies( material, stateOld, dStrain );
+    const Eigen::MatrixXd numericalEnergyTangents = centralDifference(
+                                                      [&]( const Eigen::VectorXd& y ) -> Eigen::VectorXd {
+                                                        const auto e = updateEnergies( material,
+                                                                                       stateOld,
+                                                                                       strainScale * y );
+                                                        return Eigen::Vector2d( e.dPsi, e.dDissipation );
+                                                      },
+                                                      dStrain / strainScale ) /
+                                                    strainScale;
+    const double energyRelError = std::
+      max( ( energies.dPsi_dE.transpose() - numericalEnergyTangents.row( 0 ) ).cwiseAbs().maxCoeff() /
+             std::max( energies.dPsi_dE.cwiseAbs().maxCoeff(), 1e-3 * fy0 ),
+           ( energies.dDissipation_dE.transpose() - numericalEnergyTangents.row( 1 ) ).cwiseAbs().maxCoeff() /
+             std::max( energies.dDissipation_dE.cwiseAbs().maxCoeff(), 1e-3 * fy0 ) );
+    throwExceptionOnFailure( energyRelError < 1e-6,
+                             Utilities::MakeString()
+                               << "energy tangent check failed, relative error " << energyRelError );
   }
 
   // check that the returned stress satisfies all three Rankine yield conditions
@@ -433,6 +482,11 @@ void testPropertiesAndZeroIncrement()
   throwExceptionOnFailure( state.acYield() == 0., "zero increment: flagged as plastic" );
   throwExceptionOnFailure( tangent == ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu ),
                            "zero increment: tangent is not the elastic stiffness" );
+
+  // the elastic energy changes with the stress, nothing is dissipated
+  const auto energies = updateEnergies( material, stateOld, Math::Vector6d::Zero() );
+  throwExceptionOnFailure( energies.dPsi_dE == stateOld.stress && energies.dDissipation_dE.isZero( 0. ),
+                           "zero increment: energy tangents wrong" );
 }
 
 // linear softening beyond fy = 0: the yield stress is floored at zero

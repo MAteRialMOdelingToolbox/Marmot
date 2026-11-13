@@ -53,12 +53,39 @@ namespace Marmot::Materials {
                                                const Math::Vector6d& dStrain,
                                                const timeInfo&       timeInfo ) const
   {
-    updateStress( state, dStress_dStrain, dStrain, timeInfo );
+    computeStressImplicit( state, dStress_dStrain, dStrain, timeInfo, nullptr, nullptr );
+  }
 
-    // a diverging iterate (e.g., of an arc-length iteration) may overflow the results: request a cutback instead of
-    // passing non-finite values to the solver
+  void RankineDamagePlasticity::computeStressWithEnergyTangents( state3D&              state,
+                                                                 Math::Matrix6d&       dStress_dStrain,
+                                                                 const Math::Vector6d& dStrain,
+                                                                 const timeInfo&       timeInfo,
+                                                                 Math::Vector6d&       dElasticEnergyDensity_dStrain,
+                                                                 Math::Vector6d&       dDissipation_dStrain ) const
+  {
+    computeStressImplicit( state,
+                           dStress_dStrain,
+                           dStrain,
+                           timeInfo,
+                           &dElasticEnergyDensity_dStrain,
+                           &dDissipation_dStrain );
+  }
+
+  void RankineDamagePlasticity::computeStressImplicit( state3D&              state,
+                                                       Math::Matrix6d&       dStress_dStrain,
+                                                       const Math::Vector6d& dStrain,
+                                                       const timeInfo&       timeInfo,
+                                                       Math::Vector6d*       dPsi_dE,
+                                                       Math::Vector6d*       dDissipation_dE ) const
+  {
+    updateStress( state, dStress_dStrain, dStrain, timeInfo, dPsi_dE, dDissipation_dE );
+
+    // a diverging iterate (e.g., of an arc-length iteration) may overflow the results, e.g., NaN energy tangents from
+    // 0 * inf: request a cutback instead of passing non-finite values to the solver
+    const bool energyTangentsFinite = !( dPsi_dE && dDissipation_dE ) ||
+                                      ( dPsi_dE->allFinite() && dDissipation_dE->allFinite() );
     if ( !( state.stress.allFinite() && dStress_dStrain.allFinite() && std::isfinite( state.elasticEnergyDensity ) &&
-            std::isfinite( state.dissipation ) ) )
+            std::isfinite( state.dissipation ) && energyTangentsFinite ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
@@ -66,8 +93,12 @@ namespace Marmot::Materials {
   void RankineDamagePlasticity::updateStress( state3D&              state,
                                               Math::Matrix6d&       dStress_dStrain,
                                               const Math::Vector6d& dStrain,
-                                              const timeInfo&       timeInfo ) const
+                                              const timeInfo&       timeInfo,
+                                              Math::Vector6d*       dPsi_dE,
+                                              Math::Vector6d*       dDissipation_dE ) const
   {
+    const bool energyTangents = dPsi_dE && dDissipation_dE;
+
     const double& E        = this->materialProperties[0];
     const double& nu       = this->materialProperties[1];
     const double& epsilonF = this->materialProperties[3];
@@ -98,6 +129,10 @@ namespace Marmot::Materials {
     if ( dE.isZero( 1e-14 ) ) {
       dS_dE   = integrityOld * Cel;
       acYield = 0;
+      if ( energyTangents ) {
+        *dPsi_dE = integrityOld * effStressOld;
+        dDissipation_dE->setZero();
+      }
       return;
     }
 
@@ -134,14 +169,26 @@ namespace Marmot::Materials {
 
     // free energy (1 - omega) psiEff, dissipation (1 - omega) effStress : dEp + psiEff dOmega
     state.elasticEnergyDensity += integrity * psiEff - integrityOld * psiEffOld;
+    if ( energyTangents )
+      *dPsi_dE = integrity * dEffStress_dE.transpose() * effElastStrain - psiEff * dOmega_dE;
 
-    if ( !plastic )
+    if ( !plastic ) {
+      if ( energyTangents )
+        dDissipation_dE->setZero();
       return;
+    }
 
     const double         dOmega         = integrityOld - integrity;
     const Math::Vector6d dStrainPlastic = dE - CelInv * ( effStress - effStressOld );
     const double         plasticWorkEff = effStress.dot( dStrainPlastic );
     state.dissipation += integrity * plasticWorkEff + psiEff * dOmega;
+
+    if ( energyTangents ) {
+      const Math::Matrix6d dEp_dE = Math::Matrix6d::Identity() - CelInv * dEffStress_dE;
+      *dDissipation_dE            = -plasticWorkEff * dOmega_dE +
+                         integrity * ( dEffStress_dE.transpose() * dStrainPlastic + dEp_dE.transpose() * effStress ) +
+                         dOmega * dEffStress_dE.transpose() * effElastStrain + psiEff * dOmega_dE;
+    }
   }
 
 } // namespace Marmot::Materials

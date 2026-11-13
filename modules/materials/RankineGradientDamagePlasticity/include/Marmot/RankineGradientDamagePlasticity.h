@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
+#include "Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h"
 #include "Marmot/RankineSofteningPlasticity.h"
 #include <array>
 
@@ -72,7 +73,8 @@ namespace Marmot::Materials {
    * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, \omega_\mathrm{max}, l, m \f$, optionally
    * the density and the nonlocal viscosity (default zero, for explicit dynamics only).
    */
-  class RankineGradientDamagePlasticity : public MaterialGradientEnhancedHypoElastic< 1 > {
+  class RankineGradientDamagePlasticity : public MaterialGradientEnhancedHypoElastic< 1 >,
+                                          public GradientEnhancedHypoElasticEnergyTangentProvider< 1 > {
 
   public:
     using Base = MaterialGradientEnhancedHypoElastic< 1 >;
@@ -87,13 +89,29 @@ namespace Marmot::Materials {
 
     void computeStress( response& res, tangents& tan, const increment& inc ) const override;
 
+    /**
+     * @brief computeStress(), which also yields the derivatives of the updated elastic energy density and
+     * dissipation wrt the strain increment and the nonlocal variable.
+     * @param[in,out] res As for computeStress().
+     * @param[out] tan As for computeStress().
+     * @param[in] inc As for computeStress().
+     * @param[out] energyTan The energy tangents.
+     */
+    void computeStressWithEnergyTangents( response&        res,
+                                          tangents&        tan,
+                                          const increment& inc,
+                                          energyTangents&  energyTan ) const override;
+
     double getDensity( const double* stateVars ) const override;
 
     std::vector< double > getNonlocalViscosity( const double* stateVars ) const override;
 
   private:
-    /// the stress update of computeStress, without the check of its results
-    void updateStress( response& res, tangents& tan, const increment& inc ) const;
+    /// the stress update with the check of its results; energy tangents only if energyTan is given
+    void computeStressImplicit( response& res, tangents& tan, const increment& inc, energyTangents* energyTan ) const;
+
+    /// the stress update, without the check of its results
+    void updateStress( response& res, tangents& tan, const increment& inc, energyTangents* energyTan ) const;
 
     /// properties of the perfectly plastic RankineSofteningPlasticity for the effective stress
     const std::array< double, 6 >    effectiveProperties;

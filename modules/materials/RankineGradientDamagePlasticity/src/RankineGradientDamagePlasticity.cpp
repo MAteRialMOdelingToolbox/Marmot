@@ -68,23 +68,46 @@ namespace Marmot::Materials {
 
   void RankineGradientDamagePlasticity::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
+    computeStressImplicit( res, tan, inc, nullptr );
+  }
+
+  void RankineGradientDamagePlasticity::computeStressWithEnergyTangents( response&        res,
+                                                                         tangents&        tan,
+                                                                         const increment& inc,
+                                                                         energyTangents&  energyTan ) const
+  {
+    computeStressImplicit( res, tan, inc, &energyTan );
+  }
+
+  void RankineGradientDamagePlasticity::computeStressImplicit( response&        res,
+                                                               tangents&        tan,
+                                                               const increment& inc,
+                                                               energyTangents*  energyTan ) const
+  {
     // a non-finite nonlocal field would not enter the checked results, since the history maximum ignores it
     if ( !inc.K.allFinite() )
       throw Utilities::StressUpdateFailed( Utilities::MakeString()
                                            << __PRETTY_FUNCTION__ << ": non-finite nonlocal field" );
 
-    updateStress( res, tan, inc );
+    updateStress( res, tan, inc, energyTan );
 
     // a diverging iterate may overflow the results (e.g., the energies to inf or 0 * inf = NaN): request a cutback
     // instead of passing non-finite values to the solver
     if ( !( res.stress.allFinite() && res.KLocal.allFinite() && std::isfinite( res.elasticEnergyDensity ) &&
             std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
-            tan.dKLocalddStrain.allFinite() ) )
+            tan.dKLocalddStrain.allFinite() &&
+            ( !energyTan ||
+              ( energyTan->dElasticEnergyDensityddStrain.allFinite() &&
+                energyTan->dElasticEnergyDensityddK.allFinite() && energyTan->dDissipationddStrain.allFinite() &&
+                energyTan->dDissipationddK.allFinite() ) ) ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
 
-  void RankineGradientDamagePlasticity::updateStress( response& res, tangents& tan, const increment& inc ) const
+  void RankineGradientDamagePlasticity::updateStress( response&        res,
+                                                      tangents&        tan,
+                                                      const increment& inc,
+                                                      energyTangents*  energyTan ) const
   {
     const double& E              = materialProperties[0];
     const double& nu             = materialProperties[1];
@@ -167,12 +190,26 @@ namespace Marmot::Materials {
     tan.dKLocalddStrain.row( 0 ) = dKappaD_dE.transpose();
 
     // free energy (1 - omega) psiEff, dissipation (1 - omega) effStress : dEp + psiEff dOmega
-    const double psiEff = 0.5 * effStress.dot( CelInv * effStress );
+    const double         psiEff         = 0.5 * effStress.dot( CelInv * effStress );
+    const double         dOmega         = integrityOld - integrity;
+    const Math::Vector6d dStrainPlastic = plastic ? Math::Vector6d( dE - CelInv * ( effStress - effStressOld ) )
+                                                  : Math::Vector6d::Zero();
+    const double         plasticWorkEff = effStress.dot( dStrainPlastic );
     res.elasticEnergyDensity += integrity * psiEff - integrityOld * psiEffOld;
-    res.dissipation += psiEff * ( integrityOld - integrity );
-    if ( plastic ) {
-      const Math::Vector6d dStrainPlastic = dE - CelInv * ( effStress - effStressOld );
-      res.dissipation += integrity * effStress.dot( dStrainPlastic );
+    res.dissipation += psiEff * dOmega + integrity * plasticWorkEff;
+
+    if ( energyTan ) {
+      const Math::Vector6d dPsiEff_dE          = dEffStress_dE.transpose() * ( CelInv * effStress );
+      energyTan->dElasticEnergyDensityddStrain = integrity * dPsiEff_dE - psiEff * dOmega_dE;
+      energyTan->dElasticEnergyDensityddK( 0 ) = -psiEff * dOmega_dK;
+
+      // d dEp / d dE = 1 - Cel^-1 dEffStress/dE for plastic steps; dEp vanishes for elastic ones
+      const Math::Matrix6d dEp_dE     = plastic ? Math::Matrix6d( Math::Matrix6d::Identity() - CelInv * dEffStress_dE )
+                                                : Math::Matrix6d::Zero();
+      energyTan->dDissipationddStrain = dOmega * dPsiEff_dE + ( psiEff - plasticWorkEff ) * dOmega_dE +
+                                        integrity * ( dEffStress_dE.transpose() * dStrainPlastic +
+                                                      dEp_dE.transpose() * effStress );
+      energyTan->dDissipationddK( 0 ) = ( psiEff - plasticWorkEff ) * dOmega_dK;
     }
   }
 

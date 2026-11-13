@@ -69,9 +69,10 @@ namespace {
   };
 
   struct UpdateResult {
-    MaterialPointState state;
-    Material::tangents tan;
-    double             KLocal, c, dPsi, dDissipation;
+    MaterialPointState       state;
+    Material::tangents       tan;
+    double                   KLocal, c, dPsi, dDissipation;
+    Material::energyTangents energyTan;
   };
 
   UpdateResult update( const Material&           material,
@@ -79,19 +80,39 @@ namespace {
                        const Math::Vector6d&     dE,
                        double                    K )
   {
-    UpdateResult       result{ .state = stateOld, .tan = {}, .KLocal = 0., .c = 0., .dPsi = 0., .dDissipation = 0. };
-    Material::response res{ .stress               = stateOld.stress,
-                            .KLocal               = Eigen::Vector< double, 1 >::Zero(),
-                            .c                    = Eigen::Vector< double, 1 >::Zero(),
-                            .stateVars            = result.state.stateVars.data(),
-                            .elasticEnergyDensity = 0.,
-                            .dissipation          = 0. };
+    UpdateResult
+      result{ .state = stateOld, .tan = {}, .KLocal = 0., .c = 0., .dPsi = 0., .dDissipation = 0., .energyTan = {} };
+    Material::response        res{ .stress               = stateOld.stress,
+                                   .KLocal               = Eigen::Vector< double, 1 >::Zero(),
+                                   .c                    = Eigen::Vector< double, 1 >::Zero(),
+                                   .stateVars            = result.state.stateVars.data(),
+                                   .elasticEnergyDensity = 0.,
+                                   .dissipation          = 0. };
     const Material::increment inc{ .dStrain = dE,
                                    .K       = Eigen::Vector< double, 1 >::Constant( K ),
                                    .dK      = Eigen::Vector< double, 1 >::Zero(),
                                    .time    = 0.,
                                    .dT      = 1. };
     material.computeStress( res, result.tan, inc );
+
+    // the energy variant gives the same update
+    MaterialPointState withTangents = stateOld;
+    Material::response resWithTangents{ .stress               = stateOld.stress,
+                                        .KLocal               = Eigen::Vector< double, 1 >::Zero(),
+                                        .c                    = Eigen::Vector< double, 1 >::Zero(),
+                                        .stateVars            = withTangents.stateVars.data(),
+                                        .elasticEnergyDensity = 0.,
+                                        .dissipation          = 0. };
+    Material::tangents tanWithTangents;
+    material.computeStressWithEnergyTangents( resWithTangents, tanWithTangents, inc, result.energyTan );
+    throwExceptionOnFailure( resWithTangents.stress == res.stress && resWithTangents.KLocal == res.KLocal &&
+                               withTangents.stateVars == result.state.stateVars &&
+                               resWithTangents.elasticEnergyDensity == res.elasticEnergyDensity &&
+                               resWithTangents.dissipation == res.dissipation &&
+                               tanWithTangents.dStressddStrain == result.tan.dStressddStrain &&
+                               tanWithTangents.dStressddK == result.tan.dStressddK,
+                             "computeStress() and computeStressWithEnergyTangents() differ" );
+
     result.state.stress = res.stress;
     result.KLocal       = res.KLocal( 0 );
     result.c            = res.c( 0 );
@@ -121,14 +142,17 @@ namespace {
     return r;
   }
 
-  // compare all tangent blocks [dS/dE dS/dK; dKLocal/dE dKLocal/dK] against central differences
+  // compare all tangent blocks [dS/dE dS/dK; dKLocal/dE dKLocal/dK] and the energy tangents against central
+  // differences
   void checkTangent( const Material& material, const MaterialPointState& stateOld, const Math::Vector6d& dE, double K )
   {
     using namespace Math::Differentiation::Numerical;
     const auto r = update( material, stateOld, dE, K );
 
-    Eigen::Matrix< double, 7, 7 > tangent;
-    tangent << r.tan.dStressddStrain, r.tan.dStressddK, r.tan.dKLocalddStrain, r.tan.dKLocalddK;
+    Eigen::Matrix< double, 9, 7 > tangent;
+    tangent << r.tan.dStressddStrain, r.tan.dStressddK, r.tan.dKLocalddStrain, r.tan.dKLocalddK,
+      r.energyTan.dElasticEnergyDensityddStrain.transpose(), r.energyTan.dElasticEnergyDensityddK,
+      r.energyTan.dDissipationddStrain.transpose(), r.energyTan.dDissipationddK;
 
     // scaled arguments, since the default step is relative to max(1, |x|)
     const double          scale = 1e-4;
@@ -137,16 +161,24 @@ namespace {
       numericalTangent = centralDifference(
                            [&]( const Eigen::VectorXd& y ) -> Eigen::VectorXd {
                              const auto ry = update( material, stateOld, scale * y.head( 6 ), scale * y( 6 ) );
-                             return ( Eigen::VectorXd( 7 ) << ry.state.stress, ry.KLocal ).finished();
+                             return ( Eigen::VectorXd( 9 ) << ry.state.stress, ry.KLocal, ry.dPsi, ry.dDissipation )
+                               .finished();
                            },
                            x ) /
                          scale;
 
-    const Eigen::MatrixXd error    = tangent - numericalTangent;
-    const double          relError = std::max( { error.topLeftCorner( 6, 6 ).cwiseAbs().maxCoeff() / E,
-                                                 error.topRightCorner( 6, 1 ).cwiseAbs().maxCoeff() /
-                                                   std::max( tangent.topRightCorner( 6, 1 ).norm(), ft / epsilonF ),
-                                                 error.bottomRows( 1 ).cwiseAbs().maxCoeff() } );
+    // each block relative to its own scale, floored since it may vanish
+    const Eigen::MatrixXd error         = tangent - numericalTangent;
+    const double          errorStrain   = error.topLeftCorner( 6, 6 ).cwiseAbs().maxCoeff() / E;
+    const double          errorNonlocal = error.topRightCorner( 6, 1 ).cwiseAbs().maxCoeff() /
+                                 std::max( tangent.topRightCorner( 6, 1 ).norm(), ft / epsilonF );
+    const double errorKLocal = error.row( 6 ).cwiseAbs().maxCoeff();
+    const double errorPsi    = error.row( 7 ).cwiseAbs().maxCoeff() /
+                            std::max( tangent.row( 7 ).cwiseAbs().maxCoeff(), 1e-3 * ft );
+    const double errorDissipation = error.row( 8 ).cwiseAbs().maxCoeff() /
+                                    std::max( tangent.row( 8 ).cwiseAbs().maxCoeff(), 1e-3 * ft );
+    const double relError = std::max( std::max( std::max( errorStrain, errorNonlocal ), errorKLocal ),
+                                      std::max( errorPsi, errorDissipation ) );
     throwExceptionOnFailure( relError < 1e-6,
                              Utilities::MakeString() << "tangent check failed, relative error " << relError );
   }
