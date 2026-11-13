@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialHypoElasticEnergyTangents.h"
 #include "Marmot/RankineSofteningPlasticity.h"
 #include <array>
 
@@ -64,7 +65,7 @@ namespace Marmot::Materials {
    * \f$ \varepsilon_\mathrm{f} \f$ is a material parameter (no regularization by the element size);
    * \f$ \varepsilon_\mathrm{f} = \infty \f$ recovers perfect Rankine plasticity.
    */
-  class RankineDamagePlasticity : public MaterialHypoElastic {
+  class RankineDamagePlasticity : public MaterialHypoElastic, public HypoElasticEnergyTangentProvider {
 
   public:
     RankineDamagePlasticity( const double* materialProperties, const int nMaterialProperties, const int materialLabel );
@@ -77,14 +78,41 @@ namespace Marmot::Materials {
                         const Math::Vector6d& dStrain,
                         const timeInfo&       timeInfo ) const override;
 
+    /**
+     * @brief computeStress(), which also yields the derivatives of the updated elastic energy density and
+     * dissipation wrt the strain increment.
+     * @param[in,out] state As for computeStress().
+     * @param[out] dStressDDStrain As for computeStress().
+     * @param[in] dStrain As for computeStress().
+     * @param[in] timeInfo As for computeStress().
+     * @param[out] dElasticEnergyDensity_dStrain Derivative of the updated elastic energy density.
+     * @param[out] dDissipation_dStrain Derivative of the updated dissipation.
+     */
+    void computeStressWithEnergyTangents( state3D&              state,
+                                          Math::Matrix6d&       dStressDDStrain,
+                                          const Math::Vector6d& dStrain,
+                                          const timeInfo&       timeInfo,
+                                          Math::Vector6d&       dElasticEnergyDensity_dStrain,
+                                          Math::Vector6d&       dDissipation_dStrain ) const override;
+
     double getDensity( const double* stateVars ) const override;
 
   private:
-    /// the stress update of computeStress, without the check of its results
+    /// the stress update with the check of its results; energy tangents only if both pointers are given
+    void computeStressImplicit( state3D&              state,
+                                Math::Matrix6d&       dStressDDStrain,
+                                const Math::Vector6d& dStrain,
+                                const timeInfo&       timeInfo,
+                                Math::Vector6d*       dElasticEnergyDensity_dStrain,
+                                Math::Vector6d*       dDissipation_dStrain ) const;
+
+    /// the stress update, without the check of its results
     void updateStress( state3D&              state,
                        Math::Matrix6d&       dStressDDStrain,
                        const Math::Vector6d& dStrain,
-                       const timeInfo&       timeInfo ) const;
+                       const timeInfo&       timeInfo,
+                       Math::Vector6d*       dElasticEnergyDensity_dStrain,
+                       Math::Vector6d*       dDissipation_dStrain ) const;
 
     /// properties of the perfectly plastic RankineSofteningPlasticity for the effective stress
     const std::array< double, 6 >    effectiveProperties;

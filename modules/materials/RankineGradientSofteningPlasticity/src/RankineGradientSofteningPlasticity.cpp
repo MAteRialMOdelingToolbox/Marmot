@@ -62,23 +62,46 @@ namespace Marmot::Materials {
 
   void RankineGradientSofteningPlasticity::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
+    computeStressImplicit( res, tan, inc, nullptr );
+  }
+
+  void RankineGradientSofteningPlasticity::computeStressWithEnergyTangents( response&        res,
+                                                                            tangents&        tan,
+                                                                            const increment& inc,
+                                                                            energyTangents&  energyTan ) const
+  {
+    computeStressImplicit( res, tan, inc, &energyTan );
+  }
+
+  void RankineGradientSofteningPlasticity::computeStressImplicit( response&        res,
+                                                                  tangents&        tan,
+                                                                  const increment& inc,
+                                                                  energyTangents*  energyTan ) const
+  {
     // a NaN nonlocal field would not enter the checked results, since it floors the yield stress at zero
     if ( !inc.K.allFinite() )
       throw Utilities::StressUpdateFailed( Utilities::MakeString()
                                            << __PRETTY_FUNCTION__ << ": non-finite nonlocal field" );
 
-    updateStress( res, tan, inc );
+    updateStress( res, tan, inc, energyTan );
 
     // a diverging iterate may overflow the results (e.g., the elastic energy): request a cutback instead of passing
     // non-finite values to the solver
     if ( !( res.stress.allFinite() && res.KLocal.allFinite() && std::isfinite( res.elasticEnergyDensity ) &&
             std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
-            tan.dKLocalddStrain.allFinite() && tan.dKLocalddK.allFinite() ) )
+            tan.dKLocalddStrain.allFinite() && tan.dKLocalddK.allFinite() &&
+            ( !energyTan ||
+              ( energyTan->dElasticEnergyDensityddStrain.allFinite() &&
+                energyTan->dElasticEnergyDensityddK.allFinite() && energyTan->dDissipationddStrain.allFinite() &&
+                energyTan->dDissipationddK.allFinite() ) ) ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
 
-  void RankineGradientSofteningPlasticity::updateStress( response& res, tangents& tan, const increment& inc ) const
+  void RankineGradientSofteningPlasticity::updateStress( response&        res,
+                                                         tangents&        tan,
+                                                         const increment& inc,
+                                                         energyTangents*  energyTan ) const
   {
     using namespace RankineSofteningPlasticityConstants;
     using namespace Marmot::ContinuumMechanics::Voigt;
@@ -136,6 +159,12 @@ namespace Marmot::Materials {
       tan.dKLocalddStrain.setZero();
       tan.dKLocalddK.setZero();
       res.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
+      if ( energyTan ) {
+        energyTan->dElasticEnergyDensityddStrain = S;
+        energyTan->dElasticEnergyDensityddK.setZero();
+        energyTan->dDissipationddStrain.setZero();
+        energyTan->dDissipationddK.setZero();
+      }
       return;
     }
 
@@ -253,6 +282,17 @@ namespace Marmot::Materials {
 
     res.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
     res.dissipation += fy( kappa ) * dKappa;
+
+    // psi = 1/2 S : Cel^-1 : S; dissipation fy( m K + (1 - m) kappa ) dKappa with kappa = kappaOld + dKappa
+    if ( energyTan ) {
+      const Math::Vector6d strainElastic       = CelInv * S;
+      energyTan->dElasticEnergyDensityddStrain = tan.dStressddStrain.transpose() * strainElastic;
+      energyTan->dElasticEnergyDensityddK      = tan.dStressddK.transpose() * strainElastic;
+      energyTan->dDissipationddStrain          = ( fy( kappa ) + ( 1. - m ) * dfy( kappa ) * dKappa ) *
+                                        tan.dKLocalddStrain.row( 0 ).transpose();
+      energyTan->dDissipationddK( 0 ) = fy( kappa ) * dKappa_dK +
+                                        dfy( kappa ) * ( m + ( 1. - m ) * dKappa_dK ) * dKappa;
+    }
   }
 
 } // namespace Marmot::Materials
