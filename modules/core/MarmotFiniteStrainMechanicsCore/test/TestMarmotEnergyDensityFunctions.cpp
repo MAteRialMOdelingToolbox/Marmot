@@ -174,87 +174,10 @@ auto testSecondOrderDerivedB()
     }
 }
 
-// Cross-check that the plain (energy-only) and FirstOrder (energy + analytic
-// dPsi/dC) overloads of ArrudaBoyce8ChainPotential cannot drift out of sync: both
-// funnel through the same internal `Detail::arrudaBoyce8ChainEnergyAndDerivative`
-// helper, but this test verifies that end-to-end rather than assuming it. The
-// gradient is cross-checked against a complex-step derivative of the plain overload
-// itself (not against a hand-derived formula), so this specifically guards against
-// the two overloads' shared helper silently diverging from what the plain overload
-// actually computes.
-auto testArrudaBoycePlainMatchesFirstOrder()
-{
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
-
-  Tensor33d    C       = get< 0 >( computationParameters() );
-  const double mu      = 500.0;
-  const double lambdaL = 2.5;
-
-  const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
-
-  double    psiFOD;
-  Tensor33d dPsiFOD_dC;
-  std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
-
-  throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
-                           Marmot::Utilities::MakeString()
-                             << __PRETTY_FUNCTION__ << " plain and FirstOrder energy densities disagree." );
-
-  // complex-step derivative of the plain overload, entry by entry (C treated as a
-  // general, not-necessarily-symmetric matrix argument, matching how dPsi/dC is
-  // defined and used everywhere else in this codebase)
-  const double h = 1e-20;
-  Tensor33d    dPsiCSDA( 0.0 );
-  for ( int i = 0; i < 3; i++ )
-    for ( int j = 0; j < 3; j++ ) {
-      Tensor33t< std::complex< double > >
-        Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C );
-      Cc( i, j ) += std::complex< double >( 0.0, h );
-      std::complex< double > psiC = ArrudaBoyce8ChainPotential< std::complex< double > >( Cc, mu, lambdaL );
-      dPsiCSDA( i, j )            = psiC.imag() / h;
-    }
-
-  throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
-                           Marmot::Utilities::MakeString()
-                             << __PRETTY_FUNCTION__
-                             << " FirstOrder gradient disagrees with a complex-step derivative "
-                                "of the plain overload." );
-}
-
-// Cross-check that Arruda-Boyce returns exactly zero energy and zero derivative at
-// C=I even when the locking stretch lambdaL is arbitrarily close to 1.0 (where
-// w0 = 1 - 1/lambdaL^2 is very small and an unscaled floor would clamp the reference state).
-auto testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch()
-{
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
-  const Tensor33d C  = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
-  const double    mu = 500.0;
-
-  for ( double lambdaL : { 1.00001, 1.0001, 1.001, 1.005, 1.01, 2.5 } ) {
-    const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
-    double       psiFOD;
-    Tensor33d    dPsiFOD_dC;
-    std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
-
-    throwExceptionOnFailure( std::abs( psiPlain ) < 1e-12,
-                             Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__
-                               << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
-    throwExceptionOnFailure( std::abs( psiFOD ) < 1e-12,
-                             Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__
-                               << " FirstOrder Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
-    throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, Tensor33d( 0.0 ), 1e-10 ),
-                             Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__
-                               << " FirstOrder Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
-  }
-}
-
-// Generic plain-vs-FirstOrder cross-check, same methodology as
-// testArrudaBoycePlainMatchesFirstOrder: the FirstOrder gradient
-// is checked against a complex-step derivative of the plain overload itself,
-// guarding against the two overloads' formulas silently drifting apart.
+// Generic plain-vs-FirstOrder cross-check: the FirstOrder gradient is checked against a
+// complex-step derivative of the plain overload itself (C treated as a general,
+// not-necessarily-symmetric matrix argument), guarding against the two overloads'
+// formulas silently drifting apart.
 template < typename PlainFn, typename FirstOrderFn, typename... Args >
 void checkPlainMatchesFirstOrder( const char*      testName,
                                   PlainFn          plainFn,
@@ -290,14 +213,94 @@ void checkPlainMatchesFirstOrder( const char*      testName,
                                 "of the plain overload." );
 }
 
+auto testArrudaBoycePlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double mu, double lambdaL ) { return Isochoric::ArrudaBoyce8ChainPotential( C, mu, lambdaL ); },
+    []( const auto& C, double mu, double lambdaL ) {
+      return Isochoric::FirstOrder::ArrudaBoyce8ChainPotential( C, mu, lambdaL );
+    },
+    get< 0 >( computationParameters() ),
+    500.0,
+    2.5 );
+}
+
+// Beyond the locking regularization floor, the returned gradient must still be the derivative of the returned
+// energy: checked against a real-valued central difference of the plain overload (a complex-step check alone
+// cannot detect an energy that is frozen while its perturbation part keeps moving).
+auto testArrudaBoyceRegularizedEnergyMatchesGradient()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const double mu      = 500.0;
+  const double lambdaL = 1.2; // Ibar1 = 5 for C below, beyond the locking limit 3 lambdaL^2 = 4.32
+
+  Tensor33d C( 0.0 );
+  C( 0, 0 ) = 4.0;
+  C( 1, 1 ) = 0.5;
+  C( 2, 2 ) = 0.5;
+
+  double    psi;
+  Tensor33d dPsi_dC;
+  std::tie( psi, dPsi_dC ) = Isochoric::FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+  const double h = 1e-6;
+  Tensor33d    dPsiFD( 0.0 );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33d Cp = C, Cm = C;
+      Cp( i, j ) += h;
+      Cm( i, j ) -= h;
+      dPsiFD( i, j ) = ( Isochoric::ArrudaBoyce8ChainPotential< double >( Cp, mu, lambdaL ) -
+                         Isochoric::ArrudaBoyce8ChainPotential< double >( Cm, mu, lambdaL ) ) /
+                       ( 2. * h );
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dPsi_dC, dPsiFD, 1e-2 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " regularized Arruda-Boyce gradient is not the derivative of its energy." );
+}
+
+// Cross-check that Arruda-Boyce returns exactly zero energy and zero derivative at
+// C=I even when the locking stretch lambdaL is arbitrarily close to 1.0 (where
+// w0 = 1 - 1/lambdaL^2 is very small and an unscaled floor would clamp the reference state).
+auto testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C  = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  const double    mu = 500.0;
+
+  for ( double lambdaL : { 1.00001, 1.0001, 1.001, 1.005, 1.01, 2.5 } ) {
+    const double psiPlain = Isochoric::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+    double       psiFOD;
+    Tensor33d    dPsiFOD_dC;
+    std::tie( psiFOD, dPsiFOD_dC ) = Isochoric::FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+    throwExceptionOnFailure( std::abs( psiPlain ) < 1e-12,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( std::abs( psiFOD ) < 1e-12,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrder Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, Tensor33d( 0.0 ), 1e-10 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrder Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
+  }
+}
+
 auto testNeoHookePlainMatchesFirstOrder()
 {
   using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d C = get< 0 >( computationParameters() );
   checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
-    []( const auto& C, double mu ) { return NeoHookePotential( C, mu ); },
-    []( const auto& C, double mu ) { return FirstOrder::NeoHookePotential( C, mu ); },
+    []( const auto& C, double mu ) { return Isochoric::NeoHookePotential( C, mu ); },
+    []( const auto& C, double mu ) { return Isochoric::FirstOrder::NeoHookePotential( C, mu ); },
     C,
     750.0 );
 }
@@ -308,8 +311,10 @@ auto testYeohPlainMatchesFirstOrder()
   Tensor33d C = get< 0 >( computationParameters() );
   checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
-    []( const auto& C, double c10, double c20, double c30 ) { return YeohPotential( C, c10, c20, c30 ); },
-    []( const auto& C, double c10, double c20, double c30 ) { return FirstOrder::YeohPotential( C, c10, c20, c30 ); },
+    []( const auto& C, double c10, double c20, double c30 ) { return Isochoric::YeohPotential( C, c10, c20, c30 ); },
+    []( const auto& C, double c10, double c20, double c30 ) {
+      return Isochoric::FirstOrder::YeohPotential( C, c10, c20, c30 );
+    },
     C,
     500.0,
     50.0,
@@ -322,8 +327,8 @@ auto testMooneyRivlinPlainMatchesFirstOrder()
   Tensor33d C = get< 0 >( computationParameters() );
   checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
-    []( const auto& C, double c10, double c01 ) { return MooneyRivlinPotential( C, c10, c01 ); },
-    []( const auto& C, double c10, double c01 ) { return FirstOrder::MooneyRivlinPotential( C, c10, c01 ); },
+    []( const auto& C, double c10, double c01 ) { return Isochoric::MooneyRivlinPotential( C, c10, c01 ); },
+    []( const auto& C, double c10, double c01 ) { return Isochoric::FirstOrder::MooneyRivlinPotential( C, c10, c01 ); },
     C,
     400.0,
     100.0 );
@@ -335,8 +340,8 @@ auto testVolumetricPenaltyPlainMatchesFirstOrder()
   Tensor33d C = get< 0 >( computationParameters() );
   checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
-    []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrder::VolumetricPenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::PenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::FirstOrder::PenaltyPotential( C, kappa ); },
     C,
     10000.0 );
 }
@@ -388,37 +393,37 @@ auto testVolumetricPotentialsDollSchweizerhof()
   const double k   = 10000.0;
   const double ln2 = std::log( 2.0 );
 
-  // U_1 .. U_5, Table 1 (U_2 = VolumetricPenaltyPotential)
+  // U_1 .. U_5, Table 1 (U_2 = Volumetric::PenaltyPotential)
   checkVolumetricPotential(
-    "SussmanBatheVolumetricPotential (U1)",
-    []( const auto& C, double kappa ) { return SussmanBatheVolumetricPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrder::SussmanBatheVolumetricPotential( C, kappa ); },
+    "Volumetric::SussmanBathePotential (U1)",
+    []( const auto& C, double kappa ) { return Volumetric::SussmanBathePotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::FirstOrder::SussmanBathePotential( C, kappa ); },
     k / 2.,
     k );
   checkVolumetricPotential(
-    "VolumetricPenaltyPotential (U2)",
-    []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrder::VolumetricPenaltyPotential( C, kappa ); },
+    "Volumetric::PenaltyPotential (U2)",
+    []( const auto& C, double kappa ) { return Volumetric::PenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::FirstOrder::PenaltyPotential( C, kappa ); },
     k / 2. * ln2 * ln2,
     k );
   checkVolumetricPotential(
-    "SimoTaylorVolumetricPotential (U3)",
-    []( const auto& C, double kappa ) { return SimoTaylorVolumetricPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrder::SimoTaylorVolumetricPotential( C, kappa ); },
+    "Volumetric::SimoTaylorPotential (U3)",
+    []( const auto& C, double kappa ) { return Volumetric::SimoTaylorPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::FirstOrder::SimoTaylorPotential( C, kappa ); },
     k / 4. * ( 1. + ln2 * ln2 ),
     k );
   for ( const double theta : { -2.0, -5.0, 9.0 } )
     checkVolumetricPotential(
-      "OgdenVolumetricPotential (U4)",
-      []( const auto& C, double kappa, double th ) { return OgdenVolumetricPotential( C, kappa, th ); },
-      []( const auto& C, double kappa, double th ) { return FirstOrder::OgdenVolumetricPotential( C, kappa, th ); },
+      "Volumetric::OgdenPotential (U4)",
+      []( const auto& C, double kappa, double th ) { return Volumetric::OgdenPotential( C, kappa, th ); },
+      []( const auto& C, double kappa, double th ) { return Volumetric::FirstOrder::OgdenPotential( C, kappa, th ); },
       k / ( theta * theta ) * ( theta * ln2 + std::pow( 2., -theta ) - 1. ),
       k,
       theta );
   checkVolumetricPotential(
-    "LiuHofstetterMangVolumetricPotential (U5)",
-    []( const auto& C, double kappa ) { return LiuHofstetterMangVolumetricPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrder::LiuHofstetterMangVolumetricPotential( C, kappa ); },
+    "Volumetric::LiuHofstetterMangPotential (U5)",
+    []( const auto& C, double kappa ) { return Volumetric::LiuHofstetterMangPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return Volumetric::FirstOrder::LiuHofstetterMangPotential( C, kappa ); },
     k * ( 2. * ln2 - 1. ),
     k );
 
@@ -430,12 +435,12 @@ auto testVolumetricPotentialsDollSchweizerhof()
                                                                          { 2.3, 1.4 },
                                                                          { 0.45, 1.05 } } )
     checkVolumetricPotential(
-      "DollSchweizerhofVolumetricPotential (U6)",
+      "Volumetric::DollSchweizerhofPotential (U6)",
       []( const auto& C, double kappa, double alpha, double beta ) {
-        return DollSchweizerhofVolumetricPotential( C, kappa, alpha, beta );
+        return Volumetric::DollSchweizerhofPotential( C, kappa, alpha, beta );
       },
       []( const auto& C, double kappa, double alpha, double beta ) {
-        return FirstOrder::DollSchweizerhofVolumetricPotential( C, kappa, alpha, beta );
+        return Volumetric::FirstOrder::DollSchweizerhofPotential( C, kappa, alpha, beta );
       },
       k * ( ( std::pow( 2., a + 1. ) / ( a + 1. ) + std::pow( 2., 1. - b ) / ( b - 1. ) ) / ( a + b ) -
             1. / ( ( a + 1. ) * ( b - 1. ) ) ),
@@ -453,12 +458,12 @@ auto testVolumetricPotentialsDollSchweizerhof()
                   ( std::pow( 2., 1. - betas[i] ) - 1. ) / ( betas[i] - 1. );
     expected *= k / 7.0;
     checkVolumetricPotential(
-      "GeneralizedDollSchweizerhofVolumetricPotential (U6gen)",
+      "Volumetric::GeneralizedDollSchweizerhofPotential (U6gen)",
       [&]( const auto& C, double kappa ) {
-        return GeneralizedDollSchweizerhofVolumetricPotential( C, kappa, alphas, betas );
+        return Volumetric::GeneralizedDollSchweizerhofPotential( C, kappa, alphas, betas );
       },
       [&]( const auto& C, double kappa ) {
-        return FirstOrder::GeneralizedDollSchweizerhofVolumetricPotential( C, kappa, alphas, betas );
+        return Volumetric::FirstOrder::GeneralizedDollSchweizerhofPotential( C, kappa, alphas, betas );
       },
       expected,
       k );
@@ -466,18 +471,18 @@ auto testVolumetricPotentialsDollSchweizerhof()
 
   // U_7, U_8, Eq. (16)
   checkVolumetricPotential(
-    "DollSchweizerhofExponentialVolumetricPotential (U7)",
-    []( const auto& C, double kappa ) { return DollSchweizerhofExponentialVolumetricPotential( C, kappa ); },
+    "Volumetric::DollSchweizerhofExponentialPotential (U7)",
+    []( const auto& C, double kappa ) { return Volumetric::DollSchweizerhofExponentialPotential( C, kappa ); },
     []( const auto& C, double kappa ) {
-      return FirstOrder::DollSchweizerhofExponentialVolumetricPotential( C, kappa );
+      return Volumetric::FirstOrder::DollSchweizerhofExponentialPotential( C, kappa );
     },
     k / 2. * ( std::exp( 1. ) - ln2 - 1. ),
     k );
   checkVolumetricPotential(
-    "DollSchweizerhofLogarithmicVolumetricPotential (U8)",
-    []( const auto& C, double kappa ) { return DollSchweizerhofLogarithmicVolumetricPotential( C, kappa ); },
+    "Volumetric::DollSchweizerhofLogarithmicPotential (U8)",
+    []( const auto& C, double kappa ) { return Volumetric::DollSchweizerhofLogarithmicPotential( C, kappa ); },
     []( const auto& C, double kappa ) {
-      return FirstOrder::DollSchweizerhofLogarithmicVolumetricPotential( C, kappa );
+      return Volumetric::FirstOrder::DollSchweizerhofLogarithmicPotential( C, kappa );
     },
     k / 2. * ln2,
     k );
@@ -492,23 +497,23 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
   const Tensor33d CInv( Fastor::inverse( C ) );
 
   // U_3 = (U_1 + U_2) / 2
-  throwExceptionOnFailure( checkIfEqual( SimoTaylorVolumetricPotential( C, k ),
-                                         0.5 * ( SussmanBatheVolumetricPotential( C, k ) +
-                                                 VolumetricPenaltyPotential( C, k ) ),
+  throwExceptionOnFailure( checkIfEqual( Volumetric::SimoTaylorPotential( C, k ),
+                                         0.5 * ( Volumetric::SussmanBathePotential( C, k ) +
+                                                 Volumetric::PenaltyPotential( C, k ) ),
                                          1e-14 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " U3 != (U1 + U2)/2." );
 
   // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of standardNeoHooke
   const double J = std::sqrt( Fastor::determinant( C ) );
-  throwExceptionOnFailure( checkIfEqual( OgdenVolumetricPotential( C, k, -2.0 ),
+  throwExceptionOnFailure( checkIfEqual( Volumetric::OgdenPotential( C, k, -2.0 ),
                                          k / 4. * ( J * J - 1. - 2. * std::log( J ) ),
                                          1e-14 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " U4(theta=-2) != kappa/4 (J^2 - 1 - 2 ln J)." );
 
   // beta = alpha + 2: U_6(J) = U_6(1/J)
-  throwExceptionOnFailure( checkIfEqual( DollSchweizerhofVolumetricPotential( C, k, 1.5, 3.5 ),
-                                         DollSchweizerhofVolumetricPotential( CInv, k, 1.5, 3.5 ),
+  throwExceptionOnFailure( checkIfEqual( Volumetric::DollSchweizerhofPotential( C, k, 1.5, 3.5 ),
+                                         Volumetric::DollSchweizerhofPotential( CInv, k, 1.5, 3.5 ),
                                          1e-13 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " U6(J) != U6(1/J) for beta = alpha + 2." );
@@ -517,8 +522,8 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
   {
     double    U, UInv;
     Tensor33d dU_dC, dUInv_dC;
-    std::tie( U, dU_dC )       = FirstOrder::DollSchweizerhofVolumetricPotential( C, k, 2.0, 2.0 );
-    std::tie( UInv, dUInv_dC ) = FirstOrder::DollSchweizerhofVolumetricPotential( CInv, k, 2.0, 2.0 );
+    std::tie( U, dU_dC )       = Volumetric::FirstOrder::DollSchweizerhofPotential( C, k, 2.0, 2.0 );
+    std::tie( UInv, dUInv_dC ) = Volumetric::FirstOrder::DollSchweizerhofPotential( CInv, k, 2.0, 2.0 );
     // p = 2/J (dU/dC : C) / 3, since C^{-T} : C = 3
     const double p    = 2. / J * Fastor::inner( dU_dC, C ) / 3.;
     const double pInv = 2. * J * Fastor::inner( dUInv_dC, CInv ) / 3.;
@@ -531,8 +536,8 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
   {
     const std::vector< double > alphas = { 0.7, 0.7 };
     const std::vector< double > betas  = { 2.5, 2.5 };
-    throwExceptionOnFailure( checkIfEqual( GeneralizedDollSchweizerhofVolumetricPotential( C, k, alphas, betas ),
-                                           DollSchweizerhofVolumetricPotential( C, k, 0.7, 2.5 ),
+    throwExceptionOnFailure( checkIfEqual( Volumetric::GeneralizedDollSchweizerhofPotential( C, k, alphas, betas ),
+                                           Volumetric::DollSchweizerhofPotential( C, k, 0.7, 2.5 ),
                                            1e-14 ),
                              Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << " U6gen with duplicated pairs != U6." );
@@ -544,7 +549,7 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
     const std::vector< double > betas  = { 2.5 };
     bool                        thrown = false;
     try {
-      GeneralizedDollSchweizerhofVolumetricPotential( C, k, alphas, betas );
+      Volumetric::GeneralizedDollSchweizerhofPotential( C, k, alphas, betas );
     }
     catch ( const std::invalid_argument& ) {
       thrown = true;
@@ -564,9 +569,9 @@ auto testYeohMooneyRivlinReduceToNeoHooke()
   Tensor33d    C  = get< 0 >( computationParameters() );
   const double mu = 750.0;
 
-  const double psiNeoHooke = NeoHookePotential( C, mu );
-  const double psiYeoh     = YeohPotential( C, mu / 2., 0.0, 0.0 );
-  const double psiMR       = MooneyRivlinPotential( C, mu / 2., 0.0 );
+  const double psiNeoHooke = Isochoric::NeoHookePotential( C, mu );
+  const double psiYeoh     = Isochoric::YeohPotential( C, mu / 2., 0.0, 0.0 );
+  const double psiMR       = Isochoric::MooneyRivlinPotential( C, mu / 2., 0.0 );
 
   throwExceptionOnFailure( checkIfEqual( psiYeoh, psiNeoHooke, 1e-13 ),
                            Marmot::Utilities::MakeString()
@@ -574,6 +579,97 @@ auto testYeohMooneyRivlinReduceToNeoHooke()
   throwExceptionOnFailure( checkIfEqual( psiMR, psiNeoHooke, 1e-13 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not reduce to NeoHooke." );
+}
+
+// DecoupledPotential/makeDecoupledPotential sum the isochoric and volumetric parts, for plain (scalar) results as
+// well as for FirstOrder (tuple) results, and the bundled potential stays generic in the scalar type.
+auto testDecoupledPotentialCombinesParts()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C     = get< 0 >( computationParameters() );
+  const double    mu    = 750.0;
+  const double    kappa = 10000.0;
+
+  const auto isoPlain = [mu]( const auto& C_ ) { return Isochoric::NeoHookePotential( C_, mu ); };
+  const auto volPlain = [kappa]( const auto& C_ ) { return Volumetric::PenaltyPotential( C_, kappa ); };
+  throwExceptionOnFailure( checkIfEqual( DecoupledPotential( C, isoPlain, volPlain ),
+                                         Isochoric::NeoHookePotential( C, mu ) +
+                                           Volumetric::PenaltyPotential( C, kappa ),
+                                         1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " plain decoupled potential != iso + vol." );
+
+  const auto [psiIso, dPsiIso_dC] = Isochoric::FirstOrder::NeoHookePotential( C, mu );
+  const auto [psiVol, dPsiVol_dC] = Volumetric::FirstOrder::PenaltyPotential( C, kappa );
+  const auto [psi, dPsi_dC]       = DecoupledPotential(
+    C,
+    [mu]( const auto& C_ ) { return Isochoric::FirstOrder::NeoHookePotential( C_, mu ); },
+    [kappa]( const auto& C_ ) { return Volumetric::FirstOrder::PenaltyPotential( C_, kappa ); } );
+  throwExceptionOnFailure( checkIfEqual( psi, psiIso + psiVol, 1e-14 ) &&
+                             checkIfEqual( dPsi_dC, Tensor33d( dPsiIso_dC + dPsiVol_dC ), 1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " FirstOrder decoupled potential != iso + vol." );
+
+  // the bundled potential is differentiable by complex step and matches its FirstOrder counterpart
+  const auto plain = makeDecoupledPotential( isoPlain, volPlain );
+  const auto
+    firstOrder = makeDecoupledPotential( [mu]( const auto&
+                                                 C_ ) { return Isochoric::FirstOrder::NeoHookePotential( C_, mu ); },
+                                         [kappa]( const auto& C_ ) {
+                                           return Volumetric::FirstOrder::PenaltyPotential( C_, kappa );
+                                         } );
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    [&]( const auto& C_ ) { return plain( C_ ); },
+    [&]( const auto& C_ ) { return firstOrder( C_ ); },
+    C );
+}
+
+// The full (compressible) Mooney-Rivlin and Yeoh potentials, now composed of their isochoric parts and the Ogden
+// volumetric part (theta = -2, kappa = 2/D1), must reproduce the original closed forms.
+auto testMooneyRivlinYeohFullPotentialsMatchClosedForm()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C  = get< 0 >( computationParameters() );
+  const double    C1 = 400.0, C2 = 100.0, C3 = 5.0, D1 = 1e-3;
+
+  const double J     = std::sqrt( Fastor::determinant( C ) );
+  const double I1    = Fastor::trace( C );
+  const double Ibar1 = I1 * std::pow( J, -2. / 3. );
+  const double Ibar2 = 0.5 * ( I1 * I1 - Fastor::trace( Tensor33d( C % C ) ) ) * std::pow( J, -4. / 3. );
+  const double U     = 1. / D1 * ( 0.5 * ( J * J - 1. ) - std::log( J ) );
+
+  const double expectedMR   = C1 * ( Ibar1 - 3. ) + C2 * ( Ibar2 - 3. ) + U;
+  const double expectedYeoh = C1 * ( Ibar1 - 3. ) + C2 * std::pow( Ibar1 - 3., 2 ) + C3 * std::pow( Ibar1 - 3., 3 ) + U;
+
+  throwExceptionOnFailure( checkIfEqual( MooneyRivlinPotential( C, C1, C2, D1 ), expectedMR, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not match its closed form." );
+  throwExceptionOnFailure( checkIfEqual( YeohPotential( C, C1, C2, C3, D1 ), expectedYeoh, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Yeoh does not match its closed form." );
+
+  checkPlainMatchesFirstOrder(
+    "MooneyRivlinPotential (full)",
+    []( const auto& C_, double c1, double c2, double d1 ) { return MooneyRivlinPotential( C_, c1, c2, d1 ); },
+    []( const auto& C_, double c1, double c2, double d1 ) {
+      return FirstOrder::MooneyRivlinPotential( C_, c1, c2, d1 );
+    },
+    C,
+    C1,
+    C2,
+    D1 );
+  checkPlainMatchesFirstOrder(
+    "YeohPotential (full)",
+    []( const auto& C_, double c1, double c2, double c3, double d1 ) { return YeohPotential( C_, c1, c2, c3, d1 ); },
+    []( const auto& C_, double c1, double c2, double c3, double d1 ) {
+      return FirstOrder::YeohPotential( C_, c1, c2, c3, d1 );
+    },
+    C,
+    C1,
+    C2,
+    C3,
+    D1 );
 }
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
@@ -735,6 +831,7 @@ int main()
                                testFirstOrderDerivedB,
                                testSecondOrderDerivedB,
                                testArrudaBoycePlainMatchesFirstOrder,
+                               testArrudaBoyceRegularizedEnergyMatchesGradient,
                                testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
                                testNeoHookePlainMatchesFirstOrder,
                                testYeohPlainMatchesFirstOrder,
@@ -743,6 +840,8 @@ int main()
                                testVolumetricPotentialsDollSchweizerhof,
                                testVolumetricPotentialRelationsDollSchweizerhof,
                                testYeohMooneyRivlinReduceToNeoHooke,
+                               testDecoupledPotentialCombinesParts,
+                               testMooneyRivlinYeohFullPotentialsMatchClosedForm,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
                                testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,
