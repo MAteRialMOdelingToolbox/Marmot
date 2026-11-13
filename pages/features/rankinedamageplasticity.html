@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rankine damage-plasticity model &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-enhanced Rankine damage-plasticity model" href="rankinegradientdamageplasticity.html" />
+    <link rel="prev" title="Rankine softening plasticity model" href="rankinesofteningplasticity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinesofteningplasticity.html">Rankine softening plasticity model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Rankine damage-plasticity model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#consistent-algorithmic-tangent-operator">Consistent Algorithmic Tangent Operator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rankinegradientdamageplasticity.html">Gradient-enhanced Rankine damage-plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinegradientsofteningplasticity.html">Gradient-enhanced Rankine softening plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Rankine damage-plasticity model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/rankinedamageplasticity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rankine-damage-plasticity-model">
+<span id="rankinedamageplasticity"></span><h1>Rankine damage-plasticity model<a class="headerlink" href="#rankine-damage-plasticity-model" title="Link to this heading"></a></h1>
+<p>Multi-surface Rankine plasticity in the effective stress combined with isotropic damage, following the damage-plastic
+model of Grassl and Jirásek (2006).
+The effective stress is bounded by the perfectly plastic <a class="reference internal" href="rankinesofteningplasticity.html#rankinesofteningplasticity"><span class="std std-ref">Rankine softening plasticity model</span></a>; softening results from the
+damage only.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Index</strong></p></th>
+<th class="head"><p><strong>Model Parameter</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(E\)</span></p></td>
+<td><p>Young’s modulus</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+<td><p>Poisson’s ratio</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(f_\mathrm{t}\)</span></p></td>
+<td><p>Uniaxial tensile strength</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\varepsilon_\mathrm{f}\)</span></p></td>
+<td><p>Softening parameter of the damage law (positive)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(\omega_\mathrm{max}\)</span></p></td>
+<td><p>Damage threshold, the maximum damage <span class="math notranslate nohighlight">\(0 &lt; \omega_\mathrm{max} \le 1\)</span> (1: unbounded exponential law)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>Density (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>State Variable</strong></p></th>
+<th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\kappa_\mathrm{d}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">kappaD</span></code></p></td>
+<td><p>Damage driving variable (volumetric plastic strain)</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">acYield</span></code></p></td>
+<td><p>Yield flag: 1 for a plastic, 0 for an elastic increment</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\omega\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">omega</span></code></p></td>
+<td><p>Damage</p></td>
+</tr>
+</tbody>
+</table>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The effective stress <span class="math notranslate nohighlight">\(\bar{\boldsymbol{\sigma}}\)</span> follows from perfect Rankine plasticity with the yield
+functions <span class="math notranslate nohighlight">\(f_A = \bar\sigma_A - f_\mathrm{t} \leq 0\)</span> and associated flow.
+The nominal stress and the damage read</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma} = (1-\omega)\,\bar{\boldsymbol{\sigma}}, \qquad
+\omega = \omega_\mathrm{max}\left[1 - \exp\left(-\frac{\kappa_\mathrm{d}}{\omega_\mathrm{max}\,
+\varepsilon_\mathrm{f}}\right)\right], \qquad
+\Delta\kappa_\mathrm{d} = \mathrm{tr}\,\Delta\boldsymbol{\varepsilon}^\mathrm{p} = \sum_A \Delta\lambda_A.\]</div>
+<p>The damage threshold <span class="math notranslate nohighlight">\(\omega_\mathrm{max}\)</span> bounds the damage without changing its initial slope
+<span class="math notranslate nohighlight">\(1/\varepsilon_\mathrm{f}\)</span>; <span class="math notranslate nohighlight">\(\omega_\mathrm{max} = 1\)</span> gives the exponential law
+<span class="math notranslate nohighlight">\(\omega = 1 - \exp\left(-\kappa_\mathrm{d}/\varepsilon_\mathrm{f}\right)\)</span>.
+All principal plastic strain increments are nonnegative for the Rankine surfaces, hence <span class="math notranslate nohighlight">\(\kappa_\mathrm{d}\)</span> and
+<span class="math notranslate nohighlight">\(\omega\)</span> never decrease, and under uniaxial tension <span class="math notranslate nohighlight">\(\sigma = (1-\omega)\,f_\mathrm{t}\)</span> with
+<span class="math notranslate nohighlight">\(\kappa_\mathrm{d} = \varepsilon^\mathrm{p}\)</span>, which tends to the residual strength
+<span class="math notranslate nohighlight">\((1-\omega_\mathrm{max})\,f_\mathrm{t}\)</span>.
+<span class="math notranslate nohighlight">\(\varepsilon_\mathrm{f}\)</span> is a material parameter without regularization by the element size; for regularized
+softening use the <a class="reference internal" href="rankinegradientdamageplasticity.html#rankinegradientdamageplasticity"><span class="std std-ref">Gradient-enhanced Rankine damage-plasticity model</span></a>.</p>
+<p>The free energy is <span class="math notranslate nohighlight">\(\psi = (1-\omega)\,\bar\psi_\mathrm{el}\)</span> with
+<span class="math notranslate nohighlight">\(\bar\psi_\mathrm{el} = \frac12\bar{\boldsymbol{\sigma}}:\mathbb{C}^{-1}:\bar{\boldsymbol{\sigma}}\)</span>, and the
+dissipation increment is
+<span class="math notranslate nohighlight">\((1-\omega)\,\bar{\boldsymbol{\sigma}}:\Delta\boldsymbol{\varepsilon}^\mathrm{p} + \bar\psi_\mathrm{el}\,\Delta\omega\)</span>.</p>
+</section>
+<section id="consistent-algorithmic-tangent-operator">
+<h2>Consistent Algorithmic Tangent Operator<a class="headerlink" href="#consistent-algorithmic-tangent-operator" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\boldsymbol{\sigma}}{\partial\Delta\boldsymbol{\varepsilon}}
+= (1-\omega)\,\bar{\mathbb{C}}^\mathrm{ep}
+- \bar{\boldsymbol{\sigma}} \otimes \frac{\partial\omega}{\partial\Delta\boldsymbol{\varepsilon}},
+\qquad
+\frac{\partial\kappa_\mathrm{d}}{\partial\Delta\boldsymbol{\varepsilon}}
+= \boldsymbol{1} - \bar{\mathbb{C}}^{\mathrm{ep},T}:\mathbb{C}^{-1}:\boldsymbol{1},\]</div>
+<p>with the algorithmic tangent <span class="math notranslate nohighlight">\(\bar{\mathbb{C}}^\mathrm{ep}\)</span> of the effective stress.</p>
+<p>The model is registered as <code class="docutils literal notranslate"><span class="pre">RANKINEDAMAGEPLASTICITY</span></code> and, with the co-rotational <a class="reference internal" href="hugheswinget.html#hugheswingetwrapper"><span class="std std-ref">Hughes-Winget wrapper</span></a> wrapper, as
+<code class="docutils literal notranslate"><span class="pre">RANKINEDAMAGEPLASTICITY/HUGHES-WINGET</span></code>.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticityE">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticityE"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticityE"></span><span id="Marmot::Materials::RankineDamagePlasticity"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::RankineDamagePlasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-0aa8dbc4845c0680a62466f518c875ccf53ed117.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::RankineDamagePlasticity&quot; tooltip=&quot;Marmot::Materials::RankineDamagePlasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::RankineDamagePlasticity:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f86f82ff2a695d3596f10976aecd4810ca5c0776.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::RankineDamagePlasticity&quot; tooltip=&quot;Marmot::Materials::RankineDamagePlasticity&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::RankineSofteningPlasticity&quot; tooltip=&quot;Marmot::Materials::RankineSofteningPlasticity&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;4&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Multi-surface Rankine plasticity in the effective stress combined with isotropic damage, following the damage-plastic model of Grassl and Jirásek (2006, IJSS 43, 7166-7196). </p>
+<p>The effective stress <span class="math notranslate nohighlight">\( \bar{\boldsymbol{\sigma}} \)</span> is bounded by the three Rankine surfaces <span class="math notranslate nohighlight">\( f_A = \bar\sigma_A - f_\mathrm{t} \)</span> of <a class="reference internal" href="rankinesofteningplasticity.html#classMarmot_1_1Materials_1_1RankineSofteningPlasticity"><span class="std std-ref">RankineSofteningPlasticity</span></a> without hardening or softening (associated flow, perfect plasticity,  <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\varepsilon}^\mathrm{p} = \sum_A \Delta\lambda_A
+\mathbf{E}_A \)</span>). Softening results from the scalar damage only,       <div class="math notranslate nohighlight">
+\[  \boldsymbol{\sigma} = (1-\omega)\,\bar{\boldsymbol{\sigma}}, \qquad
+  \omega = \omega_\mathrm{max} \left[1 - \exp\left(-\frac{\kappa_\mathrm{d}}{\omega_\mathrm{max}\,
+    \varepsilon_\mathrm{f}}\right)\right], \qquad
+  \Delta\kappa_\mathrm{d} = \Delta\varepsilon^\mathrm{p}_\mathrm{V}/x_\mathrm{s}
+    = \mathrm{tr}\,\Delta\boldsymbol{\varepsilon}^\mathrm{p} = \sum_A \Delta\lambda_A,
+\]</div>
+ since all principal plastic strain increments are nonnegative for the Rankine surfaces (ductility measure <span class="math notranslate nohighlight">\( x_\mathrm{s} = 1 \)</span>). The damage threshold <span class="math notranslate nohighlight">\( 0 &lt; \omega_\mathrm{max} \le 1 \)</span> bounds the damage without changing its initial slope <span class="math notranslate nohighlight">\( 1/\varepsilon_\mathrm{f} \)</span>; <span class="math notranslate nohighlight">\( \omega_\mathrm{max} = 1 \)</span> gives the exponential law <span class="math notranslate nohighlight">\( \omega = 1 - \exp(-\kappa_\mathrm{d}/\varepsilon_\mathrm{f}) \)</span>. Hence <span class="math notranslate nohighlight">\( \kappa_\mathrm{d} \)</span> and <span class="math notranslate nohighlight">\( \omega \)</span> never decrease, and under uniaxial tension <span class="math notranslate nohighlight">\( \sigma = (1-\omega)\,f_\mathrm{t} \)</span> with <span class="math notranslate nohighlight">\( \kappa_\mathrm{d} = \varepsilon^\mathrm{p} \)</span>, approaching <span class="math notranslate nohighlight">\( (1-\omega_\mathrm{max})\,f_\mathrm{t} \)</span>. The free energy is <span class="math notranslate nohighlight">\( \psi = (1-\omega)\,\bar\psi_\mathrm{el} \)</span> with  <span class="math notranslate nohighlight">\( \bar\psi_\mathrm{el} = \frac12\bar{\boldsymbol{\sigma}}
+:\mathbb{C}^{-1}:\bar{\boldsymbol{\sigma}} \)</span>, and the dissipation increment is  <span class="math notranslate nohighlight">\( (1-\omega)\,
+\bar{\boldsymbol{\sigma}}:\Delta\boldsymbol{\varepsilon}^\mathrm{p} + \bar\psi_\mathrm{el}\,\Delta\omega \)</span> (backward Euler). The consistent tangent reads  <span class="math notranslate nohighlight">\( (1-\omega)\,\bar{\mathbb{C}}^\mathrm{ep} -
+\bar{\boldsymbol{\sigma}} \otimes \partial\omega/\partial\Delta\boldsymbol{\varepsilon} \)</span> with  <span class="math notranslate nohighlight">\( \partial\kappa_\mathrm{d}/\partial\Delta\boldsymbol{\varepsilon} = \boldsymbol{1} -
+\bar{\mathbb{C}}^{\mathrm{ep},T}:\mathbb{C}^{-1}:\boldsymbol{1} \)</span>.</p>
+<p>Material properties: <span class="math notranslate nohighlight">\( E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, \omega_\mathrm{max} \)</span> and optionally the density. <span class="math notranslate nohighlight">\( \varepsilon_\mathrm{f} \)</span> is a material parameter (no regularization by the element size); <span class="math notranslate nohighlight">\( \varepsilon_\mathrm{f} = \infty \)</span> recovers perfect Rankine plasticity. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityEPKdKiKi">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityEPKdKiKi"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityEPKdKiKi"></span><span id="Marmot::Materials::RankineDamagePlasticity::RankineDamagePlasticity__doubleCP.iC.iC"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a8145c89eeef62990a494a84705d12d20"></span><span class="sig-name descname"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialLabel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityEPKdKiKi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity"></span><span id="Marmot::Materials::RankineDamagePlasticity::RankineDamagePlasticity__RankineDamagePlasticityCR"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a02d7d6065cd88d95944e1875ab13b104"></span><span class="sig-name descname"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity" title="Marmot::Materials::RankineDamagePlasticity::RankineDamagePlasticity"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticityaSERK23RankineDamagePlasticity">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticityaSERK23RankineDamagePlasticity"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticityaSERK23RankineDamagePlasticity"></span><span id="Marmot::Materials::RankineDamagePlasticity::assign-operator__RankineDamagePlasticityCR"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a65e59dce5d68eb85076408bbb2b8b486"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticityE" title="Marmot::Materials::RankineDamagePlasticity"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticityE" title="Marmot::Materials::RankineDamagePlasticity"><span class="n"><span class="pre">RankineDamagePlasticity</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticityaSERK23RankineDamagePlasticity" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::RankineDamagePlasticity::computeStress__state3DR.Math::Matrix6dR.Math::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1ae51aee5d51ee09dec9f26a760fd8c375"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo" title="Marmot::Materials::RankineDamagePlasticity::computeStress::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> A state3D instance carrying stress, strain energy, and state variables </p></li>
+<li><p><strong>dStress_dStrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Structure carrying the current (pseudo-)time and the (pseudo-)time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23RankineDamagePlasticity10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials23RankineDamagePlasticity10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials23RankineDamagePlasticity10getDensityEPKd"></span><span id="Marmot::Materials::RankineDamagePlasticity::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a22ab8a882d4abce8630b7771b3f643be"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the mass density of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the state variable array </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mass density of the material </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::RankineDamagePlasticity::updateStress__state3DR.Math::Matrix6dR.Math::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a1f78d55d30fcc52679838f19f75826c4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updateStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo" title="Marmot::Materials::RankineDamagePlasticity::updateStress::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dd><p>the stress update of computeStress, without the check of its results </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticity19effectivePropertiesE">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticity19effectivePropertiesE"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticity19effectivePropertiesE"></span><span id="Marmot::Materials::RankineDamagePlasticity::effectiveProperties__std::array:double.6:C"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a4fb69d3e4fbba29c1fbf35a63cfb4677"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">effectiveProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticity19effectivePropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>properties of the perfectly plastic <a class="reference internal" href="rankinesofteningplasticity.html#classMarmot_1_1Materials_1_1RankineSofteningPlasticity"><span class="std std-ref">RankineSofteningPlasticity</span></a> for the effective stress </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23RankineDamagePlasticity17effectiveMaterialE">
+<span id="_CPPv3N6Marmot9Materials23RankineDamagePlasticity17effectiveMaterialE"></span><span id="_CPPv2N6Marmot9Materials23RankineDamagePlasticity17effectiveMaterialE"></span><span id="Marmot::Materials::RankineDamagePlasticity::effectiveMaterial__RankineSofteningPlasticityC"></span><span class="target" id="classMarmot_1_1Materials_1_1RankineDamagePlasticity_1a67d2ce9e1deeebdd2c5090eccc939f1d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="rankinesofteningplasticity.html#_CPPv4N6Marmot9Materials26RankineSofteningPlasticityE" title="Marmot::Materials::RankineSofteningPlasticity"><span class="n"><span class="pre">RankineSofteningPlasticity</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">effectiveMaterial</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23RankineDamagePlasticity17effectiveMaterialE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rankinesofteningplasticity.html" class="btn btn-neutral float-left" title="Rankine softening plasticity model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rankinegradientdamageplasticity.html" class="btn btn-neutral float-right" title="Gradient-enhanced Rankine damage-plasticity model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
