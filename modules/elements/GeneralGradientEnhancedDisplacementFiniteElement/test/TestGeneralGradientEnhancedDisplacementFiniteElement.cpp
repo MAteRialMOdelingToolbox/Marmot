@@ -2781,7 +2781,7 @@ namespace {
   class EnergyTangentDamageMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >,
                                       public Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider< 1 > {
   public:
-    using Material = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+    using Base = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
 
     /**
      * @brief Construct from E, nu, the density, the non-local viscosity, c and alpha.
@@ -2790,7 +2790,7 @@ namespace {
      * @param materialNumber The material's label.
      */
     EnergyTangentDamageMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
-      : Material( materialProperties, nMaterialProperties, materialNumber )
+      : Base( materialProperties, nMaterialProperties, materialNumber )
     {
       stateLayout.add( "strain", 6 );
       stateLayout.finalize();
@@ -2802,9 +2802,7 @@ namespace {
      * @param[out] tan The tangents.
      * @param[in] inc The increment.
      */
-    void computeStress( Material::response&        res,
-                        Material::tangents&        tan,
-                        const Material::increment& inc ) const override
+    void computeStress( Base::response& res, Base::tangents& tan, const Base::increment& inc ) const override
     {
       update( res, tan, inc, nullptr );
     }
@@ -2816,10 +2814,10 @@ namespace {
      * @param[in] inc The increment.
      * @param[out] energyTan The energy tangents.
      */
-    void computeStressWithEnergyTangents( Material::response&        res,
-                                          Material::tangents&        tan,
-                                          const Material::increment& inc,
-                                          energyTangents&            energyTan ) const override
+    void computeStressWithEnergyTangents( Base::response&        res,
+                                          Base::tangents&        tan,
+                                          const Base::increment& inc,
+                                          energyTangents&        energyTan ) const override
     {
       update( res, tan, inc, &energyTan );
     }
@@ -2842,10 +2840,7 @@ namespace {
     }
 
   private:
-    void update( Material::response&        res,
-                 Material::tangents&        tan,
-                 const Material::increment& inc,
-                 energyTangents*            energyTan ) const
+    void update( Base::response& res, Base::tangents& tan, const Base::increment& inc, energyTangents* energyTan ) const
     {
       using Marmot::Math::Vector6d;
       const double alpha  = this->materialProperties[5];
@@ -3034,6 +3029,27 @@ void testEnergyGradientOutputIsRejectedWithoutSupport()
                            "assignEnergyGradientOutput() must reject a single output." );
   throwExceptionOnFailure( !rejects( dPsi_dQ.data(), dD_dQ.data() ),
                            "assignEnergyGradientOutput() must accept a material with energy tangents." );
+
+  // a material without the capability, assigned while the outputs are active
+  bool threw = false;
+  try {
+    element->assignProperty( at2Section );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "assignProperty() must reject a material without energy tangents while the energy "
+                           "gradient outputs are assigned." );
+
+  // the density and the non-local viscosity of the test material
+  const EnergyTangentDamageMaterial material( energyTangentDamageProperties.data(),
+                                              static_cast< int >( energyTangentDamageProperties.size() ),
+                                              1 );
+  throwExceptionOnFailure( material.getDensity( nullptr ) == energyTangentDamageProperties[2] &&
+                             material.getNonlocalViscosity( nullptr ) ==
+                               std::vector< double >{ energyTangentDamageProperties[3] },
+                           "density or non-local viscosity of the energy tangent test material wrong" );
   throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( static_cast< Element* >( element.get() ) ) !=
                              nullptr,
                            "GeneralGradientEnhancedDisplacementFiniteElement is not an EnergyGradientProvider." );

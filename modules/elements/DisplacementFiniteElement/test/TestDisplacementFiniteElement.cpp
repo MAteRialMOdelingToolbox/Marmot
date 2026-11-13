@@ -2121,65 +2121,80 @@ void testEnergyGradients()
                                 { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } );
 }
 
+// true if assignEnergyGradientOutput() throws std::invalid_argument
+bool rejectsEnergyGradientOutput( EnergyGradientProvider& element, double* dPsi_dQ, double* dD_dQ )
+{
+  bool rejected = false;
+  try {
+    element.assignEnergyGradientOutput( dPsi_dQ, dD_dQ );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  return rejected;
+}
+
+// coordinates and thickness of a CPE4 or CPS4 element, and optionally its material section
+void setUpQuad4( DisplacementFiniteElement< 2, 4 >& element, const Marmot::Discretizations::MaterialSection* section )
+{
+  static const std::vector< double >               nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  static const std::vector< double >               elPropsVec    = { 1.0 };
+  const Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(),
+                                                            static_cast< int >( elPropsVec.size() ) );
+
+  element.assignNodeCoordinates( nodeCoordsVec.data() );
+  element.assignProperty( elProps );
+  if ( section )
+    element.assignProperty( *section );
+}
+
 // assignEnergyGradientOutput() rejects unsupported setups
 void testEnergyGradientOutputIsRejectedWithoutSupport()
 {
-  constexpr int nDim   = 2;
-  constexpr int nNodes = 4;
-  using ElemType       = DisplacementFiniteElement< nDim, nNodes >;
-  const auto intType   = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  using ElemType = DisplacementFiniteElement< 2, 4 >;
 
-  const std::vector< double >                nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
-  const std::vector< double >                elPropsVec    = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
-  const std::vector< double >                linearElasticProps = { 10000.0, 0.2, 1.0 };
-  const std::vector< double >                vonMisesProps      = { 210000., 0.3, 200., 0., -150., 500. };
+  const std::vector< double >                    linearElasticProps = { 10000.0, 0.2, 1.0 };
+  const std::vector< double >                    vonMisesProps      = { 210000., 0.3, 200., 0., -150., 500. };
+  const Marmot::Discretizations::MaterialSection linearElastic( "LINEARELASTIC",
+                                                                linearElasticProps.data(),
+                                                                static_cast< int >( linearElasticProps.size() ) );
+  const Marmot::Discretizations::MaterialSection vonMises( "VONMISES",
+                                                           vonMisesProps.data(),
+                                                           static_cast< int >( vonMisesProps.size() ) );
 
-  auto makeElement =
-    [&]( ElemType::SectionType secType, const std::string& material, const std::vector< double >& props ) {
-      auto element = std::make_unique< ElemType >( 1, intType, secType );
-      element->assignNodeCoordinates( nodeCoordsVec.data() );
-      element->assignProperty( elProps );
-      element->assignProperty(
-        Marmot::Discretizations::MaterialSection( material, props.data(), static_cast< int >( props.size() ) ) );
-      return element;
-    };
+  const auto      rule = Quadrature::gaussExactToDegree( 2 );
+  Eigen::VectorXd dPsi_dQ( 8 ), dD_dQ( 8 );
 
-  auto rejects = [&]( ElemType& element, double* dPsi_dQ, double* dD_dQ ) {
-    try {
-      element.assignEnergyGradientOutput( dPsi_dQ, dD_dQ );
-    }
-    catch ( const std::invalid_argument& ) {
-      return true;
-    }
-    return false;
-  };
-
-  Eigen::VectorXd dPsi_dQ( nDim * nNodes ), dD_dQ( nDim * nNodes );
+  // no material yet
+  ElemType withoutMaterial( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( withoutMaterial, nullptr );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( withoutMaterial, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject an element without a material." );
 
   // material without the capability
-  auto linearElastic = makeElement( ElemType::SectionType::PlaneStrain, "LINEARELASTIC", linearElasticProps );
-  throwExceptionOnFailure( rejects( *linearElastic, dPsi_dQ.data(), dD_dQ.data() ),
+  ElemType linearElasticElement( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( linearElasticElement, &linearElastic );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( linearElasticElement, dPsi_dQ.data(), dD_dQ.data() ),
                            "assignEnergyGradientOutput() must reject a material without energy tangents." );
 
   // unsupported section
-  auto planeStress = makeElement( ElemType::SectionType::PlaneStress, "VONMISES", vonMisesProps );
-  throwExceptionOnFailure( rejects( *planeStress, dPsi_dQ.data(), dD_dQ.data() ),
+  ElemType planeStress( 1, rule, ElemType::SectionType::PlaneStress );
+  setUpQuad4( planeStress, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStress, dPsi_dQ.data(), dD_dQ.data() ),
                            "assignEnergyGradientOutput() must reject the plane stress section." );
 
   // only one of the outputs
-  auto planeStrain = makeElement( ElemType::SectionType::PlaneStrain, "VONMISES", vonMisesProps );
-  throwExceptionOnFailure( rejects( *planeStrain, dPsi_dQ.data(), nullptr ),
+  ElemType planeStrain( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( planeStrain, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), nullptr ),
                            "assignEnergyGradientOutput() must reject a single output." );
 
   // a material without the capability, assigned while the outputs are active
-  planeStrain->assignEnergyGradientOutput( dPsi_dQ.data(), dD_dQ.data() );
+  throwExceptionOnFailure( !rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must accept von Mises in plane strain." );
   bool threw = false;
   try {
-    planeStrain->assignProperty(
-      Marmot::Discretizations::MaterialSection( "LINEARELASTIC",
-                                                linearElasticProps.data(),
-                                                static_cast< int >( linearElasticProps.size() ) ) );
+    planeStrain.assignProperty( linearElastic );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -2189,8 +2204,8 @@ void testEnergyGradientOutputIsRejectedWithoutSupport()
                            "gradient outputs are assigned." );
 
   // the element is found through the capability interface
-  std::unique_ptr< Element > asElement = makeElement( ElemType::SectionType::PlaneStrain, "VONMISES", vonMisesProps );
-  throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( asElement.get() ) != nullptr,
+  Element& asElement = planeStress;
+  throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( &asElement ) != nullptr,
                            "DisplacementFiniteElement is not an EnergyGradientProvider." );
 }
 
