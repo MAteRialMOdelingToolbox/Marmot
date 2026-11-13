@@ -1,0 +1,2 @@
+marmot_add_module(RankineGradientSofteningPlasticity
+    REQUIRES RankineSofteningPlasticity MarmotGradientMechanicsCore)
