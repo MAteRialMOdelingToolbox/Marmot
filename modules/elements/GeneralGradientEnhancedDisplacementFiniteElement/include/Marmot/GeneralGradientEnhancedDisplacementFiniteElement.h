@@ -673,6 +673,18 @@ namespace Marmot::Discretizations::Elements {
     double* dElasticEnergy_dQOutput = nullptr;
     double* dDissipation_dQOutput   = nullptr;
 
+    // the 3D stress update with energy tangents, for the plane stress iteration of the material
+    struct StressUpdateWithEnergyTangents {
+      const EnergyTangentProvider&                    provider;
+      typename EnergyTangentProvider::energyTangents& energyTan;
+
+      template < typename Response, typename Tangents, typename Increment >
+      void operator()( Response& res, Tangents& tan, const Increment& inc ) const
+      {
+        provider.computeStressWithEnergyTangents( res, tan, inc, energyTan );
+      }
+    };
+
     // throws unless the material provides the energy gradients
     void checkEnergyGradientSupport() const;
   };
@@ -957,10 +969,10 @@ namespace Marmot::Discretizations::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::Voigt;
 
-    using Material  = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
-    using response  = typename Material::response;
-    using tangents  = typename Material::tangents;
-    using increment = typename Material::increment;
+    using MaterialBase = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
+    using response     = typename MaterialBase::response;
+    using tangents     = typename MaterialBase::tangents;
+    using increment    = typename MaterialBase::increment;
 
     // energy gradients, if assigned
     const bool             energyGradients = dElasticEnergy_dQOutput != nullptr;
@@ -1001,9 +1013,6 @@ namespace Marmot::Discretizations::Elements {
       typename EnergyTangentProvider::energyTangents energyTan;
       Voigt                                          dElasticEnergyDensity_dStrain = Voigt::Zero();
       Voigt                                          dDissipation_dStrain          = Voigt::Zero();
-      const auto computeStressWithEnergyTangents = [&]( response& res_, tangents& tan_, const increment& inc_ ) {
-        qp.energyTangentProvider->computeStressWithEnergyTangents( res_, tan_, inc_, energyTan );
-      };
 
       if constexpr ( nDim == 2 ) {
         Marmot::Math::Vector6d dE6 = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
@@ -1017,11 +1026,11 @@ namespace Marmot::Discretizations::Elements {
 
         if ( sectionType == SectionType::PlaneStress ) {
           if ( energyGradients )
-            Material::iteratePlaneStress( qp.material->getNumberOfRequiredStateVars(),
-                                          res,
-                                          tan,
-                                          inc,
-                                          computeStressWithEnergyTangents );
+            MaterialBase::iteratePlaneStress( qp.material->getNumberOfRequiredStateVars(),
+                                              res,
+                                              tan,
+                                              inc,
+                                              StressUpdateWithEnergyTangents{ *qp.energyTangentProvider, energyTan } );
           else
             qp.material->computePlaneStress( res, tan, inc );
           S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
@@ -1040,21 +1049,20 @@ namespace Marmot::Discretizations::Elements {
           tan.dKLocalddK += dKLocal_dE33 * dE33_dK;
 
           // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
-          auto condense = [&]( Marmot::Math::Vector6d                       dg_dE,
-                               Eigen::Vector< double, nNonlocalVariables >& dg_dK ) -> Voigt {
-            dg_dK += dg_dE( 2 ) * dE33_dK.transpose();
-            dg_dE += dg_dE( 2 ) * dE33_dE.transpose();
-            return ContinuumMechanics::Voigt::voigtToPlaneVoigt( dg_dE );
-          };
           if ( energyGradients ) {
-            dElasticEnergyDensity_dStrain = condense( energyTan.dElasticEnergyDensityddStrain,
-                                                      energyTan.dElasticEnergyDensityddK );
-            dDissipation_dStrain          = condense( energyTan.dDissipationddStrain, energyTan.dDissipationddK );
+            const double dPsi_dE33 = energyTan.dElasticEnergyDensityddStrain( 2 );
+            const double dD_dE33   = energyTan.dDissipationddStrain( 2 );
+            energyTan.dElasticEnergyDensityddK += dPsi_dE33 * dE33_dK.transpose();
+            energyTan.dDissipationddK += dD_dE33 * dE33_dK.transpose();
+            dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
+              Marmot::Math::Vector6d( energyTan.dElasticEnergyDensityddStrain + dPsi_dE33 * dE33_dE.transpose() ) );
+            dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
+              Marmot::Math::Vector6d( energyTan.dDissipationddStrain + dD_dE33 * dE33_dE.transpose() ) );
           }
         }
         else if ( sectionType == SectionType::PlaneStrain ) {
           if ( energyGradients ) {
-            computeStressWithEnergyTangents( res, tan, inc );
+            qp.energyTangentProvider->computeStressWithEnergyTangents( res, tan, inc, energyTan );
             dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
               energyTan.dElasticEnergyDensityddStrain );
             dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt( energyTan.dDissipationddStrain );
@@ -1100,7 +1108,7 @@ namespace Marmot::Discretizations::Elements {
           res.stateVars            = qp.managedStateVars->materialStateVars.data();
           inc                      = { dE, K, dK, time, dT };
           if ( energyGradients ) {
-            computeStressWithEnergyTangents( res, tan, inc );
+            qp.energyTangentProvider->computeStressWithEnergyTangents( res, tan, inc, energyTan );
             dElasticEnergyDensity_dStrain = energyTan.dElasticEnergyDensityddStrain;
             dDissipation_dStrain          = energyTan.dDissipationddStrain;
           }

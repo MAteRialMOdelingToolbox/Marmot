@@ -31,6 +31,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <stdexcept>
 #include <vector>
 
@@ -187,13 +188,12 @@ namespace Marmot::Materials {
      */
     virtual void computePlaneStress( response& res, tangents& tan, const increment& inc ) const
     {
+      using namespace std::placeholders;
       iteratePlaneStress( stateLayout.totalSize(),
                           res,
                           tan,
                           inc,
-                          [this]( response& res_, tangents& tan_, const increment& inc_ ) {
-                            computeStress( res_, tan_, inc_ );
-                          } );
+                          std::bind( &MaterialGradientEnhancedHypoElastic::computeStress, this, _1, _2, _3 ) );
     }
 
     /**

@@ -164,11 +164,58 @@ void testVonMisesEnergies()
   checkVonMisesEnergies( { 210000., 0.3, 200., -70000., 0., 1. }, 200. / 70000. );
 }
 
+// the explicit update gives the stress, energies and hardening of the implicit one; a zero increment has the stress as
+// elastic energy tangent and no dissipation
+void testVonMisesExplicitUpdateAndZeroIncrement()
+{
+  using namespace Marmot;
+  using namespace Marmot::Math;
+  using namespace Marmot::Materials;
+
+  const std::vector< double >         props = { 210000., 0.3, 200., 0., -150., 500. };
+  const VonMisesModel                 material( props.data(), static_cast< int >( props.size() ), 0 );
+  const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
+  const Vector6d                      direction = ( Vector6d() << 1., -0.3, -0.2, 0.1, 0.4, -0.2 ).finished();
+
+  MaterialHypoElastic::state3D implicitState, explicitState;
+  double                       kappaImplicit = 0., kappaExplicit = 0.;
+  implicitState.stateVars = &kappaImplicit;
+  explicitState.stateVars = &kappaExplicit;
+  // elastic, then plastic increments
+  for ( const double scale : { 1e-4, 1e-3, 1e-3 } ) {
+    Matrix6d tangent;
+    material.computeStress( implicitState, tangent, scale * direction, tInfo );
+    material.computeStressExplicit( explicitState, scale * direction, tInfo );
+    // the explicit return mapping iterates a fixed number of times: equal up to round-off
+    const double stressScale = implicitState.stress.cwiseAbs().maxCoeff();
+    throwExceptionOnFailure( checkIfEqual< double >( implicitState.stress,
+                                                     explicitState.stress,
+                                                     1e-12 * stressScale ) &&
+                               checkIfEqual( kappaImplicit, kappaExplicit, 1e-15 ) &&
+                               checkIfEqual( implicitState.elasticEnergyDensity,
+                                             explicitState.elasticEnergyDensity,
+                                             1e-12 * implicitState.elasticEnergyDensity ) &&
+                               checkIfEqual( implicitState.dissipation,
+                                             explicitState.dissipation,
+                                             1e-12 * std::max( implicitState.dissipation, 1e-12 ) ),
+                             "computeStressExplicit() differs from computeStress()" );
+  }
+  throwExceptionOnFailure( kappaExplicit > 0., "no plastic flow in the explicit update" );
+
+  Matrix6d                           tangent;
+  Vector6d                           dPsi_dE, dD_dE;
+  const MaterialHypoElastic::state3D stateOld = implicitState;
+  material.computeStressWithEnergyTangents( implicitState, tangent, Vector6d::Zero(), tInfo, dPsi_dE, dD_dE );
+  throwExceptionOnFailure( implicitState.stress == stateOld.stress && dPsi_dE == stateOld.stress && dD_dE.isZero( 0. ),
+                           "energy tangents of a zero increment wrong" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testVonMises,
                                                          testVonMisesCoordinateInvariance,
-                                                         testVonMisesEnergies };
+                                                         testVonMisesEnergies,
+                                                         testVonMisesExplicitUpdateAndZeroIncrement };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

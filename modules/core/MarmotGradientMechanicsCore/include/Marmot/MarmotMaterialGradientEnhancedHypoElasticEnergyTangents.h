@@ -43,7 +43,7 @@ namespace Marmot::Materials {
   class GradientEnhancedHypoElasticEnergyTangentProvider {
 
   public:
-    using Material = MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
+    using MaterialBase = MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
 
     /// @brief Derivatives of the updated elastic energy density and dissipation.
     struct energyTangents {
@@ -67,10 +67,10 @@ namespace Marmot::Materials {
      * @param[in] inc Increment of the strain and the nonlocal variables.
      * @param[out] energyTan Derivatives of the updated elastic energy density and dissipation.
      */
-    virtual void computeStressWithEnergyTangents( typename Material::response&        res,
-                                                  typename Material::tangents&        tan,
-                                                  const typename Material::increment& inc,
-                                                  energyTangents&                     energyTan ) const = 0;
+    virtual void computeStressWithEnergyTangents( typename MaterialBase::response&        res,
+                                                  typename MaterialBase::tangents&        tan,
+                                                  const typename MaterialBase::increment& inc,
+                                                  energyTangents&                         energyTan ) const = 0;
   };
 
 } // namespace Marmot::Materials
