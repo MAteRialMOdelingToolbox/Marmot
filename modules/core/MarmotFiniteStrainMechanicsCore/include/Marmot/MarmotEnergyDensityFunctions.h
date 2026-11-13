@@ -26,6 +26,9 @@
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMath.h"
+#include <span>
+#include <stdexcept>
+#include <utility>
 
 namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
 
@@ -295,6 +298,11 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    *   W_{\rm vol} = \frac{\kappa}{8}\left(\ln I_3\right)^2, \qquad I_3 = J^2 = \det\boldsymbol C
    * \f]
    *
+   * This is \f$U_2 = \frac{\kappa}{2}(\ln J)^2\f$ in Table 1 of Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146. Its convexity is lost for \f$J > e\f$, and the volumetric stress vanishes as
+   * \f$J\to\infty\f$; for large volumetric expansions consider e.g. #OgdenVolumetricPotential or
+   * #DollSchweizerhofVolumetricPotential instead.
+   *
    * @tparam T Scalar type, e.g. double, float, autodiff scalar.
    * @param C Right Cauchy-Green tensor.
    * @param kappa Bulk modulus.
@@ -305,6 +313,272 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   {
     const T lnDetC = log( determinant( C ) );
     return kappa / 8. * lnDetC * lnDetC;
+  }
+
+  /** @cond */
+  namespace Detail {
+    /* Volumetric strain energy functions U(J) acc. Doll & Schweizerhof (2000), J. Appl. Mech. 67, 17-21,
+     * https://doi.org/10.1115/1.321146, as scalar functions of J. Each returns the pair (U, dU/dJ); the plain
+     * and FirstOrder C-overloads below are thin wrappers around these, so they cannot drift apart. */
+
+    template < typename T >
+    std::pair< T, T > sussmanBatheVolumetricEnergyAndDerivative( const T& J, const double kappa )
+    {
+      return { kappa / 2. * ( J - 1. ) * ( J - 1. ), kappa * ( J - 1. ) };
+    }
+
+    template < typename T >
+    std::pair< T, T > simoTaylorVolumetricEnergyAndDerivative( const T& J, const double kappa )
+    {
+      const T lnJ = log( J );
+      return { kappa / 4. * ( ( J - 1. ) * ( J - 1. ) + lnJ * lnJ ), kappa / 2. * ( ( J - 1. ) + lnJ / J ) };
+    }
+
+    template < typename T >
+    std::pair< T, T > ogdenVolumetricEnergyAndDerivative( const T& J, const double kappa, const double theta )
+    {
+      const T JmTheta = pow( J, -theta );
+      return { kappa / ( theta * theta ) * ( theta * log( J ) + JmTheta - 1. ), kappa / theta * ( 1. - JmTheta ) / J };
+    }
+
+    template < typename T >
+    std::pair< T, T > liuHofstetterMangVolumetricEnergyAndDerivative( const T& J, const double kappa )
+    {
+      const T lnJ = log( J );
+      return { kappa * ( J * lnJ - J + 1. ), kappa * lnJ };
+    }
+
+    template < typename T >
+    std::pair< T, T > generalizedDollSchweizerhofVolumetricEnergyAndDerivative( const T&                        J,
+                                                                                const double                    kappa,
+                                                                                const std::span< const double > alphas,
+                                                                                const std::span< const double > betas )
+    {
+      if ( alphas.size() != betas.size() || alphas.empty() )
+        throw std::invalid_argument( "Generalized Doll-Schweizerhof volumetric potential: alphas and betas must be "
+                                     "non-empty and of equal size." );
+
+      double sumAlphaPlusBeta = 0.;
+      T      U                = T( 0. );
+      T      dU_dJ            = T( 0. );
+      for ( std::size_t i = 0; i < alphas.size(); i++ ) {
+        const double a = alphas[i];
+        const double b = betas[i];
+        sumAlphaPlusBeta += a + b;
+        U += pow( J, a + 1. ) / ( a + 1. ) + pow( J, 1. - b ) / ( b - 1. ) - 1. / ( a + 1. ) - 1. / ( b - 1. );
+        dU_dJ += pow( J, a ) - pow( J, -b );
+      }
+      return { kappa / sumAlphaPlusBeta * U, kappa / sumAlphaPlusBeta * dU_dJ };
+    }
+
+    template < typename T >
+    std::pair< T, T > dollSchweizerhofExponentialVolumetricEnergyAndDerivative( const T& J, const double kappa )
+    {
+      const T expJm1 = exp( J - 1. );
+      return { kappa / 2. * ( expJm1 - log( J ) - 1. ), kappa / 2. * ( expJm1 - 1. / J ) };
+    }
+
+    template < typename T >
+    std::pair< T, T > dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( const T& J, const double kappa )
+    {
+      const T lnJ = log( J );
+      return { kappa / 2. * ( J - 1. ) * lnJ, kappa / 2. * ( lnJ + ( J - 1. ) / J ) };
+    }
+
+    /* Chain rule dU/dC = dU/dJ dJ/dC with dJ/dC = J/2 C^{-T}. */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > volumetricFirstOrderFromJ(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const T&                                            J,
+      const std::pair< T, T >&                            U_dUdJ )
+    {
+      using namespace Fastor;
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInvT = transpose( inverse( C ) );
+      return { U_dUdJ.first, Math::Tensors::multiplyFastorTensorWithScalar( CInvT, T( U_dUdJ.second * J / 2. ) ) };
+    }
+  } // namespace Detail
+  /** @endcond */
+
+  /** @brief Quadratic volumetric strain energy function, \f$U_1\f$ in Table 1 of Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146 (Sussman & Bathe 1987, Simo 1988, among others),
+   * \f[
+   *   U_1(J) = \frac{\kappa}{2}(J-1)^2, \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   * Note that \f$U_1\f$ stays bounded as \f$J\to 0\f$ (violating condition (9) of the paper), so it should not be
+   * used for large compression.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T SussmanBatheVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
+  {
+    return Detail::sussmanBatheVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+  }
+
+  /** @brief Volumetric strain energy function \f$U_3\f$ in Table 1 of Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146 (Simo & Taylor 1982), the mean of \f$U_1\f$
+   * (#SussmanBatheVolumetricPotential) and \f$U_2\f$ (#VolumetricPenaltyPotential),
+   * \f[
+   *   U_3(J) = \frac{\kappa}{4}\left[(J-1)^2 + (\ln J)^2\right], \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T SimoTaylorVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
+  {
+    return Detail::simoTaylorVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+  }
+
+  /** @brief Ogden (1972) volumetric strain energy function, \f$U_4\f$ in Table 1 of Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146,
+   * \f[
+   *   U_4(J) = \frac{\kappa}{\theta^2}\left(\theta\ln J + J^{-\theta} - 1\right), \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   * All physical conditions of the paper hold only for \f$\theta < -1\f$; the popular choice \f$\theta=-2\f$ gives
+   * \f$\frac{\kappa}{4}(J^2 - 1 - 2\ln J)\f$ (Simo & Taylor 1991), and Ogden's rubber fit \f$\theta=9\f$ is
+   * admissible for nearly incompressible applications. \f$\theta\neq0\f$ is required.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @param theta Shape parameter \f$\theta\f$ (\f$\neq 0\f$).
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T OgdenVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                              const double                                        kappa,
+                              const double                                        theta )
+  {
+    return Detail::ogdenVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa, theta ).first;
+  }
+
+  /** @brief Volumetric strain energy function \f$U_5\f$ in Table 1 of Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146 (Liu, Hofstetter & Mang 1992, 1994),
+   * \f[
+   *   U_5(J) = \kappa\left(J\ln J - J + 1\right), \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   * Note that \f$U_5\f$ stays bounded as \f$J\to 0\f$ (violating condition (9) of the paper), so it should not be
+   * used for large compression.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T LiuHofstetterMangVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
+  {
+    return Detail::liuHofstetterMangVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+  }
+
+  /** @brief Two-parameter volumetric strain energy function \f$U_6\f$ acc. Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146, Eqs. (12)-(13),
+   * \f[
+   *   U_6(J) = \frac{\kappa}{\alpha+\beta}\left[\frac{J^{\alpha+1}}{\alpha+1} + \frac{J^{-(\beta-1)}}{\beta-1}\right]
+   *   - \frac{\kappa}{(\alpha+1)(\beta-1)}, \qquad
+   *   \frac{\partial U_6}{\partial J} = \kappa\,\frac{J^\alpha - J^{-\beta}}{\alpha+\beta},
+   * \f]
+   * with \f$\alpha > 0\f$ and \f$\beta > 1\f$, which fulfills all physical conditions of the paper.
+   * Special cases: \f$\beta=\alpha\f$ gives \f$p(J) = -p(J^{-1})\f$, \f$\beta=\alpha+2\f$ gives
+   * \f$U_6(J)=U_6(J^{-1})\f$; \f$\alpha=1,\ \beta\to1\f$ approaches \f$U_4\f$ with \f$\theta=-2\f$, and
+   * \f$\alpha\to0\f$ recovers Murnaghan's pressure formula.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @param alpha Shape parameter \f$\alpha > 0\f$.
+   * @param beta Shape parameter \f$\beta > 1\f$.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T DollSchweizerhofVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                         const double                                        kappa,
+                                         const double                                        alpha,
+                                         const double                                        beta )
+  {
+    const double alphas[] = { alpha };
+    const double betas[]  = { beta };
+    return Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ),
+                                                                             kappa,
+                                                                             alphas,
+                                                                             betas )
+      .first;
+  }
+
+  /** @brief Generalized volumetric strain energy function \f$U_{6\,\rm gen}\f$ acc. Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146, Eq. (15): an additive composition of \f$n\f$ terms of type
+   * #DollSchweizerhofVolumetricPotential,
+   * \f[
+   *   \frac{\partial U_{6\,\rm gen}}{\partial J} = \kappa\,
+   *   \frac{\sum_{i=1}^n \left(J^{\alpha_i} - J^{-\beta_i}\right)}{\sum_{i=1}^n (\alpha_i+\beta_i)}, \qquad
+   *   U_{6\,\rm gen}(J) = \frac{\kappa}{\sum_i(\alpha_i+\beta_i)} \sum_{i=1}^n \left[
+   *   \frac{J^{\alpha_i+1}-1}{\alpha_i+1} + \frac{J^{-(\beta_i-1)}-1}{\beta_i-1}\right],
+   * \f]
+   * with \f$\alpha_i > 0\f$ and \f$\beta_i > 1\f$.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @param alphas Shape parameters \f$\alpha_i > 0\f$.
+   * @param betas Shape parameters \f$\beta_i > 1\f$ (same, non-zero size as alphas).
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T GeneralizedDollSchweizerhofVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                                    const double                                        kappa,
+                                                    const std::span< const double >                     alphas,
+                                                    const std::span< const double >                     betas )
+  {
+    return Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ),
+                                                                             kappa,
+                                                                             alphas,
+                                                                             betas )
+      .first;
+  }
+
+  /** @brief Exponential volumetric strain energy function \f$U_7\f$ acc. Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146, Eq. (16)\f$_1\f$,
+   * \f[
+   *   U_7(J) = \frac{\kappa}{2}\left(e^{J-1} - \ln J - 1\right), \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T DollSchweizerhofExponentialVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                                    const double                                        kappa )
+  {
+    return Detail::dollSchweizerhofExponentialVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa )
+      .first;
+  }
+
+  /** @brief Logarithmic volumetric strain energy function \f$U_8\f$ acc. Doll & Schweizerhof (2000),
+   * https://doi.org/10.1115/1.321146, Eq. (16)\f$_2\f$,
+   * \f[
+   *   U_8(J) = \frac{\kappa}{2}(J-1)\ln J, \qquad J = \sqrt{\det\boldsymbol C}.
+   * \f]
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T DollSchweizerhofLogarithmicVolumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                                    const double                                        kappa )
+  {
+    return Detail::dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa )
+      .first;
   }
 
   /** @brief Standard compressible Neo-Hooke energy density function in terms of \f$\boldsymbol{C}\f$.
@@ -533,6 +807,202 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const Math::Tensors::FastorTensors::Tensor33t< T >
         dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( kappa / 4. * lnDetC ) );
       return { psi, dPsi_dC };
+    }
+
+    /** @brief Volumetric strain energy function \f$U_1\f$ (see the plain
+     * #SussmanBatheVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_1}{\partial \boldsymbol C} = \frac{\partial U_1}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_1}{\partial J} = \kappa(J-1).
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > SussmanBatheVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::volumetricFirstOrderFromJ( C, J, Detail::sussmanBatheVolumetricEnergyAndDerivative( J, kappa ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_3\f$ (see the plain
+     * #SimoTaylorVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_3}{\partial \boldsymbol C} = \frac{\partial U_3}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_3}{\partial J} = \frac{\kappa}{2}\left(J-1+\frac{\ln J}{J}\right).
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > SimoTaylorVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::volumetricFirstOrderFromJ( C, J, Detail::simoTaylorVolumetricEnergyAndDerivative( J, kappa ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_4\f$ (see the plain
+     * #OgdenVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_4}{\partial \boldsymbol C} = \frac{\partial U_4}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_4}{\partial J} = \frac{\kappa}{\theta}\,\frac{1-J^{-\theta}}{J}.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @param theta Shape parameter \f$\theta\f$ (\f$\neq 0\f$).
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > OgdenVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa,
+      const double                                        theta )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::volumetricFirstOrderFromJ( C, J, Detail::ogdenVolumetricEnergyAndDerivative( J, kappa, theta ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_5\f$ (see the plain
+     * #LiuHofstetterMangVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_5}{\partial \boldsymbol C} = \frac{\partial U_5}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_5}{\partial J} = \kappa\ln J.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > LiuHofstetterMangVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::volumetricFirstOrderFromJ( C,
+                                                J,
+                                                Detail::liuHofstetterMangVolumetricEnergyAndDerivative( J, kappa ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_6\f$ (see the plain
+     * #DollSchweizerhofVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_6}{\partial \boldsymbol C} = \frac{\partial U_6}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_6}{\partial J} = \kappa\,\frac{J^\alpha - J^{-\beta}}{\alpha+\beta}.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @param alpha Shape parameter \f$\alpha > 0\f$.
+     * @param beta Shape parameter \f$\beta > 1\f$.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > DollSchweizerhofVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa,
+      const double                                        alpha,
+      const double                                        beta )
+    {
+      const double alphas[] = { alpha };
+      const double betas[]  = { beta };
+      const T      J        = sqrt( determinant( C ) );
+      return Detail::
+        volumetricFirstOrderFromJ( C,
+                                   J,
+                                   Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( J,
+                                                                                                     kappa,
+                                                                                                     alphas,
+                                                                                                     betas ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_{6\,\rm gen}\f$ (see the plain
+     * #GeneralizedDollSchweizerhofVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_{6\,\rm gen}}{\partial \boldsymbol C} = \frac{\partial U_{6\,\rm gen}}{\partial
+     * J}\,\frac{J}{2}\boldsymbol C^{-T}, \qquad \frac{\partial U_{6\,\rm gen}}{\partial J} = \kappa\,\frac{\sum_i
+     * (J^{\alpha_i} - J^{-\beta_i})}{\sum_i(\alpha_i+\beta_i)}. \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @param alphas Shape parameters \f$\alpha_i > 0\f$.
+     * @param betas Shape parameters \f$\beta_i > 1\f$ (same, non-zero size as alphas).
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > GeneralizedDollSchweizerhofVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa,
+      const std::span< const double >                     alphas,
+      const std::span< const double >                     betas )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::
+        volumetricFirstOrderFromJ( C,
+                                   J,
+                                   Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( J,
+                                                                                                     kappa,
+                                                                                                     alphas,
+                                                                                                     betas ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_7\f$ (see the plain
+     * #DollSchweizerhofExponentialVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_7}{\partial \boldsymbol C} = \frac{\partial U_7}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_7}{\partial J} = \frac{\kappa}{2}\left(e^{J-1} - \frac{1}{J}\right).
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > DollSchweizerhofExponentialVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::
+        volumetricFirstOrderFromJ( C, J, Detail::dollSchweizerhofExponentialVolumetricEnergyAndDerivative( J, kappa ) );
+    }
+
+    /** @brief Volumetric strain energy function \f$U_8\f$ (see the plain
+     * #DollSchweizerhofLogarithmicVolumetricPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial U_8}{\partial \boldsymbol C} = \frac{\partial U_8}{\partial J}\,\frac{J}{2}\boldsymbol C^{-T},
+     *   \qquad \frac{\partial U_8}{\partial J} = \frac{\kappa}{2}\left(\ln J + \frac{J-1}{J}\right).
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > DollSchweizerhofLogarithmicVolumetricPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      const T J = sqrt( determinant( C ) );
+      return Detail::
+        volumetricFirstOrderFromJ( C, J, Detail::dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( J, kappa ) );
     }
 
     /** @brief Isochoric neo-Hookean potential (see the plain

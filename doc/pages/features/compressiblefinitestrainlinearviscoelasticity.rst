@@ -85,10 +85,10 @@ The material parameters are provided as a flat vector with the following layout:
 Theory
 ------
 
-The ``ArrudaBoyce`` base uses the shared isochoric 8-chain potential
-:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)`
-(``Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential``,
-see its API documentation for the closed-form expression), and adds the shared
+The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
+:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` provided by ``ArrudaBoyce8ChainPotential`` in
+``MarmotEnergyDensityFunctions.h`` (see its API documentation for the closed-form derivation and
+its stress-free/reduction properties), and adds the shared
 volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` -- the same
 convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin`` (as opposed to
 ``PenceGouNeoHooke``'s own :math:`K,G`-based convention, which bundles its volumetric response

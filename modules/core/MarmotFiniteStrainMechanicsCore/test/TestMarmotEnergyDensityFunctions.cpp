@@ -3,6 +3,8 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
 #include <complex>
+#include <stdexcept>
+#include <vector>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Tensors::FastorTensors;
@@ -339,6 +341,220 @@ auto testVolumetricPenaltyPlainMatchesFirstOrder()
     10000.0 );
 }
 
+// Generic checks for a volumetric strain energy function U(J) acc. Doll & Schweizerhof (2000),
+// https://doi.org/10.1115/1.321146:
+//  - plain vs FirstOrder (complex-step derivative of the plain overload),
+//  - closed-form value at the test state C of computationParameters() (J = 2),
+//  - conditions (5)_2 and (6): U = 0 and dU/dC = 0 at C = I,
+//  - condition (8)_2: d^2U/dJ^2 = kappa at J = 1 (central difference of the analytic dU/dJ along C = J^{2/3} I).
+template < typename PlainFn, typename FirstOrderFn, typename... Args >
+void checkVolumetricPotential( const char*  testName,
+                               PlainFn      plainFn,
+                               FirstOrderFn firstOrderFn,
+                               const double expectedAtJ2,
+                               Args... args )
+{
+  const Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrder( testName, plainFn, firstOrderFn, C, args... );
+
+  throwExceptionOnFailure( checkIfEqual( plainFn( C, args... ), expectedAtJ2, 1e-13 ),
+                           Marmot::Utilities::MakeString()
+                             << testName << " energy density does not match the closed form at J = 2." );
+
+  const Tensor33d I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  double          U0;
+  Tensor33d       dU0_dC;
+  std::tie( U0, dU0_dC ) = firstOrderFn( I, args... );
+  throwExceptionOnFailure( std::abs( U0 ) < 1e-12 && checkIfEqual( dU0_dC, Tensor33d( 0.0 ), 1e-12 ),
+                           Marmot::Utilities::MakeString()
+                             << testName << " energy or its derivative is non-zero at C = I." );
+
+  // volumetric stress p = dU/dJ from the analytic gradient: along C = J^{2/3} I, dU/dC = p J/2 C^{-T} = p J^{1/3}/2 I
+  const double kappa = get< 0 >( std::make_tuple( args... ) );
+  const double h     = 1e-4;
+  auto         pOfJ  = [&]( double J ) {
+    const auto [U, dU_dC] = firstOrderFn( Tensor33d( std::pow( J, 2. / 3. ) * I ), args... );
+    return 2. * dU_dC( 0, 0 ) / std::cbrt( J );
+  };
+  const double d2U_dJ = ( pOfJ( 1. + h ) - pOfJ( 1. - h ) ) / ( 2. * h );
+  throwExceptionOnFailure( checkIfEqual( d2U_dJ / kappa, 1.0, 1e-6 ),
+                           Marmot::Utilities::MakeString()
+                             << testName << " d2U/dJ2 at J = 1 does not equal the bulk modulus." );
+}
+
+auto testVolumetricPotentialsDollSchweizerhof()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const double k   = 10000.0;
+  const double ln2 = std::log( 2.0 );
+
+  // U_1 .. U_5, Table 1 (U_2 = VolumetricPenaltyPotential)
+  checkVolumetricPotential(
+    "SussmanBatheVolumetricPotential (U1)",
+    []( const auto& C, double kappa ) { return SussmanBatheVolumetricPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::SussmanBatheVolumetricPotential( C, kappa ); },
+    k / 2.,
+    k );
+  checkVolumetricPotential(
+    "VolumetricPenaltyPotential (U2)",
+    []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::VolumetricPenaltyPotential( C, kappa ); },
+    k / 2. * ln2 * ln2,
+    k );
+  checkVolumetricPotential(
+    "SimoTaylorVolumetricPotential (U3)",
+    []( const auto& C, double kappa ) { return SimoTaylorVolumetricPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::SimoTaylorVolumetricPotential( C, kappa ); },
+    k / 4. * ( 1. + ln2 * ln2 ),
+    k );
+  for ( const double theta : { -2.0, -5.0, 9.0 } )
+    checkVolumetricPotential(
+      "OgdenVolumetricPotential (U4)",
+      []( const auto& C, double kappa, double th ) { return OgdenVolumetricPotential( C, kappa, th ); },
+      []( const auto& C, double kappa, double th ) { return FirstOrder::OgdenVolumetricPotential( C, kappa, th ); },
+      k / ( theta * theta ) * ( theta * ln2 + std::pow( 2., -theta ) - 1. ),
+      k,
+      theta );
+  checkVolumetricPotential(
+    "LiuHofstetterMangVolumetricPotential (U5)",
+    []( const auto& C, double kappa ) { return LiuHofstetterMangVolumetricPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::LiuHofstetterMangVolumetricPotential( C, kappa ); },
+    k * ( 2. * ln2 - 1. ),
+    k );
+
+  // U_6, Eq. (13), with the parameter sets U_6a .. U_6f of the paper
+  for ( const auto& [a, b] : std::vector< std::pair< double, double > >{ { 2., 2. },
+                                                                         { 0.001, 3.79 },
+                                                                         { 1., 1.001 },
+                                                                         { 0.001, 10. },
+                                                                         { 2.3, 1.4 },
+                                                                         { 0.45, 1.05 } } )
+    checkVolumetricPotential(
+      "DollSchweizerhofVolumetricPotential (U6)",
+      []( const auto& C, double kappa, double alpha, double beta ) {
+        return DollSchweizerhofVolumetricPotential( C, kappa, alpha, beta );
+      },
+      []( const auto& C, double kappa, double alpha, double beta ) {
+        return FirstOrder::DollSchweizerhofVolumetricPotential( C, kappa, alpha, beta );
+      },
+      k * ( ( std::pow( 2., a + 1. ) / ( a + 1. ) + std::pow( 2., 1. - b ) / ( b - 1. ) ) / ( a + b ) -
+            1. / ( ( a + 1. ) * ( b - 1. ) ) ),
+      k,
+      a,
+      b );
+
+  // U_6gen, Eq. (15)
+  {
+    const std::vector< double > alphas   = { 0.5, 2.0 };
+    const std::vector< double > betas    = { 1.5, 3.0 };
+    double                      expected = 0.;
+    for ( std::size_t i = 0; i < alphas.size(); i++ )
+      expected += ( std::pow( 2., alphas[i] + 1. ) - 1. ) / ( alphas[i] + 1. ) +
+                  ( std::pow( 2., 1. - betas[i] ) - 1. ) / ( betas[i] - 1. );
+    expected *= k / 7.0;
+    checkVolumetricPotential(
+      "GeneralizedDollSchweizerhofVolumetricPotential (U6gen)",
+      [&]( const auto& C, double kappa ) {
+        return GeneralizedDollSchweizerhofVolumetricPotential( C, kappa, alphas, betas );
+      },
+      [&]( const auto& C, double kappa ) {
+        return FirstOrder::GeneralizedDollSchweizerhofVolumetricPotential( C, kappa, alphas, betas );
+      },
+      expected,
+      k );
+  }
+
+  // U_7, U_8, Eq. (16)
+  checkVolumetricPotential(
+    "DollSchweizerhofExponentialVolumetricPotential (U7)",
+    []( const auto& C, double kappa ) { return DollSchweizerhofExponentialVolumetricPotential( C, kappa ); },
+    []( const auto& C, double kappa ) {
+      return FirstOrder::DollSchweizerhofExponentialVolumetricPotential( C, kappa );
+    },
+    k / 2. * ( std::exp( 1. ) - ln2 - 1. ),
+    k );
+  checkVolumetricPotential(
+    "DollSchweizerhofLogarithmicVolumetricPotential (U8)",
+    []( const auto& C, double kappa ) { return DollSchweizerhofLogarithmicVolumetricPotential( C, kappa ); },
+    []( const auto& C, double kappa ) {
+      return FirstOrder::DollSchweizerhofLogarithmicVolumetricPotential( C, kappa );
+    },
+    k / 2. * ln2,
+    k );
+}
+
+// Relations between the volumetric potentials stated in Doll & Schweizerhof (2000).
+auto testVolumetricPotentialRelationsDollSchweizerhof()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const double    k = 10000.0;
+  const Tensor33d C = get< 0 >( computationParameters() );
+  const Tensor33d CInv( Fastor::inverse( C ) );
+
+  // U_3 = (U_1 + U_2) / 2
+  throwExceptionOnFailure( checkIfEqual( SimoTaylorVolumetricPotential( C, k ),
+                                         0.5 * ( SussmanBatheVolumetricPotential( C, k ) +
+                                                 VolumetricPenaltyPotential( C, k ) ),
+                                         1e-14 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " U3 != (U1 + U2)/2." );
+
+  // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of standardNeoHooke
+  const double J = std::sqrt( Fastor::determinant( C ) );
+  throwExceptionOnFailure( checkIfEqual( OgdenVolumetricPotential( C, k, -2.0 ),
+                                         k / 4. * ( J * J - 1. - 2. * std::log( J ) ),
+                                         1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " U4(theta=-2) != kappa/4 (J^2 - 1 - 2 ln J)." );
+
+  // beta = alpha + 2: U_6(J) = U_6(1/J)
+  throwExceptionOnFailure( checkIfEqual( DollSchweizerhofVolumetricPotential( C, k, 1.5, 3.5 ),
+                                         DollSchweizerhofVolumetricPotential( CInv, k, 1.5, 3.5 ),
+                                         1e-13 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " U6(J) != U6(1/J) for beta = alpha + 2." );
+
+  // beta = alpha: p_6(J) = -p_6(1/J), with p = dU/dJ = 2/J dU/dC : C / 3 ... evaluated via dU/dC = p J/2 C^{-T}
+  {
+    double    U, UInv;
+    Tensor33d dU_dC, dUInv_dC;
+    std::tie( U, dU_dC )       = FirstOrder::DollSchweizerhofVolumetricPotential( C, k, 2.0, 2.0 );
+    std::tie( UInv, dUInv_dC ) = FirstOrder::DollSchweizerhofVolumetricPotential( CInv, k, 2.0, 2.0 );
+    // p = 2/J (dU/dC : C) / 3, since C^{-T} : C = 3
+    const double p    = 2. / J * Fastor::inner( dU_dC, C ) / 3.;
+    const double pInv = 2. * J * Fastor::inner( dUInv_dC, CInv ) / 3.;
+    throwExceptionOnFailure( checkIfEqual( p, -pInv, 1e-13 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " p6(J) != -p6(1/J) for beta = alpha." );
+  }
+
+  // U_6gen with a duplicated parameter pair reduces to U_6
+  {
+    const std::vector< double > alphas = { 0.7, 0.7 };
+    const std::vector< double > betas  = { 2.5, 2.5 };
+    throwExceptionOnFailure( checkIfEqual( GeneralizedDollSchweizerhofVolumetricPotential( C, k, alphas, betas ),
+                                           DollSchweizerhofVolumetricPotential( C, k, 0.7, 2.5 ),
+                                           1e-14 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " U6gen with duplicated pairs != U6." );
+  }
+
+  // mismatched parameter arrays are rejected
+  {
+    const std::vector< double > alphas = { 0.7, 1.0 };
+    const std::vector< double > betas  = { 2.5 };
+    bool                        thrown = false;
+    try {
+      GeneralizedDollSchweizerhofVolumetricPotential( C, k, alphas, betas );
+    }
+    catch ( const std::invalid_argument& ) {
+      thrown = true;
+    }
+    throwExceptionOnFailure( thrown,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " U6gen accepted mismatched alphas/betas." );
+  }
+}
+
 // Yeoh and Mooney-Rivlin must reduce exactly to NeoHooke's isochoric part when
 // the extra shape parameters vanish and C10=mu/2, since all three now share
 // the same isochoric invariant Ibar1 (no linear-shift terms to cause drift).
@@ -524,6 +740,8 @@ int main()
                                testYeohPlainMatchesFirstOrder,
                                testMooneyRivlinPlainMatchesFirstOrder,
                                testVolumetricPenaltyPlainMatchesFirstOrder,
+                               testVolumetricPotentialsDollSchweizerhof,
+                               testVolumetricPotentialRelationsDollSchweizerhof,
                                testYeohMooneyRivlinReduceToNeoHooke,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
