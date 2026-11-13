@@ -59,6 +59,24 @@ namespace {
                                           Quadrature::gaussExactToDegree( 4 ),
                                           DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
+  const static bool CAX4_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX4",
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 4 >,
+                                          Quadrature::gaussExactToDegree( 2 ),
+                                          AxiSymmetricDisplacementFiniteElement< 4 >::PlaneStrain >() );
+
+  const static bool CAX8R_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX8R",
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 8 >,
+                                          Quadrature::gaussExactToDegree( 3 ),
+                                          AxiSymmetricDisplacementFiniteElement< 8 >::PlaneStrain >() );
+
+  const static bool CAX8_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX8",
+                     makeFactoryFunction< AxiSymmetricDisplacementFiniteElement< 8 >,
+                                          Quadrature::gaussExactToDegree( 4 ),
+                                          AxiSymmetricDisplacementFiniteElement< 8 >::PlaneStrain >() );
+
   const static bool C3D4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "C3D4",
                      makeFactoryFunction< DisplacementFiniteElement< 3, 4 >,

@@ -40,6 +40,13 @@ All notable changes to Marmot are documented in this file. The format follows
 - Gauss rules of degree 5 on simplices: the 7-point triangle rule (Radon 1948) and the 14-point tetrahedron rule
   (Walkington 2000), both with positive weights and interior points. The 14-point rule makes the consistent mass of
   a quadratic tetrahedron (`gaussExactToDegree( 4 )`) available.
+- Small-strain axisymmetric elements in `elements/DisplacementFiniteElement`: `CAX4` (4 nodes, full integration),
+  `CAX8` (8 nodes, full integration) and `CAX8R` (8 nodes, reduced integration), with r = x_1 and z = x_2. The class
+  `AxiSymmetricDisplacementFiniteElement` adds the hoop strain u_r / r and integrates over the full ring (2 pi r), so
+  internal forces, energies, masses, body forces and distributed loads are those of the full revolution. Artificial
+  bulk viscosity is not supported.
+- `BoundaryElement::computeVectorialLoadVectorForAxisymmetricElements`: the load vector of a surface traction on an
+  axisymmetric element, integrated over the ring.
 
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
