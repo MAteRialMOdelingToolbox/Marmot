@@ -24,12 +24,14 @@
  */
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialHypoElasticEnergyTangents.h"
 #include "Marmot/MarmotStateHelpers.h"
 
 namespace Marmot::Materials {
 
   /// @brief An implementation of classical J2 plasticity with isotropic hardening.
-  class VonMisesModel : public Marmot::Materials::MaterialHypoElastic {
+  class VonMisesModel : public Marmot::Materials::MaterialHypoElastic,
+                        public Marmot::Materials::HypoElasticEnergyTangentProvider {
 
   public:
     /// @brief Numerical constants for the VonMises return-mapping algorithm.
@@ -46,11 +48,27 @@ namespace Marmot::Materials {
                         const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&               timeInfo ) const override;
 
+    void computeStressWithEnergyTangents( state3D&                      state,
+                                          Marmot::Math::Matrix6d&       dStressDDStrain,
+                                          const Marmot::Math::Vector6d& dStrain,
+                                          const timeInfo&               timeInfo,
+                                          Marmot::Math::Vector6d&       dElasticEnergyDensity_dStrain,
+                                          Marmot::Math::Vector6d&       dDissipation_dStrain ) const override;
+
     void computeStressExplicit( state3D&                      state,
                                 const Marmot::Math::Vector6d& dStrain,
                                 const timeInfo&               timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;
+
+  private:
+    // the implicit stress update; energy tangents only if both pointers are given
+    void computeStressImplicit( state3D&                      state,
+                                Marmot::Math::Matrix6d&       dStressDDStrain,
+                                const Marmot::Math::Vector6d& dStrain,
+                                const timeInfo&               timeInfo,
+                                Marmot::Math::Vector6d*       dElasticEnergyDensity_dStrain,
+                                Marmot::Math::Vector6d*       dDissipation_dStrain ) const;
   };
 
 } // namespace Marmot::Materials

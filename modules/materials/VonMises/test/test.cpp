@@ -83,12 +83,14 @@ void checkVonMisesEnergies( const std::vector< double >& materialProperties, dou
   using namespace Marmot::Materials;
 
   const double        E = materialProperties[0], nu = materialProperties[1];
-  const VonMisesModel material( materialProperties.data(), materialProperties.size(), 0 );
+  const VonMisesModel material( materialProperties.data(), static_cast< int >( materialProperties.size() ), 0 );
   const Matrix6d      CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
 
   struct MaterialPointState {
     MaterialHypoElastic::state3D state;
-    double                       kappa = 0.;
+    double                       kappa   = 0.;
+    Vector6d                     dPsi_dE = Vector6d::Zero();
+    Vector6d                     dD_dE   = Vector6d::Zero();
   };
 
   // single stress update from a given state
@@ -97,7 +99,18 @@ void checkVonMisesEnergies( const std::vector< double >& materialProperties, dou
     Matrix6d                            tangent;
     const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
     updated.state.stateVars = &updated.kappa;
-    material.computeStress( updated.state, tangent, dStrain, tInfo );
+    material.computeStressWithEnergyTangents( updated.state, tangent, dStrain, tInfo, updated.dPsi_dE, updated.dD_dE );
+
+    // the standard update gives the same state
+    MaterialPointState plain = old;
+    Matrix6d           tangentPlain;
+    plain.state.stateVars = &plain.kappa;
+    material.computeStress( plain.state, tangentPlain, dStrain, tInfo );
+    throwExceptionOnFailure( plain.state.stress == updated.state.stress && tangentPlain == tangent &&
+                               plain.kappa == updated.kappa &&
+                               plain.state.elasticEnergyDensity == updated.state.elasticEnergyDensity &&
+                               plain.state.dissipation == updated.state.dissipation,
+                             "computeStress() and computeStressWithEnergyTangents() differ" );
     return updated;
   };
 
@@ -132,10 +145,9 @@ void checkVonMisesEnergies( const std::vector< double >& materialProperties, dou
       dDNumerical( j )      = ( plus.dissipation - minus.dissipation ) / ( 2. * h );
     }
     const double scale = state.stress.cwiseAbs().maxCoeff();
-    throwExceptionOnFailure( ( state.dElasticEnergyDensity_dStrain - dPsiNumerical ).cwiseAbs().maxCoeff() <
-                               1e-5 * scale,
+    throwExceptionOnFailure( ( updated.dPsi_dE - dPsiNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
                              MakeString() << "elastic energy tangent wrong in increment " << i );
-    throwExceptionOnFailure( ( state.dDissipation_dStrain - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+    throwExceptionOnFailure( ( updated.dD_dE - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
                              MakeString() << "dissipation tangent wrong in increment " << i );
 
     current = updated;

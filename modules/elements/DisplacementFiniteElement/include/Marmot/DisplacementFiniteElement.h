@@ -27,6 +27,7 @@
 #include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
@@ -34,6 +35,7 @@
 #include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMassLumping.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
+#include "Marmot/MarmotMaterialHypoElasticEnergyTangents.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
@@ -60,7 +62,8 @@ namespace Marmot::Discretizations::Elements {
    */
   template < int nDim, int nNodes >
   class DisplacementFiniteElement : public Marmot::Discretizations::Elements::Element,
-                                    public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
+                                    public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >,
+                                    public Marmot::Discretizations::Elements::EnergyGradientProvider {
 
   public:
     /**
@@ -151,11 +154,6 @@ namespace Marmot::Discretizations::Elements {
        */
       std::optional< double > referenceWaveSpeed;
 
-      /// Energy density tangents wrt the strain of the last computeKernels() call; NaN unless provided by the
-      /// material (solid and plane strain sections only)
-      Voigt dElasticEnergyDensity_dStrain = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
-      Voigt dDissipation_dStrain          = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
-
       /**
        * @brief Manager for per-quadrature-point state variables.
        * @details Provides named accessors to stress \f$\sig\f$, strain \f$\eps\f$
@@ -198,6 +196,9 @@ namespace Marmot::Discretizations::Elements {
       std::unique_ptr< QPStateVarManager > managedStateVars;
 
       std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material;
+
+      /// The material's energy tangent capability, nullptr if it has none
+      const Marmot::Materials::HypoElasticEnergyTangentProvider* energyTangentProvider = nullptr;
 
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
@@ -430,7 +431,14 @@ namespace Marmot::Discretizations::Elements {
      */
     void computeInternalEnergy( double& internalEnergy ) override;
 
-    void computeEnergyGradients( double* dElasticEnergy_dQ, double* dDissipation_dQ );
+    /**
+     * @brief Assign the arrays computeKernels() writes the energy gradients to, see EnergyGradientProvider.
+     * @param dElasticEnergy_dQ Gradient of the elastic energy; nullptr, together with @p dDissipation_dQ, stops it.
+     * @param dDissipation_dQ Gradient of the dissipation.
+     * @details Supported for the solid and plane strain sections with a material that is a
+     * Marmot::Materials::HypoElasticEnergyTangentProvider.
+     */
+    void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
     /**
      * @brief Access a named state view at a quadrature point.
@@ -463,6 +471,14 @@ namespace Marmot::Discretizations::Elements {
 
     /** @brief Number of quadrature points of this element. */
     int getNumberOfQuadraturePoints() override;
+
+  private:
+    /// Outputs of the energy gradients, see assignEnergyGradientOutput()
+    double* dElasticEnergy_dQOutput = nullptr;
+    double* dDissipation_dQOutput   = nullptr;
+
+    // throws unless section and material provide the energy gradients
+    void checkEnergyGradientSupport() const;
   };
 
   template < int nDim, int nNodes >
@@ -564,7 +580,13 @@ namespace Marmot::Discretizations::Elements {
        * them.
        */
       qp.material->setCharacteristicElementLength( ParentGeometryElement::volumeEquivalentLength( qp.detJ ) );
+
+      qp.energyTangentProvider = dynamic_cast< const Marmot::Materials::HypoElasticEnergyTangentProvider* >(
+        qp.material.get() );
     }
+
+    if ( dElasticEnergy_dQOutput )
+      checkEnergyGradientSupport();
   }
 
   template < int nDim, int nNodes >
@@ -695,6 +717,17 @@ namespace Marmot::Discretizations::Elements {
     Voigt  dE = Voigt::Zero();
     CSized C  = CSized::Zero();
 
+    // energy gradients, if assigned; the energy density tangents in 3D Voigt notation
+    const bool             energyGradients = dElasticEnergy_dQOutput != nullptr;
+    Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQOutput );
+    Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQOutput );
+    Marmot::Math::Vector6d dElasticEnergyDensity_dStrain;
+    Marmot::Math::Vector6d dDissipation_dStrain;
+    if ( energyGradients ) {
+      dElasticEnergy_dQ.setZero();
+      dDissipation_dQ.setZero();
+    }
+
     for ( QuadraturePoint& qp : qps ) {
 
       const BSized& B             = qp.B;
@@ -766,16 +799,27 @@ namespace Marmot::Discretizations::Elements {
           // set time info
           timeInfo.time = time;
           timeInfo.dT   = dT;
-          qp.material->computeStress( state, C66, dE6, timeInfo );
+          if ( energyGradients ) {
+            qp.energyTangentProvider->computeStressWithEnergyTangents( state,
+                                                                       C66,
+                                                                       dE6,
+                                                                       timeInfo,
+                                                                       dElasticEnergyDensity_dStrain,
+                                                                       dDissipation_dStrain );
+            dElasticEnergy_dQ += B.transpose() *
+                                 reduce3DVoigt< ParentGeometryElement::voigtSize >( dElasticEnergyDensity_dStrain ) *
+                                 qp.J0xW;
+            dDissipation_dQ += B.transpose() *
+                               reduce3DVoigt< ParentGeometryElement::voigtSize >( dDissipation_dStrain ) * qp.J0xW;
+          }
+          else
+            qp.material->computeStress( state, C66, dE6, timeInfo );
           qp.managedStateVars->stress = state.stress;
 
-          S                                = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
-          C                                = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
-          elasticEnergyDensity             = state.elasticEnergyDensity;
-          dissipation                      = state.dissipation;
-          qp.dElasticEnergyDensity_dStrain = reduce3DVoigt< ParentGeometryElement::voigtSize >(
-            state.dElasticEnergyDensity_dStrain );
-          qp.dDissipation_dStrain = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.dDissipation_dStrain );
+          S                    = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
+          C                    = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
+          elasticEnergyDensity = state.elasticEnergyDensity;
+          dissipation          = state.dissipation;
         }
       }
 
@@ -794,13 +838,22 @@ namespace Marmot::Discretizations::Elements {
           // set time info
           timeInfo.time = time;
           timeInfo.dT   = dT;
-          qp.material->computeStress( state, C, dE, timeInfo );
-          qp.managedStateVars->stress      = state.stress;
-          S                                = state.stress;
-          elasticEnergyDensity             = state.elasticEnergyDensity;
-          dissipation                      = state.dissipation;
-          qp.dElasticEnergyDensity_dStrain = state.dElasticEnergyDensity_dStrain;
-          qp.dDissipation_dStrain          = state.dDissipation_dStrain;
+          if ( energyGradients ) {
+            qp.energyTangentProvider->computeStressWithEnergyTangents( state,
+                                                                       C,
+                                                                       dE,
+                                                                       timeInfo,
+                                                                       dElasticEnergyDensity_dStrain,
+                                                                       dDissipation_dStrain );
+            dElasticEnergy_dQ += B.transpose() * dElasticEnergyDensity_dStrain * qp.J0xW;
+            dDissipation_dQ += B.transpose() * dDissipation_dStrain * qp.J0xW;
+          }
+          else
+            qp.material->computeStress( state, C, dE, timeInfo );
+          qp.managedStateVars->stress = state.stress;
+          S                           = state.stress;
+          elasticEnergyDensity        = state.elasticEnergyDensity;
+          dissipation                 = state.dissipation;
         }
       }
 
@@ -1210,21 +1263,44 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeEnergyGradients( double* dElasticEnergy_dQ_,
-                                                                          double* dDissipation_dQ_ )
+  void DisplacementFiniteElement< nDim, nNodes >::assignEnergyGradientOutput( double* dElasticEnergy_dQ,
+                                                                              double* dDissipation_dQ )
   {
-    Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQ_ );
-    Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQ_ );
+    if ( ( dElasticEnergy_dQ == nullptr ) != ( dDissipation_dQ == nullptr ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": assign both energy gradient outputs, or none." );
 
-    dElasticEnergy_dQ.setZero();
-    dDissipation_dQ.setZero();
+    if ( dElasticEnergy_dQ )
+      checkEnergyGradientSupport();
+
+    dElasticEnergy_dQOutput = dElasticEnergy_dQ;
+    dDissipation_dQOutput   = dDissipation_dQ;
+  }
+
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::checkEnergyGradientSupport() const
+  {
+    bool sectionSupported = false;
+    if constexpr ( nDim == 3 )
+      sectionSupported = sectionType == SectionType::Solid;
+    else if constexpr ( nDim == 2 )
+      sectionSupported = sectionType == SectionType::PlaneStrain;
+
+    if ( !sectionSupported )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                   << ": energy gradients are available for solid and plane strain sections only." );
+
     for ( const auto& qp : qps ) {
-      if ( qp.dElasticEnergyDensity_dStrain.hasNaN() || qp.dDissipation_dStrain.hasNaN() )
+      if ( !qp.material )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << __PRETTY_FUNCTION__
-                                     << ": energy tangents not provided by the material or section" );
-      dElasticEnergy_dQ += qp.B.transpose() * qp.dElasticEnergyDensity_dStrain * qp.J0xW;
-      dDissipation_dQ += qp.B.transpose() * qp.dDissipation_dStrain * qp.J0xW;
+                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                     << ": assign the material section before the energy gradient outputs." );
+      if ( !qp.energyTangentProvider )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                     << ": the material provides no energy tangents "
+                                        "(Marmot::Materials::HypoElasticEnergyTangentProvider)." );
     }
   }
 
