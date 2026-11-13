@@ -52,44 +52,41 @@ namespace Marmot::Materials {
     // every base except PenceGouNeoHooke composes Psi = Psi_iso(shape params) + Psi_vol(kappa),
     // with kappa the LAST elasticProperties entry; PenceGouNeoHooke keeps its own (K, G) potential
     // -- see the class docs.
+    namespace EDF               = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+    const auto&  par            = elasticProperties;
+    const double kappa          = par( par.size() - 1 );
+    const auto   volumetricPart = [kappa]( const auto& C_ ) { return EDF::Volumetric::PenaltyPotential( C_, kappa ); };
+
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::NeoHookePotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[1] );
-      };
+      energyDensityFunction = EDF::
+        makeDecoupledPotential( [mu = par( 0 )](
+                                  const auto& C_ ) { return EDF::Isochoric::NeoHookePotential( C_, mu ); },
+                                volumetricPart );
       break;
     case Yeoh:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[3] );
-      };
+      energyDensityFunction = EDF::
+        makeDecoupledPotential( [c10 = par( 0 ), c20 = par( 1 ), c30 = par( 2 )](
+                                  const auto& C_ ) { return EDF::Isochoric::YeohPotential( C_, c10, c20, c30 ); },
+                                volumetricPart );
       break;
     case PenceGouNeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
+      energyDensityFunction = [K = par( 0 ), G = par( 1 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
+        return EDF::PenceGouPotentialB( C_ad, K, G );
       };
       break;
     case MooneyRivlin:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[2] );
-      };
+      energyDensityFunction = EDF::
+        makeDecoupledPotential( [c10 = par( 0 ), c01 = par( 1 )](
+                                  const auto& C_ ) { return EDF::Isochoric::MooneyRivlinPotential( C_, c10, c01 ); },
+                                volumetricPart );
       break;
     case ArrudaBoyce:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[2] );
-      };
+      energyDensityFunction = EDF::
+        makeDecoupledPotential( [mu = par( 0 ), lambdaL = par( 1 )](
+                                  const auto&
+                                    C_ ) { return EDF::Isochoric::ArrudaBoyce8ChainPotential( C_, mu, lambdaL ); },
+                                volumetricPart );
       break;
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "

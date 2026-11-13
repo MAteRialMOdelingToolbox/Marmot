@@ -86,10 +86,10 @@ Theory
 ------
 
 The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
-:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` provided by ``ArrudaBoyce8ChainPotential`` in
+:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` provided by ``Isochoric::ArrudaBoyce8ChainPotential`` in
 ``MarmotEnergyDensityFunctions.h`` (see its API documentation for the closed-form derivation and
 its stress-free/reduction properties), and adds the shared
-volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` -- the same
+volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` (``Volumetric::PenaltyPotential``) -- the same
 convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin`` (as opposed to
 ``PenceGouNeoHooke``'s own :math:`K,G`-based convention, which bundles its volumetric response
 into a single potential rather than adding this shared term).

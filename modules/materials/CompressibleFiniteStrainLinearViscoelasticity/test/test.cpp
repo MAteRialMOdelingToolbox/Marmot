@@ -322,7 +322,7 @@ void testArrudaBoyceUndeformedResponse()
 // Test I-9: ArrudaBoyce response matches the shared core-header potential directly,
 // end-to-end through this material's autodiff::dual3rd-based
 // computeEnergyDensityAndDerivatives wiring and its shared
-// VolumetricPenaltyPotential volumetric convention -- NOT a check of the potential
+// Volumetric::PenaltyPotential volumetric convention -- NOT a check of the potential
 // formula itself (that is covered by
 // TestMarmotEnergyDensityFunctions), but of the switch-case dispatch and
 // derivative pipeline added for this base in this material.
@@ -346,8 +346,8 @@ void testArrudaBoyceMatchesSharedPotential()
   const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   double          psiIso;
   Tensor33d       dPsiIso_dC;
-  std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-    ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+  std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::
+    FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
   const double    lnDetC     = log( Fastor::determinant( C ) );
   const Tensor33d CInv       = Fastor::inverse( C );

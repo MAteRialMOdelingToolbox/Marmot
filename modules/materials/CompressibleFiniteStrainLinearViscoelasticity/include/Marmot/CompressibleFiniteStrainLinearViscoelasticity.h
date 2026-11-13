@@ -45,7 +45,7 @@ namespace Marmot::Materials {
    *   the bulk modulus \f$\kappa\f$ as the last entry (shared volumetric term
    *   \f$\Psi_{\rm vol}=\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$ for every base except
    *   @c PenceGouNeoHooke, which uses its own \f$K,G\f$-based convention -- see
-   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential
+   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Volumetric::PenaltyPotential
    *   and Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB):
    *   \f$\mu,\kappa\f$ for @c NeoHooke; \f$C_{10},C_{20},C_{30},\kappa\f$ for @c Yeoh;
    *   \f$C_{10},C_{01},\kappa\f$ for @c MooneyRivlin; \f$K,G\f$ for @c PenceGouNeoHooke;
