@@ -18,28 +18,22 @@ using namespace Marmot::ContinuumMechanics;
 // -----------------------------------------------------------------------
 
 // Layout: [hyperelasticBase, onlyShearCreep, <isochoric shape params...>, kappa, nMaxwell, (gamma1, tau1, ...)]
-// hyperelasticBase: 0=NeoHooke, 1=Yeoh, 2=MooneyRivlin, 4=ArrudaBoyce
-// Every base now composes Psi = Psi_iso(shape params) + kappa/8*(ln det C)^2,
-// with kappa always the LAST elasticProperties entry (see the class docs).
+// hyperelasticBase: 0=NeoHooke, 1=Yeoh, 2=MooneyRivlin, 3=PenceGouNeoHooke, 4=ArrudaBoyce
+// Every base except PenceGouNeoHooke composes Psi = Psi_iso(shape params) + kappa/8*(ln det C)^2,
+// with kappa the LAST elasticProperties entry (see the class docs).
 
-// onlyShearCreep=1 here (not 0), matching every actual use of this material in
-// this project's fitting pipelines (fit_qlv_marmot_model.py hard-codes
-// ONLY_SHEAR_CREEP=1.0) -- onlyShearCreep=0 takes a materially different code
-// path in the constructor (inverting the FULL analytic stiffness tensor from
-// computeEnergyDensityAndDerivatives's second derivative, rather than building
-// an isotropic compliance directly from the shear modulus), and that path was
-// found to have a pre-existing, unrelated bug in the shared d3f_dT3 autodiff
-// utility (returns an incorrectly symmetrized off-diagonal/shear block, e.g.
-// d2Psi/dC_01dC_01=0 with d2Psi/dC_01dC_10=2x the correct value, verified
-// directly against the fully-analytic SecondOrder::standardNeoHooke on
-// the same potential) -- previously never triggered because NeoHooke used to
-// bypass d3f_dT3 entirely via its own analytic ThirdOrder::standardNeoHooke,
-// and no other base's tests combined onlyShearCreep=0 with an actual nMaxwell>=1
-// relaxation exercising that inverted compliance. Out of scope to fix here.
+// The NeoHooke helpers below use onlyShearCreep=1; full creep (onlyShearCreep=0) is covered by
+// testFullCreepViscoelasticRelaxation.
 static std::vector< double > getElasticNeoHookeProps()
 {
   // NeoHooke, onlyShearCreep on, mu=1500, kappa=3500, nMaxwell=0
   return { 0.0, 1.0, 1500.0, 3500.0, 0.0 };
+}
+
+static std::vector< double > getViscoelasticNeoHookeFullCreepProps()
+{
+  // NeoHooke, full creep (onlyShearCreep off), mu=1500, kappa=3500, nMaxwell=1, gamma=0.3, tau=10
+  return { 0.0, 0.0, 1500.0, 3500.0, 1.0, 0.3, 10.0 };
 }
 
 static std::vector< double > getViscoelasticNeoHookeProps()
@@ -329,7 +323,7 @@ void testArrudaBoyceUndeformedResponse()
 // end-to-end through this material's autodiff::dual3rd-based
 // computeEnergyDensityAndDerivatives wiring and its shared
 // VolumetricPenaltyPotential volumetric convention -- NOT a check of the potential
-// formula itself (that is covered by TestBergstromBoyce and
+// formula itself (that is covered by
 // TestMarmotEnergyDensityFunctions), but of the switch-case dispatch and
 // derivative pipeline added for this base in this material.
 void testArrudaBoyceMatchesSharedPotential()
@@ -480,6 +474,32 @@ void testArrudaBoyceViscoelasticShearCreep()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// Test I-13: full creep (onlyShearCreep=0) with NeoHooke -- the whole PK2 stress relaxes, so the long-term
+// stress is (1-gamma) times the instantaneous elastic response of testUniaxialElasticResponse. Exercises the
+// constructor's inversion of the autodiff-based initial stiffness, which requires minor-symmetric tangents.
+void testFullCreepViscoelasticRelaxation()
+{
+  const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
+  auto              matProps = getViscoelasticNeoHookeFullCreepProps();
+  auto              solver   = makeSolver( matName, matProps );
+
+  Tensor33d gradU( 0.0 );
+  gradU( 0, 0 ) = 0.1; // F_11 = 1.1
+  solver.addStep( makeStep( gradU, 0.0, 1e-4, 1e-4 ) );
+  solver.addStep( makeStep( Tensor33d( 0.0 ), 1e-4, 1000.0, 100.0 ) );
+  solver.solve();
+
+  const double gamma = 0.3;
+  Tensor33d    stressTarget( 0.0 );
+  stressTarget( 0, 0 ) = ( 1.0 - gamma ) * 530.657287720443;
+  stressTarget( 1, 1 ) = ( 1.0 - gamma ) * 235.049800112484;
+  stressTarget( 2, 2 ) = ( 1.0 - gamma ) * 235.049800112484;
+
+  throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress, stressTarget, 1.0 ),
+                           "I-13: Full-creep viscoelastic relaxation - long-term stress wrong in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -495,6 +515,7 @@ int main()
     testUndeformedResponsePenceGouNeoHooke,                // I-10: F=I gives zero stress (PenceGouNeoHooke)
     testTriaxialResponsePenceGouNeoHookeMatchesAnalytical, // I-11: PenceGouNeoHooke matches analytical reference
     testArrudaBoyceViscoelasticShearCreep,                 // I-12: ArrudaBoyce viscoelastic shear creep
+    testFullCreepViscoelasticRelaxation,                   // I-13: full creep (onlyShearCreep=0) relaxation
   };
 
   executeTestsAndCollectExceptions( tests );

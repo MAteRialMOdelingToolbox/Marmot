@@ -4,6 +4,7 @@
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainViscoelasticity.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include <Fastor/expressions/linalg_ops/unary_trans_op.h>
@@ -12,6 +13,7 @@
 #include <Fastor/tensor_algebra/indicial.h>
 #include <autodiff/forward/dual/dual.hpp>
 #include <functional>
+#include <stdexcept>
 
 namespace Marmot::Materials {
 
@@ -47,8 +49,9 @@ namespace Marmot::Materials {
     std::function< autodiff::dual3rd( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
       energyDensityFunction;
 
-    // every base composes Psi = Psi_iso(shape params) + Psi_vol(kappa), with
-    // kappa always the LAST elasticProperties entry -- see the class docs.
+    // every base except PenceGouNeoHooke composes Psi = Psi_iso(shape params) + Psi_vol(kappa),
+    // with kappa the LAST elasticProperties entry; PenceGouNeoHooke keeps its own (K, G) potential
+    // -- see the class docs.
     switch ( hyperelasticBase ) {
     case NeoHooke:
       energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
@@ -92,7 +95,38 @@ namespace Marmot::Materials {
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
     }
-    return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction, C, true );
+    auto [psi,
+          dPsi_dC,
+          d2Psi_dCdC,
+          d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction,
+                                                                                              C,
+                                                                                              true );
+
+    // The potentials are evaluated on a general (not necessarily symmetric) C, so the
+    // autodiff derivatives w.r.t. the independent entries C_ij and C_ji differ (e.g.
+    // tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only their symmetric part acts on
+    // symmetric increments of C, so restore the minor symmetries here; without this, the
+    // stiffness inverted for onlyShearCreep = 0 is singular in the shear block.
+    Tensor3333d   d2Sym;
+    Tensor333333d d3Sym;
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ )
+        for ( int k = 0; k < 3; k++ )
+          for ( int l = 0; l < 3; l++ ) {
+            d2Sym( i, j, k, l ) = 0.25 * ( d2Psi_dCdC( i, j, k, l ) + d2Psi_dCdC( j, i, k, l ) +
+                                           d2Psi_dCdC( i, j, l, k ) + d2Psi_dCdC( j, i, l, k ) );
+            for ( int m = 0; m < 3; m++ )
+              for ( int n = 0; n < 3; n++ ) {
+                double sum = 0.0;
+                for ( int a = 0; a < 2; a++ )
+                  for ( int b = 0; b < 2; b++ )
+                    for ( int c = 0; c < 2; c++ )
+                      sum += d3Psi_dCdCdC( a ? j : i, a ? i : j, b ? l : k, b ? k : l, c ? n : m, c ? m : n );
+                d3Sym( i, j, k, l, m, n ) = 0.125 * sum;
+              }
+          }
+
+    return { psi, dPsi_dC, d2Sym, d3Sym };
   }
 
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
@@ -110,6 +144,11 @@ namespace Marmot::Materials {
                                    &materialProperties[3 + nElasticPropertiesMap.at( hyperelasticBase )] ) )
   {
 
+    if ( hyperelasticBase == ArrudaBoyce && !( elasticProperties[1] > 1.0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": ArrudaBoyce locking stretch lambdaL must be > 1, got "
+                                   << elasticProperties[1] );
+
     if ( onlyShearCreep == 1.0 ) {
       double G = 0;
       switch ( hyperelasticBase ) {
@@ -122,7 +161,7 @@ namespace Marmot::Materials {
       case PenceGouNeoHooke: G = elasticProperties[1]; break;
       // mu is NOT the infinitesimal shear modulus at finite lambdaL: G0 = 2*dPsi_iso/dIbar1
       // evaluated at Ibar1=3 (the reference configuration), which for the closed-form
-      // Arruda-Boyce potential (see detail::arrudaBoyce8ChainEnergyAndDerivative) works out to
+      // Arruda-Boyce potential (see Detail::arrudaBoyce8ChainEnergyAndDerivative) works out to
       // mu/3 + 2*mu/(3*(1-1/lambdaL^2)); only in the lambdaL->infinity limit does this reduce to mu.
       case ArrudaBoyce: {
         const double lambdaL = elasticProperties[1];
