@@ -77,6 +77,19 @@ namespace Marmot::Materials {
 
     std::vector< double > getNonlocalViscosity( const double* stateVars ) const override;
 
+    /**
+     * @brief Get the micro-inertia of the six nonlocal strain components.
+     * @param stateVars Pointer to the array of state variables
+     * @return The optional material property 15 for all six components, or zero if it is not given
+     *
+     * @details Optional, and absent means zero: the nonlocal strain is then first order in time and is integrated by
+     * its viscosity alone, which keeps every deck written before this property existed unchanged. Given, it makes the
+     * nonlocal field second order in time, so that the stable increment of an explicit analysis falls off with the
+     * element size rather than with its square; it is admissible up to \f$\eta^2/4\f$, where it is best (see
+     * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia()).
+     */
+    std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const override;
+
   protected:
     /// @brief The constitutive laws of M7; the elastic prediction is evaluated with the local, the
     /// boundaries with the over-nonlocal strain.
