@@ -17,43 +17,42 @@ using namespace Marmot::ContinuumMechanics;
 // Material property helpers
 // -----------------------------------------------------------------------
 
-// Layout: [hyperelasticBase, onlyShearCreep, <isochoric shape params...>, kappa, nMaxwell, (gamma1, tau1, ...)]
-// hyperelasticBase: 0=NeoHooke, 1=Yeoh, 2=MooneyRivlin, 3=PenceGouNeoHooke, 4=ArrudaBoyce
-// Every base except PenceGouNeoHooke composes Psi = Psi_iso(shape params) + kappa/8*(ln det C)^2,
-// with kappa the LAST elasticProperties entry (see the class docs).
+// Layout: [hyperelasticBase, onlyShearCreep, <elastic params of the base potential...>, nMaxwell, (gamma1, tau1, ...)]
+// hyperelasticBase: 0=NeoHooke (K, G), 1=Yeoh (C1, C2, C3, D1), 2=MooneyRivlin (C1, C2, D1),
+// 3=PenceGouNeoHooke (K, G), 4=ArrudaBoyce (mu, lambdaL, D1)
 
-// The NeoHooke helpers below use onlyShearCreep=1; full creep (onlyShearCreep=0) is covered by
-// testFullCreepViscoelasticRelaxation.
-static std::vector< double > getElasticNeoHookeProps()
+// The elastic NeoHooke tests run for both onlyShearCreep=0 (full creep) and onlyShearCreep=1, since the flag
+// selects different initial-stiffness paths in the constructor.
+static std::vector< double > getElasticNeoHookeProps( double onlyShearCreep )
 {
-  // NeoHooke, onlyShearCreep on, mu=1500, kappa=3500, nMaxwell=0
-  return { 0.0, 1.0, 1500.0, 3500.0, 0.0 };
+  // NeoHooke, K=3500, G=1500, nMaxwell=0
+  return { 0.0, onlyShearCreep, 3500.0, 1500.0, 0.0 };
 }
 
 static std::vector< double > getViscoelasticNeoHookeFullCreepProps()
 {
-  // NeoHooke, full creep (onlyShearCreep off), mu=1500, kappa=3500, nMaxwell=1, gamma=0.3, tau=10
-  return { 0.0, 0.0, 1500.0, 3500.0, 1.0, 0.3, 10.0 };
+  // NeoHooke, full creep (onlyShearCreep off), K=3500, G=1500, nMaxwell=1, gamma=0.3, tau=10
+  return { 0.0, 0.0, 3500.0, 1500.0, 1.0, 0.3, 10.0 };
 }
 
 static std::vector< double > getViscoelasticNeoHookeProps()
 {
-  // NeoHooke, onlyShearCreep on, mu=1500, kappa=3500, nMaxwell=1, gamma=0.3, tau=10
-  return { 0.0, 1.0, 1500.0, 3500.0, 1.0, 0.3, 10.0 };
+  // NeoHooke, onlyShearCreep on, K=3500, G=1500, nMaxwell=1, gamma=0.3, tau=10
+  return { 0.0, 1.0, 3500.0, 1500.0, 1.0, 0.3, 10.0 };
 }
 
-// Layout: [hyperelasticBase=4 (ArrudaBoyce), onlyShearCreep, mu, lambdaL, kappa, nMaxwell]
+// Layout: [hyperelasticBase=4 (ArrudaBoyce), onlyShearCreep, mu, lambdaL, D1, nMaxwell]
 static std::vector< double > getElasticArrudaBoyceProps()
 {
-  // ArrudaBoyce, full creep flag off, mu=1500, lambdaL=3.0, kappa=3500, nMaxwell=0
-  return { 4.0, 0.0, 1500.0, 3.0, 3500.0, 0.0 };
+  // ArrudaBoyce, full creep flag off, mu=1500, lambdaL=3.0, D1=2/3500 (bulk modulus 3500), nMaxwell=0
+  return { 4.0, 0.0, 1500.0, 3.0, 2.0 / 3500.0, 0.0 };
 }
 
-// Layout: [hyperelasticBase=4 (ArrudaBoyce), onlyShearCreep, mu, lambdaL, kappa, nMaxwell, gamma1, tau1]
+// Layout: [hyperelasticBase=4 (ArrudaBoyce), onlyShearCreep, mu, lambdaL, D1, nMaxwell, gamma1, tau1]
 static std::vector< double > getViscoelasticArrudaBoyceShearCreepProps()
 {
-  // ArrudaBoyce, onlyShearCreep on, mu=1500, lambdaL=3.0, kappa=3500, nMaxwell=1, gamma=0.3, tau=10
-  return { 4.0, 1.0, 1500.0, 3.0, 3500.0, 1.0, 0.3, 10.0 };
+  // ArrudaBoyce, onlyShearCreep on, mu=1500, lambdaL=3.0, D1=2/3500, nMaxwell=1, gamma=0.3, tau=10
+  return { 4.0, 1.0, 1500.0, 3.0, 2.0 / 3500.0, 1.0, 0.3, 10.0 };
 }
 
 static std::vector< double > getElasticPenceGouNeoHookeProps()
@@ -96,10 +95,10 @@ static Marmot::Materials::MaterialPointSolverFiniteStrain::Step makeStep( const 
 // -----------------------------------------------------------------------
 
 // Test I-1: F=I gives zero Kirchhoff stress for elastic NeoHooke
-void testUndeformedResponse()
+void testUndeformedResponse( double onlyShearCreep )
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  auto              matProps = getElasticNeoHookeProps();
+  auto              matProps = getElasticNeoHookeProps( onlyShearCreep );
   auto              solver   = makeSolver( matName, matProps );
 
   solver.addStep( makeStep( Tensor33d( 0.0 ), 0.0, 1.0, 1.0 ) );
@@ -112,10 +111,10 @@ void testUndeformedResponse()
 }
 
 // Test I-2: Uniaxial stretch F_11=1.1 matches NeoHooke reference (elastic, nMaxwell=0)
-void testUniaxialElasticResponse()
+void testUniaxialElasticResponse( double onlyShearCreep )
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  auto              matProps = getElasticNeoHookeProps();
+  auto              matProps = getElasticNeoHookeProps( onlyShearCreep );
   auto              solver   = makeSolver( matName, matProps );
 
   Tensor33d gradU( 0.0 );
@@ -125,24 +124,21 @@ void testUniaxialElasticResponse()
 
   auto finalStress = solver.getHistory().back().stress;
 
-  // Reference: NeoHooke mu=1500, kappa=3500, F=diag(1.1,1,1), C=diag(1.21,1,1),
-  // Psi = mu/2*(Ibar1-3) + kappa/8*(ln detC)^2, Ibar1 = I1*J^(-2/3) -- computed
-  // symbolically (sympy) from this exact potential, not carried over from the
-  // old raw-I1 formula.
+  // Reference: NeoHooke K=3500, G=1500, F=diag(1.1,1,1): tau = G (b - I) + lambda/2 (J^2 - 1) I
   Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 530.657287720443;
-  stressTarget( 1, 1 ) = 235.049800112484;
-  stressTarget( 2, 2 ) = 235.049800112484;
+  stressTarget( 0, 0 ) = 577.5;
+  stressTarget( 1, 1 ) = 262.5;
+  stressTarget( 2, 2 ) = 262.5;
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-4 ),
                            "I-2: Uniaxial elastic response failed in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // Test I-3: Kirchhoff stress tensor is symmetric for arbitrary deformation
-void testStressTensorSymmetry()
+void testStressTensorSymmetry( double onlyShearCreep )
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  auto              matProps = getElasticNeoHookeProps();
+  auto              matProps = getElasticNeoHookeProps( onlyShearCreep );
   auto              solver   = makeSolver( matName, matProps );
 
   Tensor33d gradU( 0.0 );
@@ -164,10 +160,10 @@ void testStressTensorSymmetry()
 }
 
 // Test I-4: Pure rotation gives zero Kirchhoff stress
-void testPureRotationZeroStress()
+void testPureRotationZeroStress( double onlyShearCreep )
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  auto              matProps = getElasticNeoHookeProps();
+  auto              matProps = getElasticNeoHookeProps( onlyShearCreep );
 
   for ( int phi_deg = 0; phi_deg <= 180; phi_deg += 30 ) {
     const double phi = Marmot::Math::degToRad( phi_deg );
@@ -190,10 +186,10 @@ void testPureRotationZeroStress()
 }
 
 // Test I-5: Objectivity: tau(Q*F) = Q * tau(F) * Q^T
-void testObjectivity()
+void testObjectivity( double onlyShearCreep )
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  auto              matProps = getElasticNeoHookeProps();
+  auto              matProps = getElasticNeoHookeProps( onlyShearCreep );
 
   Tensor33d F( 0.0 );
   F( 0, 0 ) = 1.01;
@@ -256,13 +252,12 @@ void testViscoelasticRelaxation()
   auto stressRelaxed = solver.getHistory().back().stress;
 
   // onlyShearCreep=1: only the deviatoric part of PK2 relaxes, PK2vol stays at
-  // its instantaneous value -- tau_final = tau_vol_instant + (1-gamma)*tau_dev_instant
-  // with gamma=0.3, computed symbolically (sympy) from the same NeoHooke
-  // mu=1500, kappa=3500, F=diag(1.1,1,1) potential as testUniaxialElasticResponse.
+  // its instantaneous value -- tau_final = F (PK2vol + (1-gamma) PK2dev) F^T with gamma=0.3,
+  // for the NeoHooke K=3500, G=1500, F=diag(1.1,1,1) response of testUniaxialElasticResponse.
   Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 481.407881803576;
-  stressTarget( 1, 1 ) = 255.400794293008;
-  stressTarget( 2, 2 ) = 255.400794293008;
+  stressTarget( 0, 0 ) = 525.525;
+  stressTarget( 1, 1 ) = 283.977272727273;
+  stressTarget( 2, 2 ) = 283.977272727273;
 
   throwExceptionOnFailure( checkIfEqual( stressRelaxed, stressTarget, 1.0 ),
                            "I-6: Viscoelastic relaxation - long-term stress wrong in " +
@@ -270,9 +265,9 @@ void testViscoelasticRelaxation()
 }
 
 // Test I-7: Substepped variant gives the same result as the regular variant
-void testSubsteppedConsistency()
+void testSubsteppedConsistency( double onlyShearCreep )
 {
-  auto matPropsElas = getElasticNeoHookeProps();
+  auto matPropsElas = getElasticNeoHookeProps( onlyShearCreep );
 
   Tensor33d gradU( 0.0 );
   gradU( 0, 0 ) = 0.05;
@@ -322,7 +317,7 @@ void testArrudaBoyceUndeformedResponse()
 // Test I-9: ArrudaBoyce response matches the shared core-header potential directly,
 // end-to-end through this material's autodiff::dual3rd-based
 // computeEnergyDensityAndDerivatives wiring and its shared
-// Volumetric::PenaltyPotential volumetric convention -- NOT a check of the potential
+// D1-based volumetric term (shared with Yeoh and MooneyRivlin) -- NOT a check of the potential
 // formula itself (that is covered by
 // TestMarmotEnergyDensityFunctions), but of the switch-case dispatch and
 // derivative pipeline added for this base in this material.
@@ -330,7 +325,7 @@ void testArrudaBoyceMatchesSharedPotential()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
   auto              matProps = getElasticArrudaBoyceProps();
-  const double      mu = matProps[2], lambdaL = matProps[3], kappa = matProps[4];
+  const double      mu = matProps[2], lambdaL = matProps[3], D1 = matProps[4];
   auto              solver = makeSolver( matName, matProps );
 
   Tensor33d F = Spatial3D::I;
@@ -349,9 +344,9 @@ void testArrudaBoyceMatchesSharedPotential()
   std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::
     FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
-  const double    lnDetC     = log( Fastor::determinant( C ) );
+  const double    detC       = Fastor::determinant( C );
   const Tensor33d CInv       = Fastor::inverse( C );
-  const Tensor33d dPsiVol_dC = ( kappa / 4. * lnDetC ) * CInv;
+  const Tensor33d dPsiVol_dC = ( ( detC - 1. ) / ( 2. * D1 ) ) * CInv;
 
   const Tensor33d PK2       = 2. * ( dPsiIso_dC + dPsiVol_dC );
   const Tensor33d tauTarget = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
@@ -491,25 +486,34 @@ void testFullCreepViscoelasticRelaxation()
 
   const double gamma = 0.3;
   Tensor33d    stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = ( 1.0 - gamma ) * 530.657287720443;
-  stressTarget( 1, 1 ) = ( 1.0 - gamma ) * 235.049800112484;
-  stressTarget( 2, 2 ) = ( 1.0 - gamma ) * 235.049800112484;
+  stressTarget( 0, 0 ) = ( 1.0 - gamma ) * 577.5;
+  stressTarget( 1, 1 ) = ( 1.0 - gamma ) * 262.5;
+  stressTarget( 2, 2 ) = ( 1.0 - gamma ) * 262.5;
 
   throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress, stressTarget, 1.0 ),
                            "I-13: Full-creep viscoelastic relaxation - long-term stress wrong in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// runs a NeoHooke test for full creep (onlyShearCreep=0) and shear creep only (onlyShearCreep=1)
+static std::function< void() > forBothCreepModes( void ( *test )( double ) )
+{
+  return [test]() {
+    for ( const double onlyShearCreep : { 0.0, 1.0 } )
+      test( onlyShearCreep );
+  };
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
-    testUndeformedResponse,                                // I-1: F=I gives zero stress
-    testUniaxialElasticResponse,                           // I-2: Uniaxial elastic stretch reference values
-    testStressTensorSymmetry,                              // I-3: Kirchhoff stress symmetry
-    testPureRotationZeroStress,                            // I-4: Pure rotation gives zero stress
-    testObjectivity,                                       // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
+    forBothCreepModes( testUndeformedResponse ),           // I-1: F=I gives zero stress
+    forBothCreepModes( testUniaxialElasticResponse ),      // I-2: Uniaxial elastic stretch reference values
+    forBothCreepModes( testStressTensorSymmetry ),         // I-3: Kirchhoff stress symmetry
+    forBothCreepModes( testPureRotationZeroStress ),       // I-4: Pure rotation gives zero stress
+    forBothCreepModes( testObjectivity ),                  // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
     testViscoelasticRelaxation,                            // I-6: Viscoelastic relaxation
-    testSubsteppedConsistency,                             // I-7: Substepped == regular
+    forBothCreepModes( testSubsteppedConsistency ),        // I-7: Substepped == regular
     testArrudaBoyceUndeformedResponse,                     // I-8: ArrudaBoyce F=I gives zero stress
     testArrudaBoyceMatchesSharedPotential,                 // I-9: ArrudaBoyce matches shared potential
     testUndeformedResponsePenceGouNeoHooke,                // I-10: F=I gives zero stress (PenceGouNeoHooke)

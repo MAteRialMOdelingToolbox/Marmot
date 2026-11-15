@@ -52,15 +52,15 @@ The material parameters are provided as a flat vector with the following layout:
    * - NeoHooke
      - 0
      - 2
-     - :math:`\mu` (shear-modulus-like parameter), :math:`\kappa` (bulk modulus)
+     - :math:`K` (bulk modulus), :math:`G` (shear modulus)
    * - Yeoh
      - 1
      - 4
-     - :math:`C_{10}`, :math:`C_{20}`, :math:`C_{30}`, :math:`\kappa`
+     - :math:`C_{1}`, :math:`C_{2}`, :math:`C_{3}`, :math:`D_1` (volumetric compliance)
    * - MooneyRivlin
      - 2
      - 3
-     - :math:`C_{10}`, :math:`C_{01}`, :math:`\kappa`
+     - :math:`C_{1}`, :math:`C_{2}`, :math:`D_1` (volumetric compliance)
    * - PenceGouNeoHooke
      - 3
      - 2
@@ -69,7 +69,7 @@ The material parameters are provided as a flat vector with the following layout:
      - 4
      - 3
      - :math:`\mu` (shear-modulus-like parameter), :math:`\lambda_L` (locking stretch),
-       :math:`\kappa` (bulk modulus)
+       :math:`D_1` (volumetric compliance)
 
 .. list-table::
    :header-rows: 1
@@ -85,14 +85,11 @@ The material parameters are provided as a flat vector with the following layout:
 Theory
 ------
 
-The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
-:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` provided by ``Isochoric::ArrudaBoyce8ChainPotential`` in
-``MarmotEnergyDensityFunctions.h`` (see its API documentation for the closed-form derivation and
-its stress-free/reduction properties), and adds the shared
-volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` (``Volumetric::PenaltyPotential``) -- the same
-convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin`` (as opposed to
-``PenceGouNeoHooke``'s own :math:`K,G`-based convention, which bundles its volumetric response
-into a single potential rather than adding this shared term).
+The ``ArrudaBoyce`` base uses the compressible potential ``ArrudaBoyce8ChainPotential`` in
+``MarmotEnergyDensityFunctions.h``: the isochoric 8-chain potential
+:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` (``Isochoric::ArrudaBoyce8ChainPotential``, see its API
+documentation for the closed-form derivation and its stress-free/reduction properties) plus the volumetric term
+:math:`\frac{1}{D_1}\left(\frac{J^2-1}{2}-\ln J\right)` shared with ``Yeoh`` and ``MooneyRivlin``.
 
 The model is a finite-strain generalization of the linear viscoelastic model
 described, e.g., in Liu et al. (2021). A generalized Maxwell model is employed

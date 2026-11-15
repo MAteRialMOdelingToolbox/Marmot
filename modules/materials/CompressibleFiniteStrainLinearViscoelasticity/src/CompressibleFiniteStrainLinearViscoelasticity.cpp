@@ -49,26 +49,18 @@ namespace Marmot::Materials {
     std::function< autodiff::dual3rd( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
       energyDensityFunction;
 
-    // every base except PenceGouNeoHooke composes Psi = Psi_iso(shape params) + Psi_vol(kappa),
-    // with kappa the LAST elasticProperties entry; PenceGouNeoHooke keeps its own (K, G) potential
+    // every base uses its full compressible potential with the parameters in the order of its interface
     // -- see the class docs.
-    namespace EDF               = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
-    const auto&  par            = elasticProperties;
-    const double kappa          = par( par.size() - 1 );
-    const auto   volumetricPart = [kappa]( const auto& C_ ) { return EDF::Volumetric::PenaltyPotential( C_, kappa ); };
+    namespace EDF   = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+    const auto& par = elasticProperties;
 
     switch ( hyperelasticBase ) {
-    case NeoHooke:
-      energyDensityFunction = EDF::
-        makeDecoupledPotential( [mu = par( 0 )](
-                                  const auto& C_ ) { return EDF::Isochoric::NeoHookePotential( C_, mu ); },
-                                volumetricPart );
-      break;
+    case NeoHooke: return EDF::ThirdOrder::standardNeoHooke( C, par( 0 ), par( 1 ) );
     case Yeoh:
-      energyDensityFunction = EDF::
-        makeDecoupledPotential( [c10 = par( 0 ), c20 = par( 1 ), c30 = par( 2 )](
-                                  const auto& C_ ) { return EDF::Isochoric::YeohPotential( C_, c10, c20, c30 ); },
-                                volumetricPart );
+      energyDensityFunction =
+        [C1 = par( 0 ), C2 = par( 1 ), C3 = par( 2 ), D1 = par( 3 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
+          return EDF::YeohPotential( C_ad, C1, C2, C3, D1 );
+        };
       break;
     case PenceGouNeoHooke:
       energyDensityFunction = [K = par( 0 ), G = par( 1 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
@@ -76,17 +68,16 @@ namespace Marmot::Materials {
       };
       break;
     case MooneyRivlin:
-      energyDensityFunction = EDF::
-        makeDecoupledPotential( [c10 = par( 0 ), c01 = par( 1 )](
-                                  const auto& C_ ) { return EDF::Isochoric::MooneyRivlinPotential( C_, c10, c01 ); },
-                                volumetricPart );
+      energyDensityFunction =
+        [C1 = par( 0 ), C2 = par( 1 ), D1 = par( 2 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
+          return EDF::MooneyRivlinPotential( C_ad, C1, C2, D1 );
+        };
       break;
     case ArrudaBoyce:
-      energyDensityFunction = EDF::
-        makeDecoupledPotential( [mu = par( 0 ), lambdaL = par( 1 )](
-                                  const auto&
-                                    C_ ) { return EDF::Isochoric::ArrudaBoyce8ChainPotential( C_, mu, lambdaL ); },
-                                volumetricPart );
+      energyDensityFunction =
+        [mu = par( 0 ), lambdaL = par( 1 ), D1 = par( 2 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
+          return EDF::ArrudaBoyce8ChainPotential( C_ad, mu, lambdaL, D1 );
+        };
       break;
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
@@ -149,7 +140,7 @@ namespace Marmot::Materials {
     if ( onlyShearCreep == 1.0 ) {
       double G = 0;
       switch ( hyperelasticBase ) {
-      case NeoHooke: G = elasticProperties[0]; break;
+      case NeoHooke: G = elasticProperties[1]; break;
       case Yeoh: G = 2 * elasticProperties[0]; break;
       // reference shear modulus of the isochoric Mooney-Rivlin potential is 2*(C10+C01), not
       // 2*C10 alone -- C01 also contributes to dPsi/dIbar1 at the reference configuration via

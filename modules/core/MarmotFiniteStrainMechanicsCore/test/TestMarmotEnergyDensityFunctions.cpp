@@ -2,6 +2,7 @@
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
+#include "autodiff/forward/dual.hpp"
 #include <complex>
 #include <stdexcept>
 #include <vector>
@@ -625,9 +626,9 @@ auto testDecoupledPotentialCombinesParts()
     C );
 }
 
-// The full (compressible) Mooney-Rivlin and Yeoh potentials, now composed of their isochoric parts and the Ogden
-// volumetric part (theta = -2, kappa = 2/D1), must reproduce the original closed forms.
-auto testMooneyRivlinYeohFullPotentialsMatchClosedForm()
+// The compressible Mooney-Rivlin, Yeoh and Arruda-Boyce potentials, composed of their isochoric parts and the Ogden
+// volumetric part (theta = -2, kappa = 2/D1), must reproduce the closed forms.
+auto testCompressiblePotentialsMatchClosedForm()
 {
   using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   const Tensor33d C  = get< 0 >( computationParameters() );
@@ -659,6 +660,23 @@ auto testMooneyRivlinYeohFullPotentialsMatchClosedForm()
     C1,
     C2,
     D1 );
+  // compressible Arruda-Boyce: isochoric 8-chain part plus the same D1 volumetric term
+  const double mu = 500.0, lambdaL = 2.5;
+  throwExceptionOnFailure( checkIfEqual( ArrudaBoyce8ChainPotential( C, mu, lambdaL, D1 ),
+                                         Isochoric::ArrudaBoyce8ChainPotential( C, mu, lambdaL ) + U,
+                                         1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " compressible Arruda-Boyce does not match iso + U." );
+  checkPlainMatchesFirstOrder(
+    "ArrudaBoyce8ChainPotential (full)",
+    []( const auto& C_, double m, double l, double d1 ) { return ArrudaBoyce8ChainPotential( C_, m, l, d1 ); },
+    []( const auto& C_, double m, double l, double d1 ) {
+      return FirstOrder::ArrudaBoyce8ChainPotential( C_, m, l, d1 );
+    },
+    C,
+    mu,
+    lambdaL,
+    D1 );
   checkPlainMatchesFirstOrder(
     "YeohPotential (full)",
     []( const auto& C_, double c1, double c2, double c3, double d1 ) { return YeohPotential( C_, c1, c2, c3, d1 ); },
@@ -670,6 +688,44 @@ auto testMooneyRivlinYeohFullPotentialsMatchClosedForm()
     C2,
     C3,
     D1 );
+}
+
+// The FirstOrder isochoric and volumetric potentials must instantiate with autodiff scalars (as documented) and
+// give the same energy and gradient as with double.
+auto testFirstOrderPotentialsWithAutodiffScalars()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  using autodiff::dual;
+  const Tensor33d         C   = get< 0 >( computationParameters() );
+  const Tensor33t< dual > CAD = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< dual >( C );
+
+  const auto check = [&]( const char* name, const auto& firstOrderFn ) {
+    const auto [psi, dPsi_dC]     = firstOrderFn( C );
+    const auto [psiAD, dPsiAD_dC] = firstOrderFn( CAD );
+    Tensor33d dPsiAD_dC_values( 0.0 );
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ )
+        dPsiAD_dC_values( i, j ) = autodiff::val( dPsiAD_dC( i, j ) );
+    throwExceptionOnFailure( checkIfEqual( autodiff::val( psiAD ), psi, 1e-12 ) &&
+                               checkIfEqual( dPsiAD_dC_values, dPsi_dC, 1e-12 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " " << name << " differs between double and autodiff::dual." );
+  };
+
+  check( "Isochoric::FirstOrder::NeoHookePotential",
+         []( const auto& C_ ) { return Isochoric::FirstOrder::NeoHookePotential( C_, 750.0 ); } );
+  check( "Isochoric::FirstOrder::YeohPotential",
+         []( const auto& C_ ) { return Isochoric::FirstOrder::YeohPotential( C_, 500.0, 50.0, 5.0 ); } );
+  check( "Isochoric::FirstOrder::MooneyRivlinPotential",
+         []( const auto& C_ ) { return Isochoric::FirstOrder::MooneyRivlinPotential( C_, 400.0, 100.0 ); } );
+  check( "Isochoric::FirstOrder::ArrudaBoyce8ChainPotential",
+         []( const auto& C_ ) { return Isochoric::FirstOrder::ArrudaBoyce8ChainPotential( C_, 500.0, 2.5 ); } );
+  check( "Volumetric::FirstOrder::PenaltyPotential",
+         []( const auto& C_ ) { return Volumetric::FirstOrder::PenaltyPotential( C_, 10000.0 ); } );
+  check( "Volumetric::FirstOrder::OgdenPotential",
+         []( const auto& C_ ) { return Volumetric::FirstOrder::OgdenPotential( C_, 10000.0, -2.0 ); } );
+  check( "FirstOrder::MooneyRivlinPotential (full)",
+         []( const auto& C_ ) { return FirstOrder::MooneyRivlinPotential( C_, 400.0, 100.0, 1e-3 ); } );
 }
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
@@ -841,7 +897,8 @@ int main()
                                testVolumetricPotentialRelationsDollSchweizerhof,
                                testYeohMooneyRivlinReduceToNeoHooke,
                                testDecoupledPotentialCombinesParts,
-                               testMooneyRivlinYeohFullPotentialsMatchClosedForm,
+                               testCompressiblePotentialsMatchClosedForm,
+                               testFirstOrderPotentialsWithAutodiffScalars,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
                                testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,

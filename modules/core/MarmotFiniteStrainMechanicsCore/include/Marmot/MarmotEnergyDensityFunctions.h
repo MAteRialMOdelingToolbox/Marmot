@@ -458,7 +458,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
 
         const Math::Tensors::FastorTensors::Tensor33t< T >
           dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
-                      Math::Tensors::multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+                      Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( Ibar1 / 3. ) );
         // dIbar2/dC = J^(-4/3)*I1*I - J^(-4/3)*C - (2/3)*Ibar2*Cinv (standard
         // isochoric second-invariant derivative identity, I2's own derivative
         // dI2/dC = I1*I - C combined with the J^(-4/3) scaling's own C-derivative).
@@ -1188,6 +1188,35 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
   }
 
+  /** @brief Compressible Arruda-Boyce 8-chain hyperelastic energy density function, with the same volumetric term
+   * and \f$D_1\f$ convention as #MooneyRivlinPotential and #YeohPotential,
+   * \f[
+   *   W = W_{AB}(\bar I_1;\mu,\lambda_L) + \frac{1}{D_1}\left( \frac{J^2 - 1}{2} - \ln J \right),
+   * \f]
+   * where \f$W_{AB}\f$ is the isochoric Isochoric::ArrudaBoyce8ChainPotential.
+   *
+   * It is the #DecoupledPotential of Isochoric::ArrudaBoyce8ChainPotential and Volumetric::OgdenPotential with
+   * \f$\kappa = 2/D_1\f$ and \f$\theta = -2\f$.
+   *
+   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param mu Shear-modulus-like parameter.
+   * @param lambdaL Locking stretch (must be > 1).
+   * @param D1 Volumetric compliance parameter.
+   * @return Energy density.
+   */
+  template < typename T >
+  T ArrudaBoyce8ChainPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                const double                                        mu,
+                                const double                                        lambdaL,
+                                const double                                        D1 )
+  {
+    return DecoupledPotential(
+      C,
+      [mu, lambdaL]( const auto& Ct ) { return Isochoric::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL ); },
+      [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
+  }
+
   namespace FirstOrder {
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first derivative
@@ -1297,6 +1326,32 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       return DecoupledPotential(
         C,
         [C1, C2, C3]( const auto& Ct ) { return Isochoric::FirstOrder::YeohPotential( Ct, C1, C2, C3 ); },
+        [D1]( const auto& Ct ) { return Volumetric::FirstOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+    }
+
+    /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential) and its first
+     * derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param mu Shear-modulus-like parameter.
+     * @param lambdaL Locking stretch (must be > 1).
+     * @param D1 Volumetric compliance parameter.
+     * @return A tuple containing the energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > ArrudaBoyce8ChainPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        mu,
+      const double                                        lambdaL,
+      const double                                        D1 )
+    {
+      return DecoupledPotential(
+        C,
+        [mu, lambdaL]( const auto& Ct ) {
+          return Isochoric::FirstOrder::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL );
+        },
         [D1]( const auto& Ct ) { return Volumetric::FirstOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
     }
   } // namespace FirstOrder
