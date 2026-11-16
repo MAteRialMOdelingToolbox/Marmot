@@ -620,6 +620,34 @@ void testLargeSlipPushOutPushBack()
   throwExceptionOnFailure( maxSlip( 0 ) == frozen, "the law must continue from the frozen largest slip" );
 }
 
+/// a long window of short and long quadratic bar elements far from the origin, with states that were never initialized
+/// (partner 0): the partner search walks from the channel point's element, and the closest point iteration never
+/// projects onto the far extrapolation of an element (a regression of the EdelweissFE pull-out with T2D3 bars)
+void testLargeSlipLongWindowUninitialized()
+{
+  const std::vector< double > x           = { 0., 0.25, 0.5, 0.65, 0.8, 0.9,  1.,  1.25, 1.5, 1.55, 1.6, 1.8,
+                                              2., 2.2,  2.4, 2.45, 2.5, 2.75, 3.,  3.1,  3.2, 3.35, 3.5, 3.75,
+                                              4., 4.25, 4.5, 4.75, 5.,  5.25, 5.5, 5.75, 6.,  6.25, 6.5 };
+  const double                offset      = 1e3;
+  std::vector< double >       coordinates = { 3.2, 0., 4.0, 0., 4.0, 0.5, 3.2, 0.5 }; // the host x in [3.2, 4]
+  for ( const double xi : x )
+    coordinates.insert( coordinates.end(), { xi, 0.37 } );
+  for ( size_t i = 0; i < coordinates.size(); i += 2 )
+    coordinates[i] += offset;
+  // channel: bar element 10 (x in [3.2, 3.5]), window from the bar start
+  Bond large( "EBLS2D3Q4W17", coordinates, { 0.3545, 10.0, 11.0, 1.0, 0.0, 3 }, "LINEARELASTICBONDSLIP", linearBond );
+  for ( int i = 0; i < 3; i++ )
+    *large.element->getStateView( "partner", i ).stateLocation = 0.0; // as if never initialized
+  Eigen::VectorXd U = Eigen::VectorXd::Zero( large.nDof );
+  for ( int n = 0; n < 35; n++ )
+    U( 8 + 2 * n ) = 0.3; // slid by 0.3
+  const auto P = large.kernels( U, Eigen::VectorXd::Zero( large.nDof ), false ).first;
+  // the whole channel stays covered: the bond force on the bar is Kt x slip x p x channel length
+  const double barForce = P.segment( 8, 70 ).reshaped( 2, 35 ).row( 0 ).sum();
+  throwExceptionOnFailure( checkIfEqual( barForce, 100. * 0.3 * 0.3545 * 0.3, 1e-9 ),
+                           Marmot::Utilities::MakeString() << "bond force of the long window " << barForce );
+}
+
 /// bar elements of different lengths: a channel point at the end of the channel (Gauss-Lobatto) belongs to its own
 /// bar element, not to the (longer) next one; pushing the bar back by d gives Kt d p L of the channel exactly
 void testLargeSlipUnequalBarElements()
@@ -683,6 +711,7 @@ int main()
     testLargeSlipObjectivity,
     testLargeSlipHostStretch,
     testLargeSlipPushOutPushBack,
+    testLargeSlipLongWindowUninitialized,
   } );
   return 0;
 }

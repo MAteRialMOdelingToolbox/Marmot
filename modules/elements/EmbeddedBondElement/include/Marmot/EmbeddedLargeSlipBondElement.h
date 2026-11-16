@@ -363,9 +363,13 @@ namespace Marmot::Discretizations::Elements {
      * @throws std::runtime_error if g' <= 0 (not a minimum: the bar is curved more strongly than its distance to the
      * point) or without convergence
      */
-    double closestPoint( int k, const BarCoordinates& xe, const VectorDim& xc, double etaStart ) const
+    double closestPoint( int k, const BarCoordinates& xeGlobal, const VectorDim& xcGlobal, double etaStart ) const
     {
-      double eta = etaStart;
+      // relative to the first node: the round-off of the gap is then about eps (|gap| + L), not eps |x|
+      const VectorDim      origin = xeGlobal.col( 0 );
+      const BarCoordinates xe     = xeGlobal.colwise() - origin;
+      const VectorDim      xc     = xcGlobal - origin;
+      double               eta    = etaStart;
       for ( int iteration = 0; iteration < 50; iteration++ ) {
         const BarPoint  p                   = barPoint( k, eta );
         const VectorDim gap                 = xe * p.N.transpose() - xc;
@@ -380,7 +384,9 @@ namespace Marmot::Discretizations::Elements {
                                        "the channel point)" );
         const double step = -orthogonality / dOrthogonality_dEta;
         eta += step;
-        if ( std::abs( step ) < 1e-12 )
+        // relative to |eta|: beyond the element, x(eta) is the difference of large terms of the extrapolated shape
+        // functions
+        if ( std::abs( step ) < 1e-12 * std::max( 1.0, std::abs( eta ) ) )
           return eta;
       }
       throw std::runtime_error( Marmot::Utilities::MakeString()
@@ -407,7 +413,14 @@ namespace Marmot::Discretizations::Elements {
       int k             = std::clamp( startElement, 0, nBarElements - 1 );
       int lastDirection = 0;
       for ( int visited = 0; visited <= nBarElements; visited++ ) {
-        const double eta       = closestPoint( k, barElementCoordinates( x, k ), xc, 0.0 );
+        const BarCoordinates xe = barElementCoordinates( x, k );
+        // the projection onto the chord of the element decides the direction; the closest point iteration runs only
+        // near the element, where its (extrapolated) polynomial is well conditioned
+        const VectorDim chord    = xe.col( 1 ) - xe.col( 0 );
+        const double    etaChord = 2.0 * ( xc - xe.col( 0 ) ).dot( chord ) / chord.squaredNorm() - 1.0;
+        const bool      far      = std::abs( etaChord ) > 1.5 &&
+                         ( ( etaChord < 0 && k > 0 ) || ( etaChord > 0 && k < nBarElements - 1 ) );
+        const double eta       = far ? etaChord : closestPoint( k, xe, xc, std::clamp( etaChord, -1.0, 1.0 ) );
         const int    direction = eta < -1.0 && k > 0 ? -1 : ( eta > 1.0 && k < nBarElements - 1 ? 1 : 0 );
         if ( direction == 0 )
           return { k, eta, false };
@@ -446,8 +459,11 @@ namespace Marmot::Discretizations::Elements {
 
       const Eigen::Map< const Eigen::Matrix< double, nDim, nHostNodes > > uHost( uLocal.data() );
       const Eigen::Map< const BarCoordinates >                            uBar( uLocal.data() + nHostNodes * nDim );
-      const VectorDim                                                     xc = cp.X + uHost * cp.hostN.transpose();
-      const BarCoordinates xe = barElementCoordinates( windowCoordinates, k ) + uBar;
+      // positions relative to the first node of the bar element (round-off far from the origin, see closestPoint)
+      const BarCoordinates xeGlobal = barElementCoordinates( windowCoordinates, k ) + uBar;
+      const VectorDim      origin   = xeGlobal.col( 0 );
+      const VectorDim      xc       = cp.X - origin + uHost * cp.hostN.transpose();
+      const BarCoordinates xe       = xeGlobal.colwise() - origin;
 
       kin.eta                   = etaFixed ? etaStart : closestPoint( k, xe, xc, etaStart );
       const BarPoint  p         = barPoint( k, kin.eta );
@@ -683,8 +699,11 @@ namespace Marmot::Discretizations::Elements {
         const auto&       cp = channelPoints[i];
         QPStateVarManager sv( states + i * nQp, nQp );
 
-        const VectorDim xc      = cp.X + uHost * cp.hostN.transpose();
-        const Partner   partner = findPartner( x, xc, static_cast< int >( std::floor( sv.partner ) ) );
+        const VectorDim xc = cp.X + uHost * cp.hostN.transpose();
+        // the search starts from the previous partner; 0: not searched yet (the states need no initialization), from
+        // the element of the channel point
+        const double  previousPartner = sv.partner > 0 ? sv.partner : cp.c;
+        const Partner partner         = findPartner( x, xc, static_cast< int >( std::floor( previousPartner ) ) );
         if ( ( partner.element == 0 && partner.eta < -1.0 && !startIsBarEnd ) ||
              ( partner.element == nBarElements - 1 && partner.eta > 1.0 && !endIsBarEnd ) )
           throw std::runtime_error( Marmot::Utilities::MakeString()
