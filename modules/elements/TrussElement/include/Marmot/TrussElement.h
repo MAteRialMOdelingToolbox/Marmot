@@ -36,7 +36,9 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include <Eigen/Dense>
+#include <algorithm>
 #include <cmath>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -639,6 +641,55 @@ namespace Marmot::Discretizations::Elements {
         for ( int a = 0; a < nNodes; a++ )
           for ( int b = 0; b < nNodes; b++ )
             M.template block< nDim, nDim >( a * nDim, b * nDim ) += N_( a ) * N_( b ) * mass * MatrixDim::Identity();
+      }
+    }
+
+    /**
+     * @brief The critical time step of explicit dynamics: the stiffest axial mode of the bar with the row-sum lumped
+     * mass (computeLumpedInertia).
+     *
+     * @details With the reference length \f$L\f$ and the wave speed \f$c\f$ of the material: 2 nodes, masses
+     * \f$\rho A L (1/2, 1/2)\f$, \f$\omega_{\max}^2 = 4 c^2 / L^2\f$, \f$\Delta t = 2 / \omega_{\max} = L / c\f$;
+     * 3 nodes, masses \f$\rho A L (1/6, 1/6, 2/3)\f$, \f$\omega_{\max}^2 = 24 c^2 / L^2\f$, \f$\Delta t = L / (\sqrt{6}
+     * c)\f$. The wave speed is the materials' maximum (P-wave) one, larger than the bar wave speed
+     * \f$\sqrt{E/\rho}\f$: the estimate is on the safe side.
+     * @param[out] criticalTimeStep The critical time step.
+     * @param[in]  QTotal           The total nodal displacements (the finite strain materials are evaluated at the
+     * current stretch).
+     */
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override
+    {
+      const double timeStepFactor = nNodes == 2 ? 1.0 : 1.0 / std::sqrt( 6.0 );
+      double       length         = 0.0;
+      for ( const auto& qp : qps )
+        length += qp.dS_dXi * qp.weight;
+
+      const Eigen::Map< const CoordinateArray > U( QTotal );
+      criticalTimeStep = std::numeric_limits< double >::max();
+      for ( const auto& qp : qps ) {
+        auto&  sv = *qp.managedStateVars; // the material needs mutable state pointers
+        double c  = 0.0;
+        if ( qp.materialHypoElastic ) {
+          Marmot::Math::Vector6d stress = Marmot::Math::Vector6d::Zero();
+          stress( 0 )                   = sv.stress;
+          c                             = qp.materialHypoElastic->getMaximumWaveSpeed(
+            Marmot::Materials::MaterialHypoElastic::state3D( stress,
+                                                             sv.elasticEnergy / qp.dV0,
+                                                             sv.dissipation / qp.dV0,
+                                                             sv.materialStateVars.data() ) );
+        }
+        else {
+          const VectorDim                dx_dS = qp.T + U * qp.dN_dS.transpose();
+          Fastor::Tensor< double, 3, 3 > F( 0.0 );
+          F( 0, 0 ) = dx_dS.norm();
+          F( 1, 1 ) = sv.lateralStretches( 0 ) > 0 ? sv.lateralStretches( 0 ) : 1.0;
+          F( 2, 2 ) = sv.lateralStretches( 1 ) > 0 ? sv.lateralStretches( 1 ) : 1.0;
+          c         = qp.materialFiniteStrain->getMaximumWaveSpeed( sv.materialStateVars.data(), F );
+        }
+        if ( !( c > 0.0 ) )
+          throw std::runtime_error( Marmot::Utilities::MakeString()
+                                    << __PRETTY_FUNCTION__ << ": element " << elLabel << ": non-positive wave speed" );
+        criticalTimeStep = std::min( criticalTimeStep, timeStepFactor * length / c );
       }
     }
 
