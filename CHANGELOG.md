@@ -90,11 +90,16 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
 ### Fixed
-- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the trial stress norm
-  (`|g| <= tol * rho_trial`, same tolerances) instead of an absolute one. The absolute tolerance (1e-12 MPa for
-  `VonMises`) lies below the round-off of large trial stresses, so large strain increments failed to converge
-  depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Tests: a single large
-  strain increment of a perfectly plastic material ends on the yield surface (implicit and explicit).
+- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
+  trial stress, `|g| <= 1e-12 * ||s_trial||`, instead of an absolute one (`VonMises` 1e-12 MPa, `ADVonMises`
+  1e-10 MPa). `g` is a difference of numbers of the size of `||s_trial||`, so its round-off is about
+  `eps * ||s_trial||`: the absolute tolerance could not be met for large trial stresses, and large strain increments
+  failed to converge depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Both
+  models now use the same tolerance; for `ADVonMises` the effective criterion is 1e-12 relative instead of 1e-10
+  absolute, i.e. looser for trial stresses above 100 MPa (Newton converges quadratically, so the result is at
+  round-off either way). Test `TestVonMisesLargeIncrement`: one strain increment of order one (trial stress about
+  900 f_y) ends on the yield surface for perfect, linear and nonlinear hardening (both models, implicit and
+  explicit).
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was

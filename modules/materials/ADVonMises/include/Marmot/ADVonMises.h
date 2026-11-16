@@ -37,10 +37,11 @@ namespace Marmot::Materials {
   public:
     /// @brief Numerical constants for the ADVonMises return-mapping algorithm.
     struct Constants {
-      /// Convergence tolerance of the inner Newton iteration, relative to the trial stress norm:
-      /// \f$|g| \leq \mathrm{tol}\, \rho_{\mathrm{trial}}\f$ (an absolute tolerance is below the round-off of large
-      /// trial stresses).
-      static constexpr double innerNewtonTol        = 1e-10;
+      /// Convergence tolerance of the inner Newton iteration on \f$g(\Delta\kappa)\f$, relative to the norm of the
+      /// deviatoric trial stress: \f$|g| \leq \mathrm{tol}\, \|\boldsymbol{s}^\mathrm{trial}\|\f$. \f$g\f$ is a
+      /// difference of numbers of the size of \f$\|\boldsymbol{s}^\mathrm{trial}\|\f$, so its round-off is about
+      /// \f$\varepsilon \|\boldsymbol{s}^\mathrm{trial}\|\f$; an absolute tolerance cannot be met for large increments.
+      static constexpr double innerNewtonTol        = 1e-12;
       static constexpr int    nMaxInnerNewtonCycles = 15; ///< Maximum number of inner Newton iterations.
     };
 
