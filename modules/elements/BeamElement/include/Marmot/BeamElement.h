@@ -75,7 +75,11 @@ namespace Marmot::Discretizations::Elements {
    * its own material instance (created by name through the hypoelastic material factory from the
    * Marmot::Discretizations::MaterialSection) and state. 2D fibers are in uniaxial stress
    * (Marmot::Materials::MaterialHypoElastic::computeUniaxialStress), 3D fibers additionally carry the torsional shear
-   * strains (Marmot::Materials::MaterialHypoElastic::computeBeamStress).
+   * strains (Marmot::Materials::MaterialHypoElastic::computeBeamStress). The torsional shear strains are scaled so that
+   * the section has the torsional stiffness \f$GJ\f$ of the given torsion constant: the torque is right for any
+   * section, but the fiber shear stresses are Saint-Venant stresses only for circles and tubes (for a square of side
+   * \f$a\f$: \f$0.46\,G a \chi\f$ at the middle of a side instead of \f$0.68\,G a \chi\f$, \f$0.65\,G a \chi\f$ at the
+   * corners instead of 0).
    *
    * Element properties: the section is given by its integration points (any shape; the element knows no shapes):
    * - 2D: \f$[ n, y_1, A_1, \dots, y_n, A_n ]\f$, \f$y\f$ in the plane, normal to the axis (\f$\boldsymbol{e}_2 =
@@ -121,6 +125,8 @@ namespace Marmot::Discretizations::Elements {
     using VectorGen  = typename Section::VectorGen;
     using MatrixGen  = typename Section::MatrixGen;
     using InterpSize = Eigen::Matrix< double, nDim, sizeLoadVector >;
+    /// local rotations: theta_z (2D); theta_x = twist, theta_y, theta_z (3D)
+    using RotationInterpSize = Eigen::Matrix< double, nRotations, sizeLoadVector >;
 
     /// A quadrature point along the axis, with its own fiber section
     struct QuadraturePoint {
@@ -146,7 +152,7 @@ namespace Marmot::Discretizations::Elements {
     /// Rows: the local axes e1, e2(, e3) in global coordinates
     MatrixDim R = MatrixDim::Identity();
     /// Global -> local dof transformation
-    KSized T = KSized::Identity();
+    KSized globalToLocalDofs = KSized::Identity();
     /// The quadrature points along the axis
     std::vector< QuadraturePoint > qps;
 
@@ -211,13 +217,27 @@ namespace Marmot::Discretizations::Elements {
       hermiteCoefficients = M.inverse();
     }
 
-    /// The Hermite polynomials (row) or their second derivative w.r.t. s at s, ordered as the columns of
-    /// hermiteCoefficients
+    /**
+     * @brief The Hermite polynomials or their derivative w.r.t. s at s, ordered as the columns of hermiteCoefficients.
+     *
+     * @details \f$\mathbf{H}(s) = \mathbf{m}(s)^\mathsf{T} \mathbf{M}^{-1}\f$ with the monomials
+     * \f$\mathbf{m}(s) = [1, s, s^2, \dots]\f$ and the matrix \f$\mathbf{M}\f$ of their values and slopes at the
+     * nodes. For 2 nodes these are the cubic functions (value at node 1, slope at node 1, value at node 2, slope at
+     * node 2) \f$1 - 3s^2 + 2s^3\f$, \f$s - 2s^2 + s^3\f$, \f$3s^2 - 2s^3\f$, \f$-s^2 + s^3\f$ (the slope functions
+     * are w.r.t. s; the element multiplies them by L for the slope w.r.t. x).
+     * @param[in] s          The parameter \f$s \in [0, 1]\f$ along the axis.
+     * @param[in] derivative The order d of the derivative: \f$d^d s^k / ds^d = k! / (k - d)!\, s^{k-d}\f$.
+     * @return The row of the nHermite functions (or their derivatives).
+     */
     Eigen::Matrix< double, 1, nHermite > hermite( double s, int derivative ) const
     {
       Eigen::Matrix< double, 1, nHermite > monomials = Eigen::Matrix< double, 1, nHermite >::Zero();
-      for ( int k = derivative; k < nHermite; k++ )
-        monomials( k ) = ( derivative == 0 ? 1.0 : k * ( k - 1 ) ) * std::pow( s, k - derivative );
+      for ( int k = derivative; k < nHermite; k++ ) {
+        double fallingFactorial = 1.0; // k! / (k - d)!
+        for ( int j = 0; j < derivative; j++ )
+          fallingFactorial *= k - j;
+        monomials( k ) = fallingFactorial * std::pow( s, k - derivative );
+      }
       return monomials * hermiteCoefficients;
     }
 
@@ -233,6 +253,8 @@ namespace Marmot::Discretizations::Elements {
                  2 * Marmot::Discretizations::Elements::Spatial1D::Bar3::dNdXi( xi ) };
     }
 
+    /// The number of state variables of one quadrature point: the own ones (section forces and strains, energy,
+    /// dissipation) and those of the section (all fibers)
     int nQpStateVars() const { return nQpStateVarsOwn + qps[0].section.getNumberOfRequiredStateVars(); }
 
     /// The number of state variables; it is known once both the element properties (the fibers) and the material
@@ -362,7 +384,36 @@ namespace Marmot::Discretizations::Elements {
           N_( 2, i + 2 ) = Hv, N_( 2, i + 4 ) = -Ht; // w with theta_y = -w'
         }
       }
-      return N_ * T;
+      return N_ * globalToLocalDofs;
+    }
+
+    /**
+     * @brief The local rotations at the parent coordinate xi in terms of the global dofs.
+     * @details 2D: \f$\theta_z = v'\f$; 3D: \f$[\varphi, \theta_y, \theta_z] = [\varphi, -w', v']\f$ (twist linear
+     * or quadratic, slopes from the Hermite functions).
+     * @param[in] xi The parent coordinate in [-1, 1].
+     * @return The interpolation of the local rotations.
+     */
+    RotationInterpSize rotationInterpolation( double xi ) const
+    {
+      const double s                                   = 0.5 * ( xi + 1 );
+      const auto [N, dNds]                             = lagrange( s );
+      const Eigen::Matrix< double, 1, nHermite > dH_ds = hermite( s, 1 );
+
+      RotationInterpSize Nr = RotationInterpSize::Zero();
+      for ( int a = 0; a < nNodes; a++ ) {
+        const int    i  = a * nDofPerNode;
+        const double dv = dH_ds( 2 * a ) / length, dt = dH_ds( 2 * a + 1 ); // d/dx of the value and slope parts
+        if constexpr ( nDim == 2 ) {
+          Nr( 0, i + 1 ) = dv, Nr( 0, i + 2 ) = dt;                         // theta_z = v'
+        }
+        else {
+          Nr( 0, i + 3 ) = N( a );                   // twist
+          Nr( 1, i + 2 ) = -dv, Nr( 1, i + 4 ) = dt; // theta_y = -w'
+          Nr( 2, i + 1 ) = dv, Nr( 2, i + 5 ) = dt;  // theta_z = v'
+        }
+      }
+      return Nr * globalToLocalDofs;
     }
 
     /// The generalized strains at the parent coordinate xi in terms of the global dofs
@@ -388,7 +439,7 @@ namespace Marmot::Discretizations::Elements {
           B( 3, i + 3 ) = dN;                      // chi = phi'
         }
       }
-      return B * T;
+      return B * globalToLocalDofs;
     }
 
     void initializeYourself() override
@@ -400,6 +451,8 @@ namespace Marmot::Discretizations::Elements {
                                      << __PRETTY_FUNCTION__ << ": element " << elLabel << " has zero length" );
       const VectorDim e1 = axis / length;
       if constexpr ( nNodes == 3 ) {
+        // the Hermite and Lagrange functions assume the mid node at s = 1/2 of a straight beam; 1e-6 L accepts the
+        // round-off of meshed coordinates and rejects real offsets
         if ( ( coordinates.col( 2 ) - 0.5 * ( coordinates.col( 0 ) + coordinates.col( 1 ) ) ).norm() > 1e-6 * length )
           throw std::invalid_argument( Marmot::Utilities::MakeString()
                                        << __PRETTY_FUNCTION__ << ": element " << elLabel
@@ -412,6 +465,7 @@ namespace Marmot::Discretizations::Elements {
       else {
         const Eigen::Vector3d v  = elementProperties.template segment< 3 >( 0 );
         const Eigen::Vector3d vn = v - v.dot( e1 ) * e1;
+        // a vector (nearly) parallel to the axis defines no e2: its normal part is then round-off
         if ( v.norm() == 0 || vn.norm() < 1e-8 * v.norm() )
           throw std::invalid_argument( Marmot::Utilities::MakeString()
                                        << __PRETTY_FUNCTION__ << ": element " << elLabel
@@ -422,13 +476,13 @@ namespace Marmot::Discretizations::Elements {
         R.row( 2 )               = e1.cross( e2 ).transpose();
       }
 
-      T.setZero();
+      globalToLocalDofs.setZero();
       for ( int a = 0; a < nNodes; a++ ) {
-        T.template block< nDim, nDim >( a * nDofPerNode, a * nDofPerNode ) = R;
+        globalToLocalDofs.template block< nDim, nDim >( a * nDofPerNode, a * nDofPerNode ) = R;
         if constexpr ( nDim == 2 )
-          T( a * nDofPerNode + 2, a * nDofPerNode + 2 ) = 1;
+          globalToLocalDofs( a * nDofPerNode + 2, a * nDofPerNode + 2 ) = 1;
         else
-          T.template block< 3, 3 >( a * nDofPerNode + 3, a * nDofPerNode + 3 ) = R;
+          globalToLocalDofs.template block< 3, 3 >( a * nDofPerNode + 3, a * nDofPerNode + 3 ) = R;
       }
 
       for ( auto& qp : qps ) {
@@ -461,18 +515,25 @@ namespace Marmot::Discretizations::Elements {
       Eigen::Map< KSized >         Ke( Ke_ );
 
       for ( auto& qp : qps ) {
-        VectorGen s;
-        MatrixGen D;
+        VectorGen sectionForces;
+        MatrixGen dSectionForces_dSectionStrains;
         double    energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn, s, D, energy, dissipation, qp.B * dQ, time, dT );
+        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+                                   sectionForces,
+                                   dSectionForces_dSectionStrains,
+                                   energy,
+                                   dissipation,
+                                   qp.B * dQ,
+                                   time,
+                                   dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = s;
+        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
         Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = qp.B * QTotal;
         qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
         qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
 
-        Pe += qp.B.transpose() * s * qp.dV;
-        Ke += qp.B.transpose() * D * qp.B * qp.dV;
+        Pe += qp.B.transpose() * sectionForces * qp.dV;
+        Ke += qp.B.transpose() * dSectionForces_dSectionStrains * qp.B * qp.dV;
       }
     }
 
@@ -500,13 +561,25 @@ namespace Marmot::Discretizations::Elements {
     {
       Eigen::Map< RhsSized >        P( P_ );
       Eigen::Map< const VectorDim > b( load );
-      const VectorDim               q = R * b * area(); // local line load
+      // the body force acts at the section points: a line load q = b A on the axis and, for a section whose centroid
+      // (y_c, z_c) is off the axis, the line moment m = r_c x q of the eccentric resultant
+      const auto                             c = qps[0].section.integrals();
+      const VectorDim                        q = R * b * c[0]; // local line load
+      Eigen::Matrix< double, nRotations, 1 > m;
+      if constexpr ( nDim == 2 )
+        m( 0 ) = -c[1] / c[0] * q( 0 ); // (y_c e2) x q, z component
+      else {
+        const Eigen::Vector3d rc( 0., c[1] / c[0], c[2] / c[0] );
+        m = rc.cross( Eigen::Vector3d( q ) );
+      }
       for ( const auto& qp : qps )
-        P += displacementInterpolation( qp.xi ).transpose() * q * qp.dV;
+        P += ( displacementInterpolation( qp.xi ).transpose() * q + rotationInterpolation( qp.xi ).transpose() * m ) *
+             qp.dV;
     }
 
     void computeInternalEnergy( double& internalEnergy ) override
     {
+      internalEnergy = 0.0;
       for ( const auto& qp : qps )
         internalEnergy += qp.stateVars[idxElasticEnergy];
     }

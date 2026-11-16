@@ -1,3 +1,4 @@
+#include "BeamTestUtilities.h"
 #include "Marmot/BeamElement.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotExceptions.h"
@@ -13,103 +14,30 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
+using namespace Marmot::Testing::BeamTests;
 using namespace Marmot::Math;
 using Marmot::Discretizations::ElementProperties;
 
 namespace {
 
-  /// A single beam element with its own state, for tests
-  struct Beam {
-    std::unique_ptr< Marmot::Discretizations::Elements::Element > element;
-    std::vector< double >                                         coordinates;
-    std::vector< double >                                         properties;
-    std::vector< double >                                         materialProperties;
-    std::vector< double >                                         stateVars;
-    int                                                           nDof;
-
-    Beam( const std::string&    type,
-          std::vector< double > coordinates_,
-          std::vector< double > properties_,
-          const std::string&    material,
-          std::vector< double > materialProperties_ )
-      : element( Marmot::Registry::ElementFactory::createElement( type, 1 ) ),
-        coordinates( std::move( coordinates_ ) ),
-        properties( std::move( properties_ ) ),
-        materialProperties( std::move( materialProperties_ ) )
-    {
-      nDof = element->getNDofPerElement();
-      element->assignNodeCoordinates( coordinates.data() );
-      element->assignProperty( ElementProperties( properties.data(), static_cast< int >( properties.size() ) ) );
-      element->initializeYourself();
-      element->assignProperty(
-        Marmot::Discretizations::MaterialSection( material,
-                                                  materialProperties.data(),
-                                                  static_cast< int >( materialProperties.size() ) ) );
-      stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-      element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
-      element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization,
-                                     nullptr );
-    }
-
-    /// residual and tangent for the total dofs U from the committed state; commits if requested
-    std::pair< Eigen::VectorXd, Eigen::MatrixXd > kernels( const Eigen::VectorXd& U,
-                                                           const Eigen::VectorXd& UOld,
-                                                           bool                   commit )
-    {
-      const auto      backup = stateVars;
-      Eigen::VectorXd P      = Eigen::VectorXd::Zero( nDof );
-      Eigen::MatrixXd K      = Eigen::MatrixXd::Zero( nDof, nDof );
-      Eigen::VectorXd dU     = U - UOld;
-      element->computeKernels( U.data(), dU.data(), P.data(), K.data(), 0.0, 1.0 );
-      if ( !commit )
-        stateVars = backup;
-      return { P, K };
-    }
-
-    /// central difference tangent from the committed state
-    Eigen::MatrixXd numericalTangent( const Eigen::VectorXd& U, const Eigen::VectorXd& UOld, double h )
-    {
-      Eigen::MatrixXd K( nDof, nDof );
-      for ( int j = 0; j < nDof; j++ ) {
-        Eigen::VectorXd Up = U, Um = U;
-        Up( j ) += h;
-        Um( j ) -= h;
-        K.col( j ) = ( kernels( Up, UOld, false ).first - kernels( Um, UOld, false ).first ) / ( 2 * h );
-      }
-      return K;
-    }
-
-    /// the linear elastic solution of the first node clamped, the second node (the other end) loaded by f, plus the
-    /// nodal loads fAll (all nodes, e.g., of a body force); returns the dofs of the second node
-    Eigen::VectorXd cantilever( const Eigen::VectorXd& f, const Eigen::VectorXd& fAll = Eigen::VectorXd() )
-    {
-      const int       n = nDof / element->getNNodes(); // dofs per node
-      const auto      K = kernels( Eigen::VectorXd::Zero( nDof ), Eigen::VectorXd::Zero( nDof ), false ).second;
-      Eigen::VectorXd F = fAll.size() ? Eigen::VectorXd( fAll.tail( nDof - n ) ) : Eigen::VectorXd::Zero( nDof - n );
-      F.head( n ) += f;
-      const Eigen::VectorXd u = K.bottomRightCorner( nDof - n, nDof - n ).ldlt().solve( F );
-      return u.head( n );
-    }
-
-    Eigen::VectorXd state( const std::string& name, int qp = 0 )
-    {
-      const auto view = element->getStateView( name, qp );
-      return Eigen::Map< const Eigen::VectorXd >( view.stateLocation, view.stateSize );
-    }
-  };
-
   const double                E = 210000., nu = 0.3, G = E / ( 2 * ( 1 + nu ) );
   const std::vector< double > linearElastic = { E, nu, 7.85e-9 };
-
-  void check( double value, double expected, double relTol, const std::string& what )
-  {
-    throwExceptionOnFailure( std::abs( value - expected ) <= relTol * std::abs( expected ),
-                             Marmot::Utilities::MakeString() << what << ": " << value << " != " << expected );
-  }
 
   /// drive the beam from U = 0 to U in nSteps equal, accepted increments, as an analysis would: the material sees
   /// moderate trial stresses (the return mapping of a nearly perfectly plastic material is then well conditioned on
   /// every platform)
+  /// the linear elastic solution of the first node clamped, the second node (the other end) loaded by f, plus the
+  /// nodal loads fAll (all nodes, e.g., of a body force); returns the dofs of the second node
+  Eigen::VectorXd cantilever( Beam& beam, const Eigen::VectorXd& f, const Eigen::VectorXd& fAll = Eigen::VectorXd() )
+  {
+    const int       nDof = beam.nDof, n = nDof / beam.element->getNNodes(); // dofs per node
+    const auto      K = beam.kernels( Eigen::VectorXd::Zero( nDof ), Eigen::VectorXd::Zero( nDof ), false ).second;
+    Eigen::VectorXd F = fAll.size() ? Eigen::VectorXd( fAll.tail( nDof - n ) ) : Eigen::VectorXd::Zero( nDof - n );
+    F.head( n ) += f;
+    const Eigen::VectorXd u = K.bottomRightCorner( nDof - n, nDof - n ).ldlt().solve( F );
+    return u.head( n );
+  }
+
   void loadInSteps( Beam& beam, const Eigen::VectorXd& U, int nSteps )
   {
     Eigen::VectorXd UOld = Eigen::VectorXd::Zero( U.size() );
@@ -118,25 +46,6 @@ namespace {
       beam.kernels( Ui, UOld, true );
       UOld = Ui;
     }
-  }
-
-  void checkTangent( Beam&                  beam,
-                     const Eigen::VectorXd& U,
-                     const Eigen::VectorXd& UOld,
-                     double                 h,
-                     double                 relTol,
-                     const std::string&     what )
-  {
-    const auto [P, K]  = beam.kernels( U, UOld, false );
-    const auto   numK  = beam.numericalTangent( U, UOld, h );
-    const double scale = numK.cwiseAbs().maxCoeff();
-    // max-norm relative to the largest entry (checkIfEqual is already relative per entry: a tolerance scaled by the
-    // largest entry would accept almost any tangent)
-    throwExceptionOnFailure( ( K - numK ).cwiseAbs().maxCoeff() <= relTol * scale,
-                             Marmot::Utilities::MakeString()
-                               << what << ": tangent does not match the numerical one\nK=\n"
-                               << K << "\nnumK=\n"
-                               << numK );
   }
 
   /// section points (y, z, A) of a rectangle y in [y0, y1], z in [z0, z1]: ny x nz cells with 2 x 2 Gauss points each
@@ -175,7 +84,7 @@ namespace {
     return points;
   }
 
-  /// the element properties of a B23 for section points (z dropped)
+  /// the element properties of a 2D beam for section points (z dropped)
   std::vector< double > properties2D( const std::vector< std::array< double, 3 > >& points )
   {
     std::vector< double > p = { double( points.size() ) };
@@ -184,7 +93,7 @@ namespace {
     return p;
   }
 
-  /// the element properties of a B33 for section points, orientation and torsion constant
+  /// the element properties of a 3D beam for section points, orientation and torsion constant
   std::vector< double > properties3D( const std::vector< std::array< double, 3 > >& points,
                                       const Eigen::Vector3d&                        v,
                                       double                                        J )
@@ -272,9 +181,9 @@ void testCantilever2D()
       Eigen::VectorXd f( 3 );
       f.head< 2 >()     = P * n;
       f( 2 )            = 0;
-      Eigen::VectorXd u = beam.cantilever( f );
-      check( u.head( 2 ).dot( n ), P * L * L * L / ( 3 * E * I ), 1e-10, what + "tip deflection (force)" );
-      check( u( 2 ), P * L * L / ( 2 * E * I ), 1e-10, what + "tip rotation (force)" );
+      Eigen::VectorXd u = cantilever( beam, f );
+      checkRelative( u.head( 2 ).dot( n ), P * L * L * L / ( 3 * E * I ), 1e-10, what + "tip deflection (force)" );
+      checkRelative( u( 2 ), P * L * L / ( 2 * E * I ), 1e-10, what + "tip rotation (force)" );
       throwExceptionOnFailure( std::abs( u.head( 2 ).dot( t ) ) < 1e-12, what + "no axial displacement (force)" );
 
       // the full solution (the mid node of the 3-node beam from the exact cubic deflection)
@@ -302,18 +211,18 @@ void testCantilever2D()
         vm.kernels( U, Eigen::VectorXd::Zero( nDof ), true );
         double energy = 0;
         vm.element->computeInternalEnergy( energy );
-        check( energy, 0.5 * P * u.head( 2 ).dot( n ), 1e-10, what + "elastic energy" );
+        checkRelative( energy, 0.5 * P * u.head( 2 ).dot( n ), 1e-10, what + "elastic energy" );
       }
 
       f << 0, 0, M;
-      u = beam.cantilever( f );
-      check( u.head( 2 ).dot( n ), M * L * L / ( 2 * E * I ), 1e-10, what + "tip deflection (moment)" );
-      check( u( 2 ), M * L / ( E * I ), 1e-10, what + "tip rotation (moment)" );
+      u = cantilever( beam, f );
+      checkRelative( u.head( 2 ).dot( n ), M * L * L / ( 2 * E * I ), 1e-10, what + "tip deflection (moment)" );
+      checkRelative( u( 2 ), M * L / ( E * I ), 1e-10, what + "tip rotation (moment)" );
 
       f.head< 2 >() = N * t;
       f( 2 )        = 0;
-      u             = beam.cantilever( f );
-      check( u.head( 2 ).dot( t ), N * L / ( E * A ), 1e-10, what + "axial elongation" );
+      u             = cantilever( beam, f );
+      checkRelative( u.head( 2 ).dot( t ), N * L / ( E * A ), 1e-10, what + "axial elongation" );
       throwExceptionOnFailure( std::abs( u( 2 ) ) < 1e-14, what + "no rotation (axial)" );
 
       // a uniform line load q (body force b A): the 3-node beam (quintic) is exact, q L^4 / (8 E I)
@@ -322,9 +231,12 @@ void testCantilever2D()
         Eigen::VectorXd       fb = Eigen::VectorXd::Zero( nDof );
         const Eigen::Vector2d bf = q / A * n;
         beam.element->computeBodyForce( fb.data(), nullptr, bf.data(), nullptr, 0, 1 );
-        u = beam.cantilever( Eigen::VectorXd::Zero( 3 ), fb );
-        check( u.head( 2 ).dot( n ), q * L * L * L * L / ( 8 * E * I ), 1e-10, what + "tip deflection (line load)" );
-        check( u( 2 ), q * L * L * L / ( 6 * E * I ), 1e-10, what + "tip rotation (line load)" );
+        u = cantilever( beam, Eigen::VectorXd::Zero( 3 ), fb );
+        checkRelative( u.head( 2 ).dot( n ),
+                       q * L * L * L * L / ( 8 * E * I ),
+                       1e-10,
+                       what + "tip deflection (line load)" );
+        checkRelative( u( 2 ), q * L * L * L / ( 6 * E * I ), 1e-10, what + "tip rotation (line load)" );
       }
     }
 }
@@ -364,22 +276,22 @@ void testCantilever3D()
       Eigen::VectorXd f( 6 ), u;
       f.head< 3 >() = P * e2;
       f.tail< 3 >().setZero();
-      u = beam.cantilever( f );
-      check( u.head( 3 ).dot( e2 ), P * L * L * L / ( 3 * E * Iz ), 1e-10, what + "deflection along e2" );
-      check( u.tail( 3 ).dot( e3 ), P * L * L / ( 2 * E * Iz ), 1e-10, what + "rotation about e3" );
+      u = cantilever( beam, f );
+      checkRelative( u.head( 3 ).dot( e2 ), P * L * L * L / ( 3 * E * Iz ), 1e-10, what + "deflection along e2" );
+      checkRelative( u.tail( 3 ).dot( e3 ), P * L * L / ( 2 * E * Iz ), 1e-10, what + "rotation about e3" );
       throwExceptionOnFailure( std::abs( u.head( 3 ).dot( e3 ) ) + std::abs( u.tail( 3 ).dot( e2 ) ) < 1e-12,
                                what + "no coupling e2 -> e3" );
 
       f.head< 3 >() = P * e3;
       f.tail< 3 >().setZero();
-      u = beam.cantilever( f );
-      check( u.head( 3 ).dot( e3 ), P * L * L * L / ( 3 * E * Iy ), 1e-10, what + "deflection along e3" );
-      check( u.tail( 3 ).dot( e2 ), -P * L * L / ( 2 * E * Iy ), 1e-10, what + "rotation about e2" );
+      u = cantilever( beam, f );
+      checkRelative( u.head( 3 ).dot( e3 ), P * L * L * L / ( 3 * E * Iy ), 1e-10, what + "deflection along e3" );
+      checkRelative( u.tail( 3 ).dot( e2 ), -P * L * L / ( 2 * E * Iy ), 1e-10, what + "rotation about e2" );
 
       f.head< 3 >().setZero();
       f.tail< 3 >() = Tq * t;
-      u             = beam.cantilever( f );
-      check( u.tail( 3 ).dot( t ), Tq * L / ( G * J ), 1e-10, what + "twist" );
+      u             = cantilever( beam, f );
+      checkRelative( u.tail( 3 ).dot( t ), Tq * L / ( G * J ), 1e-10, what + "twist" );
       throwExceptionOnFailure( u.head( 3 ).norm() < 1e-12, what + "no displacement under torsion" );
 
       // torsion: the twist is linear along the beam
@@ -388,8 +300,8 @@ void testCantilever3D()
       if ( nNodes == 3 )
         U.segment( 12, 6 ) = 0.5 * u;
       beam.kernels( U, Eigen::VectorXd::Zero( 6 * nNodes ), true );
-      check( beam.state( "torque", 1 )( 0 ), Tq, 1e-10, what + "torque" );
-      check( beam.state( "twist rate", 1 )( 0 ), Tq / ( G * J ), 1e-10, what + "twist rate" );
+      checkRelative( beam.state( "torque", 1 )( 0 ), Tq, 1e-10, what + "torque" );
+      checkRelative( beam.state( "twist rate", 1 )( 0 ), Tq / ( G * J ), 1e-10, what + "twist rate" );
     }
 }
 
@@ -419,21 +331,21 @@ void testUnsymmetricLProfile3D()
                            ->qps[0]
                            .section;
   const auto ci = section->integrals();
-  check( ci[0], A, 1e-12, "L-profile: A of the points" );
-  check( ci[3], Iy, 1e-12, "L-profile: Iy of the points" );
-  check( ci[4], Iz, 1e-12, "L-profile: Iz of the points" );
-  check( ci[5], Iyz, 1e-12, "L-profile: Iyz of the points" );
+  checkRelative( ci[0], A, 1e-12, "L-profile: A of the points" );
+  checkRelative( ci[3], Iy, 1e-12, "L-profile: Iy of the points" );
+  checkRelative( ci[4], Iz, 1e-12, "L-profile: Iz of the points" );
+  checkRelative( ci[5], Iyz, 1e-12, "L-profile: Iyz of the points" );
 
   const double    Fy = 3., Fz = -1.;
   Eigen::VectorXd f( 6 );
   f << 0, Fy, Fz, 0, 0, 0;
-  const Eigen::VectorXd u = beam.cantilever( f );
+  const Eigen::VectorXd u = cantilever( beam, f );
   // [My, Mz] = E [[Iy, -Iyz], [-Iyz, Iz]] [kappa_y, kappa_z], My = -Fz (L - x), Mz = Fy (L - x)
   Eigen::Matrix2d Db;
   Db << Iy, -Iyz, -Iyz, Iz;
   const Eigen::Vector2d kappa = ( E * Db ).inverse() * Eigen::Vector2d( -Fz, Fy ); // per (L - x)
-  check( u( 1 ), kappa( 1 ) * L * L * L / 3, 1e-9, "L-profile: deflection along y" );
-  check( u( 2 ), -kappa( 0 ) * L * L * L / 3, 1e-9, "L-profile: deflection along z (coupled)" );
+  checkRelative( u( 1 ), kappa( 1 ) * L * L * L / 3, 1e-9, "L-profile: deflection along y" );
+  checkRelative( u( 2 ), -kappa( 0 ) * L * L * L / 3, 1e-9, "L-profile: deflection along z (coupled)" );
   throwExceptionOnFailure( std::abs( u( 0 ) ) < 1e-12, "L-profile: no axial displacement (centroid on the axis)" );
 }
 
@@ -448,7 +360,7 @@ void testRigidBodyMotions()
     U << 0.3 - w * 2., 0.1 + w * 1., w, 0.3 - w * 32., 0.1 + w * 41., w;
     const auto P = beam.kernels( U, Eigen::VectorXd::Zero( 6 ), false ).first;
     throwExceptionOnFailure( P.norm() < 1e-10,
-                             Marmot::Utilities::MakeString() << "B23 rigid body motion: |P| = " << P.norm() );
+                             Marmot::Utilities::MakeString() << "2D beam rigid body motion: |P| = " << P.norm() );
   }
   {
     Beam                  beam( "B3D2",
@@ -464,7 +376,7 @@ void testRigidBodyMotions()
     U.segment< 3 >( 9 ) = w;
     const auto P        = beam.kernels( U, Eigen::VectorXd::Zero( 12 ), false ).first;
     throwExceptionOnFailure( P.norm() < 1e-10,
-                             Marmot::Utilities::MakeString() << "B33 rigid body motion: |P| = " << P.norm() );
+                             Marmot::Utilities::MakeString() << "3D beam rigid body motion: |P| = " << P.norm() );
   }
   {
     Beam                  beam( "B3D3",
@@ -498,10 +410,10 @@ void testBodyForce()
   Eigen::VectorXd P    = Eigen::VectorXd::Zero( 6 );
   const double    b[2] = { 0., -2. };
   beam.element->computeBodyForce( P.data(), nullptr, b, nullptr, 0, 1 );
-  check( P( 1 ) + P( 4 ), -2. * A * L, 1e-12, "body force: total" );
+  checkRelative( P( 1 ) + P( 4 ), -2. * A * L, 1e-12, "body force: total" );
   const double q = -2. * A * 0.6; // transverse component (normal (-0.8, 0.6))
-  check( P( 2 ), q * L * L / 12, 1e-12, "body force: moment at node 1" );
-  check( P( 5 ), -q * L * L / 12, 1e-12, "body force: moment at node 2" );
+  checkRelative( P( 2 ), q * L * L / 12, 1e-12, "body force: moment at node 1" );
+  checkRelative( P( 5 ), -q * L * L / 12, 1e-12, "body force: moment at node 2" );
 }
 
 /// fiber section with von Mises plasticity: consistent tangents in plastic states (bending, axial force, torsion),
@@ -517,7 +429,7 @@ void testPlasticTangents()
     loadInSteps( beam, U, 20 );
     UOld = U;
     U << 0., 0., 0.025, 0.17, 0.06, 0.07;
-    checkTangent( beam, U, UOld, 1e-8, 1e-5, "B23 von Mises" );
+    checkTangent( beam, U, UOld, 1e-8, 1e-5, "B2D2 von Mises" );
   }
   const auto rectangle = rectanglePoints( -10, 10, -5, 5, 2, 2 );
   const auto lProfile  = concat( rectanglePoints( -20, 20, -3, 3, 4, 1 ), rectanglePoints( -20, -14, 3, 20, 1, 3 ) );
@@ -528,8 +440,8 @@ void testPlasticTangents()
     loadInSteps( beam, U, 20 );
     UOld = U;
     U << 0., 0., 0., 0., 0., 0., 0.17, 0.06, 0.12, 0.06, -0.025, 0.07;
-    checkTangent( beam, U, UOld, 1e-8, 1e-5, "B33 von Mises (bending, axial, torsion)" );
-    throwExceptionOnFailure( beam.state( "dissipation", 0 )( 0 ) > 0, "B33 von Mises: plastic dissipation" );
+    checkTangent( beam, U, UOld, 1e-8, 1e-5, "B3D2 von Mises (bending, axial, torsion)" );
+    throwExceptionOnFailure( beam.state( "dissipation", 0 )( 0 ) > 0, "B3D2 von Mises: plastic dissipation" );
   }
   {
     Beam            beam( "B3D3",
@@ -570,7 +482,7 @@ void testPlasticLimits()
     UOld = U;
   }
   for ( int qp = 0; qp < 3; qp++ ) {
-    check( beam.state( "bending moment", qp )( 0 ), Mp, 1e-6, "plastic moment" );
+    checkRelative( beam.state( "bending moment", qp )( 0 ), Mp, 1e-6, "plastic moment" );
     throwExceptionOnFailure( std::abs( beam.state( "normal force", qp )( 0 ) ) < 1e-6 * fy * A, "pure bending" );
   }
 
@@ -582,10 +494,10 @@ void testPlasticLimits()
     bar.kernels( U, UOld, true );
     UOld = U;
   }
-  check( bar.state( "normal force", 1 )( 0 ), fy * A, 1e-8, "axial yield force" );
+  checkRelative( bar.state( "normal force", 1 )( 0 ), fy * A, 1e-8, "axial yield force" );
 }
 
-/// limit load of a 2D cantilever (tip load) of an elastic-perfectly plastic (von Mises) beam, a chain of B23 elements
+/// limit load of a 2D cantilever (tip load) of an elastic-perfectly plastic (von Mises) beam, a chain of B2D2 elements
 /// under tip displacement control (axial displacement free), by Newton iterations on the assembled system
 double cantileverLimitLoad( int                                           nElements,
                             const std::vector< std::array< double, 3 > >& points,
@@ -748,6 +660,73 @@ void testInvalidInput()
   throwExceptionOnFailure( thrown, "orientation vector parallel to the axis must be rejected" );
 }
 
+/// the Hermite functions: the cubic ones of 2 nodes in closed form, and their first and second derivatives against
+/// central differences for 2 and 3 nodes
+void testHermiteFunctions()
+{
+  using Marmot::Discretizations::Elements::BeamElement;
+  const BeamElement< 2, 2 > cubic( 1 );
+  const BeamElement< 2, 3 > quintic( 1 );
+  const double              s = 0.3;
+  Eigen::Vector4d           closedForm;
+  closedForm << 1 - 3 * s * s + 2 * s * s * s, s - 2 * s * s + s * s * s, 3 * s * s - 2 * s * s * s, -s * s + s * s * s;
+  throwExceptionOnFailure( ( cubic.hermite( s, 0 ).transpose() - closedForm ).cwiseAbs().maxCoeff() < 1e-14,
+                           "cubic Hermite functions" );
+
+  const double h          = 1e-5;
+  auto         checkSlope = [&]( const auto& element, const std::string& what ) {
+    for ( int d : { 1, 2 } ) {
+      const Eigen::VectorXd central = ( element.hermite( s + h, d - 1 ) - element.hermite( s - h, d - 1 ) ) / ( 2 * h );
+      const Eigen::VectorXd exact = element.hermite( s, d );
+      throwExceptionOnFailure( ( exact - central ).cwiseAbs().maxCoeff() <= 1e-7 * exact.cwiseAbs().maxCoeff(),
+                               Marmot::Utilities::MakeString() << what << ": derivative " << d );
+    }
+  };
+  checkSlope( cubic, "cubic Hermite functions" );
+  checkSlope( quintic, "quintic Hermite functions" );
+}
+
+/// a body force on a section whose centroid is off the axis: the line load b A and the line moment r_c x b A. 2D: an
+/// axial body force on a section at y_c = 5 gives the forces b_x A L / 2 and the couple of the line moment
+/// m = -y_c b_x A, i.e. transverse forces -m and +m at the nodes; 3D: a body force along z on a section at y_c = 5
+/// gives the torque m_x L / 2 = y_c b_z A L / 2 at each node
+void testEccentricBodyForce()
+{
+  const double L = 100., A = 100., yc = 5.;
+  {
+    Beam            beam( "B2D2", { 0., 0., L, 0. }, { 2., 4., 50., 6., 50. }, "LINEARELASTIC", linearElastic );
+    const double    bx = 2., m = -yc * bx * A;
+    Eigen::VectorXd P    = Eigen::VectorXd::Zero( 6 ), expected( 6 );
+    const double    b[2] = { bx, 0. };
+    beam.element->computeBodyForce( P.data(), nullptr, b, nullptr, 0.0, 1.0 );
+    expected << bx * A * L / 2, -m, 0., bx * A * L / 2, m, 0.;
+    throwExceptionOnFailure( ( P - expected ).cwiseAbs().maxCoeff() <= 1e-12 * expected.cwiseAbs().maxCoeff(),
+                             Marmot::Utilities::MakeString() << "2D eccentric body force: " << P.transpose() );
+  }
+  {
+    const std::vector< std::array< double, 3 > > points = { { 4., -1., 25. },
+                                                            { 6., -1., 25. },
+                                                            { 4., 1., 25. },
+                                                            { 6., 1., 25. } };
+    Beam                                         beam( "B3D2",
+                                                       { 0., 0., 0., L, 0., 0. },
+               properties3D( points, { 0., 1., 0. }, 100. ),
+               "LINEARELASTIC",
+               linearElastic );
+    const double                                 bz = 3.;
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( 12 ), expected = Eigen::VectorXd::Zero( 12 );
+    const double    b[3] = { 0., 0., bz };
+    beam.element->computeBodyForce( P.data(), nullptr, b, nullptr, 0.0, 1.0 );
+    for ( int a = 0; a < 2; a++ ) {
+      expected( 6 * a + 2 ) = bz * A * L / 2;                            // u_z
+      expected( 6 * a + 3 ) = yc * bz * A * L / 2;                       // torque
+      expected( 6 * a + 4 ) = ( a == 0 ? -1 : 1 ) * bz * A * L * L / 12; // the moments of the uniform line load
+    }
+    throwExceptionOnFailure( ( P - expected ).cwiseAbs().maxCoeff() <= 1e-12 * expected.cwiseAbs().maxCoeff(),
+                             Marmot::Utilities::MakeString() << "3D eccentric body force: " << P.transpose() );
+  }
+}
+
 int main()
 {
   executeTestsAndCollectExceptions( {
@@ -757,6 +736,8 @@ int main()
     testUnsymmetricLProfile3D,
     testRigidBodyMotions,
     testBodyForce,
+    testEccentricBodyForce,
+    testHermiteFunctions,
     testPlasticTangents,
     testPlasticLimits,
     testPlasticHingeCantilever,

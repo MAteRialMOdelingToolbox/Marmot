@@ -27,7 +27,9 @@
 #include "Marmot/CorotationalBeamElement3D.h"
 #include "Marmot/MarmotElementFactory.h"
 
-namespace Marmot::Discretizations::Elements::Registration {
+namespace {
+
+  using namespace Marmot::Discretizations::Elements;
 
   template < int nDim, int nNodes >
   bool registerBeam( const std::string& name )
@@ -57,4 +59,4 @@ namespace Marmot::Discretizations::Elements::Registration {
       return new CorotationalBeamElement3D( elementID );
     } );
 
-} // namespace Marmot::Discretizations::Elements::Registration
+} // namespace

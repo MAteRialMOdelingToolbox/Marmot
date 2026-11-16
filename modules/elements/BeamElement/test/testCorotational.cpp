@@ -1,3 +1,4 @@
+#include "BeamTestUtilities.h"
 #include "Marmot/CorotationalBeamElement.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotExceptions.h"
@@ -14,6 +15,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
+using namespace Marmot::Testing::BeamTests;
 using namespace Marmot::Math;
 using Marmot::Discretizations::ElementProperties;
 
@@ -21,117 +23,8 @@ namespace {
 
   constexpr double pi = std::numbers::pi;
 
-  /// A single beam element with its own state, for tests
-  struct Beam {
-    std::unique_ptr< Marmot::Discretizations::Elements::Element > element;
-    std::vector< double >                                         coordinates;
-    std::vector< double >                                         properties;
-    std::vector< double >                                         materialProperties;
-    std::vector< double >                                         stateVars;
-    int                                                           nDof;
-
-    Beam( const std::string&    type,
-          std::vector< double > coordinates_,
-          std::vector< double > properties_,
-          const std::string&    material,
-          std::vector< double > materialProperties_ )
-      : element( Marmot::Registry::ElementFactory::createElement( type, 1 ) ),
-        coordinates( std::move( coordinates_ ) ),
-        properties( std::move( properties_ ) ),
-        materialProperties( std::move( materialProperties_ ) )
-    {
-      nDof = element->getNDofPerElement();
-      element->assignNodeCoordinates( coordinates.data() );
-      element->assignProperty( ElementProperties( properties.data(), static_cast< int >( properties.size() ) ) );
-      element->initializeYourself();
-      element->assignProperty(
-        Marmot::Discretizations::MaterialSection( material,
-                                                  materialProperties.data(),
-                                                  static_cast< int >( materialProperties.size() ) ) );
-      stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-      element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
-      element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization,
-                                     nullptr );
-    }
-
-    Beam( Beam&& )            = default;
-    Beam& operator=( Beam&& ) = delete;
-
-    /// residual and tangent for the total dofs U from the committed state at UOld; commits if requested
-    std::pair< Eigen::VectorXd, Eigen::MatrixXd > kernels( const Eigen::VectorXd& U,
-                                                           const Eigen::VectorXd& UOld,
-                                                           bool                   commit )
-    {
-      const auto      backup = stateVars;
-      Eigen::VectorXd P      = Eigen::VectorXd::Zero( nDof );
-      Eigen::MatrixXd K      = Eigen::MatrixXd::Zero( nDof, nDof );
-      Eigen::VectorXd dU     = U - UOld;
-      element->computeKernels( U.data(), dU.data(), P.data(), K.data(), 0.0, 1.0 );
-      if ( !commit )
-        stateVars = backup;
-      return { P, K };
-    }
-
-    /// central difference tangent from the committed state
-    Eigen::MatrixXd numericalTangent( const Eigen::VectorXd& U, const Eigen::VectorXd& UOld, double h )
-    {
-      Eigen::MatrixXd K( nDof, nDof );
-      for ( int j = 0; j < nDof; j++ ) {
-        Eigen::VectorXd Up = U, Um = U;
-        Up( j ) += h;
-        Um( j ) -= h;
-        K.col( j ) = ( kernels( Up, UOld, false ).first - kernels( Um, UOld, false ).first ) / ( 2 * h );
-      }
-      return K;
-    }
-
-    Eigen::VectorXd state( const std::string& name, int qp = 0 )
-    {
-      const auto view = element->getStateView( name, qp );
-      return Eigen::Map< const Eigen::VectorXd >( view.stateLocation, view.stateSize );
-    }
-  };
-
   const double                E = 210000., nu = 0.3;
   const std::vector< double > linearElastic = { E, nu, 7.85e-9 };
-
-  void check( double value, double expected, double tol, const std::string& what )
-  {
-    throwExceptionOnFailure( std::abs( value - expected ) <= tol,
-                             Marmot::Utilities::MakeString() << std::setprecision( 12 ) << what << ": " << value
-                                                             << " != " << expected << " (tol " << tol << ")" );
-  }
-
-  double checkTangent( Beam&                  beam,
-                       const Eigen::VectorXd& U,
-                       const Eigen::VectorXd& UOld,
-                       double                 h,
-                       double                 relTol,
-                       const std::string&     what )
-  {
-    const auto [P, K]  = beam.kernels( U, UOld, false );
-    const auto   numK  = beam.numericalTangent( U, UOld, h );
-    const double scale = numK.cwiseAbs().maxCoeff();
-    const double err   = ( K - numK ).cwiseAbs().maxCoeff() / scale;
-    std::cout << what << ": tangent max rel. error " << err << "\n";
-    throwExceptionOnFailure( err < relTol,
-                             Marmot::Utilities::MakeString()
-                               << what << ": tangent does not match the numerical one\nK=\n"
-                               << K << "\nnumK=\n"
-                               << numK );
-    return err;
-  }
-
-  /// section points (y, A) of a rectangle of height h, width b: n layers with 2 Gauss points each (exact A, I)
-  std::vector< double > rectangle2D( double h, double b, int n )
-  {
-    const double          g = 1 / std::sqrt( 3. ), dy = h / n;
-    std::vector< double > p = { double( 2 * n ) };
-    for ( int i = 0; i < n; i++ )
-      for ( double a : { -g, g } )
-        p.insert( p.end(), { -h / 2 + ( i + 0.5 + 0.5 * a ) * dy, 0.5 * b * dy } );
-    return p;
-  }
 
   /// the global dofs of a rigid body motion (translation t, rotation phi about the first node) of a beam X1 -> X2
   /// superposed on local dofs (relative to the reference) Ulocal, given in the reference configuration
@@ -150,110 +43,6 @@ namespace {
       U( 3 * a + 2 )          = Ulocal( 3 * a + 2 ) + phi;
     }
     return U;
-  }
-
-  /// A straight chain of beam elements from (0, 0) along x, clamped at the first node, solved by Newton iterations on
-  /// the assembled system under load control with dead tip loads
-  struct Chain {
-    std::vector< Beam > beams;
-    int                 nEl, nDof;
-    Eigen::VectorXd     U, UOld;
-    Eigen::Vector3d     applied = Eigen::Vector3d::Zero(); ///< the tip load of the last converged state
-
-    Chain( const std::string&           type,
-           int                          nElements,
-           double                       L,
-           const std::vector< double >& section,
-           const std::string&           material,
-           const std::vector< double >& matProps )
-      : nEl( nElements ), nDof( 3 * ( nElements + 1 ) )
-    {
-      for ( int e = 0; e < nEl; e++ )
-        beams.emplace_back( type,
-                            std::vector< double >{ e * L / nEl, 0., ( e + 1 ) * L / nEl, 0. },
-                            section,
-                            material,
-                            matProps );
-      U    = Eigen::VectorXd::Zero( nDof );
-      UOld = U;
-    }
-
-    std::pair< Eigen::VectorXd, Eigen::MatrixXd > assemble( bool commit )
-    {
-      Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
-      Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
-      for ( int e = 0; e < nEl; e++ ) {
-        const auto [Pe, Ke] = beams[e].kernels( U.segment( 3 * e, 6 ), UOld.segment( 3 * e, 6 ), commit );
-        P.segment( 3 * e, 6 ) += Pe;
-        K.block( 3 * e, 3 * e, 6, 6 ) += Ke;
-      }
-      return { P, K };
-    }
-
-    /// increase the tip load [Fx, Fy, M] (dead) from the current one to tipLoad in nSteps equal increments; returns
-    /// the number of Newton iterations
-    int solve( const Eigen::Vector3d& tipLoad, int nSteps, double tol = 1e-10 )
-    {
-      int                   total = 0;
-      Eigen::VectorXd       F     = Eigen::VectorXd::Zero( nDof );
-      const Eigen::Vector3d start = applied;
-      for ( int step = 1; step <= nSteps; step++ ) {
-        F.tail< 3 >()  = start + ( tipLoad - start ) * double( step ) / nSteps;
-        bool converged = false;
-        for ( int it = 0; it < 50; it++, total++ ) {
-          const auto [P, K]       = assemble( false );
-          const Eigen::VectorXd r = ( P - F ).tail( nDof - 3 );
-          if ( r.norm() < tol * std::max( 1.0, F.norm() ) ) {
-            converged = true;
-            break;
-          }
-          U.tail( nDof - 3 ) += K.bottomRightCorner( nDof - 3, nDof - 3 ).lu().solve( -r );
-        }
-        throwExceptionOnFailure( converged,
-                                 Marmot::Utilities::MakeString() << "chain: Newton did not converge in step " << step );
-        assemble( true );
-        UOld    = U;
-        applied = F.tail< 3 >();
-      }
-      return total;
-    }
-
-    Eigen::Vector3d tip() const { return U.tail< 3 >(); }
-  };
-
-  /// the elastica of a cantilever under a dead tip force P normal to the undeformed axis: tip deflection v/L, axial
-  /// shortening (L - x)/L and tip rotation for lambda = P L^2 / EI. theta'' = -lambda cos(theta) on s in [0, 1],
-  /// theta(0) = 0, theta'(1) = 0; first integral theta'(0)^2 = 2 lambda sin(theta_tip): bisection on theta_tip (RK4)
-  std::array< double, 3 > elastica( double lambda )
-  {
-    const int n     = 20000;
-    auto      shoot = [&]( double thetaTip, double& x, double& y, double& th ) {
-      double t = 0, k = std::sqrt( 2 * lambda * std::sin( thetaTip ) );
-      x = y          = 0;
-      const double h = 1.0 / n;
-      auto         f = [&]( double t_, double k_ ) {
-        return std::array< double, 4 >{ k_, -lambda * std::cos( t_ ), std::cos( t_ ), std::sin( t_ ) };
-      };
-      for ( int i = 0; i < n; i++ ) {
-        const auto a = f( t, k );
-        const auto b = f( t + 0.5 * h * a[0], k + 0.5 * h * a[1] );
-        const auto c = f( t + 0.5 * h * b[0], k + 0.5 * h * b[1] );
-        const auto d = f( t + h * c[0], k + h * c[1] );
-        t += h / 6 * ( a[0] + 2 * b[0] + 2 * c[0] + d[0] );
-        k += h / 6 * ( a[1] + 2 * b[1] + 2 * c[1] + d[1] );
-        x += h / 6 * ( a[2] + 2 * b[2] + 2 * c[2] + d[2] );
-        y += h / 6 * ( a[3] + 2 * b[3] + 2 * c[3] + d[3] );
-      }
-      th = t;
-      return k; // theta'(1): < 0 if theta_tip is too small, > 0 if too large
-    };
-    double x, y, th, lo = 1e-9, hi = pi / 2 - 1e-12;
-    for ( int it = 0; it < 60; it++ ) {
-      const double mid                         = 0.5 * ( lo + hi );
-      ( shoot( mid, x, y, th ) < 0 ? lo : hi ) = mid;
-    }
-    shoot( 0.5 * ( lo + hi ), x, y, th );
-    return { y, 1 - x, th };
   }
 
 } // namespace
@@ -403,12 +192,12 @@ void testRollUp()
   const auto   section = rectangle2D( h, b, 2 );
   const double EI      = E * b * h * h * h / 12;
   for ( int nEl : { 10, 20, 40 } ) {
-    Chain        chain( "B2D2CR", nEl, L, section, "LINEARELASTIC", linearElastic );
+    Chain        chain( "B2D2CR", straightNodes( nEl, L, 2 ), section, "LINEARELASTIC", linearElastic );
     const double Mfull   = 2 * pi * EI / L;
     double       errPrev = 0;
     int          its     = 0;
     for ( int part = 1; part <= 4; part++ ) {
-      its += chain.solve( { 0, 0, part * 0.25 * Mfull }, 5 );
+      its += chain.solve( Eigen::Vector3d( 0, 0, part * 0.25 * Mfull ), 5 );
       const double M = part * 0.25 * Mfull, R = EI / M;
       const auto   tip = chain.tip();
       const double x = L + tip( 0 ), y = tip( 1 );
@@ -432,12 +221,12 @@ void testElastica()
   const double L = 100, h = 1, b = 1;
   const auto   section = rectangle2D( h, b, 1 );
   const double EI      = E * b * h * h * h / 12;
-  Chain        chain( "B2D2CR", 40, L, section, "LINEARELASTIC", linearElastic );
+  Chain        chain( "B2D2CR", straightNodes( 40, L, 2 ), section, "LINEARELASTIC", linearElastic );
   int          its = 0;
   for ( double lambda : { 1., 2., 5., 10. } ) {
     const double P   = lambda * EI / ( L * L );
     const auto   ref = elastica( lambda );
-    its += chain.solve( { 0, P, 0 }, 10, 1e-8 );
+    its += chain.solve( Eigen::Vector3d( 0, P, 0 ), 10, 1e-8 );
     const auto tip = chain.tip();
     std::cout << std::setprecision( 6 ) << "elastica lambda " << lambda << ": v/L " << tip( 1 ) / L << " (" << ref[0]
               << "), (L-x)/L " << -tip( 0 ) / L << " (" << ref[1] << "), theta " << tip( 2 ) << " (" << ref[2] << ")\n";
@@ -497,8 +286,8 @@ void testPlasticBending()
   const double          Py   = fy * b * hgt * hgt / 6 / ( 2 * L ); // first yield at the root of a 2L cantilever
   std::vector< double > v, diss;
   for ( const char* type : { "B2D2", "B2D2CR" } ) {
-    Chain chain( type, 8, 2 * L, sec2, "VONMISES", { E, nu, fy, 2000., 0., 1., 7.85e-9 } );
-    chain.solve( { 0, 1.3 * Py, 0 }, 13, 1e-9 );
+    Chain chain( type, straightNodes( 8, 2 * L, 2 ), sec2, "VONMISES", { E, nu, fy, 2000., 0., 1., 7.85e-9 } );
+    chain.solve( Eigen::Vector3d( 0, 1.3 * Py, 0 ), 13, 1e-9 );
     v.push_back( chain.tip()( 1 ) );
     diss.push_back( chain.beams[0].state( "dissipation", 0 )( 0 ) );
     std::cout << std::setprecision( 8 ) << type << ": plastic cantilever 1.3 P_y: tip v = " << v.back() << ", rotation "

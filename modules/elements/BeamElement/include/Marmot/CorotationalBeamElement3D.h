@@ -49,8 +49,8 @@ namespace Marmot::Discretizations::Elements {
    * element frame \f$\boldsymbol{R}_0 = [ \boldsymbol{e}_1, \boldsymbol{e}_2, \boldsymbol{e}_3 ]\f$ of B3D2 (axis and
    * orientation vector). Residual and tangent are the exact derivatives with respect to these dofs (additive rotation
    * vector formulation, valid for \f$| \boldsymbol{\Psi}_i | < 2 \pi\f$). External nodal moments are therefore
-   * conjugate to \f$\delta \boldsymbol{\Psi}\f$, not to the spins; this is irrelevant for embedded fibers, which have
-   * no moment loads. No element state beyond the section states is needed.
+   * conjugate to \f$\delta \boldsymbol{\Psi}\f$, not to the spins: a nodal moment load is a physical moment only for
+   * small rotations. No element state beyond the section states is needed.
    *
    * @par Co-rotated frame and local deformations (Battini and Pacoste, Comput. Methods Appl. Mech. Engrg. 191 (2002)
    * 1755-1789; Crisfield, Non-linear Finite Element Analysis of Solids and Structures, Vol. 2, ch. 17)
@@ -68,15 +68,36 @@ namespace Marmot::Discretizations::Elements {
    * end values and end slopes \f$\bar\theta_{i,y}\f$, \f$\bar\theta_{i,z}\f$, \f$\chi = ( \bar\theta_{2,x} -
    * \bar\theta_{1,x} ) / L_0\f$. The section gives the local forces \f$\boldsymbol{f}_l\f$ (conjugate to
    * \f$\boldsymbol{q}_l = [ \bar u, \bar{\boldsymbol{\theta}}_1, \bar{\boldsymbol{\theta}}_2 ]\f$) and the local
-   * tangent \f$\boldsymbol{K}_l\f$. With \f$\boldsymbol{G} = \partial \boldsymbol{q}_l / \partial \boldsymbol{Q}\f$:
-   * \f[ \boldsymbol{P} = \boldsymbol{G}^T \boldsymbol{f}_l, \quad \boldsymbol{K} = \boldsymbol{G}^T \boldsymbol{K}_l
-   * \boldsymbol{G} + \frac{\partial^2 ( \boldsymbol{f}_l \cdot \boldsymbol{q}_l )}{\partial \boldsymbol{Q}^2}
-   * \Big|_{\boldsymbol{f}_l}, \f]
-   * the consistent tangent (material + geometric). \f$\boldsymbol{G}\f$ and the geometric stiffness are evaluated
-   * exactly by forward automatic differentiation (dual numbers) of the closed-form map \f$\boldsymbol{Q} \mapsto
-   * \boldsymbol{q}_l\f$; the exponential and the logarithm use Taylor series near zero rotation, so the derivatives are
-   * exact also in the reference configuration. As in B2D2CR the section is incremental: it is fed with the increment
-   * of the local generalized strains between the last converged and the current state.
+   * tangent \f$\boldsymbol{K}_l\f$. With \f$\partial \boldsymbol{q}_l / \partial \boldsymbol{Q}\f$ (code:
+   * dLocalDeformations_dQ):
+   * \f[ \boldsymbol{P} = \left( \frac{\partial \boldsymbol{q}_l}{\partial \boldsymbol{Q}} \right)^T \boldsymbol{f}_l,
+   * \quad \boldsymbol{K} = \left( \frac{\partial \boldsymbol{q}_l}{\partial \boldsymbol{Q}} \right)^T \boldsymbol{K}_l
+   * \frac{\partial \boldsymbol{q}_l}{\partial \boldsymbol{Q}} + \frac{\partial^2 ( \boldsymbol{f}_l \cdot
+   * \boldsymbol{q}_l )}{\partial \boldsymbol{Q}^2} \Big|_{\boldsymbol{f}_l}, \f]
+   * the consistent tangent: material stiffness plus geometric stiffness (code: geometricStiffness, the Hessian of the
+   * work of the fixed local forces on the local deformations). Both derivatives are evaluated exactly by forward
+   * automatic differentiation (dual numbers) of the closed-form map \f$\boldsymbol{Q} \mapsto \boldsymbol{q}_l\f$;
+   * the exponential and the logarithm use Taylor series near zero rotation, so the derivatives are exact also in the
+   * reference configuration. As in B2D2CR the section is incremental: it is fed with the increment of the local
+   * generalized strains between the last converged and the current state. The steps in computeKernels(), named as in
+   * CorotationalBeamElement2D: (1) rigid frame and (2) local deformations (localDeformations()), (3) section
+   * (BeamFiberSection, per quadrature point), (4) transformation to the global dofs and geometric stiffness.
+   *
+   * @par Relation to Battini and Pacoste (2002)
+   * The local deformations \f$\boldsymbol{q}_l = [ \bar u, \bar{\boldsymbol{\theta}}_1, \bar{\boldsymbol{\theta}}_2
+   * ]\f$, the co-rotated frame and the local element are theirs. Their matrices (the projector \f$\boldsymbol{P}\f$,
+   * \f$\boldsymbol{G}\f$ = the derivative of the rigid rotation of the frame, \f$\boldsymbol{E}\f$, the matrix
+   * \f$\boldsymbol{B}\f$ of the local deformations and the terms of the geometric stiffness) are formed for variations
+   * of the global rotations by spins \f$\delta\boldsymbol{w}\f$, while the dofs here are additive rotation vectors,
+   * \f$\delta\boldsymbol{w}_i = \boldsymbol{T}_s( \boldsymbol{\Psi}_i ) \delta\boldsymbol{\Psi}_i\f$ with the
+   * tangential transformation \f$\boldsymbol{T}_s\f$ of the rotation vector. Hence \f$\partial \boldsymbol{q}_l /
+   * \partial \boldsymbol{Q} = \boldsymbol{B}_{\mathrm{BP}} \, \mathrm{diag}( \boldsymbol{I}, \boldsymbol{T}_s(
+   * \boldsymbol{\Psi}_1 ), \boldsymbol{I}, \boldsymbol{T}_s( \boldsymbol{\Psi}_2 ) )\f$, and the geometric stiffness
+   * here contains, besides their terms, the derivative of \f$\boldsymbol{T}_s\f$. Their matrices are not formed:
+   * automatic differentiation gives the exact derivatives for the additive parametrization directly, and \f$\partial^2
+   * ( \boldsymbol{f}_l \cdot \boldsymbol{q}_l ) / \partial \boldsymbol{Q}^2\f$ is the compact statement of their
+   * geometric stiffness in these dofs. At \f$\boldsymbol{\Psi}_i = \mathbf{0}\f$, \f$\boldsymbol{T}_s =
+   * \boldsymbol{I}\f$ and the two coincide.
    *
    * Validity: arbitrary rigid rotations and translations (\f$| \boldsymbol{\Psi}_i | < 2 \pi\f$), large displacements;
    * the local rotations relative to the co-rotated frame (\f$< \pi\f$) and the local strains must be small. For
@@ -109,6 +130,7 @@ namespace Marmot::Discretizations::Elements {
 
     explicit CorotationalBeamElement3D( int elementID ) : Base( elementID ) {}
 
+    /// The value of a scalar or of a dual number (for the branch decisions inside the differentiated functions)
     template < typename T >
     static double value( const T& x )
     {
@@ -118,7 +140,9 @@ namespace Marmot::Discretizations::Elements {
         return static_cast< double >( autodiff::val( x ) );
     }
 
-    /// The rotation matrix exp(skew(w)) (Rodrigues), with Taylor series near zero
+    /// The rotation matrix exp(skew(w)) (Rodrigues), with Taylor series near zero: below |w|^2 = 1e-8 the truncation
+    /// error of the series is O(|w|^12) < 1e-24, far below round-off, and the series (unlike sin(t)/t) has exact
+    /// derivatives at w = 0, which the automatic differentiation of the tangent needs in the reference configuration
     template < typename T >
     static Eigen::Matrix< T, 3, 3 > expSO3( const Eigen::Matrix< T, 3, 1 >& w )
     {
@@ -144,7 +168,8 @@ namespace Marmot::Discretizations::Elements {
     }
 
     /// The rotation vector of a rotation matrix (rotation angle < pi) via its quaternion, with a Taylor series near
-    /// zero
+    /// zero (below x = 1e-8 the truncation error is O(x^3) < 1e-24, with exact derivatives at zero rotation, as in
+    /// expSO3); throws (cutback) when the rotation reaches pi, where the logarithm is not unique
     template < typename T >
     static Eigen::Matrix< T, 3, 1 > logSO3( const Eigen::Matrix< T, 3, 3 >& R )
     {
@@ -170,7 +195,12 @@ namespace Marmot::Discretizations::Elements {
       return g * v;
     }
 
-    /// The local deformations [elongation, theta1 (3), theta2 (3)] of the global dofs Q (12)
+    /**
+     * @brief (1) The rigid (co-rotated) frame and (2) the local deformations of the global dofs.
+     * @tparam T double or a dual number type (automatic differentiation of the map)
+     * @param[in] Q The global dofs (12): per node the displacement and the rotation vector.
+     * @return The local deformations [elongation, theta1 (3), theta2 (3)].
+     */
     template < typename T >
     Eigen::Matrix< T, Eigen::Dynamic, 1 > localDeformations( const Eigen::Matrix< T, Eigen::Dynamic, 1 >& Q ) const
     {
@@ -192,7 +222,8 @@ namespace Marmot::Discretizations::Elements {
       const V3 r1   = x21 / ln;
       const V3 p    = 0.5 * ( Rg1.col( 1 ) + Rg2.col( 1 ) );
       V3       r3   = r1.cross( p );
-      // undefined frame: the second axes of the end nodes cancel (relative twist pi) or align with the chord
+      // undefined frame: the second axes of the end nodes cancel (relative twist pi) or align with the chord; r1 and
+      // p are of unit size, so |r3|^2 < 1e-24 means they are parallel to round-off
       if ( !( value( r3.dot( r3 ) ) > 1e-24 ) )
         throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
                                                      << __PRETTY_FUNCTION__ << ": element " << elLabel
@@ -210,6 +241,9 @@ namespace Marmot::Discretizations::Elements {
       return q;
     }
 
+    /// The local deformations (double)
+    /// @param[in] Q The global dofs (12).
+    /// @return The local deformations [elongation, theta1 (3), theta2 (3)].
     Vector7d localDeformations( const Vector12d& Q ) const
     {
       return localDeformations< double >( Eigen::VectorXd( Q ) );
@@ -236,54 +270,75 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
-    void computeKernels( const double* QTotal_, const double* dQ_, double* Pe_, double* Ke_, double time, double dT )
-      override
+    /**
+     * @brief (2) local deformations and (3) the sections: the local forces and the local tangent; updates the states.
+     * @param[in]  QTotal The global dofs at the end of the increment.
+     * @param[in]  dQ     The increment of the global dofs.
+     * @param[out] fl     The local forces, conjugate to the local deformations.
+     * @param[out] Kl     The local tangent.
+     * @param[in]  time   (Pseudo-)time.
+     * @param[in]  dT     (Pseudo-)time increment.
+     */
+    void localForces( const Vector12d& QTotal, const Vector12d& dQ, Vector7d& fl, Matrix7d& Kl, double time, double dT )
     {
-      Eigen::Map< const Vector12d > QTotal( QTotal_ );
-      Eigen::Map< const Vector12d > dQ( dQ_ );
-      Eigen::Map< Vector12d >       Pe( Pe_ );
-      Eigen::Map< Matrix12d >       Ke( Ke_ );
+      const Vector7d q  = localDeformations( QTotal );
+      const Vector7d dq = q - localDeformations( Vector12d( QTotal - dQ ) );
 
-      const Vector12d QOld = QTotal - dQ;
-      const Vector7d  q    = localDeformations( Vector12d( QTotal ) );
-      const Vector7d  dq   = q - localDeformations( QOld );
-
-      Vector7d fl = Vector7d::Zero();
-      Matrix7d Kl = Matrix7d::Zero();
+      fl.setZero();
+      Kl.setZero();
       for ( size_t i = 0; i < qps.size(); i++ ) {
         auto&           qp = qps[i];
         const MatrixBl& Bl = localB[i];
-        VectorGen       s;
-        MatrixGen       D;
+        VectorGen       sectionForces;
+        MatrixGen       dSectionForces_dSectionStrains;
         double          energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn, s, D, energy, dissipation, Bl * dq, time, dT );
+        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+                                   sectionForces,
+                                   dSectionForces_dSectionStrains,
+                                   energy,
+                                   dissipation,
+                                   Bl * dq,
+                                   time,
+                                   dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = s;
+        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
         Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = Bl * q;
         qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
         qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
 
-        fl += Bl.transpose() * s * qp.dV;
-        Kl += Bl.transpose() * D * Bl * qp.dV;
+        fl += Bl.transpose() * sectionForces * qp.dV;
+        Kl += Bl.transpose() * dSectionForces_dSectionStrains * Bl * qp.dV;
       }
+    }
 
+    /// d q_l / d Q (7 x 12), exact by forward automatic differentiation of localDeformations()
+    /// @param[in] QTotal The global dofs.
+    /// @return The Jacobian of the local deformations.
+    Eigen::MatrixXd dLocalDeformations_dQ( const Vector12d& QTotal ) const
+    {
       using autodiff::at;
       using autodiff::wrt;
-      // G = d q / d Q
       autodiff::VectorXdual Qd = QTotal.cast< autodiff::dual >();
       autodiff::VectorXdual F;
-      const Eigen::MatrixXd
-        G = autodiff::jacobian( [this]( const autodiff::VectorXdual& x )
-                                  -> autodiff::VectorXdual { return localDeformations< autodiff::dual >( x ); },
-                                wrt( Qd ),
-                                at( Qd ),
-                                F );
+      return autodiff::jacobian( [this]( const autodiff::VectorXdual& x )
+                                   -> autodiff::VectorXdual { return localDeformations< autodiff::dual >( x ); },
+                                 wrt( Qd ),
+                                 at( Qd ),
+                                 F );
+    }
 
-      // geometric stiffness: the Hessian of f_l . q_l(Q) at fixed f_l
+    /// The geometric stiffness d^2 (f_l . q_l) / d Q^2 at fixed local forces, exact by automatic differentiation
+    /// @param[in] QTotal The global dofs.
+    /// @param[in] fl     The local forces.
+    /// @return The geometric stiffness (12 x 12).
+    Eigen::MatrixXd geometricStiffness( const Vector12d& QTotal, const Vector7d& fl ) const
+    {
+      using autodiff::at;
+      using autodiff::wrt;
       autodiff::VectorXdual2nd Qh = QTotal.cast< autodiff::dual2nd >();
-      autodiff::dual2nd        phi;
-      Eigen::VectorXd          g;
-      const Eigen::MatrixXd    H = autodiff::hessian(
+      autodiff::dual2nd        workOfLocalForces;
+      Eigen::VectorXd          gradient;
+      return autodiff::hessian(
         [this, &fl]( const autodiff::VectorXdual2nd& x ) -> autodiff::dual2nd {
           const autodiff::VectorXdual2nd ql = localDeformations< autodiff::dual2nd >( x );
           autodiff::dual2nd              r  = 0.;
@@ -293,20 +348,47 @@ namespace Marmot::Discretizations::Elements {
         },
         wrt( Qh ),
         at( Qh ),
-        phi,
-        g );
-
-      Pe += G.transpose() * fl;
-      Ke += G.transpose() * Kl * G + H;
+        workOfLocalForces,
+        gradient );
     }
 
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override
+    void computeKernels( const double* QTotal_, const double* dQ_, double* Pe_, double* Ke_, double time, double dT )
+      override
     {
-      Matrix12d K = Matrix12d::Zero();
-      computeKernels( QTotal, dQ, Pe, K.data(), time, dT );
+      Eigen::Map< const Vector12d > QTotal( QTotal_ );
+      Eigen::Map< const Vector12d > dQ( dQ_ );
+      Eigen::Map< Vector12d >       Pe( Pe_ );
+      Eigen::Map< Matrix12d >       Ke( Ke_ );
+
+      // (1) rigid frame, (2) local deformations, (3) section
+      Vector7d fl;
+      Matrix7d Kl;
+      localForces( QTotal, dQ, fl, Kl, time, dT );
+
+      // (4) transformation to the global dofs and geometric stiffness
+      const Eigen::MatrixXd dq_dQ = dLocalDeformations_dQ( QTotal );
+      Pe += dq_dQ.transpose() * fl;
+      Ke += dq_dQ.transpose() * Kl * dq_dQ + geometricStiffness( QTotal, fl );
     }
 
-    /// dead load b A per length, lumped: b A L0 / 2 at each node, no moments
+    /// The internal forces only: the geometric stiffness (the Hessian) is not needed
+    void computeKernelsExplicit( const double* QTotal_,
+                                 const double* dQ_,
+                                 double*       Pe_,
+                                 double        time,
+                                 double        dT ) override
+    {
+      Eigen::Map< const Vector12d > QTotal( QTotal_ );
+      Eigen::Map< const Vector12d > dQ( dQ_ );
+      Eigen::Map< Vector12d >       Pe( Pe_ );
+      Vector7d                      fl;
+      Matrix7d                      Kl;
+      localForces( QTotal, dQ, fl, Kl, time, dT );
+      Pe += dLocalDeformations_dQ( QTotal ).transpose() * fl;
+    }
+
+    /// dead load b A per length, lumped: b A L0 / 2 at each node, no moments; it acts on the axis (the moment of a
+    /// section whose centroid is off the axis is neglected, unlike in the geometrically linear element)
     void computeBodyForce( double* P_, double*, const double* load, const double*, double, double ) override
     {
       Eigen::Map< Vector12d >             P( P_ );

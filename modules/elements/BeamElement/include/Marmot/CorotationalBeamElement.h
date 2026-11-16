@@ -54,13 +54,17 @@ namespace Marmot::Discretizations::Elements {
    * In the local frame the geometrically linear B2D2 kinematics apply (\f$\varepsilon_0 = \bar u / L_0\f$, \f$\kappa
    * = v''\f$ of the cubic Hermite deflection with \f$v = 0\f$ at both ends and slopes \f$\bar\theta_i\f$); the section
    * gives the local forces \f$\boldsymbol{f}_l = [ N, M_1, M_2 ]\f$ (conjugate to \f$[ \bar u, \bar\theta_1,
-   * \bar\theta_2 ]\f$) and the local tangent \f$\boldsymbol{K}_l\f$. With \f$\boldsymbol{r} = [ -c, -s, 0, c, s, 0
-   * ]\f$, \f$\boldsymbol{z} = [ s, -c, 0, -s, c, 0 ]\f$ (\f$c = \cos\beta, s = \sin\beta\f$) and \f$\boldsymbol{B} =
-   * [ \boldsymbol{r}; \boldsymbol{e}_3 - \boldsymbol{z} / l_n; \boldsymbol{e}_6 - \boldsymbol{z} / l_n ]\f$:
+   * \bar\theta_2 ]\f$) and the local tangent \f$\boldsymbol{K}_l\f$. With \f$\boldsymbol{r} = [ -\cos\beta, -\sin\beta,
+   * 0, \cos\beta, \sin\beta, 0 ]\f$, \f$\boldsymbol{z} = [ \sin\beta, -\cos\beta, 0, -\sin\beta, \cos\beta, 0 ]\f$ and
+   * \f$\boldsymbol{B} = \partial \boldsymbol{q}_l / \partial \boldsymbol{Q} = [ \boldsymbol{r}; \boldsymbol{e}_3 -
+   * \boldsymbol{z} / l_n; \boldsymbol{e}_6 - \boldsymbol{z} / l_n ]\f$ (code: dLocalDeformations_dQ):
    * \f[ \boldsymbol{P} = \boldsymbol{B}^T \boldsymbol{f}_l, \quad \boldsymbol{K} = \boldsymbol{B}^T \boldsymbol{K}_l
    * \boldsymbol{B} + \frac{N}{l_n} \boldsymbol{z} \boldsymbol{z}^T + \frac{M_1 + M_2}{l_n^2} ( \boldsymbol{r}
    * \boldsymbol{z}^T + \boldsymbol{z} \boldsymbol{r}^T ), \f]
-   * the consistent tangent (material + geometric). The section is incremental (hypoelastic materials): it is fed with
+   * the consistent tangent: material stiffness plus geometric stiffness (the last two terms). The steps in
+   * computeKernels(), named as in CorotationalBeamElement3D: (1) rigid frame and (2) local deformations
+   * (localDeformations()), (3) section (BeamFiberSection, per quadrature point), (4) transformation to the global dofs
+   * and geometric stiffness. The section is incremental (hypoelastic materials): it is fed with
    * the increment of the local generalized strains between the last converged and the current state, i.e., the strains
    * are co-rotated with the chord.
    *
@@ -84,33 +88,39 @@ namespace Marmot::Discretizations::Elements {
     /// The reference chord
     Eigen::Vector2d X21 = Eigen::Vector2d::Zero();
 
-    /// The current chord and the local deformational quantities for the global dofs
-    struct Chord {
-      double          ln;     ///< current length
-      double          c, s;   ///< direction cosines of the current chord
-      Eigen::Vector3d qLocal; ///< [elongation, theta1 - alpha, theta2 - alpha]
+    /// The current chord (the rigid frame) and the local deformations for the global dofs
+    struct LocalDeformations {
+      double          ln;               ///< current length of the chord
+      double          cosBeta, sinBeta; ///< direction cosines of the current chord
+      Eigen::Vector3d q;                ///< local deformations [elongation, theta1 - alpha, theta2 - alpha]
     };
 
     explicit CorotationalBeamElement2D( int elementID ) : Base( elementID ) {}
 
-    Chord chord( const double* Q ) const
+    /**
+     * @brief (1) The rigid frame of the current chord and (2) the local deformations of the global dofs.
+     * @param[in] Q The global dofs [u1x, u1y, theta1, u2x, u2y, theta2].
+     * @return Chord length, direction and the local deformations.
+     */
+    LocalDeformations localDeformations( const double* Q ) const
     {
       const Eigen::Vector2d d21( Q[3] - Q[0], Q[4] - Q[1] );
       const Eigen::Vector2d x21 = X21 + d21;
-      Chord                 ch;
+      LocalDeformations     ch;
       ch.ln = x21.norm();
+      // a chord shorter than round-off of the reference length has no direction (the element collapsed)
       if ( !( ch.ln > 1e-12 * length ) )
         throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
                                                      << __PRETTY_FUNCTION__ << ": element " << elLabel
                                                      << " collapsed to zero length" );
-      ch.c = x21( 0 ) / ch.ln;
-      ch.s = x21( 1 ) / ch.ln;
+      ch.cosBeta = x21( 0 ) / ch.ln;
+      ch.sinBeta = x21( 1 ) / ch.ln;
       // rigid rotation of the chord, alpha = beta - beta0 in (-pi, pi]
       const double     c0 = X21( 0 ) / length, s0 = X21( 1 ) / length;
-      const double     alpha = std::atan2( c0 * ch.s - s0 * ch.c, c0 * ch.c + s0 * ch.s );
+      const double     alpha = std::atan2( c0 * ch.sinBeta - s0 * ch.cosBeta, c0 * ch.cosBeta + s0 * ch.sinBeta );
       constexpr double twoPi = 2 * std::numbers::pi;
-      ch.qLocal << ( 2 * X21.dot( d21 ) + d21.squaredNorm() ) / ( ch.ln + length ),
-        std::remainder( Q[2] - alpha, twoPi ), std::remainder( Q[5] - alpha, twoPi );
+      ch.q << ( 2 * X21.dot( d21 ) + d21.squaredNorm() ) / ( ch.ln + length ), std::remainder( Q[2] - alpha, twoPi ),
+        std::remainder( Q[5] - alpha, twoPi );
       return ch;
     }
 
@@ -140,48 +150,61 @@ namespace Marmot::Discretizations::Elements {
       Eigen::Map< Matrix6d >       Ke( Ke_ );
 
       const Vector6d QOld = QTotal - dQ;
-      const Chord    ch   = chord( QTotal.data() );
-      const Chord    chO  = chord( QOld.data() );
-      // local increments; the rotations are wrapped individually, the difference stays small
-      Eigen::Vector3d dqLocal = ch.qLocal - chO.qLocal;
+      // (1) rigid frame, (2) local deformations, now and at the start of the increment; the increments of the
+      // rotations are wrapped individually, the difference stays small
+      const LocalDeformations ch      = localDeformations( QTotal.data() );
+      const LocalDeformations chOld   = localDeformations( QOld.data() );
+      Eigen::Vector3d         dqLocal = ch.q - chOld.q;
       for ( int i = 1; i < 3; i++ )
         dqLocal( i ) = std::remainder( dqLocal( i ), 2 * std::numbers::pi );
 
+      // (3) section: local forces f_l and local tangent K_l
       Eigen::Vector3d fl = Eigen::Vector3d::Zero();
       Eigen::Matrix3d Kl = Eigen::Matrix3d::Zero();
       for ( size_t i = 0; i < qps.size(); i++ ) {
         auto&                                qp = qps[i];
         const Eigen::Matrix< double, 2, 3 >& Bl = localB[i];
-        VectorGen                            s;
-        MatrixGen                            D;
+        VectorGen                            sectionForces;
+        MatrixGen                            dSectionForces_dSectionStrains;
         double                               energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn, s, D, energy, dissipation, Bl * dqLocal, time, dT );
+        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+                                   sectionForces,
+                                   dSectionForces_dSectionStrains,
+                                   energy,
+                                   dissipation,
+                                   Bl * dqLocal,
+                                   time,
+                                   dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = s;
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = Bl * ch.qLocal;
+        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
+        Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = Bl * ch.q;
         qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
         qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
 
-        fl += Bl.transpose() * s * qp.dV;
-        Kl += Bl.transpose() * D * Bl * qp.dV;
+        fl += Bl.transpose() * sectionForces * qp.dV;
+        Kl += Bl.transpose() * dSectionForces_dSectionStrains * Bl * qp.dV;
       }
 
+      // (4) transformation to the global dofs, P = B^T f_l, and geometric stiffness (Crisfield, Vol. 1, sec. 7.4)
       Vector6d r, z;
-      r << -ch.c, -ch.s, 0, ch.c, ch.s, 0;
-      z << ch.s, -ch.c, 0, -ch.s, ch.c, 0;
-      Eigen::Matrix< double, 3, 6 > B;
-      B.row( 0 ) = r.transpose();
-      B.row( 1 ) = -z.transpose() / ch.ln;
-      B.row( 2 ) = -z.transpose() / ch.ln;
-      B( 1, 2 ) += 1;
-      B( 2, 5 ) += 1;
+      r << -ch.cosBeta, -ch.sinBeta, 0, ch.cosBeta, ch.sinBeta, 0;
+      z << ch.sinBeta, -ch.cosBeta, 0, -ch.sinBeta, ch.cosBeta, 0;
+      Eigen::Matrix< double, 3, 6 > dLocalDeformations_dQ;
+      dLocalDeformations_dQ.row( 0 ) = r.transpose();
+      dLocalDeformations_dQ.row( 1 ) = -z.transpose() / ch.ln;
+      dLocalDeformations_dQ.row( 2 ) = -z.transpose() / ch.ln;
+      dLocalDeformations_dQ( 1, 2 ) += 1;
+      dLocalDeformations_dQ( 2, 5 ) += 1;
+      const Matrix6d geometricStiffness = fl( 0 ) / ch.ln * z * z.transpose() +
+                                          ( fl( 1 ) + fl( 2 ) ) / ( ch.ln * ch.ln ) *
+                                            ( r * z.transpose() + z * r.transpose() );
 
-      Pe += B.transpose() * fl;
-      Ke += B.transpose() * Kl * B + fl( 0 ) / ch.ln * z * z.transpose() +
-            ( fl( 1 ) + fl( 2 ) ) / ( ch.ln * ch.ln ) * ( r * z.transpose() + z * r.transpose() );
+      Pe += dLocalDeformations_dQ.transpose() * fl;
+      Ke += dLocalDeformations_dQ.transpose() * Kl * dLocalDeformations_dQ + geometricStiffness;
     }
 
-    /// dead load b A per length, lumped: b A L0 / 2 at each node, no moments
+    /// dead load b A per length, lumped: b A L0 / 2 at each node, no moments; it acts on the axis (the moment of a
+    /// section whose centroid is off the axis is neglected, unlike in the geometrically linear element)
     void computeBodyForce( double* P_, double*, const double* load, const double*, double, double ) override
     {
       Eigen::Map< Vector6d >              P( P_ );

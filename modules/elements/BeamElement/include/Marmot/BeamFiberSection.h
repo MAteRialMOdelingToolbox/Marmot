@@ -84,15 +84,18 @@ namespace Marmot::Discretizations::Elements {
 
     /// A section point (fiber)
     struct Fiber {
-      double                                                    y;    ///< local y coordinate
-      double                                                    z;    ///< local z coordinate (0 in 2D)
-      double                                                    area; ///< area (weight)
-      FiberS                                                    S; ///< generalized strains -> [eps11, gamma12, gamma13]
+      double y;                           ///< local y coordinate
+      double z;                           ///< local z coordinate (0 in 2D)
+      double area;                        ///< area (weight)
+      FiberS dFiberStrain_dSectionStrain; ///< section strains -> fiber strains [eps11, gamma12, gamma13]
       std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material;
     };
 
+    /// The section points
     std::vector< Fiber > fibers;
-    double               torsionScaling = 0.0;
+    /// The torsion scaling \f$\alpha_T = \sqrt{J / I_p}\f$ (polar moment \f$I_p\f$ of the points about their centroid):
+    /// the torsional stiffness is \f$GJ\f$ for the given torsion constant \f$J\f$ (1 for circles and tubes)
+    double torsionScaling = 0.0;
 
     /**
      * Set the section points.
@@ -138,12 +141,12 @@ namespace Marmot::Discretizations::Elements {
 
       for ( auto& f : fibers ) {
         if constexpr ( nDim == 2 )
-          f.S << 1, -f.y, //
-            0, 0,         //
+          f.dFiberStrain_dSectionStrain << 1, -f.y, //
+            0, 0,                                   //
             0, 0;
         else
-          f.S << 1, f.z, -f.y, 0,                    //
-            0, 0, 0, -torsionScaling * ( f.z - zc ), //
+          f.dFiberStrain_dSectionStrain << 1, f.z, -f.y, 0, //
+            0, 0, 0, -torsionScaling * ( f.z - zc ),        //
             0, 0, 0, torsionScaling * ( f.y - yc );
       }
     }
@@ -214,31 +217,31 @@ namespace Marmot::Discretizations::Elements {
     /**
      * Section forces and tangent for the increment of the generalized strains; updates the fiber states.
      * @param[in,out] sectionState the states of all fibers of the section (see fiberState)
-     * @param[in,out] s            the generalized section forces (in: last converged, out: current)
-     * @param[out]    D            the section tangent dS/dE
+     * @param[out]    sectionForces the section forces (the work conjugates of the section strains)
+     * @param[out]    dSectionForces_dSectionStrains the section tangent
      * @param[out]    energy       the elastic energy of the section per length
      * @param[out]    dissipation  the dissipation of the section per length
-     * @param[in]     dE           the increment of the generalized strains
+     * @param[in]     dSectionStrain the increment of the section strains
      * @param[in]     time         the current (pseudo-)time
      * @param[in]     dT           the (pseudo-)time increment
      */
     void computeSection( double*          sectionState,
-                         VectorGen&       s,
-                         MatrixGen&       D,
+                         VectorGen&       sectionForces,
+                         MatrixGen&       dSectionForces_dSectionStrains,
                          double&          energy,
                          double&          dissipation,
-                         const VectorGen& dE,
+                         const VectorGen& dSectionStrain,
                          double           time,
                          double           dT ) const
     {
-      s.setZero();
-      D.setZero();
+      sectionForces.setZero();
+      dSectionForces_dSectionStrains.setZero();
       energy = dissipation = 0;
       for ( size_t k = 0; k < fibers.size(); k++ ) {
-        const Fiber&          fiber = fibers[k];
-        double*               fs    = fiberState( sectionState, k );
-        Eigen::Matrix3d       C     = Eigen::Matrix3d::Zero();
-        const Eigen::Vector3d dEps  = fiber.S * dE;
+        const Fiber&          fiber           = fibers[k];
+        double*               fs              = fiberState( sectionState, k );
+        Eigen::Matrix3d       dStress_dStrain = Eigen::Matrix3d::Zero();
+        const Eigen::Vector3d dEps            = fiber.dFiberStrain_dSectionStrain * dSectionStrain;
 
         if constexpr ( nDim == 2 ) {
           Marmot::Materials::MaterialHypoElastic::state1D state;
@@ -246,7 +249,7 @@ namespace Marmot::Discretizations::Elements {
           state.elasticEnergyDensity = fs[3];
           state.dissipation          = fs[4];
           state.stateVars            = fs + nFiberStateVars;
-          fiber.material->computeUniaxialStress( state, C( 0, 0 ), dEps( 0 ), { time, dT } );
+          fiber.material->computeUniaxialStress( state, dStress_dStrain( 0, 0 ), dEps( 0 ), { time, dT } );
           fs[0] = state.stress;
           fs[3] = state.elasticEnergyDensity;
           fs[4] = state.dissipation;
@@ -257,7 +260,7 @@ namespace Marmot::Discretizations::Elements {
           state.elasticEnergyDensity = fs[3];
           state.dissipation          = fs[4];
           state.stateVars            = fs + nFiberStateVars;
-          fiber.material->computeBeamStress( state, C, dEps, { time, dT } );
+          fiber.material->computeBeamStress( state, dStress_dStrain, dEps, { time, dT } );
           Eigen::Map< Eigen::Vector3d > sigmaNew( fs );
           sigmaNew = state.stress;
           fs[3]    = state.elasticEnergyDensity;
@@ -265,8 +268,9 @@ namespace Marmot::Discretizations::Elements {
         }
 
         const Eigen::Map< const Eigen::Vector3d > sigma( fs );
-        s += fiber.S.transpose() * sigma * fiber.area;
-        D += fiber.S.transpose() * C * fiber.S * fiber.area;
+        const auto&                               S = fiber.dFiberStrain_dSectionStrain;
+        sectionForces += S.transpose() * sigma * fiber.area;
+        dSectionForces_dSectionStrains += S.transpose() * dStress_dStrain * S * fiber.area;
         energy += fs[3] * fiber.area;
         dissipation += fs[4] * fiber.area;
       }
