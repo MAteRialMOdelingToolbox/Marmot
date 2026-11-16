@@ -17,9 +17,14 @@ namespace Marmot::Discretizations::Elements {
   BoundaryElement::BoundaryElement( ElementShapes   parentShape,
                                     int             parentFaceNumber,
                                     int             nDim,
-                                    const VectorXd& parentCoordinates )
-    : nDim( nDim )
+                                    const VectorXd& parentCoordinates,
+                                    bool            axisymmetric )
+    : nDim( nDim ), axisymmetric( axisymmetric )
   {
+    if ( axisymmetric && nDim != 2 )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": axisymmetric boundary elements are two-dimensional." );
+
     // get boundary shape dependent on parental shape
     switch ( parentShape ) {
       /*
@@ -150,7 +155,9 @@ namespace Marmot::Discretizations::Elements {
         qp.areaVector            = n;
       }
 
-      qp.JxW = qp.areaVector.norm() * qp.weight;
+      // 2 pi r at the face point folds the ring into every load vector
+      qp.ringFactor = axisymmetric ? 2. * Marmot::Math::Constants::Pi * ( NB( qp.N, nDim ) * coordinates )( 0 ) : 1.0;
+      qp.JxW        = qp.areaVector.norm() * qp.weight * qp.ringFactor;
 
       quadraturePoints.push_back( std::move( qp ) );
     }
@@ -192,7 +199,7 @@ namespace Marmot::Discretizations::Elements {
     VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
     for ( const auto& qp : quadraturePoints )
-      Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
+      Pk += qp.weight * qp.ringFactor * qp.areaVector.transpose() * NB( qp.N, nDim );
 
     return Pk;
   }
@@ -205,10 +212,12 @@ namespace Marmot::Discretizations::Elements {
      *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
      * */
 
+    if ( axisymmetric )
+      return computeSurfaceNormalVectorialLoadVector();
+
     VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
     for ( const auto& qp : quadraturePoints ) {
-      // Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
       Eigen::VectorXd coordAtGauss = NB( qp.N, nDim ) * coordinates;
       Pk += qp.weight * 2. * coordAtGauss( 0 ) * Marmot::Math::Constants::Pi * qp.areaVector.transpose() *
             NB( qp.N, nDim );
@@ -219,6 +228,10 @@ namespace Marmot::Discretizations::Elements {
 
   MatrixXd BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates()
   {
+    if ( axisymmetric )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": not implemented for axisymmetric boundary elements." );
+
     MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
 
     if ( nDim == 2 ) {
@@ -272,24 +285,6 @@ namespace Marmot::Discretizations::Elements {
 
     for ( const auto& qp : quadraturePoints )
       Pk += qp.JxW * direction.transpose() * NB( qp.N, nDim );
-
-    return Pk;
-  }
-
-  VectorXd BoundaryElement::computeVectorialLoadVectorForAxisymmetricElements( const Eigen::VectorXd& direction )
-  {
-    /* compute the load vector for a constant distributed load (e.g. traction) in arbitrary direction for
-     * axisymmetric elements (circumferential integration included)
-     * Attention: result =  boundary-element-sized!
-     *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
-     * */
-
-    VectorXd Pk = VectorXd::Zero( coordinates.size() );
-
-    for ( const auto& qp : quadraturePoints ) {
-      Eigen::VectorXd coordAtGauss = NB( qp.N, nDim ) * coordinates;
-      Pk += qp.JxW * 2. * coordAtGauss( 0 ) * Marmot::Math::Constants::Pi * direction.transpose() * NB( qp.N, nDim );
-    }
 
     return Pk;
   }

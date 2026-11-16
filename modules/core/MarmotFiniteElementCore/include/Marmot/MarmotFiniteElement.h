@@ -674,7 +674,8 @@ namespace Marmot::Discretizations::Elements {
     /// @brief Internal data for a single quadrature point on the boundary face.
     struct BoundaryElementQuadraturePoint {
       double          weight;     ///< Quadrature weight.
-      double          JxW;        ///< Jacobian determinant times quadrature weight.
+      double          ringFactor; ///< 2 pi r of an axisymmetric boundary element, 1 otherwise.
+      double          JxW;        ///< Jacobian determinant times quadrature weight (times ringFactor).
       Eigen::VectorXd xi;         ///< Natural coordinates of the quadrature point.
       Eigen::VectorXd N;          ///< Shape function values at the quadrature point.
       Eigen::MatrixXd dNdXi;      ///< Shape function natural derivatives.
@@ -682,7 +683,8 @@ namespace Marmot::Discretizations::Elements {
       Eigen::VectorXd areaVector; ///< Outward-normal area vector at the quadrature point.
     };
 
-    const int nDim;                                                 ///< Number of spatial dimensions.
+    const int  nDim;                                                ///< Number of spatial dimensions.
+    const bool axisymmetric;                                        ///< Integrate over the ring (r = x_1).
 
     ElementShapes boundaryShape;                                    ///< Shape of the boundary (face/edge) element.
     int           nNodes;                                           ///< Number of nodes on the boundary element.
@@ -701,11 +703,14 @@ namespace Marmot::Discretizations::Elements {
      * @param[in] parentFaceNumber   Zero-based index of the boundary face on the parent element.
      * @param[in] nDim               Number of spatial dimensions.
      * @param[in] parentCoordinates  Flat vector of parent nodal coordinates.
+     * @param[in] axisymmetric       Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are
+     *                               integrated over the ring, \f$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\f$.
      */
     BoundaryElement( ElementShapes          parentShape,
                      int                    parentFaceNumber,
                      int                    nDim,
-                     const Eigen::VectorXd& parentCoordinates );
+                     const Eigen::VectorXd& parentCoordinates,
+                     bool                   axisymmetric = false );
 
     /// @brief Compute the scalar (pressure) load vector for a unit pressure.
     Eigen::VectorXd computeScalarLoadVector();
@@ -714,15 +719,20 @@ namespace Marmot::Discretizations::Elements {
 
     /// compute the element load vector for a unit vectorial load normal to the surface.
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
-    /// @brief Compute the normal-traction load vector for axisymmetric elements.
+    /**
+     * @brief Compute the normal-traction load vector for axisymmetric elements.
+     * @deprecated Construct the boundary element with @c axisymmetric = true and use
+     * computeSurfaceNormalVectorialLoadVector().
+     */
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
-    /// @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+    /**
+     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+     * @throws std::invalid_argument for an axisymmetric boundary element.
+     */
     Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
     /// compute the element load vector for a unit vectorial load in a given direction.
     Eigen::VectorXd computeVectorialLoadVector( const Eigen::VectorXd& direction );
-    /// @brief Compute the load vector for a unit vectorial load in a given direction for axisymmetric elements.
-    Eigen::VectorXd computeVectorialLoadVectorForAxisymmetricElements( const Eigen::VectorXd& direction );
     /// @brief Compute the derivative of the directional load vector with respect to nodal coordinates.
     Eigen::MatrixXd computeDVectorialLoadVector_dCoordinates( const Eigen::VectorXd& direction );
 
