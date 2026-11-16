@@ -77,7 +77,7 @@ jobs:
           cd ../..
 
       - name: Check out Marmot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Marmot
         shell: bash -leo pipefail {0}

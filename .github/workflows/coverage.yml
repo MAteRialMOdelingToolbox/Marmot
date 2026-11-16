@@ -54,7 +54,7 @@ jobs:
           cd ../..
 
       - name: Check out Marmot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build Marmot with coverage instrumentation
         shell: bash -leo pipefail {0}
@@ -101,7 +101,7 @@ jobs:
           lcov --list coverage.filtered.info --ignore-errors inconsistent,inconsistent
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v7
         with:
           # GitHub withholds repo secrets (CODECOV_TOKEN included) from `pull_request`
           # runs whose head repo is a fork, which is how most PRs reach this repo -
