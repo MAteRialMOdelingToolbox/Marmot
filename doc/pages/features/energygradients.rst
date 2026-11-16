@@ -96,7 +96,7 @@ Supported elements and materials
      - **Sections**
      - **Material capability**
    * - ``DisplacementFiniteElement``
-     - solid, plane strain
+     - solid, plane strain, axisymmetric
      - ``HypoElasticEnergyTangentProvider``
    * - ``GeneralGradientEnhancedDisplacementFiniteElement``
      - solid, plane strain, plane stress

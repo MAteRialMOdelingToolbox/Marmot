@@ -39,7 +39,8 @@ own rule cannot produce a mass matrix of full rank -- 8 points give a 20-node he
 rank 24 out of 60 -- and a singular mass leaves the modes of its null space without inertia and
 makes an equilibrium solve for the initial acceleration, :math:`\mathbf{M}\,\mathbf{a}_0 = \mathbf{R}`,
 ill-posed. The density at a point of that rule is taken from the nearest quadrature point of the
-element, which is exact for a density that is constant over the element. The same applies to the
+element, which is exact for a density that is constant over the element; the section factor (thickness,
+cross section or :math:`2\pi r`) is evaluated at the point itself. The same applies to the
 finite-strain (UL) and the gradient-enhanced displacement elements, for the latter to the
 micro-inertia of the non-local block as well.
 
@@ -68,11 +69,79 @@ Constitutive updates are carried out per quadrature point using a Marmot materia
 
 - Plane strain
 
+- Axisymmetric
+
 - 1D uniaxial stress
 
 Each quadrature point stores stress, strain and a material state vector; the element
 accumulates the history incrementally and may suggest a reduced time step if required
 by the material.
+
+
+Axisymmetric elements
+---------------------
+
+``CAX4`` (4 nodes), ``CAX8`` and ``CAX8R`` (8 nodes) are ``DisplacementFiniteElement<2, nNodes>`` with the section
+``Axisymmetric``: the body of revolution is meshed in its meridional plane, with the radius :math:`r = x_1` and the
+axial coordinate :math:`z = x_2`. The displacement :math:`(u_r, u_z)` does not depend on the angle :math:`\theta`, and
+the strain has the hoop component :math:`\varepsilon_{\theta\theta} = u_r / r` in addition to the in-plane ones:
+
+.. math::
+
+   \Delta\eps = \begin{bmatrix} \Delta\varepsilon_{rr} \\ \Delta\varepsilon_{zz} \\
+   \Delta\varepsilon_{\theta\theta} \\ \Delta\gamma_{rz} \end{bmatrix}
+   = \sum_i \begin{bmatrix} \partial N_i / \partial r & 0 \\ 0 & \partial N_i / \partial z \\
+   N_i / r & 0 \\ \partial N_i / \partial z & \partial N_i / \partial r \end{bmatrix}
+   \begin{bmatrix} \Delta u_{r,i} \\ \Delta u_{z,i} \end{bmatrix}.
+
+Volume and boundary are integrated over the full ring,
+
+.. math::
+
+   \mathrm{d}V = 2\pi r\, \mathrm{d}A, \qquad \mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s,
+
+i.e., :math:`J_0 w = w \det\mathbf{J}\, 2\pi r` at a quadrature point, with :math:`r` interpolated from the nodes,
+and :math:`2\pi r` at each point of the boundary and the mass rules.
+
+The material is called through the 3D interface with the strain increment
+:math:`(\Delta\varepsilon_{rr}, \Delta\varepsilon_{zz}, \Delta\varepsilon_{\theta\theta}, \Delta\gamma_{rz}, 0, 0)`
+(``axisymmetricVoigtToVoigt``). The tangent of the element is the upper left :math:`4 \times 4` block of the 3D
+tangent, which is exact for any material: :math:`\gamma_{r\theta} = \gamma_{z\theta} = 0` is kinematic, as
+:math:`\varepsilon_{33} = 0` in plane strain.
+
+.. list-table::
+   :header-rows: 1
+   :align: left
+
+   * - **Element**
+     - **Nodes**
+     - **Quadrature**
+     - **Zero energy modes**
+   * - ``CAX4``
+     - 4
+     - Gauss 2x2 (``gaussExactToDegree( 2 )``)
+     - 1 (axial translation)
+   * - ``CAX8``
+     - 8
+     - Gauss 3x3 (``gaussExactToDegree( 4 )``)
+     - 1 (axial translation)
+   * - ``CAX8R``
+     - 8
+     - Gauss 2x2 (``gaussExactToDegree( 3 )``)
+     - 2 (axial translation, one hourglass mode)
+
+Notes:
+
+- Internal and external forces, reactions, energies and masses are those of the full :math:`360^\circ` ring.
+- The radial displacement on the axis, :math:`u_r = 0` at :math:`r = 0`, is not imposed by the element; prescribe it.
+- Mesh in :math:`r \geq 0` only. ``initializeYourself()`` rejects a node at :math:`r < 0` and a quadrature point at
+  :math:`r \leq 0`.
+- A thickness assigned as element property is ignored.
+- ``CAX8R`` has one spurious zero energy (hourglass) mode per element, like ``CPE8R``, in addition to the axial
+  translation.
+- The artificial bulk viscosity acts on :math:`\Delta\varepsilon_{rr} + \Delta\varepsilon_{zz} +
+  \Delta\varepsilon_{\theta\theta}`, including the hoop strain.
+- The energy gradients (:doc:`energygradients`) are available with a material that provides energy tangents.
 
 
 Implementation
