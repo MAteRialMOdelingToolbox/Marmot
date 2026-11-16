@@ -298,16 +298,19 @@ namespace Marmot::Materials {
      * The general 3D computeStress function is called repeatedly, and the lateral stretches are found by a Newton
      * iteration on \f$\tau_{22} = \tau_{33} = 0\f$. The state variables and the response are reset to their values
      * at the beginning of the increment before every evaluation, so path dependent materials see one single update.
-     * The axis \f$1\f$ is the axis of the uniaxial stress state, e.g., the axis of a truss. Not virtual: it only
-     * uses the public interface, and adding a virtual function would shift the virtual table of every material.
+     * The axis \f$1\f$ is the axis of the uniaxial stress state, e.g., the axis of a truss. The reduction requires
+     * that the material answers a diagonal deformation gradient with a diagonal stress (e.g., isotropic materials):
+     * only \f$\tau_{22}\f$ and \f$\tau_{33}\f$ are condensed. A material with a closed-form uniaxial response may
+     * override it.
      *
      * @throws Marmot::Utilities::StressUpdateFailed if the iteration does not converge, which should trigger a
      * cutback
+     * @throws std::invalid_argument if the converged stress has shear components (the material is not suitable)
      */
-    void computeUniaxialStress( ConstitutiveResponse< 3 >& response,
-                                double&                    dTau11_dF11,
-                                Deformation< 3 >&          deformation,
-                                const TimeIncrement&       timeIncrement ) const;
+    virtual void computeUniaxialStress( ConstitutiveResponse< 3 >& response,
+                                        double&                    dTau11_dF11,
+                                        Deformation< 3 >&          deformation,
+                                        const TimeIncrement&       timeIncrement ) const;
 
     /**
      * @brief Find the eigen deformation that corresponds to a given eigen stress.

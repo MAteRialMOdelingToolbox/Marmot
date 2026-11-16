@@ -25,7 +25,9 @@
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/TrussElement.h"
 
-namespace Marmot::Discretizations::Elements::Registration {
+namespace {
+
+  using namespace Marmot::Discretizations::Elements;
 
   template < int nDim, int nNodes, typename TrussElement< nDim, nNodes >::Kinematics kinematics >
   bool registerTruss( const std::string& name )
@@ -50,4 +52,4 @@ namespace Marmot::Discretizations::Elements::Registration {
   const static bool T3D2CR_isRegistered = registerTruss< 3, 2, TrussElement< 3, 2 >::FiniteStrain >( "T3D2CR" );
   const static bool T3D3CR_isRegistered = registerTruss< 3, 3, TrussElement< 3, 3 >::FiniteStrain >( "T3D3CR" );
 
-} // namespace Marmot::Discretizations::Elements::Registration
+} // namespace

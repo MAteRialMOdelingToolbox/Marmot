@@ -190,8 +190,71 @@ void testInterface()
   }
 }
 
+/// the host may call the interface in the order of DisplacementFiniteElement (properties, material section, number of
+/// state variables, state variables, initialize) or initialize before assigning the material (EdelweissFE): both give
+/// the same number of state variables, forces and stiffness; asking for the number of state variables before the
+/// material section is known is an error
+void testCallOrder()
+{
+  for ( const auto& t : types ) {
+    const std::vector< double > X1 = t.nDim == 2 ? std::vector< double >{ 0., 0. }
+                                                 : std::vector< double >{ 0., 0., 0. };
+    const std::vector< double > X2 = t.nDim == 2 ? std::vector< double >{ 3., 4. }
+                                                 : std::vector< double >{ 3., 4., 2. };
+    std::vector< double >       X = nodes( t, X1, X2 ), props = { 2.0 }, mat = t.materialProperties;
+
+    auto el = std::unique_ptr< Element >( Marmot::Registry::ElementFactory::createElement( t.name, 1 ) );
+    el->assignNodeCoordinates( X.data() );
+    el->assignProperty( ElementProperties( props.data(), 1 ) );
+    throwExceptionOnFailure( throws< std::logic_error >( [&]() { el->getNumberOfRequiredStateVars(); } ),
+                             t.name + ": number of state variables before the material section" );
+    el->assignProperty( MaterialSection( t.material, mat.data(), static_cast< int >( mat.size() ) ) );
+    std::vector< double > stateVars( el->getNumberOfRequiredStateVars(), 0.0 );
+    el->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+    el->initializeYourself();
+    el->setInitialConditions( Element::MarmotMaterialInitialization, nullptr );
+
+    Truss reference( t, X, 2.0 ); // initialized before the material section is assigned
+    throwExceptionOnFailure( stateVars.size() == reference.stateVars.size(), t.name + ": number of state variables" );
+
+    const int       nDof = el->getNDofPerElement();
+    Eigen::VectorXd U( nDof ), P = Eigen::VectorXd::Zero( nDof ), PRef = Eigen::VectorXd::Zero( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      U( i ) = 1e-3 * std::sin( 1.0 + i );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof ), KRef = Eigen::MatrixXd::Zero( nDof, nDof );
+    el->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 );
+    reference.el->computeKernels( U.data(), U.data(), PRef.data(), KRef.data(), 0.0, 1.0 );
+    throwExceptionOnFailure( ( P - PRef ).norm() <= 1e-12 * PRef.norm() && ( K - KRef ).norm() <= 1e-12 * KRef.norm(),
+                             t.name + ": both call orders give the same forces and stiffness" );
+  }
+}
+
+/// a material of the wrong kind (hypoelastic for a CR truss, finite strain for a small strain one) is rejected with a
+/// hint to the matching element
+void testMaterialPairingHint()
+{
+  auto messageOf = []( const std::string& element, const std::string& material, std::vector< double > properties ) {
+    auto el = std::unique_ptr< Element >( Marmot::Registry::ElementFactory::createElement( element, 1 ) );
+    std::vector< double > props = { 1.0 };
+    el->assignProperty( ElementProperties( props.data(), 1 ) );
+    try {
+      el->assignProperty( MaterialSection( material, properties.data(), static_cast< int >( properties.size() ) ) );
+    }
+    catch ( const std::invalid_argument& e ) {
+      return std::string( e.what() );
+    }
+    return std::string();
+  };
+  const auto cr = messageOf( "T3D2CR", "LINEARELASTIC", linearElastic );
+  throwExceptionOnFailure( cr.find( "for hypoelastic materials use T<d>D<n>" ) != std::string::npos,
+                           "T3D2CR with a hypoelastic material: " + cr );
+  const auto small = messageOf( "T3D2", "COMPRESSIBLENEOHOOKE", neoHooke );
+  throwExceptionOnFailure( small.find( "use T<d>D<n>CR" ) != std::string::npos,
+                           "T3D2 with a finite strain material: " + small );
+}
+
 int main()
 {
-  executeTestsAndCollectExceptions( { testInterface } );
+  executeTestsAndCollectExceptions( { testInterface, testCallOrder, testMaterialPairingHint } );
   return 0;
 }

@@ -2,6 +2,7 @@
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <algorithm>
 
 void applyEigenDeformation_( Fastor::Tensor< double, 3, 3 >& F, double F0_XX, double F0_YY, double F0_ZZ )
 {
@@ -76,8 +77,6 @@ void Marmot::Materials::MaterialFiniteStrain::computePlaneStress( ConstitutiveRe
   throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
 }
 
-/** The basic implementation here assumes non-chirial, isotropic elastic behavior.
- */
 void Marmot::Materials::MaterialFiniteStrain::computeUniaxialStress( ConstitutiveResponse< 3 >& response,
                                                                      double&                    dTau11_dF11,
                                                                      Deformation< 3 >&          deformation,
@@ -106,8 +105,8 @@ void Marmot::Materials::MaterialFiniteStrain::computeUniaxialStress( Constitutiv
 
     computeStress( response, tangents, deformation, timeIncrement );
 
-    const auto& C = tangents.dTau_dF;
-    dTauLateral_dFLateral << C( 1, 1, 1, 1 ), C( 1, 1, 2, 2 ), C( 2, 2, 1, 1 ), C( 2, 2, 2, 2 );
+    const auto& dTau_dF = tangents.dTau_dF;
+    dTauLateral_dFLateral << dTau_dF( 1, 1, 1, 1 ), dTau_dF( 1, 1, 2, 2 ), dTau_dF( 2, 2, 1, 1 ), dTau_dF( 2, 2, 2, 2 );
 
     if ( finalEvaluation )
       break;
@@ -146,14 +145,30 @@ void Marmot::Materials::MaterialFiniteStrain::computeUniaxialStress( Constitutiv
     deformation.F( 2, 2 ) += damping * correction( 1 );
   }
 
-  // condensation of the lateral stretches: dTau11/dF11 under tau22 = tau33 = 0
-  const auto&           C = tangents.dTau_dF;
-  const Eigen::Vector2d dTau11_dFLateral( C( 0, 0, 1, 1 ), C( 0, 0, 2, 2 ) );
-  const Eigen::Vector2d dTauLateral_dF11( C( 1, 1, 0, 0 ), C( 2, 2, 0, 0 ) );
+  // the reduction assumes that a diagonal F gives a diagonal stress (e.g., an isotropic material): a material whose
+  // shear stresses do not vanish (e.g., an anisotropic one, with its axes interpreted in the frame of the truss) would
+  // otherwise have them dropped silently
+  const double tauScale = std::max(
+    { 1.0, std::abs( response.tau( 0, 0 ) ), std::abs( response.tau( 1, 1 ) ), std::abs( response.tau( 2, 2 ) ) } );
+  const double tauShear = std::max(
+    { std::abs( response.tau( 0, 1 ) ), std::abs( response.tau( 0, 2 ) ), std::abs( response.tau( 1, 2 ) ) } );
+  if ( tauShear > 1e-10 * tauScale )
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                              << ": the material answers a diagonal deformation gradient with shear "
+                                                 "stresses (anisotropic?); the uniaxial stress reduction requires a "
+                                                 "diagonal response, e.g., an isotropic material" );
 
-  dTau11_dF11 = C( 0, 0, 0, 0 ) - dTau11_dFLateral.dot( dTauLateral_dFLateral.fullPivLu().solve( dTauLateral_dF11 ) );
+  // static condensation of the lateral stretches: dTau11/dF11 under tau22 = tau33 = 0
+  const auto&           dTau_dF = tangents.dTau_dF;
+  const Eigen::Vector2d dTau11_dFLateral( dTau_dF( 0, 0, 1, 1 ), dTau_dF( 0, 0, 2, 2 ) );
+  const Eigen::Vector2d dTauLateral_dF11( dTau_dF( 1, 1, 0, 0 ), dTau_dF( 2, 2, 0, 0 ) );
+
+  dTau11_dF11 = dTau_dF( 0, 0, 0, 0 ) -
+                dTau11_dFLateral.dot( dTauLateral_dFLateral.fullPivLu().solve( dTauLateral_dF11 ) );
 }
 
+/** The basic implementation here assumes non-chiral, isotropic elastic behavior.
+ */
 std::tuple< double, double, double > Marmot::Materials::MaterialFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
   const std::tuple< double, double, double >& eigenStress,

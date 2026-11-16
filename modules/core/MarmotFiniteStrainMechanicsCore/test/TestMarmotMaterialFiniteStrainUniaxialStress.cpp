@@ -6,6 +6,7 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -98,8 +99,9 @@ void testNeoHookeUniaxialStressAndTangent()
   }
 }
 
-/// J2 plasticity without hardening: after yielding, the uniaxial Kirchhoff stress equals the yield stress, the state
-/// is only updated once, and the condensed elastoplastic tangent matches the numerical one
+/// J2 plasticity with linear hardening (H = 1000): after yielding, the uniaxial Kirchhoff stress equals the current
+/// yield stress fy + H alphaP, the state is only updated once, and the condensed elastoplastic tangent matches the
+/// numerical one
 void testJ2PlasticityUniaxialStress()
 {
   const double K = 175000., G = 80769., fy = 300.;
@@ -130,7 +132,8 @@ void testJ2PlasticityUniaxialStress()
                                                            << " != current yield stress " << expectedYieldStress );
 
   // plastic flow is isochoric: lateral contraction larger than the elastic one
-  throwExceptionOnFailure( deformationPl.F( 1, 1 ) < 1.0 - 0.3 * ( lamPl - 1.0 ), "plastic lateral contraction" );
+  const double nu = ( 3. * K - 2. * G ) / ( 2. * ( 3. * K + G ) ); // the elastic Poisson ratio, 0.3
+  throwExceptionOnFailure( deformationPl.F( 1, 1 ) < 1.0 - nu * ( lamPl - 1.0 ), "plastic lateral contraction" );
 
   const double numTangent = numericalTangent( *material, lamPl, stateVars, Tensor33d( 0.0 ) );
   throwExceptionOnFailure( checkIfEqual( CPl, numTangent, 1e-4 * std::abs( numTangent ) + 1e-3 ),
@@ -149,12 +152,81 @@ void testRobustInitialGuess()
                            "the converged uniaxial state must not depend on the initial guess" );
 }
 
+namespace {
+
+  /// a minimal material for the test of the applicability check: tau = 2 G e + lambda tr(e) I with e = F - I, plus an
+  /// anisotropic coupling tau12 = tau21 = c e11 (c = 0: isotropic)
+  class CoupledMaterial : public Material {
+    double G, lam, c;
+
+  public:
+    CoupledMaterial( double G_, double lam_, double c_ ) : Material( nullptr, 0, 1 ), G( G_ ), lam( lam_ ), c( c_ )
+    {
+      stateLayout.finalize();
+    }
+
+    void computeStress( ConstitutiveResponse< 3 >& response,
+                        AlgorithmicModuli< 3 >&    tangents,
+                        const Deformation< 3 >&    deformation,
+                        const TimeIncrement& ) const override
+    {
+      const auto&  F   = deformation.F;
+      const double trE = F( 0, 0 ) + F( 1, 1 ) + F( 2, 2 ) - 3.0;
+      tangents.dTau_dF.zeros();
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ ) {
+          response.tau( i, j ) = G * ( F( i, j ) + F( j, i ) - 2.0 * ( i == j ) ) + lam * trE * ( i == j );
+          tangents.dTau_dF( i, j, i, j ) += G;
+          tangents.dTau_dF( i, j, j, i ) += G;
+          if ( i == j )
+            for ( int k = 0; k < 3; k++ )
+              tangents.dTau_dF( i, i, k, k ) += lam;
+        }
+      response.tau( 0, 1 ) += c * ( F( 0, 0 ) - 1.0 );
+      response.tau( 1, 0 ) += c * ( F( 0, 0 ) - 1.0 );
+      tangents.dTau_dF( 0, 1, 0, 0 ) += c;
+      tangents.dTau_dF( 1, 0, 0, 0 ) += c;
+    }
+
+    double getDensity( const double* ) const override { return 1.0; }
+  };
+
+} // namespace
+
+/// the uniaxial reduction condenses only tau22 and tau33: it accepts a material that answers a diagonal F with a
+/// diagonal stress, and rejects one with shear stresses instead of dropping them silently
+void testRequiresDiagonalResponse()
+{
+  auto update = []( const Material& material ) {
+    Material::Deformation< 3 > deformation{ Tensor33d( 0.0 ) };
+    deformation.F( 0, 0 ) = 1.01;
+    deformation.F( 1, 1 ) = deformation.F( 2, 2 ) = 1.0;
+    Material::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+    double                              dTau_dLambda;
+    material.computeUniaxialStress( response, dTau_dLambda, deformation, { 0.0, 1.0 } );
+    return dTau_dLambda;
+  };
+  const double G = 1000., lam = 1500.;
+  const double E = G * ( 3 * lam + 2 * G ) / ( lam + G );
+  throwExceptionOnFailure( checkIfEqual( update( CoupledMaterial( G, lam, 0.0 ) ), E, 1e-9 * E ),
+                           "isotropic: the uniaxial tangent is Young's modulus" );
+  bool rejected = false;
+  try {
+    update( CoupledMaterial( G, lam, 500. ) );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected, "a material with shear stresses under a diagonal F must be rejected" );
+}
+
 int main()
 {
   const std::vector< std::function< void() > > tests = {
     testNeoHookeUniaxialStressAndTangent,
     testJ2PlasticityUniaxialStress,
     testRobustInitialGuess,
+    testRequiresDiagonalResponse,
   };
 
   executeTestsAndCollectExceptions( tests );

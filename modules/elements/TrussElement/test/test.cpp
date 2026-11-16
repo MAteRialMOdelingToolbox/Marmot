@@ -170,7 +170,8 @@ void testSmallStrainVonMises()
   throwExceptionOnFailure( checkIfEqual( truss.state( "stress" ), 500., 1e-6 ), "von Mises yield in uniaxial stress" );
 }
 
-/// finite strain: large rigid body rotations are stress free, and a stretch gives the uniaxial Neo-Hooke response
+/// finite strain: large rigid body rotations are stress free; rotated and stretched, the force acts along the current
+/// axis, the normal force is the Cauchy stress times the current area, and the strain is logarithmic
 void testFiniteStrainRigidRotationAndStretch()
 {
   const double K = 3000., G = 1000.;
