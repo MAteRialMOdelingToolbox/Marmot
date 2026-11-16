@@ -125,12 +125,49 @@ void testVonMisesTangentAndYieldSurface()
                            MakeString() << "von Mises yield surface in beam stress: " << equivalent );
 }
 
+/// the reduced stress states in Pa units (E = 210e9): linear elastic uniaxial and plane stress converge to the closed
+/// forms. The criterion is relative to the stress: the free stress components carry a round-off of about
+/// eps |sigma| ~ 1e-8 Pa here, below which an absolute tolerance (formerly 1e-13 / 1e-10) cannot be met, so these
+/// iterations failed for any material in SI units
+void testReducedStressStatesInPascal()
+{
+  const double                Epa = 210e9, nuPa = 0.3;
+  const std::vector< double > le = { Epa, nuPa, 7850. }; // E, nu, rho
+  {
+    auto                  material = makeMaterial( "LINEARELASTIC", le );
+    std::vector< double > stateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+    MHE::state1D          state;
+    state.stateVars = stateVars.data();
+    double dStress_dStrain;
+    material->computeUniaxialStress( state, dStress_dStrain, 0.01, { 0.0, 1.0 } );
+    throwExceptionOnFailure( std::abs( state.stress / ( Epa * 0.01 ) - 1 ) < 1e-12 &&
+                               std::abs( dStress_dStrain / Epa - 1 ) < 1e-12,
+                             MakeString() << "uniaxial stress in Pa: sigma = " << state.stress );
+  }
+  {
+    auto                  material = makeMaterial( "LINEARELASTIC", le );
+    std::vector< double > stateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+    MHE::state2D          state;
+    state.stateVars = stateVars.data();
+    Matrix3d       dStress_dStrain;
+    const Vector3d dStrain( 0.01, -0.003, 0.004 );
+    material->computePlaneStress( state, dStress_dStrain, dStrain, { 0.0, 1.0 } );
+    Matrix3d C; // plane stress, isotropic
+    C << 1, nuPa, 0, nuPa, 1, 0, 0, 0, ( 1 - nuPa ) / 2;
+    C *= Epa / ( 1 - nuPa * nuPa );
+    throwExceptionOnFailure( ( state.stress - C * dStrain ).cwiseAbs().maxCoeff() < 1e-12 * Epa * 0.01 &&
+                               ( dStress_dStrain - C ).cwiseAbs().maxCoeff() < 1e-12 * Epa,
+                             MakeString() << "plane stress in Pa: sigma = " << state.stress.transpose() );
+  }
+}
+
 int main()
 {
   executeTestsAndCollectExceptions( {
     testLinearElasticClosedForm,
     testEqualsUniaxialWithoutShear,
     testVonMisesTangentAndYieldSurface,
+    testReducedStressStatesInPascal,
   } );
   return 0;
 }

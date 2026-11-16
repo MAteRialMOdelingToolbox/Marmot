@@ -28,6 +28,7 @@
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <vector>
 
@@ -229,6 +230,59 @@ namespace Marmot::Materials {
                                         const timeInfo& timeInfo ) const;
 
     /**
+     * Beam stress implementation of @ref computeStress. The stress state of a fiber of a beam, with the prescribed
+     * axial strain and transverse shear strains \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12}, \Delta\gamma_{13} ]\f$
+     * and \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$ (computeStressWithFreeComponents()). The tangent is the
+     * condensed 3x3 tangent \f$\partial [ \sigma_{11}, \sigma_{12}, \sigma_{13} ] / \partial [ \varepsilon_{11},
+     * \gamma_{12}, \gamma_{13} ]\f$. Throws StressUpdateFailed if the iteration does not converge.
+     *
+     * @param[in,out] stateBeam           stresses, energy, dissipation and state variables of the fiber
+     * @param[out]    dStress_dStrainBeam the condensed tangent
+     * @param[in]     dStrainBeam         the increment \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12},
+     * \Delta\gamma_{13} ]\f$
+     * @param[in]     timeInfo            (pseudo-)time and its increment
+     */
+    virtual void computeBeamStress( stateBeam&                    stateBeam,
+                                    Marmot::Math::Matrix3d&       dStress_dStrainBeam,
+                                    const Marmot::Math::Vector3d& dStrainBeam,
+                                    const timeInfo&               timeInfo ) const;
+
+    /**
+     * @brief A reduced stress state by static condensation of the free components: the strain components
+     * \f$\boldsymbol{\varepsilon}_p\f$ are prescribed, the stress components \f$\boldsymbol{\sigma}_f = \mathbf{0}\f$,
+     * all other strain increments are zero.
+     *
+     * @details Indices in Marmot's Voigt order \f$[11, 22, 33, 12, 13, 23]\f$ (shear strains as engineering strains),
+     * e.g. plane stress \f$p = \{0, 1, 3\}, f = \{2\}\f$, uniaxial stress \f$p = \{0\}, f = \{1, 2\}\f$, beam stress
+     * \f$p = \{0, 3, 4\}, f = \{1, 2, 5\}\f$. Newton's method on the free strains: the 3D material (computeStress())
+     * is evaluated from the start-of-increment state every iteration (the state variables are reset), the free strains
+     * are corrected by \f$\Delta\boldsymbol{\varepsilon}_f \leftarrow \Delta\boldsymbol{\varepsilon}_f -
+     * \mathbf{C}_{ff}^{-1} \boldsymbol{\sigma}_f\f$, until \f$\max|\sigma_f| \leq 10^{-12} s\f$ (or \f$10^{-9} s\f$
+     * after 8 iterations), with the stress scale \f$s = \max(1, \max|\sigma|)\f$ of the prescribed components: the
+     * round-off of \f$\boldsymbol{\sigma}_f\f$ is relative to the size of the stresses, so an absolute tolerance cannot
+     * be met for large stresses. The tangent is the condensed one, \f$\mathbf{C}_{pp} - \mathbf{C}_{pf}
+     * \mathbf{C}_{ff}^{-1} \mathbf{C}_{fp}\f$.
+     *
+     * @tparam nP number of prescribed components
+     * @tparam nF number of free components
+     * @param[in,out] state            in: the start-of-increment stress (its free components are ignored), energy,
+     * dissipation and state variables; out: the updated ones
+     * @param[out]    dStressP_dStrainP the condensed tangent of the prescribed components
+     * @param[in,out] dStrain          in: the prescribed strain increments at p and an initial guess at f (others
+     * zero); out: the converged increment
+     * @param[in]     p                the prescribed components
+     * @param[in]     f                the free components
+     * @param[in]     timeInfo         (pseudo-)time and its increment
+     */
+    template < int nP, int nF >
+    void computeStressWithFreeComponents( state3D&                         state,
+                                          Eigen::Matrix< double, nP, nP >& dStressP_dStrainP,
+                                          Marmot::Math::Vector6d&          dStrain,
+                                          const std::array< int, nP >&     p,
+                                          const std::array< int, nF >&     f,
+                                          const timeInfo&                  timeInfo ) const;
+
+    /**
      * @brief Get a view to the state variables.
      * @param stateName Name of the state variable
      * @param stateVars Pointer to the state variable array
@@ -274,27 +328,6 @@ namespace Marmot::Materials {
      * @return Mass density of the material
      */
     virtual double getDensity( const double* stateVars ) const = 0;
-
-    /**
-     * Beam stress implementation of @ref computeStress. The stress state of a fiber of a beam, with the prescribed
-     * axial strain and transverse shear strains \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12}, \Delta\gamma_{13} ]\f$
-     * and \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$, found by a Newton iteration on the free strain components
-     * (the state variables are reset before every evaluation). The tangent is the condensed 3x3 tangent
-     * \f$\partial [ \sigma_{11}, \sigma_{12}, \sigma_{13} ] / \partial [ \varepsilon_{11}, \gamma_{12}, \gamma_{13}
-     * ]\f$. Throws StressUpdateFailed if the iteration does not converge.
-     *
-     * @param[in,out] stateBeam           stresses, energy, dissipation and state variables of the fiber
-     * @param[out]    dStress_dStrainBeam the condensed tangent
-     * @param[in]     dStrainBeam         the increment \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12},
-     * \Delta\gamma_{13} ]\f$
-     * @param[in]     timeInfo            (pseudo-)time and its increment
-     *
-     * @note Declared last, so that the virtual table of the existing interface is not shifted.
-     */
-    virtual void computeBeamStress( stateBeam&                    stateBeam,
-                                    Marmot::Math::Matrix3d&       dStress_dStrainBeam,
-                                    const Marmot::Math::Vector3d& dStrainBeam,
-                                    const timeInfo&               timeInfo ) const;
   };
 
 } // namespace Marmot::Materials

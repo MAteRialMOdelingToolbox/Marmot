@@ -11,12 +11,18 @@ All notable changes to Marmot are documented in this file. The format follows
   linear; cubic / quintic Hermite transverse interpolation), node fields displacement and rotation, sections given
   as section points (any shape, `[n, y_i, A_i ...]` in 2D, `[v, J, n, y_i, z_i, A_i ...]` in 3D) with one material
   instance per point (any hypoelastic material), Saint-Venant torsion scaled to G J. `BeamFiberSection` integrates
-  the section independently of the kinematics.
+  the section independently of the kinematics. A body force acts at the section points: line load and, for a section
+  whose centroid is off the axis, its line moment.
 - `B2D2CR` and `B3D2CR`: co-rotational (finite rotation) variants of `B2D2` / `B3D2` with the same properties
   and section (2D: Crisfield; 3D: Battini and Pacoste, exact geometric stiffness by forward automatic
   differentiation); arbitrary rigid rotations, small local strains.
 - `Materials::MaterialHypoElastic::computeBeamStress`: beam stress reduction (σ22 = σ33 = σ23 = 0; axial and
   transverse shear strains prescribed, condensed 3x3 tangent).
+- `Materials::MaterialHypoElastic::computeStressWithFreeComponents< nP, nF >`: one implementation of the reduced
+  stress states, by static condensation of the free components (prescribed strains at p, zero stresses at f, Newton
+  on the free strains from the start-of-increment state, condensed tangent `Cpp - Cpf Cff^-1 Cfp`, convergence relative
+  to the stress). `computePlaneStress`, `computeUniaxialStress` and `computeBeamStress` call it.
+- Quadrature catalogue: the 4-point Gauss-Legendre rule on `Line` (degree 7).
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -100,6 +106,12 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
 ### Fixed
+- **Results:** `MaterialHypoElastic::computePlaneStress` and `computeUniaxialStress` (all plane stress elements, the
+  truss and the 2D beam fibers) converge on a residual relative to the stress, `|sigma_f| <= 1e-12 max(1, |sigma|)`,
+  instead of an absolute one (plane stress 1e-10, uniaxial 1e-13). The round-off of the free stress components is
+  about eps |sigma|, so the absolute tolerance could not be met for large stresses: in SI units (Pa) both iterations
+  failed already for a linear elastic material. Results change at round-off level. The uniaxial tangent is condensed
+  over the iterated components (sigma22, sigma33) instead of all five; for isotropic materials both are equal.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
