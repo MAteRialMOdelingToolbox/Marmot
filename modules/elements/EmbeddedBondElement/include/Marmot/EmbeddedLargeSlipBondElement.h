@@ -80,9 +80,13 @@ namespace Marmot::Discretizations::Elements {
    * partner (\f$\boldsymbol{t} = \boldsymbol{x}_{,\eta}/|\boldsymbol{x}_{,\eta}|\f$, the normals carried along from the
    * reference frame of the channel point, EmbeddedBondKinematics::transportFrame), the slip is
    * \f[ s_t = S_c - S(\bar\eta), \qquad s_{n,i} = \boldsymbol{n}_i \cdot \boldsymbol{d}, \f]
-   * the reference arc length the bar has slid past the channel point, and the normal gap. Both are invariant under a
-   * rigid motion of host and bar (objective); the normal frame follows the bending of the bar but not a twist about its
-   * axis, which the laws, isotropic in the normal plane, do not need.
+   * the reference arc length the bar has slid past the channel point, and the normal gap. \f$s_t\f$ and the magnitude
+   * \f$|\boldsymbol{s}_n|\f$ are invariant under a rigid motion of host and bar. In 2D the element is objective. In 3D
+   * the transported normals depend on the tangent only: under a rigid rotation about an axis not normal to the bar they
+   * spin about the bar axis relative to the material, so the normal slip components spin too. Laws whose normal
+   * response depends only on \f$|\boldsymbol{s}_n|\f$ (linear normal stiffness, Coulomb friction on \f$p\f$) are
+   * unaffected; a stored normal history (the plastic normal slip of the MC2010 crushing cap) is then rotated against
+   * the current normal slip, i.e., large 3D rotations with crushing are not objective.
    *
    * **Bond and fade.** The tributary part of a channel point is covered by the bar between its ends, which have moved
    * by \f$s_t\f$: \f$x = \big(\min(S_b, S_{\mathrm{end}} + s_t) - \max(S_a, S_{\mathrm{start}} + s_t)\big) / (S_b -
@@ -114,9 +118,13 @@ namespace Marmot::Discretizations::Elements {
    * by central differences of the analytic \f$\boldsymbol{B}\f$ over the host and partner dofs only (geometry, no law
    * evaluation): geometricStiffness().
    *
-   * **Bars.** The bar elements should form a straight or smoothly curved bar: at a kink, the partner of a point on the
-   * convex side of the kink is the kink node itself (its projection lies on neither element), and the slip jumps by
-   * about \f$2 g \tan(\alpha/2)\f$ for a gap g and a kink angle \f$\alpha\f$ as the point crosses the kink.
+   * **Bars and limitations.** The bar elements should form a straight or smoothly curved bar: at a kink, the partner
+   * of a point on the convex side of the kink is the kink node itself (its projection lies on neither element), its
+   * tangential slip stays constant while it is in that wedge (of width about \f$g \alpha\f$, no tangential bond work),
+   * and the slip jumps by about \f$2 g \tan(\alpha/2)\f$ for a gap g and a kink angle \f$\alpha\f$ as the point
+   * crosses the kink. Rotations of the bar axis near 180 degrees against the reference are not supported (the frame
+   * transport degenerates; an exception is thrown at the limit). For curved quadratic bars, the arc length is
+   * integrated numerically, so the tangential row of B is consistent with it only up to that quadrature error.
    *
    * **Nodes**: the host element nodes, followed by the unique nodes of the window in bar order (bar2: e0, e1, ...,
    * eN; bar3: e0, m0, e1, m1, ..., eN). Unlike the small-slip element (bar nodes first), the host comes first, so that
@@ -711,8 +719,8 @@ namespace Marmot::Discretizations::Elements {
         // the element of the channel point
         const double  previousPartner = sv.partner > 0 ? sv.partner : cp.c;
         const Partner partner         = findPartner( x, xc, static_cast< int >( std::floor( previousPartner ) ) );
-        if ( ( partner.element == 0 && partner.eta < -1.0 && !startIsBarEnd ) ||
-             ( partner.element == nBarElements - 1 && partner.eta > 1.0 && !endIsBarEnd ) )
+        if ( ( partner.element == 0 && partner.eta < -1.0 - etaTolerance && !startIsBarEnd ) ||
+             ( partner.element == nBarElements - 1 && partner.eta > 1.0 + etaTolerance && !endIsBarEnd ) )
           throw std::runtime_error( Marmot::Utilities::MakeString()
                                     << "EmbeddedLargeSlipBondElement " << elLabel
                                     << ": the slip exceeds the window of bar elements (the window is too small)" );

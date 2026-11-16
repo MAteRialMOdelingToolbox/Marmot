@@ -94,9 +94,11 @@ namespace Marmot::Discretizations::Elements::EmbeddedBondKinematics {
    * \f$\boldsymbol{v} = \boldsymbol{t}_0 \times \boldsymbol{t}\f$ with \f$c = \boldsymbol{t}_0 \cdot \boldsymbol{t}\f$)
    * \f[ \boldsymbol{Q} = c\,\boldsymbol{I} + [\boldsymbol{v}]_\times + \frac{\boldsymbol{v} \otimes \boldsymbol{v}}{1 +
    * c}, \qquad \boldsymbol{n}_i = \boldsymbol{Q}\, \boldsymbol{n}_i^0 \f]
-   * depends on t only: it follows the bending of the bar, but not a rotation of the bar about its own axis. The
-   * normal components are therefore objective for laws isotropic in the normal plane (all laws here); a stored
-   * normal history (e.g., the plastic normal slip) is not rotated with a twist of the bar.
+   * depends on t only: it follows the bending of the bar, but not a rotation about its own axis. Under a rigid
+   * rotation about an axis not normal to t, the transported normals therefore spin about t relative to the rotated
+   * reference normals: the magnitude of the normal slip is objective, its components are not. Laws whose normal
+   * response depends only on that magnitude are objective; a stored normal history (e.g., the plastic normal slip of
+   * a crushing cap) is not.
    *
    * @param R0 the reference frame [t0, n1^0, (n2^0)]
    * @param t  the current unit tangent
