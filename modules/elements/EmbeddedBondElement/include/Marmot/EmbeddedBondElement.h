@@ -46,7 +46,7 @@ namespace Marmot::Discretizations::Elements {
    * @brief Bond-slip coupling of an embedded reinforcement bar (truss) to the host continuum element it lies in.
    *
    * @tparam nDim        number of spatial dimensions, 2 or 3
-   * @tparam nRebarNodes number of nodes of the reinforcement element, 2 or 3 (end, end, mid)
+   * @tparam nBarNodes number of nodes of the bar element, 2 or 3 (end, end, mid)
    * @tparam nHostNodes  number of nodes of the host element (Tri3, Quad4, Quad8, Tetra4, Hexa8, Hexa20; the hosts with
    * a continuum element in Marmot)
    *
@@ -83,15 +83,15 @@ namespace Marmot::Discretizations::Elements {
    *
    * Material: a bond-slip law registered in the Marmot::Registry::BondSlipLawFactory.
    */
-  template < int nDim, int nRebarNodes, int nHostNodes >
+  template < int nDim, int nBarNodes, int nHostNodes >
   class EmbeddedBondElement : public Marmot::Discretizations::Elements::Element {
 
     static_assert( nDim == 2 || nDim == 3, "EmbeddedBondElement: nDim must be 2 or 3" );
-    static_assert( nRebarNodes == 2 || nRebarNodes == 3, "EmbeddedBondElement: nRebarNodes must be 2 or 3" );
+    static_assert( nBarNodes == 2 || nBarNodes == 3, "EmbeddedBondElement: nBarNodes must be 2 or 3" );
 
   public:
     /// number of nodes: the bar nodes, followed by the host nodes
-    static constexpr int nNodes = nRebarNodes + nHostNodes;
+    static constexpr int nNodes = nBarNodes + nHostNodes;
     /// number of element dofs (displacements only)
     static constexpr int sizeLoadVector = nNodes * nDim;
 
@@ -101,7 +101,7 @@ namespace Marmot::Discretizations::Elements {
     using RhsSized     = Eigen::Matrix< double, sizeLoadVector, 1 >;              ///< element force vector
     using KSized       = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >; ///< element stiffness matrix
     using LSized       = Eigen::Matrix< double, nDim, sizeLoadVector >;           ///< relative displacement operator
-    using RebarN       = Eigen::Matrix< double, 1, nRebarNodes >;                 ///< bar shape functions
+    using BarN         = Eigen::Matrix< double, 1, nBarNodes >;                   ///< bar shape functions
 
     /// Element label
     const int elLabel;
@@ -110,7 +110,7 @@ namespace Marmot::Discretizations::Elements {
     Eigen::Map< const Eigen::VectorXd > elementProperties;
 
     /// Reference coordinates of the reinforcement nodes, [dim, node]
-    Eigen::Map< const Eigen::Matrix< double, nDim, nRebarNodes > > rebarCoordinates;
+    Eigen::Map< const Eigen::Matrix< double, nDim, nBarNodes > > barCoordinates;
 
     /// The geometry of the host element
     HostGeometry hostGeometry;
@@ -166,13 +166,13 @@ namespace Marmot::Discretizations::Elements {
      * @param elementID the element label
      */
     explicit EmbeddedBondElement( int elementID )
-      : elLabel( elementID ), elementProperties( nullptr, 0 ), rebarCoordinates( nullptr )
+      : elLabel( elementID ), elementProperties( nullptr, 0 ), barCoordinates( nullptr )
     {
       qps.resize( defaultNumberOfIntegrationPoints() );
     }
 
     /// 2 Gauss-Lobatto points for linear bars, 3 for quadratic bars (exact for the stiffness of a linear law)
-    static constexpr int defaultNumberOfIntegrationPoints() { return nRebarNodes == 2 ? 2 : 3; }
+    static constexpr int defaultNumberOfIntegrationPoints() { return nBarNodes == 2 ? 2 : 3; }
 
     /**
      * @brief The Gauss-Lobatto rule along the bar part, from the quadrature catalogue.
@@ -193,18 +193,18 @@ namespace Marmot::Discretizations::Elements {
     }
 
     /// shape functions of the bar element at the bar parent coordinate @p eta
-    static RebarN rebarN( double eta )
+    static BarN barN( double eta )
     {
-      if constexpr ( nRebarNodes == 2 )
+      if constexpr ( nBarNodes == 2 )
         return Marmot::Discretizations::Elements::Spatial1D::Bar2::N( eta );
       else
         return Marmot::Discretizations::Elements::Spatial1D::Bar3::N( eta );
     }
 
     /// derivatives of the bar shape functions with respect to @p eta
-    static RebarN rebarDNdEta( double eta )
+    static BarN barDNdEta( double eta )
     {
-      if constexpr ( nRebarNodes == 2 )
+      if constexpr ( nBarNodes == 2 )
         return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( eta );
       else
         return Marmot::Discretizations::Elements::Spatial1D::Bar3::dNdXi( eta );
@@ -299,7 +299,7 @@ namespace Marmot::Discretizations::Elements {
 
     int getNDofPerElement() override { return sizeLoadVector; }
 
-    std::string getElementShape() override { return nRebarNodes == 2 ? "bar2" : "bar3"; }
+    std::string getElementShape() override { return nBarNodes == 2 ? "bar2" : "bar3"; }
 
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
@@ -352,8 +352,8 @@ namespace Marmot::Discretizations::Elements {
 
     void assignNodeCoordinates( const double* coordinates ) override
     {
-      new ( &rebarCoordinates ) Eigen::Map< const Eigen::Matrix< double, nDim, nRebarNodes > >( coordinates );
-      hostGeometry.assignNodeCoordinates( coordinates + nRebarNodes * nDim );
+      new ( &barCoordinates ) Eigen::Map< const Eigen::Matrix< double, nDim, nBarNodes > >( coordinates );
+      hostGeometry.assignNodeCoordinates( coordinates + nBarNodes * nDim );
     }
 
     void initializeYourself() override
@@ -368,9 +368,9 @@ namespace Marmot::Discretizations::Elements {
         qp.eta    = etaStart + 0.5 * ( etaEnd - etaStart ) * ( rule[q].xi( 0 ) + 1 );
         qp.weight = rule[q].weight;
 
-        const RebarN    M       = rebarN( qp.eta );
-        const VectorDim X       = rebarCoordinates * M.transpose();
-        const VectorDim dX_dEta = rebarCoordinates * rebarDNdEta( qp.eta ).transpose();
+        const BarN      M       = barN( qp.eta );
+        const VectorDim X       = barCoordinates * M.transpose();
+        const VectorDim dX_dEta = barCoordinates * barDNdEta( qp.eta ).transpose();
         const double    dS      = dX_dEta.norm() * 0.5 * ( etaEnd - etaStart ) * qp.weight;
 
         qp.perimeterTimesDS = perimeter * dS;
@@ -379,10 +379,10 @@ namespace Marmot::Discretizations::Elements {
 
         const auto N = hostGeometry.N( qp.hostXi );
         qp.L.setZero();
-        for ( int i = 0; i < nRebarNodes; i++ )
+        for ( int i = 0; i < nBarNodes; i++ )
           qp.L.template block< nDim, nDim >( 0, i * nDim ) = M( i ) * MatrixDim::Identity();
         for ( int a = 0; a < nHostNodes; a++ )
-          qp.L.template block< nDim, nDim >( 0, ( nRebarNodes + a ) * nDim ) = -N( a ) * MatrixDim::Identity();
+          qp.L.template block< nDim, nDim >( 0, ( nBarNodes + a ) * nDim ) = -N( a ) * MatrixDim::Identity();
       }
     }
 
@@ -479,8 +479,7 @@ namespace Marmot::Discretizations::Elements {
 
     std::vector< double > getCoordinatesAtCenter() override
     {
-      const VectorDim X = rebarCoordinates *
-                          rebarN( 0.5 * ( elementProperties[1] + elementProperties[2] ) ).transpose();
+      const VectorDim X = barCoordinates * barN( 0.5 * ( elementProperties[1] + elementProperties[2] ) ).transpose();
       return std::vector< double >( X.data(), X.data() + nDim );
     }
 
@@ -488,7 +487,7 @@ namespace Marmot::Discretizations::Elements {
     {
       std::vector< std::vector< double > > result;
       for ( const auto& qp : qps ) {
-        const VectorDim X = rebarCoordinates * rebarN( qp.eta ).transpose();
+        const VectorDim X = barCoordinates * barN( qp.eta ).transpose();
         result.emplace_back( X.data(), X.data() + nDim );
       }
       return result;
