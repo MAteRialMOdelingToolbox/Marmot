@@ -20,7 +20,7 @@ slip is the displacement of the bar relative to the host material point it lies 
 
 with the host parent coordinates :math:`\boldsymbol{\xi}(\eta)` found by the inverse isoparametric mapping of the host
 geometry (``GeometryElement::parentCoordinates``) at initialization. The tangent :math:`\mathbf{t}` points from the
-first to the last bar node; in 2D, :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°; in 3D, the normals
+first to the second end node of the bar element (:math:`\mathbf{t} = \mathrm{d}\mathbf{X}/\mathrm{d}\eta`); in 2D, :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°; in 3D, the normals
 are an arbitrary right-handed pair that may differ between integration points, so the normal components of slip and
 bond stress are not comparable between points (the bond-slip laws are isotropic in the normal plane). A
 :ref:`bond-slip law <bondsliplaws>` gives the bond stress :math:`\boldsymbol{\tau}(\mathbf{s})`, integrated over
