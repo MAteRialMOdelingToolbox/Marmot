@@ -408,6 +408,10 @@ namespace Marmot::Discretizations::Elements {
     /// the small strain operator.
     void initializeYourself() override
     {
+      if ( elementProperties.size() == 0 )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                << ": assign the element properties before initializing" );
       for ( auto& qp : qps ) {
         qp.N                   = N( qp.xi );
         const NSized    dN_dXi = dNdXi( qp.xi );

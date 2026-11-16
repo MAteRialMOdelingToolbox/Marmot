@@ -444,6 +444,10 @@ namespace Marmot::Discretizations::Elements {
 
     void initializeYourself() override
     {
+      if ( elementProperties.size() == 0 )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                << ": assign the element properties before initializing" );
       const VectorDim axis = coordinates.col( 1 ) - coordinates.col( 0 );
       length               = axis.norm();
       if ( length <= 0 )
