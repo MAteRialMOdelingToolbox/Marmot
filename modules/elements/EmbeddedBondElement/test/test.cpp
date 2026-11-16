@@ -456,6 +456,17 @@ void testLargeSlipWindowExceededThrows()
     threw = true;
   }
   throwExceptionOnFailure( threw, "a slip beyond the window must throw" );
+
+  // a channel starting exactly at a window end that is not a bar end: its first point projects onto eta = -1 up to
+  // round-off, which is no slip beyond the window
+  const std::vector< double > window = { 0.5, 1.37, 2.0, 1.53, 3.5, 1.61 };
+  Bond                        atEnd( "EBLS2D2Q8W2",
+              concat( quad8, window ),
+                                     { 1.0, 0.0, 1.0, 0.0, 0.0 },
+              "LINEARELASTICBONDSLIP",
+              linearBond );
+  const auto P = atEnd.kernels( Eigen::VectorXd::Zero( atEnd.nDof ), Eigen::VectorXd::Zero( atEnd.nDof ), false ).first;
+  throwExceptionOnFailure( P.norm() < 1e-12, "no force at zero displacement" );
 }
 
 /// a straight quadratic bar of 3 elements through the hexahedron, window order e0 m0 e1 m1 e2 m2 e3
@@ -471,7 +482,7 @@ std::vector< double > straightWindow3D( const Eigen::Vector3d& a, const Eigen::V
 
 /// the analytic tangent (material, fade and geometric parts) against central differences of the forces, with a
 /// softening law with Coulomb friction and a window of 3 quadratic bar elements in a hexahedron, after a slide that
-/// bends the bar and leaves the first channel point partially covered (0 < f < 1)
+/// bends the bar and leaves the second channel point partially covered (0 < f < 1)
 void testLargeSlipTangent3D()
 {
   const Eigen::Vector3d a( 0.3, 0.2, 0.4 ), b( 1.6, 1.7, 1.5 );

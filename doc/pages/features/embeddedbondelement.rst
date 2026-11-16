@@ -20,7 +20,7 @@ slip is the displacement of the bar relative to the host material point it lies 
 
 with the host parent coordinates :math:`\boldsymbol{\xi}(\eta)` found by the inverse isoparametric mapping of the host
 geometry (``GeometryElement::parentCoordinates``) at initialization. The tangent :math:`\mathbf{t}` points from the
-first to the last bar node; in 2D, :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°; in 3D, the normals
+first to the second end node of the bar element (:math:`\mathbf{t} = \mathrm{d}\mathbf{X}/\mathrm{d}\eta`); in 2D, :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°; in 3D, the normals
 are an arbitrary right-handed pair that may differ between integration points, so the normal components of slip and
 bond stress are not comparable between points (the bond-slip laws are isotropic in the normal plane). A
 :ref:`bond-slip law <bondsliplaws>` gives the bond stress :math:`\boldsymbol{\tau}(\mathbf{s})`, integrated over
@@ -98,9 +98,12 @@ carried from the reference frame by the smallest rotation), the slip is
 
    s_t = S_c - S(\bar\eta), \qquad s_{n,i} = \mathbf{n}_i \cdot \mathbf{d}:
 
-the reference arc length the bar has slid past the channel point, and the normal gap. Both are invariant under rigid
-motions of host and bar, so the element is objective for large rotations (the normal frame follows the bending of the
-bar, not a twist about its axis, which the laws, isotropic in the normal plane, do not need).
+the reference arc length the bar has slid past the channel point, and the normal gap. :math:`s_t` and
+:math:`|\mathbf{s}_n|` are invariant under rigid motions of host and bar; in 2D the element is objective. In 3D the
+normals follow the bending of the bar but not a rotation about its axis, so under a rigid rotation about an axis not
+normal to the bar the normal slip components spin about the axis: laws whose normal response depends only on
+:math:`|\mathbf{s}_n|` (linear normal stiffness, Coulomb friction) stay objective, a stored normal history (the
+plastic normal slip of the MC2010 crushing cap) does not.
 
 **Bond and fade.** The bar ends move by :math:`s_t`, so the covered fraction of a tributary part is
 
@@ -135,9 +138,12 @@ derivatives of the projection and the frame, times the bond stress) is the centr
 :math:`\mathbf{B}` over the host and partner dofs only, without evaluating the law. The tests check the whole
 tangent against central differences of the forces.
 
-**Bars.** The bar should be straight or smoothly curved: at a kink, a point on the convex side has the kink node as
-its partner, and the slip jumps by about :math:`2 g \tan(\alpha/2)` (gap :math:`g`, kink angle :math:`\alpha`) as the
-point crosses the kink.
+**Bars and limitations.** The bar should be straight or smoothly curved: at a kink, a point on the convex side has the
+kink node as its partner, its tangential slip stays constant while it is in that wedge (width about :math:`g\alpha`),
+and the slip jumps by about :math:`2 g \tan(\alpha/2)` (gap :math:`g`, kink angle :math:`\alpha`) as the point
+crosses the kink. Rotations of the bar axis near 180 degrees against the reference are not supported. For curved
+quadratic bars the arc length is integrated numerically, and the tangent is consistent only up to that quadrature
+error.
 
 Nodes: the host element nodes, followed by the unique nodes of the window in bar order (bar2: ``e0, e1, ..., eN``;
 bar3: ``e0, m0, e1, m1, ..., eN``). Unlike the small-slip element, the host comes first, so that the element is drawn

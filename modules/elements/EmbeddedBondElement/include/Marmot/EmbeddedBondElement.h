@@ -52,10 +52,10 @@ namespace Marmot::Discretizations::Elements {
    * a continuum element in Marmot)
    *
    * The nodes of the element are the nodes of the reinforcement (truss) element, followed by the nodes of the host
-   * element. The reinforcement keeps its own, independent displacement field; the element couples it to the host by
-   * the bond stress, which a pluggable bond-slip law (Marmot::Materials::BondSlipLaw) computes from the slip, i.e., the
-   * displacement of the bar relative to the host material point it lies at:
-   * \f[
+   * element (bar first: the element is drawn as its bar; the large-slip element puts the host first, to be drawn as the
+   * host on which its channel lies). The reinforcement keeps its own, independent displacement field; the element
+   * couples it to the host by the bond stress, which a pluggable bond-slip law (Marmot::Materials::BondSlipLaw)
+   * computes from the slip, i.e., the displacement of the bar relative to the host material point it lies at: \f[
    *   \boldsymbol{\Delta}(\eta) = \sum_i M_i(\eta)\, \boldsymbol{u}_i - \sum_a N_a(\boldsymbol{\xi}(\eta))\,
    *   \boldsymbol{u}_a , \qquad \boldsymbol{s} = \boldsymbol{R}^T \boldsymbol{\Delta},
    * \f]
