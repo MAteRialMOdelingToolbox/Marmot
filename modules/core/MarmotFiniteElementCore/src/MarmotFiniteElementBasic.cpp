@@ -76,6 +76,9 @@ namespace Marmot::Discretizations::Elements {
       // the 4-point Gauss-Legendre rule: abscissas sqrt(3/7 -+ 2/7 sqrt(6/5)), weights (18 +- sqrt(30)) / 36
       const double gp4a = std::sqrt( 3. / 7 - 2. / 7 * std::sqrt( 6. / 5 ) ), gw4a = ( 18 + std::sqrt( 30. ) ) / 36;
       const double gp4b = std::sqrt( 3. / 7 + 2. / 7 * std::sqrt( 6. / 5 ) ), gw4b = ( 18 - std::sqrt( 30. ) ) / 36;
+      // interior abscissas of the 4- and 5-point Gauss-Lobatto rules, sqrt(1/5) and sqrt(3/7), correctly rounded
+      constexpr double gl4 = 0.447213595499957939282;
+      constexpr double gl5 = 0.654653670707977143798;
 
       // coordinates of the 4-point tetrahedron rule
       const double a = ( 5 - std::sqrt( 5 ) ) / 20;
@@ -121,6 +124,25 @@ namespace Marmot::Discretizations::Elements {
         { Domain::Line, Family::NewtonCotes, 1, {
             { ( VectorXd( 1 ) << -1. ).finished(),                  1.0 },
             { ( VectorXd( 1 ) << +1. ).finished(),                  1.0 } } },
+        // Gauss-Lobatto: the end points and the roots of P'_{n-1}
+        { Domain::Line, Family::GaussLobatto, 1, {
+            { ( VectorXd( 1 ) << -1. ).finished(),                  1.0 },
+            { ( VectorXd( 1 ) << +1. ).finished(),                  1.0 } } },
+        { Domain::Line, Family::GaussLobatto, 3, {
+            { ( VectorXd( 1 ) << -1. ).finished(),                  1./3 },
+            { ( VectorXd( 1 ) << 0. ).finished(),                   4./3 },
+            { ( VectorXd( 1 ) << +1. ).finished(),                  1./3 } } },
+        { Domain::Line, Family::GaussLobatto, 5, {
+            { ( VectorXd( 1 ) << -1. ).finished(),                  1./6 },
+            { ( VectorXd( 1 ) << -gl4 ).finished(),                 5./6 },
+            { ( VectorXd( 1 ) << +gl4 ).finished(),                 5./6 },
+            { ( VectorXd( 1 ) << +1. ).finished(),                  1./6 } } },
+        { Domain::Line, Family::GaussLobatto, 7, {
+            { ( VectorXd( 1 ) << -1. ).finished(),                  1./10 },
+            { ( VectorXd( 1 ) << -gl5 ).finished(),                 49./90 },
+            { ( VectorXd( 1 ) << 0. ).finished(),                   32./45 },
+            { ( VectorXd( 1 ) << +gl5 ).finished(),                 49./90 },
+            { ( VectorXd( 1 ) << +1. ).finished(),                  1./10 } } },
 
         // ------------------------------------------------------------------------------------------------ Triangle
         { Domain::Triangle, Family::Gauss, 1, {
@@ -249,10 +271,11 @@ namespace Marmot::Discretizations::Elements {
           return entry.points;
 
       static const char* domainNames[] = { "Line", "Triangle", "Quadrilateral", "Tetrahedron", "Hexahedron" };
+      static const char* familyNames[] = { "Gauss", "Newton-Cotes", "Gauss-Lobatto" };
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << "getQuadraturePoints(): there is no "
-                                   << ( rule.family == QuadratureFamily::Gauss ? "Gauss" : "Newton-Cotes" )
-                                   << " rule of degree " << rule.degreeOfExactness << " on the reference domain "
+                                   << familyNames[static_cast< int >( rule.family )] << " rule of degree "
+                                   << rule.degreeOfExactness << " on the reference domain "
                                    << domainNames[static_cast< int >( domain )] << "." );
     }
 

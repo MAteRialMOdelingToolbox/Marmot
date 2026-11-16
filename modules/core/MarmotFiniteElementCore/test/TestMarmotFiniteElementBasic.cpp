@@ -502,6 +502,35 @@ void testConsistentMassRuleIsOfDegree2p()
                            "There is no Gauss rule of degree 6 for the consistent mass of the cubic Hexa64." );
 }
 
+void testGaussLobattoRulesHaveTheEndPointsAndDegree2nMinus3()
+{
+  // n points: both end points, positive weights, exact up to the degree 2n - 3 and not beyond (x^(2n-2))
+  int nRules = 0;
+  for ( const auto& rule : quadratureRules() ) {
+    if ( rule.family != QuadratureFamily::GaussLobatto )
+      continue;
+    nRules++;
+    const int    n           = static_cast< int >( rule.points.size() );
+    const double first       = rule.points.front().xi( 0 );
+    const double last        = rule.points.back().xi( 0 );
+    double       integral    = 0;
+    bool         allPositive = true;
+    for ( const auto& qp : rule.points ) {
+      integral += qp.weight * std::pow( qp.xi( 0 ), 2 * n - 2 );
+      allPositive = allPositive && qp.weight > 0;
+    }
+    throwExceptionOnFailure( rule.domain == ReferenceDomain::Line && first == -1. && last == 1. && allPositive &&
+                               rule.degreeOfExactness == 2 * n - 3 && std::abs( integral - 2. / ( 2 * n - 1 ) ) > 1e-6,
+                             "The " + std::to_string( n ) +
+                               "-point Gauss-Lobatto rule must have both end points, positive weights and the "
+                               "degree 2n - 3." );
+    throwExceptionOnFailure( getQuadraturePoints( ReferenceDomain::Line, gaussLobattoExactToDegree( 2 * n - 3 ) )
+                                 .size() == rule.points.size(),
+                             "gaussLobattoExactToDegree( 2n - 3 ) must return the n-point rule." );
+  }
+  throwExceptionOnFailure( nRules == 4, "The catalogue must hold the Gauss-Lobatto rules with 2 to 5 points." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -519,6 +548,7 @@ int main()
     testEveryNewtonCotesRuleIsTheNodalQuadratureOfItsLinearElement,
     testEveryShapeListsTheCornersOfItsDomainFirstInCornerOrder,
     testConsistentMassRuleIsOfDegree2p,
+    testGaussLobattoRulesHaveTheEndPointsAndDegree2nMinus3,
   };
 
   executeTestsAndCollectExceptions( tests );

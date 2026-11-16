@@ -31,6 +31,17 @@ All notable changes to Marmot are documented in this file. The format follows
 - `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
   materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
   the lateral stretches with state reset, condensed tangent dτ11/dF11).
+- Bond-slip of embedded reinforcement: the pluggable bond-slip law interface `Materials::BondSlipLaw` with its
+  `Registry::BondSlipLawFactory` (bond laws are modules in the materials category with their own factory), the laws
+  `materials/LinearElasticBondSlip` (`LINEARELASTICBONDSLIP`), `materials/ModelCode2010BondSlip`
+  (`MODELCODE2010BONDSLIP`: fib Model Code 2010 envelope, elastic un-/reloading, optional Coulomb friction and a
+  normal crushing cap), and `elements/EmbeddedBondElement` (`EB<nDim>D<nBarNodes><host>`, e.g. `EB2D2Q4`,
+  `EB3D2H20`, `EB2D2T3`: the bond of a bar element to the host element it lies in, small slip, geometrically
+  linear).
+- `GeometryElement::parentCoordinates` (inverse isoparametric mapping on coordinates relative to the element, so it
+  converges far from the origin) and `GeometryElement::isInsideParentDomain`; `LagrangianCellGeometry` and the
+  embedded bond element use it.
+- The Gauss-Lobatto family of the quadrature catalogue on Line (2 to 5 points), `gaussLobattoExactToDegree()`.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
