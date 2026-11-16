@@ -1,3 +1,4 @@
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotTesting.h"
@@ -35,8 +36,8 @@ namespace {
     double      delta;
   };
 
-  /// perfect plasticity: g(dKappa) is linear, Newton converges in one step; linear and nonlinear hardening: several
-  /// iterations under the relative criterion
+  /// perfect plasticity and linear hardening: g(dKappa) is linear, Newton converges in one step; nonlinear hardening:
+  /// several iterations under the relative criterion
   const std::vector< Hardening > hardeningLaws = { { "perfectly plastic", 0., 0., 0. },
                                                    { "linear hardening", 2100., 0., 0. },
                                                    { "nonlinear hardening", 2100., 100., 20. } };
