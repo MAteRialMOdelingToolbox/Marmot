@@ -376,8 +376,10 @@ void testTangentWithFriction()
     if ( lawProperties.size() == withoutCap.size() )
       throwExceptionOnFailure( !K.isApprox( K.transpose() ), "the friction coupling makes the tangent unsymmetric" );
   }
-/// for tiny displacements, the large-slip element (channel in a quad8, window of one bar element) gives the forces of
-/// the small-slip element
+}
+
+/// for small displacements, the large-slip element (channel in a quad8, window of one bar element) gives the forces and
+/// the tangent of the small-slip element, entry by entry (the node orders differ: host first here)
 void testLargeSlipEqualsSmallSlipForSmallDisplacements()
 {
   const std::vector< double > bar = { 0.5, 0.3, 3.5, 2.8 };
@@ -390,17 +392,23 @@ void testLargeSlipEqualsSmallSlipForSmallDisplacements()
 
   Eigen::VectorXd USmall = Eigen::VectorXd::Random( small.nDof ) * 1e-6;
   // the same nodal displacements in the node order of the large-slip element: host, then bar
-  Eigen::VectorXd ULarge( large.nDof );
-  ULarge << USmall.segment( 4, 16 ), USmall.segment( 0, 4 );
+  Eigen::PermutationMatrix< Eigen::Dynamic > largeToSmall( small.nDof );
+  for ( int j = 0; j < 16; j++ )
+    largeToSmall.indices()( j ) = 4 + j;
+  for ( int j = 0; j < 4; j++ )
+    largeToSmall.indices()( 16 + j ) = j;
+  const Eigen::VectorXd ULarge = largeToSmall.transpose() * USmall;
 
-  const auto [PSmall, KSmall] = small.kernels( USmall, Eigen::VectorXd::Zero( small.nDof ), false );
-  const auto [PLarge, KLarge] = large.kernels( ULarge, Eigen::VectorXd::Zero( large.nDof ), false );
-  Eigen::VectorXd PLargeReordered( small.nDof );
-  PLargeReordered << PLarge.segment( 16, 4 ), PLarge.segment( 0, 16 );
-  throwExceptionOnFailure( checkIfEqual< double >( PLargeReordered, PSmall, 1e-6 * PSmall.cwiseAbs().maxCoeff() ),
+  const auto [PSmall, KSmall]              = small.kernels( USmall, Eigen::VectorXd::Zero( small.nDof ), false );
+  const auto [PLarge, KLarge]              = large.kernels( ULarge, Eigen::VectorXd::Zero( large.nDof ), false );
+  const Eigen::VectorXd PLargeInSmallOrder = largeToSmall * PLarge;
+  const Eigen::MatrixXd KLargeInSmallOrder = largeToSmall * KLarge * largeToSmall.transpose();
+  throwExceptionOnFailure( checkIfEqual< double >( PLargeInSmallOrder, PSmall, 1e-5 * PSmall.cwiseAbs().maxCoeff() ),
                            "large-slip forces must equal the small-slip ones for small displacements" );
-  throwExceptionOnFailure( std::abs( KLarge.sum() - KSmall.sum() ) < 1e-4 * KSmall.cwiseAbs().sum(),
-                           "large-slip tangent must equal the small-slip one for small displacements" );
+  throwExceptionOnFailure( checkIfEqual< double >( KLargeInSmallOrder, KSmall, 1e-5 * KSmall.cwiseAbs().maxCoeff() ),
+                           Marmot::Utilities::MakeString()
+                             << "large-slip tangent must equal the small-slip one entry by entry, max difference "
+                             << ( KLargeInSmallOrder - KSmall ).cwiseAbs().maxCoeff() );
 }
 
 /// a bar slid by 1.0 along its axis out of a fixed host: the channel point the bar end has passed loses its bond, the
@@ -450,36 +458,166 @@ void testLargeSlipWindowExceededThrows()
   throwExceptionOnFailure( threw, "a slip beyond the window must throw" );
 }
 
-/// the (internally finite-difference) tangent against an independent central difference, with a softening law and a
-/// window of 3 quadratic bar elements in a hexahedron
+/// a straight quadratic bar of 3 elements through the hexahedron, window order e0 m0 e1 m1 e2 m2 e3
+std::vector< double > straightWindow3D( const Eigen::Vector3d& a, const Eigen::Vector3d& b, int nNodes )
+{
+  std::vector< double > window;
+  for ( int i = 0; i < nNodes; i++ ) {
+    const Eigen::Vector3d X = a + ( b - a ) * i / double( nNodes - 1 );
+    window.insert( window.end(), { X( 0 ), X( 1 ), X( 2 ) } );
+  }
+  return window;
+}
+
+/// the analytic tangent (material, fade and geometric parts) against central differences of the forces, with a
+/// softening law with Coulomb friction and a window of 3 quadratic bar elements in a hexahedron, after a slide that
+/// bends the bar and leaves the first channel point partially covered (0 < f < 1)
 void testLargeSlipTangent3D()
 {
-  // a straight quadratic bar of 3 elements through the hexahedron, chain order e0 m0 e1 m1 e2 m2 e3
-  std::vector< double > chain;
   const Eigen::Vector3d a( 0.3, 0.2, 0.4 ), b( 1.6, 1.7, 1.5 );
-  for ( int i = 0; i <= 6; i++ ) {
-    const Eigen::Vector3d X = a + ( b - a ) * i / 6.0;
-    chain.insert( chain.end(), { X( 0 ), X( 1 ), X( 2 ) } );
-  }
-  Bond large( "EBLS3D3H8W3", concat( hexa8, chain ), { 1.5, 0.4, 2.6, 1.0, 1.0, 4 }, "MODELCODE2010BONDSLIP", mc2010 );
+  Bond                  large( "EBLS3D3H8W3",
+              concat( hexa8, straightWindow3D( a, b, 7 ) ),
+                               { 1.5, 0.0, 1.0, 1.0, 0.0, 4 },
+              "MODELCODE2010BONDSLIP",
+              mc2010Friction );
   const Eigen::Vector3d t    = ( b - a ).normalized();
+  const double          L    = ( b - a ).norm() / 3.0; // bar element length = channel length
   Eigen::VectorXd       UOld = Eigen::VectorXd::Zero( large.nDof );
   for ( int i = 1; i <= 3; i++ ) {
     Eigen::VectorXd U = Eigen::VectorXd::Zero( large.nDof );
     for ( int n = 0; n < 7; n++ )
-      U.segment< 3 >( 24 + 3 * n ) = t * 0.1 * i;
+      U.segment< 3 >( 24 + 3 * n ) = t * 0.1 * L * i;
     large.kernels( U, UOld, true );
     UOld = U;
   }
   Eigen::VectorXd U = UOld;
+  // bent bar (curved quadratic elements), deformed host
   for ( int n = 0; n < 7; n++ )
-    U.segment< 3 >( 24 + 3 * n ) += t * 0.05 + Eigen::Vector3d( 0.002, -0.001, 0.0005 ) * n;
-  U.segment( 0, 24 ) += Eigen::VectorXd::Constant( 24, 0.001 );
+    U.segment< 3 >( 24 + 3 * n ) += t * 0.05 * L + Eigen::Vector3d( 0.002, -0.001, 0.0005 ) * ( n * ( 6 - n ) );
+  for ( int j = 0; j < 24; j++ )
+    U( j ) += 0.001 * std::sin( 1.0 + j );
+
+  const double covered = *large.element->getStateView( "covered fraction", 1 ).stateLocation;
+  throwExceptionOnFailure( covered > 0 && covered < 1, "the second channel point must be partially covered" );
 
   const auto [P, K] = large.kernels( U, UOld, false );
-  const auto numK   = large.numericalTangent( U, UOld, 1e-6 );
-  throwExceptionOnFailure( checkIfEqual< double >( K, numK, 1e-4 * numK.cwiseAbs().maxCoeff() ),
-                           "large-slip tangent does not match an independent numerical one" );
+  const auto numK   = large.numericalTangent( U, UOld, 1e-7 );
+  throwExceptionOnFailure( checkIfEqual< double >( K, numK, 1e-5 * numK.cwiseAbs().maxCoeff() ),
+                           Marmot::Utilities::MakeString()
+                             << "large-slip tangent does not match central differences, max difference "
+                             << ( K - numK ).cwiseAbs().maxCoeff() << " of " << numK.cwiseAbs().maxCoeff() );
+}
+
+/// a rigid rotation of the deformed configuration (host and bar) rotates the forces: P(Q x) = Q P(x), in 2D with
+/// the MC2010 law with friction and in 3D with a linear law (LS-01)
+void testLargeSlipObjectivity()
+{
+  {
+    const std::vector< double > window = { 0.5, 1.5, 2.0, 1.6, 3.5, 1.5 };
+    Bond                        large( "EBLS2D2Q8W2",
+                concat( quad8, window ),
+                                       { 1.0, 0.2, 0.9, 1.0, 1.0 },
+                "MODELCODE2010BONDSLIP",
+                mc2010Friction );
+    const auto                  X = Eigen::Map< const Eigen::VectorXd >( large.coordinates.data(), large.nDof );
+    Eigen::VectorXd             U = Eigen::VectorXd::Zero( large.nDof );
+    for ( int n = 0; n < 3; n++ )
+      U.segment< 2 >( 16 + 2 * n ) = Eigen::Vector2d( 0.3, 0.02 * n );
+    U.head( 16 ) = Eigen::VectorXd::LinSpaced( 16, 0.0, 0.01 );
+    for ( const double angle : { 0.3, 1.5708, 2.5 } ) {
+      const Eigen::Rotation2Dd Q( angle );
+      Eigen::VectorXd          URotated( large.nDof );
+      for ( int n = 0; n < large.nDof / 2; n++ )
+        URotated.segment< 2 >( 2 * n ) = Q * ( X.segment< 2 >( 2 * n ) + U.segment< 2 >( 2 * n ) ) -
+                                         X.segment< 2 >( 2 * n );
+      const Eigen::VectorXd P        = large.kernels( U, Eigen::VectorXd::Zero( large.nDof ), false ).first;
+      const Eigen::VectorXd PRotated = large.kernels( URotated, Eigen::VectorXd::Zero( large.nDof ), false ).first;
+      Eigen::VectorXd       QP( large.nDof );
+      for ( int n = 0; n < large.nDof / 2; n++ )
+        QP.segment< 2 >( 2 * n ) = Q * P.segment< 2 >( 2 * n );
+      throwExceptionOnFailure( P.norm() > 1 && checkIfEqual< double >( PRotated, QP, 1e-9 * P.norm() ),
+                               Marmot::Utilities::MakeString()
+                                 << "2D: P(Q x) != Q P(x) at " << angle
+                                 << ", |difference| / |P| = " << ( PRotated - QP ).norm() / P.norm() );
+    }
+  }
+  {
+    const Eigen::Vector3d a( 0.3, 0.2, 0.4 ), b( 1.6, 1.7, 1.5 );
+    Bond                  large( "EBLS3D2H8W3",
+                concat( hexa8, straightWindow3D( a, b, 4 ) ),
+                                 { 1.5, 1.0, 2.0, 1.0, 1.0 },
+                "LINEARELASTICBONDSLIP",
+                linearBond );
+    const auto            X = Eigen::Map< const Eigen::VectorXd >( large.coordinates.data(), large.nDof );
+    Eigen::VectorXd       U = Eigen::VectorXd::Zero( large.nDof );
+    for ( int n = 0; n < 4; n++ )
+      U.segment< 3 >( 24 + 3 * n ) = ( b - a ).normalized() * 0.2 + Eigen::Vector3d( 0.01, -0.02, 0.005 );
+    const Eigen::Matrix3d Q = Eigen::AngleAxisd( 1.2, Eigen::Vector3d( 1, 2, -1 ).normalized() ).toRotationMatrix();
+    Eigen::VectorXd       URotated( large.nDof );
+    for ( int n = 0; n < large.nDof / 3; n++ )
+      URotated.segment< 3 >( 3 * n ) = Q * ( X.segment< 3 >( 3 * n ) + U.segment< 3 >( 3 * n ) ) -
+                                       X.segment< 3 >( 3 * n );
+    const Eigen::VectorXd P        = large.kernels( U, Eigen::VectorXd::Zero( large.nDof ), false ).first;
+    const Eigen::VectorXd PRotated = large.kernels( URotated, Eigen::VectorXd::Zero( large.nDof ), false ).first;
+    Eigen::VectorXd       QP( large.nDof );
+    for ( int n = 0; n < large.nDof / 3; n++ )
+      QP.segment< 3 >( 3 * n ) = Q * P.segment< 3 >( 3 * n );
+    throwExceptionOnFailure( P.norm() > 1 && checkIfEqual< double >( PRotated, QP, 1e-9 * P.norm() ),
+                             Marmot::Utilities::MakeString() << "3D: P(Q x) != Q P(x), |difference| / |P| = "
+                                                             << ( PRotated - QP ).norm() / P.norm() );
+  }
+}
+
+/// a host under uniform stretch along the bar and a rigid rotation, with the bar moving with it: no slip, no force
+void testLargeSlipHostStretch()
+{
+  const std::vector< double > window = { 0.5, 1.5, 2.0, 1.5, 3.5, 1.5 };
+  Bond                        large( "EBLS2D2Q8W2",
+              concat( quad8, window ),
+                                     { 1.0, 0.2, 0.9, 1.0, 1.0 },
+              "LINEARELASTICBONDSLIP",
+              linearBond );
+  const auto                  X = Eigen::Map< const Eigen::VectorXd >( large.coordinates.data(), large.nDof );
+  Eigen::Matrix2d             F;
+  F << 1.2, 0.0, 0.0, 0.9; // stretch along the bar (x), contraction across
+  F = Eigen::Rotation2Dd( 0.4 ).toRotationMatrix() * F;
+  Eigen::VectorXd U( large.nDof );
+  for ( int n = 0; n < large.nDof / 2; n++ )
+    U.segment< 2 >( 2 * n ) = ( F - Eigen::Matrix2d::Identity() ) * X.segment< 2 >( 2 * n );
+  const auto P = large.kernels( U, Eigen::VectorXd::Zero( large.nDof ), true ).first;
+  // round-off of the closest point iteration only: a slip of 1e-9 times the displacements would give Kn 1e-9 |U|
+  throwExceptionOnFailure( P.cwiseAbs().maxCoeff() < 1e-9 * 1000. * U.cwiseAbs().maxCoeff(),
+                           Marmot::Utilities::MakeString() << "uniform stretch must not slip, |P| = " << P.norm() );
+}
+
+/// a bar pulled out until it leaves the first channel point (inactive, history frozen) and pushed back: the point is
+/// active again and its law continues from the frozen history (MC2010: the largest slip)
+void testLargeSlipPushOutPushBack()
+{
+  const std::vector< double > bar = { 0.5, 1.5, 3.5, 1.5 };
+  Bond large( "EBLS2D2Q8W1", concat( quad8, bar ), { 1.0, 0.0, 1.0, 1.0, 1.0, 3 }, "MODELCODE2010BONDSLIP", mc2010 );
+  auto maxSlip = [&]( int point ) { return *large.element->getStateView( "max slip", point ).stateLocation; };
+  auto active  = [&]( int point ) { return *large.element->getStateView( "active", point ).stateLocation; };
+
+  Eigen::VectorXd UOld      = Eigen::VectorXd::Zero( large.nDof );
+  auto            moveBarTo = [&]( double u ) {
+    Eigen::VectorXd U = Eigen::VectorXd::Zero( large.nDof );
+    U( 16 ) = U( 18 ) = u;
+    large.kernels( U, UOld, true );
+    UOld = U;
+  };
+  for ( int i = 1; i <= 12; i++ )
+    moveBarTo( 0.05 * i ); // 0.6: the bar start passed the first channel point (x = 0.5)
+  throwExceptionOnFailure( active( 0 ) == 0.0, "the first channel point must be inactive after the pull-out" );
+  const double frozen = maxSlip( 0 );
+  throwExceptionOnFailure( frozen > 0.3 && frozen < 0.6,
+                           Marmot::Utilities::MakeString() << "frozen history " << frozen );
+  moveBarTo( 0.7 );
+  throwExceptionOnFailure( maxSlip( 0 ) == frozen, "the history of an inactive point must be frozen" );
+  for ( int i = 1; i <= 12; i++ )
+    moveBarTo( 0.7 - 0.05 * i ); // back to 0.1
+  throwExceptionOnFailure( active( 0 ) == 1.0, "the first channel point must be active after the push-back" );
+  throwExceptionOnFailure( maxSlip( 0 ) == frozen, "the law must continue from the frozen largest slip" );
 }
 
 /// bar elements of different lengths: a channel point at the end of the channel (Gauss-Lobatto) belongs to its own
@@ -542,6 +680,9 @@ int main()
     testLargeSlipWindowExceededThrows,
     testLargeSlipTangent3D,
     testLargeSlipUnequalBarElements,
+    testLargeSlipObjectivity,
+    testLargeSlipHostStretch,
+    testLargeSlipPushOutPushBack,
   } );
   return 0;
 }

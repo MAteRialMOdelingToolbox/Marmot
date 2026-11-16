@@ -291,8 +291,14 @@ void testInterfaceLargeSlip()
     throwExceptionOnFailure( Pb.norm() == 0 && m.norm() == 0 && M.norm() == 0, name + ": no body force, no mass" );
 
     // states: the channel points stay bonded
-    for ( const std::string state :
-          { "slip", "bond stress", "elastic energy", "dissipation", "partner", "active", "covered fraction" } )
+    for ( const std::string state : { "slip",
+                                      "bond stress",
+                                      "elastic energy density",
+                                      "dissipation density",
+                                      "dissipation",
+                                      "partner",
+                                      "active",
+                                      "covered fraction" } )
       throwExceptionOnFailure( el.getStateView( state, 0 ).stateSize >= 1, name + ": state " + state );
     throwExceptionOnFailure( *el.getStateView( "active", 0 ).stateLocation == 1.0 &&
                                std::abs( *el.getStateView( "covered fraction", 0 ).stateLocation - 1.0 ) < 1e-12,

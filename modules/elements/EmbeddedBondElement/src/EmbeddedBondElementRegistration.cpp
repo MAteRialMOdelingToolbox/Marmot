@@ -55,42 +55,46 @@ namespace Marmot::Discretizations::Elements::Registration {
   const static bool EB3D3H8_isRegistered  = registerBond< 3, 3, 8 >( "EB3D3H8" );
   const static bool EB3D3H20_isRegistered = registerBond< 3, 3, 20 >( "EB3D3H20" );
 
-  // large slip: EBLS<nDim>D<number of bar nodes><host shape>W<number of bar elements in the window>
+  // large slip: EBLS<nDim>D<number of bar nodes><host shape>W<number of bar elements in the window>.
+  // The window is a runtime size of the element (one class per bar and host shape); one name per window size is
+  // registered only because the element factory takes a plain function pointer of the element label, which cannot
+  // carry the size. The largest window is the one documented cap: a larger one is reported by the factory as an
+  // unknown element.
   constexpr int maxWindow = 48;
 
-  template < int nDim, int nHostNodes, int nBarNodes, int nBarElements >
+  template < int nDim, int nBarNodes, int nHostNodes, int nBarElements >
   Marmot::Discretizations::Elements::Element* makeLargeSlipBond( int elementID )
   {
-    return new EmbeddedLargeSlipBondElement< nDim, nHostNodes, nBarNodes >( elementID, nBarElements );
+    return new EmbeddedLargeSlipBondElement< nDim, nBarNodes, nHostNodes >( elementID, nBarElements );
   }
 
-  template < int nDim, int nHostNodes, int nBarNodes, int... windows >
+  template < int nDim, int nBarNodes, int nHostNodes, int... windows >
   bool registerLargeSlipBonds( const std::string& prefix, std::integer_sequence< int, windows... > )
   {
     return ( Marmot::Registry::ElementFactory::
                registerElement( prefix + "W" + std::to_string( windows + 1 ),
-                                &makeLargeSlipBond< nDim, nHostNodes, nBarNodes, windows + 1 > ) &&
+                                &makeLargeSlipBond< nDim, nBarNodes, nHostNodes, windows + 1 > ) &&
              ... );
   }
 
-  template < int nDim, int nHostNodes, int nBarNodes >
+  template < int nDim, int nBarNodes, int nHostNodes >
   bool registerLargeSlipBonds( const std::string& prefix )
   {
-    return registerLargeSlipBonds< nDim, nHostNodes, nBarNodes >( prefix,
+    return registerLargeSlipBonds< nDim, nBarNodes, nHostNodes >( prefix,
                                                                   std::make_integer_sequence< int, maxWindow >{} );
   }
 
-  const static bool EBLS2D2T3_isRegistered  = registerLargeSlipBonds< 2, 3, 2 >( "EBLS2D2T3" );
+  const static bool EBLS2D2T3_isRegistered  = registerLargeSlipBonds< 2, 2, 3 >( "EBLS2D2T3" );
   const static bool EBLS2D3T3_isRegistered  = registerLargeSlipBonds< 2, 3, 3 >( "EBLS2D3T3" );
-  const static bool EBLS2D2Q4_isRegistered  = registerLargeSlipBonds< 2, 4, 2 >( "EBLS2D2Q4" );
-  const static bool EBLS2D2Q8_isRegistered  = registerLargeSlipBonds< 2, 8, 2 >( "EBLS2D2Q8" );
-  const static bool EBLS2D3Q4_isRegistered  = registerLargeSlipBonds< 2, 4, 3 >( "EBLS2D3Q4" );
-  const static bool EBLS2D3Q8_isRegistered  = registerLargeSlipBonds< 2, 8, 3 >( "EBLS2D3Q8" );
-  const static bool EBLS3D2T4_isRegistered  = registerLargeSlipBonds< 3, 4, 2 >( "EBLS3D2T4" );
-  const static bool EBLS3D2H8_isRegistered  = registerLargeSlipBonds< 3, 8, 2 >( "EBLS3D2H8" );
-  const static bool EBLS3D2H20_isRegistered = registerLargeSlipBonds< 3, 20, 2 >( "EBLS3D2H20" );
-  const static bool EBLS3D3T4_isRegistered  = registerLargeSlipBonds< 3, 4, 3 >( "EBLS3D3T4" );
-  const static bool EBLS3D3H8_isRegistered  = registerLargeSlipBonds< 3, 8, 3 >( "EBLS3D3H8" );
-  const static bool EBLS3D3H20_isRegistered = registerLargeSlipBonds< 3, 20, 3 >( "EBLS3D3H20" );
+  const static bool EBLS2D2Q4_isRegistered  = registerLargeSlipBonds< 2, 2, 4 >( "EBLS2D2Q4" );
+  const static bool EBLS2D2Q8_isRegistered  = registerLargeSlipBonds< 2, 2, 8 >( "EBLS2D2Q8" );
+  const static bool EBLS2D3Q4_isRegistered  = registerLargeSlipBonds< 2, 3, 4 >( "EBLS2D3Q4" );
+  const static bool EBLS2D3Q8_isRegistered  = registerLargeSlipBonds< 2, 3, 8 >( "EBLS2D3Q8" );
+  const static bool EBLS3D2T4_isRegistered  = registerLargeSlipBonds< 3, 2, 4 >( "EBLS3D2T4" );
+  const static bool EBLS3D2H8_isRegistered  = registerLargeSlipBonds< 3, 2, 8 >( "EBLS3D2H8" );
+  const static bool EBLS3D2H20_isRegistered = registerLargeSlipBonds< 3, 2, 20 >( "EBLS3D2H20" );
+  const static bool EBLS3D3T4_isRegistered  = registerLargeSlipBonds< 3, 3, 4 >( "EBLS3D3T4" );
+  const static bool EBLS3D3H8_isRegistered  = registerLargeSlipBonds< 3, 3, 8 >( "EBLS3D3H8" );
+  const static bool EBLS3D3H20_isRegistered = registerLargeSlipBonds< 3, 3, 20 >( "EBLS3D3H20" );
 
 } // namespace Marmot::Discretizations::Elements::Registration

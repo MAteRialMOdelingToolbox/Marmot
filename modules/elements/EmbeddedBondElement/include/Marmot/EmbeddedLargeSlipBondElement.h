@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/EmbeddedBondKinematics.h"
 #include "Marmot/MarmotBondSlipLaw.h"
 #include "Marmot/MarmotBondSlipLawFactory.h"
 #include "Marmot/MarmotElement.h"
@@ -35,7 +36,6 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <limits>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -45,69 +45,127 @@ namespace Marmot::Discretizations::Elements {
 
   /**
    * @class Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement
-   * @brief Bond-slip of an embedded reinforcement bar with large slip: the bar may slide out of (or into) its host.
+   * @brief Bond-slip of an embedded bar with large slip: the bar may slide out of (or into) its host element.
    *
    * @tparam nDim        number of spatial dimensions, 2 or 3
-   * @tparam nHostNodes  number of nodes of the host element (Quad4, Quad8, Tetra4, Tetra10, Hexa8, Hexa20)
    * @tparam nBarNodes   number of nodes of the bar elements, 2 or 3 (end, end, mid)
+   * @tparam nHostNodes  number of nodes of the host element (Tri3, Quad4, Quad8, Tetra4, Hexa8, Hexa20)
    *
-   * Unlike the small-slip EmbeddedBondElement, the bond is integrated over the **channel**: the part of the original
-   * bar path inside the host element, fixed in the host. The bond history (the state of the bond-slip law) belongs to
-   * the channel points, i.e., to the concrete. At every evaluation, the partner of a channel point on the bar is
-   * searched -- the bar point currently next to it (closest point projection onto the current bar axis) -- among a
-   * window of consecutive bar elements. The tangential slip is the reference arc length the bar has slid past the
-   * channel point,
-   * \f[ s_t = S_c - S^*, \f]
-   * with the reference arc lengths \f$S_c\f$ of the channel point and \f$S^*\f$ of its current bar partner, and the
-   * normal slip is the relative position of the bar partner w.r.t. the channel point, normal to the axis.
+   * **Glossary.**
+   *  - *bar*: the 1D (truss or beam) elements of one unbranched bar; \f$\eta \in [-1, 1]\f$ is the parameter of a bar
+   *    element, \f$S\f$ the reference arc length along the bar.
+   *  - *window*: the nBarElements consecutive bar elements this element may couple to; \f$c \in [0,
+   *    n_{\mathrm{bar\,elements}}]\f$ is the window parameter, \f$c = k + (\eta + 1)/2\f$ in bar element \f$k\f$ of the
+   *    window.
+   *  - *channel*: the part \f$[c_s, c_e]\f$ of the original bar path inside the host element, fixed in the host. It
+   *    owns the bond history: the bond-slip law states belong to the concrete, not to the bar.
+   *  - *channel point*: an integration point of the channel (Gauss-Lobatto); its *tributary part* is the part of the
+   *    channel its weight represents, \f$[S_a, S_b]\f$ in reference arc length.
+   *  - *partner*: the point of the current bar next to a channel point (closest point projection).
+   *  - *covered fraction* \f$x\f$: the part of the tributary part still covered by the bar; *fade*
+   *    \f$f(x) = 3 x^2 - 2 x^3\f$.
    *
-   * Each channel point represents a tributary part of the channel (the Gauss-Lobatto weights tile the channel). Its
-   * bond is scaled by \f$f = 3 x^2 - 2 x^3\f$ of the fraction \f$x \in [0, 1]\f$ of the tributary part still covered
-   * by the bar, with the positions of the bar ends found from the slip of the point. As a bar end slides along the
-   * channel, the bond fades smoothly (\f$C^1\f$, a kink would make Newton's method cycle); a channel point the bar has
-   * left completely (\f$f = 0\f$) has no bond and its history is frozen.
-   * Parts of the bar outside of all channels -- e.g., pulled out of the concrete -- are unbonded. The bonded length
-   * therefore shrinks, exactly, and the free length grows as the bar is pulled out. For small slips (\f$f = 1\f$),
-   * the element is identical to the small-slip EmbeddedBondElement.
+   * **Contact mechanics.** This is a point-to-segment contact formulation (Wriggers, Computational Contact Mechanics,
+   * 2006, ch. 4; Laursen, Computational Contact and Impact Mechanics, 2002): channel point = slave point, window =
+   * master segments, partner = closest point projection \f$\bar\eta\f$, normal slip = normal gap, tangential slip =
+   * slip in the convected coordinate of the master.
    *
-   * Nodes: the host element nodes, followed by the unique nodes of the window of nBarElements consecutive bar
-   * elements in chain order (bar2: e0, e1, ..., eN; bar3: e0, m0, e1, m1, ..., eN).
+   * **Kinematics.** A channel point at \f$\boldsymbol{x}_c = \boldsymbol{X}_c + \sum_a N_a \boldsymbol{u}_a\f$ (host)
+   * has its partner at \f$\bar\eta\f$, the solution of the closest point problem
+   * \f[ g(\bar\eta) = \big(\boldsymbol{x}(\bar\eta) - \boldsymbol{x}_c\big) \cdot \boldsymbol{x}_{,\eta}(\bar\eta) = 0
+   * \f]
+   * on the current bar \f$\boldsymbol{x}(\eta) = \sum_b M_b(\eta)\, \boldsymbol{x}_b\f$, extended linearly beyond the
+   * window ends. With the gap \f$\boldsymbol{d} = \boldsymbol{x}(\bar\eta) - \boldsymbol{x}_c\f$ (bar minus host, as in
+   * the small-slip element) and the current frame \f$[\boldsymbol{t}, \boldsymbol{n}_1, \boldsymbol{n}_2]\f$ at the
+   * partner (\f$\boldsymbol{t} = \boldsymbol{x}_{,\eta}/|\boldsymbol{x}_{,\eta}|\f$, the normals carried along from the
+   * reference frame of the channel point, EmbeddedBondKinematics::transportFrame), the slip is
+   * \f[ s_t = S_c - S(\bar\eta), \qquad s_{n,i} = \boldsymbol{n}_i \cdot \boldsymbol{d}, \f]
+   * the reference arc length the bar has slid past the channel point, and the normal gap. Both are invariant under a
+   * rigid motion of host and bar (objective); the normal frame follows the bending of the bar but not a twist about its
+   * axis, which the laws, isotropic in the normal plane, do not need.
    *
-   * Element properties: [perimeter, c_s, c_e, start is a bar end, end is a bar end, (number of integration points)],
-   * with the channel \f$[c_s, c_e]\f$ given in the chain parameter \f$c \in [0, n_{\mathrm{bar\,elements}}]\f$ of
-   * the window (\f$c = k + (\xi + 1)/2\f$ in bar element \f$k\f$). If the partner of a channel point lies beyond an
-   * end of the window that is not an end of the bar, the window is too small for the slip and an exception is
-   * thrown.
+   * **Bond and fade.** The tributary part of a channel point is covered by the bar between its ends, which have moved
+   * by \f$s_t\f$: \f$x = \big(\min(S_b, S_{\mathrm{end}} + s_t) - \max(S_a, S_{\mathrm{start}} + s_t)\big) / (S_b -
+   * S_a)\f$, clamped to [0, 1] (only at bar ends). The bond is scaled by \f$f(x)\f$: \f$C^1\f$, as a kink in the bond
+   * force when a bar end leaves a tributary part makes Newton's method cycle. A channel point the bar has left
+   * completely (\f$f = 0\f$) has no bond and its history is frozen until the bar comes back. Parts of the bar outside
+   * of all channels -- e.g., pulled out of the concrete -- are unbonded, so the bonded length shrinks with the
+   * pull-out, up to the smoothing of \f$f\f$ over the tributary part at the bar end (a bar slid by 1 into a channel of
+   * length 3 with 3 points is bonded over \f$0.5 f(1) + 2 f(0.75) = 2.1875\f$ instead of 2). For small displacements
+   * and a covered channel, the element agrees with the small-slip EmbeddedBondElement to first order.
    *
-   * The geometry of the channel and of the frame is the reference one; the tangent is computed by central
-   * differences of the internal forces.
+   * **Residual and tangent.** With \f$p\,\Delta S\f$ the perimeter times the tributary length,
+   * \f[ \boldsymbol{f} = \sum_{\mathrm{points}} f\, p\, \Delta S\; \boldsymbol{B}^T \boldsymbol{\tau}, \qquad
+   *     \boldsymbol{B} = \frac{\partial \boldsymbol{s}}{\partial \boldsymbol{u}}, \f]
+   * over the host dofs and the dofs of the partner's bar element (the work conjugate of the slip). The linearization
+   * of the closest point gives
+   * \f[ \delta\bar\eta = -\frac{(\delta\boldsymbol{x}_b - \delta\boldsymbol{x}_c) \cdot \boldsymbol{x}_{,\eta} +
+   *     \boldsymbol{d} \cdot \delta\boldsymbol{x}_{,\eta}}{\boldsymbol{x}_{,\eta} \cdot \boldsymbol{x}_{,\eta} +
+   *     \boldsymbol{d} \cdot \boldsymbol{x}_{,\eta\eta}}, \qquad \delta s_t = -S_{,\eta}\, \delta\bar\eta, \qquad
+   *     \delta s_{n,i} = \boldsymbol{n}_i \cdot \delta\boldsymbol{d} + \boldsymbol{d} \cdot \delta\boldsymbol{n}_i \f]
+   * (\f$\delta\boldsymbol{x}_b, \delta\boldsymbol{x}_{,\eta}\f$ at fixed \f$\eta\f$), coded analytically in
+   * localKinematics(). The tangent
+   * \f[ \boldsymbol{K} = p\,\Delta S \Big( f\, \boldsymbol{B}^T \frac{\partial\boldsymbol{\tau}}{\partial
+   *     \boldsymbol{s}} \boldsymbol{B} + \frac{\mathrm{d}f}{\mathrm{d}x} \frac{\mathrm{d}x}{\mathrm{d}s_t}
+   *     \boldsymbol{B}^T \boldsymbol{\tau} \otimes \boldsymbol{B}_t + f\, \frac{\partial (\boldsymbol{B}^T
+   *     \boldsymbol{\tau})}{\partial \boldsymbol{u}} \Big|_{\boldsymbol{\tau}} \Big) \f]
+   * takes the material part from the algorithmic tangent of the bond-slip law, the fade part analytically, and the
+   * geometric part (the second derivatives of the closest point projection and of the frame, times the bond stress)
+   * by central differences of the analytic \f$\boldsymbol{B}\f$ over the host and partner dofs only (geometry, no law
+   * evaluation): geometricStiffness().
+   *
+   * **Bars.** The bar elements should form a straight or smoothly curved bar: at a kink, the partner of a point on the
+   * convex side of the kink is the kink node itself (its projection lies on neither element), and the slip jumps by
+   * about \f$2 g \tan(\alpha/2)\f$ for a gap g and a kink angle \f$\alpha\f$ as the point crosses the kink.
+   *
+   * **Nodes**: the host element nodes, followed by the unique nodes of the window in bar order (bar2: e0, e1, ...,
+   * eN; bar3: e0, m0, e1, m1, ..., eN). Unlike the small-slip element (bar nodes first), the host comes first, so that
+   * the element is drawn as its host element (the leading nodes), on which the channel lies.
+   *
+   * **Element properties**: [perimeter, c_s, c_e, start is a bar end, end is a bar end, (number of channel points
+   * 2..5)], with \f$0 \leq c_s < c_e \leq n_{\mathrm{bar\,elements}}\f$ within one bar element, and the flags 0 or 1.
+   * If the partner of a channel point lies beyond an end of the window that is not an end of the bar, the window is
+   * too small for the slip and an exception is thrown.
    *
    * Material: a bond-slip law registered in the Marmot::Registry::BondSlipLawFactory.
    */
-  template < int nDim, int nHostNodes, int nBarNodes >
+  template < int nDim, int nBarNodes, int nHostNodes >
   class EmbeddedLargeSlipBondElement : public Marmot::Discretizations::Elements::Element {
 
     static_assert( nDim == 2 || nDim == 3, "EmbeddedLargeSlipBondElement: nDim must be 2 or 3" );
     static_assert( nBarNodes == 2 || nBarNodes == 3, "EmbeddedLargeSlipBondElement: nBarNodes must be 2 or 3" );
 
   public:
-    using HostGeometry = Marmot::Discretizations::Elements::GeometryElement< nDim, nHostNodes >;
-    using VectorDim    = Eigen::Matrix< double, nDim, 1 >;
-    using MatrixDim    = Eigen::Matrix< double, nDim, nDim >;
-    using BarN         = Eigen::Matrix< double, 1, nBarNodes >;
+    using HostGeometry   = Marmot::Discretizations::Elements::GeometryElement< nDim, nHostNodes >; ///< host shape
+    using VectorDim      = Eigen::Matrix< double, nDim, 1 >;                                       ///< spatial vector
+    using MatrixDim      = Eigen::Matrix< double, nDim, nDim >;                                    ///< spatial tensor
+    using BarN           = Eigen::Matrix< double, 1, nBarNodes >;    ///< shape functions of a bar element
+    using BarCoordinates = Eigen::Matrix< double, nDim, nBarNodes >; ///< nodal coordinates of a bar element
 
-    const int elLabel;
-    const int nBarElements;
-    const int nChainNodes;
-    const int nNodes;
-    const int nDofs;
+    /// the dofs a channel point couples: the host element, then the partner's bar element
+    static constexpr int nLocalDofs = ( nHostNodes + nBarNodes ) * nDim;
+    using LocalVector               = Eigen::Matrix< double, nLocalDofs, 1 >;          ///< over the local dofs
+    using LocalMatrix               = Eigen::Matrix< double, nLocalDofs, nLocalDofs >; ///< over the local dofs
+    using SlipJacobian              = Eigen::Matrix< double, nDim, nLocalDofs >;       ///< d slip / d local dofs
 
-    /// Element properties
+    const int elLabel;                                                                 ///< element label
+    const int nBarElements; ///< number of bar elements in the window
+    const int nWindowNodes; ///< number of unique nodes of the window
+    const int nNodes;       ///< host nodes + window nodes
+    const int nDofs;        ///< number of element dofs
+
+    /// The element properties as given
     Eigen::Map< const Eigen::VectorXd > elementProperties;
+    double                              perimeter     = 0;     ///< perimeter of the bar
+    double                              cStart        = 0;     ///< start of the channel, window parameter
+    double                              cEnd          = 0;     ///< end of the channel, window parameter
+    bool                                startIsBarEnd = false; ///< the window starts at an end of the bar
+    bool                                endIsBarEnd   = false; ///< the window ends at an end of the bar
+
     /// The geometry of the host element
     HostGeometry hostGeometry;
-    /// Reference coordinates of the chain nodes, [dim, chain node]
-    Eigen::Map< const Eigen::MatrixXd > chainCoordinates;
+    /// Reference coordinates of the window nodes, [dim, window node]
+    Eigen::Map< const Eigen::MatrixXd > windowCoordinates;
 
     /// The state of a channel point
     class QPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
@@ -115,7 +173,8 @@ namespace Marmot::Discretizations::Elements {
       inline const static auto layout = makeLayout( {
         { .name = "slip", .length = 3 },
         { .name = "bond stress", .length = 3 },
-        { .name = "elastic energy", .length = 1 },
+        { .name = "elastic energy density", .length = 1 },
+        { .name = "dissipation density", .length = 1 },
         { .name = "dissipation", .length = 1 },
         { .name = "partner", .length = 1 },
         { .name = "active", .length = 1 },
@@ -124,22 +183,26 @@ namespace Marmot::Discretizations::Elements {
       } );
 
     public:
-      Eigen::Map< Eigen::Vector3d > slip;
-      Eigen::Map< Eigen::Vector3d > bondStress;
-      double&                       elasticEnergy;
-      double&                       dissipation;
-      double&                       partner;
-      double&                       active;
-      double&                       coveredFraction;
-      Eigen::Map< Eigen::VectorXd > materialStateVars;
+      Eigen::Map< Eigen::Vector3d > slip;                 ///< [s_t, s_n1, s_n2]
+      Eigen::Map< Eigen::Vector3d > bondStress;           ///< bond stress of the law (not faded)
+      double&                       elasticEnergyDensity; ///< of the law, per bond surface (not faded)
+      double&                       dissipationDensity;   ///< of the law, per bond surface (not faded)
+      double&                       dissipation;          ///< dissipated energy of the point, faded increments
+      double&                       partner;              ///< window parameter of the partner
+      double&                       active;               ///< 1 if the bar covers the point (f > 0), else 0
+      double&                       coveredFraction;      ///< x
+      Eigen::Map< Eigen::VectorXd > materialStateVars;    ///< the state of the bond-slip law
 
+      /// number of state variables without the bond-slip law
       static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
+      /// a view of the state of a channel point
       QPStateVarManager( double* theStateVarVector, int nStateVars )
         : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
           slip( &find( "slip" ) ),
           bondStress( &find( "bond stress" ) ),
-          elasticEnergy( find( "elastic energy" ) ),
+          elasticEnergyDensity( find( "elastic energy density" ) ),
+          dissipationDensity( find( "dissipation density" ) ),
           dissipation( find( "dissipation" ) ),
           partner( find( "partner" ) ),
           active( find( "active" ) ),
@@ -149,41 +212,54 @@ namespace Marmot::Discretizations::Elements {
     };
 
     /// A channel point
-    struct QuadraturePoint {
-      double                                            c   = 0; ///< chain parameter of the channel point
-      double                                            S   = 0; ///< reference arc length along the chain
-      double                                            pdS = 0; ///< perimeter x reference length of the point
-      double                                            Sa  = 0; ///< start of the tributary part (reference arc length)
-      double                                            Sb  = 0; ///< end of the tributary part (reference arc length)
-      VectorDim                                         X;       ///< reference position
-      VectorDim                                         hostXi;  ///< parent coordinates in the host element
-      Eigen::Matrix< double, 1, nHostNodes >            hostN;   ///< host shape functions
-      MatrixDim                                         R;       ///< local frame [t, n1, (n2)] as columns
-      std::unique_ptr< Marmot::Materials::BondSlipLaw > bondSlipLaw;
+    struct ChannelPoint {
+      double                                            c                    = 0; ///< window parameter
+      double                                            S                    = 0; ///< reference arc length
+      double                                            perimeterTimesLength = 0; ///< p x tributary length
+      double                                            tributaryStart       = 0; ///< reference arc length
+      double                                            tributaryEnd         = 0; ///< reference arc length
+      VectorDim                                         X;                        ///< reference position
+      VectorDim                                         hostXi;      ///< parent coordinates in the host element
+      Eigen::Matrix< double, 1, nHostNodes >            hostN;       ///< host shape functions
+      MatrixDim                                         R;           ///< reference frame [t, n1, (n2)] as columns
+      std::unique_ptr< Marmot::Materials::BondSlipLaw > bondSlipLaw; ///< the bond-slip law of the point
     };
 
-    std::vector< QuadraturePoint > qps;
+    /// The channel points
+    std::vector< ChannelPoint > channelPoints;
+
+    /// The tolerance of "inside the host element" in parent coordinates (as the small-slip element)
+    static constexpr double insideTolerance = 1e-6;
 
   private:
     double*               stateVars_  = nullptr;
     int                   nStateVars_ = 0;
-    std::vector< double > elementLengths_, cumulativeLengths_;
+    std::vector< double > cumulativeLengths_; ///< reference arc length at the start of each bar element, and the end
     double                characteristicLength_ = 1.0;
 
   public:
+    /**
+     * @brief Construct the element.
+     * @param elementID     element label
+     * @param nBarElements_ number of bar elements in the window: a runtime size, so that the registrations of all
+     * window sizes share one class
+     */
     EmbeddedLargeSlipBondElement( int elementID, int nBarElements_ )
       : elLabel( elementID ),
         nBarElements( nBarElements_ ),
-        nChainNodes( nBarNodes == 2 ? nBarElements_ + 1 : 2 * nBarElements_ + 1 ),
-        nNodes( nHostNodes + nChainNodes ),
-        nDofs( nDim * ( nHostNodes + nChainNodes ) ),
+        nWindowNodes( nBarNodes == 2 ? nBarElements_ + 1 : 2 * nBarElements_ + 1 ),
+        nNodes( nHostNodes + nWindowNodes ),
+        nDofs( nDim * ( nHostNodes + nWindowNodes ) ),
         elementProperties( nullptr, 0 ),
-        chainCoordinates( nullptr, nDim, nBarNodes == 2 ? nBarElements_ + 1 : 2 * nBarElements_ + 1 )
+        windowCoordinates( nullptr, nDim, nBarNodes == 2 ? nBarElements_ + 1 : 2 * nBarElements_ + 1 )
     {
-      qps.resize( nBarNodes == 2 ? 2 : 3 );
+      channelPoints.resize( defaultNumberOfChannelPoints() );
     }
 
-    /// the chain node indices of the nodes of bar element k, in the node order of the bar shape (end, end, mid)
+    /// 2 channel points for linear bars, 3 for quadratic bars
+    static constexpr int defaultNumberOfChannelPoints() { return nBarNodes == 2 ? 2 : 3; }
+
+    /// the window node indices of the nodes of bar element k, in the node order of the bar shape (end, end, mid)
     std::array< int, nBarNodes > barElementNodes( int k ) const
     {
       if constexpr ( nBarNodes == 2 )
@@ -192,175 +268,236 @@ namespace Marmot::Discretizations::Elements {
         return { 2 * k, 2 * k + 2, 2 * k + 1 };
     }
 
-    static BarN barN( double xi )
+    /// shape functions of a bar element
+    static BarN barN( double eta )
     {
       if constexpr ( nBarNodes == 2 )
-        return Marmot::Discretizations::Elements::Spatial1D::Bar2::N( xi );
+        return Spatial1D::Bar2::N( eta );
       else
-        return Marmot::Discretizations::Elements::Spatial1D::Bar3::N( xi );
+        return Spatial1D::Bar3::N( eta );
     }
 
-    static BarN barDNdXi( double xi )
+    /// first derivatives of the shape functions of a bar element
+    static BarN barDNdEta( double eta )
     {
       if constexpr ( nBarNodes == 2 )
-        return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( xi );
+        return Spatial1D::Bar2::dNdXi( eta );
       else
-        return Marmot::Discretizations::Elements::Spatial1D::Bar3::dNdXi( xi );
+        return Spatial1D::Bar3::dNdXi( eta );
     }
 
-    /// nodal coordinates of bar element k, [dim, node], from the chain coordinates x (reference or current)
-    Eigen::Matrix< double, nDim, nBarNodes > barElementCoordinates( const Eigen::MatrixXd& x, int k ) const
+    /// second derivatives of the shape functions of a bar element
+    static BarN barD2NdEta2( double eta )
     {
-      Eigen::Matrix< double, nDim, nBarNodes > xe;
-      const auto                               idx = barElementNodes( k );
+      if constexpr ( nBarNodes == 2 )
+        return Spatial1D::Bar2::d2NdXi2( eta );
+      else
+        return Spatial1D::Bar3::d2NdXi2( eta );
+    }
+
+    /// nodal coordinates of bar element k, [dim, node], from the window coordinates x (reference or current)
+    BarCoordinates barElementCoordinates( const Eigen::MatrixXd& x, int k ) const
+    {
+      BarCoordinates xe;
+      const auto     idx = barElementNodes( k );
       for ( int i = 0; i < nBarNodes; i++ )
         xe.col( i ) = x.col( idx[i] );
       return xe;
     }
 
-    /// reference arc length from the chain start to the point xi of bar element k
-    double arcLength( int k, double xi ) const
+    /// reference arc length from the window start to the point eta of bar element k, eta in [-1, 1]
+    double arcLength( int k, double eta ) const
     {
-      const auto   Xe   = barElementCoordinates( chainCoordinates, k );
-      const auto   rule = Marmot::Discretizations::Elements::Quadrature::Spatial1D::gaussPointList3;
-      double       S    = cumulativeLengths_[k];
-      const double a = -1.0, b = xi;
+      const auto& rule = Quadrature::getQuadraturePoints( ReferenceDomain::Line, Quadrature::gaussExactToDegree( 5 ) );
+      const BarCoordinates Xe = barElementCoordinates( windowCoordinates, k );
+      double               S  = cumulativeLengths_[k];
       for ( const auto& gp : rule ) {
-        const double z = a + 0.5 * ( b - a ) * ( gp.xi( 0 ) + 1 );
-        S += ( Xe * barDNdXi( z ).transpose() ).norm() * 0.5 * ( b - a ) * gp.weight;
+        const double z = -1.0 + 0.5 * ( eta + 1.0 ) * ( gp.xi( 0 ) + 1 );
+        S += ( Xe * barDNdEta( z ).transpose() ).norm() * 0.5 * ( eta + 1.0 ) * gp.weight;
       }
       return S;
     }
 
-    /// reference arc length of the point xi of bar element k, extrapolated linearly beyond the element ends
-    double arcLengthExtrapolated( int k, double xi ) const
-    {
-      const double xiClamped = std::clamp( xi, -1.0, 1.0 );
-      double       S         = arcLength( k, xiClamped );
-      if ( xi != xiClamped ) {
-        const auto Xe = barElementCoordinates( chainCoordinates, k );
-        S += ( xi - xiClamped ) * ( Xe * barDNdXi( xiClamped ).transpose() ).norm();
-      }
-      return S;
-    }
-
-    static std::vector< std::pair< double, double > > gaussLobatto( int n )
-    {
-      switch ( n ) {
-      case 2: return { { -1., 1. }, { 1., 1. } };
-      case 3: return { { -1., 1. / 3 }, { 0., 4. / 3 }, { 1., 1. / 3 } };
-      case 4: {
-        const double a = std::sqrt( 1. / 5 );
-        return { { -1., 1. / 6 }, { -a, 5. / 6 }, { a, 5. / 6 }, { 1., 1. / 6 } };
-      }
-      case 5: {
-        const double a = std::sqrt( 3. / 7 );
-        return { { -1., 0.1 }, { -a, 49. / 90 }, { 0., 32. / 45 }, { a, 49. / 90 }, { 1., 0.1 } };
-      }
-      default:
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << "EmbeddedLargeSlipBondElement: 2 to 5 integration points are "
-                                        "supported, "
-                                     << n << " were requested" );
-      }
-    }
-
-    static MatrixDim localFrame( const VectorDim& t )
-    {
-      MatrixDim R;
-      if constexpr ( nDim == 2 ) {
-        R.col( 0 ) = t;
-        R.col( 1 ) = VectorDim( -t( 1 ), t( 0 ) );
-      }
-      else {
-        int axis;
-        t.cwiseAbs().minCoeff( &axis );
-        const Eigen::Vector3d n1 = t.cross( Eigen::Vector3d::Unit( axis ) ).normalized();
-        R.col( 0 )               = t;
-        R.col( 1 )               = n1;
-        R.col( 2 )               = t.cross( n1 );
-      }
-      return R;
-    }
-
-    VectorDim findHostParentCoordinates( const VectorDim& X ) const
-    {
-      const bool tet = hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra4 ||
-                       hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra10;
-      VectorDim xi = VectorDim::Constant( tet ? 0.25 : 0.0 );
-      for ( int iteration = 0;; iteration++ ) {
-        const VectorDim residual = hostGeometry.NB( hostGeometry.N( xi ) ) * hostGeometry.coordinates - X;
-        const VectorDim dXi      = -hostGeometry.Jacobian( hostGeometry.dNdXi( xi ) ).inverse() * residual;
-        xi += dXi;
-        if ( dXi.norm() < 1e-13 )
-          break;
-        if ( iteration > 50 )
-          throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                       << "EmbeddedLargeSlipBondElement " << elLabel
-                                       << ": inverse mapping into the host element did not converge" );
-      }
-      constexpr double tol = 1e-6;
-      const bool inside = tet ? ( xi.minCoeff() >= -tol && xi.sum() <= 1 + tol ) : xi.cwiseAbs().maxCoeff() <= 1 + tol;
-      if ( !inside )
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << "EmbeddedLargeSlipBondElement " << elLabel
-                                     << ": a channel point lies outside of the host element, parent "
-                                        "coordinates "
-                                     << xi.transpose() );
-      return xi;
-    }
-
-    /// the partner of a point on the current bar axis
-    struct Partner {
-      int    element     = 0;
-      double xi          = 0;     ///< clamped to the element
-      double xiUnclamped = 0;     ///< extrapolated beyond the chain ends
-      bool   beforeStart = false; ///< the projection lies before the first chain node
-      bool   afterEnd    = false; ///< the projection lies behind the last chain node
+    /// A point of bar element k of the window: shape functions and reference arc length
+    struct BarPoint {
+      BarN   N, dN_dEta, d2N_dEta2; ///< shape functions and derivatives
+      double S       = 0;           ///< reference arc length
+      double dS_dEta = 0;           ///< derivative of the reference arc length
     };
 
-    Partner findPartner( const Eigen::MatrixXd& x, const VectorDim& point ) const
+    /// the point eta of bar element k; beyond the first or last node of the window, on its linear extension
+    BarPoint barPoint( int k, double eta ) const
     {
-      Partner best;
-      double  bestDistance = std::numeric_limits< double >::infinity();
-      double  xiFirst = 0, xiLast = 0;
-      for ( int k = 0; k < nBarElements; k++ ) {
-        const auto xe = barElementCoordinates( x, k );
-        double     xi = 0.0;
-        for ( int it = 0; it < 30; it++ ) {
-          const VectorDim d   = xe * barN( xi ).transpose() - point;
-          const VectorDim dx  = xe * barDNdXi( xi ).transpose();
-          VectorDim       ddx = VectorDim::Zero();
-          if constexpr ( nBarNodes == 3 )
-            ddx = xe * Eigen::Vector3d( 1., 1., -2. );
-          const double f   = d.dot( dx );
-          const double df  = dx.dot( dx ) + d.dot( ddx );
-          const double dxi = -f / df;
-          xi += dxi;
-          if ( std::abs( dxi ) < 1e-14 )
-            break;
-        }
-        if ( k == 0 )
-          xiFirst = xi;
-        if ( k == nBarElements - 1 )
-          xiLast = xi;
-        const double    xiClamped = std::clamp( xi, -1.0, 1.0 );
-        const VectorDim d         = xe * barN( xiClamped ).transpose() - point;
-        const double    distance  = d.norm() + ( std::abs( xi - xiClamped ) > 1e-12 ? 1e-12 : 0.0 );
-        if ( distance < bestDistance ) {
-          bestDistance = distance;
-          best         = { k, xiClamped, xi, false, false };
-        }
+      BarPoint             p;
+      const BarCoordinates Xe     = barElementCoordinates( windowCoordinates, k );
+      const bool           before = k == 0 && eta < -1.0;
+      const bool           after  = k == nBarElements - 1 && eta > 1.0;
+      if ( before || after ) {
+        const double end = before ? -1.0 : 1.0;
+        p.dN_dEta        = barDNdEta( end );
+        p.N              = barN( end ) + ( eta - end ) * p.dN_dEta;
+        p.d2N_dEta2      = BarN::Zero();
+        p.dS_dEta        = ( Xe * p.dN_dEta.transpose() ).norm();
+        p.S              = ( before ? cumulativeLengths_[k] : cumulativeLengths_[k + 1] ) + ( eta - end ) * p.dS_dEta;
       }
-      best.beforeStart = best.element == 0 && xiFirst < -1.0 - 1e-12;
-      best.afterEnd    = best.element == nBarElements - 1 && xiLast > 1.0 + 1e-12;
-      return best;
+      else {
+        p.N         = barN( eta );
+        p.dN_dEta   = barDNdEta( eta );
+        p.d2N_dEta2 = barD2NdEta2( eta );
+        p.dS_dEta   = ( Xe * p.dN_dEta.transpose() ).norm();
+        p.S         = arcLength( k, eta );
+      }
+      return p;
+    }
+
+    /**
+     * @brief The closest point on bar element k (extended linearly at the window ends) to the point xc: Newton on the
+     * orthogonality \f$g(\eta) = (\boldsymbol{x}(\eta) - \boldsymbol{x}_c) \cdot \boldsymbol{x}_{,\eta}\f$, \f$g' =
+     * \boldsymbol{x}_{,\eta} \cdot \boldsymbol{x}_{,\eta} + (\boldsymbol{x} - \boldsymbol{x}_c) \cdot
+     * \boldsymbol{x}_{,\eta\eta}\f$.
+     * @param k        bar element of the window
+     * @param xe       current nodal coordinates of the bar element
+     * @param xc       the point
+     * @param etaStart start of the iteration
+     * @return the parameter eta of the closest point, possibly outside of [-1, 1]
+     * @throws std::runtime_error if g' <= 0 (not a minimum: the bar is curved more strongly than its distance to the
+     * point) or without convergence
+     */
+    double closestPoint( int k, const BarCoordinates& xe, const VectorDim& xc, double etaStart ) const
+    {
+      double eta = etaStart;
+      for ( int iteration = 0; iteration < 50; iteration++ ) {
+        const BarPoint  p                   = barPoint( k, eta );
+        const VectorDim gap                 = xe * p.N.transpose() - xc;
+        const VectorDim dx_dEta             = xe * p.dN_dEta.transpose();
+        const VectorDim d2x_dEta2           = xe * p.d2N_dEta2.transpose();
+        const double    orthogonality       = gap.dot( dx_dEta );
+        const double    dOrthogonality_dEta = dx_dEta.dot( dx_dEta ) + gap.dot( d2x_dEta2 );
+        if ( !( dOrthogonality_dEta > 0 ) )
+          throw std::runtime_error( Marmot::Utilities::MakeString()
+                                    << "EmbeddedLargeSlipBondElement " << elLabel
+                                    << ": no closest point on the bar (it is curved more strongly than its distance to "
+                                       "the channel point)" );
+        const double step = -orthogonality / dOrthogonality_dEta;
+        eta += step;
+        if ( std::abs( step ) < 1e-12 )
+          return eta;
+      }
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << "EmbeddedLargeSlipBondElement " << elLabel
+                                << ": the closest point projection onto the bar did not converge" );
+    }
+
+    /// the partner of a channel point on the current bar
+    struct Partner {
+      int    element = 0;     ///< bar element of the window
+      double eta     = 0;     ///< parameter in the bar element; outside of [-1, 1] only at the window ends
+      bool   atKink  = false; ///< the partner is a node at a kink (eta fixed at -1 or 1)
+    };
+
+    /**
+     * @brief The partner of the current channel point position xc: the closest point on the window, searched from the
+     * bar element of the previous partner towards the side the projection points to.
+     * @param x            current window coordinates
+     * @param xc           current position of the channel point
+     * @param startElement bar element of the previous partner
+     */
+    Partner findPartner( const Eigen::MatrixXd& x, const VectorDim& xc, int startElement ) const
+    {
+      int k             = std::clamp( startElement, 0, nBarElements - 1 );
+      int lastDirection = 0;
+      for ( int visited = 0; visited <= nBarElements; visited++ ) {
+        const double eta       = closestPoint( k, barElementCoordinates( x, k ), xc, 0.0 );
+        const int    direction = eta < -1.0 && k > 0 ? -1 : ( eta > 1.0 && k < nBarElements - 1 ? 1 : 0 );
+        if ( direction == 0 )
+          return { k, eta, false };
+        // turning back: the point lies on the convex side of a kink, its partner is the kink node
+        if ( direction == -lastDirection )
+          return { k, direction < 0 ? -1.0 : 1.0, true };
+        lastDirection = direction;
+        k += direction;
+      }
+      throw std::logic_error( "EmbeddedLargeSlipBondElement: the partner search did not terminate" );
+    }
+
+    /// The slip of a channel point and its derivatives w.r.t. the local dofs (host, then the partner's bar element)
+    struct LocalKinematics {
+      Eigen::Vector3d slip = Eigen::Vector3d::Zero(); ///< [s_t, s_n1, (s_n2)]
+      SlipJacobian    dSlip_dU;                       ///< B
+      double          eta = 0;                        ///< partner parameter
+    };
+
+    /**
+     * @brief The slip of a channel point for the local displacements uLocal (host nodes, then the nodes of bar element
+     * k) and its first derivatives B, analytically (see the class documentation).
+     * @param cp       the channel point
+     * @param k        bar element of the partner
+     * @param uLocal   local displacements
+     * @param etaStart start of the closest point iteration, or the fixed partner at a kink node
+     * @param etaFixed the partner is a kink node
+     */
+    LocalKinematics localKinematics( const ChannelPoint& cp,
+                                     int                 k,
+                                     const LocalVector&  uLocal,
+                                     double              etaStart,
+                                     bool                etaFixed ) const
+    {
+      LocalKinematics kin;
+
+      const Eigen::Map< const Eigen::Matrix< double, nDim, nHostNodes > > uHost( uLocal.data() );
+      const Eigen::Map< const BarCoordinates >                            uBar( uLocal.data() + nHostNodes * nDim );
+      const VectorDim                                                     xc = cp.X + uHost * cp.hostN.transpose();
+      const BarCoordinates xe = barElementCoordinates( windowCoordinates, k ) + uBar;
+
+      kin.eta                   = etaFixed ? etaStart : closestPoint( k, xe, xc, etaStart );
+      const BarPoint  p         = barPoint( k, kin.eta );
+      const VectorDim gap       = xe * p.N.transpose() - xc;
+      const VectorDim dx_dEta   = xe * p.dN_dEta.transpose();
+      const VectorDim d2x_dEta2 = xe * p.d2N_dEta2.transpose();
+      const double    length    = dx_dEta.norm();
+      const VectorDim t         = dx_dEta / length;
+      const auto      frame     = EmbeddedBondKinematics::transportFrame< nDim >( cp.R, t );
+
+      kin.slip( 0 ) = cp.S - p.S;
+      for ( int i = 1; i < nDim; i++ )
+        kin.slip( i ) = frame.R.col( i ).dot( gap );
+
+      // derivatives at fixed eta: of the channel point, of the partner and of the bar tangent dx/deta
+      using DimByLocal  = Eigen::Matrix< double, nDim, nLocalDofs >;
+      DimByLocal dXc_dU = DimByLocal::Zero(), dXb_dU = DimByLocal::Zero(), dDx_dU = DimByLocal::Zero();
+      for ( int a = 0; a < nHostNodes; a++ )
+        dXc_dU.template block< nDim, nDim >( 0, a * nDim ) = cp.hostN( a ) * MatrixDim::Identity();
+      for ( int b = 0; b < nBarNodes; b++ ) {
+        dXb_dU.template block< nDim, nDim >( 0, ( nHostNodes + b ) * nDim ) = p.N( b ) * MatrixDim::Identity();
+        dDx_dU.template block< nDim, nDim >( 0, ( nHostNodes + b ) * nDim ) = p.dN_dEta( b ) * MatrixDim::Identity();
+      }
+
+      // linearization of the closest point
+      Eigen::Matrix< double, 1, nLocalDofs > dEta_dU = Eigen::Matrix< double, 1, nLocalDofs >::Zero();
+      if ( !etaFixed )
+        dEta_dU = -( dx_dEta.transpose() * ( dXb_dU - dXc_dU ) + gap.transpose() * dDx_dU ) /
+                  ( dx_dEta.dot( dx_dEta ) + gap.dot( d2x_dEta2 ) );
+
+      const DimByLocal dGap_dU     = dXb_dU - dXc_dU + dx_dEta * dEta_dU;
+      const DimByLocal dTangent_dU = ( MatrixDim::Identity() - t * t.transpose() ) / length *
+                                     ( dDx_dU + d2x_dEta2 * dEta_dU );
+
+      kin.dSlip_dU.row( 0 ) = -p.dS_dEta * dEta_dU;
+      for ( int i = 1; i < nDim; i++ )
+        kin.dSlip_dU.row( i ) = frame.R.col( i ).transpose() * dGap_dU +
+                                gap.transpose() * frame.dNormal_dTangent[i - 1] * dTangent_dU;
+      return kin;
     }
 
     int getNumberOfRequiredStateVars() override
     {
-      return static_cast< int >( qps.size() ) * ( QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly() +
-                                                  qps[0].bondSlipLaw->getNumberOfRequiredStateVars() );
+      if ( !channelPoints[0].bondSlipLaw )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << "EmbeddedLargeSlipBondElement " << elLabel
+                                << ": the bond-slip law must be assigned before the state variables" );
+      return static_cast< int >( channelPoints.size() ) *
+             ( QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly() +
+               channelPoints[0].bondSlipLaw->getNumberOfRequiredStateVars() );
     }
 
     std::vector< std::vector< std::string > > getNodeFields() override
@@ -395,22 +532,49 @@ namespace Marmot::Discretizations::Elements {
     {
       if ( property.nElementProperties < 5 )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << __PRETTY_FUNCTION__
-                                     << ": requires the properties [perimeter, c_s, c_e, start is a bar "
-                                        "end, end is a bar end, (number of integration points)]" );
+                                     << "EmbeddedLargeSlipBondElement " << elLabel
+                                     << ": requires the properties [perimeter, c_s, c_e, start is a bar end, end is a "
+                                        "bar end, (number of channel points)]" );
       new ( &elementProperties )
         Eigen::Map< const Eigen::VectorXd >( property.elementProperties, property.nElementProperties );
-      const int nQps = property.nElementProperties > 5 ? static_cast< int >( std::lround( elementProperties[5] ) )
-                                                       : ( nBarNodes == 2 ? 2 : 3 );
-      gaussLobatto( nQps );
-      qps.clear();
-      qps.resize( nQps );
+
+      auto flag = [&]( int index ) {
+        const double value = elementProperties[index];
+        if ( value != 0.0 && value != 1.0 )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << "EmbeddedLargeSlipBondElement " << elLabel << ": property " << index
+                                       << " is a flag, 0 or 1, got " << value );
+        return value == 1.0;
+      };
+      perimeter     = elementProperties[0];
+      cStart        = elementProperties[1];
+      cEnd          = elementProperties[2];
+      startIsBarEnd = flag( 3 );
+      endIsBarEnd   = flag( 4 );
+      if ( !( perimeter > 0 ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "EmbeddedLargeSlipBondElement " << elLabel << ": requires perimeter > 0" );
+      if ( !( 0 <= cStart && cStart < cEnd && cEnd <= nBarElements ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "EmbeddedLargeSlipBondElement " << elLabel
+                                     << ": requires 0 <= c_s < c_e <= number of bar elements, got [" << cStart << ", "
+                                     << cEnd << "]" );
+
+      const int nPoints = property.nElementProperties > 5 ? static_cast< int >( std::lround( elementProperties[5] ) )
+                                                          : defaultNumberOfChannelPoints();
+      EmbeddedBondKinematics::gaussLobatto( nPoints ); // validates
+      if ( channelPoints[0].bondSlipLaw && nPoints != static_cast< int >( channelPoints.size() ) )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << "EmbeddedLargeSlipBondElement " << elLabel
+                                << ": the element properties (number of channel points) must be assigned before the "
+                                   "bond-slip law" );
+      channelPoints.resize( nPoints );
     }
 
     void assignProperty( const Marmot::Discretizations::MaterialSection& section ) override
     {
-      for ( auto& qp : qps )
-        qp.bondSlipLaw = std::unique_ptr< Marmot::Materials::BondSlipLaw >(
+      for ( auto& cp : channelPoints )
+        cp.bondSlipLaw = std::unique_ptr< Marmot::Materials::BondSlipLaw >(
           Marmot::Registry::BondSlipLawFactory::createBondSlipLaw( section.materialName,
                                                                    section.materialProperties,
                                                                    section.nMaterialProperties,
@@ -420,54 +584,53 @@ namespace Marmot::Discretizations::Elements {
     void assignNodeCoordinates( const double* coordinates ) override
     {
       hostGeometry.assignNodeCoordinates( coordinates );
-      new ( &chainCoordinates )
-        Eigen::Map< const Eigen::MatrixXd >( coordinates + nHostNodes * nDim, nDim, nChainNodes );
+      new ( &windowCoordinates )
+        Eigen::Map< const Eigen::MatrixXd >( coordinates + nHostNodes * nDim, nDim, nWindowNodes );
     }
 
     void initializeYourself() override
     {
-      // reference lengths of the bar elements
-      elementLengths_.assign( nBarElements, 0.0 );
+      // reference arc lengths at the starts of the bar elements
       cumulativeLengths_.assign( nBarElements + 1, 0.0 );
-      for ( int k = 0; k < nBarElements; k++ ) {
-        cumulativeLengths_[k + 1] = 0.0; // arcLength reads cumulativeLengths_[k] only
-        elementLengths_[k]        = arcLength( k, 1.0 ) - cumulativeLengths_[k];
-        cumulativeLengths_[k + 1] = cumulativeLengths_[k] + elementLengths_[k];
-      }
+      for ( int k = 0; k < nBarElements; k++ )
+        cumulativeLengths_[k + 1] = arcLength( k, 1.0 ); // reads cumulativeLengths_[k], set before
       characteristicLength_ = std::max( 1e-12, cumulativeLengths_.back() / nBarElements );
 
-      const double perimeter = elementProperties[0];
-      const double cStart    = elementProperties[1];
-      const double cEnd      = elementProperties[2];
-      const auto   rule      = gaussLobatto( static_cast< int >( qps.size() ) );
+      // the channel lies in one bar element
+      const int k = std::min( static_cast< int >( std::floor( cStart ) ), nBarElements - 1 );
+      if ( cEnd > k + 1 + 1e-12 )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "EmbeddedLargeSlipBondElement " << elLabel
+                                     << ": the channel [c_s, c_e] must lie in one bar element" );
 
-      // the reference arc lengths of the channel ends, to tile the channel into the tributary parts of the points
-      auto arcLengthAt = [&]( double c ) {
-        const int k = std::clamp( static_cast< int >( std::floor( c ) ), 0, nBarElements - 1 );
-        return arcLength( k, 2.0 * ( c - k ) - 1.0 );
-      };
-      const double SStart = arcLengthAt( std::min( cStart, cEnd ) ), SEnd = arcLengthAt( std::max( cStart, cEnd ) );
-      double       cumulativeWeight = 0.0;
+      const auto&          rule   = EmbeddedBondKinematics::gaussLobatto( static_cast< int >( channelPoints.size() ) );
+      const BarCoordinates Xe     = barElementCoordinates( windowCoordinates, k );
+      const double         SStart = arcLength( k, 2.0 * ( cStart - k ) - 1.0 );
+      const double         SEnd   = arcLength( k, 2.0 * ( cEnd - k ) - 1.0 );
+      double               cumulativeWeight = 0.0;
 
-      for ( size_t q = 0; q < qps.size(); q++ ) {
-        auto& qp = qps[q];
-        qp.c     = cStart + 0.5 * ( cEnd - cStart ) * ( rule[q].first + 1 );
-        qp.Sa    = SStart + ( SEnd - SStart ) * cumulativeWeight / 2.0;
-        cumulativeWeight += rule[q].second;
-        qp.Sb = SStart + ( SEnd - SStart ) * cumulativeWeight / 2.0;
-        // the channel lies in one bar element; taken from its midpoint, since a point at the end of the channel (an
-        // integer c) would otherwise be attributed to the neighboring bar element, with its (possibly different) length
-        const int    k = std::clamp( static_cast< int >( std::floor( 0.5 * ( cStart + cEnd ) ) ), 0, nBarElements - 1 );
-        const double xi = 2.0 * ( qp.c - k ) - 1.0;
+      for ( size_t q = 0; q < channelPoints.size(); q++ ) {
+        auto& cp = channelPoints[q];
+        cp.c     = cStart + 0.5 * ( cEnd - cStart ) * ( rule[q].xi( 0 ) + 1 );
+        // the weights (sum 2) tile the channel into the tributary parts of the points
+        cp.tributaryStart = SStart + ( SEnd - SStart ) * cumulativeWeight / 2.0;
+        cumulativeWeight += rule[q].weight;
+        cp.tributaryEnd = SStart + ( SEnd - SStart ) * cumulativeWeight / 2.0;
 
-        const auto      Xe = barElementCoordinates( chainCoordinates, k );
-        const VectorDim G  = Xe * barDNdXi( xi ).transpose();
-        qp.X               = Xe * barN( xi ).transpose();
-        qp.S               = arcLength( k, xi );
-        qp.pdS             = perimeter * G.norm() * std::abs( cEnd - cStart ) * rule[q].second; // dS = |G| 2 dc
-        qp.R               = localFrame( G / G.norm() );
-        qp.hostXi          = findHostParentCoordinates( qp.X );
-        qp.hostN           = hostGeometry.N( qp.hostXi );
+        const double    eta     = 2.0 * ( cp.c - k ) - 1.0;
+        const VectorDim dX_dEta = Xe * barDNdEta( eta ).transpose();
+        cp.X                    = Xe * barN( eta ).transpose();
+        cp.S                    = arcLength( k, eta );
+        // dS = |dX/deta| deta, deta = (c_e - c_s) dxi on the [-1, 1] of the rule
+        cp.perimeterTimesLength = perimeter * dX_dEta.norm() * ( cEnd - cStart ) * rule[q].weight;
+        cp.R                    = EmbeddedBondKinematics::localFrame< nDim >( dX_dEta / dX_dEta.norm() );
+        cp.hostXi               = hostGeometry.parentCoordinates( cp.X );
+        if ( !HostGeometry::isInsideParentDomain( cp.hostXi, insideTolerance ) )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << "EmbeddedLargeSlipBondElement " << elLabel
+                                       << ": a channel point lies outside of the host element, parent coordinates "
+                                       << cp.hostXi.transpose() );
+        cp.hostN = hostGeometry.N( cp.hostXi );
       }
     }
 
@@ -476,96 +639,168 @@ namespace Marmot::Discretizations::Elements {
       if ( state != Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": invalid initial condition" );
-      const int nQp = nStateVars_ / static_cast< int >( qps.size() );
-      for ( size_t i = 0; i < qps.size(); i++ ) {
+      const int nQp = nStateVars_ / static_cast< int >( channelPoints.size() );
+      for ( size_t i = 0; i < channelPoints.size(); i++ ) {
         QPStateVarManager sv( stateVars_ + i * nQp, nQp );
-        sv.partner         = qps[i].c;
+        sv.partner         = channelPoints[i].c;
         sv.active          = 1.0;
         sv.coveredFraction = 1.0;
-        qps[i].bondSlipLaw->initializeYourself( sv.materialStateVars.data(),
-                                                static_cast< int >( sv.materialStateVars.size() ) );
+        channelPoints[i].bondSlipLaw->initializeYourself( sv.materialStateVars.data(),
+                                                          static_cast< int >( sv.materialStateVars.size() ) );
+      }
+    }
+
+    /// the fade f(x) = 3 x^2 - 2 x^3 of the covered fraction x
+    static double fade( double coveredFraction )
+    {
+      return coveredFraction * coveredFraction * ( 3.0 - 2.0 * coveredFraction );
+    }
+
+    /**
+     * @brief The internal forces and (optionally) the tangent for the total displacements Q; the states hold the
+     * values at the beginning of the increment and are updated in place.
+     * @param Q      total element displacements
+     * @param P      internal forces (added to)
+     * @param K      tangent (added to), or nullptr
+     * @param states the state variables of all channel points
+     * @param time   time at the beginning of the increment
+     * @param dT     time increment
+     */
+    void evaluate( const Eigen::Ref< const Eigen::VectorXd >& Q,
+                   Eigen::Ref< Eigen::VectorXd >              P,
+                   Eigen::Ref< Eigen::MatrixXd >*             K,
+                   double*                                    states,
+                   double                                     time,
+                   double                                     dT ) const
+    {
+      const int nQp = nStateVars_ / static_cast< int >( channelPoints.size() );
+
+      const Eigen::Map< const Eigen::Matrix< double, nDim, nHostNodes > > uHost( Q.data() );
+      const Eigen::Map< const Eigen::MatrixXd > uWindow( Q.data() + nHostNodes * nDim, nDim, nWindowNodes );
+      const Eigen::MatrixXd                     x = windowCoordinates + uWindow;
+
+      for ( size_t i = 0; i < channelPoints.size(); i++ ) {
+        const auto&       cp = channelPoints[i];
+        QPStateVarManager sv( states + i * nQp, nQp );
+
+        const VectorDim xc      = cp.X + uHost * cp.hostN.transpose();
+        const Partner   partner = findPartner( x, xc, static_cast< int >( std::floor( sv.partner ) ) );
+        if ( ( partner.element == 0 && partner.eta < -1.0 && !startIsBarEnd ) ||
+             ( partner.element == nBarElements - 1 && partner.eta > 1.0 && !endIsBarEnd ) )
+          throw std::runtime_error( Marmot::Utilities::MakeString()
+                                    << "EmbeddedLargeSlipBondElement " << elLabel
+                                    << ": the slip exceeds the window of bar elements (the window is too small)" );
+
+        // the local dofs: the host, then the partner's bar element
+        const auto                    idx = barElementNodes( partner.element );
+        std::array< int, nLocalDofs > dofs;
+        for ( int j = 0; j < nHostNodes * nDim; j++ )
+          dofs[j] = j;
+        for ( int b = 0; b < nBarNodes; b++ )
+          for ( int d = 0; d < nDim; d++ )
+            dofs[( nHostNodes + b ) * nDim + d] = ( nHostNodes + idx[b] ) * nDim + d;
+        LocalVector uLocal;
+        for ( int j = 0; j < nLocalDofs; j++ )
+          uLocal( j ) = Q( dofs[j] );
+
+        const LocalKinematics kin = localKinematics( cp, partner.element, uLocal, partner.eta, partner.atKink );
+        const double          st  = kin.slip( 0 );
+
+        // covered fraction of the tributary part: the bar ends moved by the tangential slip
+        double coveredStart = cp.tributaryStart, coveredEnd = cp.tributaryEnd;
+        double dStart_dSt = 0, dEnd_dSt = 0;
+        if ( startIsBarEnd && cumulativeLengths_.front() + st > coveredStart ) {
+          coveredStart = cumulativeLengths_.front() + st;
+          dStart_dSt   = 1;
+        }
+        if ( endIsBarEnd && cumulativeLengths_.back() + st < coveredEnd ) {
+          coveredEnd = cumulativeLengths_.back() + st;
+          dEnd_dSt   = 1;
+        }
+        const double tributaryLength = cp.tributaryEnd - cp.tributaryStart;
+        const double coveredRaw      = ( coveredEnd - coveredStart ) / tributaryLength;
+        const double covered         = std::clamp( coveredRaw, 0.0, 1.0 );
+        const double dCovered_dSt    = coveredRaw > 0 && coveredRaw < 1 ? ( dEnd_dSt - dStart_dSt ) / tributaryLength
+                                                                        : 0.0;
+        const double bondFade        = fade( covered );
+        const double dFade_dSt       = 6.0 * covered * ( 1.0 - covered ) * dCovered_dSt;
+
+        sv.partner         = partner.element + 0.5 * ( std::clamp( partner.eta, -1.0, 1.0 ) + 1.0 );
+        sv.coveredFraction = covered;
+        if ( bondFade <= 0.0 ) {
+          // the bar has left the channel point: no bond; slip, bond stress and law history are kept for its return
+          sv.active = 0.0;
+          continue;
+        }
+
+        const double                          dissipationDensityOld = sv.dissipationDensity;
+        Marmot::Materials::BondSlipLaw::State state{ sv.bondStress,
+                                                     sv.elasticEnergyDensity,
+                                                     sv.dissipationDensity,
+                                                     sv.materialStateVars.data() };
+        Eigen::Matrix3d                       dTau_dSlip;
+        cp.bondSlipLaw->computeBondStress( state, dTau_dSlip, kin.slip, kin.slip - sv.slip, { time, dT } );
+
+        sv.slip                 = kin.slip;
+        sv.bondStress           = state.bondStress;
+        sv.elasticEnergyDensity = state.elasticEnergyDensity;
+        sv.dissipationDensity   = state.dissipation;
+        // the energies of the point are those of its bonded part f: the forces, the reported elastic energy and the
+        // dissipation increments are faded alike; the densities of the law are kept unfaded
+        sv.dissipation += bondFade * cp.perimeterTimesLength * ( state.dissipation - dissipationDensityOld );
+        sv.active = 1.0;
+
+        const VectorDim   tau    = state.bondStress.template head< nDim >();
+        const LocalVector BtTau  = kin.dSlip_dU.transpose() * tau;
+        const LocalVector PLocal = bondFade * cp.perimeterTimesLength * BtTau;
+        for ( int j = 0; j < nLocalDofs; j++ )
+          P( dofs[j] ) += PLocal( j );
+
+        if ( K ) {
+          const LocalMatrix KLocal = cp.perimeterTimesLength *
+                                     ( bondFade * kin.dSlip_dU.transpose() *
+                                         dTau_dSlip.template topLeftCorner< nDim, nDim >() * kin.dSlip_dU +
+                                       dFade_dSt * BtTau * kin.dSlip_dU.row( 0 ) +
+                                       bondFade * geometricStiffness( cp, partner, uLocal, kin.eta, tau ) );
+          for ( int a = 0; a < nLocalDofs; a++ )
+            for ( int b = 0; b < nLocalDofs; b++ )
+              ( *K )( dofs[a], dofs[b] ) += KLocal( a, b );
+        }
       }
     }
 
     /**
-     * @brief The internal forces for the total displacements Q, from the states at the beginning of the increment in
-     * `states`, which are updated in place.
+     * @brief The geometric part of the tangent, \f$\partial (\boldsymbol{B}^T \boldsymbol{\tau}) / \partial
+     * \boldsymbol{u}\f$ at fixed \f$\boldsymbol{\tau}\f$: the second derivatives of the closest point projection and of
+     * the frame, by central differences of the analytic B over the local dofs (geometry only, no law evaluation).
+     * @param cp      the channel point
+     * @param partner its partner
+     * @param uLocal  local displacements
+     * @param eta     the partner parameter for uLocal (start of the closest point iterations)
+     * @param tau     the bond stress, fixed
      */
-    void evaluate( const Eigen::VectorXd& Q, Eigen::VectorXd& P, double* states, double time, double dT ) const
+    LocalMatrix geometricStiffness( const ChannelPoint& cp,
+                                    const Partner&      partner,
+                                    const LocalVector&  uLocal,
+                                    double              eta,
+                                    const VectorDim&    tau ) const
     {
-      P.setZero( nDofs );
-      const int nQp = nStateVars_ / static_cast< int >( qps.size() );
-
-      Eigen::Map< const Eigen::Matrix< double, nDim, Eigen::Dynamic > > Uhost( Q.data(), nDim, nHostNodes );
-      Eigen::Map< const Eigen::MatrixXd > Uchain( Q.data() + nHostNodes * nDim, nDim, nChainNodes );
-      const Eigen::MatrixXd               x = chainCoordinates + Uchain;
-
-      const double startIsBarEnd = elementProperties[3];
-      const double endIsBarEnd   = elementProperties[4];
-
-      for ( size_t i = 0; i < qps.size(); i++ ) {
-        const auto&       qp = qps[i];
-        QPStateVarManager sv( states + i * nQp, nQp );
-
-        const VectorDim xc      = qp.X + Uhost * qp.hostN.transpose();
-        const Partner   partner = findPartner( x, xc );
-
-        if ( ( partner.beforeStart && startIsBarEnd < 0.5 ) || ( partner.afterEnd && endIsBarEnd < 0.5 ) )
-          throw std::runtime_error( Marmot::Utilities::MakeString()
-                                    << "EmbeddedLargeSlipBondElement " << elLabel
-                                    << ": the slip exceeds the window of bar elements; increase maxSlip" );
-
-        const auto      xe       = barElementCoordinates( x, partner.element );
-        const VectorDim xb       = xe * barN( partner.xi ).transpose();
-        const VectorDim relative = qp.R.transpose() * ( xb - xc );
-
-        // tangential slip: the arc length the bar slid past the channel point (extrapolated beyond the bar ends)
-        Eigen::Vector3d slip = Eigen::Vector3d::Zero();
-        slip( 0 )            = qp.S - arcLengthExtrapolated( partner.element, partner.xiUnclamped );
-        for ( int d = 1; d < nDim; d++ )
-          slip( d ) = relative( d );
-
-        // the fraction of the tributary part still covered by the bar, whose ends moved by the slip
-        double coveredStart = qp.Sa, coveredEnd = qp.Sb;
-        if ( startIsBarEnd > 0.5 )
-          coveredStart = std::max( coveredStart, cumulativeLengths_.front() + slip( 0 ) );
-        if ( endIsBarEnd > 0.5 )
-          coveredEnd = std::min( coveredEnd, cumulativeLengths_.back() + slip( 0 ) );
-        // C1 smooth fade: a kink in the bond force when a bar end leaves a tributary part makes Newton cycle
-        const double covered  = std::clamp( ( coveredEnd - coveredStart ) / ( qp.Sb - qp.Sa ), 0.0, 1.0 );
-        const double fraction = covered * covered * ( 3.0 - 2.0 * covered );
-
-        sv.partner         = partner.element + 0.5 * ( partner.xi + 1 );
-        sv.coveredFraction = covered;
-        if ( fraction <= 0.0 ) {
-          // the bar has left the channel point: no bond, the history is kept
-          sv.active        = 0.0;
-          sv.bondStress    = Eigen::Vector3d::Zero();
-          sv.elasticEnergy = 0.0;
-          continue;
-        }
-
-        Marmot::Materials::BondSlipLaw::State state{ sv.bondStress,
-                                                     sv.elasticEnergy / qp.pdS,
-                                                     sv.dissipation / qp.pdS,
-                                                     sv.materialStateVars.data() };
-        Eigen::Matrix3d                       C;
-        qp.bondSlipLaw->computeBondStress( state, C, slip, slip - sv.slip, { time, dT } );
-
-        sv.slip          = slip;
-        sv.bondStress    = state.bondStress;
-        sv.elasticEnergy = state.elasticEnergyDensity * qp.pdS * fraction;
-        sv.dissipation   = state.dissipation * qp.pdS;
-        sv.active        = 1.0;
-
-        const VectorDim T   = qp.R * state.bondStress.template head< nDim >() * fraction;
-        const BarN      M   = barN( partner.xi );
-        const auto      idx = barElementNodes( partner.element );
-        for ( int a = 0; a < nHostNodes; a++ )
-          P.template segment< nDim >( a * nDim ) -= qp.hostN( a ) * T * qp.pdS;
-        for ( int b = 0; b < nBarNodes; b++ )
-          P.template segment< nDim >( ( nHostNodes + idx[b] ) * nDim ) += M( b ) * T * qp.pdS;
+      LocalMatrix  G;
+      const double h = 1e-7 * characteristicLength_;
+      LocalVector  u = uLocal;
+      for ( int j = 0; j < nLocalDofs; j++ ) {
+        u( j )                      = uLocal( j ) + h;
+        const LocalVector BtTauPlus = localKinematics( cp, partner.element, u, eta, partner.atKink )
+                                        .dSlip_dU.transpose() *
+                                      tau;
+        u( j )                       = uLocal( j ) - h;
+        const LocalVector BtTauMinus = localKinematics( cp, partner.element, u, eta, partner.atKink )
+                                         .dSlip_dU.transpose() *
+                                       tau;
+        u( j )     = uLocal( j );
+        G.col( j ) = ( BtTauPlus - BtTauMinus ) / ( 2 * h );
       }
+      return G;
     }
 
     void computeKernels( const double* QTotal_, const double*, double* Pe_, double* Ke_, double time, double dT )
@@ -573,35 +808,16 @@ namespace Marmot::Discretizations::Elements {
     {
       const Eigen::Map< const Eigen::VectorXd > QTotal( QTotal_, nDofs );
       Eigen::Map< Eigen::VectorXd >             Pe( Pe_, nDofs );
-      Eigen::Map< Eigen::MatrixXd >             Ke( Ke_, nDofs, nDofs );
-
-      // the tangent by central differences, each evaluation from the states at the beginning of the increment
-      const std::vector< double > statesOld( stateVars_, stateVars_ + nStateVars_ );
-      std::vector< double >       scratch( nStateVars_ );
-      Eigen::VectorXd             Q = QTotal, Pplus, Pminus;
-      const double                h = 1e-7 * characteristicLength_;
-      for ( int j = 0; j < nDofs; j++ ) {
-        Q( j )  = QTotal( j ) + h;
-        scratch = statesOld;
-        evaluate( Q, Pplus, scratch.data(), time, dT );
-        Q( j )  = QTotal( j ) - h;
-        scratch = statesOld;
-        evaluate( Q, Pminus, scratch.data(), time, dT );
-        Q( j ) = QTotal( j );
-        Ke.col( j ) += ( Pplus - Pminus ) / ( 2 * h );
-      }
-
-      Eigen::VectorXd P;
-      evaluate( QTotal, P, stateVars_, time, dT );
-      Pe += P;
+      Eigen::Map< Eigen::MatrixXd >             KeMap( Ke_, nDofs, nDofs );
+      Eigen::Ref< Eigen::MatrixXd >             Ke( KeMap );
+      evaluate( QTotal, Pe, &Ke, stateVars_, time, dT );
     }
 
     void computeKernelsExplicit( const double* QTotal_, const double*, double* Pe_, double time, double dT ) override
     {
       const Eigen::Map< const Eigen::VectorXd > QTotal( QTotal_, nDofs );
-      Eigen::VectorXd                           P;
-      evaluate( QTotal, P, stateVars_, time, dT );
-      Eigen::Map< Eigen::VectorXd >( Pe_, nDofs ) += P;
+      Eigen::Map< Eigen::VectorXd >             Pe( Pe_, nDofs );
+      evaluate( QTotal, Pe, nullptr, stateVars_, time, dT );
     }
 
     void computeDistributedLoad( DistributedLoadTypes,
@@ -623,40 +839,45 @@ namespace Marmot::Discretizations::Elements {
 
     void computeConsistentInertia( double* ) override {}
 
+    /// the elastic energy of the bonded parts, f x density x perimeter x tributary length
     void computeInternalEnergy( double& internalEnergy ) override
     {
-      const int nQp = nStateVars_ / static_cast< int >( qps.size() );
-      for ( size_t i = 0; i < qps.size(); i++ )
-        internalEnergy += QPStateVarManager( stateVars_ + i * nQp, nQp ).elasticEnergy;
+      const int nQp = nStateVars_ / static_cast< int >( channelPoints.size() );
+      for ( size_t i = 0; i < channelPoints.size(); i++ ) {
+        const QPStateVarManager sv( stateVars_ + i * nQp, nQp );
+        if ( sv.active > 0.5 )
+          internalEnergy += fade( sv.coveredFraction ) * sv.elasticEnergyDensity *
+                            channelPoints[i].perimeterTimesLength;
+      }
     }
 
     Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
     {
-      const int         nQp  = nStateVars_ / static_cast< int >( qps.size() );
+      const int         nQp  = nStateVars_ / static_cast< int >( channelPoints.size() );
       double*           base = stateVars_ + qpNumber * nQp;
       QPStateVarManager sv( base, nQp );
       if ( sv.contains( stateName ) )
         return sv.getStateView( stateName );
-      return qps[qpNumber].bondSlipLaw->getStateView( stateName, sv.materialStateVars.data() );
+      return channelPoints[qpNumber].bondSlipLaw->getStateView( stateName, sv.materialStateVars.data() );
     }
 
     std::vector< double > getCoordinatesAtCenter() override
     {
       VectorDim X = VectorDim::Zero();
-      for ( const auto& qp : qps )
-        X += qp.X / qps.size();
+      for ( const auto& cp : channelPoints )
+        X += cp.X / channelPoints.size();
       return std::vector< double >( X.data(), X.data() + nDim );
     }
 
     std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override
     {
       std::vector< std::vector< double > > result;
-      for ( const auto& qp : qps )
-        result.emplace_back( qp.X.data(), qp.X.data() + nDim );
+      for ( const auto& cp : channelPoints )
+        result.emplace_back( cp.X.data(), cp.X.data() + nDim );
       return result;
     }
 
-    int getNumberOfQuadraturePoints() override { return static_cast< int >( qps.size() ); }
+    int getNumberOfQuadraturePoints() override { return static_cast< int >( channelPoints.size() ); }
   };
 
 } // namespace Marmot::Discretizations::Elements
