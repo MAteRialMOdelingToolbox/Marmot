@@ -356,8 +356,8 @@ namespace Marmot::Discretizations::Elements {
      * \boldsymbol{x}_{,\eta} \cdot \boldsymbol{x}_{,\eta} + (\boldsymbol{x} - \boldsymbol{x}_c) \cdot
      * \boldsymbol{x}_{,\eta\eta}\f$.
      * @param k        bar element of the window
-     * @param xe       current nodal coordinates of the bar element
-     * @param xc       the point
+     * @param xeGlobal current nodal coordinates of the bar element
+     * @param xcGlobal the point
      * @param etaStart start of the iteration
      * @return the parameter eta of the closest point, possibly outside of [-1, 1]
      * @throws std::runtime_error if g' <= 0 (not a minimum: the bar is curved more strongly than its distance to the
