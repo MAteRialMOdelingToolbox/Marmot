@@ -269,8 +269,51 @@ void testCorotationalCutbacks()
   }
 }
 
+/// the host may call the interface in the order of DisplacementFiniteElement (properties, material section, number of
+/// state variables, state variables, initialize) or initialize before assigning the material (EdelweissFE): both give
+/// the same number of state variables and the same forces and stiffness; asking for the number of state variables
+/// before the material section is known is an error, not a too small number
+void testCallOrder()
+{
+  for ( const auto& t : types ) {
+    const std::vector< double > X1    = t.nDim == 2 ? std::vector< double >{ 0., 0. }
+                                                    : std::vector< double >{ 0., 0., 0. };
+    const std::vector< double > X2    = t.nDim == 2 ? std::vector< double >{ 80., 60. }
+                                                    : std::vector< double >{ 80., 60., 20. };
+    std::vector< double >       X     = nodes( t, X1, X2 );
+    std::vector< double >       props = properties( t.nDim );
+    std::vector< double >       mat   = linearElastic;
+
+    auto el = std::unique_ptr< Element >( Marmot::Registry::ElementFactory::createElement( t.name, 1 ) );
+    el->assignNodeCoordinates( X.data() );
+    el->assignProperty( ElementProperties( props.data(), static_cast< int >( props.size() ) ) );
+    throwExceptionOnFailure( throws< std::logic_error >( [&]() { el->getNumberOfRequiredStateVars(); } ),
+                             t.name + ": number of state variables before the material section" );
+    el->assignProperty( MaterialSection( "LINEARELASTIC", mat.data(), static_cast< int >( mat.size() ) ) );
+    std::vector< double > stateVars( el->getNumberOfRequiredStateVars(), 0.0 );
+    el->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+    el->initializeYourself();
+    el->setInitialConditions( Element::MarmotMaterialInitialization, nullptr );
+
+    Beam reference( t, X, props ); // initialized before the material section is assigned
+    throwExceptionOnFailure( stateVars.size() == reference.stateVars.size(),
+                             MakeString() << t.name << ": number of state variables " << stateVars.size() << " vs "
+                                          << reference.stateVars.size() );
+
+    const int       nDof = el->getNDofPerElement();
+    Eigen::VectorXd U( nDof ), P = Eigen::VectorXd::Zero( nDof ), PRef = Eigen::VectorXd::Zero( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      U( i ) = 1e-3 * std::sin( 1.0 + i ); // small displacements and rotations, all dofs
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof ), KRef = Eigen::MatrixXd::Zero( nDof, nDof );
+    el->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 );
+    reference.el->computeKernels( U.data(), U.data(), PRef.data(), KRef.data(), 0.0, 1.0 );
+    throwExceptionOnFailure( ( P - PRef ).norm() <= 1e-12 * PRef.norm() && ( K - KRef ).norm() <= 1e-12 * KRef.norm(),
+                             t.name + ": both call orders give the same forces and stiffness" );
+  }
+}
+
 int main()
 {
-  executeTestsAndCollectExceptions( { testInterface, testInvalidInput, testCorotationalCutbacks } );
+  executeTestsAndCollectExceptions( { testInterface, testInvalidInput, testCorotationalCutbacks, testCallOrder } );
   return 0;
 }

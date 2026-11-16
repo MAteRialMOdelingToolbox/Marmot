@@ -130,7 +130,9 @@ namespace {
     const auto [P, K]  = beam.kernels( U, UOld, false );
     const auto   numK  = beam.numericalTangent( U, UOld, h );
     const double scale = numK.cwiseAbs().maxCoeff();
-    throwExceptionOnFailure( checkIfEqual< double >( K, numK, relTol * scale ),
+    // max-norm relative to the largest entry (checkIfEqual is already relative per entry: a tolerance scaled by the
+    // largest entry would accept almost any tangent)
+    throwExceptionOnFailure( ( K - numK ).cwiseAbs().maxCoeff() <= relTol * scale,
                              Marmot::Utilities::MakeString()
                                << what << ": tangent does not match the numerical one\nK=\n"
                                << K << "\nnumK=\n"

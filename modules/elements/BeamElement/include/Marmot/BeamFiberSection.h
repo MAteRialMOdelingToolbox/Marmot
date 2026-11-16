@@ -164,18 +164,28 @@ namespace Marmot::Discretizations::Elements {
       return c;
     }
 
-    /// one material instance per fiber, created by name through the factory
-    void createMaterials( const std::string& name,
-                          const double*      properties,
-                          int                nProperties,
-                          int                elLabel,
-                          double             characteristicLength )
+    /**
+     * @brief Create one material instance per fiber, by name through the factory.
+     * @param[in] name        Name of the hypoelastic material.
+     * @param[in] properties  Material properties.
+     * @param[in] nProperties Number of material properties.
+     * @param[in] elLabel     Label of the element, passed to the materials as their number.
+     */
+    void createMaterials( const std::string& name, const double* properties, int nProperties, int elLabel )
     {
-      for ( auto& f : fibers ) {
+      for ( auto& f : fibers )
         f.material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
           Marmot::Registry::MaterialHypoElasticFactory::createMaterial( name, properties, nProperties, elLabel ) );
+    }
+
+    /**
+     * @brief Set the characteristic element length of the fiber materials (regularisation of softening materials).
+     * @param[in] characteristicLength The length of the part of the element the section represents.
+     */
+    void setCharacteristicLength( double characteristicLength )
+    {
+      for ( auto& f : fibers )
         f.material->setCharacteristicElementLength( characteristicLength );
-      }
     }
 
     bool hasMaterials() const { return !fibers.empty() && fibers[0].material; }

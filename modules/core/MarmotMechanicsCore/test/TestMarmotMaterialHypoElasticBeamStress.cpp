@@ -109,7 +109,8 @@ void testVonMisesTangentAndYieldSurface()
     dm( j ) -= h;
     numC.col( j ) = ( p.update( dp, false ).first - p.update( dm, false ).first ) / ( 2 * h );
   }
-  throwExceptionOnFailure( checkIfEqual< double >( C, numC, 1e-5 * numC.cwiseAbs().maxCoeff() ),
+  // max-norm relative to the largest entry (checkIfEqual is already relative per entry)
+  throwExceptionOnFailure( ( C - numC ).cwiseAbs().maxCoeff() <= 1e-5 * numC.cwiseAbs().maxCoeff(),
                            MakeString() << "von Mises beam tangent:\n"
                                         << C << "\nnumerical:\n"
                                         << numC );

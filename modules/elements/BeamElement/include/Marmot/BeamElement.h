@@ -60,7 +60,11 @@ namespace Marmot::Discretizations::Elements {
    * elastic material, the 2-node element reproduces the exact nodal values of a beam loaded at its nodes, the 3-node
    * element also the exact deflection of a beam under a uniform line load (quartic).
    *
-   * Integration along the axis (full, exact for elastic beams): 3 Gauss points (2 nodes), 4 Gauss points (3 nodes).
+   * Integration along the axis: 3 Gauss points (2 nodes, exact to degree 5), 4 Gauss points (3 nodes, degree 7). The
+   * curvature is linear (2 nodes) or cubic (3 nodes) along the axis, so the elastic stiffness is a polynomial of degree
+   * 2 or 6 and the consistent line load (Hermite times constant) one of degree 3 or 5: both are integrated exactly.
+   * For 2 nodes, 2 points would suffice for elastic beams; the third one, at the middle, gives a plastic zone one more
+   * section to form in.
    *
    * Geometrically linear: rotations must remain small. The section (BeamFiberSection) is independent of the
    * kinematics, so a co-rotational variant only has to provide the generalized strains of its co-rotated frame and
@@ -81,7 +85,8 @@ namespace Marmot::Discretizations::Elements {
    *   (\f$\boldsymbol{e}_3 = \boldsymbol{e}_1 \times \boldsymbol{e}_2\f$), and the torsion constant \f$J\f$.
    *
    * The section coordinates are measured from the beam axis (the line through the nodes): a section whose centroid is
-   * off the axis is an eccentric beam. The materials see the characteristic length \f$L/3\f$.
+   * off the axis is an eccentric beam. The materials see the characteristic length \f$L/n_\mathrm{qp}\f$ (\f$L/3\f$ for
+   * 2 nodes, \f$L/4\f$ for 3 nodes), the length one quadrature point represents.
    *
    * Quadrature point states: 2D: @b normal force, @b bending moment, @b axial strain, @b curvature; 3D: @b normal
    * force, @b bending moments (\f$M_y, M_z\f$), @b torque, @b axial strain, @b curvatures (\f$\kappa_y, \kappa_z\f$),
@@ -178,6 +183,9 @@ namespace Marmot::Discretizations::Elements {
     static constexpr int idxDissipation    = 2 * nGeneralized + 1;
     static constexpr int nQpStateVarsOwn   = 2 * nGeneralized + 2;
 
+    /// Degree of exactness of the Gauss rule along the axis (3 points for 2 nodes, 4 points for 3 nodes)
+    static constexpr int quadratureDegree = nNodes == 2 ? 5 : 7;
+
     /// The parametric coordinates s in [0, 1] of the nodes (end, end, mid)
     static constexpr std::array< double, 3 > nodeS = { 0.0, 1.0, 0.5 };
 
@@ -188,20 +196,11 @@ namespace Marmot::Discretizations::Elements {
     explicit BeamElement( int elementID )
       : elLabel( elementID ), elementProperties( nullptr, 0 ), coordinates( nullptr )
     {
+      // the quadrature along the axis (see the class documentation for the degrees): 3 Gauss points for 2 nodes, 4
+      // for 3 nodes
       using namespace Marmot::Discretizations::Elements::Quadrature;
-      if constexpr ( nNodes == 2 ) {
-        for ( const auto& qpInfo : Marmot::Discretizations::Elements::Quadrature::Spatial1D::gaussPointList3 )
-          qps.emplace_back( qpInfo.xi( 0 ), qpInfo.weight );
-      }
-      else {
-        // 4 point Gauss rule
-        const double a  = std::sqrt( 3. / 7 - 2. / 7 * std::sqrt( 6. / 5 ) ),
-                     b  = std::sqrt( 3. / 7 + 2. / 7 * std::sqrt( 6. / 5 ) );
-        const double wa = ( 18 + std::sqrt( 30. ) ) / 36, wb = ( 18 - std::sqrt( 30. ) ) / 36;
-        for ( const auto& [xi, w] :
-              std::array< std::pair< double, double >, 4 >{ { { -b, wb }, { -a, wa }, { a, wa }, { b, wb } } } )
-          qps.emplace_back( xi, w );
-      }
+      for ( const auto& point : getQuadraturePoints( ReferenceDomain::Line, gaussExactToDegree( quadratureDegree ) ) )
+        qps.emplace_back( point.xi( 0 ), point.weight );
 
       Eigen::Matrix< double, nHermite, nHermite > M = Eigen::Matrix< double, nHermite, nHermite >::Zero();
       for ( int a = 0; a < nNodes; a++ )
@@ -236,7 +235,16 @@ namespace Marmot::Discretizations::Elements {
 
     int nQpStateVars() const { return nQpStateVarsOwn + qps[0].section.getNumberOfRequiredStateVars(); }
 
-    int getNumberOfRequiredStateVars() override { return static_cast< int >( qps.size() ) * nQpStateVars(); }
+    /// The number of state variables; it is known once both the element properties (the fibers) and the material
+    /// section (the fiber materials) have been assigned, in either order
+    int getNumberOfRequiredStateVars() override
+    {
+      if ( !qps[0].section.hasMaterials() )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                << ": assign the element properties and the material section first" );
+      return static_cast< int >( qps.size() ) * nQpStateVars();
+    }
 
     std::vector< std::vector< std::string > > getNodeFields() override
     {
@@ -280,6 +288,19 @@ namespace Marmot::Discretizations::Elements {
           << ( nDim == 2 ? "[n, y_1, A_1, ...]" : "[vx, vy, vz, J, n, y_1, z_1, A_1, ...]" ) );
       new ( &elementProperties )
         Eigen::Map< const Eigen::VectorXd >( property.elementProperties, property.nElementProperties );
+
+      // the fibers depend only on the properties: create them here, so that the number of state variables is known
+      // before initializeYourself(), whatever order the host calls the interface in
+      const double J = nDim == 3 ? elementProperties[3] : 0.0;
+      for ( auto& qp : qps ) {
+        try {
+          qp.section.setFibers( elementProperties.data() + nHeader, nSectionPoints(), J );
+        }
+        catch ( const std::invalid_argument& e ) {
+          throw std::invalid_argument( Marmot::Utilities::MakeString() << "element " << elLabel << ": " << e.what() );
+        }
+      }
+      createMaterials();
     }
 
     void assignProperty( const Marmot::Discretizations::MaterialSection& section ) override
@@ -290,17 +311,24 @@ namespace Marmot::Discretizations::Elements {
       createMaterials();
     }
 
-    /// one material per fiber, as soon as both the fibers (initializeYourself) and the material section are known
+    /// one material per fiber, as soon as both the fibers (element properties) and the material section are known
     void createMaterials()
     {
       if ( materialName.empty() || qps[0].section.fibers.empty() )
         return;
       for ( auto& qp : qps )
-        qp.section.createMaterials( materialName,
-                                    materialProperties,
-                                    nMaterialProperties,
-                                    elLabel,
-                                    length / static_cast< double >( qps.size() ) );
+        qp.section.createMaterials( materialName, materialProperties, nMaterialProperties, elLabel );
+      setCharacteristicLength();
+    }
+
+    /// the characteristic length L / n_qp of the fiber materials, as soon as both the materials and the length
+    /// (initializeYourself) are known: the host may assign the material section before or after initializing
+    void setCharacteristicLength()
+    {
+      if ( length <= 0 || !qps[0].section.hasMaterials() )
+        return;
+      for ( auto& qp : qps )
+        qp.section.setCharacteristicLength( length / static_cast< double >( qps.size() ) );
     }
 
     void assignNodeCoordinates( const double* coords ) override
@@ -403,18 +431,11 @@ namespace Marmot::Discretizations::Elements {
           T.template block< 3, 3 >( a * nDofPerNode + 3, a * nDofPerNode + 3 ) = R;
       }
 
-      const double J = nDim == 3 ? elementProperties[3] : 0.0;
       for ( auto& qp : qps ) {
         qp.B  = strainOperator( qp.xi );
         qp.dV = 0.5 * length * qp.weight;
-        try {
-          qp.section.setFibers( elementProperties.data() + nHeader, nSectionPoints(), J );
-        }
-        catch ( const std::invalid_argument& e ) {
-          throw std::invalid_argument( Marmot::Utilities::MakeString() << "element " << elLabel << ": " << e.what() );
-        }
       }
-      createMaterials();
+      setCharacteristicLength();
     }
 
     void setInitialConditions( StateTypes state, const double* ) override

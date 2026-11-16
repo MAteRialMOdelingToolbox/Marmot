@@ -785,7 +785,7 @@ namespace Marmot::Discretizations::Elements {
      *
      * | Domain        | Gauss: points -> degree            | Newton-Cotes: points -> degree |
      * |---------------|------------------------------------|--------------------------------|
-     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5             | 2 -> 1                         |
+     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7     | 2 -> 1                         |
      * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5       | 2x2 -> 1                       |
      * | Hexahedron    | 1x1x1 -> 1, 2x2x2 -> 3, 3x3x3 -> 5 | -                              |
      * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5             | 3 -> 1                         |
