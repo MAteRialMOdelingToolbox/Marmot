@@ -40,6 +40,8 @@ namespace Marmot::Discretizations::Elements::Registration {
   }
 
   // EB<nDim>D<number of rebar nodes><host shape>
+  const static bool EB2D2T3_isRegistered  = registerBond< 2, 2, 3 >( "EB2D2T3" );
+  const static bool EB2D3T3_isRegistered  = registerBond< 2, 3, 3 >( "EB2D3T3" );
   const static bool EB2D2Q4_isRegistered  = registerBond< 2, 2, 4 >( "EB2D2Q4" );
   const static bool EB2D2Q8_isRegistered  = registerBond< 2, 2, 8 >( "EB2D2Q8" );
   const static bool EB2D3Q4_isRegistered  = registerBond< 2, 3, 4 >( "EB2D3Q4" );

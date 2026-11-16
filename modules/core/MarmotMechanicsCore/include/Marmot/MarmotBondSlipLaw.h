@@ -42,6 +42,9 @@ namespace Marmot::Materials {
    *
    * Bond-slip laws are pluggable: they live as modules in the materials category and register themselves in the
    * Marmot::Registry::BondSlipLawFactory, from which bond elements create them by name.
+   *
+   * The interface has its own small State and TimeIncrement structs instead of the state3D/timeInfo of the
+   * continuum materials, because its stress measure is a traction vector per unit bar surface, not a stress tensor.
    */
   class BondSlipLaw {
 
@@ -94,6 +97,9 @@ namespace Marmot::Materials {
      * @param[in] slip   total slip at the end of the increment, local bar frame [tangential, normal 1, normal 2]
      * @param[in] dSlip  slip increment, local bar frame
      * @param[in] timeIncrement time information
+     *
+     * The slip increment and the time increment are passed for rate-dependent laws; rate-independent laws ignore
+     * them.
      */
     virtual void computeBondStress( State&                        state,
                                     Marmot::Math::Matrix3d&       dBondStress_dSlip,

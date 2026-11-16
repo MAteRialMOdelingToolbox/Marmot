@@ -23,7 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #include "Marmot/LinearElasticBondSlip.h"
-#include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotUtils.h"
 #include <stdexcept>
 
 namespace Marmot::Materials {
@@ -32,20 +32,17 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialNumber )
     : Marmot::Materials::BondSlipLaw( materialProperties, nMaterialProperties, materialNumber ),
-      Kt( materialProperties[0] ),
-      Kn( materialProperties[1] )
+      Kt( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      Kn( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) )
   {
-    if ( nMaterialProperties < 2 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__ << ": requires 2 properties, K_t and K_n" );
     stateLayout.finalize();
   }
 
   void LinearElasticBondSlip::computeBondStress( State&                        state,
                                                  Marmot::Math::Matrix3d&       dBondStress_dSlip,
                                                  const Marmot::Math::Vector3d& slip,
-                                                 const Marmot::Math::Vector3d&,
-                                                 const TimeIncrement& ) const
+                                                 const Marmot::Math::Vector3d& /*dSlip: rate independent*/,
+                                                 const TimeIncrement& /*timeIncrement: rate independent*/ ) const
   {
     dBondStress_dSlip = Marmot::Math::Vector3d( Kt, Kn, Kn ).asDiagonal();
     state.bondStress  = dBondStress_dSlip * slip;

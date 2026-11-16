@@ -35,6 +35,7 @@
 #include <array>
 #include <cmath>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -88,16 +89,18 @@ namespace Marmot::Discretizations::Elements {
     static_assert( nRebarNodes == 2 || nRebarNodes == 3, "EmbeddedBondElement: nRebarNodes must be 2 or 3" );
 
   public:
-    static constexpr int nNodes         = nRebarNodes + nHostNodes;
+    /// number of nodes: the bar nodes, followed by the host nodes
+    static constexpr int nNodes = nRebarNodes + nHostNodes;
+    /// number of element dofs (displacements only)
     static constexpr int sizeLoadVector = nNodes * nDim;
 
-    using HostGeometry = Marmot::Discretizations::Elements::GeometryElement< nDim, nHostNodes >;
-    using VectorDim    = Eigen::Matrix< double, nDim, 1 >;
-    using MatrixDim    = Eigen::Matrix< double, nDim, nDim >;
-    using RhsSized     = Eigen::Matrix< double, sizeLoadVector, 1 >;
-    using KSized       = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
-    using LSized       = Eigen::Matrix< double, nDim, sizeLoadVector >;
-    using RebarN       = Eigen::Matrix< double, 1, nRebarNodes >;
+    using HostGeometry = Marmot::Discretizations::Elements::GeometryElement< nDim, nHostNodes >; ///< host shape
+    using VectorDim    = Eigen::Matrix< double, nDim, 1 >;                                       ///< spatial vector
+    using MatrixDim    = Eigen::Matrix< double, nDim, nDim >;                                    ///< spatial tensor
+    using RhsSized     = Eigen::Matrix< double, sizeLoadVector, 1 >;              ///< element force vector
+    using KSized       = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >; ///< element stiffness matrix
+    using LSized       = Eigen::Matrix< double, nDim, sizeLoadVector >;           ///< relative displacement operator
+    using RebarN       = Eigen::Matrix< double, 1, nRebarNodes >;                 ///< bar shape functions
 
     /// Element label
     const int elLabel;
@@ -144,12 +147,12 @@ namespace Marmot::Discretizations::Elements {
 
     /// An integration point along the bar
     struct QuadraturePoint {
-      double                                            eta    = 0; ///< parent coordinate of the bar element
-      double                                            weight = 0; ///< weight of the Gauss-Lobatto rule on [-1, 1]
-      Eigen::Matrix< double, nDim, 1 >                  hostXi;     ///< parent coordinates in the host element
-      LSized                                            L; ///< interpolation operator of the relative displacement
-      MatrixDim                                         R; ///< local frame [t, n1, (n2)] as columns
-      double                                            pdS = 0; ///< perimeter x reference length of the point
+      double                           eta    = 0; ///< parent coordinate of the bar element
+      double                           weight = 0; ///< weight of the Gauss-Lobatto rule on [-1, 1]
+      Eigen::Matrix< double, nDim, 1 > hostXi;     ///< parent coordinates in the host element
+      LSized                           L;          ///< interpolation operator of the relative displacement
+      MatrixDim                        R;          ///< local frame [t, n1, (n2)] as columns
+      double perimeterTimesDS = 0;                 ///< perimeter x reference length of the point (integration weight)
       std::unique_ptr< QPStateVarManager >              managedStateVars;
       std::unique_ptr< Marmot::Materials::BondSlipLaw > bondSlipLaw;
     };
@@ -157,35 +160,38 @@ namespace Marmot::Discretizations::Elements {
     /// the integration points
     std::vector< QuadraturePoint > qps;
 
+    /**
+     * @brief Construct the element with the default number of integration points.
+     * @param elementID the element label
+     */
     explicit EmbeddedBondElement( int elementID )
       : elLabel( elementID ), elementProperties( nullptr, 0 ), rebarCoordinates( nullptr )
     {
       qps.resize( defaultNumberOfIntegrationPoints() );
     }
 
+    /// 2 Gauss-Lobatto points for linear bars, 3 for quadratic bars (exact for the stiffness of a linear law)
     static constexpr int defaultNumberOfIntegrationPoints() { return nRebarNodes == 2 ? 2 : 3; }
 
-    /// Gauss-Lobatto points and weights on [-1, 1]
-    static std::vector< std::pair< double, double > > gaussLobatto( int n )
+    /**
+     * @brief The Gauss-Lobatto rule along the bar part, from the quadrature catalogue.
+     * @param n number of points, 2 to 5 (degree of exactness 2n - 3)
+     * @return points and weights on [-1, 1]
+     * @throws std::invalid_argument for other numbers of points
+     */
+    static const std::vector< Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo >& gaussLobatto(
+      int n )
     {
-      switch ( n ) {
-      case 2: return { { -1., 1. }, { 1., 1. } };
-      case 3: return { { -1., 1. / 3 }, { 0., 4. / 3 }, { 1., 1. / 3 } };
-      case 4: {
-        const double a = std::sqrt( 1. / 5 );
-        return { { -1., 1. / 6 }, { -a, 5. / 6 }, { a, 5. / 6 }, { 1., 1. / 6 } };
-      }
-      case 5: {
-        const double a = std::sqrt( 3. / 7 );
-        return { { -1., 0.1 }, { -a, 49. / 90 }, { 0., 32. / 45 }, { a, 49. / 90 }, { 1., 0.1 } };
-      }
-      default:
+      using namespace Marmot::Discretizations::Elements::Quadrature;
+      if ( n < 2 || n > 5 )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << "EmbeddedBondElement: 2 to 5 integration points are supported, " << n
                                      << " were requested" );
-      }
+      return getQuadraturePoints( Marmot::Discretizations::Elements::ReferenceDomain::Line,
+                                  gaussLobattoExactToDegree( 2 * n - 3 ) );
     }
 
+    /// shape functions of the bar element at the bar parent coordinate @p eta
     static RebarN rebarN( double eta )
     {
       if constexpr ( nRebarNodes == 2 )
@@ -194,6 +200,7 @@ namespace Marmot::Discretizations::Elements {
         return Marmot::Discretizations::Elements::Spatial1D::Bar3::N( eta );
     }
 
+    /// derivatives of the bar shape functions with respect to @p eta
     static RebarN rebarDNdEta( double eta )
     {
       if constexpr ( nRebarNodes == 2 )
@@ -202,7 +209,13 @@ namespace Marmot::Discretizations::Elements {
         return Marmot::Discretizations::Elements::Spatial1D::Bar3::dNdXi( eta );
     }
 
-    /// local frame of the unit tangent t, columns [t, n1, (n2)]
+    /**
+     * @brief Local frame of the unit tangent t, columns [t, n1, (n2)].
+     *
+     * In 2D, n1 is t rotated by +90 degrees. In 3D, the normals are an arbitrary right-handed pair, built from the
+     * global axis least aligned with t: they may differ between integration points, so the normal components of slip
+     * and bond stress must not be compared between points, and bond-slip laws must be isotropic in the normal plane.
+     */
     static MatrixDim localFrame( const VectorDim& t )
     {
       MatrixDim R;
@@ -223,39 +236,31 @@ namespace Marmot::Discretizations::Elements {
       return R;
     }
 
+    /// The tolerance of "inside the host element" in parent coordinates: looser than the one EdelweissFE uses to
+    /// place the ends of the bond parts on host boundaries, so that such points are always accepted
+    static constexpr double insideTolerance = 1e-6;
+
     /**
-     * @brief Parent coordinates of a point in the host element (inverse isoparametric mapping).
+     * @brief Parent coordinates of a point in the host element: the inverse isoparametric mapping of the host
+     * geometry (GeometryElement::parentCoordinates).
+     * @param[in] X The point.
+     * @return The parent coordinates.
      * @throws std::invalid_argument if the point lies outside of the host element
      */
     VectorDim findHostParentCoordinates( const VectorDim& X ) const
     {
-      VectorDim xi = VectorDim::Zero();
-      if ( hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra4 ||
-           hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra10 )
-        xi.setConstant( 0.25 );
-
-      for ( int iteration = 0;; iteration++ ) {
-        const VectorDim residual = hostGeometry.NB( hostGeometry.N( xi ) ) * hostGeometry.coordinates - X;
-        const MatrixDim J        = hostGeometry.Jacobian( hostGeometry.dNdXi( xi ) );
-        const VectorDim dXi      = -J.inverse() * residual;
-        xi += dXi;
-        if ( dXi.norm() < 1e-13 )
-          break;
-        if ( iteration > 50 )
-          throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                       << "EmbeddedBondElement " << elLabel
-                                       << ": inverse mapping into the host element did not converge" );
+      VectorDim xi;
+      try {
+        xi = hostGeometry.parentCoordinates( X );
       }
-
-      constexpr double tol = 1e-6;
-      bool             inside;
-      if ( hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra4 ||
-           hostGeometry.shape == Marmot::Discretizations::Elements::ElementShapes::Tetra10 )
-        inside = xi.minCoeff() >= -tol && xi.sum() <= 1 + tol;
-      else
-        inside = xi.cwiseAbs().maxCoeff() <= 1 + tol;
-
-      if ( !inside )
+      catch ( const std::runtime_error& ) {
+        // no convergence: only possible far outside of the element
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "EmbeddedBondElement " << elLabel
+                                     << ": a bond integration point lies outside of the host element, "
+                                     << X.transpose() );
+      }
+      if ( !HostGeometry::isInsideParentDomain( xi, insideTolerance ) )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << "EmbeddedBondElement " << elLabel
                                      << ": a bond integration point lies outside of the host element, "
@@ -266,6 +271,10 @@ namespace Marmot::Discretizations::Elements {
 
     int getNumberOfRequiredStateVars() override
     {
+      if ( !qps[0].bondSlipLaw )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << "EmbeddedBondElement " << elLabel
+                                << ": the bond-slip law must be assigned before the state variables" );
       return static_cast< int >( qps.size() ) * ( QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly() +
                                                   qps[0].bondSlipLaw->getNumberOfRequiredStateVars() );
     }
@@ -308,10 +317,25 @@ namespace Marmot::Discretizations::Elements {
       new ( &elementProperties )
         Eigen::Map< const Eigen::VectorXd >( property.elementProperties, property.nElementProperties );
 
+      const double perimeter = elementProperties[0], etaStart = elementProperties[1], etaEnd = elementProperties[2];
+      if ( !( perimeter > 0 ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << "EmbeddedBondElement " << elLabel
+                                                                     << ": requires perimeter > 0, got " << perimeter );
+      if ( !( -1 <= etaStart && etaStart < etaEnd && etaEnd <= 1 ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "EmbeddedBondElement " << elLabel
+                                     << ": requires -1 <= eta start < eta end <= 1, got [" << etaStart << ", " << etaEnd
+                                     << "]" );
+
       const int nQps = property.nElementProperties > 3 ? static_cast< int >( std::lround( elementProperties[3] ) )
                                                        : defaultNumberOfIntegrationPoints();
       gaussLobatto( nQps ); // validates
-      qps.clear();
+      // resizing the integration points would destroy the bond-slip laws assigned with them
+      if ( qps[0].bondSlipLaw && nQps != static_cast< int >( qps.size() ) )
+        throw std::logic_error( Marmot::Utilities::MakeString()
+                                << "EmbeddedBondElement " << elLabel
+                                << ": the element properties (number of integration points) must be assigned before "
+                                   "the bond-slip law" );
       qps.resize( nQps );
     }
 
@@ -336,21 +360,21 @@ namespace Marmot::Discretizations::Elements {
       const double perimeter = elementProperties[0];
       const double etaStart  = elementProperties[1];
       const double etaEnd    = elementProperties[2];
-      const auto   rule      = gaussLobatto( static_cast< int >( qps.size() ) );
+      const auto&  rule      = gaussLobatto( static_cast< int >( qps.size() ) );
 
       for ( size_t q = 0; q < qps.size(); q++ ) {
         auto& qp  = qps[q];
-        qp.eta    = etaStart + 0.5 * ( etaEnd - etaStart ) * ( rule[q].first + 1 );
-        qp.weight = rule[q].second;
+        qp.eta    = etaStart + 0.5 * ( etaEnd - etaStart ) * ( rule[q].xi( 0 ) + 1 );
+        qp.weight = rule[q].weight;
 
-        const RebarN    M  = rebarN( qp.eta );
-        const VectorDim X  = rebarCoordinates * M.transpose();
-        const VectorDim G  = rebarCoordinates * rebarDNdEta( qp.eta ).transpose();
-        const double    dS = G.norm() * 0.5 * std::abs( etaEnd - etaStart ) * qp.weight;
+        const RebarN    M       = rebarN( qp.eta );
+        const VectorDim X       = rebarCoordinates * M.transpose();
+        const VectorDim dX_dEta = rebarCoordinates * rebarDNdEta( qp.eta ).transpose();
+        const double    dS      = dX_dEta.norm() * 0.5 * ( etaEnd - etaStart ) * qp.weight;
 
-        qp.pdS    = perimeter * dS;
-        qp.R      = localFrame( G / G.norm() );
-        qp.hostXi = findHostParentCoordinates( X );
+        qp.perimeterTimesDS = perimeter * dS;
+        qp.R                = localFrame( dX_dEta / dX_dEta.norm() );
+        qp.hostXi           = findHostParentCoordinates( X );
 
         const auto N = hostGeometry.N( qp.hostXi );
         qp.L.setZero();
@@ -392,20 +416,21 @@ namespace Marmot::Discretizations::Elements {
         dSlip.template head< nDim >() = qp.R.transpose() * ( qp.L * dQ );
 
         Marmot::Materials::BondSlipLaw::State state{ sv.bondStress,
-                                                     sv.elasticEnergy / qp.pdS,
-                                                     sv.dissipation / qp.pdS,
+                                                     sv.elasticEnergy / qp.perimeterTimesDS,
+                                                     sv.dissipation / qp.perimeterTimesDS,
                                                      sv.materialStateVars.data() };
-        Eigen::Matrix3d                       C;
-        qp.bondSlipLaw->computeBondStress( state, C, slip, dSlip, { time, dT } );
+        Eigen::Matrix3d                       dBondStress_dSlip;
+        qp.bondSlipLaw->computeBondStress( state, dBondStress_dSlip, slip, dSlip, { time, dT } );
 
         sv.slip          = slip;
         sv.bondStress    = state.bondStress;
-        sv.elasticEnergy = state.elasticEnergyDensity * qp.pdS;
-        sv.dissipation   = state.dissipation * qp.pdS;
+        sv.elasticEnergy = state.elasticEnergyDensity * qp.perimeterTimesDS;
+        sv.dissipation   = state.dissipation * qp.perimeterTimesDS;
 
-        const LSized RtL = qp.R.transpose() * qp.L;
-        Pe += RtL.transpose() * state.bondStress.template head< nDim >() * qp.pdS;
-        Ke += RtL.transpose() * C.template topLeftCorner< nDim, nDim >() * RtL * qp.pdS;
+        const LSized dSlip_dU = qp.R.transpose() * qp.L;
+        Pe += dSlip_dU.transpose() * state.bondStress.template head< nDim >() * qp.perimeterTimesDS;
+        Ke += dSlip_dU.transpose() * dBondStress_dSlip.template topLeftCorner< nDim, nDim >() * dSlip_dU *
+              qp.perimeterTimesDS;
       }
     }
 

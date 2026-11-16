@@ -36,8 +36,10 @@ namespace Marmot::Materials {
    * With large stiffnesses it is a penalty formulation of perfect bond.
    *
    * Material properties:
-   *  - @b K_t: tangential bond stiffness (stress per slip)
-   *  - @b K_n: normal bond stiffness (stress per relative displacement)
+   *  0. @b K_t: tangential bond stiffness (stress per slip)
+   *  1. @b K_n: normal bond stiffness (stress per relative displacement)
+   *
+   * No state variables.
    */
   class LinearElasticBondSlip : public Marmot::Materials::BondSlipLaw {
   public:
@@ -46,6 +48,13 @@ namespace Marmot::Materials {
     /// normal bond stiffness
     const double& Kn;
 
+    /**
+     * @brief Construct the law.
+     * @param materialProperties  [K_t, K_n]
+     * @param nMaterialProperties number of properties
+     * @param materialNumber      identifier of this material
+     * @throws std::invalid_argument for fewer than 2 properties
+     */
     LinearElasticBondSlip( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     void computeBondStress( State&                        state,

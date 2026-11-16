@@ -30,12 +30,25 @@
 namespace Marmot::Materials {
 
   namespace {
-    double computeS0( const double* p, int nP )
+    /// the property array, after checking the number of properties (before any property is read)
+    const double* checkedProperties( const double* materialProperties, int nMaterialProperties )
     {
-      if ( nP < 8 )
-        throw std::invalid_argument( Marmot::Utilities::MakeString() << "ModelCode2010BondSlip: requires 8 properties: "
-                                                                        "tauMax, s1, s2, s3, alpha, tauF, K0, Kn" );
-      const double tauMax = p[0], s1 = p[1], alpha = p[4], K0 = p[6];
+      if ( nMaterialProperties < 8 || nMaterialProperties > 10 )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << "ModelCode2010BondSlip: requires 8 to 10 properties: "
+                                        "tauMax, s1, s2, s3, alpha, tauF, K0, Kn, (mu, (pMax)), got "
+                                     << nMaterialProperties );
+      return materialProperties;
+    }
+
+    double optionalProperty( const double* materialProperties, int nMaterialProperties, int index )
+    {
+      return index < nMaterialProperties ? materialProperties[index] : 0.0;
+    }
+
+    /// where the linear regularization K0 s meets the power law tauMax (s / s1)^alpha
+    double regularizationSlip( double tauMax, double s1, double alpha, double K0 )
+    {
       if ( alpha >= 1.0 )
         return 0.0;
       return std::pow( tauMax / ( K0 * std::pow( s1, alpha ) ), 1. / ( 1. - alpha ) );
@@ -46,7 +59,7 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialNumber )
     : Marmot::Materials::BondSlipLaw( materialProperties, nMaterialProperties, materialNumber ),
-      tauMax( materialProperties[0] ),
+      tauMax( checkedProperties( materialProperties, nMaterialProperties )[0] ),
       s1( materialProperties[1] ),
       s2( materialProperties[2] ),
       s3( materialProperties[3] ),
@@ -54,7 +67,9 @@ namespace Marmot::Materials {
       tauF( materialProperties[5] ),
       K0( materialProperties[6] ),
       Kn( materialProperties[7] ),
-      s0( computeS0( materialProperties, nMaterialProperties ) )
+      mu( optionalProperty( materialProperties, nMaterialProperties, 8 ) ),
+      pMax( optionalProperty( materialProperties, nMaterialProperties, 9 ) ),
+      s0( regularizationSlip( tauMax, s1, alpha, K0 ) )
   {
     if ( !( s1 > 0 && s1 <= s2 && s2 < s3 ) )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
@@ -72,9 +87,15 @@ namespace Marmot::Materials {
                                       "than the secant to the peak" );
     if ( !( Kn >= 0 ) )
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": requires Kn >= 0" );
+    if ( !( mu >= 0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": requires mu >= 0" );
+    if ( pMax > 0 && !( Kn > 0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": a normal stress cap pMax > 0 requires Kn > 0" );
 
     stateLayout.add( "plastic slip", 1 );
     stateLayout.add( "max slip", 1 );
+    stateLayout.add( "plastic normal slip", 2 );
     stateLayout.finalize();
   }
 
@@ -98,48 +119,82 @@ namespace Marmot::Materials {
   void ModelCode2010BondSlip::computeBondStress( State&                        state,
                                                  Marmot::Math::Matrix3d&       dBondStress_dSlip,
                                                  const Marmot::Math::Vector3d& slip,
-                                                 const Marmot::Math::Vector3d&,
-                                                 const TimeIncrement& ) const
+                                                 const Marmot::Math::Vector3d& /*dSlip: rate independent*/,
+                                                 const TimeIncrement& /*timeIncrement: rate independent*/ ) const
   {
-    double& sP    = stateLayout.getAs< double& >( state.stateVars, "plastic slip" );
-    double& kappa = stateLayout.getAs< double& >( state.stateVars, "max slip" );
+    double&                       plasticSlip = stateLayout.getAs< double& >( state.stateVars, "plastic slip" );
+    double&                       kappa       = stateLayout.getAs< double& >( state.stateVars, "max slip" );
+    Eigen::Map< Eigen::Vector2d > plasticNormalSlip(
+      stateLayout.getStateView( state.stateVars, "plastic normal slip" ).stateLocation );
 
     dBondStress_dSlip.setZero();
 
-    // normal directions: linear elastic
-    dBondStress_dSlip( 1, 1 ) = Kn;
-    dBondStress_dSlip( 2, 2 ) = Kn;
-    state.bondStress( 1 )     = Kn * slip( 1 );
-    state.bondStress( 2 )     = Kn * slip( 2 );
+    // normal directions: elastic, optionally perfectly plastic with the isotropic cap |t_n| <= pMax
+    const Eigen::Vector2d normalSlip( slip( 1 ), slip( 2 ) );
+    const Eigen::Vector2d plasticNormalSlipOld = plasticNormalSlip;
+    const Eigen::Vector2d normalStressTrial    = Kn * ( normalSlip - plasticNormalSlipOld );
+    const double          pressureTrial        = normalStressTrial.norm();
 
-    // tangential direction: elastic predictor ...
-    const double s        = slip( 0 );
-    const double tauOld   = state.bondStress( 0 );
-    const double sPOld    = sP;
-    const double kappaOld = kappa;
+    Eigen::Vector2d normalStress              = normalStressTrial;
+    Eigen::Matrix2d dNormalStress_dNormalSlip = Kn * Eigen::Matrix2d::Identity();
+    Eigen::Vector2d dPressure_dNormalSlip     = Eigen::Vector2d::Zero();
+    double          crushingDissipation       = 0.0;
+    const bool      normalCapActive           = pMax > 0 && pressureTrial > pMax;
+    if ( normalCapActive ) {
+      const Eigen::Vector2d normalDirection = normalStressTrial / pressureTrial;
+      normalStress                          = pMax * normalDirection;
+      dNormalStress_dNormalSlip             = Kn * pMax / pressureTrial *
+                                  ( Eigen::Matrix2d::Identity() - normalDirection * normalDirection.transpose() );
+      // dPressure_dNormalSlip = 0 on the cap
+      plasticNormalSlip   = normalSlip - normalStress / Kn;
+      crushingDissipation = pMax * ( plasticNormalSlip - plasticNormalSlipOld ).norm();
+    }
+    else if ( pressureTrial > 0 )
+      dPressure_dNormalSlip = Kn * normalStressTrial / pressureTrial;
+    const double pressure = normalStress.norm();
 
-    kappa                          = std::max( kappaOld, std::abs( s ) );
-    const auto [bound, boundSlope] = envelope( kappa );
+    state.bondStress( 1 )                            = normalStress( 0 );
+    state.bondStress( 2 )                            = normalStress( 1 );
+    dBondStress_dSlip.template block< 2, 2 >( 1, 1 ) = dNormalStress_dNormalSlip;
 
-    const double tauTrial = K0 * ( s - sPOld );
+    // tangential direction: 1D elastoplastic return mapping
+    //   yield function  f = |tau_trial| - tau_y(kappa_{n+1}, p),  tau_y = tau_env(kappa_{n+1}) + mu p
+    //   hardening       kappa_{n+1} = max(kappa_n, |s_{n+1}|)
+    // kappa is the largest *total* slip (not an accumulated plastic slip), so kappa_{n+1}, and with it the yield
+    // stress, is known before the check: the return is closed form, no local Newton iteration is needed.
+    //   f <= 0: tau = tau_trial = K0 (s - s_p),
+    //   f > 0:  tau = sign(tau_trial) tau_y,  s_p = s - tau / K0.
+    const double s              = slip( 0 );
+    const double tauOld         = state.bondStress( 0 );
+    const double plasticSlipOld = plasticSlip;
+    const double kappaOld       = kappa;
 
-    if ( std::abs( tauTrial ) <= bound * ( 1 + 1e-12 ) ) {
+    kappa                                         = std::max( kappaOld, std::abs( s ) );
+    const auto [envelopeStress, dEnvelope_dKappa] = envelope( kappa );
+    const double yieldBondStress                  = envelopeStress + mu * pressure;
+    const double tauTrial                         = K0 * ( s - plasticSlipOld );
+    const double yieldFunction                    = std::abs( tauTrial ) - yieldBondStress;
+
+    if ( yieldFunction <= 1e-12 * yieldBondStress ) {
       state.bondStress( 0 )     = tauTrial;
       dBondStress_dSlip( 0, 0 ) = K0;
     }
     else {
-      // ... and frictional slip on the envelope bound
-      const double direction = tauTrial > 0 ? 1.0 : -1.0;
-      state.bondStress( 0 )  = direction * bound;
-      sP                     = s - state.bondStress( 0 ) / K0;
+      const double signTauTrial = tauTrial > 0 ? 1.0 : -1.0;
+      state.bondStress( 0 )     = signTauTrial * yieldBondStress;
+      plasticSlip               = s - state.bondStress( 0 ) / K0;
 
-      // the bound grows (or softens) with the slip only while the largest slip is exceeded
-      const bool virginSlip     = std::abs( s ) > kappaOld;
-      dBondStress_dSlip( 0, 0 ) = virginSlip ? direction * boundSlope * ( s > 0 ? 1.0 : -1.0 ) : 0.0;
+      // the envelope moves with the slip only while the largest slip is exceeded
+      const double dKappa_dSlip = std::abs( s ) > kappaOld ? ( s > 0 ? 1.0 : -1.0 ) : 0.0;
+      dBondStress_dSlip( 0, 0 ) = signTauTrial * dEnvelope_dKappa * dKappa_dSlip;
+      // Coulomb friction: d(mu p)/ds_n
+      dBondStress_dSlip( 0, 1 ) = signTauTrial * mu * dPressure_dNormalSlip( 0 );
+      dBondStress_dSlip( 0, 2 ) = signTauTrial * mu * dPressure_dNormalSlip( 1 );
     }
 
-    state.dissipation += 0.5 * ( state.bondStress( 0 ) + tauOld ) * ( sP - sPOld );
+    state.dissipation += 0.5 * ( state.bondStress( 0 ) + tauOld ) * ( plasticSlip - plasticSlipOld ) +
+                         crushingDissipation;
     state.elasticEnergyDensity = 0.5 * state.bondStress( 0 ) * state.bondStress( 0 ) / K0 +
-                                 0.5 * Kn * ( slip( 1 ) * slip( 1 ) + slip( 2 ) * slip( 2 ) );
+                                 0.5 * Kn * ( normalSlip - plasticNormalSlip ).squaredNorm();
   }
 } // namespace Marmot::Materials
