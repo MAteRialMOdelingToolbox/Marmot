@@ -394,6 +394,9 @@ namespace Marmot::Discretizations::Elements {
                                 << ": the closest point projection onto the bar did not converge" );
     }
 
+    /// Tolerance in the bar parameter for a partner to belong to a bar element (at a node shared with the next one)
+    static constexpr double etaTolerance = 1e-9;
+
     /// the partner of a channel point on the current bar
     struct Partner {
       int    element = 0;     ///< bar element of the window
@@ -420,8 +423,12 @@ namespace Marmot::Discretizations::Elements {
         const double    etaChord = 2.0 * ( xc - xe.col( 0 ) ).dot( chord ) / chord.squaredNorm() - 1.0;
         const bool      far      = std::abs( etaChord ) > 1.5 &&
                          ( ( etaChord < 0 && k > 0 ) || ( etaChord > 0 && k < nBarElements - 1 ) );
-        const double eta       = far ? etaChord : closestPoint( k, xe, xc, std::clamp( etaChord, -1.0, 1.0 ) );
-        const int    direction = eta < -1.0 && k > 0 ? -1 : ( eta > 1.0 && k < nBarElements - 1 ? 1 : 0 );
+        const double eta = far ? etaChord : closestPoint( k, xe, xc, std::clamp( etaChord, -1.0, 1.0 ) );
+        // a partner at a node shared by two collinear elements projects to eta = +-1 up to round-off on both: only a
+        // clear excess moves to the neighbor, so that round-off is not taken for a kink
+        const int direction = eta < -1.0 - etaTolerance && k > 0
+                                ? -1
+                                : ( eta > 1.0 + etaTolerance && k < nBarElements - 1 ? 1 : 0 );
         if ( direction == 0 )
           return { k, eta, false };
         // turning back: the point lies on the convex side of a kink, its partner is the kink node
