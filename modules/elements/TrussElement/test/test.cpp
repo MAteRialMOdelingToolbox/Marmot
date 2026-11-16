@@ -278,6 +278,18 @@ void testCriticalTimeStep()
                              Marmot::Utilities::MakeString()
                                << type << ": critical time step " << dt << " != " << factor * L / c );
   }
+
+  // finite strain (CR) at rest: compressible Neo-Hooke with the P-wave modulus K + 4G/3 (the material's wave speed
+  // comes from finite differences of its tangent, hence the tolerance)
+  const double          K = 3000., G = 1000., rhoNH = 1e-9;
+  const double          cNH = std::sqrt( ( K + 4. * G / 3. ) / rhoNH );
+  Truss                 cr( "T2D2CR", { 0., 0., 0.6 * L, 0.8 * L }, 2.0, "COMPRESSIBLENEOHOOKE", { K, G, rhoNH } );
+  double                dt = 0;
+  const Eigen::VectorXd U  = Eigen::VectorXd::Zero( cr.nDof );
+  cr.element->computeCriticalTimeStepForExplicitDynamics( dt, U.data() );
+  throwExceptionOnFailure( checkIfEqual( dt, L / cNH, 1e-4 * dt ),
+                           Marmot::Utilities::MakeString()
+                             << "T2D2CR: critical time step " << dt << " != " << L / cNH );
 }
 
 int main()
