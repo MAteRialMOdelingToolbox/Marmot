@@ -167,7 +167,7 @@ namespace Marmot::Discretizations::Elements {
         VectorGen                            sectionForces;
         MatrixGen                            dSectionForces_dSectionStrains;
         double                               energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+        qp.section.computeSection( qp.state->sectionState,
                                    sectionForces,
                                    dSectionForces_dSectionStrains,
                                    energy,
@@ -176,10 +176,10 @@ namespace Marmot::Discretizations::Elements {
                                    time,
                                    dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = Bl * ch.q;
-        qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
-        qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
+        qp.state->sectionForces  = sectionForces;
+        qp.state->sectionStrains = Bl * ch.q;
+        qp.state->elasticEnergy  = energy * qp.dV;
+        qp.state->dissipation    = dissipation * qp.dV;
 
         fl += Bl.transpose() * sectionForces * qp.dV;
         Kl += Bl.transpose() * dSectionForces_dSectionStrains * Bl * qp.dV;

@@ -28,9 +28,11 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotStateVarVectorManager.h"
 #include <Eigen/Dense>
 #include <array>
 #include <cmath>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -128,15 +130,64 @@ namespace Marmot::Discretizations::Elements {
     /// local rotations: theta_z (2D); theta_x = twist, theta_y, theta_z (3D)
     using RotationInterpSize = Eigen::Matrix< double, nRotations, sizeLoadVector >;
 
+    /**
+     * @brief The state of a quadrature point: the named entries of the class documentation, followed by the state of
+     * the fiber section.
+     */
+    class QpStateVarManager : public Marmot::Utilities::StateVarVectorManager {
+
+      /// @cond INTERNAL
+
+      // the layout of the state of a point (names and lengths), see the class documentation
+      inline const static auto layout = makeLayout(
+        nDim == 2 ? std::vector< StateVarEntryDefinition >{ { "normal force", 1 },
+                                                            { "bending moment", 1 },
+                                                            { "axial strain", 1 },
+                                                            { "curvature", 1 },
+                                                            { "elastic energy", 1 },
+                                                            { "dissipation", 1 } }
+                  : std::vector< StateVarEntryDefinition >{ { "normal force", 1 },
+                                                            { "bending moments", 2 },
+                                                            { "torque", 1 },
+                                                            { "axial strain", 1 },
+                                                            { "curvatures", 2 },
+                                                            { "twist rate", 1 },
+                                                            { "elastic energy", 1 },
+                                                            { "dissipation", 1 } } );
+
+      /// @endcond
+
+    public:
+      Eigen::Map< VectorGen > sectionForces;  ///< all section forces (from "normal force" on)
+      Eigen::Map< VectorGen > sectionStrains; ///< all section strains (from "axial strain" on)
+      double&                 elasticEnergy;  ///< elastic energy, integrated over the point's volume
+      double&                 dissipation;    ///< dissipation, integrated over the point's volume
+      double*                 sectionState;   ///< the state of the fiber section
+
+      /// Number of state variables of the point itself, without the state of the section
+      static int getNumberOfRequiredStateVars() { return layout.nRequiredStateVars; }
+
+      /// @param[in] stateVars The state of the point (owned by the host).
+      explicit QpStateVarManager( double* stateVars )
+        : Marmot::Utilities::StateVarVectorManager( stateVars, layout ),
+          sectionForces( &find( "normal force" ) ),
+          sectionStrains( &find( "axial strain" ) ),
+          elasticEnergy( find( "elastic energy" ) ),
+          dissipation( find( "dissipation" ) ),
+          sectionState( stateVars + layout.nRequiredStateVars )
+      {
+      }
+    };
+
     /// A quadrature point along the axis, with its own fiber section
     struct QuadraturePoint {
-      const double xi;        ///< parent coordinate in [-1, 1]
-      const double weight;    ///< Gauss weight
-      BSized       B;         ///< generalized strains of the global dofs
-      double       dV = 0.0;  ///< length x weight / 2
-      double*      stateVars; ///< the state of this point
-      Section      section;   ///< the fibers with their materials
-      QuadraturePoint( double xi, double weight ) : xi( xi ), weight( weight ), stateVars( nullptr ) {}
+      const double                         xi;       ///< parent coordinate in [-1, 1]
+      const double                         weight;   ///< Gauss weight
+      BSized                               B;        ///< generalized strains of the global dofs
+      double                               dV = 0.0; ///< length x weight / 2
+      std::unique_ptr< QpStateVarManager > state;    ///< the state of this point, set by assignStateVars
+      Section                              section;  ///< the fibers with their materials
+      QuadraturePoint( double xi, double weight ) : xi( xi ), weight( weight ) {}
     };
 
     /// Element label
@@ -160,34 +211,6 @@ namespace Marmot::Discretizations::Elements {
     std::string   materialName;
     const double* materialProperties  = nullptr;
     int           nMaterialProperties = 0;
-
-    /// The names of the per-point states and their lengths, see the class documentation
-    static const std::vector< std::pair< std::string, int > >& qpStateEntries()
-    {
-      static const std::vector< std::pair< std::string, int > >
-        entries = nDim == 2 ? std::vector< std::pair< std::string, int > >{ { "normal force", 1 },
-                                                                            { "bending moment", 1 },
-                                                                            { "axial strain", 1 },
-                                                                            { "curvature", 1 },
-                                                                            { "elastic energy", 1 },
-                                                                            { "dissipation", 1 } }
-                            : std::vector< std::pair< std::string, int > >{ { "normal force", 1 },
-                                                                            { "bending moments", 2 },
-                                                                            { "torque", 1 },
-                                                                            { "axial strain", 1 },
-                                                                            { "curvatures", 2 },
-                                                                            { "twist rate", 1 },
-                                                                            { "elastic energy", 1 },
-                                                                            { "dissipation", 1 } };
-      return entries;
-    }
-
-    /// offsets in the state of a point
-    static constexpr int idxSectionForces  = 0;
-    static constexpr int idxSectionStrains = nGeneralized;
-    static constexpr int idxElasticEnergy  = 2 * nGeneralized;
-    static constexpr int idxDissipation    = 2 * nGeneralized + 1;
-    static constexpr int nQpStateVarsOwn   = 2 * nGeneralized + 2;
 
     /// Degree of exactness of the Gauss rule along the axis (3 points for 2 nodes, 4 points for 3 nodes)
     static constexpr int quadratureDegree = nNodes == 2 ? 5 : 7;
@@ -255,7 +278,10 @@ namespace Marmot::Discretizations::Elements {
 
     /// The number of state variables of one quadrature point: the own ones (section forces and strains, energy,
     /// dissipation) and those of the section (all fibers)
-    int nQpStateVars() const { return nQpStateVarsOwn + qps[0].section.getNumberOfRequiredStateVars(); }
+    int nQpStateVars() const
+    {
+      return QpStateVarManager::getNumberOfRequiredStateVars() + qps[0].section.getNumberOfRequiredStateVars();
+    }
 
     /// The number of state variables; it is known once both the element properties (the fibers) and the material
     /// section (the fiber materials) have been assigned, in either order
@@ -295,7 +321,7 @@ namespace Marmot::Discretizations::Elements {
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": too few state variables" );
       for ( size_t i = 0; i < qps.size(); i++ )
-        qps[i].stateVars = stateVars + i * nQpStateVars();
+        qps[i].state = std::make_unique< QpStateVarManager >( stateVars + i * nQpStateVars() );
     }
 
     void assignProperty( const ElementProperties& property ) override
@@ -501,7 +527,7 @@ namespace Marmot::Discretizations::Elements {
       switch ( state ) {
       case Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization: {
         for ( auto& qp : qps )
-          qp.section.initializeStateVars( qp.stateVars + nQpStateVarsOwn );
+          qp.section.initializeStateVars( qp.state->sectionState );
         break;
       }
       default:
@@ -522,7 +548,7 @@ namespace Marmot::Discretizations::Elements {
         VectorGen sectionForces;
         MatrixGen dSectionForces_dSectionStrains;
         double    energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+        qp.section.computeSection( qp.state->sectionState,
                                    sectionForces,
                                    dSectionForces_dSectionStrains,
                                    energy,
@@ -531,10 +557,10 @@ namespace Marmot::Discretizations::Elements {
                                    time,
                                    dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = qp.B * QTotal;
-        qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
-        qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
+        qp.state->sectionForces  = sectionForces;
+        qp.state->sectionStrains = qp.B * QTotal;
+        qp.state->elasticEnergy  = energy * qp.dV;
+        qp.state->dissipation    = dissipation * qp.dV;
 
         Pe += qp.B.transpose() * sectionForces * qp.dV;
         Ke += qp.B.transpose() * dSectionForces_dSectionStrains * qp.B * qp.dV;
@@ -585,27 +611,23 @@ namespace Marmot::Discretizations::Elements {
     {
       internalEnergy = 0.0;
       for ( const auto& qp : qps )
-        internalEnergy += qp.stateVars[idxElasticEnergy];
+        internalEnergy += qp.state->elasticEnergy;
     }
 
     Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
       if ( stateName == "section forces" )
-        return { qp.stateVars + idxSectionForces, nGeneralized };
+        return { qp.state->sectionForces.data(), nGeneralized };
       if ( stateName == "section strains" )
-        return { qp.stateVars + idxSectionStrains, nGeneralized };
-      int offset = 0;
-      for ( const auto& [name, len] : qpStateEntries() ) {
-        if ( name == stateName )
-          return { qp.stateVars + offset, len };
-        offset += len;
-      }
+        return { qp.state->sectionStrains.data(), nGeneralized };
+      if ( qp.state->contains( stateName ) )
+        return qp.state->getStateView( stateName );
       // "fiber <k> <state>"
       if ( stateName.rfind( "fiber ", 0 ) == 0 ) {
         const size_t space = stateName.find( ' ', 6 );
         if ( space != std::string::npos )
-          return qp.section.getFiberStateView( qp.stateVars + nQpStateVarsOwn,
+          return qp.section.getFiberStateView( qp.state->sectionState,
                                                std::stoul( stateName.substr( 6, space - 6 ) ),
                                                stateName.substr( space + 1 ) );
       }

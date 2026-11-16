@@ -58,11 +58,12 @@ namespace Marmot::Discretizations::Elements {
    * material is evaluated by Marmot::Materials::MaterialHypoElastic::computeUniaxialStress.
    *
    * Torsion (3D): Saint-Venant torsion without warping, about the centroid \f$(y_c, z_c)\f$ of the points: the points
-   * carry the shear strains \f$\gamma_{12} = - s ( z_f - z_c ) \chi\f$, \f$\gamma_{13} = s ( y_f - y_c ) \chi\f$
-   * (material evaluated by Marmot::Materials::MaterialHypoElastic::computeBeamStress, \f$\sigma_{22} = \sigma_{33} =
-   * \sigma_{23} = 0\f$), scaled by \f$s = \sqrt{J / \sum_f ( (y_f-y_c)^2 + (z_f-z_c)^2 ) A_f}\f$ such that the elastic
-   * torsional stiffness is \f$G J\f$ with the given torsion constant \f$J\f$ (exact for circles and tubes, where \f$s =
-   * 1\f$). The shear center offset and warping are neglected; plastic torsion is approximate.
+   * carry the shear strains \f$\gamma_{12} = - \alpha_T ( z_f - z_c ) \chi\f$, \f$\gamma_{13} = \alpha_T ( y_f - y_c )
+   * \chi\f$ (material evaluated by Marmot::Materials::MaterialHypoElastic::computeBeamStress, \f$\sigma_{22} =
+   * \sigma_{33} = \sigma_{23} = 0\f$), scaled by \f$\alpha_T = \sqrt{J / \sum_f ( (y_f-y_c)^2 + (z_f-z_c)^2 ) A_f}\f$
+   * such that the elastic torsional stiffness is \f$G J\f$ with the given torsion constant \f$J\f$ (exact for circles
+   * and tubes, where \f$\alpha_T = 1\f$). The shear center offset and warping are neglected; plastic torsion is
+   * approximate.
    *
    * Kinematics (small or co-rotated strains) are the business of the beam element: a co-rotational element can use
    * the same section with the generalized strains of its co-rotated frame.
