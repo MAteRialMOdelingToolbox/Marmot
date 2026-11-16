@@ -8,7 +8,8 @@ Theory
 
 Couples an embedded reinforcement bar (a truss or beam element; only its displacements are coupled) to the host
 continuum element it lies in by bond-slip. The nodes of the element are the nodes of the bar element, followed by
-the nodes of the host element (``Tri3``, ``Quad4``, ``Quad8``, ``Tetra4``, ``Tetra10``, ``Hexa8``, ``Hexa20``). The
+the nodes of the host element (``Tri3``, ``Quad4``, ``Quad8``, ``Tetra4``, ``Hexa8``, ``Hexa20``: the shapes of the
+continuum elements in Marmot). The
 slip is the displacement of the bar relative to the host material point it lies at, in the local frame
 :math:`\mathbf{R} = [\mathbf{t}, \mathbf{n}_1, \mathbf{n}_2]` of the bar axis,
 
@@ -28,7 +29,7 @@ Gauss-Lobatto rule of the quadrature catalogue (``gaussLobattoExactToDegree``), 
 the bar part. The formulation is geometrically linear (reference frame).
 
 Names: ``EB<nDim>D<nBarNodes><host>``, e.g., ``EB2D2T3``, ``EB2D2Q4``, ``EB2D3Q8``, ``EB3D2H8``, ``EB3D3H20``,
-``EB3D2T4``, ``EB3D2T10``.
+``EB3D2T4``.
 
 Element properties: ``[perimeter, eta_s, eta_e, (number of integration points 2..5)]`` with :math:`p > 0` and
 :math:`-1 \le \eta_s < \eta_e \le 1`. They must be assigned before the bond-slip law (the number of integration
