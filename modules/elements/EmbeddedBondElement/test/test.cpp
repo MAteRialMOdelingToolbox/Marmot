@@ -648,6 +648,40 @@ void testLargeSlipLongWindowUninitialized()
                            Marmot::Utilities::MakeString() << "bond force of the long window " << barForce );
 }
 
+/// partners exactly at the nodes shared by collinear bar elements (a bar slid by exactly one element length, 3D): the
+/// round-off of the projection must not be taken for a kink, which would freeze the partner (no tangential stiffness).
+/// With linear bar elements, the forces have a kink at the node (the nodal distribution follows the partner's element),
+/// so K v for a further slide v along the axis must equal the one-sided derivative from the side of the partner's
+/// element, not the central difference
+void testLargeSlipPartnerAtSharedNode()
+{
+  const Eigen::Vector3d a( 0.3, 0.2, 0.4 ), b( 1.6, 1.7, 1.5 );
+  Bond                  large( "EBLS3D2H8W3",
+              concat( hexa8, straightWindow3D( a, b, 4 ) ),
+                               { 1.5, 1.0, 2.0, 1.0, 1.0 },
+              "LINEARELASTICBONDSLIP",
+              linearBond );
+  const Eigen::Vector3d step = ( b - a ) / 3.0; // one bar element
+  Eigen::VectorXd       U    = Eigen::VectorXd::Zero( large.nDof );
+  Eigen::VectorXd       v    = Eigen::VectorXd::Zero( large.nDof );
+  for ( int n = 0; n < 4; n++ ) {
+    U.segment< 3 >( 24 + 3 * n ) = -step; // the channel points (at the nodes of element 1) meet the next nodes
+    v.segment< 3 >( 24 + 3 * n ) = -step.normalized();
+  }
+  const Eigen::VectorXd zero     = Eigen::VectorXd::Zero( large.nDof );
+  const auto [P, K]              = large.kernels( U, zero, false );
+  const double          h        = 1e-7;
+  const Eigen::VectorXd forward  = ( large.kernels( U + h * v, zero, false ).first - P ) / h;
+  const Eigen::VectorXd backward = ( P - large.kernels( U - h * v, zero, false ).first ) / h;
+  const double          tol      = 1e-5 * forward.cwiseAbs().maxCoeff();
+  throwExceptionOnFailure( forward.norm() > 1 && ( checkIfEqual< double >( K * v, forward, tol ) ||
+                                                   checkIfEqual< double >( K * v, backward, tol ) ),
+                           Marmot::Utilities::MakeString()
+                             << "K v with partners at shared nodes matches neither one-sided derivative: "
+                             << ( K * v - forward ).cwiseAbs().maxCoeff() << ", "
+                             << ( K * v - backward ).cwiseAbs().maxCoeff() << " of " << forward.cwiseAbs().maxCoeff() );
+}
+
 /// bar elements of different lengths: a channel point at the end of the channel (Gauss-Lobatto) belongs to its own
 /// bar element, not to the (longer) next one; pushing the bar back by d gives Kt d p L of the channel exactly
 void testLargeSlipUnequalBarElements()
@@ -712,6 +746,7 @@ int main()
     testLargeSlipHostStretch,
     testLargeSlipPushOutPushBack,
     testLargeSlipLongWindowUninitialized,
+    testLargeSlipPartnerAtSharedNode,
   } );
   return 0;
 }
