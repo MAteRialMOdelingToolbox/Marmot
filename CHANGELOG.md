@@ -42,6 +42,12 @@ All notable changes to Marmot are documented in this file. The format follows
   converges far from the origin) and `GeometryElement::isInsideParentDomain`; `LagrangianCellGeometry` and the
   embedded bond element use it.
 - The Gauss-Lobatto family of the quadrature catalogue on Line (2 to 5 points), `gaussLobattoExactToDegree()`.
+- Large slip of embedded reinforcement: `EmbeddedLargeSlipBondElement` (`EBLS<nDim>D<nBarNodes><host>W<n>`, e.g.
+  `EBLS2D2Q4W3`): the bond is integrated over the channel fixed in the host element and each channel point searches
+  its current partner (closest point projection) in a window of `n` bar elements, so the bar can slide out of its
+  host and the bonded length shrinks as it is pulled out. Objective (current frame at the partner), with the
+  linearization of the closest point; `EmbeddedBondKinematics.h` holds the frame and the integration rule shared with
+  `EmbeddedBondElement`; `Bar2::d2NdXi2`, `Bar3::d2NdXi2`.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
