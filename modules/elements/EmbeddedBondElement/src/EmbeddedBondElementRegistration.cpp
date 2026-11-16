@@ -47,11 +47,9 @@ namespace Marmot::Discretizations::Elements::Registration {
   const static bool EB2D3Q4_isRegistered  = registerBond< 2, 3, 4 >( "EB2D3Q4" );
   const static bool EB2D3Q8_isRegistered  = registerBond< 2, 3, 8 >( "EB2D3Q8" );
   const static bool EB3D2T4_isRegistered  = registerBond< 3, 2, 4 >( "EB3D2T4" );
-  const static bool EB3D2T10_isRegistered = registerBond< 3, 2, 10 >( "EB3D2T10" );
   const static bool EB3D2H8_isRegistered  = registerBond< 3, 2, 8 >( "EB3D2H8" );
   const static bool EB3D2H20_isRegistered = registerBond< 3, 2, 20 >( "EB3D2H20" );
   const static bool EB3D3T4_isRegistered  = registerBond< 3, 3, 4 >( "EB3D3T4" );
-  const static bool EB3D3T10_isRegistered = registerBond< 3, 3, 10 >( "EB3D3T10" );
   const static bool EB3D3H8_isRegistered  = registerBond< 3, 3, 8 >( "EB3D3H8" );
   const static bool EB3D3H20_isRegistered = registerBond< 3, 3, 20 >( "EB3D3H20" );
 

@@ -388,11 +388,9 @@ void testFactoryNames()
           "EB2D3Q4",
           "EB2D3Q8",
           "EB3D2T4",
-          "EB3D2T10",
           "EB3D2H8",
           "EB3D2H20",
           "EB3D3T4",
-          "EB3D3T10",
           "EB3D3H8",
           "EB3D3H20",
 

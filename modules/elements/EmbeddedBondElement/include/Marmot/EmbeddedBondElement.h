@@ -47,7 +47,8 @@ namespace Marmot::Discretizations::Elements {
    *
    * @tparam nDim        number of spatial dimensions, 2 or 3
    * @tparam nRebarNodes number of nodes of the reinforcement element, 2 or 3 (end, end, mid)
-   * @tparam nHostNodes  number of nodes of the host element (Quad4, Quad8, Tetra4, Tetra10, Hexa8, Hexa20)
+   * @tparam nHostNodes  number of nodes of the host element (Tri3, Quad4, Quad8, Tetra4, Hexa8, Hexa20; the hosts with
+   * a continuum element in Marmot)
    *
    * The nodes of the element are the nodes of the reinforcement (truss) element, followed by the nodes of the host
    * element. The reinforcement keeps its own, independent displacement field; the element couples it to the host by
