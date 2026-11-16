@@ -5,6 +5,7 @@
 #include <cmath>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <vector>
 
 using namespace Marmot;
@@ -257,9 +258,32 @@ void testFactoryNames()
   }
 }
 
+/// the critical time step of explicit dynamics: L / c for 2 nodes, L / (sqrt(6) c) for 3 nodes (the stiffest axial
+/// mode with the lumped masses), c the P-wave speed of the material; the CR variant at rest gives the same
+void testCriticalTimeStep()
+{
+  const double E = 210000., nu = 0.3, rho = 7.85e-9, L = 50.;
+  const double c = std::sqrt( E * ( 1 - nu ) / ( ( 1 + nu ) * ( 1 - 2 * nu ) ) / rho );
+  for ( const auto& [type, nNodes, factor] :
+        std::vector< std::tuple< std::string, int, double > >{ { "T2D2", 2, 1.0 },
+                                                               { "T2D3", 3, 1.0 / std::sqrt( 6.0 ) } } ) {
+    std::vector< double > X = { 0., 0., 0.6 * L, 0.8 * L };
+    if ( nNodes == 3 )
+      X.insert( X.end(), { 0.3 * L, 0.4 * L } );
+    Truss                 truss( type, X, 2.0, "LINEARELASTIC", { E, nu, rho } );
+    double                dt = 0;
+    const Eigen::VectorXd U  = Eigen::VectorXd::Zero( truss.nDof );
+    truss.element->computeCriticalTimeStepForExplicitDynamics( dt, U.data() );
+    throwExceptionOnFailure( checkIfEqual( dt, factor * L / c, 1e-6 * dt ),
+                             Marmot::Utilities::MakeString()
+                               << type << ": critical time step " << dt << " != " << factor * L / c );
+  }
+}
+
 int main()
 {
   executeTestsAndCollectExceptions( {
+    testCriticalTimeStep,
     testFactoryNames,
     testSmallStrainInclinedLinearTruss,
     testSmallStrainQuadraticTruss3D,
