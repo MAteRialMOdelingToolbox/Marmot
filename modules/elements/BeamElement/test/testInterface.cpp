@@ -312,8 +312,21 @@ void testCallOrder()
   }
 }
 
+/// initializing without the element properties is an error, not a read of a null property array
+void testInitializeWithoutProperties()
+{
+  for ( const auto& t : types ) {
+    auto el = std::unique_ptr< Element >( Marmot::Registry::ElementFactory::createElement( t.name, 1 ) );
+    std::vector< double > X = nodes( t, std::vector< double >( t.nDim, 0.0 ), std::vector< double >( t.nDim, 1.0 ) );
+    el->assignNodeCoordinates( X.data() );
+    throwExceptionOnFailure( throws< std::logic_error >( [&]() { el->initializeYourself(); } ),
+                             t.name + ": initialize without properties" );
+  }
+}
+
 int main()
 {
-  executeTestsAndCollectExceptions( { testInterface, testInvalidInput, testCorotationalCutbacks, testCallOrder } );
+  executeTestsAndCollectExceptions(
+    { testInterface, testInvalidInput, testCorotationalCutbacks, testCallOrder, testInitializeWithoutProperties } );
   return 0;
 }
