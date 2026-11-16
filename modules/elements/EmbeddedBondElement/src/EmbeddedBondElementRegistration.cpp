@@ -30,16 +30,16 @@ namespace Marmot::Discretizations::Elements::Registration {
 
   using namespace Marmot::Registry;
 
-  template < int nDim, int nRebarNodes, int nHostNodes >
+  template < int nDim, int nBarNodes, int nHostNodes >
   bool registerBond( const std::string& name )
   {
     return Marmot::Registry::ElementFactory::
       registerElement( name, []( int elementID ) -> Marmot::Discretizations::Elements::Element* {
-        return new EmbeddedBondElement< nDim, nRebarNodes, nHostNodes >( elementID );
+        return new EmbeddedBondElement< nDim, nBarNodes, nHostNodes >( elementID );
       } );
   }
 
-  // EB<nDim>D<number of rebar nodes><host shape>
+  // EB<nDim>D<number of bar nodes><host shape>
   const static bool EB2D2T3_isRegistered  = registerBond< 2, 2, 3 >( "EB2D2T3" );
   const static bool EB2D3T3_isRegistered  = registerBond< 2, 3, 3 >( "EB2D3T3" );
   const static bool EB2D2Q4_isRegistered  = registerBond< 2, 2, 4 >( "EB2D2Q4" );
