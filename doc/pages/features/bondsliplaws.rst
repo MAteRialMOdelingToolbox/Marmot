@@ -100,6 +100,20 @@ MC2010 Table 6.1-1 gives the envelope for ribbed bars, with :math:`f_{ck}` in MP
      - :math:`0.5\, c_{\mathrm{clear}}`
      - 0.4
      - :math:`0.4\,\tau_{\max}`
+   * - splitting, all other bond, unconfined
+     - :math:`5.0 (f_{ck}/25)^{0.25}`
+     - :math:`s(\tau_{\max})`
+     - :math:`s_1`
+     - :math:`1.2\, s_1`
+     - 0.4
+     - 0
+   * - splitting, all other bond, stirrups
+     - :math:`5.5 (f_{ck}/25)^{0.25}`
+     - :math:`s(\tau_{\max})`
+     - :math:`s_1`
+     - :math:`0.5\, c_{\mathrm{clear}}`
+     - 0.4
+     - :math:`0.4\,\tau_{\max}`
 
 For splitting, :math:`s_1 = s_2 = s(\tau_{\max})` is the slip at the peak, taken from the pull-out branch. The
 law requires :math:`s_2 < s_3`, so :math:`s_3` must exceed :math:`s_2`.
@@ -119,8 +133,8 @@ Sign convention
 ---------------
 
 The slip is the displacement of the bar minus that of the host, in the local frame
-:math:`[\mathbf{t}, \mathbf{n}_1, \mathbf{n}_2]`: the tangent :math:`\mathbf{t}` points from the first to the last
-bar node, in 2D :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°, in 3D the normals are an arbitrary
+:math:`[\mathbf{t}, \mathbf{n}_1, \mathbf{n}_2]`: the tangent :math:`\mathbf{t}` points from the first to the second
+end node of the bar element (:math:`\mathbf{t} = \mathrm{d}\mathbf{X}/\mathrm{d}\eta`), in 2D :math:`\mathbf{n}_1` is :math:`\mathbf{t}` rotated by +90°, in 3D the normals are an arbitrary
 right-handed pair (built from the global axis least aligned with :math:`\mathbf{t}`); laws must therefore be
 isotropic in the normal plane. A positive bond stress acts on the host in the slip direction and on the bar against
 it.
