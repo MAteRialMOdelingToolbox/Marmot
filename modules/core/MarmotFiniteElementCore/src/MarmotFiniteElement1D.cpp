@@ -24,6 +24,11 @@ namespace Marmot::Discretizations::Elements::Spatial1D {
       return dNdXi;
     }
 
+    dNdXiSized d2NdXi2( double )
+    {
+      return dNdXiSized::Zero();
+    }
+
   } // end of namespace Bar2
 
   namespace Bar3 {
@@ -49,6 +54,13 @@ namespace Marmot::Discretizations::Elements::Spatial1D {
       dNdXi << xi - 0.5, xi + 0.5, -2 * xi;
 
       return dNdXi;
+    }
+
+    dNdXiSized d2NdXi2( double )
+    {
+      dNdXiSized d2NdXi2;
+      d2NdXi2 << 1., 1., -2.;
+      return d2NdXi2;
     }
 
   } // end of namespace Bar3
