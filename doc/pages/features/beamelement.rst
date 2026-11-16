@@ -118,7 +118,10 @@ bending, torsion) exact; an L-profile (non-principal axes) against the analytica
 Limitations: geometrically linear (small rotations; a finite rigid rotation strains the element), no shear
 deformation, one material per element (a composite section = several elements on the same nodes), no distributed
 surface loads, no inertia. As any displacement-based fiber beam, a plastic hinge forms at the quadrature point
-nearest to the peak moment: the limit load converges linearly with the element size.
+nearest to the peak moment: the limit load converges linearly with the element size. A section whose centroid is
+off the axis couples the axial strain and the curvature (:math:`\varepsilon_0 = -y_c \kappa` in pure bending): the
+3-node beams represent the linear axial strain of a cantilever under a tip load exactly, the 2-node beams (axial strain
+constant per element) converge with :math:`h^2`.
 
 How to use
 ----------
