@@ -967,6 +967,18 @@ namespace Marmot::Discretizations::Elements {
           qp.material->computePlaneStress( res, tan, inc );
           S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
           C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
+
+          // static condensation of the out-of-plane strain from dS33 = 0: dE33 = dE33/dE dE + dE33/dK dK
+          using RowNonlocal                     = Eigen::Matrix< double, 1, nNonlocalVariables >;
+          const Marmot::Math::Vector6d  dSdE33  = tan.dStressddStrain.col( 2 );
+          Eigen::Matrix< double, 1, 6 > dE33_dE = -tan.dStressddStrain.row( 2 ) / dSdE33( 2 );
+          dE33_dE( 2 )                          = 0.;
+          const RowNonlocal dE33_dK             = -tan.dStressddK.row( 2 ) / dSdE33( 2 );
+
+          tan.dStressddK += dSdE33 * dE33_dK;
+          const Eigen::Vector< double, nNonlocalVariables > dKLocal_dE33 = tan.dKLocalddStrain.col( 2 );
+          tan.dKLocalddStrain += dKLocal_dE33 * dE33_dE;
+          tan.dKLocalddK += dKLocal_dE33 * dE33_dK;
         }
         else if ( sectionType == SectionType::PlaneStrain ) {
           qp.material->computeStress( res, tan, inc );

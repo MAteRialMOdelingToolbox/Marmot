@@ -90,6 +90,13 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
 ### Fixed
+- **Results:** coupling tangents of `GeneralGradientEnhancedDisplacementFiniteElement` in plane stress. The blocks
+  `kUK`, `kKU` and `kKK` used the derivatives of the material's 3D update without the out-of-plane strain, which the
+  plane stress iteration adjusts with the strain and the non-local field. They now include it by static condensation
+  of dσ₃₃ = 0, which changes the Newton iterations (not the converged results) of gradient-enhanced plane stress
+  analyses whose out-of-plane stress depends on the non-local field or whose local driving variable depends on the
+  out-of-plane strain, e.g., `RankineGradientSofteningPlasticity`. A finite difference test of the stiffness in plane
+  stress with that material covers it.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was

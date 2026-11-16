@@ -2741,6 +2741,94 @@ void testFieldDependentGradientCoefficientQuad4PlaneStrain()
                                         "Quad4 variable gradient coefficient" );
 }
 
+/* Plane stress with a material whose out-of-plane stress depends on the non-local field and whose local driving
+ * variable depends on the out-of-plane strain (Rankine gradient softening plasticity, plastic and not at the zero
+ * floor of the yield stress): the coupling blocks kUK, kKU and kKK need the condensation of the out-of-plane strain.
+ */
+void testPlaneStressCouplingTangentsMatchNumericalDifferentiation()
+{
+  using ElemType                 = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  using GradientEnhancedMaterial = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+
+  // E, nu, fy0, HLin, deltaYieldStress, delta, nonlocal length, m, density, nonlocal viscosity
+  const std::vector< double >                    props = { 30000., 0.2, 3., -2000., 0., 0., 2., 2., 7.85e-9, 1e-3 };
+  const Marmot::Discretizations::MaterialSection section( "RANKINEGRADIENTSOFTENINGPLASTICITY",
+                                                          props.data(),
+                                                          static_cast< int >( props.size() ) );
+
+  // the terms the condensation acts on do not vanish in a plastic plane stress state
+  const std::unique_ptr< GradientEnhancedMaterial > material(
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( section.materialName,
+                                                                                       section.materialProperties,
+                                                                                       section.nMaterialProperties,
+                                                                                       1 ) );
+  std::vector< double >                     materialStateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+  GradientEnhancedMaterial::response        res{ Marmot::Math::Vector6d::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          materialStateVars.data(),
+                                          0.,
+                                          0. };
+  GradientEnhancedMaterial::tangents        tan;
+  const GradientEnhancedMaterial::increment inc{ ( Marmot::Math::Vector6d() << 3e-4, 1e-4, 0., 1e-4, 0., 0. )
+                                                   .finished(),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 0.,
+                                                 1. };
+  material->computePlaneStress( res, tan, inc );
+  throwExceptionOnFailure( std::abs( tan.dStressddK( 2, 0 ) ) > 1e-2 * tan.dStressddK.cwiseAbs().maxCoeff() &&
+                             std::abs( tan.dKLocalddStrain( 0, 2 ) ) > 1e-2 * tan.dKLocalddStrain.cwiseAbs().maxCoeff(),
+                           "the plane stress coupling terms vanish, so the test would not see the condensation" );
+
+  ElemType element( 1, Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ), ElemType::PlaneStress );
+  const std::vector< double >                coordinates = distortedElementCoordinates( 2,
+                                                                                        { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 },
+                                                                                        {} );
+  const std::vector< double >                elPropsVec  = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element.assignNodeCoordinates( coordinates.data() );
+  element.assignProperty( elProps );
+  element.assignProperty( section );
+  std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
+  element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element.initializeYourself();
+
+  // a single increment from the virgin state, plastic but short of the zero floor of the yield stress
+  const int       nDof = element.getNDofPerElement();
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 3e-4 * std::sin( 1.1 * ( i + 1 ) );
+
+  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+  element.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( element.getStateView( "acYield", 0 ).stateLocation[0] == 1.,
+                           "no plastic flow in the plane stress coupling test" );
+
+  // central differences of the residual, each evaluation from the virgin state
+  Eigen::MatrixXd KNumerical( nDof, nDof );
+  const double    h = 1e-9;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd PPlusMinus[2];
+    for ( int side = 0; side < 2; side++ ) {
+      Eigen::VectorXd q = Q;
+      q[j] += side == 0 ? h : -h;
+      std::fill( stateVars.begin(), stateVars.end(), 0.0 );
+      PPlusMinus[side]     = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+      element.computeKernels( q.data(), q.data(), PPlusMinus[side].data(), Ktmp.data(), 0.0, 1.0 );
+    }
+    KNumerical.col( j ) = ( PPlusMinus[0] - PPlusMinus[1] ) / ( 2. * h );
+  }
+
+  const double relError = ( K - KNumerical ).cwiseAbs().maxCoeff() / K.cwiseAbs().maxCoeff();
+  throwExceptionOnFailure( relError < 1e-6,
+                           Marmot::Utilities::MakeString()
+                             << "plane stress stiffness does not match central differences, relative error "
+                             << relError );
+}
+
 void testCenterAndCharacteristicLengthOfLinearSimplices()
 {
   // the center is the centroid, not node 0 at the origin of the unit simplex, and the characteristic element length is
@@ -2813,6 +2901,7 @@ int main()
     testFieldDependentGradientCoefficientHexa8,
     testFieldDependentGradientCoefficientHexa20Hexa8,
     testFieldDependentGradientCoefficientQuad4PlaneStrain,
+    testPlaneStressCouplingTangentsMatchNumericalDifferentiation,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
