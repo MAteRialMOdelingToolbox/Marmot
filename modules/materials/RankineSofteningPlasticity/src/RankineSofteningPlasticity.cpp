@@ -41,12 +41,39 @@ namespace Marmot::Materials {
                                                   const Math::Vector6d& dStrain,
                                                   const timeInfo&       timeInfo ) const
   {
-    updateStress( state, dStress_dStrain, dStrain, timeInfo );
+    computeStressImplicit( state, dStress_dStrain, dStrain, timeInfo, nullptr, nullptr );
+  }
+
+  void RankineSofteningPlasticity::computeStressWithEnergyTangents( state3D&              state,
+                                                                    Math::Matrix6d&       dStress_dStrain,
+                                                                    const Math::Vector6d& dStrain,
+                                                                    const timeInfo&       timeInfo,
+                                                                    Math::Vector6d&       dElasticEnergyDensity_dStrain,
+                                                                    Math::Vector6d&       dDissipation_dStrain ) const
+  {
+    computeStressImplicit( state,
+                           dStress_dStrain,
+                           dStrain,
+                           timeInfo,
+                           &dElasticEnergyDensity_dStrain,
+                           &dDissipation_dStrain );
+  }
+
+  void RankineSofteningPlasticity::computeStressImplicit( state3D&              state,
+                                                          Math::Matrix6d&       dStress_dStrain,
+                                                          const Math::Vector6d& dStrain,
+                                                          const timeInfo&       timeInfo,
+                                                          Math::Vector6d*       dPsi_dE,
+                                                          Math::Vector6d*       dDissipation_dE ) const
+  {
+    updateStress( state, dStress_dStrain, dStrain, timeInfo, dPsi_dE, dDissipation_dE );
 
     // a diverging iterate (e.g., of an arc-length iteration) may overflow the results (e.g., the elastic energy):
     // request a cutback instead of passing non-finite values to the solver
+    const bool energyTangentsFinite = !( dPsi_dE && dDissipation_dE ) ||
+                                      ( dPsi_dE->allFinite() && dDissipation_dE->allFinite() );
     if ( !( state.stress.allFinite() && dStress_dStrain.allFinite() && std::isfinite( state.elasticEnergyDensity ) &&
-            std::isfinite( state.dissipation ) ) )
+            std::isfinite( state.dissipation ) && energyTangentsFinite ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
@@ -54,8 +81,12 @@ namespace Marmot::Materials {
   void RankineSofteningPlasticity::updateStress( state3D&              state,
                                                  Math::Matrix6d&       dStress_dStrain,
                                                  const Math::Vector6d& dStrain,
-                                                 const timeInfo&       timeInfo ) const
+                                                 const timeInfo&       timeInfo,
+                                                 Math::Vector6d*       dPsi_dE,
+                                                 Math::Vector6d*       dDissipation_dE ) const
   {
+    const bool energyTangents = dPsi_dE && dDissipation_dE;
+
     using namespace RankineSofteningPlasticityConstants;
     using namespace Marmot::ContinuumMechanics::Voigt;
     using namespace Math::Tensors;
@@ -86,6 +117,10 @@ namespace Marmot::Materials {
     if ( dE.isZero( 1e-14 ) ) {
       dS_dE   = Cel;
       acYield = 0;
+      if ( energyTangents ) {
+        *dPsi_dE = S;
+        dDissipation_dE->setZero();
+      }
       return;
     }
 
@@ -109,6 +144,10 @@ namespace Marmot::Materials {
       dS_dE   = Cel;
       acYield = 0;
       state.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
+      if ( energyTangents ) {
+        *dPsi_dE = S;
+        dDissipation_dE->setZero();
+      }
       return;
     }
 
@@ -213,6 +252,13 @@ namespace Marmot::Materials {
 
     state.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
     state.dissipation += hardening.fy( kappa ) * dKappa;
+
+    // dKappa = tr( dE - Cel^-1 dS ), since the flow directions have unit trace, and the dissipation fy(kappa) dKappa
+    if ( energyTangents ) {
+      const Math::Vector6d dDKappa_dE = I - dS_dE.transpose() * ( CelInv * I );
+      *dPsi_dE                        = dS_dE.transpose() * ( CelInv * S );
+      *dDissipation_dE                = ( hardening.fy( kappa ) + hardening.dfy_dKappa( kappa ) * dKappa ) * dDKappa_dE;
+    }
   }
 
 } // namespace Marmot::Materials

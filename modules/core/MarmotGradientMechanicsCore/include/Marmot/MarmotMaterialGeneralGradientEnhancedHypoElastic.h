@@ -31,6 +31,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <stdexcept>
 #include <vector>
 
@@ -187,10 +188,36 @@ namespace Marmot::Materials {
      */
     virtual void computePlaneStress( response& res, tangents& tan, const increment& inc ) const
     {
+      using namespace std::placeholders;
+      iteratePlaneStress( stateLayout.totalSize(),
+                          res,
+                          tan,
+                          inc,
+                          std::bind( &MaterialGradientEnhancedHypoElastic::computeStress, this, _1, _2, _3 ) );
+    }
+
+    /**
+     * @brief The plane stress iteration of computePlaneStress() around a given 3D stress update.
+     * @tparam ComputeStress3D Callable with the signature of computeStress().
+     * @param nStateVars Number of state variables of the material.
+     * @param[in,out] res Response, as for computePlaneStress().
+     * @param[in,out] tan Tangents of the last call of @p computeStress3D, i.e., of the converged 3D state.
+     * @param[in] inc Increment, as for computePlaneStress().
+     * @param computeStress3D The 3D stress update, e.g., a variant of computeStress() with additional outputs.
+     * @details The last call of @p computeStress3D is the one at the converged out-of-plane strain, so additional
+     * outputs of the callable refer to the converged 3D state.
+     */
+    template < typename ComputeStress3D >
+    static void iteratePlaneStress( int               nStateVars,
+                                    response&         res,
+                                    tangents&         tan,
+                                    const increment&  inc,
+                                    ComputeStress3D&& computeStress3D )
+    {
       using namespace Marmot;
       using namespace Eigen;
 
-      Map< VectorXd > stateVars( res.stateVars, stateLayout.totalSize() );
+      Map< VectorXd > stateVars( res.stateVars, nStateVars );
 
       VectorXd  stateVarsOld = stateVars;
       response  resTemp = { res.stress, res.KLocal, res.c, res.stateVars, res.elasticEnergyDensity, res.dissipation };
@@ -215,7 +242,7 @@ namespace Marmot::Materials {
         // set old state variables
         stateVars = stateVarsOld;
         // compute stress
-        computeStress( resTemp, tan, incTemp );
+        computeStress3D( resTemp, tan, incTemp );
 
         // evauate residual
         residual = std::abs( resTemp.stress.array().abs()[2] /

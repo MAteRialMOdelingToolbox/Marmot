@@ -56,8 +56,9 @@ namespace {
   struct UpdateResult {
     MaterialPointState state;
     Math::Matrix6d     tangent;
-    // increments of elastic energy density and dissipation
-    double dPsi, dDissipation;
+    // increments of elastic energy density and dissipation, and their derivatives wrt the strain increment
+    double         dPsi = 0., dDissipation = 0.;
+    Math::Vector6d dPsi_dE, dDissipation_dE;
   };
 
   // single stress update from a given state
@@ -65,13 +66,31 @@ namespace {
                        const MaterialPointState&  stateOld,
                        const Math::Vector6d&      dStrain )
   {
-    UpdateResult result{ .state = stateOld, .tangent = Math::Matrix6d::Zero(), .dPsi = 0., .dDissipation = 0. };
+    UpdateResult result;
+    result.state = stateOld;
+    result.tangent.setZero();
+    result.dPsi_dE.setZero();
+    result.dDissipation_dE.setZero();
     MaterialHypoElastic::state3D        state( stateOld.stress, 0., 0., result.state.stateVars.data() );
     const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
     material.computeStress( state, result.tangent, dStrain, tInfo );
     result.state.stress = state.stress;
     result.dPsi         = state.elasticEnergyDensity;
     result.dDissipation = state.dissipation;
+
+    // the energy tangents, from the same update with the energy tangent variant
+    if ( const auto* provider = dynamic_cast< const HypoElasticEnergyTangentProvider* >( &material ) ) {
+      MaterialPointState           withTangents = stateOld;
+      MaterialHypoElastic::state3D state_( stateOld.stress, 0., 0., withTangents.stateVars.data() );
+      Math::Matrix6d               tangent;
+      provider
+        ->computeStressWithEnergyTangents( state_, tangent, dStrain, tInfo, result.dPsi_dE, result.dDissipation_dE );
+      throwExceptionOnFailure( state_.stress == state.stress && tangent == result.tangent &&
+                                 withTangents.stateVars == result.state.stateVars &&
+                                 state_.elasticEnergyDensity == state.elasticEnergyDensity &&
+                                 state_.dissipation == state.dissipation,
+                               "computeStress() and computeStressWithEnergyTangents() differ" );
+    }
     return result;
   }
 
@@ -88,7 +107,7 @@ namespace {
     return false;
   }
 
-  // compare the algorithmic tangent against a central difference approximation
+  // compare the algorithmic tangent and the energy tangents against central difference approximations
   void checkTangent( const RankineDamagePlasticity& material,
                      const MaterialPointState&      stateOld,
                      const Math::Vector6d&          dStrain )
@@ -96,21 +115,29 @@ namespace {
     using namespace Math::Differentiation::Numerical;
     const auto result = update( material, stateOld, dStrain );
 
-    const Math::Matrix6d& tangent = result.tangent;
+    Eigen::Matrix< double, 8, 6 > tangent;
+    tangent << result.tangent, result.dPsi_dE.transpose(), result.dDissipation_dE.transpose();
 
     // differentiate wrt the scaled strain increment, since the default step is relative to max(1, |x|)
-    const double          strainScale      = 1e-4;
-    const Eigen::MatrixXd numericalTangent = centralDifference(
-                                               [&]( const Eigen::VectorXd& y ) -> Eigen::VectorXd {
-                                                 const auto r = update( material, stateOld, strainScale * y );
-                                                 return r.state.stress;
-                                               },
-                                               dStrain / strainScale ) /
-                                             strainScale;
+    const double strainScale = 1e-4;
+    const Eigen::MatrixXd
+      numericalTangent = centralDifference(
+                           [&]( const Eigen::VectorXd& y ) -> Eigen::VectorXd {
+                             const auto r = update( material, stateOld, strainScale * y );
+                             return ( Eigen::VectorXd( 8 ) << r.state.stress, r.dPsi, r.dDissipation ).finished();
+                           },
+                           dStrain / strainScale ) /
+                         strainScale;
 
-    // relative to the scale of the moduli, floored since the tangent may vanish
-    const double relError = ( tangent - numericalTangent ).cwiseAbs().maxCoeff() /
-                            std::max( tangent.cwiseAbs().maxCoeff(), 1e-3 * E );
+    // moduli and each energy gradient relative to their own scale, floored since the tangent may vanish
+    const Eigen::MatrixXd error       = tangent - numericalTangent;
+    const double          errorModuli = error.topRows( 6 ).cwiseAbs().maxCoeff() /
+                               std::max( tangent.topRows( 6 ).cwiseAbs().maxCoeff(), 1e-3 * E );
+    const double errorPsi = error.row( 6 ).cwiseAbs().maxCoeff() /
+                            std::max( tangent.row( 6 ).cwiseAbs().maxCoeff(), 1e-3 * ft );
+    const double errorDissipation = error.row( 7 ).cwiseAbs().maxCoeff() /
+                                    std::max( tangent.row( 7 ).cwiseAbs().maxCoeff(), 1e-3 * ft );
+    const double relError = std::max( errorModuli, std::max( errorPsi, errorDissipation ) );
     throwExceptionOnFailure( relError < 1e-6,
                              Utilities::MakeString() << "tangent check failed, relative error " << relError );
   }
@@ -187,10 +214,10 @@ void testUniaxialStress()
   const MaterialPointState      state{ .stress    = solver.getHistory().back().stress,
                                        .stateVars = solver.getHistory().back().stateVars };
   const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
-  const auto [_, tangent, dPsi, dD] = update( material,
-                                              state,
-                                              ( Math::Vector6d() << -1e-5, 0, 0, 0, 0, 0 ).finished() );
-  const Math::Matrix6d Cel          = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const auto [_, tangent, dPsi, dD, dPsi_dE, dD_dE] = update( material,
+                                                              state,
+                                                              ( Math::Vector6d() << -1e-5, 0, 0, 0, 0, 0 ).finished() );
+  const Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
   throwExceptionOnFailure( checkIfEqual< double >( tangent, ( 1. - state.omega() ) * Cel, 1e-12 ),
                            "uniaxial stress: unloading tangent mismatch" );
 }

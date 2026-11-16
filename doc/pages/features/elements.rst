@@ -12,3 +12,4 @@ This section contains the ready to use available Finite elements.
   gradientenhancedfinitestraindisplacementelement
   interfacefiniteelement
   explicitdynamicsdevices
+  energygradients
