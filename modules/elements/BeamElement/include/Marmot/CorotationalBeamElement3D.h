@@ -103,8 +103,8 @@ namespace Marmot::Discretizations::Elements {
    * the local rotations relative to the co-rotated frame (\f$< \pi\f$) and the local strains must be small. For
    * \f$\boldsymbol{R}_{g,i} = \boldsymbol{R}_0\f$ (no rotation) the tangent equals that of B3D2.
    *
-   * A single element (or a chain) whose nodes are only coupled through their displacements (embedded fibers) has a
-   * zero-energy twist about its own axis; the model must restrain it (e.g. a soft rotational spring).
+   * A single element (or a chain) whose nodes are coupled to the rest of the model only through their displacements
+   * has a zero-energy twist about its own axis; the model must restrain it (e.g. a soft rotational spring).
    *
    * Body forces (dead loads b A): lumped to the nodes (\f$b A L_0 / 2\f$ each), no nodal moments, no load stiffness.
    * Not implemented: distributed (surface) loads, inertia.
@@ -292,7 +292,7 @@ namespace Marmot::Discretizations::Elements {
         VectorGen       sectionForces;
         MatrixGen       dSectionForces_dSectionStrains;
         double          energy, dissipation;
-        qp.section.computeSection( qp.stateVars + nQpStateVarsOwn,
+        qp.section.computeSection( qp.state->sectionState,
                                    sectionForces,
                                    dSectionForces_dSectionStrains,
                                    energy,
@@ -301,10 +301,10 @@ namespace Marmot::Discretizations::Elements {
                                    time,
                                    dT );
 
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionForces )  = sectionForces;
-        Eigen::Map< VectorGen >( qp.stateVars + idxSectionStrains ) = Bl * q;
-        qp.stateVars[idxElasticEnergy]                              = energy * qp.dV;
-        qp.stateVars[idxDissipation]                                = dissipation * qp.dV;
+        qp.state->sectionForces  = sectionForces;
+        qp.state->sectionStrains = Bl * q;
+        qp.state->elasticEnergy  = energy * qp.dV;
+        qp.state->dissipation    = dissipation * qp.dV;
 
         fl += Bl.transpose() * sectionForces * qp.dV;
         Kl += Bl.transpose() * dSectionForces_dSectionStrains * Bl * qp.dV;
