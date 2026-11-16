@@ -97,9 +97,9 @@ namespace Marmot::Materials {
             std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
             tan.dKLocalddStrain.allFinite() &&
             ( !energyTan ||
-              ( energyTan->dElasticEnergyDensityddStrain.allFinite() &&
-                energyTan->dElasticEnergyDensityddK.allFinite() && energyTan->dDissipationddStrain.allFinite() &&
-                energyTan->dDissipationddK.allFinite() ) ) ) )
+              ( energyTan->dElasticEnergyDensity_dStrain.allFinite() &&
+                energyTan->dElasticEnergyDensity_dK.allFinite() && energyTan->dDissipation_dStrain.allFinite() &&
+                energyTan->dDissipation_dK.allFinite() ) ) ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
@@ -200,16 +200,16 @@ namespace Marmot::Materials {
 
     if ( energyTan ) {
       const Math::Vector6d dPsiEff_dE          = dEffStress_dE.transpose() * ( CelInv * effStress );
-      energyTan->dElasticEnergyDensityddStrain = integrity * dPsiEff_dE - psiEff * dOmega_dE;
-      energyTan->dElasticEnergyDensityddK( 0 ) = -psiEff * dOmega_dK;
+      energyTan->dElasticEnergyDensity_dStrain = integrity * dPsiEff_dE - psiEff * dOmega_dE;
+      energyTan->dElasticEnergyDensity_dK( 0 ) = -psiEff * dOmega_dK;
 
       // d dEp / d dE = 1 - Cel^-1 dEffStress/dE for plastic steps; dEp vanishes for elastic ones
       const Math::Matrix6d dEp_dE     = plastic ? Math::Matrix6d( Math::Matrix6d::Identity() - CelInv * dEffStress_dE )
                                                 : Math::Matrix6d::Zero();
-      energyTan->dDissipationddStrain = dOmega * dPsiEff_dE + ( psiEff - plasticWorkEff ) * dOmega_dE +
+      energyTan->dDissipation_dStrain = dOmega * dPsiEff_dE + ( psiEff - plasticWorkEff ) * dOmega_dE +
                                         integrity * ( dEffStress_dE.transpose() * dStrainPlastic +
                                                       dEp_dE.transpose() * effStress );
-      energyTan->dDissipationddK( 0 ) = ( psiEff - plasticWorkEff ) * dOmega_dK;
+      energyTan->dDissipation_dK( 0 ) = ( psiEff - plasticWorkEff ) * dOmega_dK;
     }
   }
 

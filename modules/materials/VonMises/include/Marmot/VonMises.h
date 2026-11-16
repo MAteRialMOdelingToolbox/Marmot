@@ -48,8 +48,18 @@ namespace Marmot::Materials {
                         const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&               timeInfo ) const override;
 
+    /**
+     * @brief computeStress(), which also yields the derivatives of the updated elastic energy density and
+     * dissipation wrt the strain increment (Marmot::Materials::HypoElasticEnergyTangentProvider).
+     * @param[in,out] state As for computeStress().
+     * @param[out] dStress_dStrain As for computeStress().
+     * @param[in] dStrain As for computeStress().
+     * @param[in] timeInfo As for computeStress().
+     * @param[out] dElasticEnergyDensity_dStrain Derivative of the updated elastic energy density.
+     * @param[out] dDissipation_dStrain Derivative of the updated dissipation.
+     */
     void computeStressWithEnergyTangents( state3D&                      state,
-                                          Marmot::Math::Matrix6d&       dStressDDStrain,
+                                          Marmot::Math::Matrix6d&       dStress_dStrain,
                                           const Marmot::Math::Vector6d& dStrain,
                                           const timeInfo&               timeInfo,
                                           Marmot::Math::Vector6d&       dElasticEnergyDensity_dStrain,
@@ -62,9 +72,18 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   private:
-    // the implicit stress update; energy tangents only if both pointers are given
+    /**
+     * @brief The implicit stress update of computeStress() and computeStressWithEnergyTangents(), with the check of
+     * its results; the energy tangents only if both pointers are given.
+     * @param[in,out] state Stress, energies and state variables.
+     * @param[out] dStress_dStrain Algorithmic tangent.
+     * @param[in] dStrain Strain increment.
+     * @param[in] timeInfo Time and time increment.
+     * @param[out] dElasticEnergyDensity_dStrain Derivative of the updated elastic energy density, or nullptr.
+     * @param[out] dDissipation_dStrain Derivative of the updated dissipation, or nullptr.
+     */
     void computeStressImplicit( state3D&                      state,
-                                Marmot::Math::Matrix6d&       dStressDDStrain,
+                                Marmot::Math::Matrix6d&       dStress_dStrain,
                                 const Marmot::Math::Vector6d& dStrain,
                                 const timeInfo&               timeInfo,
                                 Marmot::Math::Vector6d*       dElasticEnergyDensity_dStrain,

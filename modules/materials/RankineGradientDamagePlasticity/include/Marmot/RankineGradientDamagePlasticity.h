@@ -107,10 +107,23 @@ namespace Marmot::Materials {
     std::vector< double > getNonlocalViscosity( const double* stateVars ) const override;
 
   private:
-    /// the stress update with the check of its results; energy tangents only if energyTan is given
+    /**
+     * @brief The stress update of computeStress() and computeStressWithEnergyTangents(), with the check of its
+     * results; the energy tangents only if @p energyTan is given.
+     * @param[in,out] res Response.
+     * @param[out] tan Algorithmic tangents.
+     * @param[in] inc Increment.
+     * @param[out] energyTan Energy tangents, or nullptr.
+     */
     void computeStressImplicit( response& res, tangents& tan, const increment& inc, energyTangents* energyTan ) const;
 
-    /// the stress update, without the check of its results
+    /**
+     * @brief The stress update, without the check of its results.
+     * @param[in,out] res Response.
+     * @param[out] tan Algorithmic tangents.
+     * @param[in] inc Increment.
+     * @param[out] energyTan Energy tangents, or nullptr.
+     */
     void updateStress( response& res, tangents& tan, const increment& inc, energyTangents* energyTan ) const;
 
     /// properties of the perfectly plastic RankineSofteningPlasticity for the effective stress

@@ -10,6 +10,7 @@
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <string>
 #include <tuple>
 
@@ -2202,6 +2203,19 @@ void testEnergyGradientOutputIsRejectedWithoutSupport()
   throwExceptionOnFailure( threw,
                            "assignProperty() must reject a material without energy tangents while the energy "
                            "gradient outputs are assigned." );
+
+  // the element keeps von Mises and its outputs, and still writes the energy gradients
+  std::vector< double > stateVars( planeStrain.getNumberOfRequiredStateVars(), 0.0 );
+  planeStrain.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  planeStrain.initializeYourself();
+  Eigen::VectorXd Q( 8 ), P = Eigen::VectorXd::Zero( 8 );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( 8, 8 );
+  for ( int i = 0; i < 8; i++ )
+    Q[i] = 1e-4 * std::sin( 1.3 * ( i + 1 ) );
+  dPsi_dQ.setConstant( std::numeric_limits< double >::quiet_NaN() );
+  planeStrain.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( dPsi_dQ.allFinite() && dPsi_dQ.norm() > 0.,
+                           "after a rejected material, the element no longer writes its energy gradients" );
 
   // the element is found through the capability interface
   Element& asElement = planeStress;

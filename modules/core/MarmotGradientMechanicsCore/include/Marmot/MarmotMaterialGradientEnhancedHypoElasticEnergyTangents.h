@@ -43,19 +43,20 @@ namespace Marmot::Materials {
   class GradientEnhancedHypoElasticEnergyTangentProvider {
 
   public:
+    /// @brief The material base class, from which the class providing the capability derives as well.
     using MaterialBase = MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
 
     /// @brief Derivatives of the updated elastic energy density and dissipation.
     struct energyTangents {
       /// @brief Elastic energy density wrt the strain increment (Voigt, engineering shear strains).
-      Marmot::Math::Vector6d dElasticEnergyDensityddStrain = Marmot::Math::Vector6d::Zero();
+      Marmot::Math::Vector6d dElasticEnergyDensity_dStrain = Marmot::Math::Vector6d::Zero();
       /// @brief Dissipation wrt the strain increment.
-      Marmot::Math::Vector6d dDissipationddStrain = Marmot::Math::Vector6d::Zero();
+      Marmot::Math::Vector6d dDissipation_dStrain = Marmot::Math::Vector6d::Zero();
       /// @brief Elastic energy density wrt the nonlocal variables.
       Eigen::Vector< double, nNonlocalVariables >
-        dElasticEnergyDensityddK = Eigen::Vector< double, nNonlocalVariables >::Zero();
+        dElasticEnergyDensity_dK = Eigen::Vector< double, nNonlocalVariables >::Zero();
       /// @brief Dissipation wrt the nonlocal variables.
-      Eigen::Vector< double, nNonlocalVariables > dDissipationddK = Eigen::Vector< double, nNonlocalVariables >::Zero();
+      Eigen::Vector< double, nNonlocalVariables > dDissipation_dK = Eigen::Vector< double, nNonlocalVariables >::Zero();
     };
 
     virtual ~GradientEnhancedHypoElasticEnergyTangentProvider() = default;
@@ -71,6 +72,55 @@ namespace Marmot::Materials {
                                                   typename MaterialBase::tangents&        tan,
                                                   const typename MaterialBase::increment& inc,
                                                   energyTangents&                         energyTan ) const = 0;
+
+    /**
+     * @brief MaterialGradientEnhancedHypoElastic::computePlaneStress, which also yields the energy tangents of the
+     * converged 3D update.
+     * @param[in,out] res Response, as for MaterialGradientEnhancedHypoElastic::computePlaneStress.
+     * @param[in,out] tan Algorithmic tangents of the converged 3D update.
+     * @param[in] inc Increment of the in-plane strain and the nonlocal variables.
+     * @param[out] energyTan Derivatives of the updated elastic energy density and dissipation wrt the 3D strain
+     * increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.
+     * @details The default is the plane stress iteration of MaterialGradientEnhancedHypoElastic::computePlaneStress
+     * (MaterialGradientEnhancedHypoElastic::iteratePlaneStress) around computeStressWithEnergyTangents(). A material
+     * that overrides MaterialGradientEnhancedHypoElastic::computePlaneStress overrides this method consistently, so
+     * that the stress does not depend on whether energy tangents are requested. The class providing the capability
+     * must also be a MaterialGradientEnhancedHypoElastic.
+     */
+    virtual void computePlaneStressWithEnergyTangents( typename MaterialBase::response&        res,
+                                                       typename MaterialBase::tangents&        tan,
+                                                       const typename MaterialBase::increment& inc,
+                                                       energyTangents&                         energyTan ) const
+    {
+      const auto& material = dynamic_cast< const MaterialBase& >( *this );
+      MaterialBase::iteratePlaneStress( material.getNumberOfRequiredStateVars(),
+                                        res,
+                                        tan,
+                                        inc,
+                                        StressUpdateWithEnergyTangents{ *this, energyTan } );
+    }
+
+  private:
+    /// @brief computeStressWithEnergyTangents() as the 3D stress update of MaterialBase::iteratePlaneStress.
+    struct StressUpdateWithEnergyTangents {
+      /// @brief The material.
+      const GradientEnhancedHypoElasticEnergyTangentProvider& provider;
+      /// @brief The energy tangents of the last update, i.e., of the converged 3D state.
+      energyTangents& energyTan;
+
+      /**
+       * @brief The 3D stress update with the energy tangents.
+       * @param[in,out] res Response.
+       * @param[in,out] tan Algorithmic tangents.
+       * @param[in] inc Increment.
+       */
+      void operator()( typename MaterialBase::response&        res,
+                       typename MaterialBase::tangents&        tan,
+                       const typename MaterialBase::increment& inc ) const
+      {
+        provider.computeStressWithEnergyTangents( res, tan, inc, energyTan );
+      }
+    };
   };
 
 } // namespace Marmot::Materials

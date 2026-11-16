@@ -91,9 +91,9 @@ namespace Marmot::Materials {
             std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
             tan.dKLocalddStrain.allFinite() && tan.dKLocalddK.allFinite() &&
             ( !energyTan ||
-              ( energyTan->dElasticEnergyDensityddStrain.allFinite() &&
-                energyTan->dElasticEnergyDensityddK.allFinite() && energyTan->dDissipationddStrain.allFinite() &&
-                energyTan->dDissipationddK.allFinite() ) ) ) )
+              ( energyTan->dElasticEnergyDensity_dStrain.allFinite() &&
+                energyTan->dElasticEnergyDensity_dK.allFinite() && energyTan->dDissipation_dStrain.allFinite() &&
+                energyTan->dDissipation_dK.allFinite() ) ) ) )
       throw Utilities::StressUpdateFailed(
         Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
@@ -160,10 +160,10 @@ namespace Marmot::Materials {
       tan.dKLocalddK.setZero();
       res.elasticEnergyDensity += 0.5 * S.dot( CelInv * S ) - psiOld;
       if ( energyTan ) {
-        energyTan->dElasticEnergyDensityddStrain = S;
-        energyTan->dElasticEnergyDensityddK.setZero();
-        energyTan->dDissipationddStrain.setZero();
-        energyTan->dDissipationddK.setZero();
+        energyTan->dElasticEnergyDensity_dStrain = S;
+        energyTan->dElasticEnergyDensity_dK.setZero();
+        energyTan->dDissipation_dStrain.setZero();
+        energyTan->dDissipation_dK.setZero();
       }
       return;
     }
@@ -286,11 +286,11 @@ namespace Marmot::Materials {
     // psi = 1/2 S : Cel^-1 : S; dissipation fy( m K + (1 - m) kappa ) dKappa with kappa = kappaOld + dKappa
     if ( energyTan ) {
       const Math::Vector6d strainElastic       = CelInv * S;
-      energyTan->dElasticEnergyDensityddStrain = tan.dStressddStrain.transpose() * strainElastic;
-      energyTan->dElasticEnergyDensityddK      = tan.dStressddK.transpose() * strainElastic;
-      energyTan->dDissipationddStrain          = ( fy( kappa ) + ( 1. - m ) * dfy( kappa ) * dKappa ) *
+      energyTan->dElasticEnergyDensity_dStrain = tan.dStressddStrain.transpose() * strainElastic;
+      energyTan->dElasticEnergyDensity_dK      = tan.dStressddK.transpose() * strainElastic;
+      energyTan->dDissipation_dStrain          = ( fy( kappa ) + ( 1. - m ) * dfy( kappa ) * dKappa ) *
                                         tan.dKLocalddStrain.row( 0 ).transpose();
-      energyTan->dDissipationddK( 0 ) = fy( kappa ) * dKappa_dK +
+      energyTan->dDissipation_dK( 0 ) = fy( kappa ) * dKappa_dK +
                                         dfy( kappa ) * ( m + ( 1. - m ) * dKappa_dK ) * dKappa;
     }
   }

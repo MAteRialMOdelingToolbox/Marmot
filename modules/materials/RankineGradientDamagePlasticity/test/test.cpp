@@ -151,8 +151,8 @@ namespace {
 
     Eigen::Matrix< double, 9, 7 > tangent;
     tangent << r.tan.dStressddStrain, r.tan.dStressddK, r.tan.dKLocalddStrain, r.tan.dKLocalddK,
-      r.energyTan.dElasticEnergyDensityddStrain.transpose(), r.energyTan.dElasticEnergyDensityddK,
-      r.energyTan.dDissipationddStrain.transpose(), r.energyTan.dDissipationddK;
+      r.energyTan.dElasticEnergyDensity_dStrain.transpose(), r.energyTan.dElasticEnergyDensity_dK,
+      r.energyTan.dDissipation_dStrain.transpose(), r.energyTan.dDissipation_dK;
 
     // scaled arguments, since the default step is relative to max(1, |x|)
     const double          scale = 1e-4;

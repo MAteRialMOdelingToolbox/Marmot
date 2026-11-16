@@ -477,7 +477,11 @@ namespace Marmot::Discretizations::Elements {
     double* dElasticEnergy_dQOutput = nullptr;
     double* dDissipation_dQOutput   = nullptr;
 
-    // throws unless section and material provide the energy gradients
+    /**
+     * @brief Throws std::invalid_argument unless the section and the materials of all quadrature points provide the
+     * energy gradients: solid and plane strain sections, materials that are a
+     * Marmot::Materials::HypoElasticEnergyTangentProvider.
+     */
     void checkEnergyGradientSupport() const;
   };
 
@@ -558,14 +562,17 @@ namespace Marmot::Discretizations::Elements {
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty(
     const Marmot::Discretizations::MaterialSection& section )
   {
-    for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
+    // the new materials replace the current ones only once all of them are accepted
+    std::vector< std::unique_ptr< Marmot::Materials::MaterialHypoElastic > > materials;
+    materials.reserve( qps.size() );
+    for ( const auto& qp : qps ) {
+      auto material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
         Marmot::Registry::MaterialHypoElasticFactory::createMaterial( section.materialName,
                                                                       section.materialProperties,
                                                                       section.nMaterialProperties,
                                                                       elLabel ) );
 
-      if ( !qp.material )
+      if ( !material )
         throw std::invalid_argument(
           Marmot::Utilities::MakeString()
           << __PRETTY_FUNCTION__
@@ -579,14 +586,24 @@ namespace Marmot::Discretizations::Elements {
        * bounds the highest frequency. The two definitions are not interchangeable; do not unify
        * them.
        */
-      qp.material->setCharacteristicElementLength( ParentGeometryElement::volumeEquivalentLength( qp.detJ ) );
+      material->setCharacteristicElementLength( ParentGeometryElement::volumeEquivalentLength( qp.detJ ) );
 
-      qp.energyTangentProvider = dynamic_cast< const Marmot::Materials::HypoElasticEnergyTangentProvider* >(
-        qp.material.get() );
+      if ( dElasticEnergy_dQOutput &&
+           !dynamic_cast< const Marmot::Materials::HypoElasticEnergyTangentProvider* >( material.get() ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                     << ": the material provides no energy tangents "
+                                        "(Marmot::Materials::HypoElasticEnergyTangentProvider), but energy gradient "
+                                        "outputs are assigned; the element keeps its material." );
+
+      materials.push_back( std::move( material ) );
     }
 
-    if ( dElasticEnergy_dQOutput )
-      checkEnergyGradientSupport();
+    for ( size_t i = 0; i < qps.size(); i++ ) {
+      qps[i].material              = std::move( materials[i] );
+      qps[i].energyTangentProvider = dynamic_cast< const Marmot::Materials::HypoElasticEnergyTangentProvider* >(
+        qps[i].material.get() );
+    }
   }
 
   template < int nDim, int nNodes >
