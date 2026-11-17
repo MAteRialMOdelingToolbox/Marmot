@@ -15,3 +15,4 @@ This section contains the ready to use available Finite elements.
   trusselement
   embeddedbondelement
   explicitdynamicsdevices
+  energygradients

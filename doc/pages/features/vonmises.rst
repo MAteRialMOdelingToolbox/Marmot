@@ -115,9 +115,11 @@ Hardening Law
 The model includes non-linear isotropic hardening, which is controlled by the evolution of the yield stress as
 
 .. math:: f_\mathrm{y}\left(\kappa\right)
-   = f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right).
+   = \max\left(f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right),\ 0\right).
 
 Therein, :math:`f_\mathrm{y}^0`, :math:`H_\mathrm{iso,lin}`, :math:`\Delta{}f_\mathrm{y}^{0,\infty}` and :math:`\delta` are material parameters.
+For softening laws, the yield stress is floored at zero: beyond zero strength, the material flows without stress and
+without hardening modulus.
 
 .. image:: ./vonmises_hardening.svg
 
@@ -139,6 +141,22 @@ The plastic multiplier and the yield function obey the Karush–Kuhn–Tucker co
 as well as the consistency condition
 
 .. math:: \dot{\lambda}\dot{f}=0.
+
+Energies
+^^^^^^^^
+
+The elastic energy density is the energy of the elastic strain,
+
+.. math:: \psi = \frac{1}{2}\,\boldsymbol{\sigma}:\boldsymbol{C}^{\mathrm{e},-1}:\boldsymbol{\sigma},
+
+and the dissipation is the plastic work. With the backward Euler update below, its increment is
+
+.. math:: \Delta D = \boldsymbol{\sigma}^{n+1}:\Delta\boldsymbol{\varepsilon}^\mathrm{p}
+   = f_\mathrm{y}\left(\kappa^{n+1}\right)\Delta\kappa,
+
+which is non-negative, also beyond zero strength. The model provides the derivatives of :math:`\psi^{n+1}` and
+:math:`D^{n+1}` with respect to the strain increment, consistent with the stress update, for the energy gradients of the
+elements (see :ref:`energyGradients`).
 
 Implementation
 --------------
@@ -187,7 +205,18 @@ and substituting :math:`\Delta\lambda` with :math:`\sqrt{\frac{3}{2}}\Delta\kapp
    = \|\boldsymbol{s}^\mathrm{trial}\| -\sqrt{6}G\Delta\kappa -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\Delta\kappa\right)
    = 0,
 
-which can be solved numerically to obtain :math:`\Delta\kappa`.
+which is solved for :math:`\Delta\kappa` by Newton's method, starting from :math:`\Delta\kappa = 0`, until
+
+.. math:: \left|g\left(\Delta\kappa\right)\right| \leq \mathrm{tol}\,\|\boldsymbol{s}^\mathrm{trial}\|,
+   \qquad \mathrm{tol} = 10^{-12}.
+
+The tolerance is relative to the trial stress for a reason of floating point arithmetic: :math:`g` is a difference of
+numbers of the size of :math:`\|\boldsymbol{s}^\mathrm{trial}\|`, so its round-off is about
+:math:`\varepsilon\,\|\boldsymbol{s}^\mathrm{trial}\|` (machine precision :math:`\varepsilon \approx 2.2\cdot10^{-16}`).
+An absolute tolerance cannot be met once the trial stress is large: for a strain increment of order one,
+:math:`\|\boldsymbol{s}^\mathrm{trial}\| \approx 1.7\cdot10^{5}` MPa and the round-off of :math:`g` is
+:math:`4\cdot10^{-11}` MPa. For linear hardening :math:`g` is linear in :math:`\Delta\kappa` and one Newton step
+suffices; nonlinear hardening needs a few.
 
 If :math:`\Delta\kappa` is known, the state variable is updated as
 

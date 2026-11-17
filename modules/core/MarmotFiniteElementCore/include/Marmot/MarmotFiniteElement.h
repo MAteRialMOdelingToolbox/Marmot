@@ -349,7 +349,30 @@ namespace Marmot::Discretizations::Elements {
       constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
       /**
-       * @brief Compute the axisymmetric B-operator from physical derivatives.
+       * @brief Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows
+       * (11, 22, 12), the hoop row is \f$N_i / r\f$.
+       * @tparam nNodes Number of element nodes.
+       * @param[in] BPlanar Planar B-operator (3 × 2 nNodes), see Spatial2D::B.
+       * @param[in] N       Shape function values (1 × nNodes).
+       * @param[in] r       Radius of the point.
+       * @return B-operator matrix of size 4 × (2 * nNodes).
+       */
+      template < int nNodes >
+      Eigen::Matrix< double, voigtSize, nNodes * nDim > BFromPlanarB(
+        const Eigen::Matrix< double, Spatial2D::voigtSize, nNodes * nDim >& BPlanar,
+        const Eigen::Matrix< double, 1, nNodes >&                           N,
+        double                                                              r )
+      {
+        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+        B_.template topRows< 2 >()                          = BPlanar.template topRows< 2 >();
+        B_.row( 3 )                                         = BPlanar.row( 2 );
+        for ( int i = 0; i < nNodes; i++ )
+          B_( 2, 2 * i ) = N( i ) / r;
+        return B_;
+      }
+
+      /**
+       * @brief Compute the axisymmetric B-operator from physical derivatives, see BFromPlanarB().
        * @tparam nNodes Number of element nodes.
        * @param[in] dNdX    Physical shape function derivatives (2 × nNodes).
        * @param[in] N       Shape function values (1 × nNodes).
@@ -361,16 +384,7 @@ namespace Marmot::Discretizations::Elements {
                                                            const Eigen::Matrix< double, 1, nNodes >&    N,
                                                            const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
       {
-
-        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
-        for ( int i = 0; i < nNodes; i++ ) {
-          B_( 0, 2 * i )     = dNdX( 0, i );
-          B_( 1, 2 * i + 1 ) = dNdX( 1, i );
-          B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
-          B_( 3, 2 * i )     = dNdX( 1, i );
-          B_( 3, 2 * i + 1 ) = dNdX( 0, i );
-        }
-        return B_;
+        return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
     } // namespace Axisymmetric
 
@@ -678,7 +692,8 @@ namespace Marmot::Discretizations::Elements {
     /// @brief Internal data for a single quadrature point on the boundary face.
     struct BoundaryElementQuadraturePoint {
       double          weight;     ///< Quadrature weight.
-      double          JxW;        ///< Jacobian determinant times quadrature weight.
+      double          ringFactor; ///< 2 pi r of an axisymmetric boundary element, 1 otherwise.
+      double          JxW;        ///< Jacobian determinant times quadrature weight (times ringFactor).
       Eigen::VectorXd xi;         ///< Natural coordinates of the quadrature point.
       Eigen::VectorXd N;          ///< Shape function values at the quadrature point.
       Eigen::MatrixXd dNdXi;      ///< Shape function natural derivatives.
@@ -686,7 +701,8 @@ namespace Marmot::Discretizations::Elements {
       Eigen::VectorXd areaVector; ///< Outward-normal area vector at the quadrature point.
     };
 
-    const int nDim;                                                 ///< Number of spatial dimensions.
+    const int  nDim;                                                ///< Number of spatial dimensions.
+    const bool axisymmetric;                                        ///< Integrate over the ring (r = x_1).
 
     ElementShapes boundaryShape;                                    ///< Shape of the boundary (face/edge) element.
     int           nNodes;                                           ///< Number of nodes on the boundary element.
@@ -705,11 +721,14 @@ namespace Marmot::Discretizations::Elements {
      * @param[in] parentFaceNumber   Zero-based index of the boundary face on the parent element.
      * @param[in] nDim               Number of spatial dimensions.
      * @param[in] parentCoordinates  Flat vector of parent nodal coordinates.
+     * @param[in] axisymmetric       Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are
+     *                               integrated over the ring, \f$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\f$.
      */
     BoundaryElement( ElementShapes          parentShape,
                      int                    parentFaceNumber,
                      int                    nDim,
-                     const Eigen::VectorXd& parentCoordinates );
+                     const Eigen::VectorXd& parentCoordinates,
+                     bool                   axisymmetric = false );
 
     /// @brief Compute the scalar (pressure) load vector for a unit pressure.
     Eigen::VectorXd computeScalarLoadVector();
@@ -718,9 +737,16 @@ namespace Marmot::Discretizations::Elements {
 
     /// compute the element load vector for a unit vectorial load normal to the surface.
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
-    /// @brief Compute the normal-traction load vector for axisymmetric elements.
+    /**
+     * @brief Compute the normal-traction load vector for axisymmetric elements.
+     * @deprecated Construct the boundary element with @c axisymmetric = true and use
+     * computeSurfaceNormalVectorialLoadVector().
+     */
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
-    /// @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+    /**
+     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+     * @throws std::invalid_argument for an axisymmetric boundary element.
+     */
     Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
     /// compute the element load vector for a unit vectorial load in a given direction.

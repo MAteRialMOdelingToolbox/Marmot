@@ -89,7 +89,7 @@ namespace Marmot::Discretizations::Elements {
       double z;                           ///< local z coordinate (0 in 2D)
       double area;                        ///< area (weight)
       FiberS dFiberStrain_dSectionStrain; ///< section strains -> fiber strains [eps11, gamma12, gamma13]
-      std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material;
+      std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material; ///< the fiber's own material instance
     };
 
     /// The section points
@@ -192,8 +192,10 @@ namespace Marmot::Discretizations::Elements {
         f.material->setCharacteristicElementLength( characteristicLength );
     }
 
+    /// Whether the materials are assigned (all fibers get theirs at once).
     bool hasMaterials() const { return !fibers.empty() && fibers[0].material; }
 
+    /// Number of state variables of one fiber material (0 before the materials are assigned).
     int nMaterialStateVars() const { return hasMaterials() ? fibers[0].material->getNumberOfRequiredStateVars() : 0; }
 
     /// Number of state variables per fiber (own states + material states).

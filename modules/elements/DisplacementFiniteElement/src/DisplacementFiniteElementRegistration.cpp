@@ -58,6 +58,25 @@ namespace {
                                           Quadrature::gaussExactToDegree( 4 ),
                                           DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
+  // axisymmetric: r = x_1, z = x_2, integrated over the full ring; rules as for CPE4, CPE8R and CPE8
+  const static bool CAX4_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX4",
+                     makeFactoryFunction< DisplacementFiniteElement< 2, 4 >,
+                                          Quadrature::gaussExactToDegree( 2 ),
+                                          DisplacementFiniteElement< 2, 4 >::Axisymmetric >() );
+
+  const static bool CAX8R_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX8R",
+                     makeFactoryFunction< DisplacementFiniteElement< 2, 8 >,
+                                          Quadrature::gaussExactToDegree( 3 ),
+                                          DisplacementFiniteElement< 2, 8 >::Axisymmetric >() );
+
+  const static bool CAX8_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "CAX8",
+                     makeFactoryFunction< DisplacementFiniteElement< 2, 8 >,
+                                          Quadrature::gaussExactToDegree( 4 ),
+                                          DisplacementFiniteElement< 2, 8 >::Axisymmetric >() );
+
   const static bool C3D4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "C3D4",
                      makeFactoryFunction< DisplacementFiniteElement< 3, 4 >,
