@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_bond_slip_law_8h" kind="file" language="C++">
+    <compoundname>MarmotBondSlipLaw.h</compoundname>
+    <includes local="yes">Marmot/MarmotPortability.h</includes>
+    <includes local="yes">Marmot/MarmotStateHelpers.h</includes>
+    <includes local="yes">Marmot/MarmotTypedefs.h</includes>
+    <includes local="no">string</includes>
+    <includedby refid="_marmot_bond_slip_law_factory_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h</label>
+        <link refid="_marmot_bond_slip_law_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotPortability.h</label>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotStateHelpers.h</label>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="5">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h</label>
+        <link refid="_marmot_bond_slip_law_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h</label>
+        <link refid="_marmot_bond_slip_law_factory_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_marmot_1_1_materials_1_1_bond_slip_law" prot="public">Marmot::Materials::BondSlipLaw</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" prot="public">Marmot::Materials::BondSlipLaw::State</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" prot="public">Marmot::Materials::BondSlipLaw::TimeIncrement</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_materials">Marmot::Materials</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotPortability.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotStateHelpers.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotTypedefs.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Materials<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="class_marmot_1_1_materials_1_1_bond_slip_law" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" kindref="member">BondSlipLaw</ref><sp/>{</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="52" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" kindref="member">materialProperties</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="53" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" kindref="member">nMaterialProperties</ref>;<sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="56" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" kindref="member">materialNumber</ref>;<sp/></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight></codeline>
+<codeline lineno="64" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" kindref="member">BondSlipLaw</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>materialProperties_,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nMaterialProperties_,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>materialNumber_<sp/>)</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" kindref="member">materialProperties</ref>(<sp/>materialProperties_<sp/>),</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" kindref="member">nMaterialProperties</ref>(<sp/>nMaterialProperties_<sp/>),</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" kindref="member">materialNumber</ref>(<sp/>materialNumber_<sp/>)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="72" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487" kindref="member">~BondSlipLaw</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Utilities::StateLayoutDynamic<sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" kindref="member">stateLayout</ref>;</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kindref="compound">State</ref><sp/>{</highlight></codeline>
+<codeline lineno="80" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Vector3d<sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a" kindref="member">bondStress</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="81" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d" kindref="member">elasticEnergyDensity</ref>;<sp/></highlight></codeline>
+<codeline lineno="82" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc" kindref="member">dissipation</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="83" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a" kindref="member">stateVars</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kindref="compound">TimeIncrement</ref><sp/>{</highlight></codeline>
+<codeline lineno="88" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d" kindref="member">time</ref>;<sp/></highlight></codeline>
+<codeline lineno="89" refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3" kindref="member">dT</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757" kindref="member">computeBondStress</ref>(<sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kindref="compound">State</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>state,</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Matrix3d&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>dBondStress_dSlip,</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector3d&amp;<sp/>slip,</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector3d&amp;<sp/>dSlip,</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kindref="compound">TimeIncrement</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>timeIncrement<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Utilities::StateView<sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41" kindref="member">getStateView</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>stateName,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stateVars<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="117"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" kindref="member">stateLayout</ref>.getStateView(<sp/>stateVars,<sp/>stateName<sp/>);</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"></highlight></codeline>
+<codeline lineno="125" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1" kindref="member">getNumberOfRequiredStateVars</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" kindref="member">stateLayout</ref>.totalSize();<sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87" kindref="member">initializeYourself</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stateVars,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nStateVars<sp/>)</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nStateVars;<sp/>++i<sp/>)</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stateVars[i]<sp/>=<sp/>0.0;</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Materials</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h"/>
+  </compounddef>
+</doxygen>

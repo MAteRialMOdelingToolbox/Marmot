@@ -147,6 +147,28 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit12currentStateE"><code class="docutils literal notranslate"><span class="pre">currentState</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLawE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::BondSlipLaw</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw11BondSlipLawEPKdii"><code class="docutils literal notranslate"><span class="pre">BondSlipLaw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLawD0Ev"><code class="docutils literal notranslate"><span class="pre">~BondSlipLaw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw17computeBondStressER5StateRN6Marmot4Math8Matrix3dERKN6Marmot4Math8Vector3dERKN6Marmot4Math8Vector3dERK13TimeIncrement"><code class="docutils literal notranslate"><span class="pre">computeBondStress()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw12getStateViewERKNSt6stringEPd"><code class="docutils literal notranslate"><span class="pre">getStateView()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw28getNumberOfRequiredStateVarsEv"><code class="docutils literal notranslate"><span class="pre">getNumberOfRequiredStateVars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw18initializeYourselfEPdi"><code class="docutils literal notranslate"><span class="pre">initializeYourself()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw14materialNumberE"><code class="docutils literal notranslate"><span class="pre">materialNumber</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw11stateLayoutE"><code class="docutils literal notranslate"><span class="pre">stateLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw18materialPropertiesE"><code class="docutils literal notranslate"><span class="pre">materialProperties</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw19nMaterialPropertiesE"><code class="docutils literal notranslate"><span class="pre">nMaterialProperties</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactoryE"><code class="docutils literal notranslate"><span class="pre">Marmot::Registry::BondSlipLawFactory</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE"><code class="docutils literal notranslate"><span class="pre">bondSlipLawFactoryFunction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory18BondSlipLawFactoryEv"><code class="docutils literal notranslate"><span class="pre">BondSlipLawFactory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory17createBondSlipLawERKNSt6stringEPKdii"><code class="docutils literal notranslate"><span class="pre">createBondSlipLaw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot8Registry18BondSlipLawFactory19registerBondSlipLawEbRKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">registerBondSlipLaw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE"><code class="docutils literal notranslate"><span class="pre">BondSlipLawFactoryMap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory32bondSlipLawFactoryFunctionByNameEv"><code class="docutils literal notranslate"><span class="pre">bondSlipLawFactoryFunctionByName()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Microplane14Discretization4DataE"><code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::Microplane::Discretization::Data</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Microplane14Discretization4Data7normalsE"><code class="docutils literal notranslate"><span class="pre">normals</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Microplane14Discretization4Data7weightsE"><code class="docutils literal notranslate"><span class="pre">weights</span></code></a></li>
@@ -407,6 +429,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials30MaterialPointSolverHypoElastic13SolverOptions19correctionToleranceE"><code class="docutils literal notranslate"><span class="pre">correctionTolerance</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5StateE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::BondSlipLaw::State</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State10bondStressE"><code class="docutils literal notranslate"><span class="pre">bondStress</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State20elasticEnergyDensityE"><code class="docutils literal notranslate"><span class="pre">elasticEnergyDensity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State11dissipationE"><code class="docutils literal notranslate"><span class="pre">dissipation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State9stateVarsE"><code class="docutils literal notranslate"><span class="pre">stateVars</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::InterfaceMaterialHypoElastic::State</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5State5forceE"><code class="docutils literal notranslate"><span class="pre">force</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5State13surfaceStressE"><code class="docutils literal notranslate"><span class="pre">surfaceStress</span></code></a></li>
@@ -491,6 +520,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Z_ijklE"><code class="docutils literal notranslate"><span class="pre">Z_ijkl</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents5H_ijkE"><code class="docutils literal notranslate"><span class="pre">H_ijk</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE"><code class="docutils literal notranslate"><span class="pre">Y_ijkl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrementE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::BondSlipLaw::TimeIncrement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement4timeE"><code class="docutils literal notranslate"><span class="pre">time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement2dTE"><code class="docutils literal notranslate"><span class="pre">dT</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrementE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement</span></code></a><ul>
@@ -1391,6 +1425,218 @@ Reference: Matthias Neuner (2016), developed within the DK-CIM collaboration. </
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit12currentStateE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit12currentStateE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit12currentStateE"></span><span id="Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepperExplicit::currentState__SubsteppingState"></span><span class="target" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a469eb21c9939c0978742c24b1590ca35"></span><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit16SubsteppingStateE" title="Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepperExplicit::SubsteppingState"><span class="n"><span class="pre">SubsteppingState</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">currentState</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics10Algorithms26AdaptiveSubstepperExplicit12currentStateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLawE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLawE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLawE"></span><span id="Marmot::Materials::BondSlipLaw"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BondSlipLaw</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLawE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_bond_slip_law_8h"><span class="std std-ref">MarmotBondSlipLaw.h</span></a>&gt;</em></div>
+<p>Abstract base class for bond-slip laws, i.e., the constitutive relation between the slip of a reinforcement bar relative to its host continuum and the bond stress acting on the bar surface. </p>
+<p>A bond-slip law operates in the local frame of the bar: the first component is the tangential slip along the bar axis, the second and third components are the relative displacements normal to the bar axis. In two dimensions the third component is zero. The returned bond stress is a traction per unit bar surface; the element integrates it over the bar perimeter and length.</p>
+<p>Bond-slip laws are pluggable: they live as modules in the materials category and register themselves in the <a class="reference internal" href="#class_marmot_1_1_registry_1_1_bond_slip_law_factory"><span class="std std-ref">Marmot::Registry::BondSlipLawFactory</span></a>, from which bond elements create them by name.</p>
+<p>The interface has its own small <a class="reference internal" href="#struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state"><span class="std std-ref">State</span></a> and <a class="reference internal" href="#struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment"><span class="std std-ref">TimeIncrement</span></a> structs instead of the state3D/timeInfo of the continuum materials, because its stress measure is a traction vector per unit bar surface, not a stress tensor. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw11BondSlipLawEPKdii">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw11BondSlipLawEPKdii"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw11BondSlipLawEPKdii"></span><span id="Marmot::Materials::BondSlipLaw::BondSlipLaw__doubleCP.i.i"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BondSlipLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw11BondSlipLawEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the bond-slip law with a given set of properties and an identifier. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties_</strong> – <strong>[in]</strong> Pointer to the array of material properties. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of entries in <code class="docutils literal notranslate"><span class="pre">materialProperties_</span></code>. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Integer identifying this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLawD0Ev">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLawD0Ev"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLawD0Ev"></span><span id="Marmot::Materials::BondSlipLaw::~BondSlipLaw"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~BondSlipLaw</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLawD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Default destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials11BondSlipLaw17computeBondStressER5StateRN6Marmot4Math8Matrix3dERKN6Marmot4Math8Vector3dERKN6Marmot4Math8Vector3dERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials11BondSlipLaw17computeBondStressER5StateRN6Marmot4Math8Matrix3dERKN6Marmot4Math8Vector3dERKN6Marmot4Math8Vector3dERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials11BondSlipLaw17computeBondStressER5StateRN6Marmot4Math8Matrix3dERKN6Marmot4Math8Vector3dERKN6Marmot4Math8Vector3dERK13TimeIncrement"></span><span id="Marmot::Materials::BondSlipLaw::computeBondStress__StateR.Marmot::Math::Matrix3dR.Marmot::Math::Vector3dCR.Marmot::Math::Vector3dCR.TimeIncrementCRC"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBondStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5StateE" title="Marmot::Materials::BondSlipLaw::State"><span class="n"><span class="pre">State</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Matrix3dE" title="Marmot::Math::Matrix3d"><span class="n"><span class="pre">Matrix3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dBondStress_dSlip</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector3dE" title="Marmot::Math::Vector3d"><span class="n"><span class="pre">Vector3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">slip</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector3dE" title="Marmot::Math::Vector3d"><span class="n"><span class="pre">Vector3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dSlip</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrementE" title="Marmot::Materials::BondSlipLaw::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw17computeBondStressER5StateRN6Marmot4Math8Matrix3dERKN6Marmot4Math8Vector3dERKN6Marmot4Math8Vector3dERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the bond stress and its algorithmic tangent. </p>
+<p>
+The slip increment and the time increment are passed for rate-dependent laws; rate-independent laws ignore them. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> values at the beginning of the increment on entry, updated values on exit </p></li>
+<li><p><strong>dBondStress_dSlip</strong> – <strong>[out]</strong> algorithmic tangent  <span class="math notranslate nohighlight">\(\frac{\partial \boldsymbol{\tau}}{\partial
+\boldsymbol{s}}\)</span></p></li>
+<li><p><strong>slip</strong> – <strong>[in]</strong> total slip at the end of the increment, local bar frame [tangential, normal 1, normal 2] </p></li>
+<li><p><strong>dSlip</strong> – <strong>[in]</strong> slip increment, local bar frame </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> time information</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials11BondSlipLaw12getStateViewERKNSt6stringEPd">
+<span id="_CPPv3NK6Marmot9Materials11BondSlipLaw12getStateViewERKNSt6stringEPd"></span><span id="_CPPv2NK6Marmot9Materials11BondSlipLaw12getStateViewERKNSt6stringEPd"></span><span id="Marmot::Materials::BondSlipLaw::getStateView__ssCR.doublePC"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw12getStateViewERKNSt6stringEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a view to the state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – Name of the state variable </p></li>
+<li><p><strong>stateVars</strong> – Pointer to the state variable array </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Marmot::Utilities::StateView to access the state variable </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials11BondSlipLaw28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3NK6Marmot9Materials11BondSlipLaw28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2NK6Marmot9Materials11BondSlipLaw28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::BondSlipLaw::getNumberOfRequiredStateVarsC"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials11BondSlipLaw28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the total number of required state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number of required state variables </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw18initializeYourselfEPdi">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw18initializeYourselfEPdi"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw18initializeYourselfEPdi"></span><span id="Marmot::Materials::BondSlipLaw::initializeYourself__doubleP.i"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw18initializeYourselfEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the state variables. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default implementation initializes all state variables to zero. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – Pointer to the state variable array </p></li>
+<li><p><strong>nStateVars</strong> – Number of state variables</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw14materialNumberE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw14materialNumberE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw14materialNumberE"></span><span id="Marmot::Materials::BondSlipLaw::materialNumber__iC"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialNumber</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw14materialNumberE" title="Link to this definition"></a><br /></dt>
+<dd><p>Integer identifier for this material instance. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw11stateLayoutE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw11stateLayoutE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw11stateLayoutE"></span><span id="Marmot::Materials::BondSlipLaw::stateLayout__Marmot::Utilities::StateLayoutDynamic"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="utilitiescore.html#_CPPv4N6Marmot9Utilities18StateLayoutDynamicE" title="Marmot::Utilities::StateLayoutDynamic"><span class="n"><span class="pre">StateLayoutDynamic</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateLayout</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw11stateLayoutE" title="Link to this definition"></a><br /></dt>
+<dd><p>Layout of the state variables. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw18materialPropertiesE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw18materialPropertiesE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw18materialPropertiesE"></span><span id="Marmot::Materials::BondSlipLaw::materialProperties__doubleCP"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">materialProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw18materialPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the array of material properties. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw19nMaterialPropertiesE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw19nMaterialPropertiesE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw19nMaterialPropertiesE"></span><span id="Marmot::Materials::BondSlipLaw::nMaterialProperties__iC"></span><span class="target" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMaterialProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw19nMaterialPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of material properties. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactoryE">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactoryE"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactoryE"></span><span id="Marmot::Registry::BondSlipLawFactory"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BondSlipLawFactory</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactoryE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_bond_slip_law_factory_8h"><span class="std std-ref">MarmotBondSlipLawFactory.h</span></a>&gt;</em></div>
+<p>Factory for bond-slip laws, see <a class="reference internal" href="#class_marmot_1_1_materials_1_1_bond_slip_law"><span class="std std-ref">Marmot::Materials::BondSlipLaw</span></a>. </p>
+<p>Bond-slip laws register themselves by name, and bond elements create them by the name given in the material section. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a64e7bc35fdc330dd748054b6e2e06872"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bondSlipLawFactoryFunction</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLawE" title="Marmot::Materials::BondSlipLaw"><span class="n"><span class="pre">BondSlipLaw</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">materialProperties</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nMaterialProperties</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">materialNumber</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function signature for the factory functions registered in the map. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactory18BondSlipLawFactoryEv">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactory18BondSlipLawFactoryEv"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactory18BondSlipLawFactoryEv"></span><span id="Marmot::Registry::BondSlipLawFactory::BondSlipLawFactory"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a195c56e596fe24d6b78705cec647c790"></span><span class="sig-name descname"><span class="n"><span class="pre">BondSlipLawFactory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory18BondSlipLawFactoryEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactory17createBondSlipLawERKNSt6stringEPKdii">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactory17createBondSlipLawERKNSt6stringEPKdii"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactory17createBondSlipLawERKNSt6stringEPKdii"></span><span id="Marmot::Registry::BondSlipLawFactory::createBondSlipLaw__ssCR.doubleCP.i.i"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a758de44260a2ad72e4ee01a04fc03508"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials11BondSlipLawE" title="Marmot::Materials::BondSlipLaw"><span class="n"><span class="pre">BondSlipLaw</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">createBondSlipLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory17createBondSlipLawERKNSt6stringEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a bond-slip law by its name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – <strong>[in]</strong> Registered name of the bond-slip law. </p></li>
+<li><p><strong>materialProperties</strong> – <strong>[in]</strong> Array of properties. </p></li>
+<li><p><strong>nMaterialProperties</strong> – <strong>[in]</strong> Number of properties in the array. </p></li>
+<li><p><strong>materialNumber</strong> – <strong>[in]</strong> Identifier for the instance. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if no bond-slip law is registered under <code class="docutils literal notranslate"><span class="pre">name</span></code>. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the new bond-slip law. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot8Registry18BondSlipLawFactory19registerBondSlipLawEbRKNSt6stringE">
+<span id="_CPPv3I0EN6Marmot8Registry18BondSlipLawFactory19registerBondSlipLawERKNSt6stringE"></span><span id="_CPPv2I0EN6Marmot8Registry18BondSlipLawFactory19registerBondSlipLawERKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a206716a550aea85f4178b4846d2ecf66"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">registerBondSlipLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot8Registry18BondSlipLawFactory19registerBondSlipLawEbRKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Register a bond-slip law with an auto-generated factory function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – <strong>[in]</strong> Unique name under which the bond-slip law is registered. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the registration was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-types">Private Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a986f9c393ea956167d11fa48a865c36e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BondSlipLawFactoryMap</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory26bondSlipLawFactoryFunctionE" title="Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunction"><span class="n"><span class="pre">bondSlipLawFactoryFunction</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry18BondSlipLawFactory32bondSlipLawFactoryFunctionByNameEv">
+<span id="_CPPv3N6Marmot8Registry18BondSlipLawFactory32bondSlipLawFactoryFunctionByNameEv"></span><span id="_CPPv2N6Marmot8Registry18BondSlipLawFactory32bondSlipLawFactoryFunctionByNameEv"></span><span id="Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunctionByName"></span><span class="target" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a054a1372416eb735c87f83a1f5325c3d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory21BondSlipLawFactoryMapE" title="Marmot::Registry::BondSlipLawFactory::BondSlipLawFactoryMap"><span class="n"><span class="pre">BondSlipLawFactoryMap</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">bondSlipLawFactoryFunctionByName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Registry18BondSlipLawFactory32bondSlipLawFactoryFunctionByNameEv" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -3492,6 +3738,41 @@ l_j^{(m)} n_i^{(m)}) \)</span> in Voigt notation, one column per microplane. </p
 </dd></dl>
 
 <dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw5StateE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw5StateE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw5StateE"></span><span id="Marmot::Materials::BondSlipLaw::State"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">State</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5StateE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_bond_slip_law_8h"><span class="std std-ref">MarmotBondSlipLaw.h</span></a>&gt;</em></div>
+<p>Bond state at an integration point of the bar: values at the beginning of the increment on entry, updated values on exit </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw5State10bondStressE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw5State10bondStressE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw5State10bondStressE"></span><span id="Marmot::Materials::BondSlipLaw::State::bondStress__Marmot::Math::Vector3d"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector3dE" title="Marmot::Math::Vector3d"><span class="n"><span class="pre">Vector3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bondStress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State10bondStressE" title="Link to this definition"></a><br /></dt>
+<dd><p>[tangential bond stress, normal stress 1, normal stress 2] </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw5State20elasticEnergyDensityE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw5State20elasticEnergyDensityE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw5State20elasticEnergyDensityE"></span><span id="Marmot::Materials::BondSlipLaw::State::elasticEnergyDensity__double"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticEnergyDensity</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State20elasticEnergyDensityE" title="Link to this definition"></a><br /></dt>
+<dd><p>elastic energy per unit bar surface </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw5State11dissipationE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw5State11dissipationE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw5State11dissipationE"></span><span id="Marmot::Materials::BondSlipLaw::State::dissipation__double"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dissipation</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State11dissipationE" title="Link to this definition"></a><br /></dt>
+<dd><p>dissipated energy per unit bar surface </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw5State9stateVarsE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw5State9stateVarsE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw5State9stateVarsE"></span><span id="Marmot::Materials::BondSlipLaw::State::stateVars__doubleP"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw5State9stateVarsE" title="Link to this definition"></a><br /></dt>
+<dd><p>pointer to the state variables </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE">
 <span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::State"></span><span class="target" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">State</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE" title="Link to this definition"></a><br /></dt>
 <dd><div class="docutils container">
@@ -3988,6 +4269,29 @@ l_j^{(m)} n_i^{(m)}) \)</span> in Voigt notation, one column per microplane. </p
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE">
 <span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Y_ijkl__Tensor3333d"></span><span class="target" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Y_ijkl</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE" title="Link to this definition"></a><br /></dt>
 <dd><p>additional tangent term acting on the average surface gradient </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrementE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw13TimeIncrementE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw13TimeIncrementE"></span><span id="Marmot::Materials::BondSlipLaw::TimeIncrement"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimeIncrement</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrementE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_bond_slip_law_8h"><span class="std std-ref">MarmotBondSlipLaw.h</span></a>&gt;</em></div>
+<p>Time at the beginning of the increment and size of the time increment. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement4timeE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw13TimeIncrement4timeE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw13TimeIncrement4timeE"></span><span id="Marmot::Materials::BondSlipLaw::TimeIncrement::time__double"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement4timeE" title="Link to this definition"></a><br /></dt>
+<dd><p>time at the beginning of the increment </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement2dTE">
+<span id="_CPPv3N6Marmot9Materials11BondSlipLaw13TimeIncrement2dTE"></span><span id="_CPPv2N6Marmot9Materials11BondSlipLaw13TimeIncrement2dTE"></span><span id="Marmot::Materials::BondSlipLaw::TimeIncrement::dT__double"></span><span class="target" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials11BondSlipLaw13TimeIncrement2dTE" title="Link to this definition"></a><br /></dt>
+<dd><p>size of the time increment </p>
 </dd></dl>
 
 </div>
@@ -7734,6 +8038,91 @@ The transformation convention used is:  <span class="math notranslate nohighligh
 </figure>
 <p>Hughes–Winget objective stress-rate integrator. </p>
 <p>Provides the <code class="docutils literal notranslate"><span class="pre">HughesWinget</span></code> class that, given old and new deformation gradients, computes the objective strain increment, the incremental rotation tensor, and the tangent operator contributions required by hypoelastic constitutive updates. </p>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_bond_slip_law_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotBondSlipLaw.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “Marmot/MarmotPortability.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotStateHelpers.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotTypedefs.h”</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<p>Include dependency graph for MarmotBondSlipLaw.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ae333aafd224480dd4e21504811ee8b3204116b3.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotPortability.h&quot; tooltip=&quot;Marmot/MarmotPortability.h&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;5&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>This graph shows which files directly or indirectly include MarmotBondSlipLaw.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d565ad87ab0374bfd4c0b95b95315786951c0dd0.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_bond_slip_law_factory_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotBondSlipLawFactory.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “<a class="reference internal" href="#_marmot_bond_slip_law_8h"><span class="std std-ref">Marmot/MarmotBondSlipLaw.h</span></a>”</em></div>
+<div class="docutils container">
+<em>#include &lt;cassert&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;functional&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;string&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;unordered_map&gt;</em></div>
+<p>Include dependency graph for MarmotBondSlipLawFactory.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a7d9354989765176490d707f0b8c92757aecb492.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotBondSlipLaw.h&quot; tooltip=&quot;Marmot/MarmotBondSlipLaw.h&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotPortability.h&quot; tooltip=&quot;Marmot/MarmotPortability.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;7&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
+    &quot;8&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;6&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;9&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
 </dd></dl>
 
 <dl>

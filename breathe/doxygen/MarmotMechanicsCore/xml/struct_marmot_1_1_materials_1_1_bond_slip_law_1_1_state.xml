@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::BondSlipLaw::State</compoundname>
+    <includes refid="_marmot_bond_slip_law_8h" local="no">MarmotBondSlipLaw.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a" prot="public" static="no" mutable="no">
+        <type>Marmot::Math::Vector3d</type>
+        <definition>Marmot::Math::Vector3d Marmot::Materials::BondSlipLaw::State::bondStress</definition>
+        <argsstring></argsstring>
+        <name>bondStress</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::State::bondStress</qualifiedname>
+        <briefdescription>
+<para>[tangential bond stress, normal stress 1, normal stress 2] </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="80" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::BondSlipLaw::State::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::State::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+<para>elastic energy per unit bar surface </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="81" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::BondSlipLaw::State::dissipation</definition>
+        <argsstring></argsstring>
+        <name>dissipation</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::State::dissipation</qualifiedname>
+        <briefdescription>
+<para>dissipated energy per unit bar surface </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="82" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Materials::BondSlipLaw::State::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::State::stateVars</qualifiedname>
+        <briefdescription>
+<para>pointer to the state variables </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="83" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Bond state at an integration point of the bar: values at the beginning of the increment on entry, updated values on exit </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="79" bodyend="84"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::State</scope><name>bondStress</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::State</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::State</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::State</scope><name>stateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

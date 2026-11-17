@@ -284,7 +284,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h" line="126" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h" bodystart="203" bodyend="225"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h" line="126" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h" bodystart="203" bodyend="212"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab43f8191abd4fc189695fba969966ac5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a536b46be31e0c9199cf39c26e5ca30f8" kindref="member">NSized</ref></type>

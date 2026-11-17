@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_materials" kind="namespace" language="C++">
     <compoundname>Marmot::Materials</compoundname>
+    <innerclass refid="class_marmot_1_1_materials_1_1_bond_slip_law" prot="public">Marmot::Materials::BondSlipLaw</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_hypo_elastic" prot="public">Marmot::Materials::MaterialHypoElastic</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d" prot="public">Marmot::Materials::MaterialHypoElasticAD</innerclass>

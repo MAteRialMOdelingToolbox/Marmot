@@ -146,6 +146,7 @@
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotPronySeries.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticFactory.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/NewmarkBetaIntegrator.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotGeostaticStress.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLocalization.h]]></value>
@@ -163,6 +164,7 @@
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/DuvautLionsViscosity.h]]></value>
   </option>
   <option  id='INPUT_ENCODING' default='yes' type='string'><value><![CDATA[UTF-8]]></value></option>

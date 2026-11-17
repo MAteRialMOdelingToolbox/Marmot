@@ -93,6 +93,26 @@
     <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a5fd6ebc3bf5cb994dad34ddf33384a98" kind="function"><name>acceptSubstepWithFullStepOnly</name></member>
     <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a9da9f00515ab256ae0dd563f38a37c7f" kind="function"><name>splitCurrentSubstep</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_materials_1_1_bond_slip_law" kind="class"><name>Marmot::Materials::BondSlipLaw</name>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" kind="function"><name>BondSlipLaw</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487" kind="function"><name>~BondSlipLaw</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757" kind="function"><name>computeBondStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87" kind="function"><name>initializeYourself</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory" kind="class"><name>Marmot::Registry::BondSlipLawFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a64e7bc35fdc330dd748054b6e2e06872" kind="typedef"><name>bondSlipLawFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a986f9c393ea956167d11fa48a865c36e" kind="typedef"><name>BondSlipLawFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a195c56e596fe24d6b78705cec647c790" kind="function"><name>BondSlipLawFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a758de44260a2ad72e4ee01a04fc03508" kind="function"><name>createBondSlipLaw</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a206716a550aea85f4178b4846d2ecf66" kind="function"><name>registerBondSlipLaw</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a054a1372416eb735c87f83a1f5325c3d" kind="function"><name>bondSlipLawFactoryFunctionByName</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kind="struct"><name>Marmot::ContinuumMechanics::Microplane::Discretization::Data</name>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" kind="variable"><name>normals</name></member>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kind="variable"><name>weights</name></member>
@@ -337,6 +357,12 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options_1a3e0cee043b7060eae05848d817176e1f" kind="variable"><name>residualTolerance</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options_1ab3c1f0d8b485de075d1d0ba9fe4777ce" kind="variable"><name>correctionTolerance</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kind="struct"><name>Marmot::Materials::BondSlipLaw::State</name>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a7a6a4dc3b92ea541bbf3458ced59f56a" kind="variable"><name>bondStress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1a10d6f5358375ea1e5c5a5a4a154a084d" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ad869de6c89fa22593941a512829c1bcc" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state_1ada9ed3b498b290da5bc9b657efca713a" kind="variable"><name>stateVars</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::State</name>
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" kind="variable"><name>force</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" kind="variable"><name>surfaceStress</name></member>
@@ -411,6 +437,10 @@
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" kind="variable"><name>Z_ijkl</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" kind="variable"><name>H_ijk</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" kind="variable"><name>Y_ijkl</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kind="struct"><name>Marmot::Materials::BondSlipLaw::TimeIncrement</name>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3" kind="variable"><name>dT</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement</name>
     <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a775eb81e6307c9784253a570e72342a0" kind="variable"><name>timeOld</name></member>
@@ -703,6 +733,10 @@
   <compound refid="_haigh_westergaard_8h" kind="file"><name>HaighWestergaard.h</name>
   </compound>
   <compound refid="_hughes_winget_8h" kind="file"><name>HughesWinget.h</name>
+  </compound>
+  <compound refid="_marmot_bond_slip_law_8h" kind="file"><name>MarmotBondSlipLaw.h</name>
+  </compound>
+  <compound refid="_marmot_bond_slip_law_factory_8h" kind="file"><name>MarmotBondSlipLawFactory.h</name>
   </compound>
   <compound refid="_marmot_elasticity_8h" kind="file"><name>MarmotElasticity.h</name>
   </compound>

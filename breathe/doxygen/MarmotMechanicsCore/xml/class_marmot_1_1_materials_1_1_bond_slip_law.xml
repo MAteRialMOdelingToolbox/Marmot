@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_bond_slip_law" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::BondSlipLaw</compoundname>
+    <includes refid="_marmot_bond_slip_law_8h" local="no">MarmotBondSlipLaw.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" prot="public">Marmot::Materials::BondSlipLaw::State</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" prot="public">Marmot::Materials::BondSlipLaw::TimeIncrement</innerclass>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Materials::BondSlipLaw::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="52" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::BondSlipLaw::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>Number of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="53" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::BondSlipLaw::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::materialNumber</qualifiedname>
+        <briefdescription>
+<para>Integer identifier for this material instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="56" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" prot="public" static="no" mutable="no">
+        <type>Marmot::Utilities::StateLayoutDynamic</type>
+        <definition>Marmot::Utilities::StateLayoutDynamic Marmot::Materials::BondSlipLaw::stateLayout</definition>
+        <argsstring></argsstring>
+        <name>stateLayout</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::stateLayout</qualifiedname>
+        <briefdescription>
+<para>Layout of the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="75" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::BondSlipLaw::BondSlipLaw</definition>
+        <argsstring>(const double *materialProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>BondSlipLaw</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::BondSlipLaw</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct the bond-slip law with a given set of properties and an identifier. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of entries in <computeroutput>materialProperties_</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Integer identifying this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="64" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="64" bodyend="69"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::BondSlipLaw::~BondSlipLaw</definition>
+        <argsstring>()=default</argsstring>
+        <name>~BondSlipLaw</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::~BondSlipLaw</qualifiedname>
+        <briefdescription>
+<para>Default destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="72" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::BondSlipLaw::computeBondStress</definition>
+        <argsstring>(State &amp;state, Marmot::Math::Matrix3d &amp;dBondStress_dSlip, const Marmot::Math::Vector3d &amp;slip, const Marmot::Math::Vector3d &amp;dSlip, const TimeIncrement &amp;timeIncrement) const =0</argsstring>
+        <name>computeBondStress</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::computeBondStress</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kindref="compound">State</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Matrix3d &amp;</type>
+          <declname>dBondStress_dSlip</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector3d &amp;</type>
+          <declname>slip</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector3d &amp;</type>
+          <declname>dSlip</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Compute the bond stress and its algorithmic tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>values at the beginning of the increment on entry, updated values on exit </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dBondStress_dSlip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>algorithmic tangent  <formula id="98">$\frac{\partial \boldsymbol{\tau}}{\partial
+\boldsymbol{s}}$</formula> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">slip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>total slip at the end of the increment, local bar frame [tangential, normal 1, normal 2] </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dSlip</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>slip increment, local bar frame </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time information</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The slip increment and the time increment are passed for rate-dependent laws; rate-independent laws ignore them. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="104" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Materials::BondSlipLaw::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get a view to the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Marmot::Utilities::StateView to access the state variable </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="116" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="116" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Materials::BondSlipLaw::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Get the total number of required state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Total number of required state variables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="125" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="125" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::BondSlipLaw::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::initializeYourself</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation initializes all state variables to zero. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="134" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="134" bodyend="138"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class for bond-slip laws, i.e., the constitutive relation between the slip of a reinforcement bar relative to its host continuum and the bond stress acting on the bar surface. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A bond-slip law operates in the local frame of the bar: the first component is the tangential slip along the bar axis, the second and third components are the relative displacements normal to the bar axis. In two dimensions the third component is zero. The returned bond stress is a traction per unit bar surface; the element integrates it over the bar perimeter and length.</para>
+<para>Bond-slip laws are pluggable: they live as modules in the materials category and register themselves in the <ref refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory" kindref="compound">Marmot::Registry::BondSlipLawFactory</ref>, from which bond elements create them by name.</para>
+<para>The interface has its own small <ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_state" kindref="compound">State</ref> and <ref refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kindref="compound">TimeIncrement</ref> structs instead of the state3D/timeInfo of the continuum materials, because its stress measure is a traction vector per unit bar surface, not a stress tensor. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="49" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="49" bodyend="139"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a5e3ca904e9a3ea5a76d2e186cb90cfe8" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>BondSlipLaw</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a4d4c8f757e7bb8d4b3daba83f7da9757" prot="public" virt="pure-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>computeBondStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a7513de08a3566fffa5fc2b167910a5a1" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a6b4bb39d633ef74abd573050ae037d41" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a741e07b417794f46dbe94c7dbd222c87" prot="public" virt="virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa53c317e7f069e19dd57aed5460eda59" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a0ea4374c1aa85a86206e5c61f3c7f2a1" prot="protected" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1a76f452320867d7889d01e7909d111772" prot="protected" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1ade5068cde5920066e0541074284e9690" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_bond_slip_law_1aa019736c12fc11a51e1c51fd44752487" prot="public" virt="virtual"><scope>Marmot::Materials::BondSlipLaw</scope><name>~BondSlipLaw</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

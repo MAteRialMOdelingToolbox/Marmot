@@ -161,9 +161,11 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3f4f327b53b87f4f33e6a2335c4e9245" kind="function"><name>Jacobian</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a584da728cca924b5907555a8751c5ce3" kind="function"><name>dNdX</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aa36b52874889427e3a51e6a152bf49af" kind="function"><name>F</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a5d464c61a5d066a9d40705a646f66c28" kind="function"><name>parentCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1acfc5da245990bb15ac1a366f68728965" kind="function"><name>center</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ad8d7fdbe6e2323469363110e80b9727b" kind="function"><name>characteristicLengthForCriticalTimeStepAt</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a366b8fbfd584e375f036904751a919ab" kind="function"><name>referenceCentroid</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a58d8d62d7325ef4556ea2c684da59243" kind="function"><name>isInsideParentDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a9997aa16d56191f734a9b35a99c20378" kind="function"><name>volumeEquivalentLength</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element" kind="class"><name>Marmot::Discretizations::Elements::GeometryInterfaceElement</name>
@@ -315,9 +317,11 @@
     <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694b" kind="enum"><name>QuadratureFamily</name></member>
     <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694baedc41fb7bf8bdac012523d1bcd949a4f" kind="enumvalue"><name>Gauss</name></member>
     <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694baa96016246f4f1e3b5470d19bae942579" kind="enumvalue"><name>NewtonCotes</name></member>
+    <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694ba8d79a6cd40b3cc60da789f4c167526b9" kind="enumvalue"><name>GaussLobatto</name></member>
     <member refid="_marmot_finite_element_8h_1a9400325d3d210b4a464b576a6d7bf8a5" kind="function"><name>quadratureRules</name></member>
     <member refid="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" kind="function"><name>gaussExactToDegree</name></member>
     <member refid="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" kind="function"><name>newtonCotesExactToDegree</name></member>
+    <member refid="_marmot_finite_element_8h_1a8ad0dfe0f6369af4fc3c42f613027e9f" kind="function"><name>gaussLobattoExactToDegree</name></member>
     <member refid="_marmot_finite_element_8h_1a19945e9a4ca3fe5cdd84aa2ce56af67f" kind="function"><name>getQuadraturePoints</name></member>
     <member refid="_marmot_finite_element_8h_1a2e98afe11b4aaf32e9ca67484403d975" kind="function"><name>getQuadraturePoints</name></member>
   </compound>

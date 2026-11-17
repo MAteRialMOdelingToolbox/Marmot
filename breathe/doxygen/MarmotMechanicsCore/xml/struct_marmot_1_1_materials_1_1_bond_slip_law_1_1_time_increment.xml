@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::BondSlipLaw::TimeIncrement</compoundname>
+    <includes refid="_marmot_bond_slip_law_8h" local="no">MarmotBondSlipLaw.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::BondSlipLaw::TimeIncrement::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::TimeIncrement::time</qualifiedname>
+        <briefdescription>
+<para>time at the beginning of the increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="88" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::BondSlipLaw::TimeIncrement::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Materials::BondSlipLaw::TimeIncrement::dT</qualifiedname>
+        <briefdescription>
+<para>size of the time increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="89" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Time at the beginning of the increment and size of the time increment. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" line="87" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLaw.h" bodystart="87" bodyend="90"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1a7656ddc030f0298f29e1333e51919af3" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::TimeIncrement</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_bond_slip_law_1_1_time_increment_1ad0cd93132ccc319f02ec5bf8d72cf72d" prot="public" virt="non-virtual"><scope>Marmot::Materials::BondSlipLaw::TimeIncrement</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

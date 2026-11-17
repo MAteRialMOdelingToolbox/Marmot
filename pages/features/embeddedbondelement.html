@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embedded Bond Element &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Explicit dynamics devices" href="explicitdynamicsdevices.html" />
+    <link rel="prev" title="Truss Element" href="trusselement.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="elements.html">Finite elements</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="displacementfiniteelement.html">Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="displacementfinitestrainelement.html">Displacement Finite Strain Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html">General Gradient-Enhanced Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html">Gradient-Enhanced Finite-Strain Displacement Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacefiniteelement.html">Interface Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trusselement.html">Truss Element</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Embedded Bond Element</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="explicitdynamicsdevices.html">Explicit dynamics devices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="elements.html">Finite elements</a></li>
+      <li class="breadcrumb-item active">Embedded Bond Element</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/embeddedbondelement.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="embedded-bond-element">
+<span id="embeddedbondelement"></span><h1>Embedded Bond Element<a class="headerlink" href="#embedded-bond-element" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>Couples an embedded reinforcement bar (a truss or beam element; only its displacements are coupled) to the host
+continuum element it lies in by bond-slip. The nodes of the element are the nodes of the bar element, followed by
+the nodes of the host element (<code class="docutils literal notranslate"><span class="pre">Tri3</span></code>, <code class="docutils literal notranslate"><span class="pre">Quad4</span></code>, <code class="docutils literal notranslate"><span class="pre">Quad8</span></code>, <code class="docutils literal notranslate"><span class="pre">Tetra4</span></code>, <code class="docutils literal notranslate"><span class="pre">Hexa8</span></code>, <code class="docutils literal notranslate"><span class="pre">Hexa20</span></code>: the shapes of the
+continuum elements in Marmot). The
+slip is the displacement of the bar relative to the host material point it lies at, in the local frame
+<span class="math notranslate nohighlight">\(\mathbf{R} = [\mathbf{t}, \mathbf{n}_1, \mathbf{n}_2]\)</span> of the bar axis,</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{s} = \mathbf{R}^\mathsf{T} \Big( \sum_i M_i(\eta)\, \mathbf{u}_i
+  - \sum_a N_a(\boldsymbol{\xi}(\eta))\, \mathbf{u}_a \Big),\]</div>
+<p>with the host parent coordinates <span class="math notranslate nohighlight">\(\boldsymbol{\xi}(\eta)\)</span> found by the inverse isoparametric mapping of the host
+geometry (<code class="docutils literal notranslate"><span class="pre">GeometryElement::parentCoordinates</span></code>) at initialization. The tangent <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> points from the
+first to the second end node of the bar element (<span class="math notranslate nohighlight">\(\mathbf{t} = \mathrm{d}\mathbf{X}/\mathrm{d}\eta\)</span>); in 2D, <span class="math notranslate nohighlight">\(\mathbf{n}_1\)</span> is <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> rotated by +90°; in 3D, the normals
+are an arbitrary right-handed pair that may differ between integration points, so the normal components of slip and
+bond stress are not comparable between points (the bond-slip laws are isotropic in the normal plane). A
+<a class="reference internal" href="bondsliplaws.html#bondsliplaws"><span class="std std-ref">bond-slip law</span></a> gives the bond stress <span class="math notranslate nohighlight">\(\boldsymbol{\tau}(\mathbf{s})\)</span>, integrated over
+the bar perimeter <span class="math notranslate nohighlight">\(p\)</span> and the part <span class="math notranslate nohighlight">\([\eta_s, \eta_e]\)</span> of the bar element inside the host element with a
+Gauss-Lobatto rule of the quadrature catalogue (<code class="docutils literal notranslate"><span class="pre">gaussLobattoExactToDegree</span></code>), whose end points sit at the ends of
+the bar part. The formulation is geometrically linear (reference frame).</p>
+<p>Names: <code class="docutils literal notranslate"><span class="pre">EB&lt;nDim&gt;D&lt;nBarNodes&gt;&lt;host&gt;</span></code>, e.g., <code class="docutils literal notranslate"><span class="pre">EB2D2T3</span></code>, <code class="docutils literal notranslate"><span class="pre">EB2D2Q4</span></code>, <code class="docutils literal notranslate"><span class="pre">EB2D3Q8</span></code>, <code class="docutils literal notranslate"><span class="pre">EB3D2H8</span></code>, <code class="docutils literal notranslate"><span class="pre">EB3D3H20</span></code>,
+<code class="docutils literal notranslate"><span class="pre">EB3D2T4</span></code>.</p>
+<p>Element properties: <code class="docutils literal notranslate"><span class="pre">[perimeter,</span> <span class="pre">eta_s,</span> <span class="pre">eta_e,</span> <span class="pre">(number</span> <span class="pre">of</span> <span class="pre">integration</span> <span class="pre">points</span> <span class="pre">2..5)]</span></code> with <span class="math notranslate nohighlight">\(p &gt; 0\)</span> and
+<span class="math notranslate nohighlight">\(-1 \le \eta_s &lt; \eta_e \le 1\)</span>. They must be assigned before the bond-slip law (the number of integration
+points sets the number of law instances).</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE">
+<span id="_CPPv3I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE"></span><span id="_CPPv2I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nBarNodes</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nHostNodes</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmbeddedBondElement</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements7ElementE" title="Marmot::Discretizations::Elements::Element"><span class="n"><span class="pre">Element</span></span></a><a class="headerlink" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Link to this definition"></a><br /></dt>
+<dd><p>Bond-slip coupling of an embedded reinforcement bar (truss) to the host continuum element it lies in. </p>
+<p>
+The nodes of the element are the nodes of the reinforcement (truss) element, followed by the nodes of the host element. The reinforcement keeps its own, independent displacement field; the element couples it to the host by the bond stress, which a pluggable bond-slip law (<a class="reference internal" href="bondsliplaws.html#classMarmot_1_1Materials_1_1BondSlipLaw"><span class="std std-ref">Marmot::Materials::BondSlipLaw</span></a>) computes from the slip, i.e., the displacement of the bar relative to the host material point it lies at:    <div class="math notranslate nohighlight">
+\[  \boldsymbol{\Delta}(\eta) = \sum_i M_i(\eta)\, \boldsymbol{u}_i - \sum_a N_a(\boldsymbol{\xi}(\eta))\,
+  \boldsymbol{u}_a , \qquad \boldsymbol{s} = \boldsymbol{R}^T \boldsymbol{\Delta},
+\]</div>
+ with the shape functions <span class="math notranslate nohighlight">\(M_i\)</span> of the bar, <span class="math notranslate nohighlight">\(N_a\)</span> of the host, the host parent coordinates <span class="math notranslate nohighlight">\(\boldsymbol{\xi}(\eta)\)</span> of the bar point <span class="math notranslate nohighlight">\(\eta\)</span> (found by inverse mapping at initialization), and the local frame <span class="math notranslate nohighlight">\(\boldsymbol{R} = [\boldsymbol{t}, \boldsymbol{n}_1, \boldsymbol{n}_2]\)</span> of the bar axis. The internal forces and the tangent are     <div class="math notranslate nohighlight">
+\[  \boldsymbol{f} = \int \boldsymbol{L}^T \boldsymbol{R}\, \boldsymbol{\tau}\; p\, \mathrm{d}S, \qquad
+  \boldsymbol{K} = \int \boldsymbol{L}^T \boldsymbol{R}\, \frac{\partial \boldsymbol{\tau}}{\partial
+  \boldsymbol{s}}\, \boldsymbol{R}^T \boldsymbol{L}\; p\, \mathrm{d}S
+\]</div>
+ with the interpolation operator <span class="math notranslate nohighlight">\(\boldsymbol{L}\)</span> of <span class="math notranslate nohighlight">\(\boldsymbol{\Delta}\)</span> and the bar perimeter <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>One element covers the part <span class="math notranslate nohighlight">\([\eta_s, \eta_e]\)</span> of the bar element that lies inside the host element; a bar element crossing several host elements is coupled by several bond elements. A preprocessor (e.g., the embedded reinforcement generator of EdelweissFE) computes these parts.</p>
+<p>The formulation is geometrically linear: the frame is the one of the reference configuration, which is appropriate for small rotations of the bar.</p>
+<p>Element properties: [perimeter <span class="math notranslate nohighlight">\(p\)</span>, <span class="math notranslate nohighlight">\(\eta_s\)</span>, <span class="math notranslate nohighlight">\(\eta_e\)</span>, (number of integration points)]. The bond stress is integrated with a Gauss-Lobatto rule (2 to 5 points; default: 2 for linear and 3 for quadratic bars), which places integration points at the ends of the bar part and avoids the traction oscillations of Gauss rules for stiff bond.</p>
+<p>Material: a bond-slip law registered in the Marmot::Registry::BondSlipLawFactory. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – number of spatial dimensions, 2 or 3 </p></li>
+<li><p><strong>nBarNodes</strong> – number of nodes of the bar element, 2 or 3 (end, end, mid) </p></li>
+<li><p><strong>nHostNodes</strong> – number of nodes of the host element (Tri3, Quad4, Quad8, Tetra4, Hexa8, Hexa20; the hosts with a continuum element in <a class="reference internal" href="meshfreeapproximation.html#namespaceMarmot"><span class="std std-ref">Marmot</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12HostGeometryE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement12HostGeometryE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement12HostGeometryE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4b33cf49b873e9e41755a9f96f736f6c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HostGeometry</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE" title="Marmot::Discretizations::Elements::GeometryElement"><span class="n"><span class="pre">GeometryElement</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nHostNodes"><span class="n"><span class="pre">nHostNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12HostGeometryE" title="Link to this definition"></a><br /></dt>
+<dd><p>host shape </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ac4bde6762d922454fdff8f9bab11027e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VectorDim</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE" title="Link to this definition"></a><br /></dt>
+<dd><p>spatial vector </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4c873f9f7ca1e0a97238402fbec79ae5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MatrixDim</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE" title="Link to this definition"></a><br /></dt>
+<dd><p>spatial tensor </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement8RhsSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement8RhsSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement8RhsSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a1edceebe0d7aac658c04028a0dc3b2cd"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RhsSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement8RhsSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>element force vector </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6KSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement6KSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement6KSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ab68a8007ae7235c641df4b10f68768f6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6KSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>element stiffness matrix </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6LSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement6LSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement6LSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a24b3617edb3ad6b76f29cd5690b318de"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6LSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>relative displacement operator </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4b7812c9d46c91eb24237573d2637903"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BarN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nBarNodes"><span class="n"><span class="pre">nBarNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE" title="Link to this definition"></a><br /></dt>
+<dd><p>bar shape functions </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement19EmbeddedBondElementEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement19EmbeddedBondElementEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement19EmbeddedBondElementEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::EmbeddedBondElement__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1aefa672a692e61eabb0f982604a104ed5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EmbeddedBondElement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementID</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement19EmbeddedBondElementEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the element with the default number of integration points. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>elementID</strong> – the element label </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements19EmbeddedBondElement25findHostParentCoordinatesERK9VectorDim">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements19EmbeddedBondElement25findHostParentCoordinatesERK9VectorDim"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements19EmbeddedBondElement25findHostParentCoordinatesERK9VectorDim"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::findHostParentCoordinates__VectorDimCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ae7d390a46f80313664a61e15a7dc17b0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::VectorDim"><span class="n"><span class="pre">VectorDim</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">findHostParentCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::VectorDim"><span class="n"><span class="pre">VectorDim</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements19EmbeddedBondElement25findHostParentCoordinatesERK9VectorDim" title="Link to this definition"></a><br /></dt>
+<dd><p>Parent coordinates of a point in the host element: the inverse isoparametric mapping of the host geometry (GeometryElement::parentCoordinates). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> – <strong>[in]</strong> The point. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the point lies outside of the host element </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parent coordinates. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a3b812223bda5c0b354645e3a2e4e363e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of state variables required by the element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement13getNodeFieldsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement13getNodeFieldsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement13getNodeFieldsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNodeFields"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a0e6557591db10d6467c763de08e708f2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNodeFields</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement13getNodeFieldsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the nodal field names (e.g. displacement, rotation). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A 2D vector of strings representing the fields per node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement31getDofIndicesPermutationPatternEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement31getDofIndicesPermutationPatternEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement31getDofIndicesPermutationPatternEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getDofIndicesPermutationPattern"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1abdc432c689b67b741f23e4fe53c11464"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDofIndicesPermutationPattern</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement31getDofIndicesPermutationPatternEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get permutation pattern for degrees of freedom. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector of indices describing the permutation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9getNNodesEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement9getNNodesEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement9getNNodesEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNNodes"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a5048ebdba498fb08703e44f769b3794a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNNodes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9getNNodesEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of nodes in the element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21getNSpatialDimensionsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement21getNSpatialDimensionsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement21getNSpatialDimensionsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNSpatialDimensions"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ae0093a0c70569fe2d36f5d74c65da462"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNSpatialDimensions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21getNSpatialDimensionsEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of spatial dimensions (2D/3D). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17getNDofPerElementEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17getNDofPerElementEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17getNDofPerElementEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNDofPerElement"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a33d6714d5269175e015ebe8f927b5bc9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNDofPerElement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17getNDofPerElementEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of degrees of freedom per element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15getElementShapeEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15getElementShapeEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15getElementShapeEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getElementShape"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a8932bf69a32c2d0a471ac803f06c9130"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getElementShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15getElementShapeEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String describing the element shape in Ensight Gold notation (e.g. “quad4”, “hexa8”). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15assignStateVarsEPdi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a400af92407a26b7bb47da64a268a6053"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign state variable array to element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to state variable array. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERK17ElementProperties">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERK17ElementProperties"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERK17ElementProperties"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::assignProperty__ElementPropertiesCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ad504483c9834917b72ab99946f724d3f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations17ElementPropertiesE" title="Marmot::Discretizations::ElementProperties"><span class="n"><span class="pre">ElementProperties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">property</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERK17ElementProperties" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign element property set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>property</strong> – <strong>[in]</strong> Element property object containing material, geometry, etc. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::assignProperty__Marmot::Discretizations::MaterialSectionCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a004c47617c3276f1071d1a68491f6ff1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations15MaterialSectionE" title="Marmot::Discretizations::MaterialSection"><span class="n"><span class="pre">MaterialSection</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">section</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign material section property. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>property</strong> – <strong>[in]</strong> Material section definition (e.g. cross-sectional data). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21assignNodeCoordinatesEPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement21assignNodeCoordinatesEPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement21assignNodeCoordinatesEPKd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::assignNodeCoordinates__doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4460103d220dc5ebb64560302e34e6fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignNodeCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21assignNodeCoordinatesEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign nodal coordinates to element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[in]</strong> Pointer to array of nodal coordinates. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement18initializeYourselfEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement18initializeYourselfEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement18initializeYourselfEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::initializeYourself"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a2282edea2d656e6629ac24defa75f758"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize element state and internal variables. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement20setInitialConditionsE10StateTypesPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement20setInitialConditionsE10StateTypesPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement20setInitialConditionsE10StateTypesPKd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::setInitialConditions__StateTypes.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ac91dd47a877592e4b07f67ba75e0923b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialConditions</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StateTypes</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement20setInitialConditionsE10StateTypesPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Apply initial conditions to the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[in]</strong> State type to be set. </p></li>
+<li><p><strong>values</strong> – <strong>[in]</strong> Array of initial values. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14computeKernelsEPKdPKdPdPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement14computeKernelsEPKdPKdPdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement14computeKernelsEPKdPKdPdPddd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeKernels__doubleCP.doubleCP.doubleP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a0336830f4974ee06857ae59940f38ea8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeKernels</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal_</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ_</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe_</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ke_</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14computeKernelsEPKdPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Perform element computations (stiffness, residual, etc.). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dof vector. </p></li>
+<li><p><strong>dQ</strong> – <strong>[in]</strong> Incremental dof vector. </p></li>
+<li><p><strong>Pint</strong> – <strong>[out]</strong> Internal force vector. </p></li>
+<li><p><strong>K</strong> – <strong>[out]</strong> Stiffness matrix. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeKernelsExplicitEPKdPKdPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeKernelsExplicit__doubleCP.doubleCP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ae1c864721a595fb40cd56aab763da9e0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeKernelsExplicitEPKdPKdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Perform element computations for explicit time integration. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Default implementation throws an exception. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dof vector. </p></li>
+<li><p><strong>dQ</strong> – <strong>[in]</strong> Incremental dof vector. </p></li>
+<li><p><strong>Pint</strong> – <strong>[out]</strong> Internal force vector. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeDistributedLoadE20DistributedLoadTypesPdPdiPKdPKddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeDistributedLoadE20DistributedLoadTypesPdPdiPKdPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeDistributedLoadE20DistributedLoadTypesPdPdiPKdPKddd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeDistributedLoad__DistributedLoadTypes.doubleP.doubleP.i.doubleCP.doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4f3e0b109fbb7073ff27f40f47f78990"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoad</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">DistributedLoadTypes</span></span>, <span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">int</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">double</span></span>, <span class="kt"><span class="pre">double</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22computeDistributedLoadE20DistributedLoadTypesPdPdiPKdPKddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute contribution from distributed surface loads. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loadType</strong> – <strong>[in]</strong> Type of load. </p></li>
+<li><p><strong>Pext</strong> – <strong>[out]</strong> External load vector. </p></li>
+<li><p><strong>K</strong> – <strong>[out]</strong> Stiffness matrix. </p></li>
+<li><p><strong>elementFace</strong> – <strong>[in]</strong> Index of element face. </p></li>
+<li><p><strong>load</strong> – <strong>[in]</strong> Applied load values. </p></li>
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dof vector. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Current time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time step size. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement16computeBodyForceEPdPdPKdPKddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement16computeBodyForceEPdPdPKdPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement16computeBodyForceEPdPdPKdPKddd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeBodyForce__doubleP.doubleP.doubleCP.doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a6c3db04e16a194e0450095102a23b994"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyForce</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span>, <span class="kt"><span class="pre">double</span></span>, <span class="kt"><span class="pre">double</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement16computeBodyForceEPdPdPKdPKddd" title="Link to this definition"></a><br /></dt>
+<dd><p>the bond has no volume: no body forces </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement20computeLumpedInertiaEPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement20computeLumpedInertiaEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement20computeLumpedInertiaEPd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeLumpedInertia__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a337910068c28797ad54aa4fa8f5e304f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement20computeLumpedInertiaEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>the bond has no mass </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement24computeConsistentInertiaEPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement24computeConsistentInertiaEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement24computeConsistentInertiaEPd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeConsistentInertia__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a79e3dfd53dfa92a19ac1869fc84d96f6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeConsistentInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement24computeConsistentInertiaEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>the bond has no mass </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21computeInternalEnergyERd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement21computeInternalEnergyERd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement21computeInternalEnergyERd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::computeInternalEnergy__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a614d12ea43f07c63b09caf094168fcc9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeInternalEnergy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">internalEnergy</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement21computeInternalEnergyERd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute internal energy of the element. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Default implementation throws an exception. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>internalEnergy</strong> – <strong>[out]</strong> Computed internal energy. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1abdb1e32cda0dc5ebc2d42dd450c9ff70"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Access element state at a quadrature point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
+<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of quadrature point. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>View into state variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4e87f48f8b1f53e552f198eb0e6239fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get coordinates of element center. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector of coordinates at element centroid. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement32getCoordinatesAtQuadraturePointsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement32getCoordinatesAtQuadraturePointsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement32getCoordinatesAtQuadraturePointsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getCoordinatesAtQuadraturePoints"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a47fe541e0bf2bc112e5e33ca3e430015"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement32getCoordinatesAtQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get coordinates of quadrature points. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>2D vector of coordinates at quadrature points. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement27getNumberOfQuadraturePointsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement27getNumberOfQuadraturePointsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement27getNumberOfQuadraturePointsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getNumberOfQuadraturePoints"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4bec1d673dc48a1264127aa45dd216d4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement27getNumberOfQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of quadrature points used by the element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement7elLabelE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement7elLabelE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement7elLabelE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::elLabel__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ada25381600eeda643b4af3bd8eeae22b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elLabel</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement7elLabelE" title="Link to this definition"></a><br /></dt>
+<dd><p>Element label. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17elementPropertiesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17elementPropertiesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17elementPropertiesE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::elementProperties__Eigen::Map:Eigen::VectorXdC:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1acfd82912497820282a8bd559ae567ccf"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elementProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17elementPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Element properties: [perimeter, eta start, eta end, (number of integration points)]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14barCoordinatesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement14barCoordinatesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement14barCoordinatesE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::barCoordinates__Eigen::Map:Eigen::Matrix:double.nDim.nBarNodes:C:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a580919888d952b27b14f8d828e5ba463"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nBarNodes"><span class="n"><span class="pre">nBarNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">barCoordinates</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14barCoordinatesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference coordinates of the reinforcement nodes, [dim, node]. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12hostGeometryE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement12hostGeometryE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement12hostGeometryE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::hostGeometry__HostGeometry"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ac612acd1cd0becdc31b1265a58bb7da8"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12HostGeometryE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::HostGeometry"><span class="n"><span class="pre">HostGeometry</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hostGeometry</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12hostGeometryE" title="Link to this definition"></a><br /></dt>
+<dd><p>The geometry of the host element. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement3qpsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement3qpsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement3qpsE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::qps__std::vector:QuadraturePoint:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ad7b55b6dc25eaefa3b11a6febef05293"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePointE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">qps</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement3qpsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the integration points </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement32defaultNumberOfIntegrationPointsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement32defaultNumberOfIntegrationPointsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement32defaultNumberOfIntegrationPointsEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::defaultNumberOfIntegrationPointsCE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1acde0cabfc42fb6a1a4ed92e581f9fd6e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">defaultNumberOfIntegrationPoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement32defaultNumberOfIntegrationPointsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>2 Gauss-Lobatto points for linear bars, 3 for quadratic bars (exact for the stiffness of a linear law) </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12gaussLobattoEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement12gaussLobattoEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement12gaussLobattoEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::gaussLobatto__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ab4e5f76fdc8d42757a95f4a1a432defe"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements10QuadratureE" title="Marmot::Discretizations::Elements::Quadrature"><span class="n"><span class="pre">Quadrature</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements10Quadrature19QuadraturePointInfoE" title="Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo"><span class="n"><span class="pre">QuadraturePointInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">gaussLobatto</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12gaussLobattoEi" title="Link to this definition"></a><br /></dt>
+<dd><p>The Gauss-Lobatto rule along the bar part, from the quadrature catalogue. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – number of points, 2 to 5 (degree of exactness 2n - 3) </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for other numbers of points </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>points and weights on [-1, 1] </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4barNEd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement4barNEd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement4barNEd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::barN__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a2c075e7888afd767ecd1d57fef52ab8b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::BarN"><span class="n"><span class="pre">BarN</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">barN</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4barNEd" title="Link to this definition"></a><br /></dt>
+<dd><p>shape functions of the bar element at the bar parent coordinate <code class="docutils literal notranslate"><span class="pre">eta</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9barDNdEtaEd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement9barDNdEtaEd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement9barDNdEtaEd"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::barDNdEta__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a909bb788f106474ebf9ab679d7fe4552"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement4BarNE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::BarN"><span class="n"><span class="pre">BarN</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">barDNdEta</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9barDNdEtaEd" title="Link to this definition"></a><br /></dt>
+<dd><p>derivatives of the bar shape functions with respect to <code class="docutils literal notranslate"><span class="pre">eta</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement10localFrameERK9VectorDim">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement10localFrameERK9VectorDim"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement10localFrameERK9VectorDim"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::localFrame__VectorDimCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a3044ad93e839cd5ff7b4941c7847bc69"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::MatrixDim"><span class="n"><span class="pre">MatrixDim</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">localFrame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9VectorDimE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::VectorDim"><span class="n"><span class="pre">VectorDim</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement10localFrameERK9VectorDim" title="Link to this definition"></a><br /></dt>
+<dd><p>Local frame of the unit tangent t, columns [t, n1, (n2)]. </p>
+<p>In 2D, n1 is t rotated by +90 degrees. In 3D, the normals are an arbitrary right-handed pair, built from the global axis least aligned with t: they may differ between integration points, so the normal components of slip and bond stress must not be compared between points, and bond-slip laws must be isotropic in the normal plane. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6nNodesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement6nNodesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement6nNodesE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::nNodes__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a524a36d9e2c14846778bd7437460a55c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNodes</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nBarNodes"><span class="n"><span class="pre">nBarNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nHostNodes"><span class="n"><span class="pre">nHostNodes</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6nNodesE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of nodes: the bar nodes, followed by the host nodes </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::sizeLoadVector__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1aca69e1b8efc6b3770114b397551da629"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sizeLoadVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6nNodesE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement14sizeLoadVectorE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of element dofs (displacements only) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::insideTolerance__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ac00c1fe39e5411bd6be0bd9792cda60e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insideTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE" title="Link to this definition"></a><br /></dt>
+<dd><p>The tolerance of “inside the host element” in parent coordinates: looser than the one EdelweissFE uses to place the ends of the bond parts on host boundaries, so that such points are always accepted </p>
+</dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManagerE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManagerE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManagerE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QPStateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Utilities21StateVarVectorManagerE" title="Marmot::Utilities::StateVarVectorManager"><span class="n"><span class="pre">StateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd><p>The state of an integration point. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17QPStateVarManagerEPdi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17QPStateVarManagerEPdi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17QPStateVarManagerEPdi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::QPStateVarManager__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a9a4dcbcafbf834156ee9cc1ba9690c14"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QPStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17QPStateVarManagerEPdi" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager4slipE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager4slipE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager4slipE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::slip__Eigen::Map:Eigen::Vector3d:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1afde030810bfc3ab198ca77605d2e60ab"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">slip</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager4slipE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager10bondStressE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager10bondStressE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager10bondStressE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::bondStress__Eigen::Map:Eigen::Vector3d:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a7399e1e7cf68d5a5c6f2635a46438b3e"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bondStress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager10bondStressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager13elasticEnergyE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager13elasticEnergyE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager13elasticEnergyE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::elasticEnergy__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1aa63ea015114bc9035b0a1d0b521ec9af"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">elasticEnergy</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager13elasticEnergyE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager11dissipationE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager11dissipationE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager11dissipationE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::dissipation__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a129eb990e386c86651543d4e3c6d1d97"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">dissipation</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager11dissipationE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17materialStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17materialStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17materialStateVarsE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::materialStateVars__Eigen::Map:Eigen::VectorXd:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a11c07f61d27f3aa318f84604b4b15691"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager17materialStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a885f85faa08229c46417e4f064250ea7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVarsQuadraturePointOnly</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-attributes">Private Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager6layoutE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager6layoutE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager6layoutE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager::layout__autoC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QPStateVarManager_1a89a5920b5682103e4f810ca81f73d0b1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManager6layoutE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePointE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePointE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePointE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadraturePoint</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePointE" title="Link to this definition"></a><br /></dt>
+<dd><p>An integration point along the bar. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint3etaE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint3etaE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint3etaE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::eta__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a3067573955a75df05ca116e4549013af"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eta</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint3etaE" title="Link to this definition"></a><br /></dt>
+<dd><p>parent coordinate of the bar element </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6weightE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6weightE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6weightE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::weight__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1abf9478a5fb9fb030e5f80e1c28d4a491"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weight</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6weightE" title="Link to this definition"></a><br /></dt>
+<dd><p>weight of the Gauss-Lobatto rule on [-1, 1] </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6hostXiE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6hostXiE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6hostXiE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::hostXi__Eigen::Matrix:double.nDim.1:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a59ae1125a37fc84e1a7cbf04d8cbd414"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations8Elements19EmbeddedBondElementE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hostXi</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint6hostXiE" title="Link to this definition"></a><br /></dt>
+<dd><p>parent coordinates in the host element </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1LE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1LE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1LE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::L__LSized"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a9311656b9383929a141f75c396b2cd98"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement6LSizedE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::LSized"><span class="n"><span class="pre">LSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">L</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1LE" title="Link to this definition"></a><br /></dt>
+<dd><p>interpolation operator of the relative displacement </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1RE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1RE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1RE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::R__MatrixDim"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1abb329ef9070d7353540542f9da1bff56"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement9MatrixDimE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::MatrixDim"><span class="n"><span class="pre">MatrixDim</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint1RE" title="Link to this definition"></a><br /></dt>
+<dd><p>local frame [t, n1, (n2)] as columns </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16perimeterTimesDSE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16perimeterTimesDSE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16perimeterTimesDSE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::perimeterTimesDS__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a16f56c1ce7037452db194a9b5d8455a4"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">perimeterTimesDS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16perimeterTimesDSE" title="Link to this definition"></a><br /></dt>
+<dd><p>perimeter x reference length of the point (integration weight) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16managedStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16managedStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16managedStateVarsE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::managedStateVars__std::unique_ptr:QPStateVarManager:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a4c2198be17207b48734946be79ec9a91"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement17QPStateVarManagerE" title="Marmot::Discretizations::Elements::EmbeddedBondElement::QPStateVarManager"><span class="n"><span class="pre">QPStateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managedStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint16managedStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint11bondSlipLawE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint11bondSlipLawE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint11bondSlipLawE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::QuadraturePoint::bondSlipLaw__std::unique_ptr:Marmot::Materials::BondSlipLaw:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1_1QuadraturePoint_1a6eaefea16a3f43b97653bc909b5a04c0"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials11BondSlipLawE" title="Marmot::Materials::BondSlipLaw"><span class="n"><span class="pre">BondSlipLaw</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bondSlipLaw</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15QuadraturePoint11bondSlipLawE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="trusselement.html" class="btn btn-neutral float-left" title="Truss Element" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="explicitdynamicsdevices.html" class="btn btn-neutral float-right" title="Explicit dynamics devices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

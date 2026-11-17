@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_registry_1_1_bond_slip_law_factory" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Registry::BondSlipLawFactory</compoundname>
+    <includes refid="_marmot_bond_slip_law_factory_8h" local="no">MarmotBondSlipLawFactory.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a64e7bc35fdc330dd748054b6e2e06872" prot="public" static="no">
+        <type>std::function&lt; <ref refid="class_marmot_1_1_materials_1_1_bond_slip_law" kindref="compound">Marmot::Materials::BondSlipLaw</ref> *(const double *materialProperties, int nMaterialProperties, int materialNumber) &gt;</type>
+        <definition>using Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunction = std::function&lt; Marmot::Materials::BondSlipLaw*( const double* materialProperties,
+                                                                                      int nMaterialProperties,
+                                                                                      int materialNumber ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>bondSlipLawFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Function signature for the factory functions registered in the map. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a986f9c393ea956167d11fa48a865c36e" prot="private" static="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a64e7bc35fdc330dd748054b6e2e06872" kindref="member">bondSlipLawFactoryFunction</ref> &gt;</type>
+        <definition>using Marmot::Registry::BondSlipLawFactory::BondSlipLawFactoryMap = std::unordered_map&lt; std::string, bondSlipLawFactoryFunction &gt;</definition>
+        <argsstring></argsstring>
+        <name>BondSlipLawFactoryMap</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::BondSlipLawFactoryMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="82" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a195c56e596fe24d6b78705cec647c790" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Registry::BondSlipLawFactory::BondSlipLawFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>BondSlipLawFactory</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::BondSlipLawFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="48" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a758de44260a2ad72e4ee01a04fc03508" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_materials_1_1_bond_slip_law" kindref="compound">Marmot::Materials::BondSlipLaw</ref> *</type>
+        <definition>static Marmot::Materials::BondSlipLaw * Marmot::Registry::BondSlipLawFactory::createBondSlipLaw</definition>
+        <argsstring>(const std::string &amp;name, const double *materialProperties, int nMaterialProperties, int materialNumber)</argsstring>
+        <name>createBondSlipLaw</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::createBondSlipLaw</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <briefdescription>
+<para>Create a bond-slip law by its name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name of the bond-slip law. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of properties in the array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Identifier for the instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the new bond-slip law. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no bond-slip law is registered under <computeroutput>name</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="59" column="43"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a206716a550aea85f4178b4846d2ecf66" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::BondSlipLawFactory::registerBondSlipLaw</definition>
+        <argsstring>(const std::string &amp;name)</argsstring>
+        <name>registerBondSlipLaw</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::registerBondSlipLaw</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>Register a bond-slip law with an auto-generated factory function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique name under which the bond-slip law is registered. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the registration was successful. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="70" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" bodystart="70" bodyend="79"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a054a1372416eb735c87f83a1f5325c3d" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>BondSlipLawFactoryMap &amp;</type>
+        <definition>static BondSlipLawFactoryMap &amp; Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>bondSlipLawFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::BondSlipLawFactory::bondSlipLawFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="83" column="34"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Factory for bond-slip laws, see <ref refid="class_marmot_1_1_materials_1_1_bond_slip_law" kindref="compound">Marmot::Materials::BondSlipLaw</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Bond-slip laws register themselves by name, and bond elements create them by the name given in the material section. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotBondSlipLawFactory.h" bodystart="41" bodyend="84"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a195c56e596fe24d6b78705cec647c790" prot="public" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>BondSlipLawFactory</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a64e7bc35fdc330dd748054b6e2e06872" prot="public" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>bondSlipLawFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a054a1372416eb735c87f83a1f5325c3d" prot="private" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>bondSlipLawFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a986f9c393ea956167d11fa48a865c36e" prot="private" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>BondSlipLawFactoryMap</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a758de44260a2ad72e4ee01a04fc03508" prot="public" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>createBondSlipLaw</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a206716a550aea85f4178b4846d2ecf66" prot="public" virt="non-virtual"><scope>Marmot::Registry::BondSlipLawFactory</scope><name>registerBondSlipLaw</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

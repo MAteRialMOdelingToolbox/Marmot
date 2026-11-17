@@ -7,6 +7,8 @@
     <innerfile refid="_duvaut_lions_viscosity_8h">DuvautLionsViscosity.h</innerfile>
     <innerfile refid="_haigh_westergaard_8h">HaighWestergaard.h</innerfile>
     <innerfile refid="_hughes_winget_8h">HughesWinget.h</innerfile>
+    <innerfile refid="_marmot_bond_slip_law_8h">MarmotBondSlipLaw.h</innerfile>
+    <innerfile refid="_marmot_bond_slip_law_factory_8h">MarmotBondSlipLawFactory.h</innerfile>
     <innerfile refid="_marmot_elasticity_8h">MarmotElasticity.h</innerfile>
     <innerfile refid="_marmot_geostatic_stress_8h">MarmotGeostaticStress.h</innerfile>
     <innerfile refid="_marmot_interface_material_helper_functions_8h">MarmotInterfaceMaterialHelperFunctions.h</innerfile>

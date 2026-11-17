@@ -206,10 +206,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement8JacobianERK10dNdXiSized"><code class="docutils literal notranslate"><span class="pre">Jacobian()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement4dNdXERK10dNdXiSizedRK13JacobianSized"><code class="docutils literal notranslate"><span class="pre">dNdX()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement1FERK10dNdXiSizedRK16CoordinateVector"><code class="docutils literal notranslate"><span class="pre">F()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement17parentCoordinatesERKN5Eigen6MatrixId4nDimXL1EEEERK7XiSized"><code class="docutils literal notranslate"><span class="pre">parentCoordinates()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement6centerEv"><code class="docutils literal notranslate"><span class="pre">center()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement41characteristicLengthForCriticalTimeStepAtERK7XiSized"><code class="docutils literal notranslate"><span class="pre">characteristicLengthForCriticalTimeStepAt()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement11coordinatesE"><code class="docutils literal notranslate"><span class="pre">coordinates</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv"><code class="docutils literal notranslate"><span class="pre">referenceCentroid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement20isInsideParentDomainERK7XiSizedd"><code class="docutils literal notranslate"><span class="pre">isInsideParentDomain()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement22volumeEquivalentLengthEd"><code class="docutils literal notranslate"><span class="pre">volumeEquivalentLength()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement9voigtSizeE"><code class="docutils literal notranslate"><span class="pre">voigtSize</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement5shapeE"><code class="docutils literal notranslate"><span class="pre">shape</span></code></a></li>
@@ -351,6 +353,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature15quadratureRulesEv"><code class="docutils literal notranslate"><span class="pre">quadratureRules()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature18gaussExactToDegreeEi"><code class="docutils literal notranslate"><span class="pre">gaussExactToDegree()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature24newtonCotesExactToDegreeEi"><code class="docutils literal notranslate"><span class="pre">newtonCotesExactToDegree()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature25gaussLobattoExactToDegreeEi"><code class="docutils literal notranslate"><span class="pre">gaussLobattoExactToDegree()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature19getQuadraturePointsE15ReferenceDomain14QuadratureRule"><code class="docutils literal notranslate"><span class="pre">getQuadraturePoints()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature19getQuadraturePointsE13ElementShapes14QuadratureRule"><code class="docutils literal notranslate"><span class="pre">getQuadraturePoints()</span></code></a></li>
 </ul>
@@ -1978,6 +1981,28 @@ Provides shape functions <code class="docutils literal notranslate"><span class=
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement17parentCoordinatesERKN5Eigen6MatrixId4nDimXL1EEEERK7XiSized">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements15GeometryElement17parentCoordinatesERKN5Eigen6MatrixId4nDimXL1EEEERK7XiSized"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements15GeometryElement17parentCoordinatesERKN5Eigen6MatrixId4nDimX1EEERK7XiSized"></span><span id="Marmot::Discretizations::Elements::GeometryElement::parentCoordinates__Eigen::Matrix:double.nDim.1:CR.XiSizedCRC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a5d464c61a5d066a9d40705a646f66c28"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement7XiSizedE" title="Marmot::Discretizations::Elements::GeometryElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parentCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE" title="Marmot::Discretizations::Elements::GeometryElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement7XiSizedE" title="Marmot::Discretizations::Elements::GeometryElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xiStart</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv" title="Marmot::Discretizations::Elements::GeometryElement::referenceCentroid"><span class="n"><span class="pre">referenceCentroid</span></span></a><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement17parentCoordinatesERKN5Eigen6MatrixId4nDimXL1EEEERK7XiSized" title="Link to this definition"></a><br /></dt>
+<dd><p>The inverse isoparametric mapping: the natural coordinates <span class="math notranslate nohighlight">\(\boldsymbol{\xi}\)</span> of a point <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, <span class="math notranslate nohighlight">\(\sum_a N_a(\boldsymbol{\xi}) \boldsymbol{X}_a = \boldsymbol{X}\)</span>. </p>
+<p>Newton’s method,  <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\xi} = \mathbf{J}^{-1} (\boldsymbol{X} - \sum_a N_a
+\boldsymbol{X}_a)\)</span> with <span class="math notranslate nohighlight">\(\mathbf{J} = \partial \boldsymbol{X} / \partial \boldsymbol{\xi}\)</span>, on coordinates relative to the first node: the round-off of the residual is then about <span class="math notranslate nohighlight">\(\varepsilon h\)</span> (element size <span class="math notranslate nohighlight">\(h\)</span>) instead of <span class="math notranslate nohighlight">\(\varepsilon |\boldsymbol{X}|\)</span>, which for an element far from the origin exceeds any absolute tolerance. It stops when the residual is below <span class="math notranslate nohighlight">\(10^{-12} h\)</span> or the correction below <span class="math notranslate nohighlight">\(10^{-10}\)</span> (dimensionless). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – <strong>[in]</strong> The point. </p></li>
+<li><p><strong>xiStart</strong> – <strong>[in]</strong> The start, e.g., the centroid of the reference domain (inside it; for a convex element the unique solution is reached from there). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the iteration does not converge (e.g., a point far outside of a distorted element). </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The natural coordinates (also for a point outside of the element: see <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a58d8d62d7325ef4556ea2c684da59243"><span class="std std-ref">isInsideParentDomain()</span></a>). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement6centerEv">
 <span id="_CPPv3NK6Marmot15Discretizations8Elements15GeometryElement6centerEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements15GeometryElement6centerEv"></span><span id="Marmot::Discretizations::Elements::GeometryElement::centerC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1acfc5da245990bb15ac1a366f68728965"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE" title="Marmot::Discretizations::Elements::GeometryElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">center</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements15GeometryElement6centerEv" title="Link to this definition"></a><br /></dt>
 <dd><p>The physical coordinates of the element center, the image of the centroid of the reference domain. </p>
@@ -2016,6 +2041,23 @@ Provides shape functions <code class="docutils literal notranslate"><span class=
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv">
 <span id="_CPPv3N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv"></span><span id="Marmot::Discretizations::Elements::GeometryElement::referenceCentroid"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a366b8fbfd584e375f036904751a919ab"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement7XiSizedE" title="Marmot::Discretizations::Elements::GeometryElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">referenceCentroid</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement17referenceCentroidEv" title="Link to this definition"></a><br /></dt>
 <dd><p>The natural coordinates of the centroid of the reference domain: the origin of the cube [-1, 1]^nDim, ( 1 / ( nDim + 1 ), … ) for the unit simplex. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements15GeometryElement20isInsideParentDomainERK7XiSizedd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements15GeometryElement20isInsideParentDomainERK7XiSizedd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements15GeometryElement20isInsideParentDomainERK7XiSizedd"></span><span id="Marmot::Discretizations::Elements::GeometryElement::isInsideParentDomain__XiSizedCR.double"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a58d8d62d7325ef4556ea2c684da59243"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isInsideParentDomain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement7XiSizedE" title="Marmot::Discretizations::Elements::GeometryElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tolerance</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement20isInsideParentDomainERK7XiSizedd" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether natural coordinates lie in the reference domain, with a tolerance: the cube <span class="math notranslate nohighlight">\([-1, 1]^{n}\)</span> or the unit simplex <span class="math notranslate nohighlight">\(\xi_i \geq 0, \sum_i \xi_i \leq 1\)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> – <strong>[in]</strong> Natural coordinates. </p></li>
+<li><p><strong>tolerance</strong> – <strong>[in]</strong> Tolerance in natural coordinates (a point on a face is inside of both neighbours). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether the point is inside. </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
@@ -2712,7 +2754,7 @@ The operator stores the surface displacement gradient in row-major tensor order 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements10Quadrature14QuadratureRule6familyE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements10Quadrature14QuadratureRule6familyE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements10Quadrature14QuadratureRule6familyE"></span><span id="Marmot::Discretizations::Elements::Quadrature::QuadratureRule::family__QuadratureFamily"></span><span class="target" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1ab913c089d817c6f1d8c3755863350af1"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamilyE" title="Marmot::Discretizations::Elements::Quadrature::QuadratureFamily"><span class="n"><span class="pre">QuadratureFamily</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">family</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature14QuadratureRule6familyE" title="Link to this definition"></a><br /></dt>
-<dd><p>Gauss or Newton-Cotes. </p>
+<dd><p>Gauss, Newton-Cotes or Gauss-Lobatto. </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -2742,7 +2784,7 @@ The operator stores the surface displacement gradient in row-major tensor order 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements10Quadrature18QuadratureRuleData6familyE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements10Quadrature18QuadratureRuleData6familyE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements10Quadrature18QuadratureRuleData6familyE"></span><span id="Marmot::Discretizations::Elements::Quadrature::QuadratureRuleData::family__QuadratureFamily"></span><span class="target" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_data_1a2e3d9b8870f89039be1206ac833b0917"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamilyE" title="Marmot::Discretizations::Elements::Quadrature::QuadratureFamily"><span class="n"><span class="pre">QuadratureFamily</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">family</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature18QuadratureRuleData6familyE" title="Link to this definition"></a><br /></dt>
-<dd><p>Gauss or Newton-Cotes. </p>
+<dd><p>Gauss, Newton-Cotes or Gauss-Lobatto. </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -3548,6 +3590,12 @@ The usual estimate <span class="math notranslate nohighlight">\(\Delta t = l / c
 <dd><p>Closed Newton-Cotes rules: the points form an evenly spaced lattice that includes the boundary, the weights are the integrals of the Lagrange polynomials on that lattice. </p>
 </dd></dl>
 
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamily12GaussLobattoE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamily12GaussLobattoE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamily12GaussLobattoE"></span><span class="target" id="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694ba8d79a6cd40b3cc60da789f4c167526b9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GaussLobatto</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature16QuadratureFamily12GaussLobattoE" title="Link to this definition"></a><br /></dt>
+<dd><p>Gauss-Lobatto rules on Line: both end points and the roots of P’_{n-1} in between, positive weights, degree of exactness 2n - 3 for n points. </p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -3562,34 +3610,41 @@ The usual estimate <span class="math notranslate nohighlight">\(\Delta t = l / c
 <thead>
 <tr class="row-odd"><th class="head"><p>Domain  </p></th>
 <th class="head"><p>Gauss: points -&gt; degree  </p></th>
-<th class="head"><p>Newton-Cotes: points -&gt; degree  </p></th>
+<th class="head"><p>Newton-Cotes  </p></th>
+<th class="head"><p>Gauss-Lobatto  </p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Line  </p></td>
 <td><p>1 -&gt; 1, 2 -&gt; 3, 3 -&gt; 5  </p></td>
 <td><p>2 -&gt; 1  </p></td>
+<td><p>2 -&gt; 1, 3 -&gt; 3, 4 -&gt; 5, 5 -&gt; 7  </p></td>
 </tr>
 <tr class="row-odd"><td><p>Quadrilateral  </p></td>
 <td><p>1x1 -&gt; 1, 2x2 -&gt; 3, 3x3 -&gt; 5  </p></td>
 <td><p>2x2 -&gt; 1  </p></td>
+<td><p>-  </p></td>
 </tr>
 <tr class="row-even"><td><p>Hexahedron  </p></td>
-<td><p>1x1x1 -&gt; 1, 2x2x2 -&gt; 3, 3x3x3 -&gt; 5  </p></td>
+<td><p>1 -&gt; 1, 8 -&gt; 3, 27 -&gt; 5  </p></td>
+<td><p>-  </p></td>
 <td><p>-  </p></td>
 </tr>
 <tr class="row-odd"><td><p>Triangle  </p></td>
 <td><p>1 -&gt; 1, 3 -&gt; 2, 7 -&gt; 5  </p></td>
 <td><p>3 -&gt; 1  </p></td>
+<td><p>-  </p></td>
 </tr>
 <tr class="row-even"><td><p>Tetrahedron  </p></td>
 <td><p>1 -&gt; 1, 4 -&gt; 2, 14 -&gt; 5  </p></td>
+<td><p>-  </p></td>
 <td><p>-  </p></td>
 </tr>
 </tbody>
 </table>
 </p>
 <p>The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in corner order (<a class="reference internal" href="#_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037"><span class="std std-ref">ReferenceDomain</span></a>), i.e. the nodes of the linear element in node order. For a linear element N_i(xi_j) = delta_ij, so the rule makes the mass and the interface stiffness diagonal in the nodes (nodal integration). They are used for zero-thickness interface elements with a high penalty stiffness, where Gauss points cause spurious traction oscillations. An element that relies on its points being its nodes must check that itself: on a quadratic element the rule integrates with the corners only, and the shape functions of the other nodes vanish at all points.</p>
+<p>The Gauss-Lobatto rules include both end points of the line and are used along embedded bars, where the bond stress at the ends of a bar part is needed and a stiff bond would oscillate between Gauss points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The catalogue; its entries live for the whole program. </p>
@@ -3618,6 +3673,20 @@ The usual estimate <span class="math notranslate nohighlight">\(\Delta t = l / c
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>degree</strong> – <strong>[in]</strong> Degree of exactness, e.g. 1 for the nodal integration of a linear element, whose nodes are the points of the rule. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The request. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements10Quadrature25gaussLobattoExactToDegreeEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements10Quadrature25gaussLobattoExactToDegreeEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements10Quadrature25gaussLobattoExactToDegreeEi"></span><span id="Marmot::Discretizations::Elements::Quadrature::gaussLobattoExactToDegree__iCE"></span><span class="target" id="_marmot_finite_element_8h_1a8ad0dfe0f6369af4fc3c42f613027e9f"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature14QuadratureRuleE" title="Marmot::Discretizations::Elements::Quadrature::QuadratureRule"><span class="n"><span class="pre">QuadratureRule</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gaussLobattoExactToDegree</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">degree</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements10Quadrature25gaussLobattoExactToDegreeEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Request the Gauss-Lobatto rule with the fewest points that integrates polynomials up to a degree exactly. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>degree</strong> – <strong>[in]</strong> Degree of exactness; the n-point rule has the degree 2n - 3. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The request. </p>
@@ -4816,6 +4885,8 @@ J_0 w\)</span>, without forming the B-operator. </p>
 <dd><div class="docutils container">
 <em>#include “<a class="reference internal" href="#_marmot_finite_element_8h"><span class="std std-ref">Marmot/MarmotFiniteElement.h</span></a>”</em></div>
 <div class="docutils container">
+<em>#include “Marmot/MarmotJournal.h”</em></div>
+<div class="docutils container">
 <em>#include “Marmot/MarmotTypedefs.h”</em></div>
 <div class="docutils container">
 <em>#include “Marmot/MarmotVoigt.h”</em></div>
@@ -4825,30 +4896,35 @@ J_0 w\)</span>, without forming the B-operator. </p>
 <em>#include &lt;iostream&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;map&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;stdexcept&gt;</em></div>
 <p>Include dependency graph for MarmotGeometryElement.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-64b1abc6bed0cba6cbc2caae3085992a5603ffca.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6337f25a6f6e03430c7be66b07a6d95c66ae25ea.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotFiniteElement.h&quot; tooltip=&quot;Marmot/MarmotFiniteElement.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;6&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
-    &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;8&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
-    &quot;9&quot; [label=&quot;map&quot; tooltip=&quot;map&quot;]
+    &quot;7&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
+    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;9&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
+    &quot;10&quot; [label=&quot;map&quot; tooltip=&quot;map&quot;]
     &quot;4&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
     &quot;5&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

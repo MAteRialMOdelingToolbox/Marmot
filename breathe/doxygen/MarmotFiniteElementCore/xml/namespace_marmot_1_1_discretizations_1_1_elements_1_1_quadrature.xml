@@ -29,6 +29,14 @@
 <para>Closed Newton-Cotes rules: the points form an evenly spaced lattice that includes the boundary, the weights are the integrals of the Lagrange polynomials on that lattice. </para>
           </detaileddescription>
         </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694ba8d79a6cd40b3cc60da789f4c167526b9" prot="public">
+          <name>GaussLobatto</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Gauss-Lobatto rules on Line: both end points and the roots of P&apos;_{n-1} in between, positive weights, degree of exactness 2n - 3 for n points. </para>
+          </detaileddescription>
+        </enumvalue>
         <briefdescription>
 <para>Family of a quadrature rule. </para>
         </briefdescription>
@@ -36,7 +44,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="757" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="757" bodyend="762"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="757" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="757" bodyend="764"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -51,46 +59,53 @@
         </briefdescription>
         <detaileddescription>
 <para>Within each pair of domain and family the rules are sorted by increasing number of points and degree, so the first rule that reaches a requested degree is the cheapest. A new rule is added here, at its place in that order; the lookup <ref refid="_marmot_finite_element_8h_1a19945e9a4ca3fe5cdd84aa2ce56af67f" kindref="member">getQuadraturePoints()</ref> needs no change.</para>
-<para><table rows="6" cols="3"><row>
+<para><table rows="6" cols="4"><row>
 <entry thead="yes"><para>Domain  </para>
 </entry><entry thead="yes"><para>Gauss: points -&gt; degree  </para>
-</entry><entry thead="yes"><para>Newton-Cotes: points -&gt; degree  </para>
+</entry><entry thead="yes"><para>Newton-Cotes  </para>
+</entry><entry thead="yes"><para>Gauss-Lobatto  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>Line  </para>
 </entry><entry thead="no"><para>1 -&gt; 1, 2 -&gt; 3, 3 -&gt; 5  </para>
 </entry><entry thead="no"><para>2 -&gt; 1  </para>
+</entry><entry thead="no"><para>2 -&gt; 1, 3 -&gt; 3, 4 -&gt; 5, 5 -&gt; 7  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>Quadrilateral  </para>
 </entry><entry thead="no"><para>1x1 -&gt; 1, 2x2 -&gt; 3, 3x3 -&gt; 5  </para>
 </entry><entry thead="no"><para>2x2 -&gt; 1  </para>
+</entry><entry thead="no"><para>-  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>Hexahedron  </para>
-</entry><entry thead="no"><para>1x1x1 -&gt; 1, 2x2x2 -&gt; 3, 3x3x3 -&gt; 5  </para>
+</entry><entry thead="no"><para>1 -&gt; 1, 8 -&gt; 3, 27 -&gt; 5  </para>
+</entry><entry thead="no"><para>-  </para>
 </entry><entry thead="no"><para>-  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>Triangle  </para>
 </entry><entry thead="no"><para>1 -&gt; 1, 3 -&gt; 2, 7 -&gt; 5  </para>
 </entry><entry thead="no"><para>3 -&gt; 1  </para>
+</entry><entry thead="no"><para>-  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>Tetrahedron  </para>
 </entry><entry thead="no"><para>1 -&gt; 1, 4 -&gt; 2, 14 -&gt; 5  </para>
 </entry><entry thead="no"><para>-  </para>
+</entry><entry thead="no"><para>-  </para>
 </entry></row>
 </table>
 </para>
 <para>The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in corner order (<ref refid="_marmot_finite_element_8h_1a86a49e202b86c13d6f37c65f1d870037" kindref="member">ReferenceDomain</ref>), i.e. the nodes of the linear element in node order. For a linear element N_i(xi_j) = delta_ij, so the rule makes the mass and the interface stiffness diagonal in the nodes (nodal integration). They are used for zero-thickness interface elements with a high penalty stiffness, where Gauss points cause spurious traction oscillations. An element that relies on its points being its nodes must check that itself: on a quadratic element the rule integrates with the corners only, and the shape functions of the other nodes vanish at all points.</para>
+<para>The Gauss-Lobatto rules include both end points of the line and are used along embedded bars, where the bond stress at the ends of a bar part is needed and a stiff bond would oscillate between Gauss points.</para>
 <para><simplesect kind="return"><para>The catalogue; its entries live for the whole program. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="805" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="805" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="810" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="810" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
@@ -121,7 +136,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="830" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="830" bodyend="833"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="835" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="835" bodyend="838"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
@@ -152,7 +167,38 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="842" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="842" bodyend="845"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="847" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="847" bodyend="850"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a8ad0dfe0f6369af4fc3c42f613027e9f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
+        <definition>QuadratureRule Marmot::Discretizations::Elements::Quadrature::gaussLobattoExactToDegree</definition>
+        <argsstring>(int degree)</argsstring>
+        <name>gaussLobattoExactToDegree</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::gaussLobattoExactToDegree</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>degree</declname>
+        </param>
+        <briefdescription>
+<para>Request the Gauss-Lobatto rule with the fewest points that integrates polynomials up to a degree exactly. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">degree</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Degree of exactness; the n-point rule has the degree 2n - 3. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The request. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="857" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="857" bodyend="860"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a19945e9a4ca3fe5cdd84aa2ce56af67f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt; &amp;</type>
@@ -204,7 +250,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="856" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="856" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="871" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="871" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a2e98afe11b4aaf32e9ca67484403d975" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt; &amp;</type>
@@ -256,7 +302,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="866" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="866" bodyend="869"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="881" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="881" bodyend="884"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
