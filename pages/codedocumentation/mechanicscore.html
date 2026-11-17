@@ -219,6 +219,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot18ContinuumMechanics10Algorithms12HughesWinget4dEpsE"><code class="docutils literal notranslate"><span class="pre">dEps</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::HypoElasticEnergyTangentProvider</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev"><code class="docutils literal notranslate"><span class="pre">~HypoElasticEnergyTangentProvider()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE"><code class="docutils literal notranslate"><span class="pre">computeStressWithEnergyTangents()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot9Materials30MaterialPointSolverHypoElastic9IncrementE"><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialPointSolverHypoElastic::Increment</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials30MaterialPointSolverHypoElastic9Increment15strainIncrementE"><code class="docutils literal notranslate"><span class="pre">strainIncrement</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot9Materials30MaterialPointSolverHypoElastic9Increment15stressIncrementE"><code class="docutils literal notranslate"><span class="pre">stressIncrement</span></code></a></li>
@@ -1981,6 +1986,41 @@ The slip increment and the time increment are passed for rate-dependent laws; ra
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics10Algorithms12HughesWinget4dEpsE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics10Algorithms12HughesWinget4dEpsE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics10Algorithms12HughesWinget4dEpsE"></span><span id="Marmot::ContinuumMechanics::Algorithms::HughesWinget::dEps__Marmot::Math::Vector6d"></span><span class="target" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af563084359d01bc8a203b85c8795029e"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dEps</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics10Algorithms12HughesWinget4dEpsE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE">
+<span id="_CPPv3N6Marmot9Materials32HypoElasticEnergyTangentProviderE"></span><span id="_CPPv2N6Marmot9Materials32HypoElasticEnergyTangentProviderE"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider"></span><span class="target" id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HypoElasticEnergyTangentProvider</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_material_hypo_elastic_energy_tangents_8h"><span class="std std-ref">MarmotMaterialHypoElasticEnergyTangents.h</span></a>&gt;</em></div>
+<p>Optional capability of a <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_hypo_elastic"><span class="std std-ref">MaterialHypoElastic</span></a>: a stress update that also yields the energy tangents. </p>
+<p>A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment by inheriting from this class next to <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_hypo_elastic"><span class="std std-ref">MaterialHypoElastic</span></a>. Elements find the capability with <code class="docutils literal notranslate"><span class="pre">dynamic_cast&lt;</span> <span class="pre">const</span> <span class="pre">HypoElasticEnergyTangentProvider*</span> <span class="pre">&gt;(</span> <span class="pre">material</span> <span class="pre">)</span></code> and call this variant instead of <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e"><span class="std std-ref">MaterialHypoElastic::computeStress</span></a> only when they assemble energy gradients, e.g., for dissipation based arc length control. The standard material interface is not affected. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev">
+<span id="_CPPv3N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev"></span><span id="_CPPv2N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider::~HypoElasticEnergyTangentProvider"></span><span class="target" id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1adef98e0d3fb382925b565b751726412d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~HypoElasticEnergyTangentProvider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE">
+<span id="_CPPv3NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE"></span><span id="_CPPv2NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider::computeStressWithEnergyTangents__MaterialHypoElastic::state3DR.Marmot::Math::Matrix6dR.Marmot::Math::Vector6dCR.MaterialHypoElastic::timeInfoCR.Marmot::Math::Vector6dR.Marmot::Math::Vector6dRC"></span><span class="target" id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1ab1212a26727ada8d57293f448171df33"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressWithEnergyTangents</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials19MaterialHypoElastic7state3DE" title="Marmot::Materials::MaterialHypoElastic::state3D"><span class="n"><span class="pre">state3D</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStress_dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials19MaterialHypoElastic8timeInfoE" title="Marmot::Materials::MaterialHypoElastic::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span>, <a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dElasticEnergyDensity_dStrain</span></span>, <a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dDissipation_dStrain</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e"><span class="std std-ref">MaterialHypoElastic::computeStress</span></a>, which also yields the energy tangents of the update. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> Stress, energies and state variables, as for <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e"><span class="std std-ref">MaterialHypoElastic::computeStress</span></a>. </p></li>
+<li><p><strong>dStress_dStrain</strong> – <strong>[out]</strong> Algorithmic tangent. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Linearized strain increment. </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Time and time increment. </p></li>
+<li><p><strong>dElasticEnergyDensity_dStrain</strong> – <strong>[out]</strong> Derivative of the updated elastic energy density wrt the strain increment (Voigt, engineering shear strains). </p></li>
+<li><p><strong>dDissipation_dStrain</strong> – <strong>[out]</strong> Derivative of the updated dissipation wrt the strain increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -8479,22 +8519,24 @@ The transformation convention used is:  <span class="math notranslate nohighligh
 </figure>
 <p>This graph shows which files directly or indirectly include MarmotMaterialHypoElastic.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-188df01186d5b6c4d54d3e4ba53b248ce6cfd7db.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-b16c82a8c4b50119863b5367b71973814951947c.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;2&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;3&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticAD.h&quot;]
-    &quot;4&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticFactory.h&quot;]
-    &quot;5&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h&quot;]
-    &quot;6&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h&quot;]
+    &quot;4&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h&quot;]
+    &quot;5&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticFactory.h&quot;]
+    &quot;6&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h&quot;]
+    &quot;7&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=back tooltip=&quot;include&quot;]
-    &quot;5&quot; -&gt; &quot;6&quot; [dir=back tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=back tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;7&quot; [dir=back tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -8526,6 +8568,43 @@ The transformation convention used is:  <span class="math notranslate nohighligh
     &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_material_hypo_elastic_energy_tangents_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotMaterialHypoElasticEnergyTangents.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “<a class="reference internal" href="#_marmot_material_hypo_elastic_8h"><span class="std std-ref">Marmot/MarmotMaterialHypoElastic.h</span></a>”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotPortability.h”</em></div>
+<div class="docutils container">
+<em>#include “Marmot/MarmotTypedefs.h”</em></div>
+<p>Include dependency graph for MarmotMaterialHypoElasticEnergyTangents.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fde83bc924a12440f84bca890ddd8c2a79c6499d.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot/MarmotPortability.h&quot; tooltip=&quot;Marmot/MarmotPortability.h&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;6&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

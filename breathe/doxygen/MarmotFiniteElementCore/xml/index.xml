@@ -134,6 +134,10 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" kind="function"><name>getCoordinatesAtQuadraturePoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" kind="function"><name>getNumberOfQuadraturePoints</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider" kind="class"><name>Marmot::Discretizations::Elements::EnergyGradientProvider</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1ab06d58c70eae5221c4b2c0bcc16d784c" kind="function"><name>~EnergyGradientProvider</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1a3cc110104d988ee3cf71dc75652c573f" kind="function"><name>assignEnergyGradientOutput</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element" kind="class"><name>Marmot::Discretizations::Elements::GeometryElement</name>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" kind="typedef"><name>XiSized</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1af6db4302d18e995c1d332e65a634d0eb" kind="typedef"><name>CoordinateVector</name></member>
@@ -451,6 +455,8 @@
   <compound refid="_marmot_element_factory_8h" kind="file"><name>MarmotElementFactory.h</name>
   </compound>
   <compound refid="_marmot_element_property_8h" kind="file"><name>MarmotElementProperty.h</name>
+  </compound>
+  <compound refid="_marmot_energy_gradient_provider_8h" kind="file"><name>MarmotEnergyGradientProvider.h</name>
   </compound>
   <compound refid="_marmot_enhanced_assumed_strain_8h" kind="file"><name>MarmotEnhancedAssumedStrain.h</name>
   </compound>

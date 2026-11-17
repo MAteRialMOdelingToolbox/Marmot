@@ -5,6 +5,7 @@
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element" prot="public">Marmot::Discretizations::Elements::BoundaryElement</innerclass>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" prot="public">Marmot::Discretizations::Elements::Element</innerclass>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper" prot="public">Marmot::Discretizations::Elements::ElementSpatialWrapper</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider" prot="public">Marmot::Discretizations::Elements::EnergyGradientProvider</innerclass>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element" prot="public">Marmot::Discretizations::Elements::GeometryElement</innerclass>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element" prot="public">Marmot::Discretizations::Elements::GeometryInterfaceElement</innerclass>
     <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity">Marmot::Discretizations::Elements::BulkViscosity</innernamespace>

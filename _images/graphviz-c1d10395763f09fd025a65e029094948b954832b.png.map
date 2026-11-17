@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement&lt; nDim, nNodes, nNonlocalVariables, nNonLocalNodes &gt;::QuadraturePoint" alt="" coords="202,5,1806,53"/>
+<area shape="rect" id="node2" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;" alt="" coords="5,101,966,149"/>
+<area shape="poly" id="edge2" title="usage" alt="" coords="877,54,630,101,629,95,872,54"/>
+<area shape="rect" id="node3" title="std::conditional_t&lt; nonLocalSharesShapeFunctions, NoNonLocalShapeFunctions, NonLocalShapeFunctions &gt;" alt="" coords="990,101,2058,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="1134,51,1383,98,1377,98,1134,57"/>
+</map>

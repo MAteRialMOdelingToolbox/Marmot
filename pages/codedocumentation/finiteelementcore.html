@@ -184,6 +184,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements21ElementSpatialWrapper20referenceCoordinatesE"><code class="docutils literal notranslate"><span class="pre">referenceCoordinates</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::EnergyGradientProvider</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev"><code class="docutils literal notranslate"><span class="pre">~EnergyGradientProvider()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd"><code class="docutils literal notranslate"><span class="pre">assignEnergyGradientOutput()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::GeometryElement</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement7XiSizedE"><code class="docutils literal notranslate"><span class="pre">XiSized</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements15GeometryElement16CoordinateVectorE"><code class="docutils literal notranslate"><span class="pre">CoordinateVector</span></code></a></li>
@@ -1808,6 +1813,39 @@ The coefficient of each field’s FIRST time derivative: zero on the displacemen
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements21ElementSpatialWrapper20referenceCoordinatesE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements21ElementSpatialWrapper20referenceCoordinatesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements21ElementSpatialWrapper20referenceCoordinatesE"></span><span id="Marmot::Discretizations::Elements::ElementSpatialWrapper::referenceCoordinates__Eigen::VectorXd"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a75b986c4867eb4088ca25f9ff203a05d"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">referenceCoordinates</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements21ElementSpatialWrapper20referenceCoordinatesE" title="Link to this definition"></a><br /></dt>
 <dd><p>Ambient-space coordinates of node 0, needed to recover the translation (T alone only encodes the rotation) when mapping a child-space point back into ambient space. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProviderE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProviderE"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EnergyGradientProvider</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_energy_gradient_provider_8h"><span class="std std-ref">MarmotEnergyGradientProvider.h</span></a>&gt;</em></div>
+<p>Optional capability of an <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_elements_1_1_element"><span class="std std-ref">Element</span></a>: the gradients of its elastic energy and dissipation wrt its dofs. </p>
+<p>An element provides the gradients by inheriting from this class next to <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_elements_1_1_element"><span class="std std-ref">Element</span></a>. Frameworks find the capability with <code class="docutils literal notranslate"><span class="pre">dynamic_cast&lt;</span> <span class="pre">EnergyGradientProvider*</span> <span class="pre">&gt;(</span> <span class="pre">element</span> <span class="pre">)</span></code>, e.g., for dissipation based arc length control, and assign the output arrays once. The element then writes the gradients in every computeKernels() call, for the state of that call, consistent with its algorithmic update; computeKernelsExplicit() does not write them. Elements without assigned outputs evaluate their kernels as before, and the standard element interface is not affected. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider::~EnergyGradientProvider"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1ab06d58c70eae5221c4b2c0bcc16d784c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~EnergyGradientProvider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider::assignEnergyGradientOutput__doubleP.doubleP"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1a3cc110104d988ee3cf71dc75652c573f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignEnergyGradientOutput</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dElasticEnergy_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dDissipation_dQ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the arrays the element writes its energy gradients to in every computeKernels() call. </p>
+<p>
+Call it after the material section is assigned. It throws std::invalid_argument if the section or the material cannot provide the gradients, so unsupported setups are rejected before the analysis. The arrays must outlive the assignment. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dElasticEnergy_dQ</strong> – Gradient of the elastic energy, of size <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a049378a4baa4433392a7576d7ab4c7f6"><span class="std std-ref">Element::getNDofPerElement()</span></a>, in the element’s dof order; nullptr, together with <code class="docutils literal notranslate"><span class="pre">dDissipation_dQ</span></code>, stops the output. </p></li>
+<li><p><strong>dDissipation_dQ</strong> – Gradient of the dissipation, of the same size and order.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -4773,6 +4811,25 @@ J_0 w\)</span>, without forming the B-operator. </p>
     &quot;2&quot; -&gt; &quot;4&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=back tooltip=&quot;include&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+</dd></dl>
+
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="_marmot_energy_gradient_provider_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotEnergyGradientProvider.h</span></span></dt>
+<dd><div class="docutils container">
+<em>#include “Marmot/MarmotPortability.h”</em></div>
+<p>Include dependency graph for MarmotEnergyGradientProvider.h:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ea0104acb38625e678e30cc937a4c3a0d3fc041c.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotPortability.h&quot; tooltip=&quot;Marmot/MarmotPortability.h&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

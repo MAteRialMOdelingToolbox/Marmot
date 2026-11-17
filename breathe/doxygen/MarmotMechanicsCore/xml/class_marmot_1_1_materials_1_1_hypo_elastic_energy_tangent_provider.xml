@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::HypoElasticEnergyTangentProvider</compoundname>
+    <includes refid="_marmot_material_hypo_elastic_energy_tangents_8h" local="no">MarmotMaterialHypoElasticEnergyTangents.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1adef98e0d3fb382925b565b751726412d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::HypoElasticEnergyTangentProvider::~HypoElasticEnergyTangentProvider</definition>
+        <argsstring>()=default</argsstring>
+        <name>~HypoElasticEnergyTangentProvider</name>
+        <qualifiedname>Marmot::Materials::HypoElasticEnergyTangentProvider::~HypoElasticEnergyTangentProvider</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h" line="44" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1ab1212a26727ada8d57293f448171df33" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::HypoElasticEnergyTangentProvider::computeStressWithEnergyTangents</definition>
+        <argsstring>(MaterialHypoElastic::state3D &amp;state, Marmot::Math::Matrix6d &amp;dStress_dStrain, const Marmot::Math::Vector6d &amp;dStrain, const MaterialHypoElastic::timeInfo &amp;timeInfo, Marmot::Math::Vector6d &amp;dElasticEnergyDensity_dStrain, Marmot::Math::Vector6d &amp;dDissipation_dStrain) const =0</argsstring>
+        <name>computeStressWithEnergyTangents</name>
+        <qualifiedname>Marmot::Materials::HypoElasticEnergyTangentProvider::computeStressWithEnergyTangents</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d" kindref="compound">MaterialHypoElastic::state3D</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Matrix6d &amp;</type>
+          <declname>dStress_dStrain</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info" kindref="compound">MaterialHypoElastic::timeInfo</ref> &amp;</type>
+          <declname>timeInfo</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Vector6d &amp;</type>
+          <declname>dElasticEnergyDensity_dStrain</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Vector6d &amp;</type>
+          <declname>dDissipation_dStrain</declname>
+        </param>
+        <briefdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">MaterialHypoElastic::computeStress</ref>, which also yields the energy tangents of the update. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress, energies and state variables, as for <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">MaterialHypoElastic::computeStress</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dStress_dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic tangent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Linearized strain increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeInfo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dElasticEnergyDensity_dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivative of the updated elastic energy density wrt the strain increment (Voigt, engineering shear strains). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dDissipation_dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivative of the updated dissipation wrt the strain increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h" line="56" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Optional capability of a <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic" kindref="compound">MaterialHypoElastic</ref>: a stress update that also yields the energy tangents. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment by inheriting from this class next to <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic" kindref="compound">MaterialHypoElastic</ref>. Elements find the capability with <computeroutput>dynamic_cast&lt; const HypoElasticEnergyTangentProvider* &gt;( material )</computeroutput> and call this variant instead of <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">MaterialHypoElastic::computeStress</ref> only when they assemble energy gradients, e.g., for dissipation based arc length control. The standard material interface is not affected. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElasticEnergyTangents.h" bodystart="41" bodyend="62"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1ab1212a26727ada8d57293f448171df33" prot="public" virt="pure-virtual"><scope>Marmot::Materials::HypoElasticEnergyTangentProvider</scope><name>computeStressWithEnergyTangents</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1adef98e0d3fb382925b565b751726412d" prot="public" virt="virtual"><scope>Marmot::Materials::HypoElasticEnergyTangentProvider</scope><name>~HypoElasticEnergyTangentProvider</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

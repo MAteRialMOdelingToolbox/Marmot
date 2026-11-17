@@ -29,15 +29,17 @@
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
       </node>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</label>
         <link refid="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="12" relation="include">
-        </childnode>
         <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
         </childnode>
         <childnode refid="14" relation="include">
         </childnode>
@@ -62,16 +64,16 @@
       <node id="8">
         <label>algorithm</label>
       </node>
-      <node id="12">
+      <node id="13">
         <label>cassert</label>
       </node>
       <node id="9">
         <label>cmath</label>
       </node>
-      <node id="13">
+      <node id="10">
         <label>functional</label>
       </node>
-      <node id="10">
+      <node id="11">
         <label>stdexcept</label>
       </node>
       <node id="14">
@@ -80,7 +82,7 @@
       <node id="15">
         <label>unordered_map</label>
       </node>
-      <node id="11">
+      <node id="12">
         <label>vector</label>
       </node>
     </incdepgraph>

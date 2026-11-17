@@ -8,6 +8,7 @@
     <innerfile refid="_marmot_element_8h">MarmotElement.h</innerfile>
     <innerfile refid="_marmot_element_factory_8h">MarmotElementFactory.h</innerfile>
     <innerfile refid="_marmot_element_property_8h">MarmotElementProperty.h</innerfile>
+    <innerfile refid="_marmot_energy_gradient_provider_8h">MarmotEnergyGradientProvider.h</innerfile>
     <innerfile refid="_marmot_enhanced_assumed_strain_8h">MarmotEnhancedAssumedStrain.h</innerfile>
     <innerfile refid="_marmot_finite_element_8h">MarmotFiniteElement.h</innerfile>
     <innerfile refid="_marmot_finite_element_spatial_wrapper_8h">MarmotFiniteElementSpatialWrapper.h</innerfile>

@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_material_gradient_enhanced_hypo_elastic_energy_tangents_8h" kind="file" language="C++">
+    <compoundname>MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" local="yes">Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h</includes>
+    <includes local="yes">Marmot/MarmotTypedefs.h</includes>
+    <incdepgraph>
+      <node id="2">
+        <label>Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h</label>
+        <link refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h</label>
+        <link refid="_marmot_material_gradient_enhanced_hypo_elastic_energy_tangents_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotExceptions.h</label>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotJournal.h</label>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotMath.h</label>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotStateHelpers.h</label>
+      </node>
+      <node id="7">
+        <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="8">
+        <label>algorithm</label>
+      </node>
+      <node id="9">
+        <label>cmath</label>
+      </node>
+      <node id="10">
+        <label>functional</label>
+      </node>
+      <node id="11">
+        <label>stdexcept</label>
+      </node>
+      <node id="12">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" prot="public">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" prot="public">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents" prot="private">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_materials">Marmot::Materials</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotTypedefs.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Materials<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNonlocalVariables<sp/>&gt;</highlight></codeline>
+<codeline lineno="43" refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" kindref="compound">GradientEnhancedHypoElasticEnergyTangentProvider</ref><sp/>{</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="47" refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" kindref="member">MaterialBase</ref><sp/>=<sp/><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;</ref>;</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50" refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref><sp/>{</highlight></codeline>
+<codeline lineno="52" refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1adec396ff43d27ff70e0cba4079c78e33" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1adec396ff43d27ff70e0cba4079c78e33" kindref="member">dElasticEnergyDensity_dStrain</ref><sp/>=<sp/>Marmot::Math::Vector6d::Zero();</highlight></codeline>
+<codeline lineno="54" refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1ade8533a9727e70c3b2bacfeb96073f6f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1ade8533a9727e70c3b2bacfeb96073f6f" kindref="member">dDissipation_dStrain</ref><sp/>=<sp/>Marmot::Math::Vector6d::Zero();</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Vector&lt;<sp/>double,<sp/>nNonlocalVariables<sp/>&gt;</highlight></codeline>
+<codeline lineno="57" refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1a0b33fca515d529f58c00d954fa205bfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1a0b33fca515d529f58c00d954fa205bfa" kindref="member">dElasticEnergyDensity_dK</ref><sp/>=<sp/>Eigen::Vector&lt;<sp/>double,<sp/>nNonlocalVariables<sp/>&gt;::Zero();</highlight></codeline>
+<codeline lineno="59" refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1aeaa24cbe930775baf87520eb349d63f0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Vector&lt;<sp/>double,<sp/>nNonlocalVariables<sp/>&gt;<sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1aeaa24cbe930775baf87520eb349d63f0" kindref="member">dDissipation_dK</ref><sp/>=<sp/>Eigen::Vector&lt;<sp/>double,<sp/>nNonlocalVariables<sp/>&gt;::Zero();</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" kindref="compound">~GradientEnhancedHypoElasticEnergyTangentProvider</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" kindref="member">computeStressWithEnergyTangents</ref>(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">MaterialBase::response</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res,</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">MaterialBase::tangents</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tan,</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">MaterialBase::increment</ref>&amp;<sp/>inc,</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>energyTan<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" kindref="member">computePlaneStressWithEnergyTangents</ref>(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">MaterialBase::response</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res,</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">MaterialBase::tangents</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tan,</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">MaterialBase::increment</ref>&amp;<sp/>inc,</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>energyTan<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="94"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;<sp/>material<sp/>=<sp/></highlight><highlight class="keyword">dynamic_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">const<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" kindref="member">MaterialBase</ref>&amp;<sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>*this<sp/>);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a133158b47d2c9a2aa36cccea061684a3" kindref="member">MaterialBase::iteratePlaneStress</ref>(<sp/>material.getNumberOfRequiredStateVars(),</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res,</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tan,</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>inc,</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>StressUpdateWithEnergyTangents{<sp/>*this,<sp/>energyTan<sp/>}<sp/>);</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal">StressUpdateWithEnergyTangents<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" kindref="compound">GradientEnhancedHypoElasticEnergyTangentProvider</ref>&amp;<sp/>provider;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>energyTangents&amp;<sp/>energyTan;</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>operator()(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>MaterialBase::response&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>res,</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>MaterialBase::tangents&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tan,</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>MaterialBase::increment&amp;<sp/>inc<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="120"><highlight class="keyword"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>provider.<ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" kindref="member">computeStressWithEnergyTangents</ref>(<sp/>res,<sp/>tan,<sp/>inc,<sp/>energyTan<sp/>);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Materials</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h"/>
+  </compounddef>
+</doxygen>

@@ -19,6 +19,7 @@
     <innerfile refid="_marmot_lower_dimensional_stress_8h">MarmotLowerDimensionalStress.h</innerfile>
     <innerfile refid="_marmot_material_hypo_elastic_8h">MarmotMaterialHypoElastic.h</innerfile>
     <innerfile refid="_marmot_material_hypo_elastic_a_d_8h">MarmotMaterialHypoElasticAD.h</innerfile>
+    <innerfile refid="_marmot_material_hypo_elastic_energy_tangents_8h">MarmotMaterialHypoElasticEnergyTangents.h</innerfile>
     <innerfile refid="_marmot_material_hypo_elastic_factory_8h">MarmotMaterialHypoElasticFactory.h</innerfile>
     <innerfile refid="_marmot_material_point_solver_hypo_elastic_8h">MarmotMaterialPointSolverHypoElastic.h</innerfile>
     <innerfile refid="_marmot_microplane_8h">MarmotMicroplane.h</innerfile>

@@ -1,5 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kind="struct"><name>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents</name>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1adec396ff43d27ff70e0cba4079c78e33" kind="variable"><name>dElasticEnergyDensity_dStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1ade8533a9727e70c3b2bacfeb96073f6f" kind="variable"><name>dDissipation_dStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1a0b33fca515d529f58c00d954fa205bfa" kind="variable"><name>dElasticEnergyDensity_dK</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents_1aeaa24cbe930775baf87520eb349d63f0" kind="variable"><name>dDissipation_dK</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" kind="class"><name>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</name>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" kind="typedef"><name>MaterialBase</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a43ae232710ec278d9eb608625d495899" kind="function"><name>~GradientEnhancedHypoElasticEnergyTangentProvider</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" kind="function"><name>computeStressWithEnergyTangents</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" kind="function"><name>computePlaneStressWithEnergyTangents</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic::increment</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1ada1a84de55a5731da646fa4142d68611" kind="variable"><name>dStrain</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1ae68727dffdb025531b9e8e3adb7f8c51" kind="variable"><name>K</name></member>
@@ -25,6 +37,7 @@
     <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a8445226619877e88c5585b8aeef68966" kind="function"><name>getMaximumWaveSpeed</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" kind="function"><name>getNonlocalViscosity</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1974ed923cec85c33bab176657715eca" kind="function"><name>getNonlocalMicroInertia</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a133158b47d2c9a2aa36cccea061684a3" kind="function"><name>iteratePlaneStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a02d4287128ff572100f81724263961d7" kind="function"><name>validatedNonlocalMicroInertia</name></member>
   </compound>
   <compound refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory" kind="class"><name>Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory</name>
@@ -43,6 +56,11 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1ada16bb5ee284ca853b4c33a2f4a41530" kind="variable"><name>stateVars</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1a6bc10349dc8081e414cd2da274d507eb" kind="variable"><name>elasticEnergyDensity</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1ae6b03c87dac8d8999ba3280472fd36cd" kind="variable"><name>dissipation</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents" kind="struct"><name>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents</name>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1adb3250711fa19195f8c6f8a235518929" kind="variable"><name>provider</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1a0ff209109b17cf6403db8ff83dd13572" kind="variable"><name>energyTan</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1a63ff30c708da9bc62fd97dd80b7237e7" kind="function"><name>operator()</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic::tangents</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1a32912220c16bd0108749fe2978118019" kind="variable"><name>dStressddStrain</name></member>
@@ -95,6 +113,8 @@
   <compound refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" kind="file"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic.h</name>
   </compound>
   <compound refid="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h" kind="file"><name>MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</name>
+  </compound>
+  <compound refid="_marmot_material_gradient_enhanced_hypo_elastic_energy_tangents_8h" kind="file"><name>MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h</name>
   </compound>
   <compound refid="_marmot_phase_field_energy_degradation_8h" kind="file"><name>MarmotPhaseFieldEnergyDegradation.h</name>
   </compound>

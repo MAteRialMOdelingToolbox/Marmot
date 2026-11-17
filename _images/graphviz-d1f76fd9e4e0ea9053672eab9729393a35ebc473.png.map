@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;" alt="" coords="5,101,966,149"/>
+<area shape="rect" id="node2" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::energyTangents" alt="" coords="990,101,2115,149"/>
+<area shape="rect" id="node3" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::StressUpdateWithEnergyTangents" alt="" coords="367,5,1671,53"/>
+<area shape="poly" id="edge1" title="usage" alt="" coords="888,54,634,101,633,95,883,54"/>
+<area shape="poly" id="edge2" title="usage" alt="" coords="1152,51,1407,98,1402,98,1152,57"/>
+</map>

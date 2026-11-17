@@ -115,9 +115,11 @@ Hardening Law
 The model includes non-linear isotropic hardening, which is controlled by the evolution of the yield stress as
 
 .. math:: f_\mathrm{y}\left(\kappa\right)
-   = f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right).
+   = \max\left(f_\mathrm{y}^0 + H_\mathrm{iso,lin}\kappa + \Delta f_\mathrm{y}^{0,\infty}\left(1-\exp\left(-\delta\kappa\right)\right),\ 0\right).
 
 Therein, :math:`f_\mathrm{y}^0`, :math:`H_\mathrm{iso,lin}`, :math:`\Delta{}f_\mathrm{y}^{0,\infty}` and :math:`\delta` are material parameters.
+For softening laws, the yield stress is floored at zero: beyond zero strength, the material flows without stress and
+without hardening modulus.
 
 .. image:: ./vonmises_hardening.svg
 
@@ -139,6 +141,22 @@ The plastic multiplier and the yield function obey the Karush–Kuhn–Tucker co
 as well as the consistency condition
 
 .. math:: \dot{\lambda}\dot{f}=0.
+
+Energies
+^^^^^^^^
+
+The elastic energy density is the energy of the elastic strain,
+
+.. math:: \psi = \frac{1}{2}\,\boldsymbol{\sigma}:\boldsymbol{C}^{\mathrm{e},-1}:\boldsymbol{\sigma},
+
+and the dissipation is the plastic work. With the backward Euler update below, its increment is
+
+.. math:: \Delta D = \boldsymbol{\sigma}^{n+1}:\Delta\boldsymbol{\varepsilon}^\mathrm{p}
+   = f_\mathrm{y}\left(\kappa^{n+1}\right)\Delta\kappa,
+
+which is non-negative, also beyond zero strength. The model provides the derivatives of :math:`\psi^{n+1}` and
+:math:`D^{n+1}` with respect to the strain increment, consistent with the stress update, for the energy gradients of the
+elements (see :ref:`energyGradients`).
 
 Implementation
 --------------

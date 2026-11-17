@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Elements::EnergyGradientProvider</compoundname>
+    <includes refid="_marmot_energy_gradient_provider_8h" local="no">MarmotEnergyGradientProvider.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1ab06d58c70eae5221c4b2c0bcc16d784c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Elements::EnergyGradientProvider::~EnergyGradientProvider</definition>
+        <argsstring>()=default</argsstring>
+        <name>~EnergyGradientProvider</name>
+        <qualifiedname>Marmot::Discretizations::Elements::EnergyGradientProvider::~EnergyGradientProvider</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h" line="43" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1a3cc110104d988ee3cf71dc75652c573f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Elements::EnergyGradientProvider::assignEnergyGradientOutput</definition>
+        <argsstring>(double *dElasticEnergy_dQ, double *dDissipation_dQ)=0</argsstring>
+        <name>assignEnergyGradientOutput</name>
+        <qualifiedname>Marmot::Discretizations::Elements::EnergyGradientProvider::assignEnergyGradientOutput</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>dElasticEnergy_dQ</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dDissipation_dQ</declname>
+        </param>
+        <briefdescription>
+<para>Assign the arrays the element writes its energy gradients to in every computeKernels() call. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dElasticEnergy_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient of the elastic energy, of size <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a049378a4baa4433392a7576d7ab4c7f6" kindref="member">Element::getNDofPerElement()</ref>, in the element&apos;s dof order; nullptr, together with <computeroutput>dDissipation_dQ</computeroutput>, stops the output. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dDissipation_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient of the dissipation, of the same size and order.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Call it after the material section is assigned. It throws std::invalid_argument if the section or the material cannot provide the gradients, so unsupported setups are rejected before the analysis. The arrays must outlive the assignment. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h" line="54" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Optional capability of an <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref>: the gradients of its elastic energy and dissipation wrt its dofs. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>An element provides the gradients by inheriting from this class next to <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref>. Frameworks find the capability with <computeroutput>dynamic_cast&lt; EnergyGradientProvider* &gt;( element )</computeroutput>, e.g., for dissipation based arc length control, and assign the output arrays once. The element then writes the gradients in every computeKernels() call, for the state of that call, consistent with its algorithmic update; computeKernelsExplicit() does not write them. Elements without assigned outputs evaluate their kernels as before, and the standard element interface is not affected. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h" line="40" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnergyGradientProvider.h" bodystart="40" bodyend="55"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1a3cc110104d988ee3cf71dc75652c573f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::EnergyGradientProvider</scope><name>assignEnergyGradientOutput</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1ab06d58c70eae5221c4b2c0bcc16d784c" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::EnergyGradientProvider</scope><name>~EnergyGradientProvider</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

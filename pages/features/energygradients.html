@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy gradients &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Meshfree methods" href="meshfree.html" />
+    <link rel="prev" title="Explicit dynamics devices" href="explicitdynamicsdevices.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="elements.html">Finite elements</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="displacementfiniteelement.html">Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="displacementfinitestrainelement.html">Displacement Finite Strain Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html">General Gradient-Enhanced Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html">Gradient-Enhanced Finite-Strain Displacement Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacefiniteelement.html">Interface Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trusselement.html">Truss Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="embeddedbondelement.html">Embedded Bond Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explicitdynamicsdevices.html">Explicit dynamics devices</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Energy gradients</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#supported-elements-and-materials">Supported elements and materials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="elements.html">Finite elements</a></li>
+      <li class="breadcrumb-item active">Energy gradients</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/energygradients.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="energy-gradients">
+<span id="energygradients"></span><h1>Energy gradients<a class="headerlink" href="#energy-gradients" title="Link to this heading"></a></h1>
+<p>Gradients of the elastic energy and the dissipation of an element with respect to its degrees of freedom, consistent
+with the algorithmic update. They linearize constraints on the energies of a structure, e.g., the dissipation based
+arc-length control of EdelweissFE, where an increment dissipates a prescribed amount of energy.</p>
+<p>They are <strong>optional capabilities</strong>: elements and materials that provide them inherit from an additional interface
+class. The standard interfaces (<code class="docutils literal notranslate"><span class="pre">Element</span></code>, <code class="docutils literal notranslate"><span class="pre">MaterialHypoElastic</span></code>, <code class="docutils literal notranslate"><span class="pre">MaterialGradientEnhancedHypoElastic</span></code>) are
+unchanged, and elements and materials without the capability behave exactly as before.</p>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The element’s elastic energy and dissipation are the sums over its quadrature points,</p>
+<div class="math notranslate nohighlight">
+\[\Psi = \sum_{q} \psi_q\, J_0 w_q, \qquad D = \sum_{q} D_q\, J_0 w_q,\]</div>
+<p>with the energy densities <span class="math notranslate nohighlight">\(\psi_q\)</span> and <span class="math notranslate nohighlight">\(D_q\)</span> after the update of the increment. Their gradients follow with
+the kinematics of the element, e.g., <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon} = \boldsymbol{B}\,\Delta\boldsymbol{q}\)</span> for
+the displacement element,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \Psi}{\partial \boldsymbol{q}}
+= \sum_{q} \boldsymbol{B}^T \frac{\partial \psi_q}{\partial \Delta\boldsymbol{\varepsilon}}\, J_0 w_q, \qquad
+\frac{\partial D}{\partial \boldsymbol{q}}
+= \sum_{q} \boldsymbol{B}^T \frac{\partial D_q}{\partial \Delta\boldsymbol{\varepsilon}}\, J_0 w_q.\]</div>
+<p>The gradient-enhanced element adds the derivatives with respect to the non-local variables, interpolated with the
+shape functions of the non-local field. The material provides the derivatives of its energy densities, the
+<strong>energy tangents</strong>, consistent with its stress update; they depend on the history, so they are not the derivatives of
+a potential.</p>
+<section id="plane-stress">
+<h3>Plane stress<a class="headerlink" href="#plane-stress" title="Link to this heading"></a></h3>
+<p>In plane stress, the material’s update is iterated until <span class="math notranslate nohighlight">\(\sigma_{33} = 0\)</span>, which determines the out-of-plane
+strain increment <span class="math notranslate nohighlight">\(\Delta\varepsilon_{33}\)</span> as a function of the in-plane strain increment and the non-local
+variables. The energy tangents of the converged 3D update are condensed by the total derivative</p>
+<div class="math notranslate nohighlight">
+\[\frac{\mathrm{d} g}{\mathrm{d} \Delta\varepsilon_{\alpha\beta}}
+= \frac{\partial g}{\partial \Delta\varepsilon_{\alpha\beta}}
++ \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial
+\Delta\varepsilon_{\alpha\beta}}, \qquad
+\frac{\mathrm{d} g}{\mathrm{d} \bar\kappa}
+= \frac{\partial g}{\partial \bar\kappa}
++ \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial \bar\kappa},\]</div>
+<p>for <span class="math notranslate nohighlight">\(g = \psi, D\)</span>, with <span class="math notranslate nohighlight">\(\partial \Delta\varepsilon_{33} / \partial (\cdot) = -(\partial \sigma_{33} /
+\partial (\cdot)) / (\partial \sigma_{33} / \partial \Delta\varepsilon_{33})\)</span> from <span class="math notranslate nohighlight">\(\mathrm{d}\sigma_{33} = 0\)</span>.</p>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>A framework finds the capability of an element once, assigns two arrays of the size of the element’s degrees of
+freedom, and reads them after each evaluation of the element:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Marmot</span><span class="o">::</span><span class="nn">Discretizations</span><span class="o">::</span><span class="nn">Elements</span><span class="p">;</span>
+
+<span class="c1">// after the material section is assigned</span>
+<span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="w"> </span><span class="n">EnergyGradientProvider</span><span class="o">*</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">!</span><span class="n">provider</span><span class="w"> </span><span class="p">)</span>
+<span class="w">  </span><span class="p">;</span><span class="w"> </span><span class="c1">// the element provides no energy gradients</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dElasticEnergy_dQ</span><span class="p">(</span><span class="w"> </span><span class="n">element</span><span class="o">-&gt;</span><span class="n">getNDofPerElement</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">dDissipation_dQ</span><span class="p">(</span><span class="w"> </span><span class="n">element</span><span class="o">-&gt;</span><span class="n">getNDofPerElement</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+<span class="n">provider</span><span class="o">-&gt;</span><span class="n">assignEnergyGradientOutput</span><span class="p">(</span><span class="w"> </span><span class="n">dElasticEnergy_dQ</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">dDissipation_dQ</span><span class="p">.</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+
+<span class="n">element</span><span class="o">-&gt;</span><span class="n">computeKernels</span><span class="p">(</span><span class="w"> </span><span class="n">QTotal</span><span class="p">,</span><span class="w"> </span><span class="n">dQ</span><span class="p">,</span><span class="w"> </span><span class="n">Pe</span><span class="p">,</span><span class="w"> </span><span class="n">Ke</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">dT</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// also writes both gradients</span>
+
+<span class="n">provider</span><span class="o">-&gt;</span><span class="n">assignEnergyGradientOutput</span><span class="p">(</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">,</span><span class="w"> </span><span class="nb">nullptr</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// stops the output</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>When they are written:</strong> in every call of <code class="docutils literal notranslate"><span class="pre">computeKernels()</span></code>, for the state of that call, i.e., of the current
+iterate. The arrays are overwritten, not accumulated. <code class="docutils literal notranslate"><span class="pre">computeKernelsExplicit()</span></code> does not write them. Elements
+without assigned outputs evaluate their kernels as before.</p></li>
+<li><p><strong>Order:</strong> the element’s own order of the degrees of freedom, as the residual <code class="docutils literal notranslate"><span class="pre">Pe</span></code> of <code class="docutils literal notranslate"><span class="pre">computeKernels()</span></code>; the
+framework maps them to its global vector as the residual
+(<code class="docutils literal notranslate"><span class="pre">Element::getDofIndicesPermutationPattern()</span></code>).</p></li>
+<li><p><strong>Checks:</strong> <code class="docutils literal notranslate"><span class="pre">assignEnergyGradientOutput()</span></code> throws <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code> if the section or the material cannot
+provide the gradients, so an unsupported setup is rejected before the analysis. A material section assigned while
+the outputs are active is checked as well; if it is rejected, the element keeps its material.</p></li>
+<li><p><strong>Lifetime:</strong> the element writes to the arrays until the outputs are reset with <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, so they must outlive
+the assignment.</p></li>
+</ul>
+</section>
+<section id="supported-elements-and-materials">
+<h2>Supported elements and materials<a class="headerlink" href="#supported-elements-and-materials" title="Link to this heading"></a></h2>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Element</strong></p></th>
+<th class="head"><p><strong>Sections</strong></p></th>
+<th class="head"><p><strong>Material capability</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DisplacementFiniteElement</span></code></p></td>
+<td><p>solid, plane strain</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HypoElasticEnergyTangentProvider</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></code></p></td>
+<td><p>solid, plane strain, plane stress</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedHypoElasticEnergyTangentProvider</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Materials with energy tangents: <a class="reference internal" href="vonmises.html#vonmisesmodel"><span class="std std-ref">Von Mises model</span></a>, Rankine softening plasticity and Rankine damage-plasticity
+(<code class="docutils literal notranslate"><span class="pre">HypoElasticEnergyTangentProvider</span></code>), and their gradient-enhanced versions
+(<code class="docutils literal notranslate"><span class="pre">GradientEnhancedHypoElasticEnergyTangentProvider</span></code>).</p>
+<p>A material provides the energy tangents by inheriting from the capability class next to its base class and
+implementing <code class="docutils literal notranslate"><span class="pre">computeStressWithEnergyTangents()</span></code>, a variant of <code class="docutils literal notranslate"><span class="pre">computeStress()</span></code> that also returns the derivatives
+of the updated energy densities. Both should share one implementation of the update, so that they give the same
+stress. For plane stress, <code class="docutils literal notranslate"><span class="pre">GradientEnhancedHypoElasticEnergyTangentProvider::computePlaneStressWithEnergyTangents()</span></code>
+runs the plane stress iteration of <code class="docutils literal notranslate"><span class="pre">MaterialGradientEnhancedHypoElastic::computePlaneStress()</span></code> around the variant; a
+material that overrides <code class="docutils literal notranslate"><span class="pre">computePlaneStress()</span></code> overrides it consistently.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProviderE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProviderE"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EnergyGradientProvider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EnergyGradientProvider</span></span></span><br /></dt>
+<dd><p>Optional capability of an Element: the gradients of its elastic energy and dissipation wrt its dofs. </p>
+<p>An element provides the gradients by inheriting from this class next to Element. Frameworks find the capability with <code class="docutils literal notranslate"><span class="pre">dynamic_cast&lt;</span> <span class="pre">EnergyGradientProvider*</span> <span class="pre">&gt;(</span> <span class="pre">element</span> <span class="pre">)</span></code>, e.g., for dissipation based arc length control, and assign the output arrays once. The element then writes the gradients in every computeKernels() call, for the state of that call, consistent with its algorithmic update; computeKernelsExplicit() does not write them. Elements without assigned outputs evaluate their kernels as before, and the standard element interface is not affected. </p>
+<p>Subclassed by <a class="reference internal" href="displacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteElement"><span class="std std-ref">Marmot::Discretizations::Elements::DisplacementFiniteElement&lt; nDim, nNodes &gt;</span></a>, <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement"><span class="std std-ref">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement&lt; nDim, nNodes, nNonlocalVariables, nNonLocalNodes &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider::~EnergyGradientProvider"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EnergyGradientProvider_1ab06d58c70eae5221c4b2c0bcc16d784c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~EnergyGradientProvider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd"></span><span id="Marmot::Discretizations::Elements::EnergyGradientProvider::assignEnergyGradientOutput__doubleP.doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EnergyGradientProvider_1a3cc110104d988ee3cf71dc75652c573f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignEnergyGradientOutput</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dElasticEnergy_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dDissipation_dQ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>Assign the arrays the element writes its energy gradients to in every computeKernels() call. </p>
+<p>
+Call it after the material section is assigned. It throws std::invalid_argument if the section or the material cannot provide the gradients, so unsupported setups are rejected before the analysis. The arrays must outlive the assignment. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dElasticEnergy_dQ</strong> – Gradient of the elastic energy, of size Element::getNDofPerElement(), in the element’s dof order; nullptr, together with <code class="docutils literal notranslate"><span class="pre">dDissipation_dQ</span></code>, stops the output. </p></li>
+<li><p><strong>dDissipation_dQ</strong> – Gradient of the dissipation, of the same size and order.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE">
+<span id="_CPPv3N6Marmot9Materials32HypoElasticEnergyTangentProviderE"></span><span id="_CPPv2N6Marmot9Materials32HypoElasticEnergyTangentProviderE"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider"></span><span class="target" id="classMarmot_1_1Materials_1_1HypoElasticEnergyTangentProvider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HypoElasticEnergyTangentProvider</span></span></span><br /></dt>
+<dd><p>Optional capability of a MaterialHypoElastic: a stress update that also yields the energy tangents. </p>
+<p>A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment by inheriting from this class next to MaterialHypoElastic. Elements find the capability with <code class="docutils literal notranslate"><span class="pre">dynamic_cast&lt;</span> <span class="pre">const</span> <span class="pre">HypoElasticEnergyTangentProvider*</span> <span class="pre">&gt;(</span> <span class="pre">material</span> <span class="pre">)</span></code> and call this variant instead of MaterialHypoElastic::computeStress only when they assemble energy gradients, e.g., for dissipation based arc length control. The standard material interface is not affected. </p>
+<p>Subclassed by <a class="reference internal" href="rankinedamageplasticity.html#classMarmot_1_1Materials_1_1RankineDamagePlasticity"><span class="std std-ref">Marmot::Materials::RankineDamagePlasticity</span></a>, <a class="reference internal" href="rankinesofteningplasticity.html#classMarmot_1_1Materials_1_1RankineSofteningPlasticity"><span class="std std-ref">Marmot::Materials::RankineSofteningPlasticity</span></a>, <a class="reference internal" href="vonmises.html#classMarmot_1_1Materials_1_1VonMisesModel"><span class="std std-ref">Marmot::Materials::VonMisesModel</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev">
+<span id="_CPPv3N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev"></span><span id="_CPPv2N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider::~HypoElasticEnergyTangentProvider"></span><span class="target" id="classMarmot_1_1Materials_1_1HypoElasticEnergyTangentProvider_1adef98e0d3fb382925b565b751726412d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~HypoElasticEnergyTangentProvider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE">
+<span id="_CPPv3NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE"></span><span id="_CPPv2NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE"></span><span id="Marmot::Materials::HypoElasticEnergyTangentProvider::computeStressWithEnergyTangents__MaterialHypoElastic::state3DR.Marmot::Math::Matrix6dR.Marmot::Math::Vector6dCR.MaterialHypoElastic::timeInfoCR.Marmot::Math::Vector6dR.Marmot::Math::Vector6dRC"></span><span class="target" id="classMarmot_1_1Materials_1_1HypoElasticEnergyTangentProvider_1ab1212a26727ada8d57293f448171df33"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressWithEnergyTangents</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElastic7state3DE" title="Marmot::Materials::MaterialHypoElastic::state3D"><span class="n"><span class="pre">state3D</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStress_dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElastic8timeInfoE" title="Marmot::Materials::MaterialHypoElastic::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dElasticEnergyDensity_dStrain</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dDissipation_dStrain</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>MaterialHypoElastic::computeStress, which also yields the energy tangents of the update. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> Stress, energies and state variables, as for MaterialHypoElastic::computeStress. </p></li>
+<li><p><strong>dStress_dStrain</strong> – <strong>[out]</strong> Algorithmic tangent. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Linearized strain increment. </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Time and time increment. </p></li>
+<li><p><strong>dElasticEnergyDensity_dStrain</strong> – <strong>[out]</strong> Derivative of the updated elastic energy density wrt the strain increment (Voigt, engineering shear strains). </p></li>
+<li><p><strong>dDissipation_dStrain</strong> – <strong>[out]</strong> Derivative of the updated dissipation wrt the strain increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE">
+<span id="_CPPv3I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE"></span><span id="_CPPv2I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNonlocalVariables</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedHypoElasticEnergyTangentProvider</span></span></span><br /></dt>
+<dd><p>Optional capability of a MaterialGradientEnhancedHypoElastic: a stress update that also yields the energy tangents. </p>
+<p>A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment and the nonlocal variables by inheriting from this class next to MaterialGradientEnhancedHypoElastic. Elements find the capability with <code class="docutils literal notranslate"><span class="pre">dynamic_cast</span></code> and call this variant instead of MaterialGradientEnhancedHypoElastic::computeStress only when they assemble energy gradients. The standard material interface is not affected. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nNonlocalVariables</strong> – Number of nonlocal variables of the material.</p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1abddd485d1a6b4e975147502ecce8f937"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialBase</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>The material base class, from which the class providing the capability derives as well. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderD0Ev">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderD0Ev"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderD0Ev"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::~GradientEnhancedHypoElasticEnergyTangentProvider"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1a43ae232710ec278d9eb608625d495899"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~GradientEnhancedHypoElasticEnergyTangentProvider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">
+<span id="_CPPv3NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents"></span><span id="_CPPv2NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computeStressWithEnergyTangents__MaterialBase::responseR.MaterialBase::tangentsR.MaterialBase::incrementCR.energyTangentsRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1a4d08c0d60cb83a1ec89fc9702fa91608"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressWithEnergyTangents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents"><span class="n"><span class="pre">energyTangents</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">energyTan</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>MaterialGradientEnhancedHypoElastic::computeStress, which also yields the energy tangents of the update. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Response, as for MaterialGradientEnhancedHypoElastic::computeStress. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Algorithmic tangents. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Increment of the strain and the nonlocal variables. </p></li>
+<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider36computePlaneStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">
+<span id="_CPPv3NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider36computePlaneStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents"></span><span id="_CPPv2NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider36computePlaneStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computePlaneStressWithEnergyTangents__MaterialBase::responseR.MaterialBase::tangentsR.MaterialBase::incrementCR.energyTangentsRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1ace7a23fcf529b69f72419e9958e8a7a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStressWithEnergyTangents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents"><span class="n"><span class="pre">energyTangents</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">energyTan</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>MaterialGradientEnhancedHypoElastic::computePlaneStress, which also yields the energy tangents of the converged 3D update. </p>
+<p>
+The default is the plane stress iteration of MaterialGradientEnhancedHypoElastic::computePlaneStress (MaterialGradientEnhancedHypoElastic::iteratePlaneStress) around <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1a4d08c0d60cb83a1ec89fc9702fa91608"><span class="std std-ref">computeStressWithEnergyTangents()</span></a>. A material that overrides MaterialGradientEnhancedHypoElastic::computePlaneStress overrides this method consistently, so that the stress does not depend on whether energy tangents are requested. The class providing the capability must also be a MaterialGradientEnhancedHypoElastic. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Response, as for MaterialGradientEnhancedHypoElastic::computePlaneStress. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Algorithmic tangents of the converged 3D update. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Increment of the in-plane strain and the nonlocal variables. </p></li>
+<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1energyTangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">energyTangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Derivatives of the updated elastic energy density and dissipation. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dElasticEnergyDensity_dStrain__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1energyTangents_1adec396ff43d27ff70e0cba4079c78e33"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dElasticEnergyDensity_dStrain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic energy density wrt the strain increment (Voigt, engineering shear strains). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dDissipation_dStrain__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1energyTangents_1ade8533a9727e70c3b2bacfeb96073f6f"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dDissipation_dStrain</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>Dissipation wrt the strain increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dElasticEnergyDensity_dK__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1energyTangents_1a0b33fca515d529f58c00d954fa205bfa"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dElasticEnergyDensity_dK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic energy density wrt the nonlocal variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dDissipation_dK__Eigen::Vector:double.nNonlocalVariables:"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1energyTangents_1aeaa24cbe930775baf87520eb349d63f0"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dDissipation_dK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE" title="Link to this definition"></a><br /></dt>
+<dd><p>Dissipation wrt the nonlocal variables. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1StressUpdateWithEnergyTangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StressUpdateWithEnergyTangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1a4d08c0d60cb83a1ec89fc9702fa91608"><span class="std std-ref">computeStressWithEnergyTangents()</span></a> as the 3D stress update of MaterialBase::iteratePlaneStress. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE">
+<span id="_CPPv3NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE"></span><span id="_CPPv2NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::call-operator__MaterialBase::responseR.MaterialBase::tangentsR.MaterialBase::incrementCRC"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1StressUpdateWithEnergyTangents_1a63ff30c708da9bc62fd97dd80b7237e7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">()</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase"><span class="n"><span class="pre">MaterialBase</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE" title="Link to this definition"></a><br /></dt>
+<dd><p>The 3D stress update with the energy tangents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Response. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Algorithmic tangents. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::provider__GradientEnhancedHypoElasticEnergyTangentProviderCR"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1StressUpdateWithEnergyTangents_1adb3250711fa19195f8c6f8a235518929"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider"><span class="n"><span class="pre">GradientEnhancedHypoElasticEnergyTangentProvider</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">provider</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE" title="Link to this definition"></a><br /></dt>
+<dd><p>The material. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE">
+<span id="_CPPv3N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE"></span><span id="_CPPv2N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::energyTan__energyTangentsR"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider_1_1StressUpdateWithEnergyTangents_1a0ff209109b17cf6403db8ff83dd13572"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE" title="Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents"><span class="n"><span class="pre">energyTangents</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">energyTan</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE" title="Link to this definition"></a><br /></dt>
+<dd><p>The energy tangents of the last update, i.e., of the converged 3D state. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="explicitdynamicsdevices.html" class="btn btn-neutral float-left" title="Explicit dynamics devices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="meshfree.html" class="btn btn-neutral float-right" title="Meshfree methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

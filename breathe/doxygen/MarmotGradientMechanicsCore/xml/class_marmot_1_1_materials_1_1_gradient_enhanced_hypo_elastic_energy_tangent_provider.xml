@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</compoundname>
+    <includes refid="_marmot_material_gradient_enhanced_hypo_elastic_energy_tangents_8h" local="no">MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" prot="public">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents" prot="private">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nNonlocalVariables</declname>
+        <defname>nNonlocalVariables</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic</ref>&lt; nNonlocalVariables &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::MaterialBase = MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;</definition>
+        <argsstring></argsstring>
+        <name>MaterialBase</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase</qualifiedname>
+        <briefdescription>
+<para>The material base class, from which the class providing the capability derives as well. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="47" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a43ae232710ec278d9eb608625d495899" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::~GradientEnhancedHypoElasticEnergyTangentProvider</definition>
+        <argsstring>()=default</argsstring>
+        <name>~GradientEnhancedHypoElasticEnergyTangentProvider</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::~GradientEnhancedHypoElasticEnergyTangentProvider</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="62" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::computeStressWithEnergyTangents</definition>
+        <argsstring>(typename MaterialBase::response &amp;res, typename MaterialBase::tangents &amp;tan, const typename MaterialBase::increment &amp;inc, energyTangents &amp;energyTan) const =0</argsstring>
+        <name>computeStressWithEnergyTangents</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computeStressWithEnergyTangents</qualifiedname>
+        <param>
+          <type>typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">MaterialBase::response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">MaterialBase::tangents</ref> &amp;</type>
+          <declname>tan</declname>
+        </param>
+        <param>
+          <type>const typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">MaterialBase::increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref> &amp;</type>
+          <declname>energyTan</declname>
+        </param>
+        <briefdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kindref="member">MaterialGradientEnhancedHypoElastic::computeStress</ref>, which also yields the energy tangents of the update. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Response, as for <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kindref="member">MaterialGradientEnhancedHypoElastic::computeStress</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic tangents. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the strain and the nonlocal variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">energyTan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivatives of the updated elastic energy density and dissipation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="71" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider&lt; nNonlocalVariables &gt;::computePlaneStressWithEnergyTangents</definition>
+        <argsstring>(typename MaterialBase::response &amp;res, typename MaterialBase::tangents &amp;tan, const typename MaterialBase::increment &amp;inc, energyTangents &amp;energyTan) const</argsstring>
+        <name>computePlaneStressWithEnergyTangents</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computePlaneStressWithEnergyTangents</qualifiedname>
+        <param>
+          <type>typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">MaterialBase::response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">MaterialBase::tangents</ref> &amp;</type>
+          <declname>tan</declname>
+        </param>
+        <param>
+          <type>const typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">MaterialBase::increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref> &amp;</type>
+          <declname>energyTan</declname>
+        </param>
+        <briefdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kindref="member">MaterialGradientEnhancedHypoElastic::computePlaneStress</ref>, which also yields the energy tangents of the converged 3D update. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Response, as for <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kindref="member">MaterialGradientEnhancedHypoElastic::computePlaneStress</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic tangents of the converged 3D update. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the in-plane strain and the nonlocal variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">energyTan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The default is the plane stress iteration of <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kindref="member">MaterialGradientEnhancedHypoElastic::computePlaneStress</ref> (<ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a133158b47d2c9a2aa36cccea061684a3" kindref="member">MaterialGradientEnhancedHypoElastic::iteratePlaneStress</ref>) around <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" kindref="member">computeStressWithEnergyTangents()</ref>. A material that overrides <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kindref="member">MaterialGradientEnhancedHypoElastic::computePlaneStress</ref> overrides this method consistently, so that the stress does not depend on whether energy tangents are requested. The class providing the capability must also be a <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic</ref>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="90" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="90" bodyend="101"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Optional capability of a <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic</ref>: a stress update that also yields the energy tangents. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNonlocalVariables</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of nonlocal variables of the material.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment and the nonlocal variables by inheriting from this class next to <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic</ref>. Elements find the capability with <computeroutput>dynamic_cast</computeroutput> and call this variant instead of <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kindref="member">MaterialGradientEnhancedHypoElastic::computeStress</ref> only when they assemble energy gradients. The standard material interface is not affected. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="43" bodyend="124"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>computePlaneStressWithEnergyTangents</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" prot="public" virt="pure-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>computeStressWithEnergyTangents</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1abddd485d1a6b4e975147502ecce8f937" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>MaterialBase</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a43ae232710ec278d9eb608625d495899" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>~GradientEnhancedHypoElasticEnergyTangentProvider</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1561,6 +1561,8 @@
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4I_i_iEN6Marmot15Discretizations8Elements25DisplacementFiniteElementE">Marmot::Discretizations::Elements::DisplacementFiniteElement (C++ class)</a>
 </li>
+      <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement26assignEnergyGradientOutputEPdPd">Marmot::Discretizations::Elements::DisplacementFiniteElement::assignEnergyGradientOutput (C++ function)</a>
+</li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement21assignNodeCoordinatesEPKd">Marmot::Discretizations::Elements::DisplacementFiniteElement::assignNodeCoordinates (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE">Marmot::Discretizations::Elements::DisplacementFiniteElement::assignProperty (C++ function)</a>, <a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement14assignPropertyERKN6Marmot15Discretizations17ElementPropertiesE">[1]</a>, <a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement14assignPropertyERKNSt6stringEPKdi">[2]</a>
@@ -1570,6 +1572,8 @@
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement6BSizedE">Marmot::Discretizations::Elements::DisplacementFiniteElement::BSized (C++ type)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement25bulkViscosityCoefficientsE">Marmot::Discretizations::Elements::DisplacementFiniteElement::bulkViscosityCoefficients (C++ member)</a>
+</li>
+      <li><a href="pages/features/displacementfiniteelement.html#_CPPv4NK6Marmot15Discretizations8Elements25DisplacementFiniteElement26checkEnergyGradientSupportEv">Marmot::Discretizations::Elements::DisplacementFiniteElement::checkEnergyGradientSupport (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement16computeBodyForceEPdPdPKdPKddd">Marmot::Discretizations::Elements::DisplacementFiniteElement::computeBodyForce (C++ function)</a>
 </li>
@@ -1588,6 +1592,10 @@
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement20computeLumpedInertiaEPd">Marmot::Discretizations::Elements::DisplacementFiniteElement::computeLumpedInertia (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement6CSizedE">Marmot::Discretizations::Elements::DisplacementFiniteElement::CSized (C++ type)</a>
+</li>
+      <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement21dDissipation_dQOutputE">Marmot::Discretizations::Elements::DisplacementFiniteElement::dDissipation_dQOutput (C++ member)</a>
+</li>
+      <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement23dElasticEnergy_dQOutputE">Marmot::Discretizations::Elements::DisplacementFiniteElement::dElasticEnergy_dQOutput (C++ member)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement25DisplacementFiniteElementEiN15Discretizations8Elements10Quadrature14QuadratureRuleE11SectionType">Marmot::Discretizations::Elements::DisplacementFiniteElement::DisplacementFiniteElement (C++ function)</a>
 </li>
@@ -1642,6 +1650,8 @@
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement15QuadraturePoint39characteristicLengthForCriticalTimeStepE">Marmot::Discretizations::Elements::DisplacementFiniteElement::QuadraturePoint::characteristicLengthForCriticalTimeStep (C++ member)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement15QuadraturePoint4detJE">Marmot::Discretizations::Elements::DisplacementFiniteElement::QuadraturePoint::detJ (C++ member)</a>
+</li>
+      <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement15QuadraturePoint21energyTangentProviderE">Marmot::Discretizations::Elements::DisplacementFiniteElement::QuadraturePoint::energyTangentProvider (C++ member)</a>
 </li>
       <li><a href="pages/features/displacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements25DisplacementFiniteElement15QuadraturePoint28getNumberOfRequiredStateVarsEv">Marmot::Discretizations::Elements::DisplacementFiniteElement::QuadraturePoint::getNumberOfRequiredStateVars (C++ function)</a>
 </li>
@@ -2389,11 +2399,19 @@
 </li>
       <li><a href="pages/features/embeddedbondelement.html#_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement17windowCoordinatesE">Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement::windowCoordinates (C++ member)</a>
 </li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE">Marmot::Discretizations::Elements::EnergyGradientProvider (C++ class)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd">Marmot::Discretizations::Elements::EnergyGradientProvider::assignEnergyGradientOutput (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProvider26assignEnergyGradientOutputEPdPd">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev">Marmot::Discretizations::Elements::EnergyGradientProvider::~EnergyGradientProvider (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot15Discretizations8Elements22EnergyGradientProviderD0Ev">[1]</a>
+</li>
       <li><a href="pages/codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements36expandNodeIndicesToCoordinateIndicesERKN5Eigen8VectorXiEi">Marmot::Discretizations::Elements::expandNodeIndicesToCoordinateIndices (C++ function)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4I_i_i_i_iEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElementE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement (C++ class)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21addNonLocalResidualAtEN5Eigen3RefIN5Eigen6MatrixId14nNonLocalNodesXL1EEEEEERK15QuadraturePointidRKN6Marmot9Materials35MaterialGradientEnhancedHypoElasticI18nNonlocalVariablesE8responseERKN5Eigen3RefIK12KSizedVectorEE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::addNonLocalResidualAt (C++ function)</a>
+</li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26assignEnergyGradientOutputEPdPd">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::assignEnergyGradientOutput (C++ function)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21assignNodeCoordinatesEPKd">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::assignNodeCoordinates (C++ function)</a>
 </li>
@@ -2404,6 +2422,8 @@
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6BSizedE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::BSized (C++ type)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement25bulkViscosityCoefficientsE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::bulkViscosityCoefficients (C++ member)</a>
+</li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26checkEnergyGradientSupportEv">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::checkEnergyGradientSupport (C++ function)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16computeBodyForceEPdPdPKdPKddd">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeBodyForce (C++ function)</a>
 </li>
@@ -2425,6 +2445,10 @@
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6CSizedE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::CSized (C++ type)</a>
 </li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21dDissipation_dQOutputE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::dDissipation_dQOutput (C++ member)</a>
+</li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement23dElasticEnergy_dQOutputE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::dElasticEnergy_dQOutput (C++ member)</a>
+</li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement10dNdXiSizedE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::dNdXiSized (C++ type)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11dNdXiSizedKE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::dNdXiSizedK (C++ type)</a>
@@ -2432,6 +2456,8 @@
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement17elementPropertiesE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::elementProperties (C++ member)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement7elLabelE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::elLabel (C++ member)</a>
+</li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21EnergyTangentProviderE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::EnergyTangentProvider (C++ type)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement48GeneralGradientEnhancedDisplacementFiniteElementEiN15Discretizations8Elements10Quadrature14QuadratureRuleE11SectionType">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::GeneralGradientEnhancedDisplacementFiniteElement (C++ function)</a>
 </li>
@@ -2512,6 +2538,8 @@
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint4dNdXE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint::dNdX (C++ member)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint6dNdX_KEv">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint::dNdX_K (C++ function)</a>
+</li>
+      <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint21energyTangentProviderE">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint::energyTangentProvider (C++ member)</a>
 </li>
       <li><a href="pages/features/generalgradientenhanceddisplacementfiniteelement.html#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint28getNumberOfRequiredStateVarsEv">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint::getNumberOfRequiredStateVars (C++ function)</a>
 </li>
@@ -4053,8 +4081,6 @@
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree30DisplacementParticleSQCNIxNSNI21updatePhysicsExplicitEPKddd">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI::updatePhysicsExplicit (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/features/displacementparticle.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree29DisplacementParticleSQCNIxSDIE">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI (C++ class)</a>
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree29DisplacementParticleSQCNIxSDI13_newmark_betaE">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI::_newmark_beta (C++ member)</a>
@@ -4069,6 +4095,8 @@
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree29DisplacementParticleSQCNIxSDI27assignStateVarsOnSubdomainsEPdi">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI::assignStateVarsOnSubdomains (C++ function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree29DisplacementParticleSQCNIxSDI13BodyLoadTypesE">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI::BodyLoadTypes (C++ enum)</a>
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree29DisplacementParticleSQCNIxSDI13BodyLoadTypes9BodyForceE">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI::BodyLoadTypes::BodyForce (C++ enumerator)</a>
@@ -5499,6 +5527,34 @@
 </li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedHughesWingetWrapperD0Ev">Marmot::Materials::GradientEnhancedHughesWingetWrapper::~GradientEnhancedHughesWingetWrapper (C++ function)</a>, <a href="pages/features/gradientenhancedhugheswinget.html#_CPPv4N6Marmot9Materials35GradientEnhancedHughesWingetWrapperD0Ev">[1]</a>
 </li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider (C++ class)</a>, <a href="pages/features/energygradients.html#_CPPv4I_iEN6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider36computePlaneStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computePlaneStressWithEnergyTangents (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider36computePlaneStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::computeStressWithEnergyTangents (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementER14energyTangents">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents (C++ struct)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangentsE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dDissipation_dK (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents15dDissipation_dKE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dDissipation_dStrain (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents20dDissipation_dStrainE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dElasticEnergyDensity_dK (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents24dElasticEnergyDensity_dKE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::energyTangents::dElasticEnergyDensity_dStrain (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider14energyTangents29dElasticEnergyDensity_dStrainE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::MaterialBase (C++ type)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider12MaterialBaseE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents (C++ struct)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::energyTan (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents9energyTanE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::operator() (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4NK6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangentsclERN12MaterialBase8responseERN12MaterialBase8tangentsERKN12MaterialBase9incrementE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents::provider (C++ member)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProvider30StressUpdateWithEnergyTangents8providerE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderD0Ev">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::~GradientEnhancedHypoElasticEnergyTangentProvider (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials48GradientEnhancedHypoElasticEnergyTangentProviderD0Ev">[1]</a>
+</li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetTangentE">Marmot::Materials::HughesWingetTangent (C++ enum)</a>
 </li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetTangent8AnalyticE">Marmot::Materials::HughesWingetTangent::Analytic (C++ enumerator)</a>
@@ -5544,6 +5600,12 @@
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE">Marmot::Materials::HughesWingetWrapper::toEigen (C++ function)</a>, <a href="pages/features/hugheswinget.html#_CPPv4N6Marmot9Materials19HughesWingetWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE">[1]</a>
 </li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetWrapperD0Ev">Marmot::Materials::HughesWingetWrapper::~HughesWingetWrapper (C++ function)</a>, <a href="pages/features/hugheswinget.html#_CPPv4N6Marmot9Materials19HughesWingetWrapperD0Ev">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE">Marmot::Materials::HypoElasticEnergyTangentProvider (C++ class)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE">Marmot::Materials::HypoElasticEnergyTangentProvider::computeStressWithEnergyTangents (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4NK6Marmot9Materials32HypoElasticEnergyTangentProvider31computeStressWithEnergyTangentsERN19MaterialHypoElastic7state3DERN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERKN19MaterialHypoElastic8timeInfoERN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev">Marmot::Materials::HypoElasticEnergyTangentProvider::~HypoElasticEnergyTangentProvider (C++ function)</a>, <a href="pages/features/energygradients.html#_CPPv4N6Marmot9Materials32HypoElasticEnergyTangentProviderD0Ev">[1]</a>
 </li>
       <li><a href="pages/codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctionsE">Marmot::Materials::InterfaceMaterialHelperFunctions (C++ type)</a>, <a href="pages/features/interfacematerialhypoelastic.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctionsE">[1]</a>
 </li>
@@ -6052,6 +6114,8 @@
       <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials35MaterialGradientEnhancedHypoElastic9increment4timeE">Marmot::Materials::MaterialGradientEnhancedHypoElastic::increment::time (C++ member)</a>
 </li>
       <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials35MaterialGradientEnhancedHypoElastic18initializeYourselfEPdi">Marmot::Materials::MaterialGradientEnhancedHypoElastic::initializeYourself (C++ function)</a>
+</li>
+      <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4I0EN6Marmot9Materials35MaterialGradientEnhancedHypoElastic18iteratePlaneStressEviR8responseR8tangentsRK9incrementRR15ComputeStress3D">Marmot::Materials::MaterialGradientEnhancedHypoElastic::iteratePlaneStress (C++ function)</a>
 </li>
       <li><a href="pages/codedocumentation/gradientmechanicscore.html#_CPPv4N6Marmot9Materials35MaterialGradientEnhancedHypoElastic35MaterialGradientEnhancedHypoElasticEPKdii">Marmot::Materials::MaterialGradientEnhancedHypoElastic::MaterialGradientEnhancedHypoElastic (C++ function)</a>
 </li>
@@ -6667,6 +6731,10 @@
 </li>
       <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">Marmot::Materials::RankineDamagePlasticity::computeStress (C++ function)</a>
 </li>
+      <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity21computeStressImplicitER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoPN4Math8Vector6dEPN4Math8Vector6dE">Marmot::Materials::RankineDamagePlasticity::computeStressImplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity31computeStressWithEnergyTangentsER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoRN4Math8Vector6dERN4Math8Vector6dE">Marmot::Materials::RankineDamagePlasticity::computeStressWithEnergyTangents (C++ function)</a>
+</li>
       <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4N6Marmot9Materials23RankineDamagePlasticity17effectiveMaterialE">Marmot::Materials::RankineDamagePlasticity::effectiveMaterial (C++ member)</a>
 </li>
       <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4N6Marmot9Materials23RankineDamagePlasticity19effectivePropertiesE">Marmot::Materials::RankineDamagePlasticity::effectiveProperties (C++ member)</a>
@@ -6677,13 +6745,17 @@
 </li>
       <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityEPKdKiKi">Marmot::Materials::RankineDamagePlasticity::RankineDamagePlasticity (C++ function)</a>, <a href="pages/features/rankinedamageplasticity.html#_CPPv4N6Marmot9Materials23RankineDamagePlasticity23RankineDamagePlasticityERK23RankineDamagePlasticity">[1]</a>
 </li>
-      <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">Marmot::Materials::RankineDamagePlasticity::updateStress (C++ function)</a>
+      <li><a href="pages/features/rankinedamageplasticity.html#_CPPv4NK6Marmot9Materials23RankineDamagePlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoPN4Math8Vector6dEPN4Math8Vector6dE">Marmot::Materials::RankineDamagePlasticity::updateStress (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4N6Marmot9Materials31RankineGradientDamagePlasticityE">Marmot::Materials::RankineGradientDamagePlasticity (C++ class)</a>
 </li>
       <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4N6Marmot9Materials31RankineGradientDamagePlasticity4BaseE">Marmot::Materials::RankineGradientDamagePlasticity::Base (C++ type)</a>
 </li>
       <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4NK6Marmot9Materials31RankineGradientDamagePlasticity13computeStressER8responseR8tangentsRK9increment">Marmot::Materials::RankineGradientDamagePlasticity::computeStress (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4NK6Marmot9Materials31RankineGradientDamagePlasticity21computeStressImplicitER8responseR8tangentsRK9incrementP14energyTangents">Marmot::Materials::RankineGradientDamagePlasticity::computeStressImplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4NK6Marmot9Materials31RankineGradientDamagePlasticity31computeStressWithEnergyTangentsER8responseR8tangentsRK9incrementR14energyTangents">Marmot::Materials::RankineGradientDamagePlasticity::computeStressWithEnergyTangents (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4N6Marmot9Materials31RankineGradientDamagePlasticity17effectiveMaterialE">Marmot::Materials::RankineGradientDamagePlasticity::effectiveMaterial (C++ member)</a>
 </li>
@@ -6697,13 +6769,17 @@
 </li>
       <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4N6Marmot9Materials31RankineGradientDamagePlasticity31RankineGradientDamagePlasticityEPKdii">Marmot::Materials::RankineGradientDamagePlasticity::RankineGradientDamagePlasticity (C++ function)</a>, <a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4N6Marmot9Materials31RankineGradientDamagePlasticity31RankineGradientDamagePlasticityERK31RankineGradientDamagePlasticity">[1]</a>
 </li>
-      <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4NK6Marmot9Materials31RankineGradientDamagePlasticity12updateStressER8responseR8tangentsRK9increment">Marmot::Materials::RankineGradientDamagePlasticity::updateStress (C++ function)</a>
+      <li><a href="pages/features/rankinegradientdamageplasticity.html#_CPPv4NK6Marmot9Materials31RankineGradientDamagePlasticity12updateStressER8responseR8tangentsRK9incrementP14energyTangents">Marmot::Materials::RankineGradientDamagePlasticity::updateStress (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4N6Marmot9Materials34RankineGradientSofteningPlasticityE">Marmot::Materials::RankineGradientSofteningPlasticity (C++ class)</a>
 </li>
       <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4N6Marmot9Materials34RankineGradientSofteningPlasticity4BaseE">Marmot::Materials::RankineGradientSofteningPlasticity::Base (C++ type)</a>
 </li>
       <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity13computeStressER8responseR8tangentsRK9increment">Marmot::Materials::RankineGradientSofteningPlasticity::computeStress (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity21computeStressImplicitER8responseR8tangentsRK9incrementP14energyTangents">Marmot::Materials::RankineGradientSofteningPlasticity::computeStressImplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity31computeStressWithEnergyTangentsER8responseR8tangentsRK9incrementR14energyTangents">Marmot::Materials::RankineGradientSofteningPlasticity::computeStressWithEnergyTangents (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity10getDensityEPKd">Marmot::Materials::RankineGradientSofteningPlasticity::getDensity (C++ function)</a>
 </li>
@@ -6713,23 +6789,31 @@
 </li>
       <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4N6Marmot9Materials34RankineGradientSofteningPlasticity34RankineGradientSofteningPlasticityEPKdii">Marmot::Materials::RankineGradientSofteningPlasticity::RankineGradientSofteningPlasticity (C++ function)</a>
 </li>
-      <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity12updateStressER8responseR8tangentsRK9increment">Marmot::Materials::RankineGradientSofteningPlasticity::updateStress (C++ function)</a>
+      <li><a href="pages/features/rankinegradientsofteningplasticity.html#_CPPv4NK6Marmot9Materials34RankineGradientSofteningPlasticity12updateStressER8responseR8tangentsRK9incrementP14energyTangents">Marmot::Materials::RankineGradientSofteningPlasticity::updateStress (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4N6Marmot9Materials26RankineSofteningPlasticityE">Marmot::Materials::RankineSofteningPlasticity (C++ class)</a>
 </li>
       <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity13computeStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">Marmot::Materials::RankineSofteningPlasticity::computeStress (C++ function)</a>
 </li>
+      <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity21computeStressImplicitER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoPN4Math8Vector6dEPN4Math8Vector6dE">Marmot::Materials::RankineSofteningPlasticity::computeStressImplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity31computeStressWithEnergyTangentsER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoRN4Math8Vector6dERN4Math8Vector6dE">Marmot::Materials::RankineSofteningPlasticity::computeStressWithEnergyTangents (C++ function)</a>
+</li>
       <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity10getDensityEPKd">Marmot::Materials::RankineSofteningPlasticity::getDensity (C++ function)</a>
 </li>
       <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4N6Marmot9Materials26RankineSofteningPlasticity26RankineSofteningPlasticityEPKdKiKi">Marmot::Materials::RankineSofteningPlasticity::RankineSofteningPlasticity (C++ function)</a>
 </li>
-      <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfo">Marmot::Materials::RankineSofteningPlasticity::updateStress (C++ function)</a>
+      <li><a href="pages/features/rankinesofteningplasticity.html#_CPPv4NK6Marmot9Materials26RankineSofteningPlasticity12updateStressER7state3DRN4Math8Matrix6dERKN4Math8Vector6dERK8timeInfoPN4Math8Vector6dEPN4Math8Vector6dE">Marmot::Materials::RankineSofteningPlasticity::updateStress (C++ function)</a>
 </li>
       <li><a href="pages/features/vonmises.html#_CPPv4N6Marmot9Materials13VonMisesModelE">Marmot::Materials::VonMisesModel (C++ class)</a>
 </li>
       <li><a href="pages/features/vonmises.html#_CPPv4NK6Marmot9Materials13VonMisesModel13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo">Marmot::Materials::VonMisesModel::computeStress (C++ function)</a>
 </li>
       <li><a href="pages/features/vonmises.html#_CPPv4NK6Marmot9Materials13VonMisesModel21computeStressExplicitER7state3DRKN6Marmot4Math8Vector6dERK8timeInfo">Marmot::Materials::VonMisesModel::computeStressExplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/vonmises.html#_CPPv4NK6Marmot9Materials13VonMisesModel21computeStressImplicitER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfoPN6Marmot4Math8Vector6dEPN6Marmot4Math8Vector6dE">Marmot::Materials::VonMisesModel::computeStressImplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/vonmises.html#_CPPv4NK6Marmot9Materials13VonMisesModel31computeStressWithEnergyTangentsER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfoRN6Marmot4Math8Vector6dERN6Marmot4Math8Vector6dE">Marmot::Materials::VonMisesModel::computeStressWithEnergyTangents (C++ function)</a>
 </li>
       <li><a href="pages/features/vonmises.html#_CPPv4N6Marmot9Materials13VonMisesModel9ConstantsE">Marmot::Materials::VonMisesModel::Constants (C++ struct)</a>
 </li>

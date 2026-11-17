@@ -158,6 +158,10 @@
     <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a462f0ab824760c0cd51f52356c2643bd" kind="function"><name>compute_dS_dF</name></member>
     <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af0f9491f27f9c6f380c7355d0bbd25bd" kind="function"><name>compute_dScalar_dF</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider" kind="class"><name>Marmot::Materials::HypoElasticEnergyTangentProvider</name>
+    <member refid="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1adef98e0d3fb382925b565b751726412d" kind="function"><name>~HypoElasticEnergyTangentProvider</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hypo_elastic_energy_tangent_provider_1ab1212a26727ada8d57293f448171df33" kind="function"><name>computeStressWithEnergyTangents</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment" kind="struct"><name>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a17cf50df16582a2162e92ea2fa36e007" kind="variable"><name>strainIncrement</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3ef26a2051c1684315a8b7562565ec2e" kind="variable"><name>stressIncrement</name></member>
@@ -757,6 +761,8 @@
   <compound refid="_marmot_material_hypo_elastic_8h" kind="file"><name>MarmotMaterialHypoElastic.h</name>
   </compound>
   <compound refid="_marmot_material_hypo_elastic_a_d_8h" kind="file"><name>MarmotMaterialHypoElasticAD.h</name>
+  </compound>
+  <compound refid="_marmot_material_hypo_elastic_energy_tangents_8h" kind="file"><name>MarmotMaterialHypoElasticEnergyTangents.h</name>
   </compound>
   <compound refid="_marmot_material_hypo_elastic_factory_8h" kind="file"><name>MarmotMaterialHypoElasticFactory.h</name>
   </compound>
