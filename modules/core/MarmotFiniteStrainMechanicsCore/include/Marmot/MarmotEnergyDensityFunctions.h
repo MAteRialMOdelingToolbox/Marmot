@@ -175,12 +175,13 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     using ScalarDerivatives = Invariants::RightCauchyGreen::ScalarDerivatives< T, Order >;
 
     /* Psi( C ) and its derivatives w.r.t. C up to Order for a scalar function
-     * fBar: (Ibar1, Ibar2, J) -> ScalarDerivatives w.r.t. (Ibar1, Ibar2, J). */
-    template < int Order, typename T, typename ScalarFunction >
+     * fBar: (Ibar1, Ibar2, J) -> ScalarDerivatives w.r.t. (Ibar1, Ibar2, J). UsesIbar2 = false skips the evaluation
+     * of Ibar2 for a function of Ibar1 alone. */
+    template < int Order, bool UsesIbar2, typename T, typename ScalarFunction >
     auto isochoricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const ScalarFunction& fBar )
     {
-      const auto                          inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C );
-      const ScalarDerivatives< T, Order > f   = fBar( inv.x );
+      const auto inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C, UsesIbar2 );
+      const ScalarDerivatives< T, Order > f = fBar( inv.x );
       return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
     }
 
@@ -189,7 +190,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < int Order, typename T, typename ScalarFunction >
     auto volumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const ScalarFunction& U )
     {
-      const auto                          inv = Invariants::RightCauchyGreen::computeInvariants< Order >( C );
+      const auto                          inv = Invariants::RightCauchyGreen::computeInvariants< Order >( C, false );
       const ScalarDerivatives< T, Order > f   = U( inv.x[Invariants::RightCauchyGreen::indexJ] );
       return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
     }
@@ -449,7 +450,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T MooneyRivlinPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double C10, const double C01 )
     {
-      return Detail::isochoricPotential< 0 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+      return Detail::isochoricPotential< 0, true >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
         return Detail::mooneyRivlinIsochoric< 0 >( xBar, C10, C01 );
       } );
     }
@@ -477,7 +478,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                      const double                                        C20,
                      const double                                        C30 )
     {
-      return Detail::isochoricPotential< 0 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+      return Detail::isochoricPotential< 0, false >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
         return Detail::yeohIsochoric< 0 >( xBar, C10, C20, C30 );
       } );
     }
@@ -502,7 +503,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T NeoHookePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double mu )
     {
-      return Detail::isochoricPotential< 0 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+      return Detail::isochoricPotential< 0, false >( C, [mu]( const std::array< T, 3 >& xBar ) {
         return Detail::neoHookeIsochoric< 0 >( xBar, mu );
       } );
     }
@@ -539,7 +540,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                   const double                                        mu,
                                   const double                                        lambdaL )
     {
-      return Detail::isochoricPotential< 0 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+      return Detail::isochoricPotential< 0, false >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
         return Detail::arrudaBoyce8ChainIsochoric< 0 >( xBar, mu, lambdaL );
       } );
     }
@@ -563,7 +564,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        mu )
       {
-        return Detail::isochoricPotential< 1 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 1, false >( C, [mu]( const std::array< T, 3 >& xBar ) {
           return Detail::neoHookeIsochoric< 1 >( xBar, mu );
         } );
       }
@@ -585,7 +586,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C20,
         const double                                        C30 )
       {
-        return Detail::isochoricPotential< 1 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 1, false >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
           return Detail::yeohIsochoric< 1 >( xBar, C10, C20, C30 );
         } );
       }
@@ -605,7 +606,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C10,
         const double                                        C01 )
       {
-        return Detail::isochoricPotential< 1 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 1, true >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
           return Detail::mooneyRivlinIsochoric< 1 >( xBar, C10, C01 );
         } );
       }
@@ -641,7 +642,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        mu,
         const double                                        lambdaL )
       {
-        return Detail::isochoricPotential< 1 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 1, false >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
           return Detail::arrudaBoyce8ChainIsochoric< 1 >( xBar, mu, lambdaL );
         } );
       }
@@ -662,7 +663,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        mu )
       {
-        return Detail::isochoricPotential< 2 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 2, false >( C, [mu]( const std::array< T, 3 >& xBar ) {
           return Detail::neoHookeIsochoric< 2 >( xBar, mu );
         } );
       }
@@ -683,7 +684,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C20,
         const double                                        C30 )
       {
-        return Detail::isochoricPotential< 2 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 2, false >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
           return Detail::yeohIsochoric< 2 >( xBar, C10, C20, C30 );
         } );
       }
@@ -703,7 +704,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C10,
         const double                                        C01 )
       {
-        return Detail::isochoricPotential< 2 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 2, true >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
           return Detail::mooneyRivlinIsochoric< 2 >( xBar, C10, C01 );
         } );
       }
@@ -723,7 +724,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        mu,
         const double                                        lambdaL )
       {
-        return Detail::isochoricPotential< 2 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+        return Detail::isochoricPotential< 2, false >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
           return Detail::arrudaBoyce8ChainIsochoric< 2 >( xBar, mu, lambdaL );
         } );
       }
@@ -1514,6 +1515,37 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
   }
 
+  /** @cond */
+  namespace Detail {
+    /* PenceGouPotentialB as a function of (I1, J), with its scalar derivatives w.r.t. (I1, I2, J). */
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > penceGouB( const std::array< T, 3 >& x, const double K, const double G )
+    {
+      constexpr std::size_t iI1 = Invariants::RightCauchyGreen::indexI1;
+      constexpr std::size_t iJ  = Invariants::RightCauchyGreen::indexJ;
+
+      const T& I1     = x[iI1];
+      const T& J      = x[iJ];
+      const T  Jm23   = pow( J, -2. / 3. );
+      const T  JmJInv = J - 1. / J;
+
+      ScalarDerivatives< T, Order > f;
+      f.f = K / 8. * JmJInv * JmJInv + G / 2. * ( I1 * Jm23 - 3. );
+      if constexpr ( Order >= 1 ) {
+        f.df[iI1] = G / 2. * Jm23;
+        f.df[iJ]  = K / 4. * JmJInv * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * Jm23 / J;
+      }
+      if constexpr ( Order >= 2 ) {
+        const T J2     = J * J;
+        f.d2f[iJ][iJ]  = K / 4. * ( 1. + 3. / ( J2 * J2 ) ) + 5. / 9. * G * I1 * Jm23 / J2;
+        f.d2f[iI1][iJ] = -G / 3. * Jm23 / J;
+        f.d2f[iJ][iI1] = f.d2f[iI1][iJ];
+      }
+      return f;
+    }
+  } // namespace Detail
+  /** @endcond */
+
   namespace FirstOrder {
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first derivative
@@ -1551,29 +1583,8 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        K,
       const double                                        G )
     {
-      using namespace Fastor;
-      using namespace Marmot::Math::Tensors::FastorIndices;
-
-      const T J  = sqrt( determinant( C ) );
-      const T I1 = trace( C );
-      // energy density
-      T psi = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
-
-      // first derivative w.r.t. C
-      const T dPsi_dJ  = K / 4. * ( J - 1. / J ) * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * pow( J, -5. / 3. );
-      const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
-
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
-      const Math::Tensors::FastorTensors::Tensor33t< T >
-        dJ_dC = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
-      const Math::Tensors::FastorTensors::Tensor33t< T >
-        dI1_dC = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >( Math::Tensors::FastorTensors::Spatial3D::I );
-
-      Math::Tensors::FastorTensors::Tensor33t< T >
-        dPsi_dC = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
-                  Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
-
-      return { psi, dPsi_dC };
+      const auto inv = Invariants::RightCauchyGreen::computeInvariants< 1 >( C, false );
+      return Invariants::RightCauchyGreen::composeWithInvariants( Detail::penceGouB< 1 >( inv.x, K, G ), inv );
     }
 
     /** @brief Mooney-Rivlin potential (see the plain
@@ -1764,36 +1775,8 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        K,
       const double                                        G )
     {
-      using namespace Fastor;
-      using namespace Marmot::Math::Tensors::FastorIndices;
-
-      const T J  = sqrt( determinant( C ) );
-      const T I1 = trace( C );
-      // energy density
-      T psi = K / 8. * pow( J - 1. / J, 2. ) + G / 2. * ( I1 * pow( J, -2. / 3 ) - 3. );
-
-      // first derivative w.r.t. C
-      const T dPsi_dJ  = K / 4. * ( J - 1. / J ) * ( 1 + 1. / ( J * J ) ) - G / 3. * I1 * pow( J, -5. / 3. );
-      const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
-
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInv   = inverse( C );
-      const Math::Tensors::FastorTensors::Tensor33t< T > dJ_dC  = 0.5 * J * transpose( CInv );
-      const Math::Tensors::FastorTensors::Tensor33t< T > dI1_dC = Math::Tensors::FastorTensors::Spatial3D::I;
-
-      Math::Tensors::FastorTensors::Tensor33t< T > dPsi_dC = dPsi_dJ * dJ_dC + dPsi_dI1 * dI1_dC;
-
-      // second derivative w.r.t. C
-      const T d2Psi_dJdJ  = K / 4. * ( 1. + 3. / ( J * J * J * J ) ) + 5. / 9. * G * I1 * pow( J, -8. / 3. );
-      const T d2Psi_dJdI1 = -G / 3. * pow( J, -5. / 3. );
-      Math::Tensors::FastorTensors::Tensor3333t< T > d2J_dCdC = J / 4. * einsum< JI, LK, to_IJKL >( CInv, CInv ) -
-                                                                J / 2. * einsum< JK, LI, to_IJKL >( CInv, CInv );
-
-      Math::Tensors::FastorTensors::Tensor3333t< T > d2Psi_dCdC = d2Psi_dJdJ * einsum< IJ, KL >( dJ_dC, dJ_dC ) +
-                                                                  dPsi_dJ * d2J_dCdC +
-                                                                  d2Psi_dJdI1 * ( einsum< IJ, KL >( dJ_dC, dI1_dC ) +
-                                                                                  einsum< IJ, KL >( dI1_dC, dJ_dC ) );
-
-      return { psi, dPsi_dC, d2Psi_dCdC };
+      const auto inv = Invariants::RightCauchyGreen::computeInvariants< 2 >( C, false );
+      return Invariants::RightCauchyGreen::composeWithInvariants( Detail::penceGouB< 2 >( inv.x, K, G ), inv );
     }
 
     /** @brief Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t.

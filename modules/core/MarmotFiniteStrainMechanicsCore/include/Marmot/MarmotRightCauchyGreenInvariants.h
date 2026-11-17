@@ -106,6 +106,20 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
       d2x_dCdC;
   };
 
+  /** @brief Second principal invariant \f$I_2 = \tfrac{1}{2}\left(I_1^2 - \mathrm{tr}\,\boldsymbol C^2\right)\f$,
+   * evaluated as the sum of the principal 2x2 minors of \f$\boldsymbol C\f$.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @return \f$I_2\f$.
+   */
+  template < typename T >
+  T secondInvariant( const Math::Tensors::FastorTensors::Tensor33t< T >& C )
+  {
+    return C( 0, 0 ) * C( 1, 1 ) + C( 1, 1 ) * C( 2, 2 ) + C( 0, 0 ) * C( 2, 2 ) - C( 0, 1 ) * C( 1, 0 ) -
+           C( 1, 2 ) * C( 2, 1 ) - C( 0, 2 ) * C( 2, 0 );
+  }
+
   /** @brief Compute the principal invariants \f$(I_1, I_2, J)\f$ of \f$\boldsymbol C\f$ and their derivatives
    * w.r.t. \f$\boldsymbol C\f$ up to @p Order,
    * \f[
@@ -123,10 +137,13 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * @tparam Order Highest derivative to compute (0, 1 or 2).
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @param C Right Cauchy-Green tensor.
+   * @param withI2 Pass @c false for a function that does not depend on \f$I_2\f$, to skip its evaluation;
+   * \f$I_2\f$ and its derivatives are then not meaningful.
    * @return The invariants and their derivatives.
    */
   template < int Order, typename T >
-  InvariantsAndDerivatives< T, Order > computeInvariants( const Math::Tensors::FastorTensors::Tensor33t< T >& C )
+  InvariantsAndDerivatives< T, Order > computeInvariants( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                                          const bool withI2 = true )
   {
     static_assert( Order >= 0 && Order <= 2, "computeInvariants: only derivatives up to the second order" );
     using namespace Fastor;
@@ -136,7 +153,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
     const T I1     = trace( C );
     const T J      = sqrt( determinant( C ) );
     inv.x[indexI1] = I1;
-    inv.x[indexI2] = 0.5 * ( I1 * I1 - trace( C % C ) );
+    inv.x[indexI2] = withI2 ? secondInvariant( C ) : T( 0. );
     inv.x[indexJ]  = J;
 
     if constexpr ( Order >= 1 ) {
@@ -185,11 +202,14 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * @tparam Order Highest derivative to compute (0, 1 or 2).
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @param C Right Cauchy-Green tensor.
+   * @param withI2 Pass @c false for a function that does not depend on \f$\bar I_2\f$, to skip its
+   * evaluation; \f$\bar I_2\f$ and its derivatives are then not meaningful.
    * @return The isochoric invariants and their derivatives.
    */
   template < int Order, typename T >
   InvariantsAndDerivatives< T, Order > computeIsochoricInvariants(
-    const Math::Tensors::FastorTensors::Tensor33t< T >& C )
+    const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+    const bool                                          withI2 = true )
   {
     static_assert( Order >= 0 && Order <= 2, "computeIsochoricInvariants: only derivatives up to the second order" );
     using namespace Fastor;
@@ -197,7 +217,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
     InvariantsAndDerivatives< T, Order > inv;
 
     const T I1     = trace( C );
-    const T I2     = 0.5 * ( I1 * I1 - trace( C % C ) );
+    const T I2     = withI2 ? secondInvariant( C ) : T( 0. );
     const T J      = sqrt( determinant( C ) );
     const T Jm23   = pow( J, -2. / 3. );
     const T Jm43   = Jm23 * Jm23;

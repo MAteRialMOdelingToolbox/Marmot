@@ -998,34 +998,6 @@ auto testRightCauchyGreenInvariantsAndDerivatives()
                              << " derivatives of the isochoric invariants do not vanish at C = lambda I." );
 }
 
-// composeWithInvariants on a function of (I1, I2, J) reproduces the hand-derived PenceGouPotentialB
-auto testComposeWithInvariantsReproducesPenceGouB()
-{
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
-  using namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen;
-  const auto [C, invC, K, G, J_, I1_] = computationParameters();
-
-  const auto   inv = computeInvariants< 2 >( C );
-  const double I1  = inv.x[indexI1];
-  const double J   = inv.x[indexJ];
-
-  ScalarDerivatives< double, 2 > f;
-  f.f                    = K / 8. * std::pow( J - 1. / J, 2. ) + G / 2. * ( I1 * std::pow( J, -2. / 3. ) - 3. );
-  f.df[indexI1]          = G / 2. * std::pow( J, -2. / 3. );
-  f.df[indexJ]           = K / 4. * ( J - 1. / J ) * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * std::pow( J, -5. / 3. );
-  f.d2f[indexJ][indexJ]  = K / 4. * ( 1. + 3. / ( J * J * J * J ) ) + 5. / 9. * G * I1 * std::pow( J, -8. / 3. );
-  f.d2f[indexI1][indexJ] = -G / 3. * std::pow( J, -5. / 3. );
-  f.d2f[indexJ][indexI1] = f.d2f[indexI1][indexJ];
-
-  const auto [psi, dPsi_dC, d2Psi_dCdC]          = composeWithInvariants( f, inv );
-  const auto [psiRef, dPsiRef_dC, d2PsiRef_dCdC] = SecondOrder::PenceGouPotentialB( C, K, G );
-
-  throwExceptionOnFailure( checkIfEqual( psi, psiRef, 1e-11 ) && checkIfEqual( dPsi_dC, dPsiRef_dC, 1e-11 ) &&
-                             checkIfEqual( d2Psi_dCdC, d2PsiRef_dCdC, 1e-11 ),
-                           Marmot::Utilities::MakeString()
-                             << __PRETTY_FUNCTION__ << " composeWithInvariants != SecondOrder::PenceGouPotentialB." );
-}
-
 // Generic FirstOrder-vs-SecondOrder cross-check at a general, non-symmetric C: energy and gradient must agree, and
 // the SecondOrder Hessian is checked against a complex-step derivative of the FirstOrder gradient.
 template < typename FirstOrderFn, typename SecondOrderFn, typename... Args >
@@ -1063,6 +1035,32 @@ void checkSecondOrderMatchesFirstOrder( const char*      testName,
                              << testName
                              << " SecondOrder Hessian disagrees with a complex-step derivative of the "
                                 "FirstOrder gradient." );
+}
+
+// The plain PenceGouPotentialB keeps its own closed form of the energy (it is the one differentiated automatically
+// in the plasticity models), while the FirstOrder and SecondOrder overloads go through the invariants of C: the
+// three must agree, also at a general, non-symmetric C.
+auto testPenceGouPotentialBOverloadsAgree()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const auto [C, invC, K, G, J, I1] = computationParameters();
+
+  for ( const Tensor33d& C_ : { C, nonSymmetricC() } ) {
+    checkPlainMatchesFirstOrder(
+      __PRETTY_FUNCTION__,
+      []( const auto& Ct, double K_, double G_ ) { return PenceGouPotentialB( Ct, K_, G_ ); },
+      []( const auto& Ct, double K_, double G_ ) { return FirstOrder::PenceGouPotentialB( Ct, K_, G_ ); },
+      C_,
+      K,
+      G );
+    checkSecondOrderMatchesFirstOrder(
+      "SecondOrder::PenceGouPotentialB",
+      []( const auto& Ct, double K_, double G_ ) { return FirstOrder::PenceGouPotentialB( Ct, K_, G_ ); },
+      []( const auto& Ct, double K_, double G_ ) { return SecondOrder::PenceGouPotentialB( Ct, K_, G_ ); },
+      C_,
+      K,
+      G );
+  }
 }
 
 #define CHECK_SECOND_ORDER( Namespace, Potential, ... )                                                                \
@@ -1170,7 +1168,7 @@ int main()
                                testCompressiblePotentialsMatchClosedForm,
                                testFirstOrderPotentialsWithAutodiffScalars,
                                testRightCauchyGreenInvariantsAndDerivatives,
-                               testComposeWithInvariantsReproducesPenceGouB,
+                               testPenceGouPotentialBOverloadsAgree,
                                testSecondOrderPotentialsMatchFirstOrder,
                                testVolumetricSecondOrderBulkModulus,
                                testStandardNeoHookeEnergyMatchesClosedForm,
