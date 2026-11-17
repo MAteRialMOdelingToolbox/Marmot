@@ -17,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="819" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="819" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="823" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="823" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a8c19c397c9f5766c7521cf79f2c4f857" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -32,7 +32,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="820" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="820" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="824" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="824" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -55,7 +55,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="826" column="22"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="830" column="22"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -64,7 +64,7 @@
     <detaileddescription>
 <para>A structural type, so that element registrations can pass it as a template argument. It is built with <ref refid="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" kindref="member">gaussExactToDegree()</ref> or <ref refid="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" kindref="member">newtonCotesExactToDegree()</ref>. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="818" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="818" bodyend="827"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="822" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="822" bodyend="831"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1a8c19c397c9f5766c7521cf79f2c4f857" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</scope><name>degreeOfExactness</name></member>
       <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule_1ab913c089d817c6f1d8c3755863350af1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadratureRule</scope><name>family</name></member>

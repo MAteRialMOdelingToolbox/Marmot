@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="640" height="300" font-family="sans-serif" font-size="13">
+  <rect width="640" height="300" fill="#ffffff"/>
+  <!-- host element -->
+  <polygon points="150,70 470,60 480,230 140,240" fill="#eef2f7" stroke="#55606e" stroke-width="1.5"/>
+  <text x="430" y="85" fill="#55606e">host element</text>
+  <!-- channel: original bar path inside the host, fixed in the host -->
+  <line x1="145" y1="160" x2="475" y2="150" stroke="#2b6cb0" stroke-width="3" stroke-dasharray="7,5"/>
+  <text x="300" y="188" fill="#2b6cb0">channel [c_s, c_e] (fixed in the host)</text>
+  <!-- tributary parts of 3 Gauss-Lobatto channel points: [0, 1/6], [1/6, 5/6], [5/6, 1] of the channel -->
+  <g stroke="#2b6cb0" stroke-width="1.2">
+    <line x1="145" y1="172" x2="145" y2="180"/><line x1="200" y1="170" x2="200" y2="178"/>
+    <line x1="420" y1="164" x2="420" y2="172"/><line x1="475" y1="162" x2="475" y2="170"/>
+  </g>
+  <text x="150" y="205" fill="#2b6cb0" font-size="11">tributary parts</text>
+  <!-- bar window: 3 bar elements, slid to the right by s_t, slightly off the channel (normal gap) -->
+  <line x1="245" y1="139" x2="600" y2="128" stroke="#c05621" stroke-width="6" stroke-linecap="round"/>
+  <g fill="#c05621">
+    <circle cx="245" cy="139" r="5"/><circle cx="363" cy="135" r="5"/><circle cx="481" cy="131" r="5"/><circle cx="600" cy="128" r="5"/>
+  </g>
+  <text x="520" y="115" fill="#c05621">bar window (current)</text>
+  <text x="200" y="125" fill="#c05621" font-size="11">bar end</text>
+  <!-- channel points and their partners (closest point projection) -->
+  <g fill="#2b6cb0"><circle cx="145" cy="160" r="5"/><circle cx="310" cy="155" r="5"/><circle cx="475" cy="150" r="5"/></g>
+  <line x1="310" y1="155" x2="309.6" y2="137" stroke="#2f855a" stroke-width="1.5"/>
+  <circle cx="309.6" cy="137" r="4" fill="#2f855a"/>
+  <text x="318" y="100" fill="#2f855a">partner x(η̄): closest point,</text>
+  <text x="318" y="116" fill="#2f855a">gap d = normal slip</text>
+  <line x1="475" y1="150" x2="474.6" y2="131.5" stroke="#2f855a" stroke-width="1.5"/>
+  <circle cx="474.6" cy="131.5" r="4" fill="#2f855a"/>
+  <!-- the first channel point: the bar has left it -->
+  <text x="40" y="150" fill="#2b6cb0" font-size="11">left by the bar:</text>
+  <text x="40" y="164" fill="#2b6cb0" font-size="11">f = 0, history frozen</text>
+  <!-- slip arrow -->
+  <line x1="145" y1="262" x2="245" y2="258" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="160" y="282" fill="#333">tangential slip s_t = S_c − S(η̄)</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+</svg>

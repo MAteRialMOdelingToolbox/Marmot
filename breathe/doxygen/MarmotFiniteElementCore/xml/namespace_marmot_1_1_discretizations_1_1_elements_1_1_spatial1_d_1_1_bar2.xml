@@ -91,6 +91,25 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="305" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="305" declcolumn="18"/>
       </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1ac4a59485bfacbb0e5759e55eef8a201e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_finite_element_8h_1a60178f075d26e430d30511a51c8dddf7" kindref="member">dNdXiSized</ref></type>
+        <definition>dNdXiSized Marmot::Discretizations::Elements::Spatial1D::Bar2::d2NdXi2</definition>
+        <argsstring>(double xi)</argsstring>
+        <name>d2NdXi2</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial1D::Bar2::d2NdXi2</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the second derivatives of the Bar2 shape functions (constant, zero). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="307" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="307" declcolumn="18"/>
+      </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>

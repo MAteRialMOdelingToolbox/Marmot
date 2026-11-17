@@ -348,6 +348,7 @@
     <member refid="_marmot_finite_element_8h_1adf24aecc3bc39e576ba00e506869315a" kind="variable"><name>nNodes</name></member>
     <member refid="_marmot_finite_element_8h_1a3a89b5113efa27bcb2287ec5ac6ee3e8" kind="function"><name>N</name></member>
     <member refid="_marmot_finite_element_8h_1a24f1fd55196dc58688af0eb0a50ad8b4" kind="function"><name>dNdXi</name></member>
+    <member refid="_marmot_finite_element_8h_1ac4a59485bfacbb0e5759e55eef8a201e" kind="function"><name>d2NdXi2</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial1_d_1_1_bar3" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial1D::Bar3</name>
     <member refid="_marmot_finite_element_8h_1a4c366ed0174083fa3d6f97260cc63856" kind="typedef"><name>NSized</name></member>
@@ -355,6 +356,7 @@
     <member refid="_marmot_finite_element_8h_1a9b1bd9699edd5ee19a2052d2e20573d5" kind="variable"><name>nNodes</name></member>
     <member refid="_marmot_finite_element_8h_1aca69441f31ec1c0a66c9de7f42a9807e" kind="function"><name>N</name></member>
     <member refid="_marmot_finite_element_8h_1a7102ddd4bd651756bdcced8c38787be2" kind="function"><name>dNdXi</name></member>
+    <member refid="_marmot_finite_element_8h_1a20ef86e58cb045c5cc0b54ab02cab52d" kind="function"><name>d2NdXi2</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial2D</name>
     <member refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kind="variable"><name>nDim</name></member>
