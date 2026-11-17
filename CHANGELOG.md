@@ -7,6 +7,14 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
+  materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
+  materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
+  material and geometric tangent; for 2 nodes identical to the co-rotational truss). Property: the cross section
+  area. E.g., for reinforcement bars embedded in continuum elements.
+- `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
+  materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
+  the lateral stretches with state reset, condensed tangent dτ11/dF11).
 - Bond-slip of embedded reinforcement: the pluggable bond-slip law interface `Materials::BondSlipLaw` with its
   `Registry::BondSlipLawFactory` (bond laws are modules in the materials category with their own factory), the laws
   `materials/LinearElasticBondSlip` (`LINEARELASTICBONDSLIP`), `materials/ModelCode2010BondSlip`
@@ -68,6 +76,12 @@ All notable changes to Marmot are documented in this file. The format follows
   a combination of the local and the nonlocal softening variable.
 
 ### Changed
+- **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
+  the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
+  response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`
+  must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
+  `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
+  generic facilities (tested), now without a registered element.
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
   them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
@@ -105,6 +119,18 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial2D::gaussPointList1x1/2x2/3x3` | `getQuadraturePoints( ReferenceDomain::Quadrilateral, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
+
+### Fixed
+- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
+  trial stress, `|g| <= 1e-12 * ||s_trial||`, instead of an absolute one (`VonMises` 1e-12 MPa, `ADVonMises`
+  1e-10 MPa). `g` is a difference of numbers of the size of `||s_trial||`, so its round-off is about
+  `eps * ||s_trial||`: the absolute tolerance could not be met for large trial stresses, and large strain increments
+  failed to converge depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Both
+  models now use the same tolerance; for `ADVonMises` the effective criterion is 1e-12 relative instead of 1e-10
+  absolute, i.e. looser for trial stresses above 100 MPa (Newton converges quadratically, so the result is at
+  round-off either way). Test `TestVonMisesLargeIncrement`: one strain increment of order one (trial stress about
+  900 f_y) ends on the yield surface for perfect, linear and nonlinear hardening (both models, implicit and
+  explicit).
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
