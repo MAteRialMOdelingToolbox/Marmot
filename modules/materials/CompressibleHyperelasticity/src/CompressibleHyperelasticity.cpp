@@ -9,6 +9,7 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <variant>
@@ -26,6 +27,15 @@ namespace Marmot::Materials {
     [[noreturn]] void throwInvalidProperties( const std::string& message )
     {
       throw std::invalid_argument( "CompressibleHyperelasticity: " + message );
+    }
+
+    /* A base selector is an integer stored as a double; anything else is rejected rather than truncated. */
+    int baseSelector( const double value, const std::string& name )
+    {
+      if ( !( value >= 0. && value <= 1000. ) || std::abs( value - std::round( value ) ) > 1e-9 )
+        throwInvalidProperties( "the " + name + " base must be a non-negative integer, got " + std::to_string( value ) +
+                                "." );
+      return static_cast< int >( std::round( value ) );
     }
 
     int nIsochoricParameters( const int isochoricBase )
@@ -69,8 +79,8 @@ namespace Marmot::Materials {
     if ( nMaterialProperties < 2 )
       throwInvalidProperties( "the first two material properties select the isochoric and the volumetric base." );
 
-    const int isochoricBase  = static_cast< int >( materialProperties[0] );
-    const int volumetricBase = static_cast< int >( materialProperties[1] );
+    const int isochoricBase  = baseSelector( materialProperties[0], "isochoric" );
+    const int volumetricBase = baseSelector( materialProperties[1], "volumetric" );
     const int nIsochoric     = nIsochoricParameters( isochoricBase );
     const int nVolumetric    = nVolumetricParameters( volumetricBase );
     indexDensity             = 2 + nIsochoric + nVolumetric;
@@ -79,6 +89,12 @@ namespace Marmot::Materials {
       throwInvalidProperties( "expected at least " + std::to_string( indexDensity ) +
                               " material properties (2 bases, " + std::to_string( nIsochoric ) + " isochoric and " +
                               std::to_string( nVolumetric ) + " volumetric parameters), got " +
+                              std::to_string( nMaterialProperties ) + "." );
+
+    if ( nMaterialProperties > indexDensity + 1 )
+      throwInvalidProperties( "expected at most " + std::to_string( indexDensity + 1 ) +
+                              " material properties (2 bases, " + std::to_string( nIsochoric ) + " isochoric and " +
+                              std::to_string( nVolumetric ) + " volumetric parameters, optional density), got " +
                               std::to_string( nMaterialProperties ) + "." );
 
     const double* iso = materialProperties + 2;
@@ -99,9 +115,19 @@ namespace Marmot::Materials {
     case SussmanBathe: volumetricPart = EDF::Volumetric::SussmanBathe{ vol[0] }; break;
     case Penalty: volumetricPart = EDF::Volumetric::Penalty{ vol[0] }; break;
     case SimoTaylor: volumetricPart = EDF::Volumetric::SimoTaylor{ vol[0] }; break;
-    case Ogden: volumetricPart = EDF::Volumetric::Ogden{ vol[0], vol[1] }; break;
+    case Ogden:
+      if ( vol[1] == 0.0 || !std::isfinite( vol[1] ) )
+        throwInvalidProperties( "the Ogden exponent theta must be nonzero, got " + std::to_string( vol[1] ) + "." );
+      volumetricPart = EDF::Volumetric::Ogden{ vol[0], vol[1] };
+      break;
     case LiuHofstetterMang: volumetricPart = EDF::Volumetric::LiuHofstetterMang{ vol[0] }; break;
-    case DollSchweizerhof: volumetricPart = EDF::Volumetric::DollSchweizerhof{ vol[0], vol[1], vol[2] }; break;
+    case DollSchweizerhof:
+      if ( !( vol[1] > 0.0 ) || !( vol[2] > 1.0 ) )
+        throwInvalidProperties(
+          "the Doll-Schweizerhof shape parameters must fulfil alpha > 0 and beta > 1, got alpha = " +
+          std::to_string( vol[1] ) + ", beta = " + std::to_string( vol[2] ) + "." );
+      volumetricPart = EDF::Volumetric::DollSchweizerhof{ vol[0], vol[1], vol[2] };
+      break;
     case DollSchweizerhofExponential: volumetricPart = EDF::Volumetric::DollSchweizerhofExponential{ vol[0] }; break;
     default: volumetricPart = EDF::Volumetric::DollSchweizerhofLogarithmic{ vol[0] };
     }

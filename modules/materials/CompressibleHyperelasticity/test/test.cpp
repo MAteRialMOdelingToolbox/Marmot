@@ -7,6 +7,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTesting.h"
 #include <array>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -781,7 +782,22 @@ void testMaterialPropertiesAreValidated()
                            "too few material properties accepted in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( throwsInvalidArgument( { 3, 2, 1500., 1.0, 3500. } ),
                            "locking stretch <= 1 accepted in " + std::string( __PRETTY_FUNCTION__ ) );
-  throwExceptionOnFailure( !throwsInvalidArgument( { 3, 2, 1500., 3.0, 3500. } ),
+  throwExceptionOnFailure( throwsInvalidArgument( { 0.5, 2, 1500., 3500. } ) &&
+                             throwsInvalidArgument( { 0, 5.9999, 1500., 3500. } ) &&
+                             throwsInvalidArgument( { -1, 2, 1500., 3500. } ) &&
+                             throwsInvalidArgument( { 0, std::numeric_limits< double >::quiet_NaN(), 1500., 3500. } ),
+                           "non-integral base selector accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 0, 2, 1500., 3500., 1., 3. } ) &&
+                             throwsInvalidArgument( { 0, 6, 1500., 3500., 1., 3., 2400., 1. } ),
+                           "surplus material properties accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 0, 4, 1500., 3500., 0. } ),
+                           "Ogden exponent theta = 0 accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 0, 6, 1500., 3500., 0., 3. } ) &&
+                             throwsInvalidArgument( { 0, 6, 1500., 3500., 1., 1. } ),
+                           "invalid Doll-Schweizerhof shape parameters accepted in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( !throwsInvalidArgument( { 3, 2, 1500., 3.0, 3500. } ) &&
+                             !throwsInvalidArgument( { 0, 6, 1500., 3500., 1., 3., 2400. } ),
                            "valid material properties rejected in " + std::string( __PRETTY_FUNCTION__ ) );
 
   const std::vector< double >       withDensity = { 1, 4, 700., -50., 20., 3500., -2., 2400. };

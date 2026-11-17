@@ -123,7 +123,7 @@ When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven 
 
    # Define material and properties
    # isochoric base 0 (NeoHooke), volumetric base 6 (DollSchweizerhof), mu, kappa, alpha, beta
-   properties = np.array([0.0, 6.0, 7500.0, 20000.0, 1.0, 3.0])
+   properties = np.array([0.0, 6.0, 0.25, 20000.0, 1.0, 3.0])
    solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEHYPERELASTICITY", properties)
 
    # Define loading step

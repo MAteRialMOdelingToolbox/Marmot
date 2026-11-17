@@ -69,13 +69,20 @@ namespace Marmot::Materials {
       const SecondOrderPotential& potential,
       const Tensor33d&            C )
     {
-      const auto [d2Psi_dCdC, d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::
-        dF_dSymmetricT( [&potential]( const Tensor33t< autodiff::dual >&
-                                        C_ad ) { return minorSymmetricPart( std::get< 2 >( potential( C_ad ) ) ); },
-                        C );
+      // the value parts of every dual evaluation are the energy density and its first derivative at C
+      double    psi = 0.;
+      Tensor33d dPsi_dC;
 
-      const auto [psi, dPsi_dC_general, d2Psi_dCdC_general] = potential( C );
-      const Tensor33d dPsi_dC                               = .5 * ( dPsi_dC_general + transpose( dPsi_dC_general ) );
+      const auto [d2Psi_dCdC, d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::dF_dSymmetricT(
+        [&potential, &psi, &dPsi_dC]( const Tensor33t< autodiff::dual >& C_ad ) {
+          const auto [psi_ad, dPsi_dC_ad, d2Psi_dCdC_ad] = potential( C_ad );
+          psi                                            = autodiff::val( psi_ad );
+          for ( int i = 0; i < 3; i++ )
+            for ( int j = 0; j < 3; j++ )
+              dPsi_dC( i, j ) = .5 * ( autodiff::val( dPsi_dC_ad( i, j ) ) + autodiff::val( dPsi_dC_ad( j, i ) ) );
+          return minorSymmetricPart( d2Psi_dCdC_ad );
+        },
+        C );
 
       return { psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC };
     }

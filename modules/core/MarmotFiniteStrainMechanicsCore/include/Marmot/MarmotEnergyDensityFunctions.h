@@ -380,12 +380,14 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       for ( std::size_t i = 0; i < alphas.size(); i++ ) {
         const double a = alphas[i];
         const double b = betas[i];
-        U.f += scale *
-               ( pow( J, a + 1. ) / ( a + 1. ) + pow( J, 1. - b ) / ( b - 1. ) - 1. / ( a + 1. ) - 1. / ( b - 1. ) );
+        // all powers of J from J^a and J^-b
+        const T powJa      = pow( J, a );
+        const T powJMinusB = pow( J, -b );
+        U.f += scale * ( powJa * J / ( a + 1. ) + powJMinusB * J / ( b - 1. ) - 1. / ( a + 1. ) - 1. / ( b - 1. ) );
         if constexpr ( Order >= 1 )
-          U.df[iJ] += scale * ( pow( J, a ) - pow( J, -b ) );
+          U.df[iJ] += scale * ( powJa - powJMinusB );
         if constexpr ( Order >= 2 )
-          U.d2f[iJ][iJ] += scale * ( a * pow( J, a - 1. ) + b * pow( J, -b - 1. ) );
+          U.d2f[iJ][iJ] += scale * ( a * powJa + b * powJMinusB ) / J;
       }
       return U;
     }
