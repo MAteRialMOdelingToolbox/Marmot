@@ -32,6 +32,20 @@ All notable changes to Marmot are documented in this file. The format follows
   host and the bonded length shrinks as it is pulled out. Objective (current frame at the partner), with the
   linearization of the closest point; `EmbeddedBondKinematics.h` holds the frame and the integration rule shared with
   `EmbeddedBondElement`; `Bar2::d2NdXi2`, `Bar3::d2NdXi2`.
+- Energy gradients of the elements for dissipation based arc-length control, as optional capabilities that leave the
+  standard interfaces unchanged (see the feature page "Energy gradients"):
+  - `EnergyGradientProvider` (elements): `assignEnergyGradientOutput()` assigns two arrays to which every
+    `computeKernels()` call writes the gradients of the element's elastic energy and dissipation with respect to its
+    degrees of freedom; unsupported sections or materials are rejected when the outputs are assigned.
+    `DisplacementFiniteElement` (solid, plane strain) and `GeneralGradientEnhancedDisplacementFiniteElement` (solid,
+    plane strain, plane stress, with the non-local degrees of freedom) provide it.
+  - `HypoElasticEnergyTangentProvider` and `GradientEnhancedHypoElasticEnergyTangentProvider` (materials):
+    `computeStressWithEnergyTangents()`, the stress update with the derivatives of the updated elastic energy density
+    and dissipation, and `computePlaneStressWithEnergyTangents()` for the gradient-enhanced plane stress iteration.
+  - Energy tangents of `VonMises`, `RankineSofteningPlasticity`, `RankineDamagePlasticity`,
+    `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
+  - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
+    around a given 3D stress update.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -131,6 +145,18 @@ All notable changes to Marmot are documented in this file. The format follows
   round-off either way). Test `TestVonMisesLargeIncrement`: one strain increment of order one (trial stress about
   900 f_y) ends on the yield surface for perfect, linear and nonlinear hardening (both models, implicit and
   explicit).
+- **Results:** coupling tangents of `GeneralGradientEnhancedDisplacementFiniteElement` in plane stress. The blocks
+  `kUK`, `kKU` and `kKK` used the derivatives of the material's 3D update without the out-of-plane strain, which the
+  plane stress iteration adjusts with the strain and the non-local field. They now include it by static condensation
+  of dσ₃₃ = 0, which changes the Newton iterations (not the converged results) of gradient-enhanced plane stress
+  analyses whose out-of-plane stress depends on the non-local field or whose local driving variable depends on the
+  out-of-plane strain, e.g., `RankineGradientSofteningPlasticity`. A finite difference test of the stiffness in plane
+  stress with that material covers it.
+- **Results:** energies of `VonMises`. The elastic energy density is ½ σ : C⁻¹ : σ; it was accumulated as
+  ½ Δε : C : Δε − 2G Δλ n : Δε per increment, without the work of the stress at the start of the increment. The
+  dissipation increment is the plastic work f_y(κₙ₊₁) Δκ of the return mapping instead of 2G Δλ n : Δε. The yield
+  stress is floored at zero, so that a softening law flows without stress beyond zero strength instead of reversing
+  the stress, and a trial stress without deviatoric part is elastic. This applies to `computeStressExplicit()` too.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
