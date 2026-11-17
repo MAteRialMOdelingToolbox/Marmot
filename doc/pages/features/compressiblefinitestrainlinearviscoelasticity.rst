@@ -45,6 +45,9 @@ With ``onlyShearCreep = 1`` the initial compliance of the generalized Maxwell mo
 :math:`\frac{1}{2G_0}\,\mathbb{I}` with the analytical initial shear modulus
 :math:`G_0 = 2\left(\partial\Psi/\partial\bar I_1 + \partial\Psi/\partial\bar I_2\right)` at
 :math:`\mathbf{C}=\mathbf{I}` of the selected base model.
+With full creep (``onlyShearCreep = 0``) it is
+:math:`\frac{1}{2G_0}\,\mathbb{I}^{\mathrm{dev}} + \frac{1}{9K_0}\,\mathbf{I}\otimes\mathbf{I}`, where the initial bulk
+modulus :math:`K_0` is :math:`K` for NeoHooke and PenceGouNeoHooke and :math:`2/D_1` for the other base models.
 
 .. list-table::
    :header-rows: 1

@@ -141,10 +141,19 @@ namespace Marmot::Materials {
      * at @f$\mathbf{C}=\mathbf{I}@f$: @f$G@f$ for @c NeoHooke and @c PenceGouNeoHooke, @f$2C_1@f$ for
      * @c Yeoh, @f$2(C_1+C_2)@f$ for @c MooneyRivlin and
      * @f$\mu\,\frac{3\lambda_L^2-1}{3(\lambda_L^2-1)}@f$ for @c ArrudaBoyce. With @c onlyShearCreep the
-     * initial compliance is @f$\frac{1}{2G_0}\mathbb{I}@f$.
+     * initial compliance is @f$\frac{1}{2G_0}\mathbb{I}@f$, otherwise
+     * @f$\frac{1}{2G_0}\mathbb{I}^{\mathrm{dev}} + \frac{1}{9K_0}\mathbf{I}\otimes\mathbf{I}@f$.
      * @return Initial shear modulus @f$G_0@f$.
      */
     double initialShearModulus() const;
+
+    /**
+     * @brief Initial (infinitesimal) bulk modulus of the selected hyperelastic base.
+     * @details @f$K_0 = \mathrm{d}^2U/\mathrm{d}J^2@f$ at @f$J=1@f$: @f$K@f$ for @c NeoHooke and
+     * @c PenceGouNeoHooke, @f$2/D_1@f$ for @c Yeoh, @c MooneyRivlin and @c ArrudaBoyce.
+     * @return Initial bulk modulus @f$K_0@f$.
+     */
+    double initialBulkModulus() const;
 
     /**
      * @brief Compute strain energy density and derivatives with respect to @f$\mathbf{C}@f$.

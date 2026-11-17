@@ -125,7 +125,9 @@ All notable changes to Marmot are documented in this file. The format follows
   generic facilities (tested), now without a registered element.
 - `CompressibleFiniteStrainLinearViscoelasticity` takes the initial shear modulus for `onlyShearCreep = 1` from one
   function, `initialShearModulus()`, with the analytical expression of each hyperelastic base; the Arruda-Boyce one
-  is written as `mu (3 lambdaL^2 - 1) / (3 (lambdaL^2 - 1))`. Results are unchanged.
+  is written as `mu (3 lambdaL^2 - 1) / (3 (lambdaL^2 - 1))`. For full creep the initial compliance is the closed
+  form `1/(2 G0) Dev + 1/(9 K0) I(x)I` with the analytical `initialBulkModulus()`, instead of the numerically
+  inverted initial stiffness from automatic differentiation. Results agree to round-off.
 - `FirstOrder::PenceGouPotentialB` and `SecondOrder::PenceGouPotentialB` evaluate their derivatives through the
   invariant helper. Results agree with the previous closed forms to round-off; the `FirstOrder` overload takes about
   half the time, the `SecondOrder` overload the same. The plain `PenceGouPotentialB` is unchanged.

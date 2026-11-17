@@ -120,6 +120,23 @@ namespace Marmot::Materials {
     }
   }
 
+  double CompressibleFiniteStrainLinearViscoelasticity::initialBulkModulus() const
+  {
+    // K0 = d2U/dJ2 at J = 1
+    const auto& par = elasticProperties;
+
+    switch ( hyperelasticBase ) {
+    case NeoHooke:
+    case PenceGouNeoHooke: return par( 0 );
+    case Yeoh: return 2. / par( 3 );
+    case MooneyRivlin:
+    case ArrudaBoyce: return 2. / par( 2 );
+    default:
+      throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::initialBulkModulus: "
+                                "Unknown hyperelastic base." );
+    }
+  }
+
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
     const double* materialProperties,
     int           nMaterialProperties,
@@ -140,14 +157,13 @@ namespace Marmot::Materials {
                                    << __PRETTY_FUNCTION__ << ": ArrudaBoyce locking stretch lambdaL must be > 1, got "
                                    << elasticProperties[1] );
 
-    // shear creep only: the deviatoric initial stiffness is 2 G0 times the deviatoric projector, so the
-    // compliance follows from the analytical initial shear modulus alone;
-    // full creep: invert the initial stiffness dPK2/dE = 4 d2Psi/dCdC at C = I
+    // the initial stiffness dPK2/dE at C = I is isotropic: K0 I(x)I + 2 G0 Dev, hence the compliance is
+    // 1/(9 K0) I(x)I + 1/(2 G0) Dev; with shear creep only, the deviatoric part alone is needed
     if ( onlyShearCreep == 1.0 )
       initialCompliance = .5 / initialShearModulus() * Spatial3D::I4;
     else
-      initialCompliance = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor(
-        evaluate( 4. * std::get< 2 >( computeEnergyDensityAndDerivatives( evaluate( Spatial3D::I ) ) ) ) );
+      initialCompliance = .5 / initialShearModulus() * Spatial3D::DeviatoricSymmetric +
+                          1. / ( 9. * initialBulkModulus() ) * Spatial3D::IHyd;
 
     initializeStateLayout();
   }

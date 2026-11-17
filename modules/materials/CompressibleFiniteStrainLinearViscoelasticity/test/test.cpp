@@ -498,12 +498,15 @@ void testFullCreepViscoelasticRelaxation()
 
 // Test I-14: for every hyperelastic base the analytical initial shear modulus G0 defines the deviatoric
 // part of the initial stiffness dPK2/dE = 4 d2Psi/dCdC at C = I: Dev : dPK2/dE : Dev = 2 G0 Dev. This is
-// what justifies initialCompliance = 0.5/G0 * I4 for onlyShearCreep = 1.
+// what justifies initialCompliance = 0.5/G0 * I4 for onlyShearCreep = 1. The analytical full-creep compliance
+// 1/(2 G0) Dev + 1/(9 K0) I(x)I must equal the inverse of that initial stiffness.
 void testAnalyticalInitialShearModulusMatchesInitialStiffness()
 {
   struct Exposed : CompressibleFiniteStrainLinearViscoelasticity {
     using CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity;
     using CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives;
+    using CompressibleFiniteStrainLinearViscoelasticity::initialBulkModulus;
+    using CompressibleFiniteStrainLinearViscoelasticity::initialCompliance;
     using CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus;
   };
 
@@ -535,6 +538,20 @@ void testAnalyticalInitialShearModulusMatchesInitialStiffness()
 
     throwExceptionOnFailure( Fastor::max( Fastor::abs( difference ) ) < 1e-9 * G0,
                              "I-14: deviatoric initial stiffness is not 2 G0 Dev for base " +
+                               std::to_string( static_cast< int >( matProps[0] ) ) + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+
+    // full creep: same parameters with onlyShearCreep = 0
+    auto fullCreepProps = matProps;
+    fullCreepProps[1]   = 0.0;
+    const Exposed     fullCreepMaterial( fullCreepProps.data(), static_cast< int >( fullCreepProps.size() ), 0 );
+    const Tensor3333d complianceDifference = fullCreepMaterial.initialCompliance -
+                                             Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor(
+                                               initialStiffness );
+
+    throwExceptionOnFailure( Fastor::max( Fastor::abs( complianceDifference ) ) < 1e-9 / G0,
+                             "I-14: analytical full-creep compliance is not the inverse of the initial stiffness "
+                             "for base " +
                                std::to_string( static_cast< int >( matProps[0] ) ) + " in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
