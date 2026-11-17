@@ -94,7 +94,7 @@ namespace Marmot::Materials {
       // compute return mapping direction
       Marmot::Math::Vector6d n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
-      while ( std::abs( g( dKappa ) ) > Constants::innerNewtonTol ) {
+      while ( std::abs( g( dKappa ) ) > Constants::innerNewtonTol * rhoTrial ) {
 
         if ( counter == Constants::nMaxInnerNewtonCycles ) {
           throw Marmot::Utilities::StressUpdateFailed(
@@ -215,7 +215,7 @@ namespace Marmot::Materials {
         counter += 1;
       }
 
-      if ( std::abs( g_val ) > Constants::innerNewtonTol ) {
+      if ( std::abs( g_val ) > Constants::innerNewtonTol * rhoTrial ) {
         throw Marmot::Utilities::StressUpdateFailed(
           "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
       }
