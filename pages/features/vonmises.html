@@ -290,7 +290,17 @@ Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol
 \[g\left(\Delta\kappa\right)
 = \|\boldsymbol{s}^\mathrm{trial}\| -\sqrt{6}G\Delta\kappa -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\Delta\kappa\right)
 = 0,\]</div>
-<p>which can be solved numerically to obtain <span class="math notranslate nohighlight">\(\Delta\kappa\)</span>.</p>
+<p>which is solved for <span class="math notranslate nohighlight">\(\Delta\kappa\)</span> by Newton’s method, starting from <span class="math notranslate nohighlight">\(\Delta\kappa = 0\)</span>, until</p>
+<div class="math notranslate nohighlight">
+\[\left|g\left(\Delta\kappa\right)\right| \leq \mathrm{tol}\,\|\boldsymbol{s}^\mathrm{trial}\|,
+\qquad \mathrm{tol} = 10^{-12}.\]</div>
+<p>The tolerance is relative to the trial stress for a reason of floating point arithmetic: <span class="math notranslate nohighlight">\(g\)</span> is a difference of
+numbers of the size of <span class="math notranslate nohighlight">\(\|\boldsymbol{s}^\mathrm{trial}\|\)</span>, so its round-off is about
+<span class="math notranslate nohighlight">\(\varepsilon\,\|\boldsymbol{s}^\mathrm{trial}\|\)</span> (machine precision <span class="math notranslate nohighlight">\(\varepsilon \approx 2.2\cdot10^{-16}\)</span>).
+An absolute tolerance cannot be met once the trial stress is large: for a strain increment of order one,
+<span class="math notranslate nohighlight">\(\|\boldsymbol{s}^\mathrm{trial}\| \approx 1.7\cdot10^{5}\)</span> MPa and the round-off of <span class="math notranslate nohighlight">\(g\)</span> is
+<span class="math notranslate nohighlight">\(4\cdot10^{-11}\)</span> MPa. For linear hardening <span class="math notranslate nohighlight">\(g\)</span> is linear in <span class="math notranslate nohighlight">\(\Delta\kappa\)</span> and one Newton step
+suffices; nonlinear hardening needs a few.</p>
 <p>If <span class="math notranslate nohighlight">\(\Delta\kappa\)</span> is known, the state variable is updated as</p>
 <div class="math notranslate nohighlight">
 \[\kappa^{n+1} = \kappa^{n} + \Delta\kappa\]</div>
@@ -405,7 +415,7 @@ Given the stress tensor <span class="math notranslate nohighlight">\(\boldsymbol
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13VonMisesModel9Constants14innerNewtonTolE">
 <span id="_CPPv3N6Marmot9Materials13VonMisesModel9Constants14innerNewtonTolE"></span><span id="_CPPv2N6Marmot9Materials13VonMisesModel9Constants14innerNewtonTolE"></span><span id="Marmot::Materials::VonMisesModel::Constants::innerNewtonTol__double"></span><span class="target" id="structMarmot_1_1Materials_1_1VonMisesModel_1_1Constants_1ada97961314adac2bded40d09d229a887"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">innerNewtonTol</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-12</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13VonMisesModel9Constants14innerNewtonTolE" title="Link to this definition"></a><br /></dt>
-<dd><p>Convergence tolerance for the inner Newton iteration. </p>
+<dd><p>Convergence tolerance of the inner Newton iteration on <span class="math notranslate nohighlight">\(g(\Delta\kappa)\)</span>, relative to the norm of the deviatoric trial stress: <span class="math notranslate nohighlight">\(|g| \leq \mathrm{tol}\, \|\boldsymbol{s}^\mathrm{trial}\|\)</span>. <span class="math notranslate nohighlight">\(g\)</span> is a difference of numbers of the size of <span class="math notranslate nohighlight">\(\|\boldsymbol{s}^\mathrm{trial}\|\)</span>, so its round-off is about <span class="math notranslate nohighlight">\(\varepsilon \|\boldsymbol{s}^\mathrm{trial}\|\)</span>; an absolute tolerance cannot be met for large increments. </p>
 </dd></dl>
 
 <dl class="cpp var">
