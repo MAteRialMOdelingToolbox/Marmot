@@ -38,7 +38,7 @@ jobs:
           cd eigen
           mkdir build
           cd build
-          cmake -DBUILD_TESTING=OFF  ..
+          cmake -DBUILD_TESTING=OFF -DEIGEN_BUILD_BLAS=OFF -DEIGEN_BUILD_LAPACK=OFF ..
           sudo make install
           cd ../..
 

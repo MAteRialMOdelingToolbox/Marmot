@@ -90,6 +90,8 @@ Get Eigen:
     cd build
     cmake \
         -DBUILD_TESTING=OFF  \
+        -DEIGEN_BUILD_BLAS=OFF \
+        -DEIGEN_BUILD_LAPACK=OFF \
         -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
         ..

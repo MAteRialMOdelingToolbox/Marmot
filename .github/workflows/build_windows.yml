@@ -33,7 +33,7 @@ jobs:
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch 5.0.1 https://gitlab.com/libeigen/eigen.git
-          cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
+          cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DEIGEN_BUILD_BLAS=OFF -DEIGEN_BUILD_LAPACK=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
           cmake --install eigen/_build
 
       # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
