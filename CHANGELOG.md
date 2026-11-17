@@ -46,6 +46,18 @@ All notable changes to Marmot are documented in this file. The format follows
     `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
   - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
     around a given 3D stress update.
+- Shared hyperelastic strain energy density functions in `MarmotEnergyDensityFunctions.h`, split into
+  `EnergyDensityFunctions::Isochoric` (`NeoHookePotential`, `YeohPotential`, `MooneyRivlinPotential`,
+  `ArrudaBoyce8ChainPotential`) and `EnergyDensityFunctions::Volumetric` (`PenaltyPotential` and the functions of
+  Doll & Schweizerhof (2000), https://doi.org/10.1115/1.321146: `SussmanBathePotential`, `SimoTaylorPotential`,
+  `OgdenPotential`, `LiuHofstetterMangPotential`, `DollSchweizerhofPotential`,
+  `GeneralizedDollSchweizerhofPotential`, `DollSchweizerhofExponentialPotential`,
+  `DollSchweizerhofLogarithmicPotential`), each with a `FirstOrder` overload returning the energy and ∂Ψ/∂C.
+  `DecoupledPotential` and `makeDecoupledPotential` combine an isochoric and a volumetric part. The compressible
+  `ArrudaBoyce8ChainPotential(C, mu, lambdaL, D1)` is new, as are the `FirstOrder` overloads of the compressible
+  `MooneyRivlinPotential` and `YeohPotential`.
+- `CompressibleFiniteStrainLinearViscoelasticity`: hyperelastic base `ArrudaBoyce` (`baseModel = 4`, elastic
+  properties mu, lambdaL, D1); a locking stretch lambdaL <= 1 is rejected.
 - `MarmotRightCauchyGreenInvariants.h` (`ContinuumMechanics::Invariants::RightCauchyGreen`): the principal invariants
   (I1, I2, J) and the isochoric invariants (Ī1, Ī2, J) of the right Cauchy-Green tensor with their first and second
   derivatives w.r.t. C (`computeInvariants`, `computeIsochoricInvariants`), and `composeWithInvariants`, the chain
