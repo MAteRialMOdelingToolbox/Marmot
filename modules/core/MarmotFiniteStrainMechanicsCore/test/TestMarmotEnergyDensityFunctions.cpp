@@ -6,6 +6,7 @@
 #include <array>
 #include <cmath>
 #include <complex>
+#include <span>
 #include <stdexcept>
 #include <vector>
 
@@ -1147,6 +1148,141 @@ auto testVolumetricSecondOrderBulkModulus()
          get< 2 >( Volumetric::SecondOrder::DollSchweizerhofLogarithmicPotential( I, k ) ) );
 }
 
+// A user-defined isochoric part for the single-pass DecoupledPotential: Psi = a ( Ibar1 - 3 ) + b ( Ibar2 - 3 )^2
+struct QuadraticInIbar2 {
+  double                a;
+  double                b;
+  static constexpr bool usesIbar2 = true;
+
+  template < int Order, typename T >
+  Marmot::ContinuumMechanics::Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives(
+    const std::array< T, 3 >& xBar ) const
+  {
+    Marmot::ContinuumMechanics::Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > f;
+    f.f = a * ( xBar[0] - 3. ) + b * ( xBar[1] - 3. ) * ( xBar[1] - 3. );
+    if constexpr ( Order >= 1 ) {
+      f.df[0] = T( a );
+      f.df[1] = 2. * b * ( xBar[1] - 3. );
+    }
+    if constexpr ( Order >= 2 )
+      f.d2f[1][1] = T( 2. * b );
+    return f;
+  }
+};
+
+// The single-pass DecoupledPotential of two scalar functions equals the sum of the separately evaluated parts, for
+// every isochoric and every volumetric scalar function and for the plain, FirstOrder and SecondOrder overloads.
+auto testSinglePassDecoupledPotential()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+
+  static_assert( IsochoricScalarFunction< Isochoric::Yeoh > && IsochoricScalarFunction< QuadraticInIbar2 > );
+  static_assert( VolumetricScalarFunction< Volumetric::Ogden > && !VolumetricScalarFunction< Isochoric::Yeoh > );
+  static_assert( !IsochoricScalarFunction< Volumetric::Ogden > );
+
+  const Tensor33d C     = nonSymmetricC();
+  const double    kappa = 5000.;
+
+  const auto check =
+    [&]( const char* name, const auto& isoPart, const auto& volPart, const auto& iso, const auto& vol ) {
+      const std::tuple< double, Tensor33d, Tensor3333d > reference   = DecoupledPotential( C, iso, vol );
+      const std::tuple< double, Tensor33d, Tensor3333d > secondOrder = SecondOrder::DecoupledPotential( C,
+                                                                                                        isoPart,
+                                                                                                        volPart );
+      const std::tuple< double, Tensor33d > firstOrder = FirstOrder::DecoupledPotential( C, isoPart, volPart );
+      const double                          plain      = DecoupledPotential( C, isoPart, volPart );
+      const double                          scale      = 1. + std::abs( get< 0 >( reference ) );
+
+      throwExceptionOnFailure( checkIfEqual( get< 0 >( secondOrder ), get< 0 >( reference ), 1e-14 * scale ) &&
+                                 checkIfEqual( get< 1 >( secondOrder ), get< 1 >( reference ), 1e-13 * scale ) &&
+                                 checkIfEqual( get< 2 >( secondOrder ), get< 2 >( reference ), 1e-13 * scale ) &&
+                                 checkIfEqual( get< 0 >( firstOrder ), get< 0 >( reference ), 1e-14 * scale ) &&
+                                 checkIfEqual( get< 1 >( firstOrder ), get< 1 >( reference ), 1e-13 * scale ) &&
+                                 checkIfEqual( plain, get< 0 >( reference ), 1e-14 * scale ),
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " single-pass decoupled potential with " << name
+                                 << " != isochoric part + volumetric part." );
+    };
+
+  // every isochoric scalar function with one volumetric one
+  const Volumetric::SimoTaylor simoTaylor{ kappa };
+  const auto                   simoTaylorOfC = [&]( const auto& C_ ) {
+    return Volumetric::SecondOrder::SimoTaylorPotential( C_, kappa );
+  };
+#define CHECK_ISOCHORIC_PART( Part, ... )                                                                              \
+  check(                                                                                                               \
+    #Part,                                                                                                             \
+    Isochoric::Part{ __VA_ARGS__ },                                                                                    \
+    simoTaylor,                                                                                                        \
+    [&]( const auto& C_ ) { return Isochoric::SecondOrder::Part##Potential( C_, __VA_ARGS__ ); },                      \
+    simoTaylorOfC )
+  CHECK_ISOCHORIC_PART( NeoHooke, 750. );
+  CHECK_ISOCHORIC_PART( Yeoh, 400., 100., 5. );
+  CHECK_ISOCHORIC_PART( MooneyRivlin, 400., 100. );
+  CHECK_ISOCHORIC_PART( ArrudaBoyce8Chain, 500., 2.5 );
+#undef CHECK_ISOCHORIC_PART
+
+  // every volumetric scalar function with one isochoric one (which uses both isochoric invariants)
+  const Isochoric::MooneyRivlin mooneyRivlin{ 400., 100. };
+  const auto                    mooneyRivlinOfC = [&]( const auto& C_ ) {
+    return Isochoric::SecondOrder::MooneyRivlinPotential( C_, 400., 100. );
+  };
+  const std::array< double, 2 >   alphas = { 1., 2.5 };
+  const std::array< double, 2 >   betas  = { 2., 3. };
+  const std::span< const double > alphasView( alphas ), betasView( betas );
+#define CHECK_VOLUMETRIC_PART( Part, ... )                                                                             \
+  check( #Part, mooneyRivlin, Volumetric::Part{ __VA_ARGS__ }, mooneyRivlinOfC, [&]( const auto& C_ ) {                \
+    return Volumetric::SecondOrder::Part##Potential( C_, __VA_ARGS__ );                                                \
+  } )
+  CHECK_VOLUMETRIC_PART( Penalty, kappa );
+  CHECK_VOLUMETRIC_PART( SussmanBathe, kappa );
+  CHECK_VOLUMETRIC_PART( SimoTaylor, kappa );
+  CHECK_VOLUMETRIC_PART( Ogden, kappa, -2. );
+  CHECK_VOLUMETRIC_PART( LiuHofstetterMang, kappa );
+  CHECK_VOLUMETRIC_PART( DollSchweizerhof, kappa, 1.5, 2.5 );
+  CHECK_VOLUMETRIC_PART( GeneralizedDollSchweizerhof, kappa, alphasView, betasView );
+  CHECK_VOLUMETRIC_PART( DollSchweizerhofExponential, kappa );
+  CHECK_VOLUMETRIC_PART( DollSchweizerhofLogarithmic, kappa );
+#undef CHECK_VOLUMETRIC_PART
+
+  // a user-defined isochoric part, bundled by makeDecoupledPotential: the closed-form derivatives match the
+  // complex-step derivative of the plain potential
+  const QuadraticInIbar2 quadratic{ 300., 40. };
+  const auto             psi               = makeDecoupledPotential( quadratic, simoTaylor );
+  const auto [energy, dPsi_dC, d2Psi_dCdC] = SecondOrder::DecoupledPotential( C, quadratic, simoTaylor );
+  Tensor33d    dPsi_dC_complexStep;
+  const double h = 1e-30;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33t< std::complex< double > > C_complex;
+      for ( int k = 0; k < 3; k++ )
+        for ( int l = 0; l < 3; l++ )
+          C_complex( k, l ) = std::complex< double >( C( k, l ), ( k == i && l == j ) ? h : 0. );
+      dPsi_dC_complexStep( i, j ) = psi( C_complex ).imag() / h;
+    }
+  throwExceptionOnFailure( checkIfEqual( psi( C ), energy, 1e-12 ) &&
+                             checkIfEqual( dPsi_dC, dPsi_dC_complexStep, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " user-defined part: dPsi/dC != complex-step derivative." );
+
+  // ... and the second derivative matches the complex-step derivative of the FirstOrder overload
+  Tensor3333d d2Psi_dCdC_complexStep;
+  for ( int k = 0; k < 3; k++ )
+    for ( int l = 0; l < 3; l++ ) {
+      Tensor33t< std::complex< double > > C_complex;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          C_complex( i, j ) = std::complex< double >( C( i, j ), ( i == k && j == l ) ? h : 0. );
+      const auto dPsi_complex = get< 1 >( FirstOrder::DecoupledPotential( C_complex, quadratic, simoTaylor ) );
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          d2Psi_dCdC_complexStep( i, j, k, l ) = dPsi_complex( i, j ).imag() / h;
+    }
+  throwExceptionOnFailure( checkIfEqual( d2Psi_dCdC, d2Psi_dCdC_complexStep, 1e-9 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " user-defined part: d2Psi/dCdC != complex-step derivative." );
+}
+
 // The compressible Mooney-Rivlin, Yeoh and Arruda-Boyce potentials sum their isochoric part and the Ogden
 // volumetric part as scalar functions of one set of invariants. They must equal the DecoupledPotential of the two
 // parts, which evaluates each part on its own, in the energy, the gradient and the Hessian.
@@ -1205,6 +1341,7 @@ int main()
                                testPenceGouPotentialBOverloadsAgree,
                                testSecondOrderPotentialsMatchFirstOrder,
                                testVolumetricSecondOrderBulkModulus,
+                               testSinglePassDecoupledPotential,
                                testCompressiblePotentialsEqualDecoupledParts,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,

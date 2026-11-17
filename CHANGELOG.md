@@ -56,6 +56,16 @@ All notable changes to Marmot are documented in this file. The format follows
   `DecoupledPotential` and `makeDecoupledPotential` combine an isochoric and a volumetric part. The compressible
   `ArrudaBoyce8ChainPotential(C, mu, lambdaL, D1)` is new, as are the `FirstOrder` overloads of the compressible
   `MooneyRivlinPotential` and `YeohPotential`.
+- Single-pass `DecoupledPotential`: every isochoric and volumetric potential also exists as a scalar function type
+  (`Isochoric::NeoHooke`, `Yeoh`, `MooneyRivlin`, `ArrudaBoyce8Chain`; `Volumetric::Penalty`, `SussmanBathe`,
+  `SimoTaylor`, `Ogden`, `LiuHofstetterMang`, `DollSchweizerhof`, `GeneralizedDollSchweizerhof`,
+  `DollSchweizerhofExponential`, `DollSchweizerhofLogarithmic`), e.g.
+  `SecondOrder::DecoupledPotential( C, Isochoric::Yeoh{ C10, C20, C30 }, Volumetric::SimoTaylor{ kappa } )`. The
+  plain, `FirstOrder::` and `SecondOrder::` overloads add the scalar derivatives of both parts before the chain rule,
+  so the invariants of C are computed once and the tensors assembled once, for any pair. `makeDecoupledPotential`
+  accepts these types too. User-defined parts qualify through the concepts `IsochoricScalarFunction` and
+  `VolumetricScalarFunction`. The compressible `MooneyRivlinPotential`, `YeohPotential` and
+  `ArrudaBoyce8ChainPotential` are such pairs with `Volumetric::Ogden{ 2 / D1, -2 }`.
 - `CompressibleFiniteStrainLinearViscoelasticity`: hyperelastic base `ArrudaBoyce` (`baseModel = 4`, elastic
   properties mu, lambdaL, D1); a locking stretch lambdaL <= 1 is rejected.
 - `MarmotRightCauchyGreenInvariants.h` (`ContinuumMechanics::Invariants::RightCauchyGreen`): the principal invariants

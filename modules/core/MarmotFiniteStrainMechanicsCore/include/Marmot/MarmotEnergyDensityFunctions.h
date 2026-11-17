@@ -28,6 +28,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotRightCauchyGreenInvariants.h"
 #include <array>
+#include <concepts>
 #include <span>
 #include <stdexcept>
 #include <tuple>
@@ -416,21 +417,280 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         U.d2f[iJ][iJ] = kappa / 2. * ( 1. / J + 1. / ( J * J ) );
       return U;
     }
-    /* Isochoric potential fBar: (Ibar1, Ibar2, J) -> ScalarDerivatives plus the Ogden volumetric potential with
-     * kappa = 2 / D1 and theta = -2, i.e. 1 / D1 ( ( J^2 - 1 ) / 2 - ln J ). Both parts are summed as scalar
-     * functions of one set of isochoric invariants, so C is processed once. */
-    template < int Order, bool UsesIbar2, typename T, typename ScalarFunction >
-    auto compressiblePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
-                                const ScalarFunction&                               fBar,
-                                const double                                        D1 )
+  } // namespace Detail
+  /** @endcond */
+
+  /** @brief Scalar function of the isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$ with its scalar derivatives,
+   * e.g. Isochoric::Yeoh: the isochoric part of the single-pass @c DecoupledPotential. A user-defined type qualifies
+   * with a static member @c usesIbar2 and a member template
+   * @c scalarDerivatives<Order>( xBar ) returning Invariants::RightCauchyGreen::ScalarDerivatives. */
+  template < typename Part >
+  concept IsochoricScalarFunction = requires( const Part& part, const std::array< double, 3 >& xBar ) {
+    {
+      Part::usesIbar2
+    } -> std::convertible_to< bool >;
+    {
+      part.template scalarDerivatives< 0 >( xBar )
+    } -> std::same_as< Invariants::RightCauchyGreen::ScalarDerivatives< double, 0 > >;
+  };
+
+  /** @brief Scalar function \f$U(J)\f$ with its scalar derivatives, e.g. Volumetric::SimoTaylor: the volumetric part
+   * of the single-pass @c DecoupledPotential. A user-defined type qualifies with a member template
+   * @c scalarDerivatives<Order>( J ) returning Invariants::RightCauchyGreen::ScalarDerivatives with the entries of
+   * \f$J\f$ set. */
+  template < typename Part >
+  concept VolumetricScalarFunction = requires( const Part& part, const double& J ) {
+    {
+      part.template scalarDerivatives< 0 >( J )
+    } -> std::same_as< Invariants::RightCauchyGreen::ScalarDerivatives< double, 0 > >;
+  };
+
+  namespace Isochoric {
+    /** @brief Scalar function of the isochoric neo-Hooke potential, see #NeoHookePotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct NeoHooke {
+      double mu; ///< Shear modulus.
+
+      /// Whether the function depends on the second isochoric invariant.
+      static constexpr bool usesIbar2 = false;
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$(\bar I_1, \bar I_2, J)\f$.
+       * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives(
+        const std::array< T, 3 >& xBar ) const
+      {
+        return Detail::neoHookeIsochoric< Order >( xBar, mu );
+      }
+    };
+
+    /** @brief Scalar function of the isochoric Yeoh potential, see #YeohPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct Yeoh {
+      double C10; ///< Parameter \f$C_{10}\f$.
+      double C20; ///< Parameter \f$C_{20}\f$.
+      double C30; ///< Parameter \f$C_{30}\f$.
+
+      /// Whether the function depends on the second isochoric invariant.
+      static constexpr bool usesIbar2 = false;
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$(\bar I_1, \bar I_2, J)\f$.
+       * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives(
+        const std::array< T, 3 >& xBar ) const
+      {
+        return Detail::yeohIsochoric< Order >( xBar, C10, C20, C30 );
+      }
+    };
+
+    /** @brief Scalar function of the isochoric Mooney-Rivlin potential, see #MooneyRivlinPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct MooneyRivlin {
+      double C10; ///< Parameter \f$C_{10}\f$.
+      double C01; ///< Parameter \f$C_{01}\f$.
+
+      /// Whether the function depends on the second isochoric invariant.
+      static constexpr bool usesIbar2 = true;
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$(\bar I_1, \bar I_2, J)\f$.
+       * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives(
+        const std::array< T, 3 >& xBar ) const
+      {
+        return Detail::mooneyRivlinIsochoric< Order >( xBar, C10, C01 );
+      }
+    };
+
+    /** @brief Scalar function of the isochoric Arruda-Boyce 8-chain potential, see #ArrudaBoyce8ChainPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct ArrudaBoyce8Chain {
+      double mu;      ///< Shear-modulus-like parameter.
+      double lambdaL; ///< Locking stretch.
+
+      /// Whether the function depends on the second isochoric invariant.
+      static constexpr bool usesIbar2 = false;
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$(\bar I_1, \bar I_2, J)\f$.
+       * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives(
+        const std::array< T, 3 >& xBar ) const
+      {
+        return Detail::arrudaBoyce8ChainIsochoric< Order >( xBar, mu, lambdaL );
+      }
+    };
+  } // namespace Isochoric
+
+  namespace Volumetric {
+    /** @brief Scalar function \f$U(J)\f$ of the penalty volumetric potential, see #PenaltyPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct Penalty {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::penaltyVolumetric< Order >( J, kappa );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the Sussman-Bathe volumetric potential, see #SussmanBathePotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct SussmanBathe {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::sussmanBatheVolumetric< Order >( J, kappa );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the Simo-Taylor volumetric potential, see #SimoTaylorPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct SimoTaylor {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::simoTaylorVolumetric< Order >( J, kappa );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the Ogden volumetric potential, see #OgdenPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct Ogden {
+      double kappa; ///< Bulk modulus.
+      double theta; ///< Exponent \f$\theta\f$.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::ogdenVolumetric< Order >( J, kappa, theta );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the Liu-Hofstetter-Mang volumetric potential, see
+     * #LiuHofstetterMangPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct LiuHofstetterMang {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::liuHofstetterMangVolumetric< Order >( J, kappa );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the two-parameter Doll-Schweizerhof volumetric potential, see
+     * #DollSchweizerhofPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct DollSchweizerhof {
+      double kappa; ///< Bulk modulus.
+      double alpha; ///< Shape parameter \f$\alpha > 0\f$.
+      double beta;  ///< Shape parameter \f$\beta > 1\f$.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        const double alphas[] = { alpha };
+        const double betas[]  = { beta };
+        return Detail::generalizedDollSchweizerhofVolumetric< Order >( J, kappa, alphas, betas );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the generalized Doll-Schweizerhof volumetric potential, see
+     * #GeneralizedDollSchweizerhofPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct GeneralizedDollSchweizerhof {
+      double                    kappa;  ///< Bulk modulus.
+      std::span< const double > alphas; ///< Shape parameters \f$\alpha_i > 0\f$ (not owned).
+      std::span< const double > betas;  ///< Shape parameters \f$\beta_i > 1\f$ (not owned).
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::generalizedDollSchweizerhofVolumetric< Order >( J, kappa, alphas, betas );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the exponential Doll-Schweizerhof volumetric potential, see
+     * #DollSchweizerhofExponentialPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct DollSchweizerhofExponential {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::dollSchweizerhofExponentialVolumetric< Order >( J, kappa );
+      }
+    };
+
+    /** @brief Scalar function \f$U(J)\f$ of the logarithmic Doll-Schweizerhof volumetric potential, see
+     * #DollSchweizerhofLogarithmicPotential; for
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential. */
+    struct DollSchweizerhofLogarithmic {
+      double kappa; ///< Bulk modulus.
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$J\f$, stored in the entries of \f$J\f$.
+       * @param J Determinant of the deformation gradient.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const T& J ) const
+      {
+        return Detail::dollSchweizerhofLogarithmicVolumetric< Order >( J, kappa );
+      }
+    };
+  } // namespace Volumetric
+
+  /** @cond */
+  namespace Detail {
+    /* Psi_iso + U and its derivatives w.r.t. C up to Order: the scalar derivatives of both parts are added
+     * before the chain rule, so the invariants of C are computed once and the tensors assembled once. */
+    template < int Order, typename T, IsochoricScalarFunction IsochoricPart, VolumetricScalarFunction VolumetricPart >
+    auto decoupledPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                             const IsochoricPart&                                isochoricPart,
+                             const VolumetricPart&                               volumetricPart )
     {
       [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
 
-      const auto inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C, UsesIbar2 );
-      ScalarDerivatives< T, Order >       f = fBar( inv.x );
-      const ScalarDerivatives< T, Order > U = ogdenVolumetric< Order >( inv.x[Invariants::RightCauchyGreen::indexJ],
-                                                                        2. / D1,
-                                                                        -2. );
+      const auto inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C, IsochoricPart::usesIbar2 );
+      ScalarDerivatives< T, Order >       f = isochoricPart.template scalarDerivatives< Order >( inv.x );
+      const ScalarDerivatives< T, Order > U = volumetricPart.template scalarDerivatives< Order >(
+        inv.x[Invariants::RightCauchyGreen::indexJ] );
       f.f += U.f;
       if constexpr ( Order >= 1 )
         f.df[iJ] += U.df[iJ];
@@ -1397,6 +1657,19 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    *   [&]( const auto& C_ ) { return Volumetric::FirstOrder::PenaltyPotential( C_, kappa ); } );
    * @endcode
    *
+   * @par Single pass
+   * The parts can instead be given as scalar functions of the invariants (IsochoricScalarFunction and
+   * VolumetricScalarFunction, e.g. Isochoric::Yeoh and Volumetric::SimoTaylor). The scalar derivatives of both
+   * parts are then added before the chain rule, so the invariants of \f$\boldsymbol C\f$ are computed once and the
+   * derivatives assembled once; the result is the energy, or with FirstOrder::DecoupledPotential and
+   * SecondOrder::DecoupledPotential the tuple with its derivatives:
+   * @code
+   * const double psi = DecoupledPotential( C, Isochoric::Yeoh{ C10, C20, C30 }, Volumetric::SimoTaylor{ kappa } );
+   * const auto [psi_, dPsi_dC, d2Psi_dCdC] = SecondOrder::DecoupledPotential( C,
+   *                                                                           Isochoric::Yeoh{ C10, C20, C30 },
+   *                                                                           Volumetric::SimoTaylor{ kappa } );
+   * @endcode
+   *
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @tparam IsochoricPart Callable \f$\boldsymbol C \mapsto \Psi_{\rm iso}\f$ (and derivatives).
    * @tparam VolumetricPart Callable \f$\boldsymbol C \mapsto U\f$ (and derivatives).
@@ -1412,6 +1685,18 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   {
     return Detail::sumPotentialResults( isochoricPart( C ), volumetricPart( C ) );
   }
+
+  /** @cond */
+  /* Single-pass overload of DecoupledPotential for two scalar functions, documented with the generic overload
+   * (Doxygen merges the two, as they differ in their constraints only). */
+  template < typename T, IsochoricScalarFunction IsochoricPart, VolumetricScalarFunction VolumetricPart >
+  auto DecoupledPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                           const IsochoricPart&                                isochoricPart,
+                           const VolumetricPart&                               volumetricPart )
+  {
+    return Detail::decoupledPotential< 0 >( C, isochoricPart, volumetricPart );
+  }
+  /** @endcond */
 
   /** @brief Bundles an isochoric and a volumetric part into one reusable decoupled potential, i.e. a callable
    * \f$\boldsymbol C \mapsto \Psi_{\rm iso}(\boldsymbol C) + U(\boldsymbol C)\f$ that evaluates #DecoupledPotential.
@@ -1468,10 +1753,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                            const double                                        C2,
                            const double                                        D1 )
   {
-    return Detail::compressiblePotential< 0, true >(
-      C,
-      [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 0 >( xBar, C1, C2 ); },
-      D1 );
+    return Detail::decoupledPotential< 0 >( C, Isochoric::MooneyRivlin{ C1, C2 }, Volumetric::Ogden{ 2. / D1, -2. } );
   }
 
   /** @brief Yeoh hyperelastic energy density function.
@@ -1502,10 +1784,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                    const double                                        C3,
                    const double                                        D1 )
   {
-    return Detail::compressiblePotential< 0, false >(
-      C,
-      [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 0 >( xBar, C1, C2, C3 ); },
-      D1 );
+    return Detail::decoupledPotential< 0 >( C, Isochoric::Yeoh{ C1, C2, C3 }, Volumetric::Ogden{ 2. / D1, -2. } );
   }
 
   /** @brief Compressible Arruda-Boyce 8-chain hyperelastic energy density function, with the same volumetric term
@@ -1531,12 +1810,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                 const double                                        lambdaL,
                                 const double                                        D1 )
   {
-    return Detail::compressiblePotential< 0, false >(
-      C,
-      [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
-        return Detail::arrudaBoyce8ChainIsochoric< 0 >( xBar, mu, lambdaL );
-      },
-      D1 );
+    return Detail::decoupledPotential< 0 >( C,
+                                            Isochoric::ArrudaBoyce8Chain{ mu, lambdaL },
+                                            Volumetric::Ogden{ 2. / D1, -2. } );
   }
 
   /** @cond */
@@ -1571,6 +1847,24 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   /** @endcond */
 
   namespace FirstOrder {
+    /** @brief Single-pass decoupled potential of two scalar functions (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first derivative
+     * w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param isochoricPart Isochoric part, e.g. Isochoric::Yeoh.
+     * @param volumetricPart Volumetric part, e.g. Volumetric::SimoTaylor.
+     * @return Tuple of energy density and its first derivative.
+     */
+    template < typename T, IsochoricScalarFunction IsochoricPart, VolumetricScalarFunction VolumetricPart >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > DecoupledPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const IsochoricPart&                                isochoricPart,
+      const VolumetricPart&                               volumetricPart )
+    {
+      return Detail::decoupledPotential< 1 >( C, isochoricPart, volumetricPart );
+    }
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first derivative
      * w.r.t. C
@@ -1629,10 +1923,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C2,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 1, true >(
-        C,
-        [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 1 >( xBar, C1, C2 ); },
-        D1 );
+      return Detail::decoupledPotential< 1 >( C, Isochoric::MooneyRivlin{ C1, C2 }, Volumetric::Ogden{ 2. / D1, -2. } );
     }
 
     /** @brief Yeoh potential (see the plain
@@ -1655,10 +1946,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C3,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 1, false >(
-        C,
-        [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 1 >( xBar, C1, C2, C3 ); },
-        D1 );
+      return Detail::decoupledPotential< 1 >( C, Isochoric::Yeoh{ C1, C2, C3 }, Volumetric::Ogden{ 2. / D1, -2. } );
     }
 
     /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
@@ -1679,16 +1967,31 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        lambdaL,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 1, false >(
-        C,
-        [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
-          return Detail::arrudaBoyce8ChainIsochoric< 1 >( xBar, mu, lambdaL );
-        },
-        D1 );
+      return Detail::decoupledPotential< 1 >( C,
+                                              Isochoric::ArrudaBoyce8Chain{ mu, lambdaL },
+                                              Volumetric::Ogden{ 2. / D1, -2. } );
     }
   } // namespace FirstOrder
 
   namespace SecondOrder {
+    /** @brief Single-pass decoupled potential of two scalar functions (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first and second
+     * derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param isochoricPart Isochoric part, e.g. Isochoric::Yeoh.
+     * @param volumetricPart Volumetric part, e.g. Volumetric::SimoTaylor.
+     * @return Tuple of energy density and its first and second derivative.
+     */
+    template < typename T, IsochoricScalarFunction IsochoricPart, VolumetricScalarFunction VolumetricPart >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > DecoupledPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const IsochoricPart&                                isochoricPart,
+      const VolumetricPart&                               volumetricPart )
+    {
+      return Detail::decoupledPotential< 2 >( C, isochoricPart, volumetricPart );
+    }
 
     /** @brief Mooney-Rivlin potential (see the plain
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential) and its first and
@@ -1708,10 +2011,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C2,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 2, true >(
-        C,
-        [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 2 >( xBar, C1, C2 ); },
-        D1 );
+      return Detail::decoupledPotential< 2 >( C, Isochoric::MooneyRivlin{ C1, C2 }, Volumetric::Ogden{ 2. / D1, -2. } );
     }
 
     /** @brief Yeoh potential (see the plain
@@ -1734,10 +2034,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C3,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 2, false >(
-        C,
-        [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 2 >( xBar, C1, C2, C3 ); },
-        D1 );
+      return Detail::decoupledPotential< 2 >( C, Isochoric::Yeoh{ C1, C2, C3 }, Volumetric::Ogden{ 2. / D1, -2. } );
     }
 
     /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
@@ -1758,12 +2055,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        lambdaL,
       const double                                        D1 )
     {
-      return Detail::compressiblePotential< 2, false >(
-        C,
-        [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
-          return Detail::arrudaBoyce8ChainIsochoric< 2 >( xBar, mu, lambdaL );
-        },
-        D1 );
+      return Detail::decoupledPotential< 2 >( C,
+                                              Isochoric::ArrudaBoyce8Chain{ mu, lambdaL },
+                                              Volumetric::Ogden{ 2. / D1, -2. } );
     }
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
