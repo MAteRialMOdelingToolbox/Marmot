@@ -2734,7 +2734,7 @@ namespace {
   // sum of the radial and of the axial entries of a nodal vector
   Eigen::Vector2d sumPerDirection( const Eigen::VectorXd& P )
   {
-    return Eigen::Vector2d( P( Eigen::seq( 0, Eigen::last, 2 ) ).sum(), P( Eigen::seq( 1, Eigen::last, 2 ) ).sum() );
+    return Eigen::Vector2d( P( Eigen::seq( 0, P.size() - 1, 2 ) ).sum(), P( Eigen::seq( 1, P.size() - 1, 2 ) ).sum() );
   }
 
   // sum_i r_i P_{z,i}, which is exact for any field interpolated isoparametrically, since sum_i r_i N_i = r
@@ -2990,7 +2990,7 @@ namespace {
       // the shape functions sum to one, so the entries of a direction sum to the mass of the ring
       Eigen::MatrixXd M = Eigen::MatrixXd::Zero( nDof, nDof );
       element->computeConsistentInertia( M.data() );
-      const auto   axial          = Eigen::seq( 1, Eigen::last, 2 );
+      const auto   axial          = Eigen::seq( 1, nDof - 1, 2 );
       const double consistentMass = M( axial, axial ).sum();
       throwExceptionOnFailure( checkIfEqual( consistentMass, mass, 1e-10 ),
                                name + ": consistent mass is not the mass of the ring." );
@@ -3084,7 +3084,7 @@ namespace {
     }
 
     // u_z = 0: only the radial degrees of freedom are free
-    const auto            radial = Eigen::seq( 0, Eigen::last, 2 );
+    const auto            radial = Eigen::seq( 0, KGlobal.rows() - 1, 2 );
     const Eigen::MatrixXd Krr    = KGlobal( radial, radial );
     const Eigen::VectorXd ur     = Krr.ldlt().solve( Eigen::VectorXd( FGlobal( radial ) ) );
 
