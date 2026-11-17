@@ -26,6 +26,12 @@ All notable changes to Marmot are documented in this file. The format follows
   converges far from the origin) and `GeometryElement::isInsideParentDomain`; `LagrangianCellGeometry` and the
   embedded bond element use it.
 - The Gauss-Lobatto family of the quadrature catalogue on Line (2 to 5 points), `gaussLobattoExactToDegree()`.
+- Large slip of embedded reinforcement: `EmbeddedLargeSlipBondElement` (`EBLS<nDim>D<nBarNodes><host>W<n>`, e.g.
+  `EBLS2D2Q4W3`): the bond is integrated over the channel fixed in the host element and each channel point searches
+  its current partner (closest point projection) in a window of `n` bar elements, so the bar can slide out of its
+  host and the bonded length shrinks as it is pulled out. Objective (current frame at the partner), with the
+  linearization of the closest point; `EmbeddedBondKinematics.h` holds the frame and the integration rule shared with
+  `EmbeddedBondElement`; `Bar2::d2NdXi2`, `Bar3::d2NdXi2`.
 - Energy gradients of the elements for dissipation based arc-length control, as optional capabilities that leave the
   standard interfaces unchanged (see the feature page "Energy gradients"):
   - `EnergyGradientProvider` (elements): `assignEnergyGradientOutput()` assigns two arrays to which every
