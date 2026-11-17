@@ -1,5 +1,6 @@
 #include "Marmot/FiniteStrainIsotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
@@ -11,7 +12,6 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Materials {
 
@@ -52,7 +52,7 @@ namespace Marmot::Materials {
                                                                   const TimeIncrement&         timeIncrement ) const
   {
 
-    using scalar  = autodiff::dual;
+    using scalar  = Marmot::Math::Differentiation::Automatic::dual;
     const auto& F = deformation.F;
 
     using namespace ContinuumMechanics;

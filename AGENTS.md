@@ -85,7 +85,8 @@ Rules:
 6. Base classes at the root of their audience namespace; concrete implementations beside their base; factories in `Registry`.
 7. Registration statics go in **unnamed namespaces** in `src/<Name>Registration.cpp`.
 8. C++17 nested namespace syntax only (`namespace Marmot::ContinuumMechanics::Elasticity {`); namespaces are PascalCase.
-9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. (Sanctioned exception: `Marmot::Math::Differentiation::Automatic` imports `autodiff` inside its own leaf namespace.) `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
+9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
+10. The automatic differentiation backend (autodiff) is included and named only in `Marmot/MarmotAutomaticDifferentiationTypes.h`. All other code uses its backend-neutral vocabulary in `Marmot::Math::Differentiation::Automatic`: the types `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >`, `Taylor< order >` (and the Eigen aliases `VectorXdual`, …) and the functions `seed< level >`, `derivative< level >`, `value` and `taylorDerivatives< order >` — never the backend's members (`.val`, `.grad`) or functions.
 
 `scripts/checkNamespaceConventions.sh` greps for violations; CI treats findings as errors.
 

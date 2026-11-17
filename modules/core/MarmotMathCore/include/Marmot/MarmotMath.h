@@ -24,12 +24,12 @@
  */
 
 #pragma once
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
-#include <autodiff/forward/dual/dual.hpp>
-#include <autodiff/forward/real/real.hpp>
 #include <complex>
+#include <type_traits>
 
 namespace Marmot::Math {
 
@@ -190,29 +190,26 @@ namespace Marmot::Math {
      *  This function converts input values of different numeric types, including:
      *  - double
      *  - std::complex<double>
-     *  - autodiff::real
-     *  - autodiff::dual
+     *  - Marmot::Math::Differentiation::Automatic::Taylor< 1 >
+     *  - Marmot::Math::Differentiation::Automatic::HyperDual numbers of any order
      *  - Eigen::Matrix with elements of any type convertible to double
      *
      *  The function is overloaded and templated to handle these different types appropriately.
      */
     double makeReal( const double& value );
     double makeReal( const std::complex< double >& value );
-    double makeReal( const autodiff::real& value );
+    double makeReal( const Marmot::Math::Differentiation::Automatic::Taylor< 1 >& value );
 
-    /** @brief Converts autodiff::dual numbers to double precision floating point numbers
-     *  @tparam T Underlying type of the autodiff::dual number
-     *  @tparam G Gradient type of the autodiff::dual number
-     *  @param number Input autodiff::dual number
-     *  @return Converted value as double
-     *
-     *  This function converts an autodiff::dual number to a double precision floating point number.
-     *  It is templated to handle dual numbers with different underlying types.
+    /** @brief Converts hyper-dual numbers of any order to double precision floating point numbers
+     *  @tparam Scalar hyper-dual number type
+     *  @param number Input hyper-dual number
+     *  @return Primal value of the hyper-dual number
      */
-    template < typename T, typename G >
-    double makeReal( const autodiff::detail::Dual< T, G >& number )
+    template < typename Scalar,
+               std::enable_if_t< Marmot::Math::Differentiation::Automatic::isHyperDual< Scalar >, bool > = true >
+    double makeReal( const Scalar& number )
     {
-      return double( number );
+      return Marmot::Math::Differentiation::Automatic::value( number );
     }
 
     /** @brief Extracts the real part of a arbitrary scalartype-valued Matrix

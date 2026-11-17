@@ -107,7 +107,8 @@ namespace Marmot::Materials {
     const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Constant derivative of Biot stress with respect to right stretch tensor.
-    const Marmot::Math::Tensors::FastorTensors::Tensor3333t< autodiff::dual > dBiotStress_dU;
+    const Marmot::Math::Tensors::FastorTensors::Tensor3333t< Marmot::Math::Differentiation::Automatic::dual >
+      dBiotStress_dU;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()

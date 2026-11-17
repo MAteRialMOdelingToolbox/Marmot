@@ -80,12 +80,14 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdO
     //         + einsum< kl, ijmn, to_ijklmn >( dDetC_dC, dInvCt_dC );
 
     // workaround with autodiff for third derivative
-    auto detC_func = [=]( const Tensor33t< autodiff::dual3rd >& C_var ) {
-      autodiff::dual3rd res = determinant( C_var );
+    auto detC_func = [=]( const Tensor33t< Marmot::Math::Differentiation::Automatic::dual3rd >& C_var ) {
+      Marmot::Math::Differentiation::Automatic::dual3rd res = determinant( C_var );
       return res;
     };
 
-    auto lnDetC_func = [=]( const Tensor33t< autodiff::dual3rd >& C_var ) { return log( determinant( C_var ) ); };
+    auto lnDetC_func = [=]( const Tensor33t< Marmot::Math::Differentiation::Automatic::dual3rd >& C_var ) {
+      return log( determinant( C_var ) );
+    };
 
     Tensor333333d d3DetC_dC3 = std::get< 3 >(
       Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( detC_func, C, true ) );

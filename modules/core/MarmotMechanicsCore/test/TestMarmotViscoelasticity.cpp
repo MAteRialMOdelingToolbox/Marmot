@@ -1,6 +1,6 @@
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotViscoelasticity.h"
-#include "autodiff/forward/real.hpp"
 
 using namespace Marmot;
 using namespace Marmot::Testing;
@@ -14,12 +14,11 @@ void testAutodiffDerivative()
   double tau = 1.234e5;
 
   // autodiff setup
-  static constexpr int                         maxDerivativeOrder = 3;
-  autodiff::Real< maxDerivativeOrder, double > tau_( tau );
-  auto                                         phiPL = [&]( autodiff::Real< maxDerivativeOrder, double > t ) {
+  static constexpr int maxDerivativeOrder = 3;
+  auto                 phiPL = [&]( Marmot::Math::Differentiation::Automatic::Taylor< maxDerivativeOrder > t ) {
     return ComplianceFunctions::powerLaw( t, m, n );
   };
-  auto phiLPL = [&]( autodiff::Real< maxDerivativeOrder, double > t ) {
+  auto phiLPL = [&]( Marmot::Math::Differentiation::Automatic::Taylor< maxDerivativeOrder > t ) {
     return ComplianceFunctions::logPowerLaw( t, m, n );
   };
 
@@ -27,9 +26,13 @@ void testAutodiffDerivative()
   Eigen::TensorFixedSize< double, Eigen::Sizes< maxDerivativeOrder > > autodiffValPL;
   Eigen::TensorFixedSize< double, Eigen::Sizes< maxDerivativeOrder > > autodiffValLPL;
 
+  const auto derivativesPL  = Marmot::Math::Differentiation::Automatic::taylorDerivatives< maxDerivativeOrder >( phiPL,
+                                                                                                                tau );
+  const auto derivativesLPL = Marmot::Math::Differentiation::Automatic::taylorDerivatives< maxDerivativeOrder >( phiLPL,
+                                                                                                                 tau );
   for ( int i = 0; i < maxDerivativeOrder; i++ ) {
-    autodiffValPL( i )  = autodiff::derivatives( phiPL, autodiff::along( 1. ), autodiff::at( tau_ ) )[i + 1];
-    autodiffValLPL( i ) = autodiff::derivatives( phiLPL, autodiff::along( 1. ), autodiff::at( tau_ ) )[i + 1];
+    autodiffValPL( i )  = derivativesPL[i + 1];
+    autodiffValLPL( i ) = derivativesLPL[i + 1];
   }
 
   // derivatives from sympy

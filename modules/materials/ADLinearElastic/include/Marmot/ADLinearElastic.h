@@ -38,7 +38,7 @@ namespace Marmot::Materials {
     using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Elasticity tensor for isotropic materials
-    const autodiff::MatrixXdual C;
+    const Marmot::Math::Differentiation::Automatic::MatrixXdual C;
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 

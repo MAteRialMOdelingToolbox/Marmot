@@ -25,8 +25,7 @@
 
 #pragma once
 #include "Eigen/Dense"
-#include "autodiff/forward/dual/dual.hpp"
-#include "autodiff/forward/dual/eigen.hpp"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "unsupported/Eigen/CXX11/Tensor"
 
 /**
@@ -73,9 +72,10 @@ namespace Marmot::Math {
   typedef Eigen::Matrix< complexDouble, 6, 1 > Vector6cd;     ///< 6-component complex double column vector
 
   // autodiff dual matrix definitions
-  typedef Eigen::Matrix< autodiff::dual, 6, 1 > Vector6dual;       ///< 6-component autodiff::dual column vector
-  typedef Eigen::Map< Vector6dual >             mVector6dual;      ///< Non-owning map over a Vector6dual
-  typedef Eigen::Map< const Vector6dual >       mVector6dualConst; ///< Non-owning const map over a Vector6dual
+  typedef Eigen::Matrix< Marmot::Math::Differentiation::Automatic::dual, 6, 1 >
+    Vector6dual; ///< 6-component Marmot::Math::Differentiation::Automatic::dual column vector
+  typedef Eigen::Map< Vector6dual >       mVector6dual;      ///< Non-owning map over a Vector6dual
+  typedef Eigen::Map< const Vector6dual > mVector6dualConst; ///< Non-owning const map over a Vector6dual
 
   // definitions for templated scalar type
   template < typename T >

@@ -1,10 +1,10 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotAutomaticDifferentiation.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <autodiff/forward/dual/eigen.hpp>
 
 using namespace Eigen;
-using namespace autodiff;
+using namespace Marmot::Math::Differentiation::Automatic;
 
 void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&                      state,
                                                               Marmot::Math::Matrix6d&       dStressDDStrain,
@@ -31,7 +31,7 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
   // autodiff part
   // ----------------------------------------
   // compute stress and tangent with autodiff
-  std::tie( S, C ) = Marmot::Math::Differentiation::Automatic::dF_dX(
+  std::tie( S, C ) = dF_dX(
     [&]( const Marmot::Math::Vector6dual dE_ ) {
       // reset stateVars to old state
       stateVars = stateVarsOld;

@@ -24,10 +24,10 @@
  */
 
 #pragma once
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include "autodiff/forward/real.hpp"
 
 #include <cmath>
 #include <functional>
@@ -132,16 +132,15 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      * @return the value of the approximated spectrum at @f$\tau@f$
      */
     template < int k >
-    double evaluatePostWidderFormula(
-      std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > function,
-      double                                                                      tau,
-      PostWidderCoefficientSign                                                   coefficientSign )
+    double evaluatePostWidderFormula( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                        Marmot::Math::Differentiation::Automatic::Taylor< k > ) > function,
+                                      double                                                      tau,
+                                      PostWidderCoefficientSign                                   coefficientSign )
     {
-      autodiff::Real< k, double > evaluationTime( tau * k );
       double coefficient = std::pow( -tau * k, k ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
       if ( coefficientSign == PostWidderCoefficientSign::Negative )
         coefficient *= -1.;
-      return coefficient * autodiff::derivatives( function, autodiff::along( 1. ), autodiff::at( evaluationTime ) )[k];
+      return coefficient * Marmot::Math::Differentiation::Automatic::taylorDerivatives< k >( function, tau * k )[k];
     }
 
     /**

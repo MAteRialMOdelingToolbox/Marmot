@@ -23,10 +23,9 @@ void testTensorToScalar()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
-    [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-    };
+  std::function< dual( const Fastor::Tensor< dual, 3, 3 >& ) > psi = [&]( const Fastor::Tensor< dual, 3, 3 >& Ce_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+  };
 
   // autodiff solution
   Tensor33d dPsi_dC = df_dT( psi, C );
@@ -80,10 +79,9 @@ void testTensorToScalarSymmetric()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
-    [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-    };
+  std::function< dual( const Fastor::Tensor< dual, 3, 3 >& ) > psi = [&]( const Fastor::Tensor< dual, 3, 3 >& Ce_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+  };
 
   Tensor33d dPsi_dC_full = df_dT( psi, C );
   Tensor33d dPsi_dC_sym  = df_dT( psi, C, true );
@@ -99,33 +97,31 @@ void testTensorToScalarWith2ndOrderDuals()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33t< autodiff::dual > F_dual = Marmot::Math::Tensors::makeDual( F );
+  Tensor33t< dual > F_dual = Marmot::Math::Tensors::makeDual( F );
 
   // seed F_dual to check if shifting to higher order duals works
   seed< 1 >( F_dual( 0, 0 ), 1 );
 
   // compute right Cauchy-Green tensor
-  Tensor33t< autodiff::dual > C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
-    F_dual );
+  Tensor33t< dual > C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_dual );
 
   // set material parameters
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
-    [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-    };
+  std::function< dual2nd( const Tensor33t< dual2nd >& ) > psi = [&]( const Tensor33t< dual2nd >& Ce_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+  };
 
   // analytical solution
   auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
-  Tensor33t< autodiff::dual > dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
+  Tensor33t< dual > dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
-  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual< dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dPsi for F = I failed" );
 
   // extension in first direction
@@ -140,7 +136,7 @@ void testTensorToScalarWith2ndOrderDuals()
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
-  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual< dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
 
@@ -155,7 +151,7 @@ void testTensorToScalarWith2ndOrderDuals()
   // autodiff solution
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
-  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual< dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
@@ -166,23 +162,22 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d                   C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
-  Tensor33t< autodiff::dual > C_dual = Marmot::Math::Tensors::makeDual( C );
+  Tensor33d         C      = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33t< dual > C_dual = Marmot::Math::Tensors::makeDual( C );
 
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
-    [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-    };
+  std::function< dual2nd( const Tensor33t< dual2nd >& ) > psi = [&]( const Tensor33t< dual2nd >& Ce_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+  };
 
   auto [val_full, dPsi_dC_full] = df_dT< 1 >( psi, C_dual );
   auto [val_sym, dPsi_dC_sym]   = df_dT< 1 >( psi, C_dual, true );
 
   throwExceptionOnFailure( checkIfEqual( double( val_sym ), double( val_full ), 1e-12 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
-  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual< dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__
                              << "symmetric higher-order df_dT doesn't match the dense computation" );
@@ -193,12 +188,10 @@ void testTensorToTensor()
   Tensor33d F;
   F.random();
 
-  std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& F_ ) {
-      Tensor33t< autodiff::dual > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
-        F_ );
-      return C;
-    };
+  std::function< Tensor33t< dual >( const Tensor33t< dual >& ) > f = [&]( const Fastor::Tensor< dual, 3, 3 >& F_ ) {
+    Tensor33t< dual > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_ );
+    return C;
+  };
 
   // autodiff solution
   auto [C, dC_dF] = dF_dT( f, F );
@@ -226,11 +219,10 @@ void testTensorToTensorSymmetric()
 
   // f(C) = C*C: transpose-equivariant (f(A^T) = f(A)^T for any A), same-dimension square output, so the
   // symmetry-exploiting path (which relies on that property) is applicable
-  std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
-    []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
-      return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
-                                                                                                                   C_ );
-    };
+  std::function< Tensor33t< dual >( const Tensor33t< dual >& ) > f = []( const Fastor::Tensor< dual, 3, 3 >& C_ ) {
+    return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
+                                                                                                                 C_ );
+  };
 
   auto [Fval_full, dF_dC_full] = dF_dT( f, C );
   auto [Fval_sym, dF_dC_sym]   = dF_dT( f, C, true );
@@ -252,10 +244,9 @@ void testTensorToScalarSecondOrder()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
-    };
+  std::function< dual2nd( const Tensor33t< dual2nd >& ) > f = [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+  };
 
   auto [psi, dPsi_dC, d2Psi_dC2] = SecondOrder::d2f_dT2( f, C );
 
@@ -284,10 +275,9 @@ void testTensorToScalarSecondOrderSymmetric()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
-    };
+  std::function< dual2nd( const Tensor33t< dual2nd >& ) > f = [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+  };
 
   auto [psi_full, dPsi_dC_full, d2Psi_dC2_full] = SecondOrder::d2f_dT2( f, C );
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym]    = SecondOrder::d2f_dT2( f, C, true );
@@ -313,8 +303,8 @@ void testTensorToScalarSecondOrderMixed()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
+  std::function< dual2nd( const Tensor33t< dual2nd >&, const dual2nd ) > f =
+    [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_, const dual2nd omega_ ) {
       const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
                                                                                                               K,
                                                                                                               G );
@@ -349,8 +339,8 @@ void testTensorToScalarSecondOrderMixedSymmetric()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
+  std::function< dual2nd( const Tensor33t< dual2nd >&, const dual2nd ) > f =
+    [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_, const dual2nd omega_ ) {
       const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
                                                                                                               K,
                                                                                                               G );
@@ -377,16 +367,15 @@ void testTensorToScalarThirdOrder()
   Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // Use a simpler test function: f(C) = sum(C^2)
-  std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
-    [&]( const Fastor::Tensor< autodiff::dual3rd, 3, 3 >& C_ ) {
-      autodiff::dual3rd result = 0.0;
-      for ( size_t i = 0; i < 3; i++ ) {
-        for ( size_t j = 0; j < 3; j++ ) {
-          result += C_( i, j ) * C_( i, j );
-        }
+  std::function< dual3rd( const Tensor33t< dual3rd >& ) > f = [&]( const Fastor::Tensor< dual3rd, 3, 3 >& C_ ) {
+    dual3rd result = 0.0;
+    for ( size_t i = 0; i < 3; i++ ) {
+      for ( size_t j = 0; j < 3; j++ ) {
+        result += C_( i, j ) * C_( i, j );
       }
-      return result;
-    };
+    }
+    return result;
+  };
 
   auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = ThirdOrder::d3f_dT3( f, C );
 
@@ -420,12 +409,11 @@ void testTensorToScalarThirdOrderSymmetric()
 
   // det(C): a transpose-invariant scalar function with genuinely nonzero third derivatives, unlike the trivial
   // sum(C^2) used above, so the symmetry-exploiting mirroring is actually exercised
-  std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
-    []( const Fastor::Tensor< autodiff::dual3rd, 3, 3 >& C_ ) {
-      return C_( 0, 0 ) * ( C_( 1, 1 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 1 ) ) -
-             C_( 0, 1 ) * ( C_( 1, 0 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 0 ) ) +
-             C_( 0, 2 ) * ( C_( 1, 0 ) * C_( 2, 1 ) - C_( 1, 1 ) * C_( 2, 0 ) );
-    };
+  std::function< dual3rd( const Tensor33t< dual3rd >& ) > f = []( const Fastor::Tensor< dual3rd, 3, 3 >& C_ ) {
+    return C_( 0, 0 ) * ( C_( 1, 1 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 1 ) ) -
+           C_( 0, 1 ) * ( C_( 1, 0 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 0 ) ) +
+           C_( 0, 2 ) * ( C_( 1, 0 ) * C_( 2, 1 ) - C_( 1, 1 ) * C_( 2, 0 ) );
+  };
 
   auto [psi_full, dPsi_dC_full, d2Psi_dC2_full, d3Psi_dC3_full] = ThirdOrder::d3f_dT3( f, C );
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym, d3Psi_dC3_sym]     = ThirdOrder::d3f_dT3( f, C, true );
@@ -448,13 +436,12 @@ void testNonSquareRank2Shapes()
   // must be usable without triggering the isSymmetric-only code path's compile-time shape requirements
 
   // df_dT with a non-square-rank2 (rank-1 vector) input: f(T) = sum(T_i^2), gradient = 2*T
-  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 4 >& ) > f =
-    []( const Fastor::Tensor< autodiff::dual, 4 >& T ) {
-      autodiff::dual result = 0.0;
-      for ( size_t i = 0; i < 4; i++ )
-        result += T( i ) * T( i );
-      return result;
-    };
+  std::function< dual( const Fastor::Tensor< dual, 4 >& ) > f = []( const Fastor::Tensor< dual, 4 >& T ) {
+    dual result = 0.0;
+    for ( size_t i = 0; i < 4; i++ )
+      result += T( i ) * T( i );
+    return result;
+  };
 
   Fastor::Tensor< double, 4 > T{ 1., 2., 3., 4. };
   Fastor::Tensor< double, 4 > dF_dT_result = df_dT( f, T );
@@ -465,9 +452,9 @@ void testNonSquareRank2Shapes()
                              << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
 
   // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
-  std::function< Fastor::Tensor< autodiff::dual, 2 >( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > g =
-    []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
-      Fastor::Tensor< autodiff::dual, 2 > out( 0.0 );
+  std::function< Fastor::Tensor< dual, 2 >( const Fastor::Tensor< dual, 3, 3 >& ) > g =
+    []( const Fastor::Tensor< dual, 3, 3 >& C_ ) {
+      Fastor::Tensor< dual, 2 > out( 0.0 );
       out( 0 ) = C_( 0, 0 ) * C_( 0, 0 );
       out( 1 ) = C_( 1, 1 ) + C_( 2, 2 );
       return out;

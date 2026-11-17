@@ -1,4 +1,5 @@
 #include "Marmot/ADCompressibleNeoHooke.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -8,7 +9,6 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Materials {
 
@@ -43,8 +43,10 @@ namespace Marmot::Materials {
       PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
-    Tensor33t< autodiff::dual > PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,
-                                                                                             autodiff::dual( 2.0 ) );
+    Tensor33t< Marmot::Math::Differentiation::Automatic::dual >
+      PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,
+                                                                   Marmot::Math::Differentiation::Automatic::dual(
+                                                                     2.0 ) );
 
     const auto tau                = Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                  = tau;

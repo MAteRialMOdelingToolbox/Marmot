@@ -45,9 +45,7 @@ report "lowercase namespace name" \
 #    headers. Tracks braces: a 'using' line (aliases 'using X = ...' excluded)
 #    is flagged unless some enclosing brace is a non-namespace block (class,
 #    function, ...). Comment-only lines are skipped so braces in docs do not
-#    skew the depth. AGENTS.md rule 9 sanctions the autodiff import in
-#    Marmot::Math::Differentiation::Automatic (the MarmotAutomaticDifferentiation*
-#    headers).
+#    skew the depth.
 report "using at global or namespace scope in a header" \
   "$(awk '
       FNR == 1 { depth = 0; nsCount = 0 }
@@ -63,7 +61,7 @@ report "using at global or namespace scope in a header" \
           else if (c == "}") { if (depth > 0) { nsCount -= ns[depth]; depth-- } }
         }
       }
-    ' $HDR 2>/dev/null | grep -v "MarmotAutomaticDifferentiation")"
+    ' $HDR 2>/dev/null)"
 
 # 6. Old-style nested namespace declarations (C++17 required): a bare
 #    'namespace Marmot {' opener whose children are opened separately.
@@ -74,6 +72,13 @@ report "old-style 'namespace Marmot {' opener (use C++17 'namespace Marmot::X {'
 # 7. Namespace depth > 6 (counting Marmot).
 report "namespace deeper than 6 levels" \
   "$(grep -nE "namespace +(\w+::){6,}\w+ *\{" $ALL 2>/dev/null)"
+
+# 8. The automatic differentiation backend is named in one header only: everything else uses the backend-neutral
+#    types and functions of Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). Comment lines are skipped.
+report "AD backend used outside MarmotAutomaticDifferentiationTypes.h" \
+  "$(grep -nE "autodiff::|#include *[<\"]autodiff/" $ALL 2>/dev/null \
+    | grep -v "MarmotAutomaticDifferentiationTypes.h:" \
+    | grep -vE "^[^:]+:[0-9]+: *(//|/?\*)")"
 
 if [ $FAIL -ne 0 ]; then
   echo "Namespace convention violations found."

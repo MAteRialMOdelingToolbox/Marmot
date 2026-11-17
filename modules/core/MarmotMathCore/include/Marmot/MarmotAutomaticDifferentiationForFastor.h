@@ -34,15 +34,11 @@
 #  pragma warning( pop )
 #endif
 #include "Marmot/MarmotAutomaticDifferentiation.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
-#include "autodiff/forward/dual.hpp"
-#include "autodiff/forward/dual/eigen.hpp"
-#include <autodiff/forward/dual/dual.hpp>
 #include <functional>
 
 namespace Marmot::Math::Differentiation::Automatic {
-
-  using namespace autodiff;
 
   /** @brief Increase the order of an arbitray order dual-valued Fastor tensor by one and shift the derivatives
    *  @tparam order current order of the dual numers in the tensor
@@ -51,11 +47,11 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @return output tensor with increased order dual numbers
    */
   template < size_t order, size_t... Rest >
-  Fastor::Tensor< HigherOrderDual< order + 1, double >, Rest... > increaseDualOrderWithShift(
-    const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& in )
+  Fastor::Tensor< HyperDual< order + 1 >, Rest... > increaseDualOrderWithShift(
+    const Fastor::Tensor< HyperDual< order >, Rest... >& in )
   {
-    using in_scalar_type  = HigherOrderDual< order, double >;
-    using out_scalar_type = HigherOrderDual< order + 1, double >;
+    using in_scalar_type  = HyperDual< order >;
+    using out_scalar_type = HyperDual< order + 1 >;
 
     Fastor::Tensor< out_scalar_type, Rest... > out( 0.0 );
     out_scalar_type*                           out_data = out.data();
@@ -137,8 +133,8 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @tparam Rest dimensions of the tensor
    * */
   template < size_t order, size_t... Rest >
-  using tensor_to_scalar_function_type_arbitrary_dual_order = std::function< HigherOrderDual< order, double >(
-    const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >& T ) >;
+  using tensor_to_scalar_function_type_arbitrary_dual_order = std::function< HyperDual< order >(
+    const Fastor::Tensor< HyperDual< order >, Rest... >& T ) >;
 
   /** @brief Compute the gradient of a tensor-to-scalar function where the with dual numbers of arbitrary order
    *  @tparam order current order of the dual numers in the tensor
@@ -154,14 +150,14 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @return pair of function value and gradient of f with respect to T, same shape as T
    */
   template < size_t order, size_t... Rest >
-  std::pair< HigherOrderDual< order, double >, Fastor::Tensor< HigherOrderDual< order, double >, Rest... > > df_dT(
+  std::pair< HyperDual< order >, Fastor::Tensor< HyperDual< order >, Rest... > > df_dT(
     const tensor_to_scalar_function_type_arbitrary_dual_order< order + 1, Rest... >& f,
-    const Fastor::Tensor< HigherOrderDual< order, double >, Rest... >&               T,
+    const Fastor::Tensor< HyperDual< order >, Rest... >&                             T,
     bool                                                                             isSymmetric = false )
   {
 
-    using scalartype            = HigherOrderDual< order, double >;
-    using higherOrderScalartype = HigherOrderDual< order + 1, double >;
+    using scalartype            = HyperDual< order >;
+    using higherOrderScalartype = HyperDual< order + 1 >;
 
     higherOrderScalartype                            f_;
     Fastor::Tensor< scalartype, Rest... >            df_dT_( 0.0 );
@@ -249,20 +245,20 @@ namespace Marmot::Math::Differentiation::Automatic {
             const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
             const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
             const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
-            T_right_data[T_right_mem_idx].grad += 1.0;
+            seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
             F_at_T_right = F( T_right );
 
             for ( size_t outRow = 0; outRow < dim; ++outRow ) {
               for ( size_t outCol = 0; outCol < dim; ++outCol ) {
                 const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
                 const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
-                const double               val    = F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )].grad;
+                const double val = derivative< 1 >( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] );
                 dF_dT_data[dF_dT_.get_mem_index( out_ab * T.size() + lin_ij )] = val;
                 if ( col != row )
                   dF_dT_data[dF_dT_.get_mem_index( out_ba * T.size() + lin_ji )] = val;
               }
             }
-            T_right_data[T_right_mem_idx].grad -= 1.0;
+            seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
           }
         }
 
@@ -273,13 +269,14 @@ namespace Marmot::Math::Differentiation::Automatic {
 
     for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
       const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
-      T_right_data[T_right_mem_idx].grad += 1.0;
+      seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
       F_at_T_right = F( T_right );
 
       for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
-        dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = F_at_T_right_data[F_at_T_right.get_mem_index( j )].grad;
+        dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = derivative< 1 >(
+          F_at_T_right_data[F_at_T_right.get_mem_index( j )] );
       }
-      T_right_data[T_right_mem_idx].grad -= 1.0;
+      seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
     }
 
     F_ = Tensors::makeReal( F_at_T_right );
@@ -347,7 +344,7 @@ namespace Marmot::Math::Differentiation::Automatic {
             }
           }
           dF_dT_( i, j ) = derivative< 1 >( F_right );
-          F_             = double( F_right );
+          F_             = value( F_right );
           if ( isSymmetric && j != i )
             dF_dT_( j, i ) = dF_dT_( i, j );
           seed< 1 >( T_right( i, j ), 0.0 );
@@ -489,7 +486,7 @@ namespace Marmot::Math::Differentiation::Automatic {
             }
           }
           dF_dT_( i, j ) = derivative< 1 >( F_right );
-          F_             = double( F_right );
+          F_             = value( F_right );
           if ( isSymmetric && j != i )
             dF_dT_( j, i ) = dF_dT_( i, j );
           seed< 1 >( T_right( i, j ), 0.0 );

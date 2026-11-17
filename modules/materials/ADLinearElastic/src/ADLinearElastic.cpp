@@ -1,12 +1,12 @@
 #include "Marmot/ADLinearElastic.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/dual/eigen.hpp"
 
 namespace Marmot::Materials {
 
   using namespace Marmot;
-  using namespace autodiff;
+  using namespace Marmot::Math::Differentiation::Automatic;
   using namespace Eigen;
   using namespace ContinuumMechanics::Elasticity;
 

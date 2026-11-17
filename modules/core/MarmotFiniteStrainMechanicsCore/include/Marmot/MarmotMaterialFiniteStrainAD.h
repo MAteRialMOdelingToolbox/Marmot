@@ -61,17 +61,17 @@ namespace Marmot::Materials {
      */
     template < int nDim >
     struct ConstitutiveResponseAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > tau;                  ///< Kirchhoff stress
-      double                                       elasticEnergyDensity; ///< elastic energy per unit volume
-      double  dissipation; ///< dissipation per unit volume (for inelastic materials)
-      double* stateVars;   ///< pointer to state variables
+      Fastor::Tensor< Marmot::Math::Differentiation::Automatic::dual, nDim, nDim > tau; ///< Kirchhoff stress
+      double  elasticEnergyDensity; ///< elastic energy per unit volume
+      double  dissipation;          ///< dissipation per unit volume (for inelastic materials)
+      double* stateVars;            ///< pointer to state variables
 
       /**
        * @brief Default constructor.
        * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
        */
       ConstitutiveResponseAD()
-        : tau( Fastor::Tensor< autodiff::dual, nDim, nDim >( 0.0 ) ),
+        : tau( Fastor::Tensor< Marmot::Math::Differentiation::Automatic::dual, nDim, nDim >( 0.0 ) ),
           elasticEnergyDensity( 0.0 ),
           dissipation( 0.0 ),
           stateVars( nullptr )
@@ -100,7 +100,7 @@ namespace Marmot::Materials {
      */
     template < int nDim >
     struct DeformationAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > F; ///< deformation gradient
+      Fastor::Tensor< Marmot::Math::Differentiation::Automatic::dual, nDim, nDim > F; ///< deformation gradient
     };
 
     /**
@@ -132,7 +132,7 @@ namespace Marmot::Materials {
     {
       using namespace Marmot;
       using namespace Marmot::Math::Tensors::FastorTensors;
-      using scalar = autodiff::dual;
+      using scalar = Marmot::Math::Differentiation::Automatic::dual;
 
       Eigen::Map< Eigen::VectorXd > stateVars( response.stateVars, this->getNumberOfRequiredStateVars() );
 

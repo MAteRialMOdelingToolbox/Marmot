@@ -1,4 +1,5 @@
 #include "Marmot/ADVonMises.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotExceptions.h"
@@ -6,13 +7,11 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include <autodiff/forward/dual.hpp>
-#include <autodiff/forward/dual/eigen.hpp>
 
 namespace Marmot::Materials {
 
   using namespace Marmot;
-  using namespace autodiff;
+  using namespace Marmot::Math::Differentiation::Automatic;
   using namespace Eigen;
   using namespace ContinuumMechanics::Elasticity;
 
@@ -81,7 +80,7 @@ namespace Marmot::Materials {
         // compute derivative of g wrt kappa at constant rhoTrial
         dual dKappa_( dKappa );
         seed< 1 >( dKappa_, 1.0 );
-        dg_ddKappa = derivative< 1 >( g( dual( rhoTrial.val ), kappa, dKappa_ ) );
+        dg_ddKappa = derivative< 1 >( g( dual( value( rhoTrial ) ), kappa, dKappa_ ) );
 
         // update dKappa and iteration counter
         dKappa -= g( rhoTrial, kappa, dKappa ) / dg_ddKappa;
@@ -99,7 +98,7 @@ namespace Marmot::Materials {
       auto dEpsP = dLambda * n;
       auto dEpsE = dE - dEpsP;
       auto dS    = Cel * dEpsE;
-      kappa += dKappa.val;
+      kappa += value( dKappa );
       auto stressAvg = S - 0.5 * Cel * dEpsE;
       state.elasticEnergyDensity += Math::Tensors::makeReal( dEpsE.dot( stressAvg ) );
       state.dissipation += Math::Tensors::makeReal( dEpsP.dot( dS ) );

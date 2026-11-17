@@ -13,9 +13,10 @@ namespace Marmot::Testing {
     return std::to_string( a );
   }
 
-  std::string getString( const autodiff::dual a )
+  std::string getString( const Marmot::Math::Differentiation::Automatic::dual a )
   {
-    return "(" + std::to_string( a.val ) + ",  " + std::to_string( a.grad ) + ")";
+    return "(" + std::to_string( Marmot::Math::Differentiation::Automatic::value( a ) ) + ",  " +
+           std::to_string( Marmot::Math::Differentiation::Automatic::derivative< 1 >( a ) ) + ")";
   }
 
   bool checkIfEqual( const double a, const double b, const double tol )
@@ -47,9 +48,16 @@ namespace Marmot::Testing {
       return true;
   }
 
-  bool checkIfEqual( const autodiff::dual a, const autodiff::dual b, const double tol )
+  bool checkIfEqual( const Marmot::Math::Differentiation::Automatic::dual a,
+                     const Marmot::Math::Differentiation::Automatic::dual b,
+                     const double                                         tol )
   {
-    if ( checkIfEqual( a.val, b.val, tol ) && checkIfEqual( a.grad, b.grad, tol ) ) {
+    if ( checkIfEqual( Marmot::Math::Differentiation::Automatic::value( a ),
+                       Marmot::Math::Differentiation::Automatic::value( b ),
+                       tol ) &&
+         checkIfEqual( Marmot::Math::Differentiation::Automatic::derivative< 1 >( a ),
+                       Marmot::Math::Differentiation::Automatic::derivative< 1 >( b ),
+                       tol ) ) {
       return true;
     }
     return false;

@@ -1,8 +1,8 @@
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotKelvinChain.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotViscoelasticity.h"
-#include "autodiff/forward/real.hpp"
 
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
@@ -123,7 +123,7 @@ void computeElasticModuliTestFunction()
   double m = 1;
   double n = 1;
   // compliance function
-  auto phi = [&]( autodiff::Real< maxDerivativeOrder, double > t ) {
+  auto phi = [&]( Marmot::Math::Differentiation::Automatic::Taylor< maxDerivativeOrder > t ) {
     return ComplianceFunctions::logPowerLaw( t, m, n );
   };
   // Properties retardationTimes
@@ -164,7 +164,7 @@ void evaluatePostWidderFormulaTestFunction()
   double m = 1;
   double n = 1;
   // compliance function
-  auto phi = [&]( autodiff::Real< maxDerivativeOrder, double > t ) {
+  auto phi = [&]( Marmot::Math::Differentiation::Automatic::Taylor< maxDerivativeOrder > t ) {
     return ComplianceFunctions::logPowerLaw( t, m, n );
   };
   // retardation time
@@ -185,7 +185,7 @@ void approximateZerothComplianceTestFunction()
   double m = 1;
   double n = 1;
   // compliance function
-  auto phi = [&]( autodiff::Real< maxDerivativeOrder, double > t ) {
+  auto phi = [&]( Marmot::Math::Differentiation::Automatic::Taylor< maxDerivativeOrder > t ) {
     return ComplianceFunctions::logPowerLaw( t, m, n );
   };
   // min retardation time
