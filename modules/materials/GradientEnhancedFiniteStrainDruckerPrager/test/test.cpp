@@ -1,4 +1,4 @@
-#include "Marmot/CompressibleNeoHooke.h"
+#include "Marmot/CompressibleHyperelasticity.h"
 #include "Marmot/GradientEnhancedFiniteStrainDruckerPrager.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -116,9 +116,12 @@ void testElasticRangeIsCompressibleNeoHooke()
   const auto props = properties( 1e6, 30., 10. ); // never yields
   Mat        mat( props.data(), static_cast< int >( props.size() ), 1 );
 
-  CompressibleNeoHooke                            reference( props.data(), 2, 1 );
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > r( Tensor33d( 0.0 ), 0., 0., nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    t;
+  // the compressible Neo-Hooke model of Pence & Gou (variant B) with K = props[0], G = props[1]: isochoric NeoHooke
+  // (0) with mu = G and volumetric DollSchweizerhof (6) with kappa = K, alpha = 1, beta = 3
+  const std::array< double, 6 >                          referenceProps = { 0., 6., props[1], props[0], 1., 3. };
+  CompressibleHyperelasticity                            reference( referenceProps.data(), 6, 1 );
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > r( Tensor33d( 0.0 ), 0., 0., nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    t;
 
   for ( double s : { 0.05, 0.2, 0.5 } ) {
     reference.computeStress( r, t, { testF( s ) }, { 0.0, 1.0 } );

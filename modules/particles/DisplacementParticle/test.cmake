@@ -1,7 +1,7 @@
 # add current directory to the source for the tests
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 
-add_marmot_test("TestDisplacementParticle" "${CURR_TEST_SOURCE_DIR}/test.cpp" REQUIRES CompressibleNeoHooke)
+add_marmot_test("TestDisplacementParticle" "${CURR_TEST_SOURCE_DIR}/test.cpp" REQUIRES CompressibleHyperelasticity)
 # glibc fills freed and fresh heap memory with a pattern: a member that is read before it is set shows up as garbage
 # instead of as zero (the particles have been bitten by this: second moments, VCI basis and volume, density)
 if(TEST "TestDisplacementParticle") # not defined if a required module is not built

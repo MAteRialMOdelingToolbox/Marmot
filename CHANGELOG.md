@@ -143,6 +143,16 @@ All notable changes to Marmot are documented in this file. The format follows
   and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
+- **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
+  `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
+  whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,
+  3 `ArrudaBoyce8Chain`) and the volumetric part (1 `SussmanBathe`, 2 `Penalty`, 3 `SimoTaylor`, 4 `Ogden`,
+  5 `LiuHofstetterMang`, 6 `DollSchweizerhof`, 7 `DollSchweizerhofExponential`, 8 `DollSchweizerhofLogarithmic`,
+  numbered as U1 to U8 in Doll & Schweizerhof (2000)), followed by the parameters of the isochoric part, those of the
+  volumetric part and, optionally, the density. Inputs with `COMPRESSIBLENEOHOOKE` and the properties `K, G[, rho]`
+  keep their results (to round-off) as `COMPRESSIBLEHYPERELASTICITY` with `0, 6, G, K, 1, 3[, rho]`. The header is
+  `Marmot/CompressibleHyperelasticity.h`, the module `CompressibleHyperelasticity`; the examples moved to
+  `examples/*/CompressibleHyperelasticity`.
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
   the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
   response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`

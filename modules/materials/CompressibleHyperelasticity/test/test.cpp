@@ -1,9 +1,16 @@
-#include "Marmot/CompressibleNeoHooke.h"
+#include "Marmot/CompressibleHyperelasticity.h"
+#include "Marmot/MarmotDeformationMeasures.h"
+#include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTesting.h"
+#include <array>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <vector>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
@@ -19,20 +26,23 @@ void testSetup( const std::string& testName,
                 bool               IsotropyCheck    = false )
 {
 
-  // idx 0 - Bulk modulus K, idx 1 - Shear modulus G
-  std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-  const int               nMaterialProperties = 2;
+  // isochoric NeoHooke (0) with mu = 1500, volumetric DollSchweizerhof (6) with kappa = 3500, alpha = 1, beta = 3:
+  // the compressible Neo-Hooke model of Pence & Gou (variant B) with K = 3500, G = 1500
+  std::array< double, 6 > materialProperties_ = { 0, 6, 1500, 3500, 1, 3 };
+  const int               nMaterialProperties = 6;
   const int               elLabel             = 1;
 
   // Create material instance
-  const CompressibleNeoHooke mat = CompressibleNeoHooke( &materialProperties_[0], nMaterialProperties, elLabel );
+  const CompressibleHyperelasticity mat = CompressibleHyperelasticity( &materialProperties_[0],
+                                                                       nMaterialProperties,
+                                                                       elLabel );
 
   // Create deformation, time increment, response and tangent objects required for stress computation
-  CompressibleNeoHooke::Deformation< 3 > def     = { Tensor33d( 0.0 ) };
-  CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::Deformation< 3 > def     = { Tensor33d( 0.0 ) };
+  CompressibleHyperelasticity::TimeIncrement    timeInc = { 0, 0.1 };
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tangent = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tangent = { Tensor3333d( 0.0 ) };
 
   // Prescribe a deformation gradient tensor F for the considered load case
   def.F = inputF;
@@ -45,20 +55,21 @@ void testSetup( const std::string& testName,
     // Compare computed stress to target stress values
     throwExceptionOnFailure( checkIfEqual( response.tau, targetStress, 1e-10 ),
                              testName + " - Kirchhoff stress tensor (tau) computation failed" +
-                               " for CompressibleNeoHooke material in " + std::string( __PRETTY_FUNCTION__ ) );
+                               " for CompressibleHyperelasticity material in " + std::string( __PRETTY_FUNCTION__ ) );
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
 
         throwExceptionOnFailure( checkIfEqual( response.tau( i, j ), response.tau( j, i ), 1e-10 ),
                                  testName + " - Kirchhoff stress tensor symmetry check failed" +
-                                   " for CompressibleNeoHooke material in " + std::string( __PRETTY_FUNCTION__ ) );
+                                   " for CompressibleHyperelasticity material in " +
+                                   std::string( __PRETTY_FUNCTION__ ) );
 
     if ( checkTangent ) {
       // Compare algorithmic tangent to target tangent values
       throwExceptionOnFailure( checkIfEqual( tangent.dTau_dF, targetTangent, 1e-10 ),
                                testName + " - Algorithmic tangent tensor computation failed" +
-                                 " for CompressibleNeoHooke material in " + std::string( __PRETTY_FUNCTION__ ) );
+                                 " for CompressibleHyperelasticity material in " + std::string( __PRETTY_FUNCTION__ ) );
     }
   }
 
@@ -92,7 +103,8 @@ void testSetup( const std::string& testName,
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressRotated, 1e-10 ),
                                testName + " - Objectivity test failed (phi_deg=" + std::to_string( phi_deg ) +
-                                 ") for CompressibleNeoHooke material in " + std::string( __PRETTY_FUNCTION__ ) );
+                                 ") for CompressibleHyperelasticity material in " +
+                                 std::string( __PRETTY_FUNCTION__ ) );
     }
   }
 
@@ -121,7 +133,8 @@ void testSetup( const std::string& testName,
 
       throwExceptionOnFailure( checkIfEqual( stressNew, stressUnrotated, 1e-10 ),
                                testName + " - Isotropy test failed (phi_deg=" + std::to_string( phi_deg ) +
-                                 ") for CompressibleNeoHooke material in " + std::string( __PRETTY_FUNCTION__ ) );
+                                 ") for CompressibleHyperelasticity material in " +
+                                 std::string( __PRETTY_FUNCTION__ ) );
     }
   }
 }
@@ -291,9 +304,9 @@ void testRotation()
 void testWithMPSolver()
 {
   using namespace Marmot::Materials;
-  auto        materialProperties = std::vector< double >{ 3500, 1500 };
+  auto        materialProperties = std::vector< double >{ 0, 6, 1500, 3500, 1, 3 };
   auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
-  std::string matName            = "COMPRESSIBLENEOHOOKE";
+  std::string matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
                                                                     static_cast< int >( materialProperties.size() ),
@@ -337,40 +350,41 @@ void testWithMPSolver()
   stressTarget( 1, 0 ) = .15;
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-8 ),
-                           "I-5: Material Point Solver simple shear test failed for CompressibleNeoHooke material in " +
+                           "I-5: Material Point Solver simple shear test failed for CompressibleHyperelasticity "
+                           "material in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 // ─────────────────────────────────────────────────────────────────────────────
 // The following tests exercise Marmot::Materials::MaterialFiniteStrain's default (base-class)
-// implementations, none of which CompressibleNeoHooke overrides: computeStressExplicit,
+// implementations, none of which CompressibleHyperelasticity overrides: computeStressExplicit,
 // computeStress(..., eigenDeformation), computePlaneStrain(Explicit) (with and without
 // eigenDeformation), computePlaneStress(Explicit), getStateView, getMaximumWaveSpeed,
 // setCharacteristicElementLength and findEigenDeformationForEigenStress.
 // ─────────────────────────────────────────────────────────────────────────────
 
 namespace {
-  std::array< double, 2 > materialProperties_ = { 3500, 1500 };
-  CompressibleNeoHooke    makeMaterial()
+  std::array< double, 6 >     materialProperties_ = { 0, 6, 1500, 3500, 1, 3 };
+  CompressibleHyperelasticity makeMaterial()
   {
-    return CompressibleNeoHooke( &materialProperties_[0], 2, 1 );
+    return CompressibleHyperelasticity( &materialProperties_[0], 6, 1 );
   }
 } // namespace
 
 void testComputeStressExplicitMatchesComputeStress()
 {
-  CompressibleNeoHooke matA = makeMaterial();
-  CompressibleNeoHooke matB = makeMaterial();
+  CompressibleHyperelasticity matA = makeMaterial();
+  CompressibleHyperelasticity matB = makeMaterial();
 
   Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 1 ) += 0.05;
 
-  CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
-  CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resA( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanA = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::Deformation< 3 >          def     = { inputF };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resA( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanA = { Tensor3333d( 0.0 ) };
   matA.computeStress( resA, tanA, def, timeInc );
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resB( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resB( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   matB.computeStressExplicit( resB, def, timeInc );
 
   throwExceptionOnFailure( checkIfEqual( resA.tau, resB.tau, 1e-14 ) &&
@@ -381,7 +395,7 @@ void testComputeStressExplicitMatchesComputeStress()
 
 void testComputeStressWithEigenDeformation()
 {
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
 
   Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.01;
@@ -396,16 +410,16 @@ void testComputeStressWithEigenDeformation()
   fRef( 1, 1 ) *= F0_YY;
   fRef( 2, 2 ) *= F0_ZZ;
 
-  CompressibleNeoHooke::Deformation< 3 >          defRef  = { fRef };
-  CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resRef( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanRef = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::Deformation< 3 >          defRef  = { fRef };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resRef( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanRef = { Tensor3333d( 0.0 ) };
   mat.computeStress( resRef, tanRef, defRef, timeInc );
 
-  CompressibleNeoHooke::Deformation< 3 >          def = { inputF };
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
-  // CompressibleNeoHooke's own 4-arg computeStress() override hides the base class's 5-arg
+  CompressibleHyperelasticity::Deformation< 3 >          def = { inputF };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
+  // CompressibleHyperelasticity's own 4-arg computeStress() override hides the base class's 5-arg
   // (eigenDeformation) overload for a concretely-typed instance -- call through an explicit
   // base-class reference, as production code does (always via a Marmot::Materials::MaterialFiniteStrain*).
   Marmot::Materials::MaterialFiniteStrain& matBase = mat;
@@ -433,22 +447,22 @@ void testComputeStressWithEigenDeformation()
 
 void testComputePlaneStrainMatchesComputeStress()
 {
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
 
   Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.02;
   inputF( 1, 1 )   = 0.99;
   inputF( 2, 2 )   = 1.0; // plane strain: no out-of-plane stretch
 
-  CompressibleNeoHooke::Deformation< 3 > def     = { inputF };
-  CompressibleNeoHooke::TimeIncrement    timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::Deformation< 3 > def     = { inputF };
+  CompressibleHyperelasticity::TimeIncrement    timeInc = { 0, 0.1 };
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resStress( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStress = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resStress( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanStress = { Tensor3333d( 0.0 ) };
   mat.computeStress( resStress, tanStress, def, timeInc );
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resStrain( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStrain = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resStrain( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanStrain = { Tensor3333d( 0.0 ) };
   mat.computePlaneStrain( resStrain, tanStrain, def, timeInc );
 
   throwExceptionOnFailure( checkIfEqual( resStress.tau, resStrain.tau, 1e-14 ) &&
@@ -459,13 +473,13 @@ void testComputePlaneStrainMatchesComputeStress()
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // ... and the eigen-deformation overload must match computeStress(..., eigenDeformation) likewise.
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resStressEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStressEigen  = { Tensor3333d( 0.0 ) };
-  Marmot::Materials::MaterialFiniteStrain&        matBaseForEigen = mat;
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resStressEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanStressEigen  = { Tensor3333d( 0.0 ) };
+  Marmot::Materials::MaterialFiniteStrain&               matBaseForEigen = mat;
   matBaseForEigen.computeStress( resStressEigen, tanStressEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resStrainEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStrainEigen = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resStrainEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tanStrainEigen = { Tensor3333d( 0.0 ) };
   mat.computePlaneStrain( resStrainEigen, tanStrainEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
 
   throwExceptionOnFailure( checkIfEqual( resStressEigen.tau, resStrainEigen.tau, 1e-14 ),
@@ -474,13 +488,13 @@ void testComputePlaneStrainMatchesComputeStress()
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // computePlaneStrainExplicit (both overloads) must match computePlaneStrain ignoring the tangent.
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resExplicit( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resExplicit( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   mat.computePlaneStrainExplicit( resExplicit, def, timeInc );
   throwExceptionOnFailure( checkIfEqual( resExplicit.tau, resStrain.tau, 1e-14 ),
                            "computePlaneStrainExplicit() must match computePlaneStrain() in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > resExplicitEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > resExplicitEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   mat.computePlaneStrainExplicit( resExplicitEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
   throwExceptionOnFailure( checkIfEqual( resExplicitEigen.tau, resStrainEigen.tau, 1e-14 ),
                            "computePlaneStrainExplicit() with eigenDeformation must match computePlaneStrain() "
@@ -490,15 +504,18 @@ void testComputePlaneStrainMatchesComputeStress()
 
 void testComputePlaneStressIsNotYetImplemented()
 {
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
 
   Fastor::Tensor< double, 2, 2 > inputF2D( 0.0 );
-  inputF2D( 0, 0 )                                        = 1.0;
-  inputF2D( 1, 1 )                                        = 1.0;
-  CompressibleNeoHooke::Deformation< 2 >          def2D   = { inputF2D };
-  CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };
-  CompressibleNeoHooke::ConstitutiveResponse< 2 > res2D( Fastor::Tensor< double, 2, 2 >( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 2 >    tan2D = { Fastor::Tensor< double, 2, 2, 2, 2 >( 0.0 ) };
+  inputF2D( 0, 0 )                                               = 1.0;
+  inputF2D( 1, 1 )                                               = 1.0;
+  CompressibleHyperelasticity::Deformation< 2 >          def2D   = { inputF2D };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 2 > res2D( Fastor::Tensor< double, 2, 2 >( 0.0 ),
+                                                                0.0,
+                                                                0.0,
+                                                                nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 2 >    tan2D = { Fastor::Tensor< double, 2, 2, 2, 2 >( 0.0 ) };
 
   bool threw = false;
   try {
@@ -526,10 +543,10 @@ void testComputePlaneStressIsNotYetImplemented()
 
 void testGetStateViewThrowsForMaterialWithNoStateVars()
 {
-  // CompressibleNeoHooke requires no state variables, so any name lookup on its (empty)
+  // CompressibleHyperelasticity requires no state variables, so any name lookup on its (empty)
   // state layout is necessarily unknown -- this documents that behaviour rather than
   // asserting a specific state variable exists.
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
 
   bool threw = false;
   try {
@@ -545,17 +562,17 @@ void testGetStateViewThrowsForMaterialWithNoStateVars()
 
 void testGetMaximumWaveSpeedMatchesAnalyticalTangentAtIdentity()
 {
-  // getDensity() requires a 3rd material property (density), unlike the K,G-only materials used
+  // getDensity() requires the density after the parameters of the potential, unlike the materials used
   // elsewhere in this file.
-  std::array< double, 3 > propsWithDensity = { 3500, 1500, 2400 };
-  CompressibleNeoHooke    mat( propsWithDensity.data(), 3, 1 );
+  std::array< double, 7 >     propsWithDensity = { 0, 6, 1500, 3500, 1, 3, 2400 };
+  CompressibleHyperelasticity mat( propsWithDensity.data(), 7, 1 );
 
   Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
-  CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
-  CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::Deformation< 3 >          def     = { inputF };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
   mat.computeStress( res, tan, def, timeInc );
 
   const double maxDiag = std::max(
@@ -572,14 +589,14 @@ void testGetMaximumWaveSpeedMatchesAnalyticalTangentAtIdentity()
 
 void testSetCharacteristicElementLengthIsANoOp()
 {
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
   // The base class default does nothing; this call exists purely to exercise that no-op body.
   mat.setCharacteristicElementLength( 0.5 );
 }
 
 void testFindEigenDeformationForEigenStressReproducesTargetStress()
 {
-  CompressibleNeoHooke mat = makeMaterial();
+  CompressibleHyperelasticity mat = makeMaterial();
 
   const std::tuple< double, double, double > initialGuess = { 1.0, 1.0, 1.0 };
   const std::tuple< double, double, double > targetStress = { 100.0, 150.0, 200.0 };
@@ -591,10 +608,10 @@ void testFindEigenDeformationForEigenStressReproducesTargetStress()
   fFound( 1, 1 ) = F0_YY;
   fFound( 2, 2 ) = F0_ZZ;
 
-  CompressibleNeoHooke::Deformation< 3 >          def     = { fFound };
-  CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
+  CompressibleHyperelasticity::Deformation< 3 >          def     = { fFound };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > res( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
   mat.computeStress( res, tan, def, timeInc );
 
   throwExceptionOnFailure( checkIfEqual( res.tau( 0, 0 ), std::get< 0 >( targetStress ), 1e-6 ) &&
@@ -603,6 +620,189 @@ void testFindEigenDeformationForEigenStressReproducesTargetStress()
                            "findEigenDeformationForEigenStress() did not converge to a deformation reproducing "
                            "the target diagonal stress in " +
                              std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// Material properties of every pair of isochoric and volumetric base, with the parameters of both parts.
+static std::vector< std::vector< double > > propertiesOfAllBasePairs()
+{
+  const std::vector< std::vector< double > > isochoric  = { { 0, 1500. },
+                                                            { 1, 700., -50., 20. },
+                                                            { 2, 500., 200. },
+                                                            { 3, 1500., 3. } };
+  const std::vector< std::vector< double > > volumetric = { { 1, 3500. },
+                                                            { 2, 3500. },
+                                                            { 3, 3500. },
+                                                            { 4, 3500., -2. },
+                                                            { 5, 3500. },
+                                                            { 6, 3500., 1.5, 2.5 },
+                                                            { 7, 3500. },
+                                                            { 8, 3500. } };
+  std::vector< std::vector< double > >       properties;
+  for ( const auto& iso : isochoric )
+    for ( const auto& vol : volumetric ) {
+      std::vector< double > p = { iso[0], vol[0] };
+      p.insert( p.end(), iso.begin() + 1, iso.end() );
+      p.insert( p.end(), vol.begin() + 1, vol.end() );
+      properties.push_back( p );
+    }
+  return properties;
+}
+
+static Tensor33d deformedF()
+{
+  Tensor33d F = Spatial3D::I;
+  F( 0, 0 ) += 0.08;
+  F( 1, 1 ) -= 0.02;
+  F( 2, 2 ) -= 0.015;
+  F( 0, 1 ) = 0.03;
+  F( 1, 2 ) = -0.02;
+  F( 2, 0 ) = 0.01;
+  return F;
+}
+
+// For every pair of bases: the stress is F ( 2 dPsi/dC ) F^T with the separately evaluated FirstOrder potentials of
+// both parts, the energy is the sum of both parts, and the tangent matches central differences of the stress.
+void testEveryBasePairMatchesSharedPotentials()
+{
+  namespace EDF = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+
+  const Tensor33d F = deformedF();
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+
+  for ( const auto& props : propertiesOfAllBasePairs() ) {
+    const std::string pair = "isochoric base " + std::to_string( static_cast< int >( props[0] ) ) +
+                             ", volumetric base " + std::to_string( static_cast< int >( props[1] ) );
+    const double* iso = props.data() + 2;
+    const double* vol = props.data() + props.size() - ( props[1] == 4 ? 2 : props[1] == 6 ? 3 : 1 );
+
+    std::tuple< double, Tensor33d > isoPart, volPart;
+    switch ( static_cast< int >( props[0] ) ) {
+    case 0: isoPart = EDF::Isochoric::FirstOrder::NeoHookePotential( C, iso[0] ); break;
+    case 1: isoPart = EDF::Isochoric::FirstOrder::YeohPotential( C, iso[0], iso[1], iso[2] ); break;
+    case 2: isoPart = EDF::Isochoric::FirstOrder::MooneyRivlinPotential( C, iso[0], iso[1] ); break;
+    default: isoPart = EDF::Isochoric::FirstOrder::ArrudaBoyce8ChainPotential( C, iso[0], iso[1] );
+    }
+    switch ( static_cast< int >( props[1] ) ) {
+    case 1: volPart = EDF::Volumetric::FirstOrder::SussmanBathePotential( C, vol[0] ); break;
+    case 2: volPart = EDF::Volumetric::FirstOrder::PenaltyPotential( C, vol[0] ); break;
+    case 3: volPart = EDF::Volumetric::FirstOrder::SimoTaylorPotential( C, vol[0] ); break;
+    case 4: volPart = EDF::Volumetric::FirstOrder::OgdenPotential( C, vol[0], vol[1] ); break;
+    case 5: volPart = EDF::Volumetric::FirstOrder::LiuHofstetterMangPotential( C, vol[0] ); break;
+    case 6: volPart = EDF::Volumetric::FirstOrder::DollSchweizerhofPotential( C, vol[0], vol[1], vol[2] ); break;
+    case 7: volPart = EDF::Volumetric::FirstOrder::DollSchweizerhofExponentialPotential( C, vol[0] ); break;
+    default: volPart = EDF::Volumetric::FirstOrder::DollSchweizerhofLogarithmicPotential( C, vol[0] );
+    }
+    const Tensor33d PK2       = 2. * ( std::get< 1 >( isoPart ) + std::get< 1 >( volPart ) );
+    const Tensor33d tauTarget = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+
+    const CompressibleHyperelasticity mat( props.data(), static_cast< int >( props.size() ), 1 );
+    const auto                        stressAt = [&mat]( const Tensor33d& F_ ) {
+      CompressibleHyperelasticity::Deformation< 3 >          def     = { F_ };
+      CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+      CompressibleHyperelasticity::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+      CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tangent = { Tensor3333d( 0.0 ) };
+      mat.computeStress( response, tangent, def, timeInc );
+      return std::tuple{ response.tau, tangent.dTau_dF, response.elasticEnergyDensity };
+    };
+    const auto [tau, dTau_dF, psi] = stressAt( F );
+
+    throwExceptionOnFailure( checkIfEqual( tau, tauTarget, 1e-9 ),
+                             "stress does not match the shared potentials for " + pair + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+    throwExceptionOnFailure( checkIfEqual( psi, std::get< 0 >( isoPart ) + std::get< 0 >( volPart ), 1e-10 ),
+                             "energy density does not match the shared potentials for " + pair + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+
+    const double h = 1e-6;
+    for ( int k = 0; k < 3; k++ )
+      for ( int l = 0; l < 3; l++ ) {
+        Tensor33d Fp = F, Fm = F;
+        Fp( k, l ) += h;
+        Fm( k, l ) -= h;
+        const Tensor33d dTau = ( std::get< 0 >( stressAt( Fp ) ) - std::get< 0 >( stressAt( Fm ) ) ) / ( 2. * h );
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            throwExceptionOnFailure( std::abs( dTau( i, j ) - dTau_dF( i, j, k, l ) ) < 1e-4,
+                                     "tangent does not match central differences for " + pair + " in " +
+                                       std::string( __PRETTY_FUNCTION__ ) );
+      }
+  }
+}
+
+// NeoHooke with DollSchweizerhof( K, 1, 3 ) is the compressible Neo-Hooke model of Pence & Gou (variant B), the
+// former material CompressibleNeoHooke with the properties K, G.
+void testNeoHookeDollSchweizerhofIsPenceGouB()
+{
+  const double                      K = 3500., G = 1500.;
+  const std::array< double, 6 >     props = { 0, 6, G, K, 1, 3 };
+  const CompressibleHyperelasticity mat( props.data(), 6, 1 );
+
+  const Tensor33d F = deformedF();
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+
+  CompressibleHyperelasticity::Deformation< 3 >          def     = { F };
+  CompressibleHyperelasticity::TimeIncrement             timeInc = { 0, 0.1 };
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    tangent = { Tensor3333d( 0.0 ) };
+  mat.computeStress( response, tangent, def, timeInc );
+
+  const auto [psi, dPsi_dC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
+  const Tensor33d PK2       = 2. * dPsi_dC;
+  const Tensor33d tauTarget = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+
+  throwExceptionOnFailure( checkIfEqual( response.tau, tauTarget, 1e-10 ) &&
+                             checkIfEqual( response.elasticEnergyDensity, psi, 1e-10 ),
+                           "NeoHooke with DollSchweizerhof( K, 1, 3 ) is not PenceGouPotentialB in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// Unknown bases, too few properties and an invalid locking stretch are rejected; the density follows the
+// parameters of the potential.
+void testMaterialPropertiesAreValidated()
+{
+  const auto throwsInvalidArgument = []( const std::vector< double >& props ) {
+    try {
+      CompressibleHyperelasticity mat( props.data(), static_cast< int >( props.size() ), 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  throwExceptionOnFailure( throwsInvalidArgument( { 4, 2, 1500., 3500. } ),
+                           "unknown isochoric base accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 0, 0, 1500., 3500. } ) &&
+                             throwsInvalidArgument( { 0, 9, 1500., 3500. } ),
+                           "unknown volumetric base accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 0 } ) &&
+                             throwsInvalidArgument( { 1, 6, 700., -50., 20., 3500., 1. } ),
+                           "too few material properties accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( throwsInvalidArgument( { 3, 2, 1500., 1.0, 3500. } ),
+                           "locking stretch <= 1 accepted in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( !throwsInvalidArgument( { 3, 2, 1500., 3.0, 3500. } ),
+                           "valid material properties rejected in " + std::string( __PRETTY_FUNCTION__ ) );
+
+  const std::vector< double >       withDensity = { 1, 4, 700., -50., 20., 3500., -2., 2400. };
+  const CompressibleHyperelasticity mat( withDensity.data(), static_cast< int >( withDensity.size() ), 1 );
+  throwExceptionOnFailure( checkIfEqual( mat.getDensity( nullptr ), 2400., 1e-14 ),
+                           "density is not the property following the potential parameters in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  const std::vector< double >       withoutDensity = { 1, 4, 700., -50., 20., 3500., -2. };
+  const CompressibleHyperelasticity matWithoutDensity( withoutDensity.data(),
+                                                       static_cast< int >( withoutDensity.size() ),
+                                                       1 );
+  bool                              threw = false;
+  try {
+    matWithoutDensity.getDensity( nullptr );
+  }
+  catch ( const std::runtime_error& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "getDensity() without density did not throw in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
 int main()
@@ -622,6 +822,9 @@ int main()
     testGetMaximumWaveSpeedMatchesAnalyticalTangentAtIdentity,
     testSetCharacteristicElementLengthIsANoOp,
     testFindEigenDeformationForEigenStressReproducesTargetStress,
+    testEveryBasePairMatchesSharedPotentials,
+    testNeoHookeDollSchweizerhofIsPenceGouB,
+    testMaterialPropertiesAreValidated,
   };
 
   executeTestsAndCollectExceptions( tests );
