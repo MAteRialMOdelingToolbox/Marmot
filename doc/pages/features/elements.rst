@@ -11,5 +11,7 @@ This section contains the ready to use available Finite elements.
   generalgradientenhanceddisplacementfiniteelement
   gradientenhancedfinitestraindisplacementelement
   interfacefiniteelement
+  trusselement
+  embeddedbondelement
   explicitdynamicsdevices
   energygradients

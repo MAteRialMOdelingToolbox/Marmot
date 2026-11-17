@@ -15,14 +15,14 @@ namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 // ---------------------------------------------------------------------------------------------
 // All tests below embed a 2-node 1D truss (DisplacementFiniteElement<1,2>, UniaxialStress) into
-// 2D ambient space, exactly matching the production "T2D2" element registered in
-// DisplacementFiniteElementRegistration.cpp: Marmot::Discretizations::Elements::ElementSpatialWrapper(nDim=2,
+// 2D ambient space (the configuration formerly registered as "T2D2"; that name now belongs to the TrussElement
+// module): Marmot::Discretizations::Elements::ElementSpatialWrapper(nDim=2,
 // nDimChild=1, nNodes=2, nRhsChild=2, rhsIndicesToBeWrapped={0,1}, nIndicesToBeWrapped=2, child).
 // ---------------------------------------------------------------------------------------------
 
 namespace {
 
-  std::unique_ptr< Marmot::Discretizations::Elements::ElementSpatialWrapper > makeT2D2(
+  std::unique_ptr< Marmot::Discretizations::Elements::ElementSpatialWrapper > makeWrappedUniaxialBar(
     const std::vector< double >& nodeCoordsVec,
     const std::vector< double >& matProps,
     std::vector< double >&       stateVarsOut )
@@ -74,7 +74,7 @@ void testBasicAccessorsDelegateToChild()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   throwExceptionOnFailure( wrapper->getNNodes() == 2, "getNNodes() must delegate to the wrapper's own nNodes." );
   throwExceptionOnFailure( wrapper->getNSpatialDimensions() == 2,
@@ -118,7 +118,7 @@ void testDofIndicesPermutationPatternExpandsChildPattern()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const auto pattern = wrapper->getDofIndicesPermutationPattern();
   throwExceptionOnFailure( static_cast< int >( pattern.size() ) == 4,
@@ -144,7 +144,7 @@ void testComputeKernelsTangentMatchesNumericalDifferentiation()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int  nDof       = wrapper->getNDofPerElement();
   const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
@@ -189,7 +189,7 @@ void testComputeKernelsMatchesAnalyticAxialStiffnessForAxisAlignedTruss()
   const std::vector< double > matProps = { E, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int                   nDof = wrapper->getNDofPerElement();
   const std::vector< double > Q( nDof, 0.0 );
@@ -217,7 +217,7 @@ void testComputeKernelsExplicitThrowsNotImplemented()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int                   nDof = wrapper->getNDofPerElement();
   const std::vector< double > Q( nDof, 0.0 );
@@ -248,7 +248,7 @@ void testComputeBodyForceConservesTotalForce()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int                   nDof = wrapper->getNDofPerElement();
   const std::vector< double > load = { 3.0, 0.0 }; // force per unit length, along the truss axis
@@ -277,7 +277,7 @@ void testSetInitialConditionsDelegatesToChild()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   // DisplacementFiniteElement<1,...>::setInitialConditions only handles
   // MarmotMaterialInitialization and MarmotMaterialStateVars (throws) and rejects GeostaticStress
@@ -306,7 +306,7 @@ void testGetStateViewReturnsTransformationMatrixAndDelegatesOtherwise()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const auto tView = wrapper->getStateView( "Marmot::Discretizations::Elements::ElementSpatialWrapper.T", 0 );
   throwExceptionOnFailure( tView.stateSize == 2, "getStateView(\"...T\") returned the wrong size." );
@@ -339,7 +339,7 @@ void testGetCoordinatesAtCenterMatchesChildCoordinatesInAmbientSpace()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const auto center = wrapper->getCoordinatesAtCenter();
 
@@ -357,7 +357,7 @@ void testGetCoordinatesAtQuadraturePointsMatchesChildCoordinatesInAmbientSpace()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const auto qpCoords = wrapper->getCoordinatesAtQuadraturePoints();
   throwExceptionOnFailure( static_cast< int >( qpCoords.size() ) == wrapper->getNumberOfQuadraturePoints(),
@@ -389,7 +389,7 @@ void testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int                   nDof = wrapper->getNDofPerElement();
   const std::vector< double > load( 1, 1.0 );
@@ -429,7 +429,7 @@ void testUnoverriddenOptionalMethodsFallBackToBaseClassDefaults()
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
-  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+  auto wrapper = makeWrappedUniaxialBar( nodeCoordsVec, matProps, stateVars );
 
   const int nDof = wrapper->getNDofPerElement();
 
