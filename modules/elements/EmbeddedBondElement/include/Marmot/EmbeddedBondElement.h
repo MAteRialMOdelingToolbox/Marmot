@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/EmbeddedBondKinematics.h"
 #include "Marmot/MarmotBondSlipLaw.h"
 #include "Marmot/MarmotBondSlipLawFactory.h"
 #include "Marmot/MarmotElement.h"
@@ -51,10 +52,10 @@ namespace Marmot::Discretizations::Elements {
    * a continuum element in Marmot)
    *
    * The nodes of the element are the nodes of the reinforcement (truss) element, followed by the nodes of the host
-   * element. The reinforcement keeps its own, independent displacement field; the element couples it to the host by
-   * the bond stress, which a pluggable bond-slip law (Marmot::Materials::BondSlipLaw) computes from the slip, i.e., the
-   * displacement of the bar relative to the host material point it lies at:
-   * \f[
+   * element (bar first: the element is drawn as its bar; the large-slip element puts the host first, to be drawn as the
+   * host on which its channel lies). The reinforcement keeps its own, independent displacement field; the element
+   * couples it to the host by the bond stress, which a pluggable bond-slip law (Marmot::Materials::BondSlipLaw)
+   * computes from the slip, i.e., the displacement of the bar relative to the host material point it lies at: \f[
    *   \boldsymbol{\Delta}(\eta) = \sum_i M_i(\eta)\, \boldsymbol{u}_i - \sum_a N_a(\boldsymbol{\xi}(\eta))\,
    *   \boldsymbol{u}_a , \qquad \boldsymbol{s} = \boldsymbol{R}^T \boldsymbol{\Delta},
    * \f]
@@ -174,24 +175,6 @@ namespace Marmot::Discretizations::Elements {
     /// 2 Gauss-Lobatto points for linear bars, 3 for quadratic bars (exact for the stiffness of a linear law)
     static constexpr int defaultNumberOfIntegrationPoints() { return nBarNodes == 2 ? 2 : 3; }
 
-    /**
-     * @brief The Gauss-Lobatto rule along the bar part, from the quadrature catalogue.
-     * @param n number of points, 2 to 5 (degree of exactness 2n - 3)
-     * @return points and weights on [-1, 1]
-     * @throws std::invalid_argument for other numbers of points
-     */
-    static const std::vector< Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo >& gaussLobatto(
-      int n )
-    {
-      using namespace Marmot::Discretizations::Elements::Quadrature;
-      if ( n < 2 || n > 5 )
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << "EmbeddedBondElement: 2 to 5 integration points are supported, " << n
-                                     << " were requested" );
-      return getQuadraturePoints( Marmot::Discretizations::Elements::ReferenceDomain::Line,
-                                  gaussLobattoExactToDegree( 2 * n - 3 ) );
-    }
-
     /// shape functions of the bar element at the bar parent coordinate @p eta
     static BarN barN( double eta )
     {
@@ -208,33 +191,6 @@ namespace Marmot::Discretizations::Elements {
         return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( eta );
       else
         return Marmot::Discretizations::Elements::Spatial1D::Bar3::dNdXi( eta );
-    }
-
-    /**
-     * @brief Local frame of the unit tangent t, columns [t, n1, (n2)].
-     *
-     * In 2D, n1 is t rotated by +90 degrees. In 3D, the normals are an arbitrary right-handed pair, built from the
-     * global axis least aligned with t: they may differ between integration points, so the normal components of slip
-     * and bond stress must not be compared between points, and bond-slip laws must be isotropic in the normal plane.
-     */
-    static MatrixDim localFrame( const VectorDim& t )
-    {
-      MatrixDim R;
-      if constexpr ( nDim == 2 ) {
-        R.col( 0 ) = t;
-        R.col( 1 ) = VectorDim( -t( 1 ), t( 0 ) );
-      }
-      else {
-        // the global axis least aligned with t gives a well conditioned first normal
-        int axis;
-        t.cwiseAbs().minCoeff( &axis );
-        const Eigen::Vector3d e  = Eigen::Vector3d::Unit( axis );
-        const Eigen::Vector3d n1 = t.cross( e ).normalized();
-        R.col( 0 )               = t;
-        R.col( 1 )               = n1;
-        R.col( 2 )               = t.cross( n1 );
-      }
-      return R;
     }
 
     /// The tolerance of "inside the host element" in parent coordinates: looser than the one EdelweissFE uses to
@@ -330,7 +286,7 @@ namespace Marmot::Discretizations::Elements {
 
       const int nQps = property.nElementProperties > 3 ? static_cast< int >( std::lround( elementProperties[3] ) )
                                                        : defaultNumberOfIntegrationPoints();
-      gaussLobatto( nQps ); // validates
+      EmbeddedBondKinematics::gaussLobatto( nQps ); // validates
       // resizing the integration points would destroy the bond-slip laws assigned with them
       if ( qps[0].bondSlipLaw && nQps != static_cast< int >( qps.size() ) )
         throw std::logic_error( Marmot::Utilities::MakeString()
@@ -361,7 +317,7 @@ namespace Marmot::Discretizations::Elements {
       const double perimeter = elementProperties[0];
       const double etaStart  = elementProperties[1];
       const double etaEnd    = elementProperties[2];
-      const auto&  rule      = gaussLobatto( static_cast< int >( qps.size() ) );
+      const auto&  rule      = EmbeddedBondKinematics::gaussLobatto( static_cast< int >( qps.size() ) );
 
       for ( size_t q = 0; q < qps.size(); q++ ) {
         auto& qp  = qps[q];
@@ -374,7 +330,7 @@ namespace Marmot::Discretizations::Elements {
         const double    dS      = dX_dEta.norm() * 0.5 * ( etaEnd - etaStart ) * qp.weight;
 
         qp.perimeterTimesDS = perimeter * dS;
-        qp.R                = localFrame( dX_dEta / dX_dEta.norm() );
+        qp.R                = EmbeddedBondKinematics::localFrame< nDim >( dX_dEta / dX_dEta.norm() );
         qp.hostXi           = findHostParentCoordinates( X );
 
         const auto N = hostGeometry.N( qp.hostXi );
