@@ -79,13 +79,13 @@
 <para>Computes the geometry-system coupling tensors for an interface. </para>
         </briefdescription>
         <detaileddescription>
-<para>Forms the contracted matrix <formula id="17">$Q = L:N$</formula> and its inverse <formula id="18">$G$</formula>, then computes the coupling tensor <formula id="19">$A = G \otimes N$</formula> and the condensed constitutive tensor <formula id="20">$B = L - L:A:L$</formula>.</para>
+<para>Forms the contracted matrix <formula id="235">$Q = L:N$</formula> and its inverse <formula id="236">$G$</formula>, then computes the coupling tensor <formula id="237">$A = G \otimes N$</formula> and the condensed constitutive tensor <formula id="238">$B = L - L:A:L$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Normal projector <formula id="21">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
+<para>Normal projector <formula id="239">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -98,10 +98,10 @@
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Tuple containing, in order:<itemizedlist>
-<listitem><para><formula id="22">$B$</formula>: condensed fourth-order constitutive tensor,</para>
-</listitem><listitem><para><formula id="23">$L$</formula>: unchanged input constitutive tensor,</para>
-</listitem><listitem><para><formula id="24">$A$</formula>: fourth-order geometry-system coupling tensor,</para>
-</listitem><listitem><para><formula id="25">$G = Q^{-1}$</formula>: inverse contracted constitutive matrix. </para>
+<listitem><para><formula id="240">$B$</formula>: condensed fourth-order constitutive tensor,</para>
+</listitem><listitem><para><formula id="241">$L$</formula>: unchanged input constitutive tensor,</para>
+</listitem><listitem><para><formula id="242">$A$</formula>: fourth-order geometry-system coupling tensor,</para>
+</listitem><listitem><para><formula id="243">$G = Q^{-1}$</formula>: inverse contracted constitutive matrix. </para>
 </listitem></itemizedlist>
 </para>
 </simplesect>
@@ -147,7 +147,7 @@
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Normal projector <formula id="21">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
+<para>Normal projector <formula id="239">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -160,10 +160,10 @@
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Tuple containing, in order:<itemizedlist>
-<listitem><para><formula id="26">$Z$</formula>: condensed fourth-order surface-strain operator,</para>
-</listitem><listitem><para><formula id="27">$H^{-1}$</formula>: second-order displacement-jump operator,</para>
-</listitem><listitem><para><formula id="28">$H^{-1}nF$</formula>: third-order jump/surface-strain coupling operator,</para>
-</listitem><listitem><para><formula id="29">$nYH^{-1}Fn$</formula>: fourth-order coupling correction. </para>
+<listitem><para><formula id="244">$Z$</formula>: condensed fourth-order surface-strain operator,</para>
+</listitem><listitem><para><formula id="245">$H^{-1}$</formula>: second-order displacement-jump operator,</para>
+</listitem><listitem><para><formula id="246">$H^{-1}nF$</formula>: third-order jump/surface-strain coupling operator,</para>
+</listitem><listitem><para><formula id="247">$nYH^{-1}Fn$</formula>: fourth-order coupling correction. </para>
 </listitem></itemizedlist>
 </para>
 </simplesect>

@@ -98,9 +98,10 @@
 <a class="reference external" href="https://github.com/autodiff/autodiff">autodiff</a>,
 and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
 <p>These are header-only libraries, so no compilation is required.</p>
-<p>Both Eigen 3.4 and Eigen 5 are supported.
-Eigen 5 requires an autodiff version with Eigen 5 support;
-autodiff 1.1.2 and older do not compile against Eigen 5 (see <a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>).</p>
+<p>Marmot requires Eigen 5.
+autodiff 1.1.2 does not compile against Eigen 5 without the patch of
+<a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>, which is not merged upstream yet;
+Step 5 applies it. The autodiff 1.1.2 of the conda channel below carries it.</p>
 </section>
 <section id="prebuilt-conda-package">
 <h2>Prebuilt conda package<a class="headerlink" href="#prebuilt-conda-package" title="Link to this heading"></a></h2>
@@ -160,12 +161,14 @@ environment:</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone --branch 3.4.0  https://gitlab.com/libeigen/eigen.git</span>
+<span class="go"> git clone --branch 5.0.1  https://gitlab.com/libeigen/eigen.git</span>
 <span class="go"> cd eigen</span>
 <span class="go"> mkdir build</span>
 <span class="go"> cd build</span>
 <span class="go"> cmake \</span>
 <span class="go">     -DBUILD_TESTING=OFF  \</span>
+<span class="go">     -DEIGEN_BUILD_BLAS=OFF \</span>
+<span class="go">     -DEIGEN_BUILD_LAPACK=OFF \</span>
 <span class="go">     -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \</span>
 <span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
 <span class="go">     ..</span>
@@ -177,7 +180,9 @@ environment:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">Step 5</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git</span>
+<span class="go"> git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git</span>
+<span class="go"> curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff</span>
+<span class="go"> git -C autodiff apply ../autodiff-eigen5.diff</span>
 <span class="go"> cd autodiff</span>
 <span class="go"> mkdir build</span>
 <span class="go"> cd build</span>

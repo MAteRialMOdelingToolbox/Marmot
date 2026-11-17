@@ -151,7 +151,7 @@
 <para>Deviatoric projection tensor in Voigt notation. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="196">$ 6 \times 6 $</formula> matrix. </para>
+<para><formula id="14">$ 6 \times 6 $</formula> matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -184,7 +184,7 @@
 </parameterlist>
 <simplesect kind="return"><para>The size of the Voigt notation array as a VoigtSize. </para>
 </simplesect>
-<simplesect kind="note"><para>The calculation is based on the formula: <formula id="195">$ \frac{x * x + x}{2} $</formula>. </para>
+<simplesect kind="note"><para>The calculation is based on the formula: <formula id="13">$ \frac{x * x + x}{2} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -211,14 +211,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component 3D stress vector in Voigt notation:     <formula id="197">\[\begin{bmatrix}
+<para>6-component 3D stress vector in Voigt notation:     <formula id="15">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
-\]</formula> where <formula id="198">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula> in plane stress conditions. </para>
+\]</formula> where <formula id="16">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula> in plane stress conditions. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3-component plane stress vector in Voigt notation:     <formula id="199">\[\begin{bmatrix}
+<simplesect kind="return"><para>3-component plane stress vector in Voigt notation:     <formula id="17">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12}
 \end{bmatrix}^T
 \]</formula> </para>
@@ -268,14 +268,14 @@
 <parametername>voigtPlane</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3-component plane stress vector in Voigt notation:     <formula id="199">\[\begin{bmatrix}
+<para>3-component plane stress vector in Voigt notation:     <formula id="17">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component 3D stress vector in Voigt notation:     <formula id="200">\[\begin{bmatrix}
+<simplesect kind="return"><para>6-component 3D stress vector in Voigt notation:     <formula id="18">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; 0 &amp; \sigma_{12} &amp; 0 &amp; 0
 \end{bmatrix}^T
 \]</formula> </para>
@@ -348,7 +348,7 @@
 <simplesect kind="return"><para>Reduced Voigt vector of size <computeroutput>voigtSize</computeroutput>. </para>
 </simplesect>
 <simplesect kind="note"><para>Considered cases:<itemizedlist>
-<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns the <formula id="201">$\sigma_{11}$</formula> component.</para>
+<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns the <formula id="19">$\sigma_{11}$</formula> component.</para>
 </listitem><listitem><para><computeroutput>voigtSize = 3</computeroutput>: Returns the plane stress components using <computeroutput>voigtToPlaneVoigt()</computeroutput>.</para>
 </listitem><listitem><para><computeroutput>voigtSize = 6</computeroutput>: Returns the input 3D vector unchanged. </para>
 </listitem></itemizedlist>
@@ -411,7 +411,7 @@
 <simplesect kind="return"><para>6-component 3D Voigt vector. </para>
 </simplesect>
 <simplesect kind="note"><para>Considered cases:<itemizedlist>
-<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns a 3D vector with only <formula id="201">$\sigma_{11}$</formula> non-zero:     <formula id="202">\[\begin{bmatrix}
+<listitem><para><computeroutput>voigtSize = 1</computeroutput>: Returns a 3D vector with only <formula id="19">$\sigma_{11}$</formula> non-zero:     <formula id="20">\[\begin{bmatrix}
 \sigma_{11} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
 \end{bmatrix}^T
 \]</formula></para>
@@ -468,14 +468,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component strain vector in Voigt notation:     <formula id="203">\[\begin{bmatrix}
+<para>6-component strain vector in Voigt notation:     <formula id="21">\[\begin{bmatrix}
 \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3x3 strain tensor:       <formula id="204">\[\begin{bmatrix}
+<simplesect kind="return"><para>3x3 strain tensor:       <formula id="22">\[\begin{bmatrix}
 \varepsilon_{11} &amp; \gamma_{12}/2 &amp; \gamma_{13}/2 \\
 \gamma_{12}/2 &amp; \varepsilon_{22} &amp; \gamma_{23}/2 \\
 \gamma_{13}/2 &amp; \gamma_{23}/2 &amp; \varepsilon_{33} \\
@@ -523,14 +523,14 @@
 <parametername>voigt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6-component stress vector in Voigt notation:     <formula id="197">\[\begin{bmatrix}
+<para>6-component stress vector in Voigt notation:     <formula id="15">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
 \]</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>3x3 stress tensor:       <formula id="205">\[\begin{bmatrix}
+<simplesect kind="return"><para>3x3 stress tensor:       <formula id="23">\[\begin{bmatrix}
 \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
 \sigma_{12} &amp; \sigma_{22} &amp; \sigma_{23} \\
 \sigma_{13} &amp; \sigma_{23} &amp; \sigma_{33} \\
@@ -562,7 +562,7 @@
 <parametername>strainTensor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3x3 strain tensor:        <formula id="206">\[\boldsymbol{\varepsilon} =
+<para>3x3 strain tensor:        <formula id="24">\[\boldsymbol{\varepsilon} =
 \begin{bmatrix}
 \varepsilon_{11} &amp; \varepsilon_{12} &amp; \varepsilon_{13} \\
 \varepsilon_{21} &amp; \varepsilon_{22} &amp; \varepsilon_{23} \\
@@ -572,7 +572,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component strain vector in Voigt notation:             <formula id="207">\[\begin{aligned}
+<simplesect kind="return"><para>6-component strain vector in Voigt notation:             <formula id="25">\[\begin{aligned}
 \boldsymbol{\varepsilon}^{\text{Voigt}} &amp;=
 \begin{bmatrix}
   \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
@@ -585,7 +585,7 @@
 \end{aligned}
 \]</formula> </para>
 </simplesect>
-<simplesect kind="note"><para>Shear components in the Voigt vector ( <formula id="208">$\gamma_{ij}$</formula> ) are engineering strains, which are twice the tensor shear components. </para>
+<simplesect kind="note"><para>Shear components in the Voigt vector ( <formula id="26">$\gamma_{ij}$</formula> ) are engineering strains, which are twice the tensor shear components. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -627,7 +627,7 @@
 <parametername>stressTensor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3x3 stress tensor:        <formula id="209">\[\boldsymbol{\sigma} =
+<para>3x3 stress tensor:        <formula id="27">\[\boldsymbol{\sigma} =
 \begin{bmatrix}
 \sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
 \sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\
@@ -637,7 +637,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6-component stress vector in Voigt notation:      <formula id="210">\[\boldsymbol{\sigma}^{\text{Voigt}} =
+<simplesect kind="return"><para>6-component stress vector in Voigt notation:      <formula id="28">\[\boldsymbol{\sigma}^{\text{Voigt}} =
 \begin{bmatrix}
 \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T
@@ -667,7 +667,7 @@
           <declname>C</declname>
         </param>
         <briefdescription>
-<para>Converts a fourth-order stiffness tensor to its Voigt notation representation ( <formula id="196">$ 6 \times 6 $</formula> matrix). </para>
+<para>Converts a fourth-order stiffness tensor to its Voigt notation representation ( <formula id="14">$ 6 \times 6 $</formula> matrix). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -720,7 +720,7 @@
           <declname>voigtStiffness</declname>
         </param>
         <briefdescription>
-<para>Converts a stiffness matrix in Voigt notation ( <formula id="196">$ 6 \times 6 $</formula> matrix) to a 4th-order stiffness tensor ( <formula id="211">$ 3 \times 3 \times 3 \times 3 $</formula> tensor). </para>
+<para>Converts a stiffness matrix in Voigt notation ( <formula id="14">$ 6 \times 6 $</formula> matrix) to a 4th-order stiffness tensor ( <formula id="29">$ 3 \times 3 \times 3 \times 3 $</formula> tensor). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -745,11 +745,11 @@
 <parametername>voigtStiffness</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="196">$ 6 \times 6 $</formula> matrix representing the stiffness in Voigt notation. </para>
+<para>The <formula id="14">$ 6 \times 6 $</formula> matrix representing the stiffness in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>A fourth-order tensor of type <computeroutput>FourthOrderTensorType</computeroutput> representing the stiffness tensor. The dimensions of the tensor are <formula id="211">$ 3 \times 3 \times 3 \times 3 $</formula>. </para>
+<simplesect kind="return"><para>A fourth-order tensor of type <computeroutput>FourthOrderTensorType</computeroutput> representing the stiffness tensor. The dimensions of the tensor are <formula id="29">$ 3 \times 3 \times 3 \times 3 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -793,11 +793,11 @@
 </parameternamelist>
 <parameterdescription>
 <para>Input stress vector in Voigt notation, size <computeroutput>VOIGTFROMDIM(nDim) x 1</computeroutput>:<itemizedlist>
-<listitem><para>1D:  <formula id="212">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+<listitem><para>1D:  <formula id="30">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>2D:  <formula id="213">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+</listitem><listitem><para>2D:  <formula id="31">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{12} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>3D:   <formula id="214">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+</listitem><listitem><para>3D:   <formula id="32">$ \boldsymbol{\sigma}^{\text{Voigt}} =
   \begin{bmatrix} \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
 \end{bmatrix}^T $</formula> </para>
 </listitem></itemizedlist>
@@ -805,7 +805,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Symmetric stress tensor of size <formula id="215">$ nDim \times nDim $</formula>. </para>
+<simplesect kind="return"><para>Symmetric stress tensor of size <formula id="33">$ nDim \times nDim $</formula>. </para>
 </simplesect>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
@@ -864,11 +864,11 @@
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Column vector of size <computeroutput>VOIGTFROMDIM(nDim) x 1</computeroutput> representing the strain in Voigt notation.<itemizedlist>
-<listitem><para>1D:  <formula id="216">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+<listitem><para>1D:  <formula id="34">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>2D:  <formula id="217">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+</listitem><listitem><para>2D:  <formula id="35">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} &amp; \varepsilon_{22} &amp; 2 \varepsilon_{12} \end{bmatrix}^T $</formula></para>
-</listitem><listitem><para>3D:   <formula id="218">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+</listitem><listitem><para>3D:   <formula id="36">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
   \begin{bmatrix} \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; 2 \varepsilon_{12} &amp; 2
 \varepsilon_{13} &amp; 2 \varepsilon_{23} \end{bmatrix}^T $</formula> </para>
 </listitem></itemizedlist>
