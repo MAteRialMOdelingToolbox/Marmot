@@ -303,6 +303,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar2 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar2 shape functions (constant, zero).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar2
 
     namespace Bar3 {
@@ -315,6 +317,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar3 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar3 shape functions (constant).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar3
   }   // namespace Spatial1D
 
