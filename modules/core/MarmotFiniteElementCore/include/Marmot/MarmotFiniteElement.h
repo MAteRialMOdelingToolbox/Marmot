@@ -349,7 +349,30 @@ namespace Marmot::Discretizations::Elements {
       constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
       /**
-       * @brief Compute the axisymmetric B-operator from physical derivatives.
+       * @brief Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows
+       * (11, 22, 12), the hoop row is \f$N_i / r\f$.
+       * @tparam nNodes Number of element nodes.
+       * @param[in] BPlanar Planar B-operator (3 × 2 nNodes), see Spatial2D::B.
+       * @param[in] N       Shape function values (1 × nNodes).
+       * @param[in] r       Radius of the point.
+       * @return B-operator matrix of size 4 × (2 * nNodes).
+       */
+      template < int nNodes >
+      Eigen::Matrix< double, voigtSize, nNodes * nDim > BFromPlanarB(
+        const Eigen::Matrix< double, Spatial2D::voigtSize, nNodes * nDim >& BPlanar,
+        const Eigen::Matrix< double, 1, nNodes >&                           N,
+        double                                                              r )
+      {
+        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+        B_.template topRows< 2 >()                          = BPlanar.template topRows< 2 >();
+        B_.row( 3 )                                         = BPlanar.row( 2 );
+        for ( int i = 0; i < nNodes; i++ )
+          B_( 2, 2 * i ) = N( i ) / r;
+        return B_;
+      }
+
+      /**
+       * @brief Compute the axisymmetric B-operator from physical derivatives, see BFromPlanarB().
        * @tparam nNodes Number of element nodes.
        * @param[in] dNdX    Physical shape function derivatives (2 × nNodes).
        * @param[in] N       Shape function values (1 × nNodes).
@@ -361,16 +384,7 @@ namespace Marmot::Discretizations::Elements {
                                                            const Eigen::Matrix< double, 1, nNodes >&    N,
                                                            const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
       {
-
-        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
-        for ( int i = 0; i < nNodes; i++ ) {
-          B_( 0, 2 * i )     = dNdX( 0, i );
-          B_( 1, 2 * i + 1 ) = dNdX( 1, i );
-          B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
-          B_( 3, 2 * i )     = dNdX( 1, i );
-          B_( 3, 2 * i + 1 ) = dNdX( 0, i );
-        }
-        return B_;
+        return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
     } // namespace Axisymmetric
 

@@ -3278,6 +3278,11 @@ void testAxisymmetricElementsRejectNegativeRadii()
                            "an axisymmetric element collapsed onto the axis must be rejected." );
   throwExceptionOnFailure( !axisymmetricQuad4Rejects( { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
                            "an axisymmetric element with nodes on the axis must be accepted." );
+  // round-off of a node on the axis is accepted, relative to the element size; beyond it the node is rejected
+  throwExceptionOnFailure( !axisymmetricQuad4Rejects( { -1e-16, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element with round-off of a node on the axis must be accepted." );
+  throwExceptionOnFailure( axisymmetricQuad4Rejects( { -1e-9, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element with a node at r = -1e-9 h must be rejected." );
 }
 
 // a thickness assigned to an axisymmetric element is ignored

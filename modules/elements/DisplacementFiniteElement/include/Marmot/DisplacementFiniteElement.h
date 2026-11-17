@@ -292,8 +292,8 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Precompute geometry-related quantities at quadrature points (B, detJ, J0xW).
      * @details \f$J_0 w = w \det\mathbf{J}\, s(\boldsymbol{\xi})\f$ with the section factor of sectionFactorAt().
-     * @throws std::invalid_argument for an axisymmetric section with a node at \f$r < 0\f$ or a quadrature point at
-     * \f$r \leq 0\f$.
+     * @throws std::invalid_argument for an axisymmetric section with a node at \f$r < -10^{-12} h\f$, \f$h\f$ the
+     * diagonal of the element's bounding box, or a quadrature point at \f$r \leq 0\f$.
      */
     void initializeYourself() override;
 
@@ -600,7 +600,7 @@ namespace Marmot::Discretizations::Elements {
 
     /**
      * @brief Axisymmetric strain operator, rows (rr, zz, \f$\theta\theta\f$, rz): the planar operator of @p qp with
-     * the hoop row \f$N_i / r\f$.
+     * the hoop row \f$N_i / r\f$, see Spatial2D::Axisymmetric::BFromPlanarB().
      * @param qp The quadrature point.
      * @return The operator.
      */
@@ -818,14 +818,19 @@ namespace Marmot::Discretizations::Elements {
   {
     const bool axisymmetric = sectionType == SectionType::Axisymmetric;
 
-    // a mesh drawn in r < 0, or straddling the axis, would give J0xW <= 0 and an infinite hoop strain N / r
-    if ( axisymmetric )
-      for ( int i = 0; i < nNodes; i++ )
-        if ( this->coordinates( nDim * i ) < 0.0 )
-          throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                       << __PRETTY_FUNCTION__ << ": axisymmetric element " << elLabel << ": node "
-                                       << i + 1 << " (local) lies at r = x_1 = " << this->coordinates( nDim * i )
-                                       << " < 0; axisymmetric elements are meshed in r >= 0." );
+    // a mesh drawn in r < 0, or straddling the axis, would give J0xW <= 0 and an infinite hoop strain N / r; the
+    // tolerance relative to the element size h (diagonal of its bounding box) accepts round-off of nodes on the axis
+    if ( axisymmetric ) {
+      const Eigen::Map< const Eigen::Matrix< double, nDim, nNodes > > nodes( this->coordinates.data() );
+      const double h = ( nodes.rowwise().maxCoeff() - nodes.rowwise().minCoeff() ).norm();
+      int          i = 0;
+      const double r = nodes.row( 0 ).minCoeff( &i );
+      if ( r < -1e-12 * h )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": axisymmetric element " << elLabel << ": node "
+                                     << i + 1 << " (local) lies at r = x_1 = " << r
+                                     << " < 0; axisymmetric elements are meshed in r >= 0." );
+    }
 
     for ( QuadraturePoint& qp : qps ) {
       const dNdXiSized    dNdXi = this->dNdXi( qp.xi );
@@ -1129,15 +1134,8 @@ namespace Marmot::Discretizations::Elements {
   typename DisplacementFiniteElement< nDim, nNodes >::BSizedAxisymmetric DisplacementFiniteElement< nDim, nNodes >::
     axisymmetricB( const QuadraturePoint& qp ) const
   {
-    // rows rr, zz and rz are those of the planar operator (11, 22, 12); the hoop row gives u_r / r
-    const NSized       N      = this->N( qp.xi );
-    const double       r      = ( this->NB( N ) * this->coordinates )( 0 );
-    BSizedAxisymmetric B      = BSizedAxisymmetric::Zero();
-    B.template topRows< 2 >() = qp.B.template topRows< 2 >();
-    B.row( 3 )                = qp.B.row( 2 );
-    for ( int i = 0; i < nNodes; i++ )
-      B( 2, 2 * i ) = N( i ) / r;
-    return B;
+    const NSized N = this->N( qp.xi );
+    return Spatial2D::Axisymmetric::BFromPlanarB< nNodes >( qp.B, N, ( this->NB( N ) * this->coordinates )( 0 ) );
   }
 
   template < int nDim, int nNodes >

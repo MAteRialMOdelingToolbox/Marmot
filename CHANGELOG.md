@@ -93,9 +93,13 @@ All notable changes to Marmot are documented in this file. The format follows
   `DisplacementFiniteElement< 2, nNodes >` with the new section `SectionType::Axisymmetric`, which adds the hoop
   strain u_r / r and integrates over the full ring (2 pi r), so internal forces, energies, masses, body forces and
   distributed loads are those of the full revolution. The artificial bulk viscosity and the energy gradients are
-  available. `initializeYourself()` rejects a node at r < 0 and a quadrature point at r <= 0.
+  available. `initializeYourself()` rejects a node at r < -1e-12 h (h the size of the element) and a
+  quadrature point at r <= 0.
 - `BoundaryElement( ..., axisymmetric )`: with `axisymmetric = true`, its load vectors are integrated over the ring
   (2 pi r ds).
+- `Spatial2D::Axisymmetric::BFromPlanarB( BPlanar, N, r )`: the axisymmetric B-operator from the planar one, the
+  single definition of the hoop row; `Spatial2D::Axisymmetric::B` (`GeometryElement::B_axisymmetric`) and the
+  axisymmetric section of `DisplacementFiniteElement` use it.
 - `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
   and the reference measure, used for the quadrature weights and the consistent mass.
 

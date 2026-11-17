@@ -134,8 +134,9 @@ Notes:
 
 - Internal and external forces, reactions, energies and masses are those of the full :math:`360^\circ` ring.
 - The radial displacement on the axis, :math:`u_r = 0` at :math:`r = 0`, is not imposed by the element; prescribe it.
-- Mesh in :math:`r \geq 0` only. ``initializeYourself()`` rejects a node at :math:`r < 0` and a quadrature point at
-  :math:`r \leq 0`.
+- Mesh in :math:`r \geq 0` only. ``initializeYourself()`` rejects a node at :math:`r < -10^{-12} h`, with :math:`h`
+  the diagonal of the element's bounding box, so that round-off of nodes on the axis is accepted, and a quadrature
+  point at :math:`r \leq 0`.
 - A thickness assigned as element property is ignored.
 - ``CAX8R`` has one spurious zero energy (hourglass) mode per element, like ``CPE8R``, in addition to the axial
   translation.
