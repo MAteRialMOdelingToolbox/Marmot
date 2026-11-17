@@ -205,7 +205,18 @@ and substituting :math:`\Delta\lambda` with :math:`\sqrt{\frac{3}{2}}\Delta\kapp
    = \|\boldsymbol{s}^\mathrm{trial}\| -\sqrt{6}G\Delta\kappa -\sqrt{\frac{2}{3}}f_\mathrm{y}\left(\Delta\kappa\right)
    = 0,
 
-which can be solved numerically to obtain :math:`\Delta\kappa`.
+which is solved for :math:`\Delta\kappa` by Newton's method, starting from :math:`\Delta\kappa = 0`, until
+
+.. math:: \left|g\left(\Delta\kappa\right)\right| \leq \mathrm{tol}\,\|\boldsymbol{s}^\mathrm{trial}\|,
+   \qquad \mathrm{tol} = 10^{-12}.
+
+The tolerance is relative to the trial stress for a reason of floating point arithmetic: :math:`g` is a difference of
+numbers of the size of :math:`\|\boldsymbol{s}^\mathrm{trial}\|`, so its round-off is about
+:math:`\varepsilon\,\|\boldsymbol{s}^\mathrm{trial}\|` (machine precision :math:`\varepsilon \approx 2.2\cdot10^{-16}`).
+An absolute tolerance cannot be met once the trial stress is large: for a strain increment of order one,
+:math:`\|\boldsymbol{s}^\mathrm{trial}\| \approx 1.7\cdot10^{5}` MPa and the round-off of :math:`g` is
+:math:`4\cdot10^{-11}` MPa. For linear hardening :math:`g` is linear in :math:`\Delta\kappa` and one Newton step
+suffices; nonlinear hardening needs a few.
 
 If :math:`\Delta\kappa` is known, the state variable is updated as
 

@@ -7,6 +7,25 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
+  materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
+  materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
+  material and geometric tangent; for 2 nodes identical to the co-rotational truss). Property: the cross section
+  area. E.g., for reinforcement bars embedded in continuum elements.
+- `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
+  materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
+  the lateral stretches with state reset, condensed tangent dτ11/dF11).
+- Bond-slip of embedded reinforcement: the pluggable bond-slip law interface `Materials::BondSlipLaw` with its
+  `Registry::BondSlipLawFactory` (bond laws are modules in the materials category with their own factory), the laws
+  `materials/LinearElasticBondSlip` (`LINEARELASTICBONDSLIP`), `materials/ModelCode2010BondSlip`
+  (`MODELCODE2010BONDSLIP`: fib Model Code 2010 envelope, elastic un-/reloading, optional Coulomb friction and a
+  normal crushing cap), and `elements/EmbeddedBondElement` (`EB<nDim>D<nBarNodes><host>`, e.g. `EB2D2Q4`,
+  `EB3D2H20`, `EB2D2T3`: the bond of a bar element to the host element it lies in, small slip, geometrically
+  linear).
+- `GeometryElement::parentCoordinates` (inverse isoparametric mapping on coordinates relative to the element, so it
+  converges far from the origin) and `GeometryElement::isInsideParentDomain`; `LagrangianCellGeometry` and the
+  embedded bond element use it.
+- The Gauss-Lobatto family of the quadrature catalogue on Line (2 to 5 points), `gaussLobattoExactToDegree()`.
 - Energy gradients of the elements for dissipation based arc-length control, as optional capabilities that leave the
   standard interfaces unchanged (see the feature page "Energy gradients"):
   - `EnergyGradientProvider` (elements): `assignEnergyGradientOutput()` assigns two arrays to which every
@@ -75,6 +94,12 @@ All notable changes to Marmot are documented in this file. The format follows
   and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
+- **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
+  the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
+  response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`
+  must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
+  `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
+  generic facilities (tested), now without a registered element.
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
   them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
@@ -123,6 +148,16 @@ All notable changes to Marmot are documented in this file. The format follows
   with `axisymmetric = true` and call `computeSurfaceNormalVectorialLoadVector()`.
 
 ### Fixed
+- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
+  trial stress, `|g| <= 1e-12 * ||s_trial||`, instead of an absolute one (`VonMises` 1e-12 MPa, `ADVonMises`
+  1e-10 MPa). `g` is a difference of numbers of the size of `||s_trial||`, so its round-off is about
+  `eps * ||s_trial||`: the absolute tolerance could not be met for large trial stresses, and large strain increments
+  failed to converge depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Both
+  models now use the same tolerance; for `ADVonMises` the effective criterion is 1e-12 relative instead of 1e-10
+  absolute, i.e. looser for trial stresses above 100 MPa (Newton converges quadratically, so the result is at
+  round-off either way). Test `TestVonMisesLargeIncrement`: one strain increment of order one (trial stress about
+  900 f_y) ends on the yield surface for perfect, linear and nonlinear hardening (both models, implicit and
+  explicit).
 - **Results:** coupling tangents of `GeneralGradientEnhancedDisplacementFiniteElement` in plane stress. The blocks
   `kUK`, `kKU` and `kKK` used the derivatives of the material's 3D update without the out-of-plane strain, which the
   plane stress iteration adjusts with the strain and the non-local field. They now include it by static condensation

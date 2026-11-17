@@ -186,18 +186,17 @@ void testVonMisesExplicitUpdateAndZeroIncrement()
     Matrix6d tangent;
     material.computeStress( implicitState, tangent, scale * direction, tInfo );
     material.computeStressExplicit( explicitState, scale * direction, tInfo );
-    // the explicit return mapping iterates a fixed number of times: equal up to round-off
+    // the explicit return mapping iterates to round-off, the implicit one stops at |g| <= 1e-12 rho_trial: equal up to
+    // that stopping tolerance, not to round-off
     const double stressScale = implicitState.stress.cwiseAbs().maxCoeff();
-    throwExceptionOnFailure( checkIfEqual< double >( implicitState.stress,
-                                                     explicitState.stress,
-                                                     1e-12 * stressScale ) &&
-                               checkIfEqual( kappaImplicit, kappaExplicit, 1e-15 ) &&
+    throwExceptionOnFailure( checkIfEqual< double >( implicitState.stress, explicitState.stress, 1e-9 * stressScale ) &&
+                               checkIfEqual( kappaImplicit, kappaExplicit, 1e-12 ) &&
                                checkIfEqual( implicitState.elasticEnergyDensity,
                                              explicitState.elasticEnergyDensity,
-                                             1e-12 * implicitState.elasticEnergyDensity ) &&
+                                             1e-9 * implicitState.elasticEnergyDensity ) &&
                                checkIfEqual( implicitState.dissipation,
                                              explicitState.dissipation,
-                                             1e-12 * std::max( implicitState.dissipation, 1e-12 ) ),
+                                             1e-9 * std::max( implicitState.dissipation, 1e-12 ) ),
                              "computeStressExplicit() differs from computeStress()" );
   }
   throwExceptionOnFailure( kappaExplicit > 0., "no plastic flow in the explicit update" );
