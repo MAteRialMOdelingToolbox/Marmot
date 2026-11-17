@@ -3,6 +3,8 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
 #include "autodiff/forward/dual.hpp"
+#include <array>
+#include <cmath>
 #include <complex>
 #include <stdexcept>
 #include <vector>
@@ -878,6 +880,274 @@ auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
   }
 }
 
+// A general, non-symmetric C: the derivatives w.r.t. C are those w.r.t. its nine independent components, so
+// a transposed term (C vs C^T, C^-1 vs C^-T) shows up as a mismatch here but not at a symmetric C.
+Tensor33d nonSymmetricC()
+{
+  Tensor33d C = get< 0 >( computationParameters() );
+  C( 0, 1 ) += 0.11;
+  C( 1, 2 ) += 0.07;
+  C( 2, 0 ) -= 0.05;
+  return C;
+}
+
+// The invariants of C and their first and second derivatives w.r.t. C, for the principal set (I1, I2, J) and the
+// isochoric set (Ibar1, Ibar2, J): each derivative is checked against a complex-step derivative of the next lower
+// order, and the orders must agree with each other.
+template < typename ComputeFn >
+void checkInvariantsAgainstComplexStep( const char* testName, ComputeFn compute )
+{
+  using Complex     = std::complex< double >;
+  const Tensor33d C = nonSymmetricC();
+  const double    h = 1e-20;
+
+  const auto inv0 = compute( 0, C );
+  const auto inv1 = compute( 1, C );
+  const auto inv2 = compute( 2, C );
+
+  for ( std::size_t a = 0; a < 3; a++ ) {
+    throwExceptionOnFailure( checkIfEqual( inv0.x[a], inv2.x[a], 1e-14 ) &&
+                               checkIfEqual( inv1.x[a], inv2.x[a], 1e-14 ) &&
+                               checkIfEqual( inv1.dx_dC[a], inv2.dx_dC[a], 1e-14 ),
+                             Marmot::Utilities::MakeString()
+                               << testName << " invariant " << a << " differs between the derivative orders." );
+
+    Tensor33d   dxCSDA( 0.0 );
+    Tensor3333d d2xCSDA( 0.0 );
+    for ( int k = 0; k < 3; k++ )
+      for ( int l = 0; l < 3; l++ ) {
+        Tensor33t< Complex > Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< Complex >( C );
+        Cc( k, l ) += Complex( 0.0, h );
+        const auto invC = compute( 1, Cc );
+        dxCSDA( k, l )  = invC.x[a].imag() / h;
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            d2xCSDA( i, j, k, l ) = invC.dx_dC[a]( i, j ).imag() / h;
+      }
+
+    throwExceptionOnFailure( checkIfEqual( inv2.dx_dC[a], dxCSDA, 1e-12 ),
+                             Marmot::Utilities::MakeString() << testName << " first derivative of invariant " << a
+                                                             << " disagrees with a complex-step derivative." );
+    throwExceptionOnFailure( checkIfEqual( inv2.d2x_dCdC[a], d2xCSDA, 1e-12 ),
+                             Marmot::Utilities::MakeString() << testName << " second derivative of invariant " << a
+                                                             << " disagrees with a complex-step derivative." );
+  }
+}
+
+// compute( order, C ) with the order as a function argument: dispatch to the Order template parameter
+template < typename T >
+struct InvariantsOfAnyOrder {
+  std::array< T, 3 >                x;
+  std::array< Tensor33t< T >, 3 >   dx_dC;
+  std::array< Tensor3333t< T >, 3 > d2x_dCdC;
+};
+
+template < bool isochoric, typename T >
+InvariantsOfAnyOrder< T > invariantsOfOrder( int order, const Tensor33t< T >& C )
+{
+  using namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen;
+  InvariantsOfAnyOrder< T > res;
+  if ( order == 0 ) {
+    res.x = isochoric ? computeIsochoricInvariants< 0 >( C ).x : computeInvariants< 0 >( C ).x;
+  }
+  else if ( order == 1 ) {
+    const auto inv = isochoric ? computeIsochoricInvariants< 1 >( C ) : computeInvariants< 1 >( C );
+    res.x          = inv.x;
+    res.dx_dC      = inv.dx_dC;
+  }
+  else {
+    const auto inv = isochoric ? computeIsochoricInvariants< 2 >( C ) : computeInvariants< 2 >( C );
+    res.x          = inv.x;
+    res.dx_dC      = inv.dx_dC;
+    res.d2x_dCdC   = inv.d2x_dCdC;
+  }
+  return res;
+}
+
+auto testRightCauchyGreenInvariantsAndDerivatives()
+{
+  using namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen;
+
+  checkInvariantsAgainstComplexStep( "principal invariants (I1, I2, J):", []( int order, const auto& C ) {
+    return invariantsOfOrder< false >( order, C );
+  } );
+  checkInvariantsAgainstComplexStep( "isochoric invariants (Ibar1, Ibar2, J):",
+                                     []( int order, const auto& C ) { return invariantsOfOrder< true >( order, C ); } );
+
+  // closed forms at the symmetric test state: J = 2, I1 = 5.25
+  const auto [C, invC, K, G, J, I1] = computationParameters();
+  const double I2                   = 0.5 * ( I1 * I1 - Fastor::trace( Tensor33d( C % C ) ) );
+  const auto   principal            = computeInvariants< 0 >( C );
+  const auto   isochoric            = computeIsochoricInvariants< 0 >( C );
+  throwExceptionOnFailure( checkIfEqual( principal.x[indexI1], I1, 1e-14 ) &&
+                             checkIfEqual( principal.x[indexI2], I2, 1e-14 ) &&
+                             checkIfEqual( principal.x[indexJ], J, 1e-14 ) &&
+                             checkIfEqual( isochoric.x[indexI1], I1 * std::pow( J, -2. / 3. ), 1e-14 ) &&
+                             checkIfEqual( isochoric.x[indexI2], I2 * std::pow( J, -4. / 3. ), 1e-14 ) &&
+                             checkIfEqual( isochoric.x[indexJ], J, 1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " invariants do not match their closed forms." );
+
+  // the isochoric invariants do not change under C -> lambda C: their derivatives vanish exactly at C = lambda I
+  const auto atIdentity = computeIsochoricInvariants< 1 >(
+    Tensor33d( 1.7 * Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I ) ) );
+  throwExceptionOnFailure( checkIfEqual( atIdentity.dx_dC[indexI1], Tensor33d( 0.0 ), 1e-15 ) &&
+                             checkIfEqual( atIdentity.dx_dC[indexI2], Tensor33d( 0.0 ), 1e-15 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " derivatives of the isochoric invariants do not vanish at C = lambda I." );
+}
+
+// composeWithInvariants on a function of (I1, I2, J) reproduces the hand-derived PenceGouPotentialB
+auto testComposeWithInvariantsReproducesPenceGouB()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen;
+  const auto [C, invC, K, G, J_, I1_] = computationParameters();
+
+  const auto   inv = computeInvariants< 2 >( C );
+  const double I1  = inv.x[indexI1];
+  const double J   = inv.x[indexJ];
+
+  ScalarDerivatives< double, 2 > f;
+  f.f                    = K / 8. * std::pow( J - 1. / J, 2. ) + G / 2. * ( I1 * std::pow( J, -2. / 3. ) - 3. );
+  f.df[indexI1]          = G / 2. * std::pow( J, -2. / 3. );
+  f.df[indexJ]           = K / 4. * ( J - 1. / J ) * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * std::pow( J, -5. / 3. );
+  f.d2f[indexJ][indexJ]  = K / 4. * ( 1. + 3. / ( J * J * J * J ) ) + 5. / 9. * G * I1 * std::pow( J, -8. / 3. );
+  f.d2f[indexI1][indexJ] = -G / 3. * std::pow( J, -5. / 3. );
+  f.d2f[indexJ][indexI1] = f.d2f[indexI1][indexJ];
+
+  const auto [psi, dPsi_dC, d2Psi_dCdC]          = composeWithInvariants( f, inv );
+  const auto [psiRef, dPsiRef_dC, d2PsiRef_dCdC] = SecondOrder::PenceGouPotentialB( C, K, G );
+
+  throwExceptionOnFailure( checkIfEqual( psi, psiRef, 1e-11 ) && checkIfEqual( dPsi_dC, dPsiRef_dC, 1e-11 ) &&
+                             checkIfEqual( d2Psi_dCdC, d2PsiRef_dCdC, 1e-11 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " composeWithInvariants != SecondOrder::PenceGouPotentialB." );
+}
+
+// Generic FirstOrder-vs-SecondOrder cross-check at a general, non-symmetric C: energy and gradient must agree, and
+// the SecondOrder Hessian is checked against a complex-step derivative of the FirstOrder gradient.
+template < typename FirstOrderFn, typename SecondOrderFn, typename... Args >
+void checkSecondOrderMatchesFirstOrder( const char*      testName,
+                                        FirstOrderFn     firstOrderFn,
+                                        SecondOrderFn    secondOrderFn,
+                                        const Tensor33d& C,
+                                        Args... args )
+{
+  using Complex = std::complex< double >;
+
+  const std::tuple< double, Tensor33d >              firstOrder  = firstOrderFn( C, args... );
+  const std::tuple< double, Tensor33d, Tensor3333d > secondOrder = secondOrderFn( C, args... );
+
+  const double scale = 1. + std::abs( get< 0 >( firstOrder ) );
+  throwExceptionOnFailure( checkIfEqual( get< 0 >( secondOrder ), get< 0 >( firstOrder ), 1e-14 * scale ) &&
+                             checkIfEqual( get< 1 >( secondOrder ), get< 1 >( firstOrder ), 1e-14 * scale ),
+                           Marmot::Utilities::MakeString()
+                             << testName << " FirstOrder and SecondOrder energy or gradient disagree." );
+
+  const double h = 1e-20;
+  Tensor3333d  d2PsiCSDA( 0.0 );
+  for ( int k = 0; k < 3; k++ )
+    for ( int l = 0; l < 3; l++ ) {
+      Tensor33t< Complex > Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< Complex >( C );
+      Cc( k, l ) += Complex( 0.0, h );
+      const std::tuple< Complex, Tensor33t< Complex > > firstOrderC = firstOrderFn( Cc, args... );
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          d2PsiCSDA( i, j, k, l ) = get< 1 >( firstOrderC )( i, j ).imag() / h;
+    }
+
+  throwExceptionOnFailure( checkIfEqual( get< 2 >( secondOrder ), d2PsiCSDA, 1e-9 * scale ),
+                           Marmot::Utilities::MakeString()
+                             << testName
+                             << " SecondOrder Hessian disagrees with a complex-step derivative of the "
+                                "FirstOrder gradient." );
+}
+
+#define CHECK_SECOND_ORDER( Namespace, Potential, ... )                                                                \
+  checkSecondOrderMatchesFirstOrder(                                                                                   \
+    #Namespace "SecondOrder::" #Potential,                                                                             \
+    []( const auto& C_, auto... a ) { return Namespace FirstOrder::Potential( C_, a... ); },                           \
+    []( const auto& C_, auto... a ) { return Namespace SecondOrder::Potential( C_, a... ); },                          \
+    C,                                                                                                                 \
+    __VA_ARGS__ )
+
+auto testSecondOrderPotentialsMatchFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C = nonSymmetricC();
+  const double    k = 10000.0;
+
+  CHECK_SECOND_ORDER( Isochoric::, NeoHookePotential, 750.0 );
+  CHECK_SECOND_ORDER( Isochoric::, YeohPotential, 500.0, 50.0, 5.0 );
+  CHECK_SECOND_ORDER( Isochoric::, MooneyRivlinPotential, 400.0, 100.0 );
+  CHECK_SECOND_ORDER( Isochoric::, ArrudaBoyce8ChainPotential, 500.0, 2.5 );
+  // beyond the locking regularization floor (Ibar1 > 3 lambdaL^2): linear continuation in Ibar1
+  CHECK_SECOND_ORDER( Isochoric::, ArrudaBoyce8ChainPotential, 500.0, 1.02 );
+
+  CHECK_SECOND_ORDER( Volumetric::, PenaltyPotential, k );
+  CHECK_SECOND_ORDER( Volumetric::, SussmanBathePotential, k );
+  CHECK_SECOND_ORDER( Volumetric::, SimoTaylorPotential, k );
+  CHECK_SECOND_ORDER( Volumetric::, OgdenPotential, k, -2.0 );
+  CHECK_SECOND_ORDER( Volumetric::, OgdenPotential, k, 9.0 );
+  CHECK_SECOND_ORDER( Volumetric::, LiuHofstetterMangPotential, k );
+  CHECK_SECOND_ORDER( Volumetric::, DollSchweizerhofPotential, k, 2.3, 1.4 );
+  CHECK_SECOND_ORDER( Volumetric::, DollSchweizerhofExponentialPotential, k );
+  CHECK_SECOND_ORDER( Volumetric::, DollSchweizerhofLogarithmicPotential, k );
+
+  const std::vector< double > alphas = { 0.5, 2.0 };
+  const std::vector< double > betas  = { 1.5, 3.0 };
+  checkSecondOrderMatchesFirstOrder(
+    "Volumetric::SecondOrder::GeneralizedDollSchweizerhofPotential",
+    [&]( const auto& C_, double kappa ) {
+      return Volumetric::FirstOrder::GeneralizedDollSchweizerhofPotential( C_, kappa, alphas, betas );
+    },
+    [&]( const auto& C_, double kappa ) {
+      return Volumetric::SecondOrder::GeneralizedDollSchweizerhofPotential( C_, kappa, alphas, betas );
+    },
+    C,
+    k );
+
+  // the compressible potentials: isochoric part + Ogden volumetric part
+  CHECK_SECOND_ORDER(, MooneyRivlinPotential, 400.0, 100.0, 1e-3 );
+  CHECK_SECOND_ORDER(, YeohPotential, 400.0, 100.0, 5.0, 1e-3 );
+  CHECK_SECOND_ORDER(, ArrudaBoyce8ChainPotential, 500.0, 2.5, 1e-3 );
+}
+
+#undef CHECK_SECOND_ORDER
+
+// d2U/dJ2 = kappa at J = 1 (condition (8)_2 of Doll & Schweizerhof) from the SecondOrder Hessian: along
+// C = J^{2/3} I, I : d2U/dCdC : I = 9/4 ( d2U/dJ2 - dU/dJ ) at J = 1, and dU/dJ = 0 there.
+auto testVolumetricSecondOrderBulkModulus()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  const double    k = 10000.0;
+
+  const auto check = [&]( const char* name, const Tensor3333d& d2U_dCdC ) {
+    double sum = 0.;
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ )
+        sum += d2U_dCdC( i, i, j, j );
+    throwExceptionOnFailure( checkIfEqual( sum / ( 9. / 4. * k ), 1.0, 1e-12 ),
+                             Marmot::Utilities::MakeString()
+                               << name << " SecondOrder: d2U/dJ2 at J = 1 does not equal the bulk modulus." );
+  };
+
+  check( "PenaltyPotential", get< 2 >( Volumetric::SecondOrder::PenaltyPotential( I, k ) ) );
+  check( "SussmanBathePotential", get< 2 >( Volumetric::SecondOrder::SussmanBathePotential( I, k ) ) );
+  check( "SimoTaylorPotential", get< 2 >( Volumetric::SecondOrder::SimoTaylorPotential( I, k ) ) );
+  check( "OgdenPotential", get< 2 >( Volumetric::SecondOrder::OgdenPotential( I, k, -2.0 ) ) );
+  check( "LiuHofstetterMangPotential", get< 2 >( Volumetric::SecondOrder::LiuHofstetterMangPotential( I, k ) ) );
+  check( "DollSchweizerhofPotential",
+         get< 2 >( Volumetric::SecondOrder::DollSchweizerhofPotential( I, k, 2.3, 1.4 ) ) );
+  check( "DollSchweizerhofExponentialPotential",
+         get< 2 >( Volumetric::SecondOrder::DollSchweizerhofExponentialPotential( I, k ) ) );
+  check( "DollSchweizerhofLogarithmicPotential",
+         get< 2 >( Volumetric::SecondOrder::DollSchweizerhofLogarithmicPotential( I, k ) ) );
+}
+
 int main()
 {
   auto tests = std::vector<
@@ -899,6 +1169,10 @@ int main()
                                testDecoupledPotentialCombinesParts,
                                testCompressiblePotentialsMatchClosedForm,
                                testFirstOrderPotentialsWithAutodiffScalars,
+                               testRightCauchyGreenInvariantsAndDerivatives,
+                               testComposeWithInvariantsReproducesPenceGouB,
+                               testSecondOrderPotentialsMatchFirstOrder,
+                               testVolumetricSecondOrderBulkModulus,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
                                testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,

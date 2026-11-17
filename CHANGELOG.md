@@ -46,6 +46,16 @@ All notable changes to Marmot are documented in this file. The format follows
     `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
   - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
     around a given 3D stress update.
+- `MarmotRightCauchyGreenInvariants.h` (`ContinuumMechanics::Invariants::RightCauchyGreen`): the principal invariants
+  (I1, I2, J) and the isochoric invariants (Ī1, Ī2, J) of the right Cauchy-Green tensor with their first and second
+  derivatives w.r.t. C (`computeInvariants`, `computeIsochoricInvariants`), and `composeWithInvariants`, the chain
+  rule from the scalar derivatives of a function of these invariants to ∂Ψ/∂C and ∂²Ψ/∂C∂C. A hyperelastic
+  potential then only states its scalar function and scalar derivatives. The derivatives hold for a general,
+  non-symmetric C, as automatic and complex-step differentiation produce them.
+- `SecondOrder` overloads (energy, ∂Ψ/∂C and ∂²Ψ/∂C∂C in closed form) of every potential in
+  `EnergyDensityFunctions::Isochoric` and `EnergyDensityFunctions::Volumetric`, and of the compressible
+  `MooneyRivlinPotential`, `YeohPotential` and `ArrudaBoyce8ChainPotential`. The plain, `FirstOrder` and
+  `SecondOrder` overloads of a potential evaluate the same scalar function through the invariant helper.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -180,6 +190,9 @@ All notable changes to Marmot are documented in this file. The format follows
   dissipation increment is the plastic work f_y(κₙ₊₁) Δκ of the return mapping instead of 2G Δλ n : Δε. The yield
   stress is floored at zero, so that a softening law flows without stress beyond zero strength instead of reversing
   the stress, and a trial stress without deviatoric part is elastic. This applies to `computeStressExplicit()` too.
+- **Results:** `CompressibleFiniteStrainLinearViscoelasticity` with `baseModel = MooneyRivlin` and
+  `onlyShearCreep = 1` takes the reference shear modulus 2 (C1 + C2) of the Mooney-Rivlin potential; it took 2 C1
+  before. Results change for inputs with C2 ≠ 0.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was

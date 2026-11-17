@@ -83,38 +83,20 @@ namespace Marmot::Materials {
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
     }
-    auto [psi,
-          dPsi_dC,
-          d2Psi_dCdC,
-          d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction,
-                                                                                              C,
-                                                                                              true );
+    // The potentials are functions of a general (not necessarily symmetric) C, so their derivatives w.r.t. the
+    // independent entries C_ij and C_ji differ (e.g. tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only
+    // the symmetric part acts on symmetric increments of C. Differentiating through sym(C) projects every
+    // derivative onto its minor-symmetric part; without this, the stiffness inverted for onlyShearCreep = 0 is
+    // singular in the shear block.
+    const auto energyDensityOfSymmetricPart = [&energyDensityFunction]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
+      Tensor33t< autodiff::dual3rd > CSym;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          CSym( i, j ) = 0.5 * ( C_ad( i, j ) + C_ad( j, i ) );
+      return energyDensityFunction( CSym );
+    };
 
-    // The potentials are evaluated on a general (not necessarily symmetric) C, so the
-    // autodiff derivatives w.r.t. the independent entries C_ij and C_ji differ (e.g.
-    // tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only their symmetric part acts on
-    // symmetric increments of C, so restore the minor symmetries here; without this, the
-    // stiffness inverted for onlyShearCreep = 0 is singular in the shear block.
-    Tensor3333d   d2Sym;
-    Tensor333333d d3Sym;
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ )
-        for ( int k = 0; k < 3; k++ )
-          for ( int l = 0; l < 3; l++ ) {
-            d2Sym( i, j, k, l ) = 0.25 * ( d2Psi_dCdC( i, j, k, l ) + d2Psi_dCdC( j, i, k, l ) +
-                                           d2Psi_dCdC( i, j, l, k ) + d2Psi_dCdC( j, i, l, k ) );
-            for ( int m = 0; m < 3; m++ )
-              for ( int n = 0; n < 3; n++ ) {
-                double sum = 0.0;
-                for ( int a = 0; a < 2; a++ )
-                  for ( int b = 0; b < 2; b++ )
-                    for ( int c = 0; c < 2; c++ )
-                      sum += d3Psi_dCdCdC( a ? j : i, a ? i : j, b ? l : k, b ? k : l, c ? n : m, c ? m : n );
-                d3Sym( i, j, k, l, m, n ) = 0.125 * sum;
-              }
-          }
-
-    return { psi, dPsi_dC, d2Sym, d3Sym };
+    return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityOfSymmetricPart, C, true );
   }
 
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
@@ -142,14 +124,12 @@ namespace Marmot::Materials {
       switch ( hyperelasticBase ) {
       case NeoHooke: G = elasticProperties[1]; break;
       case Yeoh: G = 2 * elasticProperties[0]; break;
-      // reference shear modulus of the isochoric Mooney-Rivlin potential is 2*(C10+C01), not
-      // 2*C10 alone -- C01 also contributes to dPsi/dIbar1 at the reference configuration via
-      // the Ibar2 term (dIbar2/dIbar1|C=I effectively contributes an equal weight to C01 there).
+      // reference shear modulus G0 = 2 ( dPsi/dIbar1 + dPsi/dIbar2 ) at C = I
       case MooneyRivlin: G = 2 * ( elasticProperties[0] + elasticProperties[1] ); break;
       case PenceGouNeoHooke: G = elasticProperties[1]; break;
       // mu is NOT the infinitesimal shear modulus at finite lambdaL: G0 = 2*dPsi_iso/dIbar1
       // evaluated at Ibar1=3 (the reference configuration), which for the closed-form
-      // Arruda-Boyce potential (see Detail::arrudaBoyce8ChainEnergyAndDerivative) works out to
+      // Arruda-Boyce potential (see Detail::arrudaBoyce8ChainIsochoric) works out to
       // mu/3 + 2*mu/(3*(1-1/lambdaL^2)); only in the lambdaL->infinity limit does this reduce to mu.
       case ArrudaBoyce: {
         const double lambdaL = elasticProperties[1];

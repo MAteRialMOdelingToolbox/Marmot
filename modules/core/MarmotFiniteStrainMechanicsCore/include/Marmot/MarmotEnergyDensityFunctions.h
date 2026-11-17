@@ -26,6 +26,8 @@
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotRightCauchyGreenInvariants.h"
+#include <array>
 #include <span>
 #include <stdexcept>
 #include <tuple>
@@ -163,12 +165,77 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
 
   /** @cond */
   namespace Detail {
-    /** @brief Shared closed-form energy and derivative for the Arruda-Boyce 8-chain
-     * potential's isochoric part, as a function of the isochoric first invariant
-     * \f$\bar I_1\f$ alone -- used by both the plain (energy-only) and
-     * FirstOrder (energy + first derivative w.r.t. C) overloads of
-     * Isochoric::ArrudaBoyce8ChainPotential below, so the two cannot independently drift out
-     * of sync with each other.
+    /* Every isochoric potential is one scalar function of the isochoric invariants (Ibar1, Ibar2) and every
+     * volumetric potential one scalar function of J, each with its scalar derivatives up to the requested order.
+     * The plain, FirstOrder and SecondOrder overloads w.r.t. C all funnel through isochoricPotential() and
+     * volumetricPotential(), which leave the tensor algebra to Invariants::RightCauchyGreen, so the overloads
+     * cannot drift apart. */
+
+    template < typename T, int Order >
+    using ScalarDerivatives = Invariants::RightCauchyGreen::ScalarDerivatives< T, Order >;
+
+    /* Psi( C ) and its derivatives w.r.t. C up to Order for a scalar function
+     * fBar: (Ibar1, Ibar2, J) -> ScalarDerivatives w.r.t. (Ibar1, Ibar2, J). */
+    template < int Order, typename T, typename ScalarFunction >
+    auto isochoricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const ScalarFunction& fBar )
+    {
+      const auto                          inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C );
+      const ScalarDerivatives< T, Order > f   = fBar( inv.x );
+      return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
+    }
+
+    /* U( C ) and its derivatives w.r.t. C up to Order for a scalar function
+     * U: J -> ScalarDerivatives w.r.t. (I1, I2, J), of which only the entries of J are set. */
+    template < int Order, typename T, typename ScalarFunction >
+    auto volumetricPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const ScalarFunction& U )
+    {
+      const auto                          inv = Invariants::RightCauchyGreen::computeInvariants< Order >( C );
+      const ScalarDerivatives< T, Order > f   = U( inv.x[Invariants::RightCauchyGreen::indexJ] );
+      return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > neoHookeIsochoric( const std::array< T, 3 >& xBar, const double mu )
+    {
+      ScalarDerivatives< T, Order > f;
+      f.f = mu / 2. * ( xBar[0] - 3. );
+      if constexpr ( Order >= 1 )
+        f.df[0] = T( mu / 2. );
+      return f;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > yeohIsochoric( const std::array< T, 3 >& xBar,
+                                                 const double              C10,
+                                                 const double              C20,
+                                                 const double              C30 )
+    {
+      const T                       Ibar1m3 = xBar[0] - 3.;
+      ScalarDerivatives< T, Order > f;
+      f.f = C10 * Ibar1m3 + C20 * Ibar1m3 * Ibar1m3 + C30 * Ibar1m3 * Ibar1m3 * Ibar1m3;
+      if constexpr ( Order >= 1 )
+        f.df[0] = C10 + 2. * C20 * Ibar1m3 + 3. * C30 * Ibar1m3 * Ibar1m3;
+      if constexpr ( Order >= 2 )
+        f.d2f[0][0] = 2. * C20 + 6. * C30 * Ibar1m3;
+      return f;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > mooneyRivlinIsochoric( const std::array< T, 3 >& xBar,
+                                                         const double              C10,
+                                                         const double              C01 )
+    {
+      ScalarDerivatives< T, Order > f;
+      f.f = C10 * ( xBar[0] - 3. ) + C01 * ( xBar[1] - 3. );
+      if constexpr ( Order >= 1 ) {
+        f.df[0] = T( C10 );
+        f.df[1] = T( C01 );
+      }
+      return f;
+    }
+
+    /** @brief Arruda-Boyce 8-chain potential as a function of the isochoric first invariant
+     * \f$\bar I_1\f$ alone.
      *
      * Closed-form Cohen (1991) Pade approximation to the inverse Langevin function,
      * integrated in \f$\bar I_1\f$. Regularized near the locking limit
@@ -181,16 +248,20 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * reference state (\f$\bar I_1 = 3, w = w_0\f$) remains strictly unregularized
      * and exactly zero-energy even for locking stretches arbitrarily close to 1.
      *
+     * @tparam Order Highest scalar derivative to compute.
      * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff::dual3rd.
-     * @param Ibar1 Isochoric first invariant, \f$\bar I_1 = I_1 J^{-2/3}\f$.
+     * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
      * @param mu Shear-modulus-like parameter (small-strain limit -> standard
      * neo-Hookean shear modulus).
      * @param lambdaL Locking stretch (must be > 1).
-     * @return Pair (Psi_iso, dPsi_iso/dIbar1).
+     * @return \f$\Psi_{\rm iso}\f$ and its derivatives w.r.t. \f$(\bar I_1, \bar I_2, J)\f$.
      */
-    template < typename T >
-    std::pair< T, T > arrudaBoyce8ChainEnergyAndDerivative( const T& Ibar1, const double mu, const double lambdaL )
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > arrudaBoyce8ChainIsochoric( const std::array< T, 3 >& xBar,
+                                                              const double              mu,
+                                                              const double              lambdaL )
     {
+      const T&     Ibar1    = xBar[0];
       const double lambdaL2 = lambdaL * lambdaL;
       const double w0       = 1. - 1. / lambdaL2;
       const T      w        = w0 - ( Ibar1 - 3. ) / ( 3. * lambdaL2 );
@@ -198,39 +269,151 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       // w0 < 1 for lambdaL > 1, so the floor always lies below the reference state w = w0
       const double wFloor = 1e-2 * w0;
 
+      ScalarDerivatives< T, Order > f;
       if ( Math::Tensors::makeReal( w ) > wFloor ) {
-        const T psi_iso     = mu / 6. * ( Ibar1 - 3. ) - mu * lambdaL2 * log( w / w0 );
-        const T dPsi_dIbar1 = mu / 6. + mu / 3. / w;
-        return { psi_iso, dPsi_dIbar1 };
+        f.f = mu / 6. * ( Ibar1 - 3. ) - mu * lambdaL2 * log( w / w0 );
+        if constexpr ( Order >= 1 )
+          f.df[0] = mu / 6. + mu / 3. / w;
+        if constexpr ( Order >= 2 )
+          f.d2f[0][0] = mu / ( 9. * lambdaL2 ) / ( w * w );
+        return f;
       }
 
       // C1 linear continuation of ln(w) about wFloor: d/dIbar1 of the energy is the constant below
-      const T psi_iso = mu / 6. * ( Ibar1 - 3. ) -
-                        mu * lambdaL2 * ( std::log( wFloor / w0 ) + ( w - wFloor ) / wFloor );
-      const T dPsi_dIbar1 = T( mu / 6. + mu / 3. / wFloor );
-      return { psi_iso, dPsi_dIbar1 };
+      f.f = mu / 6. * ( Ibar1 - 3. ) - mu * lambdaL2 * ( std::log( wFloor / w0 ) + ( w - wFloor ) / wFloor );
+      if constexpr ( Order >= 1 )
+        f.df[0] = T( mu / 6. + mu / 3. / wFloor );
+      return f;
     }
-    /** @brief Isochoric first invariant \f$\bar I_1 = I_1 J^{-2/3}\f$ and its derivative
-     * \f$\partial \bar I_1/\partial \boldsymbol C = J^{-2/3}\boldsymbol I - \frac{\bar I_1}{3}\boldsymbol C^{-1}\f$.
-     *
-     * @tparam T Scalar type, e.g. double, std::complex<double>.
-     * @param C Right Cauchy-Green tensor.
-     * @return Pair (Ibar1, dIbar1/dC).
-     */
-    template < typename T >
-    std::pair< T, Math::Tensors::FastorTensors::Tensor33t< T > > isochoricFirstInvariantAndDerivative(
-      const Math::Tensors::FastorTensors::Tensor33t< T >& C )
-    {
-      using namespace Fastor;
-      const T Jm23  = pow( determinant( C ), -1. / 3. );
-      const T Ibar1 = trace( C ) * Jm23;
 
-      const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
-        Math::Tensors::FastorTensors::Spatial3D::I );
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
-      return { Ibar1,
-               Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
-                 Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( Ibar1 / 3. ) ) };
+    /* Volumetric strain energy functions U(J) acc. Doll & Schweizerhof (2000), J. Appl. Mech. 67, 17-21,
+     * https://doi.org/10.1115/1.321146, as scalar functions of J with dU/dJ and d2U/dJ2. */
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > sussmanBatheVolumetric( const T& J, const double kappa )
+    {
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / 2. * ( J - 1. ) * ( J - 1. );
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa * ( J - 1. );
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = T( kappa );
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > penaltyVolumetric( const T& J, const double kappa )
+    {
+      const T                                lnJ = log( J );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / 2. * lnJ * lnJ;
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa * lnJ / J;
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa * ( 1. - lnJ ) / ( J * J );
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > simoTaylorVolumetric( const T& J, const double kappa )
+    {
+      const T                                lnJ = log( J );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / 4. * ( ( J - 1. ) * ( J - 1. ) + lnJ * lnJ );
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa / 2. * ( ( J - 1. ) + lnJ / J );
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa / 2. * ( 1. + ( 1. - lnJ ) / ( J * J ) );
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > ogdenVolumetric( const T& J, const double kappa, const double theta )
+    {
+      const T                                JmTheta = pow( J, -theta );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / ( theta * theta ) * ( theta * log( J ) + JmTheta - 1. );
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa / theta * ( 1. - JmTheta ) / J;
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa / theta * ( ( theta + 1. ) * JmTheta - 1. ) / ( J * J );
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > liuHofstetterMangVolumetric( const T& J, const double kappa )
+    {
+      const T                                lnJ = log( J );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa * ( J * lnJ - J + 1. );
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa * lnJ;
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa / J;
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > generalizedDollSchweizerhofVolumetric( const T&                        J,
+                                                                         const double                    kappa,
+                                                                         const std::span< const double > alphas,
+                                                                         const std::span< const double > betas )
+    {
+      if ( alphas.size() != betas.size() || alphas.empty() )
+        throw std::invalid_argument( "Generalized Doll-Schweizerhof volumetric potential: alphas and betas must be "
+                                     "non-empty and of equal size." );
+
+      double sumAlphaPlusBeta = 0.;
+      for ( std::size_t i = 0; i < alphas.size(); i++ )
+        sumAlphaPlusBeta += alphas[i] + betas[i];
+      const double scale = kappa / sumAlphaPlusBeta;
+
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      for ( std::size_t i = 0; i < alphas.size(); i++ ) {
+        const double a = alphas[i];
+        const double b = betas[i];
+        U.f += scale *
+               ( pow( J, a + 1. ) / ( a + 1. ) + pow( J, 1. - b ) / ( b - 1. ) - 1. / ( a + 1. ) - 1. / ( b - 1. ) );
+        if constexpr ( Order >= 1 )
+          U.df[iJ] += scale * ( pow( J, a ) - pow( J, -b ) );
+        if constexpr ( Order >= 2 )
+          U.d2f[iJ][iJ] += scale * ( a * pow( J, a - 1. ) + b * pow( J, -b - 1. ) );
+      }
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > dollSchweizerhofExponentialVolumetric( const T& J, const double kappa )
+    {
+      const T                                expJm1 = exp( J - 1. );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / 2. * ( expJm1 - log( J ) - 1. );
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa / 2. * ( expJm1 - 1. / J );
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa / 2. * ( expJm1 + 1. / ( J * J ) );
+      return U;
+    }
+
+    template < int Order, typename T >
+    ScalarDerivatives< T, Order > dollSchweizerhofLogarithmicVolumetric( const T& J, const double kappa )
+    {
+      const T                                lnJ = log( J );
+      ScalarDerivatives< T, Order >          U;
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+      U.f                                       = kappa / 2. * ( J - 1. ) * lnJ;
+      if constexpr ( Order >= 1 )
+        U.df[iJ] = kappa / 2. * ( lnJ + ( J - 1. ) / J );
+      if constexpr ( Order >= 2 )
+        U.d2f[iJ][iJ] = kappa / 2. * ( 1. / J + 1. / ( J * J ) );
+      return U;
     }
   } // namespace Detail
   /** @endcond */
@@ -266,16 +449,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T MooneyRivlinPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double C10, const double C01 )
     {
-      using namespace Fastor;
-      using namespace Marmot::Math::Tensors::FastorIndices;
-
-      const T J   = sqrt( determinant( C ) );
-      const T I1  = trace( C );
-      const T I1_ = I1 * pow( J, -2. / 3. );
-      const T I2_ = 0.5 * ( I1 * I1 - trace( C % C ) ) * pow( J, -4. / 3. );
-      T       res = C10 * ( I1_ - 3. ) + C01 * ( I2_ - 3. );
-
-      return res;
+      return Detail::isochoricPotential< 0 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+        return Detail::mooneyRivlinIsochoric< 0 >( xBar, C10, C01 );
+      } );
     }
 
     /** @brief Isochoric Yeoh hyperelastic energy density function (no volumetric
@@ -301,11 +477,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                      const double                                        C20,
                      const double                                        C30 )
     {
-      const T J         = sqrt( determinant( C ) );
-      const T I1        = trace( C );
-      const T I1_minus3 = I1 * pow( J, -2. / 3. ) - 3.;
-      T       res       = C10 * I1_minus3 + C20 * I1_minus3 * I1_minus3 + C30 * I1_minus3 * I1_minus3 * I1_minus3;
-      return res;
+      return Detail::isochoricPotential< 0 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+        return Detail::yeohIsochoric< 0 >( xBar, C10, C20, C30 );
+      } );
     }
 
     /** @brief Isochoric neo-Hookean hyperelastic energy density function
@@ -328,9 +502,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T NeoHookePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double mu )
     {
-      const T J     = sqrt( determinant( C ) );
-      const T Ibar1 = trace( C ) * pow( J, -2. / 3. );
-      return mu / 2. * ( Ibar1 - 3. );
+      return Detail::isochoricPotential< 0 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+        return Detail::neoHookeIsochoric< 0 >( xBar, mu );
+      } );
     }
 
     /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
@@ -365,14 +539,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                   const double                                        mu,
                                   const double                                        lambdaL )
     {
-      using namespace Fastor;
-      const T J     = sqrt( determinant( C ) );
-      const T I1    = trace( C );
-      const T Ibar1 = I1 * pow( J, -2. / 3 );
-
-      return Detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1, mu, lambdaL ).first;
+      return Detail::isochoricPotential< 0 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+        return Detail::arrudaBoyce8ChainIsochoric< 0 >( xBar, mu, lambdaL );
+      } );
     }
-
     namespace FirstOrder {
 
       /** @brief Isochoric neo-Hookean potential (see the plain
@@ -393,12 +563,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        mu )
       {
-        const auto [Ibar1, dIbar1_dC] = Detail::isochoricFirstInvariantAndDerivative( C );
-
-        const T psi = mu / 2. * ( Ibar1 - 3. );
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, T( mu / 2. ) );
-        return { psi, dPsi_dC };
+        return Detail::isochoricPotential< 1 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+          return Detail::neoHookeIsochoric< 1 >( xBar, mu );
+        } );
       }
 
       /** @brief Isochoric Yeoh potential (see the plain Isochoric::YeohPotential, isochoric part
@@ -418,14 +585,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C20,
         const double                                        C30 )
       {
-        const auto [Ibar1, dIbar1_dC] = Detail::isochoricFirstInvariantAndDerivative( C );
-        const T Ibar1m3               = Ibar1 - 3.;
-
-        const T psi         = C10 * Ibar1m3 + C20 * Ibar1m3 * Ibar1m3 + C30 * Ibar1m3 * Ibar1m3 * Ibar1m3;
-        const T dPsi_dIbar1 = C10 + 2. * C20 * Ibar1m3 + 3. * C30 * Ibar1m3 * Ibar1m3;
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
-        return { psi, dPsi_dC };
+        return Detail::isochoricPotential< 1 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+          return Detail::yeohIsochoric< 1 >( xBar, C10, C20, C30 );
+        } );
       }
 
       /** @brief Isochoric Mooney-Rivlin potential (see the plain Isochoric::MooneyRivlinPotential,
@@ -443,35 +605,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        C10,
         const double                                        C01 )
       {
-        using namespace Fastor;
-        const T J     = sqrt( determinant( C ) );
-        const T Jm23  = pow( J, -2. / 3. );
-        const T Jm43  = pow( J, -4. / 3. );
-        const T I1    = trace( C );
-        const T Ibar1 = I1 * Jm23;
-        const T I2    = 0.5 * ( I1 * I1 - trace( C % C ) );
-        const T Ibar2 = I2 * Jm43;
-
-        const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
-          Math::Tensors::FastorTensors::Spatial3D::I );
-        const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
-
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
-                      Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( Ibar1 / 3. ) );
-        // dIbar2/dC = J^(-4/3)*I1*I - J^(-4/3)*C - (2/3)*Ibar2*Cinv (standard
-        // isochoric second-invariant derivative identity, I2's own derivative
-        // dI2/dC = I1*I - C combined with the J^(-4/3) scaling's own C-derivative).
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dIbar2_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, T( Jm43 * I1 ) ) -
-                      Math::Tensors::multiplyFastorTensorWithScalar( C, Jm43 ) -
-                      Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( 2. / 3. * Ibar2 ) );
-
-        const T psi = C10 * ( Ibar1 - 3. ) + C01 * ( Ibar2 - 3. );
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, T( C10 ) ) +
-                    Math::Tensors::multiplyFastorTensorWithScalar( dIbar2_dC, T( C01 ) );
-        return { psi, dPsi_dC };
+        return Detail::isochoricPotential< 1 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+          return Detail::mooneyRivlinIsochoric< 1 >( xBar, C10, C01 );
+        } );
       }
 
       /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
@@ -505,100 +641,94 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        mu,
         const double                                        lambdaL )
       {
-        const auto [Ibar1, dIbar1_dC]     = Detail::isochoricFirstInvariantAndDerivative( C );
-        const auto [psi_iso, dPsi_dIbar1] = Detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1, mu, lambdaL );
-
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
-
-        return { psi_iso, dPsi_dC };
+        return Detail::isochoricPotential< 1 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+          return Detail::arrudaBoyce8ChainIsochoric< 1 >( xBar, mu, lambdaL );
+        } );
       }
     } // namespace FirstOrder
-  }   // namespace Isochoric
 
-  /** @cond */
-  namespace Detail {
-    /* Volumetric strain energy functions U(J) acc. Doll & Schweizerhof (2000), J. Appl. Mech. 67, 17-21,
-     * https://doi.org/10.1115/1.321146, as scalar functions of J. Each returns the pair (U, dU/dJ); the plain
-     * and FirstOrder C-overloads below are thin wrappers around these, so they cannot drift apart. */
+    namespace SecondOrder {
 
-    template < typename T >
-    std::pair< T, T > sussmanBatheVolumetricEnergyAndDerivative( const T& J, const double kappa )
-    {
-      return { kappa / 2. * ( J - 1. ) * ( J - 1. ), kappa * ( J - 1. ) };
-    }
-
-    template < typename T >
-    std::pair< T, T > simoTaylorVolumetricEnergyAndDerivative( const T& J, const double kappa )
-    {
-      const T lnJ = log( J );
-      return { kappa / 4. * ( ( J - 1. ) * ( J - 1. ) + lnJ * lnJ ), kappa / 2. * ( ( J - 1. ) + lnJ / J ) };
-    }
-
-    template < typename T >
-    std::pair< T, T > ogdenVolumetricEnergyAndDerivative( const T& J, const double kappa, const double theta )
-    {
-      const T JmTheta = pow( J, -theta );
-      return { kappa / ( theta * theta ) * ( theta * log( J ) + JmTheta - 1. ), kappa / theta * ( 1. - JmTheta ) / J };
-    }
-
-    template < typename T >
-    std::pair< T, T > liuHofstetterMangVolumetricEnergyAndDerivative( const T& J, const double kappa )
-    {
-      const T lnJ = log( J );
-      return { kappa * ( J * lnJ - J + 1. ), kappa * lnJ };
-    }
-
-    template < typename T >
-    std::pair< T, T > generalizedDollSchweizerhofVolumetricEnergyAndDerivative( const T&                        J,
-                                                                                const double                    kappa,
-                                                                                const std::span< const double > alphas,
-                                                                                const std::span< const double > betas )
-    {
-      if ( alphas.size() != betas.size() || alphas.empty() )
-        throw std::invalid_argument( "Generalized Doll-Schweizerhof volumetric potential: alphas and betas must be "
-                                     "non-empty and of equal size." );
-
-      double sumAlphaPlusBeta = 0.;
-      T      U                = T( 0. );
-      T      dU_dJ            = T( 0. );
-      for ( std::size_t i = 0; i < alphas.size(); i++ ) {
-        const double a = alphas[i];
-        const double b = betas[i];
-        sumAlphaPlusBeta += a + b;
-        U += pow( J, a + 1. ) / ( a + 1. ) + pow( J, 1. - b ) / ( b - 1. ) - 1. / ( a + 1. ) - 1. / ( b - 1. );
-        dU_dJ += pow( J, a ) - pow( J, -b );
+      /** @brief Isochoric neo-Hookean potential (see the plain #NeoHookePotential) and its first and second derivative
+       * w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param mu Shear modulus.
+       * @return A tuple containing the (isochoric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > NeoHookePotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        mu )
+      {
+        return Detail::isochoricPotential< 2 >( C, [mu]( const std::array< T, 3 >& xBar ) {
+          return Detail::neoHookeIsochoric< 2 >( xBar, mu );
+        } );
       }
-      return { kappa / sumAlphaPlusBeta * U, kappa / sumAlphaPlusBeta * dU_dJ };
-    }
 
-    template < typename T >
-    std::pair< T, T > dollSchweizerhofExponentialVolumetricEnergyAndDerivative( const T& J, const double kappa )
-    {
-      const T expJm1 = exp( J - 1. );
-      return { kappa / 2. * ( expJm1 - log( J ) - 1. ), kappa / 2. * ( expJm1 - 1. / J ) };
-    }
+      /** @brief Isochoric Yeoh potential (see the plain #YeohPotential) and its first and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param C10 Yeoh material parameter.
+       * @param C20 Yeoh material parameter.
+       * @param C30 Yeoh material parameter.
+       * @return A tuple containing the (isochoric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > YeohPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        C10,
+        const double                                        C20,
+        const double                                        C30 )
+      {
+        return Detail::isochoricPotential< 2 >( C, [C10, C20, C30]( const std::array< T, 3 >& xBar ) {
+          return Detail::yeohIsochoric< 2 >( xBar, C10, C20, C30 );
+        } );
+      }
 
-    template < typename T >
-    std::pair< T, T > dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( const T& J, const double kappa )
-    {
-      const T lnJ = log( J );
-      return { kappa / 2. * ( J - 1. ) * lnJ, kappa / 2. * ( lnJ + ( J - 1. ) / J ) };
-    }
+      /** @brief Isochoric Mooney-Rivlin potential (see the plain #MooneyRivlinPotential) and its first and second
+       * derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param C10 Mooney-Rivlin material parameter.
+       * @param C01 Mooney-Rivlin material parameter.
+       * @return A tuple containing the (isochoric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > MooneyRivlinPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        C10,
+        const double                                        C01 )
+      {
+        return Detail::isochoricPotential< 2 >( C, [C10, C01]( const std::array< T, 3 >& xBar ) {
+          return Detail::mooneyRivlinIsochoric< 2 >( xBar, C10, C01 );
+        } );
+      }
 
-    /* Chain rule dU/dC = dU/dJ dJ/dC with dJ/dC = J/2 C^{-T}. */
-    template < typename T >
-    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > volumetricFirstOrderFromJ(
-      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
-      const T&                                            J,
-      const std::pair< T, T >&                            U_dUdJ )
-    {
-      using namespace Fastor;
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInvT = transpose( inverse( C ) );
-      return { U_dUdJ.first, Math::Tensors::multiplyFastorTensorWithScalar( CInvT, T( U_dUdJ.second * J / 2. ) ) };
-    }
-  } // namespace Detail
-  /** @endcond */
+      /** @brief Isochoric Arruda-Boyce 8-chain potential (see the plain #ArrudaBoyce8ChainPotential) and its first and
+       * second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param mu Shear-modulus-like parameter.
+       * @param lambdaL Locking stretch (must be > 1).
+       * @return A tuple containing the (isochoric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > ArrudaBoyce8ChainPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        mu,
+        const double                                        lambdaL )
+      {
+        return Detail::isochoricPotential< 2 >( C, [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+          return Detail::arrudaBoyce8ChainIsochoric< 2 >( xBar, mu, lambdaL );
+        } );
+      }
+    } // namespace SecondOrder
+  }   // namespace Isochoric
 
   /** @brief Purely volumetric strain energy functions \f$U(J)\f$, \f$J = \sqrt{\det\boldsymbol C}\f$.
    *
@@ -627,8 +757,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T PenaltyPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      const T lnDetC = log( determinant( C ) );
-      return kappa / 8. * lnDetC * lnDetC;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::penaltyVolumetric< 0 >( J, kappa );
+      } );
     }
 
     /** @brief Quadratic volumetric strain energy function, \f$U_1\f$ in Table 1 of Doll & Schweizerhof (2000),
@@ -647,7 +778,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T SussmanBathePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      return Detail::sussmanBatheVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::sussmanBatheVolumetric< 0 >( J, kappa );
+      } );
     }
 
     /** @brief Volumetric strain energy function \f$U_3\f$ in Table 1 of Doll & Schweizerhof (2000),
@@ -665,7 +798,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T SimoTaylorPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      return Detail::simoTaylorVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::simoTaylorVolumetric< 0 >( J, kappa );
+      } );
     }
 
     /** @brief Ogden (1972) volumetric strain energy function, \f$U_4\f$ in Table 1 of Doll & Schweizerhof (2000),
@@ -685,7 +820,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T OgdenPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa, const double theta )
     {
-      return Detail::ogdenVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa, theta ).first;
+      return Detail::volumetricPotential< 0 >( C, [kappa, theta]( const T& J ) {
+        return Detail::ogdenVolumetric< 0 >( J, kappa, theta );
+      } );
     }
 
     /** @brief Volumetric strain energy function \f$U_5\f$ in Table 1 of Doll & Schweizerhof (2000),
@@ -704,7 +841,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T LiuHofstetterMangPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      return Detail::liuHofstetterMangVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa ).first;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::liuHofstetterMangVolumetric< 0 >( J, kappa );
+      } );
     }
 
     /** @brief Two-parameter volumetric strain energy function \f$U_6\f$ acc. Doll & Schweizerhof (2000),
@@ -734,11 +873,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     {
       const double alphas[] = { alpha };
       const double betas[]  = { beta };
-      return Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ),
-                                                                               kappa,
-                                                                               alphas,
-                                                                               betas )
-        .first;
+      return Detail::volumetricPotential< 0 >( C, [kappa, &alphas, &betas]( const T& J ) {
+        return Detail::generalizedDollSchweizerhofVolumetric< 0 >( J, kappa, alphas, betas );
+      } );
     }
 
     /** @brief Generalized volumetric strain energy function \f$U_{6\,\rm gen}\f$ acc. Doll & Schweizerhof (2000),
@@ -765,11 +902,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                             const std::span< const double >                     alphas,
                                             const std::span< const double >                     betas )
     {
-      return Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ),
-                                                                               kappa,
-                                                                               alphas,
-                                                                               betas )
-        .first;
+      return Detail::volumetricPotential< 0 >( C, [kappa, alphas, betas]( const T& J ) {
+        return Detail::generalizedDollSchweizerhofVolumetric< 0 >( J, kappa, alphas, betas );
+      } );
     }
 
     /** @brief Exponential volumetric strain energy function \f$U_7\f$ acc. Doll & Schweizerhof (2000),
@@ -786,8 +921,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T DollSchweizerhofExponentialPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      return Detail::dollSchweizerhofExponentialVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa )
-        .first;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::dollSchweizerhofExponentialVolumetric< 0 >( J, kappa );
+      } );
     }
 
     /** @brief Logarithmic volumetric strain energy function \f$U_8\f$ acc. Doll & Schweizerhof (2000),
@@ -804,10 +940,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     template < typename T >
     T DollSchweizerhofLogarithmicPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
     {
-      return Detail::dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( T( sqrt( determinant( C ) ) ), kappa )
-        .first;
+      return Detail::volumetricPotential< 0 >( C, [kappa]( const T& J ) {
+        return Detail::dollSchweizerhofLogarithmicVolumetric< 0 >( J, kappa );
+      } );
     }
-
     namespace FirstOrder {
 
       /** @brief Shared volumetric penalty potential (see the plain
@@ -826,13 +962,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        using namespace Fastor;
-        const T                                            lnDetC = log( determinant( C ) );
-        const Math::Tensors::FastorTensors::Tensor33t< T > CInv   = inverse( C );
-        const T                                            psi    = kappa / 8. * lnDetC * lnDetC;
-        const Math::Tensors::FastorTensors::Tensor33t< T >
-          dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( kappa / 4. * lnDetC ) );
-        return { psi, dPsi_dC };
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::penaltyVolumetric< 1 >( J, kappa );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_1\f$ (see the plain
@@ -852,8 +984,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::volumetricFirstOrderFromJ( C, J, Detail::sussmanBatheVolumetricEnergyAndDerivative( J, kappa ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::sussmanBatheVolumetric< 1 >( J, kappa );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_3\f$ (see the plain
@@ -873,8 +1006,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::volumetricFirstOrderFromJ( C, J, Detail::simoTaylorVolumetricEnergyAndDerivative( J, kappa ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::simoTaylorVolumetric< 1 >( J, kappa );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_4\f$ (see the plain
@@ -896,8 +1030,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const double                                        kappa,
         const double                                        theta )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::volumetricFirstOrderFromJ( C, J, Detail::ogdenVolumetricEnergyAndDerivative( J, kappa, theta ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa, theta]( const T& J ) {
+          return Detail::ogdenVolumetric< 1 >( J, kappa, theta );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_5\f$ (see the plain
@@ -917,10 +1052,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::volumetricFirstOrderFromJ( C,
-                                                  J,
-                                                  Detail::liuHofstetterMangVolumetricEnergyAndDerivative( J, kappa ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::liuHofstetterMangVolumetric< 1 >( J, kappa );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_6\f$ (see the plain
@@ -946,14 +1080,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       {
         const double alphas[] = { alpha };
         const double betas[]  = { beta };
-        const T      J        = sqrt( determinant( C ) );
-        return Detail::
-          volumetricFirstOrderFromJ( C,
-                                     J,
-                                     Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( J,
-                                                                                                       kappa,
-                                                                                                       alphas,
-                                                                                                       betas ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa, &alphas, &betas]( const T& J ) {
+          return Detail::generalizedDollSchweizerhofVolumetric< 1 >( J, kappa, alphas, betas );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_{6\,\rm gen}\f$ (see the plain
@@ -977,14 +1106,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const std::span< const double >                     alphas,
         const std::span< const double >                     betas )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::
-          volumetricFirstOrderFromJ( C,
-                                     J,
-                                     Detail::generalizedDollSchweizerhofVolumetricEnergyAndDerivative( J,
-                                                                                                       kappa,
-                                                                                                       alphas,
-                                                                                                       betas ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa, alphas, betas]( const T& J ) {
+          return Detail::generalizedDollSchweizerhofVolumetric< 1 >( J, kappa, alphas, betas );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_7\f$ (see the plain
@@ -1004,11 +1128,9 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::
-          volumetricFirstOrderFromJ( C,
-                                     J,
-                                     Detail::dollSchweizerhofExponentialVolumetricEnergyAndDerivative( J, kappa ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::dollSchweizerhofExponentialVolumetric< 1 >( J, kappa );
+        } );
       }
 
       /** @brief Volumetric strain energy function \f$U_8\f$ (see the plain
@@ -1028,13 +1150,188 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         const Math::Tensors::FastorTensors::Tensor33t< T >& C,
         const double                                        kappa )
       {
-        const T J = sqrt( determinant( C ) );
-        return Detail::
-          volumetricFirstOrderFromJ( C,
-                                     J,
-                                     Detail::dollSchweizerhofLogarithmicVolumetricEnergyAndDerivative( J, kappa ) );
+        return Detail::volumetricPotential< 1 >( C, [kappa]( const T& J ) {
+          return Detail::dollSchweizerhofLogarithmicVolumetric< 1 >( J, kappa );
+        } );
       }
     } // namespace FirstOrder
+
+    namespace SecondOrder {
+
+      /** @brief Volumetric penalty potential (see the plain #PenaltyPotential) and its first and second derivative
+       * w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > PenaltyPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::penaltyVolumetric< 2 >( J, kappa );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_1\f$ (see the plain #SussmanBathePotential) and its first and
+       * second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > SussmanBathePotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::sussmanBatheVolumetric< 2 >( J, kappa );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_3\f$ (see the plain #SimoTaylorPotential) and its first and
+       * second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > SimoTaylorPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::simoTaylorVolumetric< 2 >( J, kappa );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_4\f$ (see the plain #OgdenPotential) and its first and second
+       * derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @param theta Shape parameter \f$\theta\f$ (\f$\neq 0\f$).
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > OgdenPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa,
+        const double                                        theta )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa, theta]( const T& J ) {
+          return Detail::ogdenVolumetric< 2 >( J, kappa, theta );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_5\f$ (see the plain #LiuHofstetterMangPotential) and its first
+       * and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > LiuHofstetterMangPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::liuHofstetterMangVolumetric< 2 >( J, kappa );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_6\f$ (see the plain #DollSchweizerhofPotential) and its first
+       * and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @param alpha Shape parameter \f$\alpha > 0\f$.
+       * @param beta Shape parameter \f$\beta > 1\f$.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > DollSchweizerhofPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa,
+        const double                                        alpha,
+        const double                                        beta )
+      {
+        const double alphas[] = { alpha };
+        const double betas[]  = { beta };
+        return Detail::volumetricPotential< 2 >( C, [kappa, &alphas, &betas]( const T& J ) {
+          return Detail::generalizedDollSchweizerhofVolumetric< 2 >( J, kappa, alphas, betas );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_{6\,\rm gen}\f$ (see the plain
+       * #GeneralizedDollSchweizerhofPotential) and its first and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @param alphas Shape parameters \f$\alpha_i > 0\f$.
+       * @param betas Shape parameters \f$\beta_i > 1\f$ (same, non-zero size as alphas).
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > GeneralizedDollSchweizerhofPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa,
+        const std::span< const double >                     alphas,
+        const std::span< const double >                     betas )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa, alphas, betas]( const T& J ) {
+          return Detail::generalizedDollSchweizerhofVolumetric< 2 >( J, kappa, alphas, betas );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_7\f$ (see the plain #DollSchweizerhofExponentialPotential) and
+       * its first and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > DollSchweizerhofExponentialPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::dollSchweizerhofExponentialVolumetric< 2 >( J, kappa );
+        } );
+      }
+
+      /** @brief Volumetric strain energy function \f$U_8\f$ (see the plain #DollSchweizerhofLogarithmicPotential) and
+       * its first and second derivative w.r.t. C.
+       *
+       * @tparam T Scalar type, e.g. double, std::complex<double>.
+       * @param C Right Cauchy-Green tensor.
+       * @param kappa Bulk modulus.
+       * @return A tuple containing the (volumetric) energy density and its first and second derivative w.r.t. C.
+       */
+      template < typename T >
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > DollSchweizerhofLogarithmicPotential(
+        const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+        const double                                        kappa )
+      {
+        return Detail::volumetricPotential< 2 >( C, [kappa]( const T& J ) {
+          return Detail::dollSchweizerhofLogarithmicVolumetric< 2 >( J, kappa );
+        } );
+      }
+    } // namespace SecondOrder
   }   // namespace Volumetric
 
   /** @cond */
@@ -1357,6 +1654,82 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   } // namespace FirstOrder
 
   namespace SecondOrder {
+
+    /** @brief Mooney-Rivlin potential (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential) and its first and
+     * second derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param C1 Mooney-Rivlin material parameter C1.
+     * @param C2 Mooney-Rivlin material parameter C2.
+     * @param D1 Mooney-Rivlin material parameter D1.
+     * @return A tuple containing the energy density and its first and second derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > MooneyRivlinPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        C1,
+      const double                                        C2,
+      const double                                        D1 )
+    {
+      return DecoupledPotential(
+        C,
+        [C1, C2]( const auto& Ct ) { return Isochoric::SecondOrder::MooneyRivlinPotential( Ct, C1, C2 ); },
+        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+    }
+
+    /** @brief Yeoh potential (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential) and its first and second
+     * derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param C1 Yeoh material parameter.
+     * @param C2 Yeoh material parameter.
+     * @param C3 Yeoh material parameter.
+     * @param D1 Volumetric penalty parameter.
+     * @return A tuple containing the energy density and its first and second derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > YeohPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        C1,
+      const double                                        C2,
+      const double                                        C3,
+      const double                                        D1 )
+    {
+      return DecoupledPotential(
+        C,
+        [C1, C2, C3]( const auto& Ct ) { return Isochoric::SecondOrder::YeohPotential( Ct, C1, C2, C3 ); },
+        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+    }
+
+    /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential) and its first
+     * and second derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param mu Shear-modulus-like parameter.
+     * @param lambdaL Locking stretch (must be > 1).
+     * @param D1 Volumetric compliance parameter.
+     * @return A tuple containing the energy density and its first and second derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > ArrudaBoyce8ChainPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        mu,
+      const double                                        lambdaL,
+      const double                                        D1 )
+    {
+      return DecoupledPotential(
+        C,
+        [mu, lambdaL]( const auto& Ct ) {
+          return Isochoric::SecondOrder::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL );
+        },
+        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+    }
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
      * derivative w.r.t. C
