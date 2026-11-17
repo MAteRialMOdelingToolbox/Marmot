@@ -557,7 +557,48 @@ void testAnalyticalInitialShearModulusMatchesInitialStiffness()
   }
 }
 
-// runs a NeoHooke test for full creep (onlyShearCreep=0) and shear creep only (onlyShearCreep=1)
+// Test I-15: the elastic Yeoh and MooneyRivlin responses are the stresses of the shared compressible potentials,
+// tau = F (2 dPsi/dC) F^T, for full creep and shear creep only.
+void testYeohAndMooneyRivlinMatchSharedPotentials( double onlyShearCreep )
+{
+  namespace EDF = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+
+  const std::string matName = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
+  const double      C1 = 700.0, C2 = -50.0, C3 = 20.0, D1 = 2.0 / 3500.0;
+
+  Tensor33d F = Spatial3D::I;
+  F( 0, 0 ) += 0.08;
+  F( 1, 1 ) -= 0.02;
+  F( 2, 2 ) -= 0.015;
+  F( 0, 1 )         = 0.01;
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+
+  const auto checkStress = [&]( std::vector< double > matProps, const Tensor33d& dPsi_dC, const std::string& base ) {
+    auto solver = makeSolver( matName, matProps );
+    solver.addStep( makeStep( F - Spatial3D::I, 0.0, 1.0, 1.0 ) );
+    solver.solve();
+    const Tensor33d tau       = solver.getHistory().back().stress;
+    const Tensor33d PK2       = 2. * dPsi_dC;
+    const Tensor33d tauTarget = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+
+    throwExceptionOnFailure( checkIfEqual( tau, tauTarget, 1e-6 ),
+                             "I-15: " + base + " stress does not match the shared potential in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+  };
+
+  // Yeoh: [1, onlyShearCreep, C1, C2, C3, D1, nMaxwell]
+  checkStress( { 1.0, onlyShearCreep, C1, C2, C3, D1, 0.0 },
+               std::get< 1 >( EDF::FirstOrder::YeohPotential< double >( C, C1, C2, C3, D1 ) ),
+               "Yeoh" );
+
+  // MooneyRivlin: [2, onlyShearCreep, C1, C2, D1, nMaxwell]
+  const double C2MooneyRivlin = 200.0;
+  checkStress( { 2.0, onlyShearCreep, C1, C2MooneyRivlin, D1, 0.0 },
+               std::get< 1 >( EDF::FirstOrder::MooneyRivlinPotential< double >( C, C1, C2MooneyRivlin, D1 ) ),
+               "MooneyRivlin" );
+}
+
+// runs a test for full creep (onlyShearCreep=0) and shear creep only (onlyShearCreep=1)
 static std::function< void() > forBothCreepModes( void ( *test )( double ) )
 {
   return [test]() {
@@ -583,6 +624,7 @@ int main()
     testArrudaBoyceViscoelasticShearCreep,                    // I-12: ArrudaBoyce viscoelastic shear creep
     testFullCreepViscoelasticRelaxation,                      // I-13: full creep (onlyShearCreep=0) relaxation
     testAnalyticalInitialShearModulusMatchesInitialStiffness, // I-14: analytical G0 for every base
+    forBothCreepModes( testYeohAndMooneyRivlinMatchSharedPotentials ), // I-15: Yeoh, MooneyRivlin stress
   };
 
   executeTestsAndCollectExceptions( tests );
