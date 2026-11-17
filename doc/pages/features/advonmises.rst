@@ -52,5 +52,8 @@ Implementation
 
 Implementation follows the :ref:`vonMisesModel`, however, automatic differentiation is used to compute the consistent algorithmic tangent operator.
 
+The return mapping uses the same Newton iteration and the same stopping rule, relative to the trial stress
+(:math:`|g| \leq 10^{-12}\,\|\boldsymbol{s}^\mathrm{trial}\|`).
+
 .. doxygenclass:: Marmot::Materials::ADVonMises
    :allow-dot-graphs:
