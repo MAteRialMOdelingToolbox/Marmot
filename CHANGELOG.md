@@ -104,6 +104,9 @@ All notable changes to Marmot are documented in this file. The format follows
   and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
+- **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
+  requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
+  (autodiff#397).
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
   the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
   response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`

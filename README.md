@@ -36,7 +36,7 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 [changelog](CHANGELOG.md) lists every renamed class and namespace.
 
 `Marmot` requires the
-[Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8, including Eigen 5),
+[Eigen](https://gitlab.com/libeigen/eigen) (≥5.0),
 [autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
 and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).

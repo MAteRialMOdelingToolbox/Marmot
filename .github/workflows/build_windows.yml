@@ -26,20 +26,24 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.DEPS_PREFIX }}
-          key: deps-windows-2022-eigen-3.4.0-autodiff-v1.1.0-fastor-V0.6.4
+          key: deps-windows-2022-eigen-5.0.1-autodiff-v1.1.2-397-fastor-V0.6.4
 
       # Build directories are named _build: autodiff ships a BUILD file, and Windows paths are case-insensitive.
       - name: Install Eigen
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          git clone --depth 1 --branch 5.0.1 https://gitlab.com/libeigen/eigen.git
           cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
           cmake --install eigen/_build
 
+      # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
+      # from its pinned commit.
       - name: Install Autodiff
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
-          git clone --depth 1 --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          git clone --depth 1 --branch v1.1.2 https://github.com/autodiff/autodiff.git
+          curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
+          git -C autodiff apply ../autodiff-eigen5.diff
           cmake -S autodiff -B autodiff/_build -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX" `
             -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF
           cmake --install autodiff/_build
