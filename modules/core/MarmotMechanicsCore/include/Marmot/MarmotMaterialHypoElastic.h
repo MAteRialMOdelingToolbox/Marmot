@@ -247,6 +247,7 @@ namespace Marmot::Materials {
                                     const Marmot::Math::Vector3d& dStrainBeam,
                                     const timeInfo&               timeInfo ) const;
 
+  protected:
     /**
      * @brief A reduced stress state by static condensation of the free components: the strain components
      * \f$\boldsymbol{\varepsilon}_p\f$ are prescribed, the stress components \f$\boldsymbol{\sigma}_f = \mathbf{0}\f$,
@@ -262,6 +263,10 @@ namespace Marmot::Materials {
      * round-off of \f$\boldsymbol{\sigma}_f\f$ is relative to the size of the stresses, so an absolute tolerance cannot
      * be met for large stresses. The tangent is the condensed one, \f$\mathbf{C}_{pp} - \mathbf{C}_{pf}
      * \mathbf{C}_{ff}^{-1} \mathbf{C}_{fp}\f$.
+     *
+     * The definition is in MarmotMaterialHypoElastic.cpp and explicitly instantiated there only for the three reduced
+     * stress states that use it: `<3, 1>` (computePlaneStress()), `<1, 2>` (computeUniaxialStress()) and `<3, 3>`
+     * (computeBeamStress()). Another combination compiles but does not link; add its instantiation there.
      *
      * @tparam nP number of prescribed components
      * @tparam nF number of free components
@@ -282,6 +287,7 @@ namespace Marmot::Materials {
                                           const std::array< int, nF >&     f,
                                           const timeInfo&                  timeInfo ) const;
 
+  public:
     /**
      * @brief Get a view to the state variables.
      * @param stateName Name of the state variable

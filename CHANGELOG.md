@@ -7,6 +7,45 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
+  materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
+  materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
+  material and geometric tangent; for 2 nodes identical to the co-rotational truss). Property: the cross section
+  area. E.g., for reinforcement bars embedded in continuum elements.
+- `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
+  materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
+  the lateral stretches with state reset, condensed tangent dτ11/dF11).
+- Bond-slip of embedded reinforcement: the pluggable bond-slip law interface `Materials::BondSlipLaw` with its
+  `Registry::BondSlipLawFactory` (bond laws are modules in the materials category with their own factory), the laws
+  `materials/LinearElasticBondSlip` (`LINEARELASTICBONDSLIP`), `materials/ModelCode2010BondSlip`
+  (`MODELCODE2010BONDSLIP`: fib Model Code 2010 envelope, elastic un-/reloading, optional Coulomb friction and a
+  normal crushing cap), and `elements/EmbeddedBondElement` (`EB<nDim>D<nBarNodes><host>`, e.g. `EB2D2Q4`,
+  `EB3D2H20`, `EB2D2T3`: the bond of a bar element to the host element it lies in, small slip, geometrically
+  linear).
+- `GeometryElement::parentCoordinates` (inverse isoparametric mapping on coordinates relative to the element, so it
+  converges far from the origin) and `GeometryElement::isInsideParentDomain`; `LagrangianCellGeometry` and the
+  embedded bond element use it.
+- The Gauss-Lobatto family of the quadrature catalogue on Line (2 to 5 points), `gaussLobattoExactToDegree()`.
+- Large slip of embedded reinforcement: `EmbeddedLargeSlipBondElement` (`EBLS<nDim>D<nBarNodes><host>W<n>`, e.g.
+  `EBLS2D2Q4W3`): the bond is integrated over the channel fixed in the host element and each channel point searches
+  its current partner (closest point projection) in a window of `n` bar elements, so the bar can slide out of its
+  host and the bonded length shrinks as it is pulled out. Objective (current frame at the partner), with the
+  linearization of the closest point; `EmbeddedBondKinematics.h` holds the frame and the integration rule shared with
+  `EmbeddedBondElement`; `Bar2::d2NdXi2`, `Bar3::d2NdXi2`.
+- Energy gradients of the elements for dissipation based arc-length control, as optional capabilities that leave the
+  standard interfaces unchanged (see the feature page "Energy gradients"):
+  - `EnergyGradientProvider` (elements): `assignEnergyGradientOutput()` assigns two arrays to which every
+    `computeKernels()` call writes the gradients of the element's elastic energy and dissipation with respect to its
+    degrees of freedom; unsupported sections or materials are rejected when the outputs are assigned.
+    `DisplacementFiniteElement` (solid, plane strain) and `GeneralGradientEnhancedDisplacementFiniteElement` (solid,
+    plane strain, plane stress, with the non-local degrees of freedom) provide it.
+  - `HypoElasticEnergyTangentProvider` and `GradientEnhancedHypoElasticEnergyTangentProvider` (materials):
+    `computeStressWithEnergyTangents()`, the stress update with the derivatives of the updated elastic energy density
+    and dissipation, and `computePlaneStressWithEnergyTangents()` for the gradient-enhanced plane stress iteration.
+  - Energy tangents of `VonMises`, `RankineSofteningPlasticity`, `RankineDamagePlasticity`,
+    `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
+  - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
+    around a given 3D stress update.
 - `elements/BeamElement`: Euler-Bernoulli beams `B2D2`, `B2D3`, `B3D2`, `B3D3` (2 or 3 nodes, geometrically
   linear; cubic / quintic Hermite transverse interpolation), node fields displacement and rotation, sections given
   as section points (any shape, `[n, y_i, A_i ...]` in 2D, `[v, J, n, y_i, z_i, A_i ...]` in 3D) with one material
@@ -23,14 +62,6 @@ All notable changes to Marmot are documented in this file. The format follows
   on the free strains from the start-of-increment state, condensed tangent `Cpp - Cpf Cff^-1 Cfp`, convergence relative
   to the stress). `computePlaneStress`, `computeUniaxialStress` and `computeBeamStress` call it.
 - Quadrature catalogue: the 4-point Gauss-Legendre rule on `Line` (degree 7).
-- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
-  materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
-  materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
-  material and geometric tangent; for 2 nodes identical to the co-rotational truss). Property: the cross section
-  area. E.g., for reinforcement bars embedded in continuum elements.
-- `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
-  materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
-  the lateral stretches with state reset, condensed tangent dτ11/dF11).
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -73,6 +104,20 @@ All notable changes to Marmot are documented in this file. The format follows
 - `materials/RankineGradientSofteningPlasticity` (`RANKINEGRADIENTSOFTENINGPLASTICITY`), the implicit-gradient
   over-nonlocal extension of `RankineSofteningPlasticity` (Vermeer and Brinkgreve, 1994): the yield stress depends on
   a combination of the local and the nonlocal softening variable.
+- Small-strain axisymmetric elements in `elements/DisplacementFiniteElement`: `CAX4` (4 nodes, full integration),
+  `CAX8` (8 nodes, full integration) and `CAX8R` (8 nodes, reduced integration), with r = x_1 and z = x_2. They are
+  `DisplacementFiniteElement< 2, nNodes >` with the new section `SectionType::Axisymmetric`, which adds the hoop
+  strain u_r / r and integrates over the full ring (2 pi r), so internal forces, energies, masses, body forces and
+  distributed loads are those of the full revolution. The artificial bulk viscosity and the energy gradients are
+  available. `initializeYourself()` rejects a node at r < -1e-12 h (h the size of the element) and a
+  quadrature point at r <= 0.
+- `BoundaryElement( ..., axisymmetric )`: with `axisymmetric = true`, its load vectors are integrated over the ring
+  (2 pi r ds).
+- `Spatial2D::Axisymmetric::BFromPlanarB( BPlanar, N, r )`: the axisymmetric B-operator from the planar one, the
+  single definition of the hoop row; `Spatial2D::Axisymmetric::B` (`GeometryElement::B_axisymmetric`) and the
+  axisymmetric section of `DisplacementFiniteElement` use it.
+- `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
+  and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
@@ -119,7 +164,38 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
 
+- `DisplacementFiniteElement`: `computeKernels()` and `computeKernelsExplicit()` share one implementation, and the
+  solid, plane strain and axisymmetric sections one material update through the 3D interface. Results are unchanged.
+  The consistent mass takes the thickness or cross section from the element property instead of recovering it from
+  the nearest quadrature point (identical up to rounding).
+
+### Deprecated
+- `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
+  with `axisymmetric = true` and call `computeSurfaceNormalVectorialLoadVector()`.
+
 ### Fixed
+- `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
+  trial stress, `|g| <= 1e-12 * ||s_trial||`, instead of an absolute one (`VonMises` 1e-12 MPa, `ADVonMises`
+  1e-10 MPa). `g` is a difference of numbers of the size of `||s_trial||`, so its round-off is about
+  `eps * ||s_trial||`: the absolute tolerance could not be met for large trial stresses, and large strain increments
+  failed to converge depending on the platform's floating point evaluation order (e.g., AVX2 builds, macOS). Both
+  models now use the same tolerance; for `ADVonMises` the effective criterion is 1e-12 relative instead of 1e-10
+  absolute, i.e. looser for trial stresses above 100 MPa (Newton converges quadratically, so the result is at
+  round-off either way). Test `TestVonMisesLargeIncrement`: one strain increment of order one (trial stress about
+  900 f_y) ends on the yield surface for perfect, linear and nonlinear hardening (both models, implicit and
+  explicit).
+- **Results:** coupling tangents of `GeneralGradientEnhancedDisplacementFiniteElement` in plane stress. The blocks
+  `kUK`, `kKU` and `kKK` used the derivatives of the material's 3D update without the out-of-plane strain, which the
+  plane stress iteration adjusts with the strain and the non-local field. They now include it by static condensation
+  of dσ₃₃ = 0, which changes the Newton iterations (not the converged results) of gradient-enhanced plane stress
+  analyses whose out-of-plane stress depends on the non-local field or whose local driving variable depends on the
+  out-of-plane strain, e.g., `RankineGradientSofteningPlasticity`. A finite difference test of the stiffness in plane
+  stress with that material covers it.
+- **Results:** energies of `VonMises`. The elastic energy density is ½ σ : C⁻¹ : σ; it was accumulated as
+  ½ Δε : C : Δε − 2G Δλ n : Δε per increment, without the work of the stress at the start of the increment. The
+  dissipation increment is the plastic work f_y(κₙ₊₁) Δκ of the return mapping instead of 2G Δλ n : Δε. The yield
+  stress is floored at zero, so that a softening law flows without stress beyond zero strength instead of reversing
+  the stress, and a trial stress without deviatoric part is elastic. This applies to `computeStressExplicit()` too.
 - **Results:** `MaterialHypoElastic::computePlaneStress` and `computeUniaxialStress` (all plane stress elements, the
   truss and the 2D beam fibers) converge on a residual relative to the stress, `|sigma_f| <= 1e-12 max(1, |sigma|)`,
   instead of an absolute one (plane stress 1e-10, uniaxial 1e-13). The round-off of the free stress components is

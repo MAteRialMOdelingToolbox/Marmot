@@ -303,6 +303,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar2 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar2 shape functions (constant, zero).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar2
 
     namespace Bar3 {
@@ -315,6 +317,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar3 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar3 shape functions (constant).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar3
   }   // namespace Spatial1D
 
@@ -345,7 +349,30 @@ namespace Marmot::Discretizations::Elements {
       constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
       /**
-       * @brief Compute the axisymmetric B-operator from physical derivatives.
+       * @brief Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows
+       * (11, 22, 12), the hoop row is \f$N_i / r\f$.
+       * @tparam nNodes Number of element nodes.
+       * @param[in] BPlanar Planar B-operator (3 × 2 nNodes), see Spatial2D::B.
+       * @param[in] N       Shape function values (1 × nNodes).
+       * @param[in] r       Radius of the point.
+       * @return B-operator matrix of size 4 × (2 * nNodes).
+       */
+      template < int nNodes >
+      Eigen::Matrix< double, voigtSize, nNodes * nDim > BFromPlanarB(
+        const Eigen::Matrix< double, Spatial2D::voigtSize, nNodes * nDim >& BPlanar,
+        const Eigen::Matrix< double, 1, nNodes >&                           N,
+        double                                                              r )
+      {
+        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+        B_.template topRows< 2 >()                          = BPlanar.template topRows< 2 >();
+        B_.row( 3 )                                         = BPlanar.row( 2 );
+        for ( int i = 0; i < nNodes; i++ )
+          B_( 2, 2 * i ) = N( i ) / r;
+        return B_;
+      }
+
+      /**
+       * @brief Compute the axisymmetric B-operator from physical derivatives, see BFromPlanarB().
        * @tparam nNodes Number of element nodes.
        * @param[in] dNdX    Physical shape function derivatives (2 × nNodes).
        * @param[in] N       Shape function values (1 × nNodes).
@@ -357,16 +384,7 @@ namespace Marmot::Discretizations::Elements {
                                                            const Eigen::Matrix< double, 1, nNodes >&    N,
                                                            const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
       {
-
-        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
-        for ( int i = 0; i < nNodes; i++ ) {
-          B_( 0, 2 * i )     = dNdX( 0, i );
-          B_( 1, 2 * i + 1 ) = dNdX( 1, i );
-          B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
-          B_( 3, 2 * i )     = dNdX( 1, i );
-          B_( 3, 2 * i + 1 ) = dNdX( 0, i );
-        }
-        return B_;
+        return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
     } // namespace Axisymmetric
 
@@ -674,7 +692,8 @@ namespace Marmot::Discretizations::Elements {
     /// @brief Internal data for a single quadrature point on the boundary face.
     struct BoundaryElementQuadraturePoint {
       double          weight;     ///< Quadrature weight.
-      double          JxW;        ///< Jacobian determinant times quadrature weight.
+      double          ringFactor; ///< 2 pi r of an axisymmetric boundary element, 1 otherwise.
+      double          JxW;        ///< Jacobian determinant times quadrature weight (times ringFactor).
       Eigen::VectorXd xi;         ///< Natural coordinates of the quadrature point.
       Eigen::VectorXd N;          ///< Shape function values at the quadrature point.
       Eigen::MatrixXd dNdXi;      ///< Shape function natural derivatives.
@@ -682,7 +701,8 @@ namespace Marmot::Discretizations::Elements {
       Eigen::VectorXd areaVector; ///< Outward-normal area vector at the quadrature point.
     };
 
-    const int nDim;                                                 ///< Number of spatial dimensions.
+    const int  nDim;                                                ///< Number of spatial dimensions.
+    const bool axisymmetric;                                        ///< Integrate over the ring (r = x_1).
 
     ElementShapes boundaryShape;                                    ///< Shape of the boundary (face/edge) element.
     int           nNodes;                                           ///< Number of nodes on the boundary element.
@@ -701,11 +721,14 @@ namespace Marmot::Discretizations::Elements {
      * @param[in] parentFaceNumber   Zero-based index of the boundary face on the parent element.
      * @param[in] nDim               Number of spatial dimensions.
      * @param[in] parentCoordinates  Flat vector of parent nodal coordinates.
+     * @param[in] axisymmetric       Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are
+     *                               integrated over the ring, \f$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\f$.
      */
     BoundaryElement( ElementShapes          parentShape,
                      int                    parentFaceNumber,
                      int                    nDim,
-                     const Eigen::VectorXd& parentCoordinates );
+                     const Eigen::VectorXd& parentCoordinates,
+                     bool                   axisymmetric = false );
 
     /// @brief Compute the scalar (pressure) load vector for a unit pressure.
     Eigen::VectorXd computeScalarLoadVector();
@@ -714,9 +737,16 @@ namespace Marmot::Discretizations::Elements {
 
     /// compute the element load vector for a unit vectorial load normal to the surface.
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
-    /// @brief Compute the normal-traction load vector for axisymmetric elements.
+    /**
+     * @brief Compute the normal-traction load vector for axisymmetric elements.
+     * @deprecated Construct the boundary element with @c axisymmetric = true and use
+     * computeSurfaceNormalVectorialLoadVector().
+     */
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
-    /// @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+    /**
+     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+     * @throws std::invalid_argument for an axisymmetric boundary element.
+     */
     Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
     /// compute the element load vector for a unit vectorial load in a given direction.
@@ -755,10 +785,12 @@ namespace Marmot::Discretizations::Elements {
      * @brief Family of a quadrature rule.
      */
     enum class QuadratureFamily {
-      Gauss,       ///< Gauss-type rules with interior points and positive weights: Gauss-Legendre on Line,
-                   ///< Quadrilateral and Hexahedron, symmetric Gauss rules on Triangle and Tetrahedron.
-      NewtonCotes, ///< Closed Newton-Cotes rules: the points form an evenly spaced lattice that includes the
-                   ///< boundary, the weights are the integrals of the Lagrange polynomials on that lattice.
+      Gauss,        ///< Gauss-type rules with interior points and positive weights: Gauss-Legendre on Line,
+                    ///< Quadrilateral and Hexahedron, symmetric Gauss rules on Triangle and Tetrahedron.
+      NewtonCotes,  ///< Closed Newton-Cotes rules: the points form an evenly spaced lattice that includes the
+                    ///< boundary, the weights are the integrals of the Lagrange polynomials on that lattice.
+      GaussLobatto, ///< Gauss-Lobatto rules on Line: both end points and the roots of P'_{n-1} in between,
+                    ///< positive weights, degree of exactness 2n - 3 for n points.
     };
 
     /**
@@ -771,7 +803,7 @@ namespace Marmot::Discretizations::Elements {
      */
     struct QuadratureRuleData {
       ReferenceDomain                    domain;            ///< Reference domain the points are given on.
-      QuadratureFamily                   family;            ///< Gauss or Newton-Cotes.
+      QuadratureFamily                   family;            ///< Gauss, Newton-Cotes or Gauss-Lobatto.
       int                                degreeOfExactness; ///< Degree of exactness.
       std::vector< QuadraturePointInfo > points;            ///< Points and weights, in a fixed order.
     };
@@ -783,13 +815,13 @@ namespace Marmot::Discretizations::Elements {
      * so the first rule that reaches a requested degree is the cheapest. A new rule is added here, at its place in
      * that order; the lookup getQuadraturePoints() needs no change.
      *
-     * | Domain        | Gauss: points -> degree            | Newton-Cotes: points -> degree |
-     * |---------------|------------------------------------|--------------------------------|
-     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7     | 2 -> 1                         |
-     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5       | 2x2 -> 1                       |
-     * | Hexahedron    | 1x1x1 -> 1, 2x2x2 -> 3, 3x3x3 -> 5 | -                              |
-     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5             | 3 -> 1                         |
-     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5            | -                              |
+     * | Domain        | Gauss: points -> degree        | Newton-Cotes | Gauss-Lobatto                  |
+     * |---------------|--------------------------------|--------------|--------------------------------|
+     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7 | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
+     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5   | 2x2 -> 1     | -                              |
+     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5        | -            | -                              |
+     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5         | 3 -> 1       | -                              |
+     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5        | -            | -                              |
      *
      * The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its
      * tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in
@@ -799,6 +831,9 @@ namespace Marmot::Discretizations::Elements {
      * points cause spurious traction oscillations. An element that relies on its points being its nodes must check
      * that itself: on a quadratic element the rule integrates with the corners only, and the shape functions of the
      * other nodes vanish at all points.
+     *
+     * The Gauss-Lobatto rules include both end points of the line and are used along embedded bars, where the bond
+     * stress at the ends of a bar part is needed and a stiff bond would oscillate between Gauss points.
      *
      * @return The catalogue; its entries live for the whole program.
      */
@@ -811,7 +846,7 @@ namespace Marmot::Discretizations::Elements {
      * with gaussExactToDegree() or newtonCotesExactToDegree().
      */
     struct QuadratureRule {
-      QuadratureFamily family;            ///< Gauss or Newton-Cotes.
+      QuadratureFamily family;            ///< Gauss, Newton-Cotes or Gauss-Lobatto.
       int              degreeOfExactness; ///< Degree of exactness required.
 
       /**
@@ -842,6 +877,16 @@ namespace Marmot::Discretizations::Elements {
     constexpr QuadratureRule newtonCotesExactToDegree( int degree )
     {
       return { QuadratureFamily::NewtonCotes, degree };
+    }
+
+    /**
+     * @brief Request the Gauss-Lobatto rule with the fewest points that integrates polynomials up to a degree exactly.
+     * @param[in] degree Degree of exactness; the n-point rule has the degree 2n - 3.
+     * @return The request.
+     */
+    constexpr QuadratureRule gaussLobattoExactToDegree( int degree )
+    {
+      return { QuadratureFamily::GaussLobatto, degree };
     }
 
     /**

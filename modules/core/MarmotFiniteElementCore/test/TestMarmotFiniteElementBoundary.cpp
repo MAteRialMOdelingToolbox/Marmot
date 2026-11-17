@@ -319,6 +319,81 @@ void testComputeSurfaceNormalVectorialLoadVectorForAxisymmetricElementsScalesByT
 }
 
 // ---------------------------------------------------------------------------------------------
+// An axisymmetric boundary element folds 2 pi r into every load vector: on the bottom face z = 0 of
+// the ring r in [1, 2], r varies along the face, so the first moments sum_i r_i P_i = 2 pi int r^2 ds
+// check that r is evaluated at each face point, not once per face.
+// ---------------------------------------------------------------------------------------------
+
+void testAxisymmetricBoundaryElementIntegratesOverTheRing()
+{
+  const std::vector< double >               coordsVec = { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0 };
+  const Eigen::Map< const Eigen::VectorXd > parentCoords( coordsVec.data(), 8 );
+  const double                              twoPi = 2.0 * Marmot::Math::Constants::Pi;
+
+  const int       bottomFace = 1;
+  BoundaryElement plane( Quad4, bottomFace, 2, parentCoords );
+  BoundaryElement ring( Quad4, bottomFace, 2, parentCoords, true );
+
+  const auto firstMoment = [&]( const Eigen::VectorXd& P, int direction ) {
+    const auto assembled = assembleVectorial( P, ring, 4, 2 );
+    double     moment    = 0.0;
+    for ( int node = 0; node < 4; node++ )
+      moment += coordsVec[node * 2] * assembled.parentVector( node * 2 + direction );
+    return moment;
+  };
+
+  // int_1^2 r ds = 3/2 and int_1^2 r^2 ds = 7/3
+  const Eigen::Vector2d direction( 0.3, -1.7 );
+  const Eigen::VectorXd traction = ring.computeVectorialLoadVector( direction );
+  throwExceptionOnFailure( checkIfEqual( assembleVectorial( traction, ring, 4, 2 ).parentVector.sum(),
+                                         twoPi * 1.5 * direction.sum(),
+                                         1e-12 ),
+                           "axisymmetric computeVectorialLoadVector(): resultant is not 2 pi int r ds." );
+  throwExceptionOnFailure( checkIfEqual( firstMoment( traction, 1 ), twoPi * 7. / 3. * direction( 1 ), 1e-12 ),
+                           "axisymmetric computeVectorialLoadVector(): first moment is not 2 pi int r^2 ds." );
+
+  // outward normal of the bottom face: -z
+  const Eigen::VectorXd normal = ring.computeSurfaceNormalVectorialLoadVector();
+  throwExceptionOnFailure( checkIfEqual( firstMoment( normal, 1 ), -twoPi * 7. / 3., 1e-12 ),
+                           "axisymmetric computeSurfaceNormalVectorialLoadVector(): first moment is not -2 pi int "
+                           "r^2 ds." );
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( normal ),
+                                         Eigen::MatrixXd(
+                                           plane.computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements() ),
+                                         1e-12 ) &&
+                             checkIfEqual( Eigen::MatrixXd( normal ),
+                                           Eigen::MatrixXd(
+                                             ring.computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements() ),
+                                           1e-12 ),
+                           "the deprecated computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements() differs "
+                           "from the axisymmetric boundary element." );
+
+  throwExceptionOnFailure( checkIfEqual( ring.computeScalarLoadVector().sum(), twoPi * 1.5, 1e-12 ),
+                           "axisymmetric computeScalarLoadVector(): sum is not 2 pi int r ds." );
+
+  bool threw = false;
+  try {
+    ring.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "computeDSurfaceNormalVectorialLoadVector_dCoordinates() must throw for an axisymmetric "
+                           "boundary element." );
+
+  threw = false;
+  try {
+    const Eigen::Map< const Eigen::VectorXd > cubeCoords( unitCubeCoords.data(), 24 );
+    BoundaryElement                           invalid( Hexa8, 1, 3, cubeCoords, true );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "an axisymmetric boundary element must be two-dimensional." );
+}
+
+// ---------------------------------------------------------------------------------------------
 // Quad8 / Hexa20: exercise the remaining constructor branches. Only the partition-of-unity total
 // is checked here (no corner-geometry assumptions), since these boundary shapes carry midside
 // nodes.
@@ -515,6 +590,7 @@ int main()
     testComputeSurfaceNormalVectorialLoadVectorPointsOutwardQuad4,
     testComputeSurfaceNormalVectorialLoadVectorPointsOutwardHexa8,
     testComputeSurfaceNormalVectorialLoadVectorForAxisymmetricElementsScalesByTwoPiR,
+    testAxisymmetricBoundaryElementIntegratesOverTheRing,
     testQuad8AndHexa20BoundariesIntegrateToFaceLengthAndArea,
     testComputeDScalarLoadVectorThrowsNotImplemented,
     testComputeDVectorialLoadVectorThrowsNotImplemented,

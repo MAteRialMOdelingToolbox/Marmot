@@ -1,8 +1,10 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
+#include "Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotWaveSpeedContract.h"
@@ -2741,6 +2743,94 @@ void testFieldDependentGradientCoefficientQuad4PlaneStrain()
                                         "Quad4 variable gradient coefficient" );
 }
 
+/* Plane stress with a material whose out-of-plane stress depends on the non-local field and whose local driving
+ * variable depends on the out-of-plane strain (Rankine gradient softening plasticity, plastic and not at the zero
+ * floor of the yield stress): the coupling blocks kUK, kKU and kKK need the condensation of the out-of-plane strain.
+ */
+void testPlaneStressCouplingTangentsMatchNumericalDifferentiation()
+{
+  using ElemType                 = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  using GradientEnhancedMaterial = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+
+  // E, nu, fy0, HLin, deltaYieldStress, delta, nonlocal length, m, density, nonlocal viscosity
+  const std::vector< double >                    props = { 30000., 0.2, 3., -2000., 0., 0., 2., 2., 7.85e-9, 1e-3 };
+  const Marmot::Discretizations::MaterialSection section( "RANKINEGRADIENTSOFTENINGPLASTICITY",
+                                                          props.data(),
+                                                          static_cast< int >( props.size() ) );
+
+  // the terms the condensation acts on do not vanish in a plastic plane stress state
+  const std::unique_ptr< GradientEnhancedMaterial > material(
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( section.materialName,
+                                                                                       section.materialProperties,
+                                                                                       section.nMaterialProperties,
+                                                                                       1 ) );
+  std::vector< double >                     materialStateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+  GradientEnhancedMaterial::response        res{ Marmot::Math::Vector6d::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          materialStateVars.data(),
+                                          0.,
+                                          0. };
+  GradientEnhancedMaterial::tangents        tan;
+  const GradientEnhancedMaterial::increment inc{ ( Marmot::Math::Vector6d() << 3e-4, 1e-4, 0., 1e-4, 0., 0. )
+                                                   .finished(),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 0.,
+                                                 1. };
+  material->computePlaneStress( res, tan, inc );
+  throwExceptionOnFailure( std::abs( tan.dStressddK( 2, 0 ) ) > 1e-2 * tan.dStressddK.cwiseAbs().maxCoeff() &&
+                             std::abs( tan.dKLocalddStrain( 0, 2 ) ) > 1e-2 * tan.dKLocalddStrain.cwiseAbs().maxCoeff(),
+                           "the plane stress coupling terms vanish, so the test would not see the condensation" );
+
+  ElemType element( 1, Discretizations::Elements::Quadrature::gaussExactToDegree( 2 ), ElemType::PlaneStress );
+  const std::vector< double >                coordinates = distortedElementCoordinates( 2,
+                                                                                        { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 },
+                                                                                        {} );
+  const std::vector< double >                elPropsVec  = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element.assignNodeCoordinates( coordinates.data() );
+  element.assignProperty( elProps );
+  element.assignProperty( section );
+  std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
+  element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element.initializeYourself();
+
+  // a single increment from the virgin state, plastic but short of the zero floor of the yield stress
+  const int       nDof = element.getNDofPerElement();
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 3e-4 * std::sin( 1.1 * ( i + 1 ) );
+
+  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+  element.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( element.getStateView( "acYield", 0 ).stateLocation[0] == 1.,
+                           "no plastic flow in the plane stress coupling test" );
+
+  // central differences of the residual, each evaluation from the virgin state
+  Eigen::MatrixXd KNumerical( nDof, nDof );
+  const double    h = 1e-9;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd PPlusMinus[2];
+    for ( int side = 0; side < 2; side++ ) {
+      Eigen::VectorXd q = Q;
+      q[j] += side == 0 ? h : -h;
+      std::fill( stateVars.begin(), stateVars.end(), 0.0 );
+      PPlusMinus[side]     = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+      element.computeKernels( q.data(), q.data(), PPlusMinus[side].data(), Ktmp.data(), 0.0, 1.0 );
+    }
+    KNumerical.col( j ) = ( PPlusMinus[0] - PPlusMinus[1] ) / ( 2. * h );
+  }
+
+  const double relError = ( K - KNumerical ).cwiseAbs().maxCoeff() / K.cwiseAbs().maxCoeff();
+  throwExceptionOnFailure( relError < 1e-6,
+                           Marmot::Utilities::MakeString()
+                             << "plane stress stiffness does not match central differences, relative error "
+                             << relError );
+}
+
 void testCenterAndCharacteristicLengthOfLinearSimplices()
 {
   // the center is the centroid, not node 0 at the origin of the unit simplex, and the characteristic element length is
@@ -2767,6 +2857,389 @@ void testCenterAndCharacteristicLengthOfLinearSimplices()
   throwExceptionOnFailure( std::abs( tetCenter[0] - 2.5 / 4 ) < 1e-14 && std::abs( tetCenter[1] - 1.5 / 4 ) < 1e-14 &&
                              std::abs( tetCenter[2] - 3. / 4 ) < 1e-14,
                            "The center of a tetrahedron must be its centroid." );
+}
+
+namespace {
+
+  /* A damaging elastic material with the energy tangent capability: psi = (1 - omega(K)) psi0(eps) with
+   * omega = 1 - exp(-alpha K^2), the local driving variable tr(eps), and the dissipation increment
+   * psi0 (omega(K) - omega(K - dK)). Smooth in the strain and the non-local field, so central differences of the
+   * energies check the energy tangents everywhere.
+   */
+  class EnergyTangentDamageMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >,
+                                      public Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider< 1 > {
+  public:
+    using Base = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+
+    /**
+     * @brief Construct from E, nu, the density, the non-local viscosity, c and alpha.
+     * @param materialProperties The six properties, in that order.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    EnergyTangentDamageMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : Base( materialProperties, nMaterialProperties, materialNumber )
+    {
+      stateLayout.add( "strain", 6 );
+      stateLayout.finalize();
+    }
+
+    /**
+     * @brief The stress update.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     */
+    void computeStress( Base::response& res, Base::tangents& tan, const Base::increment& inc ) const override
+    {
+      update( res, tan, inc, nullptr );
+    }
+
+    /**
+     * @brief The stress update with the energy tangents.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     * @param[out] energyTan The energy tangents.
+     */
+    void computeStressWithEnergyTangents( Base::response&        res,
+                                          Base::tangents&        tan,
+                                          const Base::increment& inc,
+                                          energyTangents&        energyTan ) const override
+    {
+      update( res, tan, inc, &energyTan );
+    }
+
+    /**
+     * @brief The density.
+     * @param stateVars Unused.
+     * @return The third property.
+     */
+    double getDensity( const double* stateVars ) const override { return this->materialProperties[2]; }
+
+    /**
+     * @brief The non-local viscosity.
+     * @param stateVars Unused.
+     * @return The fourth property.
+     */
+    std::vector< double > getNonlocalViscosity( const double* stateVars ) const override
+    {
+      return { this->materialProperties[3] };
+    }
+
+  private:
+    void update( Base::response& res, Base::tangents& tan, const Base::increment& inc, energyTangents* energyTan ) const
+    {
+      using Marmot::Math::Vector6d;
+      const double alpha  = this->materialProperties[5];
+      auto         strain = stateLayout.getAs< Eigen::Map< Vector6d > >( res.stateVars, "strain" );
+      strain += inc.dStrain;
+
+      const auto     C        = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                 this->materialProperties[1] );
+      const double   K        = inc.K( 0 );
+      const double   KOld     = K - inc.dK( 0 );
+      const double   omega    = 1. - std::exp( -alpha * K * K );
+      const double   omegaOld = 1. - std::exp( -alpha * KOld * KOld );
+      const double   dOmegadK = 2. * alpha * K * std::exp( -alpha * K * K );
+      const Vector6d Ceps     = C * strain;
+      const double   psi0     = 0.5 * strain.dot( Ceps );
+      const Vector6d trace    = ( Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
+
+      res.stress               = ( 1. - omega ) * Ceps;
+      res.KLocal( 0 )          = trace.dot( strain );
+      res.c( 0 )               = this->materialProperties[4];
+      res.elasticEnergyDensity = ( 1. - omega ) * psi0;
+      res.dissipation += psi0 * ( omega - omegaOld );
+
+      tan.dStressddStrain    = ( 1. - omega ) * C;
+      tan.dStressddK         = -dOmegadK * Ceps;
+      tan.dKLocalddStrain    = trace.transpose();
+      tan.dKLocalddK( 0, 0 ) = 0.;
+      tan.dcddK( 0, 0 )      = 0.;
+
+      if ( energyTan ) {
+        energyTan->dElasticEnergyDensity_dStrain = ( 1. - omega ) * Ceps;
+        energyTan->dElasticEnergyDensity_dK( 0 ) = -dOmegadK * psi0;
+        energyTan->dDissipation_dStrain          = ( omega - omegaOld ) * Ceps;
+        energyTan->dDissipation_dK( 0 )          = dOmegadK * psi0;
+      }
+    }
+  };
+
+  [[maybe_unused]] const bool energyTangentDamageMaterialRegistered = Marmot::Registry::
+    MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< EnergyTangentDamageMaterial >(
+      "ENERGYTANGENTDAMAGEMATERIAL" );
+
+  // E, nu, density, non-local viscosity, c, alpha
+  const std::vector< double > energyTangentDamageProperties = { 20000.0, 0.2, 1.0, 1.0, 1.0, 2.0e4 };
+
+  // E, nu, fy0, HLin, deltaYieldStress, delta, nonlocal length, m, density, nonlocal viscosity
+  const std::vector< double > rankineGradientSofteningProperties =
+    { 30000., 0.2, 3., -2000., 0., 0., 2., 2., 7.85e-9, 1e-3 };
+
+} // namespace
+
+/* Energy gradients of computeKernels() against central differences of the summed quadrature point energies, for a
+ * second increment dQ2 = a2 cos(...) + r dQ1 from the state after a first increment dQ1 = a1 sin(...).
+ */
+template < int nDim, int nNodes >
+void checkEnergyGradients(
+  const std::vector< double >&                                                                      nodeCoordsVec,
+  typename GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNodes >::SectionType secType,
+  const Marmot::Discretizations::MaterialSection&                                                   materialSection,
+  double                                                                                            a1,
+  double                                                                                            a2,
+  double                                                                                            r,
+  const std::string&                                                                                label )
+{
+  using ElemType     = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNodes >;
+  const auto intType = Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element = std::make_unique< ElemType >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+  element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element->initializeYourself();
+
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd P( nDof ), dQ1( nDof ), dQ2( nDof ), dPsi_dQ( nDof ), dD_dQ( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  for ( int i = 0; i < nDof; i++ ) {
+    dQ1[i] = a1 * std::sin( 1.5 * ( i + 1 ) );
+    dQ2[i] = a2 * std::cos( 0.7 * ( i + 1 ) ) + r * dQ1[i];
+  }
+
+  // first increment, then evaluate the second one always from that state
+  P.setZero();
+  K.setZero();
+  element->computeKernels( dQ1.data(), dQ1.data(), P.data(), K.data(), 0.0, 1.0 );
+  const std::vector< double > stateVarsOld = stateVars;
+
+  auto evaluate = [&]( const Eigen::VectorXd& dQ ) -> std::pair< double, double > {
+    std::copy( stateVarsOld.begin(), stateVarsOld.end(), stateVars.begin() );
+    const Eigen::VectorXd Q = dQ1 + dQ;
+    P.setZero();
+    K.setZero();
+    element->computeKernels( Q.data(), dQ.data(), P.data(), K.data(), 0.0, 1.0 );
+    double psi = 0.0, dissipation = 0.0;
+    for ( const auto& qp : element->qps ) {
+      psi += qp.managedStateVars->elasticStrainEnergy;
+      dissipation += qp.managedStateVars->dissipation;
+    }
+    return { psi, dissipation };
+  };
+
+  // the outputs leave the residual and the stiffness unchanged
+  evaluate( dQ2 );
+  const Eigen::VectorXd PPlain = P;
+  const Eigen::MatrixXd KPlain = K;
+
+  element->assignEnergyGradientOutput( dPsi_dQ.data(), dD_dQ.data() );
+  const auto            reference        = evaluate( dQ2 );
+  const Eigen::VectorXd dPsi_dQReference = dPsi_dQ, dD_dQReference = dD_dQ;
+  throwExceptionOnFailure( std::abs( reference.second ) > 0.0, label + ": no dissipation in the energy gradient test" );
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( P ), Eigen::MatrixXd( PPlain ), 1e-12 ) &&
+                             checkIfEqual( K, KPlain, 1e-12 ),
+                           label + ": the energy gradient outputs change the residual or the stiffness." );
+
+  Eigen::VectorXd dPsiNumerical( nDof ), dDNumerical( nDof );
+  const double    h = 1e-8;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd perturbation = Eigen::VectorXd::Zero( nDof );
+    perturbation[j]              = h;
+    const auto plus              = evaluate( dQ2 + perturbation );
+    const auto minus             = evaluate( dQ2 - perturbation );
+    dPsiNumerical[j]             = ( plus.first - minus.first ) / ( 2. * h );
+    dDNumerical[j]               = ( plus.second - minus.second ) / ( 2. * h );
+  }
+
+  const double scale = std::max( dPsi_dQReference.cwiseAbs().maxCoeff(), dD_dQReference.cwiseAbs().maxCoeff() );
+  throwExceptionOnFailure( ( dPsi_dQReference - dPsiNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           label + ": elastic energy gradient does not match central differences." );
+  throwExceptionOnFailure( ( dD_dQReference - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           label + ": dissipation gradient does not match central differences." );
+  throwExceptionOnFailure( dD_dQReference.tail( nNodes ).cwiseAbs().maxCoeff() > 1e-3 * scale,
+                           label + ": the dissipation gradient wrt the non-local field is not exercised." );
+}
+
+void testEnergyGradients()
+{
+  using Quad4                                         = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  using Hexa8                                         = GeneralGradientEnhancedDisplacementFiniteElement< 3, 8, 1, 8 >;
+  const std::vector< double >                    quad = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  const std::vector< double >                    hexa = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  const Marmot::Discretizations::MaterialSection damageSection( "ENERGYTANGENTDAMAGEMATERIAL",
+                                                                energyTangentDamageProperties.data(),
+                                                                static_cast< int >(
+                                                                  energyTangentDamageProperties.size() ) );
+  const Marmot::Discretizations::MaterialSection rankineSection( "RANKINEGRADIENTSOFTENINGPLASTICITY",
+                                                                 rankineGradientSofteningProperties.data(),
+                                                                 static_cast< int >(
+                                                                   rankineGradientSofteningProperties.size() ) );
+
+  checkEnergyGradients< 2, 4 >( distortedElementCoordinates( 2, quad, {} ),
+                                Quad4::SectionType::PlaneStrain,
+                                damageSection,
+                                2e-3,
+                                1e-3,
+                                0.,
+                                "Quad4 PlaneStrain" );
+  checkEnergyGradients< 2, 4 >( distortedElementCoordinates( 2, quad, {} ),
+                                Quad4::SectionType::PlaneStress,
+                                damageSection,
+                                2e-3,
+                                1e-3,
+                                0.,
+                                "Quad4 PlaneStress" );
+  checkEnergyGradients< 3, 8 >( distortedElementCoordinates( 3, hexa, {} ),
+                                Hexa8::SectionType::Solid,
+                                damageSection,
+                                2e-3,
+                                1e-3,
+                                0.,
+                                "Hexa8 Solid" );
+
+  // plastic loading in plane stress, where the condensation of the out-of-plane strain enters the energy gradients
+  checkEnergyGradients< 2, 4 >( distortedElementCoordinates( 2, quad, {} ),
+                                Quad4::SectionType::PlaneStress,
+                                rankineSection,
+                                3e-4,
+                                3e-5,
+                                0.5,
+                                "Quad4 PlaneStress Rankine" );
+}
+
+/* The out-of-plane derivatives of the energies, which the element condenses in plane stress, do not vanish for
+ * Rankine gradient softening plasticity in a plastic plane stress state: the plane stress energy gradient test with
+ * that material would fail without the condensation.
+ */
+void testPlaneStressEnergyTangentsHaveOutOfPlaneComponents()
+{
+  using GradientEnhancedMaterial = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+  using Provider                 = Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider< 1 >;
+
+  const std::unique_ptr< GradientEnhancedMaterial > material(
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory<
+      1 >::createMaterial( "RANKINEGRADIENTSOFTENINGPLASTICITY",
+                           rankineGradientSofteningProperties.data(),
+                           static_cast< int >( rankineGradientSofteningProperties.size() ),
+                           1 ) );
+  const auto* provider = dynamic_cast< const Provider* >( material.get() );
+  throwExceptionOnFailure( provider != nullptr, "RankineGradientSofteningPlasticity provides no energy tangents" );
+
+  std::vector< double >                     stateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+  GradientEnhancedMaterial::response        res{ Marmot::Math::Vector6d::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          Eigen::Vector< double, 1 >::Zero(),
+                                          stateVars.data(),
+                                          0.,
+                                          0. };
+  GradientEnhancedMaterial::tangents        tan;
+  Provider::energyTangents                  energyTan;
+  const GradientEnhancedMaterial::increment inc{ ( Marmot::Math::Vector6d() << 3e-4, 1e-4, 0., 1e-4, 0., 0. )
+                                                   .finished(),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 Eigen::Vector< double, 1 >::Constant( 1e-4 ),
+                                                 0.,
+                                                 1. };
+  provider->computePlaneStressWithEnergyTangents( res, tan, inc, energyTan );
+
+  throwExceptionOnFailure( res.dissipation > 0. &&
+                             std::abs( energyTan.dDissipation_dStrain( 2 ) ) >
+                               1e-2 * energyTan.dDissipation_dStrain.cwiseAbs().maxCoeff() &&
+                             std::abs( energyTan.dElasticEnergyDensity_dStrain( 2 ) ) >
+                               1e-2 * energyTan.dElasticEnergyDensity_dStrain.cwiseAbs().maxCoeff(),
+                           "the out-of-plane energy tangents vanish, so the plane stress energy gradient test would "
+                           "not see their condensation" );
+}
+
+// assignEnergyGradientOutput() rejects a material without the capability
+void testEnergyGradientOutputIsRejectedWithoutSupport()
+{
+  using ElemType     = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  const auto intType = Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element = std::make_unique< ElemType >( 1, intType, ElemType::SectionType::PlaneStrain );
+
+  const std::vector< double >                nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  const std::vector< double >                elPropsVec    = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  element->assignProperty( elProps );
+  Eigen::VectorXd dPsi_dQ( element->getNDofPerElement() ), dD_dQ( element->getNDofPerElement() );
+
+  auto rejects = [&]( double* dPsi_dQ_, double* dD_dQ_ ) {
+    try {
+      element->assignEnergyGradientOutput( dPsi_dQ_, dD_dQ_ );
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  throwExceptionOnFailure( rejects( dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject an element without a material." );
+
+  Marmot::Discretizations::MaterialSection at2Section( "AT2PHASEFIELD",
+                                                       at2Properties.data(),
+                                                       static_cast< int >( at2Properties.size() ) );
+  element->assignProperty( at2Section );
+  throwExceptionOnFailure( rejects( dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject a material without energy tangents." );
+
+  Marmot::Discretizations::MaterialSection section( "ENERGYTANGENTDAMAGEMATERIAL",
+                                                    energyTangentDamageProperties.data(),
+                                                    static_cast< int >( energyTangentDamageProperties.size() ) );
+  element->assignProperty( section );
+  throwExceptionOnFailure( rejects( nullptr, dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject a single output." );
+  throwExceptionOnFailure( !rejects( dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must accept a material with energy tangents." );
+
+  // a material without the capability, assigned while the outputs are active
+  bool threw = false;
+  try {
+    element->assignProperty( at2Section );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "assignProperty() must reject a material without energy tangents while the energy "
+                           "gradient outputs are assigned." );
+
+  // the element keeps its material and its outputs, and still writes the energy gradients
+  std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+  element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element->initializeYourself();
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd Q( nDof ), P = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 1e-3 * std::sin( 1.3 * ( i + 1 ) );
+  dPsi_dQ.setConstant( std::numeric_limits< double >::quiet_NaN() );
+  element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( dPsi_dQ.allFinite() && dPsi_dQ.norm() > 0.,
+                           "after a rejected material, the element no longer writes its energy gradients" );
+
+  // the density and the non-local viscosity of the test material
+  const EnergyTangentDamageMaterial material( energyTangentDamageProperties.data(),
+                                              static_cast< int >( energyTangentDamageProperties.size() ),
+                                              1 );
+  throwExceptionOnFailure( material.getDensity( nullptr ) == energyTangentDamageProperties[2] &&
+                             material.getNonlocalViscosity( nullptr ) ==
+                               std::vector< double >{ energyTangentDamageProperties[3] },
+                           "density or non-local viscosity of the energy tangent test material wrong" );
+  throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( static_cast< Element* >( element.get() ) ) !=
+                             nullptr,
+                           "GeneralGradientEnhancedDisplacementFiniteElement is not an EnergyGradientProvider." );
 }
 
 int main()
@@ -2813,6 +3286,7 @@ int main()
     testFieldDependentGradientCoefficientHexa8,
     testFieldDependentGradientCoefficientHexa20Hexa8,
     testFieldDependentGradientCoefficientQuad4PlaneStrain,
+    testPlaneStressCouplingTangentsMatchNumericalDifferentiation,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
@@ -2823,6 +3297,9 @@ int main()
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
     testGetStateViewVariants,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
+    testEnergyGradients,
+    testPlaneStressEnergyTangentsHaveOutOfPlaneComponents,
+    testEnergyGradientOutputIsRejectedWithoutSupport,
   };
 
   executeTestsAndCollectExceptions( tests );

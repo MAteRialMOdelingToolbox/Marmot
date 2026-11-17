@@ -2,6 +2,7 @@
 #include "Marmot/LinearElastic.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
@@ -9,6 +10,8 @@
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
+#include <limits>
+#include <map>
 #include <string>
 #include <tuple>
 
@@ -2021,6 +2024,210 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
                            "computeInternalEnergy() does not match the sum over quadrature points." );
 }
 
+// energy gradients of computeKernels() against central differences of the summed quadrature point energies, from a
+// plastic state
+template < int nDim, int nNodes >
+void checkEnergyGradients( typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
+                           const std::vector< double >&                                    nodeCoordsVec )
+{
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  // von Mises with exponential softening
+  const std::vector< double >                matProps = { 210000., 0.3, 200., 0., -150., 500. };
+  Marmot::Discretizations::MaterialSection   materialSection( "VONMISES",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVars = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVars, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVars );
+  element->initializeYourself();
+
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd P( nDof ), dQ1( nDof ), dQ2( nDof ), dPsi_dQ( nDof ), dD_dQ( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  for ( int i = 0; i < nDof; i++ ) {
+    dQ1[i] = 4e-3 * std::sin( 1.5 * ( i + 1 ) );
+    dQ2[i] = 5e-4 * std::cos( 0.7 * ( i + 1 ) );
+  }
+
+  // first increment into plasticity without energy gradients, then evaluate the second one always from that state
+  P.setZero();
+  K.setZero();
+  element->computeKernels( dQ1.data(), dQ1.data(), P.data(), K.data(), 0.0, 1.0 );
+  const std::vector< double > stateVarsOld = stateVars;
+
+  auto evaluate = [&]( const Eigen::VectorXd& dQ ) -> std::pair< double, double > {
+    std::copy( stateVarsOld.begin(), stateVarsOld.end(), stateVars.begin() );
+    const Eigen::VectorXd Q = dQ1 + dQ;
+    P.setZero();
+    K.setZero();
+    element->computeKernels( Q.data(), dQ.data(), P.data(), K.data(), 0.0, 1.0 );
+    double psi = 0.0, dissipation = 0.0;
+    for ( const auto& qp : element->qps ) {
+      psi += qp.managedStateVars->elasticStrainEnergy;
+      dissipation += qp.managedStateVars->dissipation;
+    }
+    return { psi, dissipation };
+  };
+
+  // the outputs leave the residual and the stiffness unchanged
+  evaluate( dQ2 );
+  const Eigen::VectorXd PPlain = P;
+  const Eigen::MatrixXd KPlain = K;
+
+  element->assignEnergyGradientOutput( dPsi_dQ.data(), dD_dQ.data() );
+  const auto            reference        = evaluate( dQ2 );
+  const Eigen::VectorXd dPsi_dQReference = dPsi_dQ, dD_dQReference = dD_dQ;
+  throwExceptionOnFailure( reference.second > 0.0, "no dissipation in the energy gradient test" );
+  throwExceptionOnFailure( P == PPlain && K == KPlain,
+                           "computeKernels(): the energy gradient outputs change the residual or the stiffness." );
+
+  Eigen::VectorXd dPsiNumerical( nDof ), dDNumerical( nDof );
+  const double    h = 1e-9;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd perturbation = Eigen::VectorXd::Zero( nDof );
+    perturbation[j]              = h;
+    const auto plus              = evaluate( dQ2 + perturbation );
+    const auto minus             = evaluate( dQ2 - perturbation );
+    dPsiNumerical[j]             = ( plus.first - minus.first ) / ( 2. * h );
+    dDNumerical[j]               = ( plus.second - minus.second ) / ( 2. * h );
+  }
+
+  const double scale = std::max( dPsi_dQReference.cwiseAbs().maxCoeff(), dD_dQReference.cwiseAbs().maxCoeff() );
+  throwExceptionOnFailure( ( dPsi_dQReference - dPsiNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeKernels(): elastic energy gradient does not match central differences." );
+  throwExceptionOnFailure( ( dD_dQReference - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeKernels(): dissipation gradient does not match central differences." );
+
+  // nullptr stops the output
+  element->assignEnergyGradientOutput( nullptr, nullptr );
+  dPsi_dQ.setConstant( 7.0 );
+  dD_dQ.setConstant( 7.0 );
+  evaluate( dQ2 );
+  throwExceptionOnFailure( ( dPsi_dQ.array() == 7.0 ).all() && ( dD_dQ.array() == 7.0 ).all(),
+                           "computeKernels() writes energy gradients after the outputs were reset." );
+}
+
+void testEnergyGradients()
+{
+  checkEnergyGradients< 3, 8 >( DisplacementFiniteElement< 3, 8 >::SectionType::Solid,
+                                { 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1 } );
+  checkEnergyGradients< 2, 4 >( DisplacementFiniteElement< 2, 4 >::SectionType::PlaneStrain,
+                                { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } );
+  checkEnergyGradients< 2, 4 >( DisplacementFiniteElement< 2, 4 >::SectionType::Axisymmetric,
+                                { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0 } );
+  checkEnergyGradients< 2, 8 >( DisplacementFiniteElement< 2, 8 >::SectionType::Axisymmetric,
+                                { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.5, 0.5, 1.0, 0.0, 0.5 } );
+}
+
+// true if assignEnergyGradientOutput() throws std::invalid_argument
+bool rejectsEnergyGradientOutput( EnergyGradientProvider& element, double* dPsi_dQ, double* dD_dQ )
+{
+  bool rejected = false;
+  try {
+    element.assignEnergyGradientOutput( dPsi_dQ, dD_dQ );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  return rejected;
+}
+
+// coordinates and thickness of a CPE4 or CPS4 element, and optionally its material section
+void setUpQuad4( DisplacementFiniteElement< 2, 4 >& element, const Marmot::Discretizations::MaterialSection* section )
+{
+  static const std::vector< double >               nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  static const std::vector< double >               elPropsVec    = { 1.0 };
+  const Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(),
+                                                            static_cast< int >( elPropsVec.size() ) );
+
+  element.assignNodeCoordinates( nodeCoordsVec.data() );
+  element.assignProperty( elProps );
+  if ( section )
+    element.assignProperty( *section );
+}
+
+// assignEnergyGradientOutput() rejects unsupported setups
+void testEnergyGradientOutputIsRejectedWithoutSupport()
+{
+  using ElemType = DisplacementFiniteElement< 2, 4 >;
+
+  const std::vector< double >                    linearElasticProps = { 10000.0, 0.2, 1.0 };
+  const std::vector< double >                    vonMisesProps      = { 210000., 0.3, 200., 0., -150., 500. };
+  const Marmot::Discretizations::MaterialSection linearElastic( "LINEARELASTIC",
+                                                                linearElasticProps.data(),
+                                                                static_cast< int >( linearElasticProps.size() ) );
+  const Marmot::Discretizations::MaterialSection vonMises( "VONMISES",
+                                                           vonMisesProps.data(),
+                                                           static_cast< int >( vonMisesProps.size() ) );
+
+  const auto      rule = Quadrature::gaussExactToDegree( 2 );
+  Eigen::VectorXd dPsi_dQ( 8 ), dD_dQ( 8 );
+
+  // no material yet
+  ElemType withoutMaterial( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( withoutMaterial, nullptr );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( withoutMaterial, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject an element without a material." );
+
+  // material without the capability
+  ElemType linearElasticElement( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( linearElasticElement, &linearElastic );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( linearElasticElement, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject a material without energy tangents." );
+
+  // unsupported section
+  ElemType planeStress( 1, rule, ElemType::SectionType::PlaneStress );
+  setUpQuad4( planeStress, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStress, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must reject the plane stress section." );
+
+  // only one of the outputs
+  ElemType planeStrain( 1, rule, ElemType::SectionType::PlaneStrain );
+  setUpQuad4( planeStrain, &vonMises );
+  throwExceptionOnFailure( rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), nullptr ),
+                           "assignEnergyGradientOutput() must reject a single output." );
+
+  // a material without the capability, assigned while the outputs are active
+  throwExceptionOnFailure( !rejectsEnergyGradientOutput( planeStrain, dPsi_dQ.data(), dD_dQ.data() ),
+                           "assignEnergyGradientOutput() must accept von Mises in plane strain." );
+  bool threw = false;
+  try {
+    planeStrain.assignProperty( linearElastic );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "assignProperty() must reject a material without energy tangents while the energy "
+                           "gradient outputs are assigned." );
+
+  // the element keeps von Mises and its outputs, and still writes the energy gradients
+  std::vector< double > stateVars( planeStrain.getNumberOfRequiredStateVars(), 0.0 );
+  planeStrain.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  planeStrain.initializeYourself();
+  Eigen::VectorXd Q( 8 ), P = Eigen::VectorXd::Zero( 8 );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( 8, 8 );
+  for ( int i = 0; i < 8; i++ )
+    Q[i] = 1e-4 * std::sin( 1.3 * ( i + 1 ) );
+  dPsi_dQ.setConstant( std::numeric_limits< double >::quiet_NaN() );
+  planeStrain.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( dPsi_dQ.allFinite() && dPsi_dQ.norm() > 0.,
+                           "after a rejected material, the element no longer writes its energy gradients" );
+
+  // the element is found through the capability interface
+  Element& asElement = planeStress;
+  throwExceptionOnFailure( dynamic_cast< EnergyGradientProvider* >( &asElement ) != nullptr,
+                           "DisplacementFiniteElement is not an EnergyGradientProvider." );
+}
+
 void testGetStateViewVariants()
 {
   constexpr int nDim    = 2;
@@ -2457,6 +2664,682 @@ void testBulkViscosityRejectsNegativeCoefficients()
   }
 }
 
+namespace {
+  // the Gauss rules of the registered axisymmetric elements
+  constexpr Quadrature::QuadratureRule ruleOfCAX4  = Quadrature::gaussExactToDegree( 2 );
+  constexpr Quadrature::QuadratureRule ruleOfCAX8R = Quadrature::gaussExactToDegree( 3 );
+  constexpr Quadrature::QuadratureRule ruleOfCAX8  = Quadrature::gaussExactToDegree( 4 );
+
+  constexpr double axisymmetricYoungsModulus = 10000.0;
+  constexpr double axisymmetricPoissonsRatio = 0.2;
+  constexpr double axisymmetricDensity       = 2.5;
+  // E, nu, density; at namespace scope, as the material keeps a pointer to them
+  const std::vector< double > axisymmetricMaterialProperties = { axisymmetricYoungsModulus,
+                                                                 axisymmetricPoissonsRatio,
+                                                                 axisymmetricDensity };
+  // von Mises with exponential softening
+  const std::vector< double > axisymmetricVonMisesProperties = { 210000., 0.3, 200., 0., -150., 500. };
+
+  // nodes of a quad8 on r in [r0, r1], z in [z0, z1], the first four those of the quad4
+  std::vector< double > ringQuadCoordinates( double r0, double r1, double z0, double z1 )
+  {
+    const double rm = 0.5 * ( r0 + r1 ), zm = 0.5 * ( z0 + z1 );
+    return { r0, z0, r1, z0, r1, z1, r0, z1, rm, z0, r1, zm, rm, z1, r0, zm };
+  }
+
+  // rings away from and at the axis; the elements keep a view on them
+  const std::vector< double > ringAwayFromTheAxis = ringQuadCoordinates( 1.0, 2.0, 0.0, 1.0 );
+  const std::vector< double > ringAtTheAxis       = ringQuadCoordinates( 0.0, 1.0, 0.0, 1.0 );
+
+  struct RingGeometry {
+    double r0, r1, z0, z1;
+    double crossSection() const { return Marmot::Math::Constants::Pi * ( r1 * r1 - r0 * r0 ); }
+    double volume() const { return crossSection() * ( z1 - z0 ); }
+    // int r^2 dr over [r0, r1]
+    double secondMomentInR() const { return ( r1 * r1 * r1 - r0 * r0 * r0 ) / 3.0; }
+  };
+
+  RingGeometry ringGeometry( const std::vector< double >& coordinates )
+  {
+    return { coordinates[0], coordinates[2], coordinates[1], coordinates[5] };
+  }
+
+  // axisymmetric quad, by default linear elastic on r in [1, 2]
+  template < int nNodes >
+  std::unique_ptr< DisplacementFiniteElement< 2, nNodes > > makeAxisymmetricQuad(
+    std::vector< double >&       stateVars,
+    Quadrature::QuadratureRule   quadratureRule,
+    const std::vector< double >& coordinates        = ringAwayFromTheAxis,
+    const std::string&           materialName       = "LINEARELASTIC",
+    const std::vector< double >& materialProperties = axisymmetricMaterialProperties )
+  {
+    using ElementType = DisplacementFiniteElement< 2, nNodes >;
+
+    auto element = std::make_unique< ElementType >( 1, quadratureRule, ElementType::SectionType::Axisymmetric );
+    element->assignNodeCoordinates( coordinates.data() );
+
+    Marmot::Discretizations::MaterialSection materialSection( materialName,
+                                                              materialProperties.data(),
+                                                              static_cast< int >( materialProperties.size() ) );
+    element->assignProperty( materialSection );
+
+    const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
+    stateVars.assign( nStateVarsTotal, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVarsTotal );
+    element->initializeYourself();
+
+    return element;
+  }
+
+  // sum of the radial and of the axial entries of a nodal vector
+  Eigen::Vector2d sumPerDirection( const Eigen::VectorXd& P )
+  {
+    return Eigen::Vector2d( P( Eigen::seq( 0, Eigen::last, 2 ) ).sum(), P( Eigen::seq( 1, Eigen::last, 2 ) ).sum() );
+  }
+
+  // sum_i r_i P_{z,i}, which is exact for any field interpolated isoparametrically, since sum_i r_i N_i = r
+  double axialFirstMomentInR( const Eigen::VectorXd& P, const std::vector< double >& coordinates )
+  {
+    double moment = 0.0;
+    for ( int i = 0; i < P.size() / 2; i++ )
+      moment += coordinates[2 * i] * P[2 * i + 1];
+    return moment;
+  }
+
+  // the linear elastic stress of a strain in axisymmetric Voigt notation (rr, zz, tt, rz)
+  Marmot::Math::Vector6d linearElasticAxisymmetricStress( double eRR, double eZZ, double eTT, double gRZ )
+  {
+    const double E = axisymmetricYoungsModulus, nu = axisymmetricPoissonsRatio;
+    const double lambda = E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
+    const double mu     = E / ( 2 * ( 1 + nu ) );
+    const double trace  = eRR + eZZ + eTT;
+
+    Marmot::Math::Vector6d stress;
+    stress << lambda * trace + 2 * mu * eRR, lambda * trace + 2 * mu * eZZ, lambda * trace + 2 * mu * eTT, mu * gRZ,
+      0.0, 0.0;
+    return stress;
+  }
+
+  // a plastic von Mises state: the tangent is the consistent tangent of the return mapping, so a wrong block of the
+  // 3D tangent or a mismatch between the residual and the stiffness shows
+  template < int nNodes >
+  void checkAxisymmetricTangent( Quadrature::QuadratureRule quadratureRule, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars,
+                                                   quadratureRule,
+                                                   ringAwayFromTheAxis,
+                                                   "VONMISES",
+                                                   axisymmetricVonMisesProperties );
+
+    const int  nDof       = element->getNDofPerElement();
+    const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+    Eigen::VectorXd Q0( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      Q0[i] = 0.01 * std::sin( 1.3 * ( i + 1 ) );
+
+    resetState();
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    double dissipation = 0.0;
+    for ( const auto& qp : element->qps )
+      dissipation += qp.managedStateVars->dissipation;
+    throwExceptionOnFailure( dissipation > 0.0, name + ": the tangent test must start from a plastic state." );
+
+    NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+      resetState();
+      Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+      element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+      return Ptmp;
+    };
+
+    const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+
+    throwExceptionOnFailure( ( K - numK ).cwiseAbs().maxCoeff() < 1e-6 * K.cwiseAbs().maxCoeff(),
+                             name + ": stiffness does not match the numerical tangent." );
+  }
+
+  // u_r = a r, u_z = b z: rr = tt = a, zz = b, rz = 0 everywhere, also at the axis
+  template < int nNodes >
+  void checkAxisymmetricUniformStrainField( Quadrature::QuadratureRule   quadratureRule,
+                                            const std::vector< double >& coordinates,
+                                            const std::string&           name )
+  {
+    const double a = 1e-3, b = -2e-3;
+    const auto   ring = ringGeometry( coordinates );
+
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule, coordinates );
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd Q( nDof );
+    for ( int i = 0; i < nNodes; i++ ) {
+      Q[2 * i]     = a * coordinates[2 * i];
+      Q[2 * i + 1] = b * coordinates[2 * i + 1];
+    }
+
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    const Marmot::Math::Vector6d stress = linearElasticAxisymmetricStress( a, b, a, 0.0 );
+
+    double volume = 0.0;
+    for ( int i = 0; i < element->getNumberOfQuadraturePoints(); i++ ) {
+      const Eigen::Map< const Marmot::Math::Vector6d > stressAtQp( element->getStateView( "stress", i ).stateLocation );
+      throwExceptionOnFailure( ( stressAtQp - stress ).norm() < 1e-9, name + ": uniform stress field not reproduced." );
+      volume += element->qps[i].J0xW;
+    }
+
+    throwExceptionOnFailure( checkIfEqual( volume, ring.volume(), 1e-10 ),
+                             name + ": quadrature weights do not integrate the ring volume." );
+
+    // energy of the ring, 1/2 sigma : eps V
+    double internalEnergy = 0.0;
+    element->computeInternalEnergy( internalEnergy );
+    const double energyDensity = 0.5 * ( stress( 0 ) * a + stress( 1 ) * b + stress( 2 ) * a );
+    throwExceptionOnFailure( checkIfEqual( internalEnergy, energyDensity * ring.volume(), 1e-12 ),
+                             name + ": internal energy is not 1/2 sigma : eps times the ring volume." );
+
+    // axial resultant of the nodes on the top face
+    double topForce = 0.0;
+    for ( int i = 0; i < nNodes; i++ )
+      if ( coordinates[2 * i + 1] == ring.z1 )
+        topForce += P[2 * i + 1];
+    throwExceptionOnFailure( checkIfEqual( topForce, stress( 1 ) * ring.crossSection(), 1e-9 ),
+                             name + ": axial resultant does not match stress times ring area." );
+  }
+
+  // u_r = c z: rr = zz = 0, tt = c z / r, rz = c; checks the hoop and the shear rows of the operator
+  template < int nNodes >
+  void checkAxisymmetricShearField( Quadrature::QuadratureRule quadratureRule, const std::string& name )
+  {
+    const double c = 2e-3;
+
+    for ( const auto* coordinates : { &ringAwayFromTheAxis, &ringAtTheAxis } ) {
+      std::vector< double > stateVars;
+      auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule, *coordinates );
+
+      const int       nDof = element->getNDofPerElement();
+      Eigen::VectorXd Q    = Eigen::VectorXd::Zero( nDof );
+      for ( int i = 0; i < nNodes; i++ )
+        Q[2 * i] = c * ( *coordinates )[2 * i + 1];
+
+      Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+      element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+      const auto qpCoordinates = element->getCoordinatesAtQuadraturePoints();
+      for ( int i = 0; i < element->getNumberOfQuadraturePoints(); i++ ) {
+        const double                                     r = qpCoordinates[i][0], z = qpCoordinates[i][1];
+        const Eigen::Map< const Marmot::Math::Vector6d > stressAtQp(
+          element->getStateView( "stress", i ).stateLocation );
+        const Marmot::Math::Vector6d expected = linearElasticAxisymmetricStress( 0.0, 0.0, c * z / r, c );
+        throwExceptionOnFailure( ( stressAtQp - expected ).norm() < 1e-9 * expected.norm(),
+                                 name + ": stress of the field u_r = c z not reproduced." );
+      }
+    }
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricExplicitMatchesImplicit( Quadrature::QuadratureRule quadratureRule, const std::string& name )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule );
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd Q( nDof );
+    for ( int i = 0; i < nDof; i++ )
+      Q[i] = 0.01 * std::cos( 0.7 * ( i + 1 ) );
+
+    Eigen::VectorXd PImplicit = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+
+    std::fill( stateVars.begin(), stateVars.end(), 0.0 );
+    Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( nDof );
+    element->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+
+    throwExceptionOnFailure( ( PImplicit - PExplicit ).norm() < 1e-10,
+                             name + ": explicit residual differs from the implicit one." );
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricDistributedLoad( Quadrature::QuadratureRule quadratureRule, const std::string& name )
+  {
+    const double twoPi = 2.0 * Marmot::Math::Constants::Pi;
+
+    for ( const auto* coordinates : { &ringAwayFromTheAxis, &ringAtTheAxis } ) {
+      std::vector< double > stateVars;
+      auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule, *coordinates );
+      const auto            ring    = ringGeometry( *coordinates );
+
+      const int       nDof      = element->getNDofPerElement();
+      const int       outerFace = 2;
+      const int       topFace   = 3;
+      const double    outerArea = twoPi * ring.r1 * ( ring.z1 - ring.z0 );
+      Eigen::VectorXd QTotal    = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+
+      const auto load =
+        [&]( Marmot::Discretizations::Elements::Element::DistributedLoadTypes type, int face, const double* values ) {
+          Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+          element->computeDistributedLoad( type, P.data(), K.data(), face, values, QTotal.data(), 0.0, 1.0 );
+          return P;
+        };
+
+      // pressure acts against the outward normal, -z on the top and -r on the outer face
+      const double          pressure = 2.5;
+      const Eigen::VectorXd onTop    = load( Marmot::Discretizations::Elements::Element::Pressure, topFace, &pressure );
+      throwExceptionOnFailure( checkIfEqual( sumPerDirection( onTop )( 0 ), 0.0, 1e-12 ) &&
+                                 checkIfEqual( sumPerDirection( onTop )( 1 ), -pressure * ring.crossSection(), 1e-12 ),
+                               name + ": pressure resultant on the top face." );
+      throwExceptionOnFailure( checkIfEqual( axialFirstMomentInR( onTop, *coordinates ),
+                                             -pressure * twoPi * ring.secondMomentInR(),
+                                             1e-12 ),
+                               name + ": first moment of the pressure on the top face is not -2 pi p int r^2 dr." );
+
+      const Eigen::VectorXd onOuter = load( Marmot::Discretizations::Elements::Element::Pressure,
+                                            outerFace,
+                                            &pressure );
+      throwExceptionOnFailure( checkIfEqual( sumPerDirection( onOuter )( 0 ), -pressure * outerArea, 1e-10 ) &&
+                                 checkIfEqual( sumPerDirection( onOuter )( 1 ), 0.0, 1e-10 ),
+                               name + ": pressure resultant on the outer face." );
+
+      const Eigen::Vector2d traction( 0.7, -1.3 );
+      const Eigen::VectorXd tractionOnTop = load( Marmot::Discretizations::Elements::Element::SurfaceTraction,
+                                                  topFace,
+                                                  traction.data() );
+      throwExceptionOnFailure( ( sumPerDirection( tractionOnTop ) - traction * ring.crossSection() ).norm() < 1e-12,
+                               name + ": traction resultant on the top face." );
+      throwExceptionOnFailure( checkIfEqual( axialFirstMomentInR( tractionOnTop, *coordinates ),
+                                             traction( 1 ) * twoPi * ring.secondMomentInR(),
+                                             1e-12 ),
+                               name + ": first moment of the traction on the top face is not 2 pi t_z int r^2 dr." );
+
+      bool threw = false;
+      try {
+        load( Marmot::Discretizations::Elements::Element::SurfaceTorsion, topFace, traction.data() );
+      }
+      catch ( const std::invalid_argument& ) {
+        threw = true;
+      }
+      throwExceptionOnFailure( threw, name + ": an unhandled load type must throw." );
+    }
+  }
+
+  template < int nNodes >
+  void checkAxisymmetricMassAndBodyForce( Quadrature::QuadratureRule quadratureRule, const std::string& name )
+  {
+    const double twoPi = 2.0 * Marmot::Math::Constants::Pi;
+
+    for ( const auto* coordinates : { &ringAwayFromTheAxis, &ringAtTheAxis } ) {
+      std::vector< double > stateVars;
+      auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule, *coordinates );
+      const auto            ring    = ringGeometry( *coordinates );
+
+      const int    nDof = element->getNDofPerElement();
+      const double mass = axisymmetricDensity * ring.volume();
+      // int r * 2 pi r dV / (2 pi): the first moment in r of a quantity distributed over the ring
+      const double firstMoment = twoPi * ring.secondMomentInR() * ( ring.z1 - ring.z0 );
+
+      // the shape functions sum to one, so the entries of a direction sum to the mass of the ring
+      Eigen::MatrixXd M = Eigen::MatrixXd::Zero( nDof, nDof );
+      element->computeConsistentInertia( M.data() );
+      const auto   axial          = Eigen::seq( 1, Eigen::last, 2 );
+      const double consistentMass = M( axial, axial ).sum();
+      throwExceptionOnFailure( checkIfEqual( consistentMass, mass, 1e-10 ),
+                               name + ": consistent mass is not the mass of the ring." );
+      throwExceptionOnFailure( checkIfEqual( axialFirstMomentInR( M.rowwise().sum(), *coordinates ),
+                                             axisymmetricDensity * firstMoment,
+                                             1e-10 ),
+                               name + ": first moment of the consistent mass is not rho 2 pi int r^2 dA." );
+      throwExceptionOnFailure( ( M - M.transpose() ).norm() < 1e-10, name + ": consistent mass must be symmetric." );
+
+      Eigen::VectorXd lumped = Eigen::VectorXd::Zero( nDof );
+      element->computeLumpedInertia( lumped.data() );
+      throwExceptionOnFailure( ( sumPerDirection( lumped ) - Eigen::Vector2d::Constant( mass ) ).norm() < 1e-10,
+                               name + ": lumped mass is not the mass of the ring." );
+
+      const Eigen::Vector2d bodyForce( 0.3, -9.81 );
+      Eigen::VectorXd       P      = Eigen::VectorXd::Zero( nDof );
+      Eigen::VectorXd       QTotal = Eigen::VectorXd::Zero( nDof );
+      element->computeBodyForce( P.data(), M.data(), bodyForce.data(), QTotal.data(), 0.0, 1.0 );
+      throwExceptionOnFailure( ( sumPerDirection( P ) - bodyForce * ring.volume() ).norm() < 1e-10,
+                               name + ": body force resultant is not the force on the ring." );
+      throwExceptionOnFailure( checkIfEqual( axialFirstMomentInR( P, *coordinates ),
+                                             bodyForce( 1 ) * firstMoment,
+                                             1e-10 ),
+                               name + ": first moment of the body force is not f_z 2 pi int r^2 dA." );
+    }
+  }
+
+  // errors against the Lame solution: nodal radial displacement relative to its maximum, and radial and hoop stress
+  // at the quadrature points relative to the pressure
+  struct LameErrors {
+    double displacement;
+    double stress;
+  };
+
+  // thick-walled cylinder, r in [a, b], under internal pressure in plane strain (u_z = 0), meshed by one row of
+  // elements
+  template < int nNodes >
+  LameErrors thickWalledCylinderErrors( Quadrature::QuadratureRule quadratureRule, int nElements )
+  {
+    const double a = 1.0, b = 2.0, height = 0.25, p = 10.0;
+    const double E = axisymmetricYoungsModulus, nu = axisymmetricPoissonsRatio;
+    const double A = p * a * a / ( b * b - a * a ), B = p * a * a * b * b / ( b * b - a * a );
+    const auto   uR = [&]( double r ) { return ( 1 + nu ) / E * ( ( 1 - 2 * nu ) * A * r + B / r ); };
+
+    using ElementType = DisplacementFiniteElement< 2, nNodes >;
+    std::vector< std::vector< double > >          coordinates( nElements );
+    std::vector< std::vector< double > >          stateVars( nElements );
+    std::vector< std::unique_ptr< ElementType > > elements;
+    std::vector< std::vector< int > >             globalNodes( nElements );
+    std::map< std::pair< long, long >, int >      nodeIndex;
+    std::vector< double >                         nodeRadius;
+
+    const double dr = ( b - a ) / nElements;
+    for ( int e = 0; e < nElements; e++ ) {
+      coordinates[e] = ringQuadCoordinates( a + e * dr, a + ( e + 1 ) * dr, 0.0, height );
+      elements.push_back( makeAxisymmetricQuad< nNodes >( stateVars[e], quadratureRule, coordinates[e] ) );
+
+      for ( int i = 0; i < nNodes; i++ ) {
+        const auto key = std::make_pair( std::lround( coordinates[e][2 * i] * 1e9 ),
+                                         std::lround( coordinates[e][2 * i + 1] * 1e9 ) );
+        if ( !nodeIndex.contains( key ) ) {
+          nodeIndex[key] = static_cast< int >( nodeRadius.size() );
+          nodeRadius.push_back( coordinates[e][2 * i] );
+        }
+        globalNodes[e].push_back( nodeIndex[key] );
+      }
+    }
+
+    const int       nGlobalNodes = static_cast< int >( nodeRadius.size() );
+    Eigen::MatrixXd KGlobal      = Eigen::MatrixXd::Zero( 2 * nGlobalNodes, 2 * nGlobalNodes );
+    Eigen::VectorXd FGlobal      = Eigen::VectorXd::Zero( 2 * nGlobalNodes );
+    const int       nDof         = 2 * nNodes;
+    const int       innerFace    = 4;
+
+    for ( int e = 0; e < nElements; e++ ) {
+      Eigen::VectorXd zero = Eigen::VectorXd::Zero( nDof ), P = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+      elements[e]->computeKernels( zero.data(), zero.data(), P.data(), K.data(), 0.0, 1.0 );
+      std::fill( stateVars[e].begin(), stateVars[e].end(), 0.0 );
+
+      Eigen::VectorXd F = Eigen::VectorXd::Zero( nDof );
+      if ( e == 0 )
+        elements[e]->computeDistributedLoad( Element::Pressure, F.data(), K.data(), innerFace, &p, zero.data(), 0, 1 );
+
+      for ( int i = 0; i < nDof; i++ ) {
+        const int I = 2 * globalNodes[e][i / 2] + i % 2;
+        FGlobal( I ) += F( i );
+        for ( int j = 0; j < nDof; j++ )
+          KGlobal( I, 2 * globalNodes[e][j / 2] + j % 2 ) += K( i, j );
+      }
+    }
+
+    // u_z = 0: only the radial degrees of freedom are free
+    const auto            radial = Eigen::seq( 0, Eigen::last, 2 );
+    const Eigen::MatrixXd Krr    = KGlobal( radial, radial );
+    const Eigen::VectorXd ur     = Krr.ldlt().solve( Eigen::VectorXd( FGlobal( radial ) ) );
+
+    double maxError = 0.0, maxValue = 0.0;
+    for ( int n = 0; n < nGlobalNodes; n++ ) {
+      maxError = std::max( maxError, std::abs( ur( n ) - uR( nodeRadius[n] ) ) );
+      maxValue = std::max( maxValue, std::abs( uR( nodeRadius[n] ) ) );
+    }
+
+    // hoop and radial stress at the quadrature points
+    double maxStressError = 0.0;
+    for ( int e = 0; e < nElements; e++ ) {
+      Eigen::VectorXd Q = Eigen::VectorXd::Zero( nDof ), P = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+      for ( int i = 0; i < nNodes; i++ )
+        Q( 2 * i ) = ur( globalNodes[e][i] );
+      elements[e]->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+      const auto qpCoordinates = elements[e]->getCoordinatesAtQuadraturePoints();
+      for ( int i = 0; i < elements[e]->getNumberOfQuadraturePoints(); i++ ) {
+        const double                                     r = qpCoordinates[i][0];
+        const Eigen::Map< const Marmot::Math::Vector6d > stress(
+          elements[e]->getStateView( "stress", i ).stateLocation );
+        maxStressError = std::max( { maxStressError,
+                                     std::abs( stress( 0 ) - ( A - B / ( r * r ) ) ),
+                                     std::abs( stress( 2 ) - ( A + B / ( r * r ) ) ) } );
+      }
+    }
+    return { maxError / maxValue, maxStressError / p };
+  }
+
+  // convergence orders of the displacement and the stress from a mesh of n and of 2 n elements; a nonpositive
+  // displacement order checks only that the displacement error is below the tolerance on both meshes
+  template < int nNodes >
+  void checkAxisymmetricLameCylinder( Quadrature::QuadratureRule quadratureRule,
+                                      int                        nElements,
+                                      double                     displacementOrder,
+                                      double                     stressOrder,
+                                      double                     displacementTolerance,
+                                      const std::string&         name )
+  {
+    const LameErrors coarse = thickWalledCylinderErrors< nNodes >( quadratureRule, nElements );
+    const LameErrors fine   = thickWalledCylinderErrors< nNodes >( quadratureRule, 2 * nElements );
+
+    const auto order = []( double coarseError, double fineError ) { return std::log2( coarseError / fineError ); };
+
+    throwExceptionOnFailure( fine.displacement < displacementTolerance &&
+                               ( displacementOrder <= 0.0 ||
+                                 order( coarse.displacement, fine.displacement ) > displacementOrder ),
+                             Marmot::Utilities::MakeString()
+                               << name << ": radial displacement does not converge to the Lame solution: errors "
+                               << coarse.displacement << " and " << fine.displacement );
+    throwExceptionOnFailure( order( coarse.stress, fine.stress ) > stressOrder,
+                             Marmot::Utilities::MakeString()
+                               << name << ": stress does not converge to the Lame solution: errors " << coarse.stress
+                               << " and " << fine.stress );
+  }
+
+  // number of zero eigenvalues of the linear elastic stiffness on r in [1, 2]
+  template < int nNodes >
+  int numberOfZeroEnergyModes( Quadrature::QuadratureRule quadratureRule )
+  {
+    std::vector< double > stateVars;
+    auto                  element = makeAxisymmetricQuad< nNodes >( stateVars, quadratureRule );
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd Q = Eigen::VectorXd::Zero( nDof ), P = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( K ).eigenvalues();
+    return static_cast< int >( ( eigenvalues.array().abs() < 1e-10 * eigenvalues.cwiseAbs().maxCoeff() ).count() );
+  }
+
+  // true if initializeYourself() throws std::invalid_argument for these nodes
+  bool axisymmetricQuad4Rejects( const std::vector< double >& coordinates )
+  {
+    using ElementType = DisplacementFiniteElement< 2, 4 >;
+    ElementType element( 1, ruleOfCAX4, ElementType::SectionType::Axisymmetric );
+    element.assignNodeCoordinates( coordinates.data() );
+    try {
+      element.initializeYourself();
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  }
+} // namespace
+
+void testAxisymmetricElementsAreRegistered()
+{
+  const auto sectionOf = []( Marmot::Discretizations::Elements::Element* element ) {
+    if ( const auto* quad4 = dynamic_cast< DisplacementFiniteElement< 2, 4 >* >( element ) )
+      return static_cast< int >( quad4->sectionType );
+    if ( const auto* quad8 = dynamic_cast< DisplacementFiniteElement< 2, 8 >* >( element ) )
+      return static_cast< int >( quad8->sectionType );
+    return -1;
+  };
+
+  for ( const auto& [name, nNodes, nQuadraturePoints] :
+        { std::make_tuple( "CAX4", 4, 4 ), std::make_tuple( "CAX8R", 8, 4 ), std::make_tuple( "CAX8", 8, 9 ) } ) {
+    const std::string                                             elementName( name );
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+      Marmot::Registry::ElementFactory::createElement( elementName, 1 ) );
+    throwExceptionOnFailure( element->getNNodes() == nNodes, elementName + ": number of nodes." );
+    throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == nQuadraturePoints,
+                             elementName + ": number of quadrature points." );
+    throwExceptionOnFailure( sectionOf( element.get() ) == DisplacementFiniteElement< 2, 4 >::SectionType::Axisymmetric,
+                             elementName + ": the section must be axisymmetric." );
+  }
+
+  bool threw = false;
+  try {
+    DisplacementFiniteElement< 3, 8 > solid( 1, ruleOfCAX4, DisplacementFiniteElement< 3, 8 >::Axisymmetric );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "a three-dimensional element must reject the axisymmetric section." );
+}
+
+void testComputeKernelsAxisymmetricTangentMatchesNumericalDifferentiation()
+{
+  checkAxisymmetricTangent< 4 >( ruleOfCAX4, "CAX4" );
+  checkAxisymmetricTangent< 8 >( ruleOfCAX8R, "CAX8R" );
+  checkAxisymmetricTangent< 8 >( ruleOfCAX8, "CAX8" );
+}
+
+void testComputeKernelsAxisymmetricReproducesUniformStrainField()
+{
+  for ( const auto* coordinates : { &ringAwayFromTheAxis, &ringAtTheAxis } ) {
+    checkAxisymmetricUniformStrainField< 4 >( ruleOfCAX4, *coordinates, "CAX4" );
+    checkAxisymmetricUniformStrainField< 8 >( ruleOfCAX8R, *coordinates, "CAX8R" );
+    checkAxisymmetricUniformStrainField< 8 >( ruleOfCAX8, *coordinates, "CAX8" );
+  }
+}
+
+void testComputeKernelsAxisymmetricReproducesShearField()
+{
+  checkAxisymmetricShearField< 4 >( ruleOfCAX4, "CAX4" );
+  checkAxisymmetricShearField< 8 >( ruleOfCAX8R, "CAX8R" );
+  checkAxisymmetricShearField< 8 >( ruleOfCAX8, "CAX8" );
+}
+
+void testComputeKernelsExplicitMatchesImplicitResidualAxisymmetric()
+{
+  checkAxisymmetricExplicitMatchesImplicit< 4 >( ruleOfCAX4, "CAX4" );
+  checkAxisymmetricExplicitMatchesImplicit< 8 >( ruleOfCAX8R, "CAX8R" );
+  checkAxisymmetricExplicitMatchesImplicit< 8 >( ruleOfCAX8, "CAX8" );
+}
+
+void testComputeDistributedLoadAxisymmetricIntegratesOverTheRing()
+{
+  checkAxisymmetricDistributedLoad< 4 >( ruleOfCAX4, "CAX4" );
+  checkAxisymmetricDistributedLoad< 8 >( ruleOfCAX8R, "CAX8R" );
+  checkAxisymmetricDistributedLoad< 8 >( ruleOfCAX8, "CAX8" );
+}
+
+void testAxisymmetricMassAndBodyForceAreThoseOfTheRing()
+{
+  checkAxisymmetricMassAndBodyForce< 4 >( ruleOfCAX4, "CAX4" );
+  checkAxisymmetricMassAndBodyForce< 8 >( ruleOfCAX8R, "CAX8R" );
+  checkAxisymmetricMassAndBodyForce< 8 >( ruleOfCAX8, "CAX8" );
+}
+
+void testAxisymmetricThickWalledCylinderMatchesLameSolution()
+{
+  // orders 2 (displacement) and 1 (stress at the Gauss points) for CAX4, 4 and 2 for CAX8; CAX8R is far below 1e-6
+  checkAxisymmetricLameCylinder< 4 >( ruleOfCAX4, 16, 1.9, 0.9, 1e-3, "CAX4" );
+  checkAxisymmetricLameCylinder< 8 >( ruleOfCAX8, 4, 3.8, 1.5, 1e-5, "CAX8" );
+  checkAxisymmetricLameCylinder< 8 >( ruleOfCAX8R, 4, 0.0, 2.0, 1e-6, "CAX8R" );
+}
+
+// the only rigid body mode of an axisymmetric element is the axial translation; reduced integration adds one
+// hourglass mode to the quad8
+void testAxisymmetricZeroEnergyModes()
+{
+  throwExceptionOnFailure( numberOfZeroEnergyModes< 4 >( ruleOfCAX4 ) == 1, "CAX4: one zero energy mode expected." );
+  throwExceptionOnFailure( numberOfZeroEnergyModes< 8 >( ruleOfCAX8 ) == 1, "CAX8: one zero energy mode expected." );
+  throwExceptionOnFailure( numberOfZeroEnergyModes< 8 >( ruleOfCAX8R ) == 2, "CAX8R: two zero energy modes expected." );
+}
+
+void testAxisymmetricElementsRejectNegativeRadii()
+{
+  throwExceptionOnFailure( axisymmetricQuad4Rejects( { -1.0, 0.0, -0.5, 0.0, -0.5, 1.0, -1.0, 1.0 } ),
+                           "an axisymmetric element in r < 0 must be rejected." );
+  throwExceptionOnFailure( axisymmetricQuad4Rejects( { -0.5, 0.0, 0.5, 0.0, 0.5, 1.0, -0.5, 1.0 } ),
+                           "an axisymmetric element straddling the axis must be rejected." );
+  throwExceptionOnFailure( axisymmetricQuad4Rejects( { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element collapsed onto the axis must be rejected." );
+  throwExceptionOnFailure( !axisymmetricQuad4Rejects( { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element with nodes on the axis must be accepted." );
+  // round-off of a node on the axis is accepted, relative to the element size; beyond it the node is rejected
+  throwExceptionOnFailure( !axisymmetricQuad4Rejects( { -1e-16, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element with round-off of a node on the axis must be accepted." );
+  throwExceptionOnFailure( axisymmetricQuad4Rejects( { -1e-9, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } ),
+                           "an axisymmetric element with a node at r = -1e-9 h must be rejected." );
+}
+
+// a thickness assigned to an axisymmetric element is ignored
+void testAxisymmetricElementsIgnoreTheThickness()
+{
+  using ElementType                     = DisplacementFiniteElement< 2, 4 >;
+  const std::vector< double > thickness = { 5.0 };
+  ElementType                 element( 1, ruleOfCAX4, ElementType::SectionType::Axisymmetric );
+  element.assignNodeCoordinates( ringAwayFromTheAxis.data() );
+  element.assignProperty( Marmot::Discretizations::ElementProperties( thickness.data(), 1 ) );
+  element.initializeYourself();
+
+  double volume = 0.0;
+  for ( const auto& qp : element.qps )
+    volume += qp.J0xW;
+  throwExceptionOnFailure( checkIfEqual( volume, ringGeometry( ringAwayFromTheAxis ).volume(), 1e-10 ),
+                           "CAX4: the thickness must not scale the ring." );
+}
+
+// the bulk viscosity acts on the volumetric strain including the hoop strain: u_r = s r, u_z = s z is a uniform
+// volumetric strain 3 s
+void testAxisymmetricBulkViscosityDissipatesVolumetricWork()
+{
+  const double timeIncrement = 1.0e-3;
+  const double b1            = 0.06;
+
+  for ( const double strainPerAxis : { -1.0e-4, 1.0e-4 } ) {
+    const auto internalForce = [&]( double linearCoefficient ) {
+      std::vector< double >       stateVars;
+      auto                        element      = makeAxisymmetricQuad< 4 >( stateVars, ruleOfCAX4 );
+      const std::vector< double > coefficients = { linearCoefficient, 0.0 };
+      element->assignProperty( "bulk viscosity", coefficients.data(), 2 );
+
+      Eigen::VectorXd dQ( 8 ), U = Eigen::VectorXd::Zero( 8 ), P = Eigen::VectorXd::Zero( 8 );
+      for ( int i = 0; i < 8; i++ )
+        dQ( i ) = strainPerAxis * ringAwayFromTheAxis[i];
+      element->computeKernelsExplicit( U.data(), dQ.data(), P.data(), 0.0, timeIncrement );
+      return std::make_pair( P, dQ );
+    };
+
+    const auto [withViscosity, dQ]         = internalForce( b1 );
+    const Eigen::VectorXd withoutViscosity = internalForce( 0.0 ).first;
+
+    // characteristic length 1 of the unit square r in [1, 2], z in [0, 1]
+    const double volumetricStrain      = 3.0 * strainPerAxis;
+    const double expectedViscousStress = b1 * axisymmetricDensity * linearElasticWaveSpeed( axisymmetricDensity ) *
+                                         volumetricStrain / timeIncrement;
+    const double expectedViscousWork = expectedViscousStress * volumetricStrain *
+                                       ringGeometry( ringAwayFromTheAxis ).volume();
+
+    throwExceptionOnFailure( checkIfEqual( ( withViscosity - withoutViscosity ).dot( dQ ),
+                                           expectedViscousWork,
+                                           1e-12 * std::abs( expectedViscousWork ) ),
+                             "CAX4: the viscous internal force does not match the bulk viscosity work of the ring." );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -2493,6 +3376,18 @@ int main()
     testComputeKernelsExplicitThrowsForUniaxialStress,
     testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain,
     testComputeKernelsExplicitMatchesImplicitResidualSolid3D,
+    testAxisymmetricElementsAreRegistered,
+    testComputeKernelsAxisymmetricTangentMatchesNumericalDifferentiation,
+    testComputeKernelsAxisymmetricReproducesUniformStrainField,
+    testComputeKernelsAxisymmetricReproducesShearField,
+    testComputeKernelsExplicitMatchesImplicitResidualAxisymmetric,
+    testComputeDistributedLoadAxisymmetricIntegratesOverTheRing,
+    testAxisymmetricMassAndBodyForceAreThoseOfTheRing,
+    testAxisymmetricThickWalledCylinderMatchesLameSolution,
+    testAxisymmetricZeroEnergyModes,
+    testAxisymmetricElementsRejectNegativeRadii,
+    testAxisymmetricElementsIgnoreTheThickness,
+    testAxisymmetricBulkViscosityDissipatesVolumetricWork,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
@@ -2502,6 +3397,8 @@ int main()
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
+    testEnergyGradients,
+    testEnergyGradientOutputIsRejectedWithoutSupport,
     testGetStateViewVariants,
     testGetCoordinatesAtQuadraturePoints,
     testGetNodeFieldsAndDofIndicesPermutationPattern,

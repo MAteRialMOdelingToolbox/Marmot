@@ -203,25 +203,12 @@ namespace Marmot::Discretizations::Cells {
   LagrangianCellGeometry< nDim, nNodes >::XiSized LagrangianCellGeometry< nDim, nNodes >::findReferenceCoordinate(
     const XiSized& coord ) const
   {
-    const auto    X = ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes );
     const XiSized h = _boundingBoxMax - _boundingBoxMin;
 
-    // initial guess: the affine map of the bounding box, exact for a box-shaped cell
-    XiSized xi = 2 * ( coord - ( _boundingBoxMax + _boundingBoxMin ) / 2 ).cwiseProduct( h.cwiseInverse() );
-    XiSized r  = coord - X * N( xi ).transpose();
-
-    for ( int iteration = 0; r.norm() > 1e-12 * h.norm(); iteration++ ) {
-      if ( iteration >= 20 )
-        throw std::runtime_error( Marmot::Utilities::MakeString()
-                                  << __PRETTY_FUNCTION__ << ": failed to determine inverse map for coordinate "
-                                  << coord.transpose() );
-
-      const JacobianSized J = ParentLagrangianGeometryElement::Jacobian( ParentLagrangianGeometryElement::dNdXi( xi ) );
-      xi += J.partialPivLu().solve( r );
-      r = coord - X * N( xi ).transpose();
-    }
-
-    return xi;
+    // the inverse isoparametric mapping of the geometry element, started from the affine map of the bounding box
+    // (exact for a box-shaped cell)
+    const XiSized xiStart = 2 * ( coord - ( _boundingBoxMax + _boundingBoxMin ) / 2 ).cwiseProduct( h.cwiseInverse() );
+    return ParentLagrangianGeometryElement::parentCoordinates( coord, xiStart );
   }
 
 } // namespace Marmot::Discretizations::Cells
