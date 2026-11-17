@@ -7,6 +7,14 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
+  materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
+  materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
+  material and geometric tangent; for 2 nodes identical to the co-rotational truss). Property: the cross section
+  area. E.g., for reinforcement bars embedded in continuum elements.
+- `Materials::MaterialFiniteStrain::computeUniaxialStress` (virtual): uniaxial stress reduction of finite strain
+  materials whose response to a diagonal deformation gradient is diagonal, e.g. isotropic ones (Newton iteration on
+  the lateral stretches with state reset, condensed tangent dτ11/dF11).
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -51,6 +59,12 @@ All notable changes to Marmot are documented in this file. The format follows
   a combination of the local and the nonlocal softening variable.
 
 ### Changed
+- **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
+  the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
+  response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`
+  must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
+  `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
+  generic facilities (tested), now without a registered element.
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
   them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
