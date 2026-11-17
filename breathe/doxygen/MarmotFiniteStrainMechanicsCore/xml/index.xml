@@ -123,6 +123,7 @@
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a04ae82bf6b55b7406402e244056d5c0e" kind="function"><name>computePlaneStrainExplicit</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7b3edcf9103bce626425fbdfec9c019c" kind="function"><name>computePlaneStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1afb9af3285d55f00fb3983a9111ad1b7a" kind="function"><name>computePlaneStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1aae18c14fa332ebc9d8c0ec1db9dad1c1" kind="function"><name>computeUniaxialStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a1a44e61c30c6a18bf204a0375305ddfc" kind="function"><name>findEigenDeformationForEigenStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af07a0556b7f723dd0c1fc47fa33a128e" kind="function"><name>getStateView</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7ad41a3c35aead0da007341ff2152ef4" kind="function"><name>getNumberOfRequiredStateVars</name></member>
