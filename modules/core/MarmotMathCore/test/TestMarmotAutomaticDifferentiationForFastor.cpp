@@ -242,6 +242,66 @@ void testTensorToTensorSymmetric()
                              << __PRETTY_FUNCTION__ << "symmetric dF_dT doesn't match the dense computation" );
 }
 
+// dF_dSymmetricT returns the gradient along symmetric directions, i.e. the gradient of the dense computation
+// symmetrized in its last index pair, for an output of any shape and a function that is not
+// transpose-equivariant.
+void testTensorToTensorWrtSymmetricTensor()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-1;
+  F( 0, 1 ) += 2e-1;
+  F( 1, 2 ) -= 1e-1;
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+
+  // rank-4 output C (x) (B C) with a non-symmetric B: not transpose-equivariant
+  Tensor33d B( 0.0 );
+  B( 0, 0 )    = 1.0;
+  B( 0, 1 )    = 2.0;
+  B( 1, 2 )    = -1.0;
+  B( 2, 0 )    = 0.5;
+  B( 2, 2 )    = 3.0;
+  const auto f = [&B]( const Tensor33t< autodiff::dual >& C_ ) {
+    Fastor::Tensor< autodiff::dual, 3, 3, 3, 3 > out;
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ )
+        for ( int k = 0; k < 3; k++ )
+          for ( int l = 0; l < 3; l++ ) {
+            autodiff::dual BC_kl = 0.0;
+            for ( int m = 0; m < 3; m++ )
+              BC_kl += B( k, m ) * C_( m, l );
+            out( i, j, k, l ) = C_( i, j ) * BC_kl;
+          }
+    return out;
+  };
+
+  std::function< Fastor::Tensor< autodiff::dual, 3, 3, 3, 3 >( const Tensor33t< autodiff::dual >& ) > fDense = f;
+  const auto [value_dense, gradient_dense] = dF_dT( fDense, C );
+  const auto [value, gradient]             = dF_dSymmetricT( f, C );
+
+  Fastor::Tensor< double, 3, 3, 3, 3, 3, 3 > gradient_expected;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ )
+      for ( int k = 0; k < 3; k++ )
+        for ( int l = 0; l < 3; l++ )
+          for ( int m = 0; m < 3; m++ )
+            for ( int n = 0; n < 3; n++ )
+              gradient_expected( i, j, k, l, m, n ) = 0.5 * ( gradient_dense( i, j, k, l, m, n ) +
+                                                              gradient_dense( i, j, k, l, n, m ) );
+
+  throwExceptionOnFailure( checkIfEqual< double >( value, value_dense, 1e-12 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( gradient, gradient_expected, 1e-12 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << "dF_dSymmetricT doesn't match the symmetrized dense computation" );
+
+  // the symmetrization matters for this function: the dense gradient is not symmetric in its last index pair
+  throwExceptionOnFailure( !checkIfEqual< double >( gradient, gradient_dense, 1e-6 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "test function does not distinguish the two gradients" );
+}
+
 void testTensorToScalarSecondOrder()
 {
 
@@ -501,6 +561,7 @@ int main()
                                                        testTensorToScalarWith2ndOrderDualsSymmetric,
                                                        testTensorToTensor,
                                                        testTensorToTensorSymmetric,
+                                                       testTensorToTensorWrtSymmetricTensor,
                                                        testTensorToScalarSecondOrder,
                                                        testTensorToScalarSecondOrderSymmetric,
                                                        testTensorToScalarSecondOrderMixed,

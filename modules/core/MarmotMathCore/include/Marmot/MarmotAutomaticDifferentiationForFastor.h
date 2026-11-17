@@ -39,6 +39,8 @@
 #include "autodiff/forward/dual/eigen.hpp"
 #include <autodiff/forward/dual/dual.hpp>
 #include <functional>
+#include <type_traits>
+#include <utility>
 
 namespace Marmot::Math::Differentiation::Automatic {
 
@@ -285,6 +287,82 @@ namespace Marmot::Math::Differentiation::Automatic {
     F_ = Tensors::makeReal( F_at_T_right );
 
     return { F_, dF_dT_ };
+  }
+
+  /// \cond DOXYGEN_SKIP
+  namespace Detail {
+    /* Value and gradient types of a dual-valued tensor function of a (dim x dim) tensor. */
+    template < typename DualTensor, size_t dim >
+    struct GradientWrtSquareTensor;
+
+    template < size_t dim, size_t... RestF >
+    struct GradientWrtSquareTensor< Fastor::Tensor< dual, RestF... >, dim > {
+      using Dual     = Fastor::Tensor< dual, RestF... >;
+      using Value    = Fastor::Tensor< double, RestF... >;
+      using Gradient = Fastor::Tensor< double, RestF..., dim, dim >;
+    };
+  } // namespace Detail
+  /// \endcond
+
+  /** @brief Compute the gradient of a tensor-to-tensor function with respect to a symmetric (dim x dim) tensor
+   *
+   *  The function is differentiated along the dim*(dim+1)/2 symmetric directions
+   *  \f$ \mathrm{sym}(\boldsymbol e_k \otimes \boldsymbol e_l) \f$, so the result is the gradient of
+   *  \f$ F \circ \mathrm{sym} \f$,
+   *  \f[
+   *    \frac{\partial F_{\dots}}{\partial T_{kl}}\bigg|_{\rm sym} = \frac12 \left( \frac{\partial F_{\dots}}{\partial
+   *    T_{kl}} + \frac{\partial F_{\dots}}{\partial T_{lk}} \right),
+   *  \f]
+   *  which is symmetric in its last index pair and is the part of the gradient that acts on symmetric increments of
+   *  T. In contrast to the symmetric mode of #dF_dT, the output of F may have any shape and F does not have to be
+   *  transpose-equivariant; e.g. F may be the closed-form second derivative of a hyperelastic potential w.r.t. the
+   *  right Cauchy-Green tensor, which yields its third derivative with dim*(dim+1)/2 evaluations.
+   *
+   *  @tparam Function callable mapping a (dim x dim) tensor of dual numbers to a tensor of dual numbers
+   *  @tparam dim dimension of the input tensor (dim x dim)
+   *  @param F function mapping a tensor to a tensor
+   *  @param T symmetric input tensor at which the gradient is evaluated
+   *  @return pair of function value and gradient of F with respect to T, gradient has shape (shape of F..., dim, dim)
+   */
+  template < typename Function, size_t dim >
+  auto dF_dSymmetricT( const Function& F, const Fastor::Tensor< double, dim, dim >& T )
+  {
+    using Types = Detail::GradientWrtSquareTensor<
+      std::remove_cvref_t< std::invoke_result_t< const Function&, const Fastor::Tensor< dual, dim, dim >& > >,
+      dim >;
+
+    typename Types::Value            F_;
+    typename Types::Gradient         dF_dT_;
+    Fastor::Tensor< dual, dim, dim > T_right = Tensors::makeDual( T );
+
+    double* dF_dT_data = dF_dT_.data();
+
+    for ( size_t row = 0; row < dim; ++row ) {
+      for ( size_t col = row; col < dim; ++col ) {
+        // direction sym( e_row (x) e_col )
+        const double weight                          = row == col ? 1.0 : 0.5;
+        T_right( row, col ).grad                     = weight;
+        T_right( col, row ).grad                     = weight;
+        const typename Types::Dual F_at_T_right      = F( T_right );
+        const dual*                F_at_T_right_data = F_at_T_right.data();
+
+        const Fastor::FASTOR_INDEX lin_ij = row * dim + col;
+        const Fastor::FASTOR_INDEX lin_ji = col * dim + row;
+        for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
+          const double val = F_at_T_right_data[F_at_T_right.get_mem_index( j )].grad;
+          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + lin_ij )] = val;
+          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + lin_ji )] = val;
+        }
+
+        T_right( row, col ).grad = 0.0;
+        T_right( col, row ).grad = 0.0;
+
+        if ( row + 1 == dim )
+          F_ = Tensors::makeReal( F_at_T_right );
+      }
+    }
+
+    return std::pair{ F_, dF_dT_ };
   }
 
   namespace SecondOrder {
