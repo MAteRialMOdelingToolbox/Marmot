@@ -56,6 +56,9 @@ All notable changes to Marmot are documented in this file. The format follows
   `EnergyDensityFunctions::Isochoric` and `EnergyDensityFunctions::Volumetric`, and of the compressible
   `MooneyRivlinPotential`, `YeohPotential` and `ArrudaBoyce8ChainPotential`. The plain, `FirstOrder` and
   `SecondOrder` overloads of a potential evaluate the same scalar function through the invariant helper.
+  The second derivatives of the invariants are kept as a few scalar coefficients (`SecondDerivativeCoefficients`),
+  from which the fourth-order tensor is assembled in one pass, and the compressible potentials process C once
+  for both of their parts.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and

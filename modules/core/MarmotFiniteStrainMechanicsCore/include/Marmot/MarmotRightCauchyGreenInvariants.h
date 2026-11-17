@@ -72,20 +72,46 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
 
   /** @brief Value and scalar derivatives of a function \f$f(x_1, x_2, x_3)\f$ of three invariants.
    *
-   * Only the entries up to @p Order are meaningful: @c f for every order, @c df for @p Order >= 1 and @c d2f for
-   * @p Order >= 2. Entries that are not set are zero.
+   * @c f is available for every order, @c df for @p Order >= 1 and @c d2f for @p Order >= 2. Entries that are
+   * not set are zero.
    *
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
-   * @tparam Order Highest derivative that is filled (0, 1 or 2).
+   * @tparam Order Highest derivative that is available (0, 1 or 2).
    */
   template < typename T, int Order >
   struct ScalarDerivatives {
     /// @brief Function value.
     T f{};
-    /// @brief Gradient \f$\partial f/\partial x_a\f$.
-    std::array< T, 3 > df{};
-    /// @brief Hessian \f$\partial^2 f/\partial x_a\partial x_b\f$.
-    std::array< std::array< T, 3 >, 3 > d2f{};
+    /// @brief Gradient \f$\partial f/\partial x_a\f$ (@p Order >= 1).
+    std::conditional_t< ( Order >= 1 ), std::array< T, 3 >, NotComputed > df{};
+    /// @brief Hessian \f$\partial^2 f/\partial x_a\partial x_b\f$ (@p Order >= 2).
+    std::conditional_t< ( Order >= 2 ), std::array< std::array< T, 3 >, 3 >, NotComputed > d2f{};
+  };
+
+  /** @brief Second derivatives of three invariants w.r.t. \f$\boldsymbol C\f$ in compact form.
+   *
+   * The second derivative of each invariant \f$x_a\f$ of #computeInvariants and #computeIsochoricInvariants is a
+   * combination of dyads of the first derivatives and of two fixed fourth-order tensors,
+   * \f[
+   *   \frac{\partial^2 x_a}{\partial C_{ij}\partial C_{kl}} = \sum_{b,c} \Gamma_{a,bc}\,
+   *   \frac{\partial x_b}{\partial C_{ij}}\frac{\partial x_c}{\partial C_{kl}}
+   *   + \beta_a\, C^{-1}_{li} C^{-1}_{jk}
+   *   + \gamma_a \left(\delta_{ij}\delta_{kl} - \delta_{il}\delta_{jk}\right),
+   * \f]
+   * so only the scalars \f$\Gamma_{a,bc}\f$, \f$\beta_a\f$ and \f$\gamma_a\f$ are stored. #composeWithInvariants
+   * assembles \f$\partial^2\Psi/\partial\boldsymbol C\partial\boldsymbol C\f$ from them in one pass;
+   * #secondDerivative returns the full tensor of one invariant.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   */
+  template < typename T >
+  struct SecondDerivativeCoefficients {
+    /// @brief \f$\Gamma_{a,bc}\f$, coefficients of the dyads of the first derivatives.
+    std::array< std::array< std::array< T, 3 >, 3 >, 3 > dyads{};
+    /// @brief \f$\beta_a\f$, coefficient of \f$C^{-1}_{li} C^{-1}_{jk}\f$.
+    std::array< T, 3 > inverse{};
+    /// @brief \f$\gamma_a\f$, coefficient of \f$\delta_{ij}\delta_{kl} - \delta_{il}\delta_{jk}\f$.
+    std::array< T, 3 > identity{};
   };
 
   /** @brief Three invariants \f$\boldsymbol x\f$ of \f$\boldsymbol C\f$ and their derivatives w.r.t.
@@ -101,10 +127,78 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
     /// @brief First derivatives \f$\partial x_a/\partial\boldsymbol C\f$ (@p Order >= 1).
     std::conditional_t< ( Order >= 1 ), std::array< Math::Tensors::FastorTensors::Tensor33t< T >, 3 >, NotComputed >
       dx_dC;
-    /// @brief Second derivatives \f$\partial^2 x_a/\partial\boldsymbol C\partial\boldsymbol C\f$ (@p Order >= 2).
-    std::conditional_t< ( Order >= 2 ), std::array< Math::Tensors::FastorTensors::Tensor3333t< T >, 3 >, NotComputed >
-      d2x_dCdC;
+    /// @brief \f$\boldsymbol C^{-T}\f$ (@p Order >= 2).
+    std::conditional_t< ( Order >= 2 ), Math::Tensors::FastorTensors::Tensor33t< T >, NotComputed > CInvT;
+    /// @brief Second derivatives \f$\partial^2 x_a/\partial\boldsymbol C\partial\boldsymbol C\f$ in compact form
+    /// (@p Order >= 2), see #secondDerivative for the full tensor.
+    std::conditional_t< ( Order >= 2 ), SecondDerivativeCoefficients< T >, NotComputed > d2x_dCdC;
   };
+
+  /// @cond
+  namespace Detail {
+    /* Cofactors cof( i, j ) of C, so that det C = sum_j C( 0, j ) cof( 0, j ), C^-T = cof / det C and
+     * I2 = cof( 0, 0 ) + cof( 1, 1 ) + cof( 2, 2 ). Every order of the invariants evaluates these same expressions,
+     * so the energy does not depend on the requested order, not even in the last bit. */
+    template < typename T >
+    T cofactor( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const int i, const int j )
+    {
+      const int i1 = ( i + 1 ) % 3, i2 = ( i + 2 ) % 3;
+      const int j1 = ( j + 1 ) % 3, j2 = ( j + 2 ) % 3;
+      return C( i1, j1 ) * C( i2, j2 ) - C( i1, j2 ) * C( i2, j1 );
+    }
+
+    template < typename T >
+    T determinantFromFirstRowCofactors( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                        const T&                                            cof00,
+                                        const T&                                            cof01,
+                                        const T&                                            cof02 )
+    {
+      return C( 0, 0 ) * cof00 + C( 0, 1 ) * cof01 + C( 0, 2 ) * cof02;
+    }
+
+    /* The quantities shared by both sets of invariants: I1, I2, det C, J and, for Order >= 1, C^-T. */
+    template < typename T, int Order >
+    struct Basics {
+      T                                                                                               I1, I2, detC, J;
+      std::conditional_t< ( Order >= 1 ), Math::Tensors::FastorTensors::Tensor33t< T >, NotComputed > CInvT;
+    };
+
+    template < int Order, typename T >
+    Basics< T, Order > computeBasics( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const bool withI2 )
+    {
+      Basics< T, Order > b;
+      b.I1 = C( 0, 0 ) + C( 1, 1 ) + C( 2, 2 );
+
+      if constexpr ( Order == 0 ) {
+        const T cof00 = cofactor( C, 0, 0 );
+        b.detC        = determinantFromFirstRowCofactors( C, cof00, cofactor( C, 0, 1 ), cofactor( C, 0, 2 ) );
+        b.I2          = withI2 ? T( cof00 + cofactor( C, 1, 1 ) + cofactor( C, 2, 2 ) ) : T( 0. );
+      }
+      else if constexpr ( std::is_floating_point_v< T > ) {
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            b.CInvT( i, j ) = cofactor( C, i, j );
+        b.detC = determinantFromFirstRowCofactors( C, b.CInvT( 0, 0 ), b.CInvT( 0, 1 ), b.CInvT( 0, 2 ) );
+        b.I2   = withI2 ? T( b.CInvT( 0, 0 ) + b.CInvT( 1, 1 ) + b.CInvT( 2, 2 ) ) : T( 0. );
+
+        const T invDetC = 1. / b.detC;
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            b.CInvT( i, j ) *= invDetC;
+      }
+      else {
+        // complex and dual numbers: the inverse of Fastor is faster than the cofactors written out
+        const T cof00 = cofactor( C, 0, 0 );
+        b.detC        = determinantFromFirstRowCofactors( C, cof00, cofactor( C, 0, 1 ), cofactor( C, 0, 2 ) );
+        b.I2          = withI2 ? T( cof00 + cofactor( C, 1, 1 ) + cofactor( C, 2, 2 ) ) : T( 0. );
+        b.CInvT       = Fastor::transpose( Fastor::inverse( C ) );
+      }
+
+      b.J = sqrt( b.detC );
+      return b;
+    }
+  } // namespace Detail
+  /// @endcond
 
   /** @brief Second principal invariant \f$I_2 = \tfrac{1}{2}\left(I_1^2 - \mathrm{tr}\,\boldsymbol C^2\right)\f$,
    * evaluated as the sum of the principal 2x2 minors of \f$\boldsymbol C\f$.
@@ -116,8 +210,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
   template < typename T >
   T secondInvariant( const Math::Tensors::FastorTensors::Tensor33t< T >& C )
   {
-    return C( 0, 0 ) * C( 1, 1 ) + C( 1, 1 ) * C( 2, 2 ) + C( 0, 0 ) * C( 2, 2 ) - C( 0, 1 ) * C( 1, 0 ) -
-           C( 1, 2 ) * C( 2, 1 ) - C( 0, 2 ) * C( 2, 0 );
+    return Detail::cofactor( C, 0, 0 ) + Detail::cofactor( C, 1, 1 ) + Detail::cofactor( C, 2, 2 );
   }
 
   /** @brief Compute the principal invariants \f$(I_1, I_2, J)\f$ of \f$\boldsymbol C\f$ and their derivatives
@@ -138,7 +231,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @param C Right Cauchy-Green tensor.
    * @param withI2 Pass @c false for a function that does not depend on \f$I_2\f$, to skip its evaluation;
-   * \f$I_2\f$ and its derivatives are then not meaningful.
+   * \f$I_2\f$ and its first derivative are then zero and its second derivative is not meaningful.
    * @return The invariants and their derivatives.
    */
   template < int Order, typename T >
@@ -146,40 +239,30 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
                                                           const bool withI2 = true )
   {
     static_assert( Order >= 0 && Order <= 2, "computeInvariants: only derivatives up to the second order" );
-    using namespace Fastor;
+
+    const auto b = Detail::computeBasics< Order >( C, withI2 );
 
     InvariantsAndDerivatives< T, Order > inv;
-
-    const T I1     = trace( C );
-    const T J      = sqrt( determinant( C ) );
-    inv.x[indexI1] = I1;
-    inv.x[indexI2] = withI2 ? secondInvariant( C ) : T( 0. );
-    inv.x[indexJ]  = J;
+    inv.x[indexI1] = b.I1;
+    inv.x[indexI2] = b.I2;
+    inv.x[indexJ]  = b.J;
 
     if constexpr ( Order >= 1 ) {
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInv  = inverse( C );
-      const T                                            halfJ = 0.5 * J;
-      const auto                                         delta = []( int a, int b ) { return a == b ? 1. : 0.; };
-
+      const T halfJ = 0.5 * b.J;
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ ) {
-          inv.dx_dC[indexI1]( i, j ) = T( delta( i, j ) );
-          inv.dx_dC[indexI2]( i, j ) = I1 * delta( i, j ) - C( j, i );
-          inv.dx_dC[indexJ]( i, j )  = halfJ * CInv( j, i );
+          const double delta_ij      = i == j ? 1. : 0.;
+          inv.dx_dC[indexI1]( i, j ) = T( delta_ij );
+          inv.dx_dC[indexI2]( i, j ) = withI2 ? T( b.I1 * delta_ij - C( j, i ) ) : T( 0. );
+          inv.dx_dC[indexJ]( i, j )  = halfJ * b.CInvT( i, j );
         }
 
       if constexpr ( Order >= 2 ) {
-        const T quarterJ = 0.25 * J;
-        for ( int i = 0; i < 3; i++ )
-          for ( int j = 0; j < 3; j++ )
-            for ( int k = 0; k < 3; k++ )
-              for ( int l = 0; l < 3; l++ ) {
-                inv.d2x_dCdC[indexI1]( i, j, k, l ) = T( 0. );
-                inv.d2x_dCdC[indexI2]( i, j, k, l ) = T( delta( i, j ) * delta( k, l ) -
-                                                         delta( i, l ) * delta( j, k ) );
-                inv.d2x_dCdC[indexJ]( i, j, k, l )  = quarterJ * CInv( j, i ) * CInv( l, k ) -
-                                                     halfJ * CInv( j, k ) * CInv( l, i );
-              }
+        // with C^-T = 2 / J dJ/dC: J / 4 C^-T (x) C^-T = 1 / J dJ/dC (x) dJ/dC
+        inv.CInvT                                  = b.CInvT;
+        inv.d2x_dCdC.identity[indexI2]             = T( 1. );
+        inv.d2x_dCdC.dyads[indexJ][indexJ][indexJ] = 1. / b.J;
+        inv.d2x_dCdC.inverse[indexJ]               = -halfJ;
       }
     }
 
@@ -203,7 +286,8 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @param C Right Cauchy-Green tensor.
    * @param withI2 Pass @c false for a function that does not depend on \f$\bar I_2\f$, to skip its
-   * evaluation; \f$\bar I_2\f$ and its derivatives are then not meaningful.
+   * evaluation; \f$\bar I_2\f$ and its first derivative are then zero and its second derivative is not
+   * meaningful.
    * @return The isochoric invariants and their derivatives.
    */
   template < int Order, typename T >
@@ -212,62 +296,130 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
     const bool                                          withI2 = true )
   {
     static_assert( Order >= 0 && Order <= 2, "computeIsochoricInvariants: only derivatives up to the second order" );
-    using namespace Fastor;
+
+    const auto b = Detail::computeBasics< Order >( C, withI2 );
+
+    const T Jm23  = pow( b.J, -2. / 3. );
+    const T Jm43  = Jm23 * Jm23;
+    const T Ibar1 = b.I1 * Jm23;
+    const T Ibar2 = b.I2 * Jm43;
 
     InvariantsAndDerivatives< T, Order > inv;
-
-    const T I1     = trace( C );
-    const T I2     = withI2 ? secondInvariant( C ) : T( 0. );
-    const T J      = sqrt( determinant( C ) );
-    const T Jm23   = pow( J, -2. / 3. );
-    const T Jm43   = Jm23 * Jm23;
-    const T Ibar1  = I1 * Jm23;
-    const T Ibar2  = I2 * Jm43;
     inv.x[indexI1] = Ibar1;
     inv.x[indexI2] = Ibar2;
-    inv.x[indexJ]  = J;
+    inv.x[indexJ]  = b.J;
 
     if constexpr ( Order >= 1 ) {
-      const Math::Tensors::FastorTensors::Tensor33t< T > CInv  = inverse( C );
-      const T                                            halfJ = 0.5 * J;
-      const auto                                         delta = []( int a, int b ) { return a == b ? 1. : 0.; };
-
-      auto& dIbar1 = inv.dx_dC[indexI1];
-      auto& dIbar2 = inv.dx_dC[indexI2];
+      const T halfJ       = 0.5 * b.J;
+      const T I1Third     = b.I1 / 3.;
+      const T twoThirdsI2 = 2. / 3. * b.I2;
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ ) {
-          dIbar1( i, j )            = Jm23 * ( delta( i, j ) - I1 / 3. * CInv( j, i ) );
-          dIbar2( i, j )            = Jm43 * ( I1 * delta( i, j ) - C( j, i ) - 2. / 3. * I2 * CInv( j, i ) );
-          inv.dx_dC[indexJ]( i, j ) = halfJ * CInv( j, i );
+          const double delta_ij      = i == j ? 1. : 0.;
+          inv.dx_dC[indexI1]( i, j ) = Jm23 * ( delta_ij - I1Third * b.CInvT( i, j ) );
+          inv.dx_dC[indexI2]( i, j ) = withI2
+                                         ? T( Jm43 * ( b.I1 * delta_ij - C( j, i ) - twoThirdsI2 * b.CInvT( i, j ) ) )
+                                         : T( 0. );
+          inv.dx_dC[indexJ]( i, j )  = halfJ * b.CInvT( i, j );
         }
 
       if constexpr ( Order >= 2 ) {
-        const T quarterJ = 0.25 * J;
-        for ( int i = 0; i < 3; i++ )
-          for ( int j = 0; j < 3; j++ )
-            for ( int k = 0; k < 3; k++ )
-              for ( int l = 0; l < 3; l++ ) {
-                // C^{-T}_ij = CInv( j, i ) and d C^{-T}_ij / d C_kl = - CInv( j, k ) * CInv( l, i )
-                const T CInvT_ij    = CInv( j, i );
-                const T CInvT_kl    = CInv( l, k );
-                const T dCInvT_ijkl = -CInv( j, k ) * CInv( l, i );
+        // dyads with C^-T are written with dJ/dC: C^-T = s dJ/dC, s = 2 / J
+        const T s  = 2. / b.J;
+        auto&   d2 = inv.d2x_dCdC;
+        inv.CInvT  = b.CInvT;
 
-                inv.d2x_dCdC[indexI1]( i, j, k, l ) = -1. / 3. *
-                                                        ( dIbar1( i, j ) * CInvT_kl + CInvT_ij * dIbar1( k, l ) ) -
-                                                      Ibar1 / 9. * CInvT_ij * CInvT_kl - Ibar1 / 3. * dCInvT_ijkl;
+        // d2Ibar1 = -1/3 ( dIbar1 (x) C^-T + C^-T (x) dIbar1 ) - Ibar1/9 C^-T (x) C^-T - Ibar1/3 dC^-T/dC
+        d2.dyads[indexI1][indexI1][indexJ] = -s / 3.;
+        d2.dyads[indexI1][indexJ][indexI1] = -s / 3.;
+        d2.dyads[indexI1][indexJ][indexJ]  = -Ibar1 / 9. * s * s;
+        d2.inverse[indexI1]                = Ibar1 / 3.;
 
-                inv.d2x_dCdC[indexI2]( i, j, k, l ) = -2. / 3. * dIbar2( i, j ) * CInvT_kl +
-                                                      Jm43 * ( delta( i, j ) * delta( k, l ) -
-                                                               delta( i, l ) * delta( j, k ) -
-                                                               2. / 3. * ( I1 * delta( k, l ) - C( l, k ) ) * CInvT_ij -
-                                                               2. / 3. * I2 * dCInvT_ijkl );
+        // d2Ibar2 = -2/3 ( dIbar2 (x) C^-T + C^-T (x) dIbar2 ) - 4/9 Ibar2 C^-T (x) C^-T - 2/3 Ibar2 dC^-T/dC
+        //           + J^-4/3 d2I2
+        d2.dyads[indexI2][indexI2][indexJ] = -2. / 3. * s;
+        d2.dyads[indexI2][indexJ][indexI2] = -2. / 3. * s;
+        d2.dyads[indexI2][indexJ][indexJ]  = -4. / 9. * Ibar2 * s * s;
+        d2.inverse[indexI2]                = 2. / 3. * Ibar2;
+        d2.identity[indexI2]               = Jm43;
 
-                inv.d2x_dCdC[indexJ]( i, j, k, l ) = quarterJ * CInvT_ij * CInvT_kl + halfJ * dCInvT_ijkl;
-              }
+        d2.dyads[indexJ][indexJ][indexJ] = 1. / b.J;
+        d2.inverse[indexJ]               = -halfJ;
       }
     }
 
     return inv;
+  }
+
+  /// @cond
+  namespace Detail {
+    /* G_ij = sum_a c_a dx_a,ij */
+    template < typename T >
+    void assembleSecondOrder( Math::Tensors::FastorTensors::Tensor33t< T >&                        G,
+                              const std::array< Math::Tensors::FastorTensors::Tensor33t< T >, 3 >& dx_dC,
+                              const std::array< T, 3 >&                                            c )
+    {
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          G( i, j ) = c[0] * dx_dC[0]( i, j ) + c[1] * dx_dC[1]( i, j ) + c[2] * dx_dC[2]( i, j );
+    }
+
+    /* H_ijkl = cDyads_bc dx_b,ij dx_c,kl + cInverse C^-T_il C^-T_kj + cIdentity ( d_ij d_kl - d_il d_jk ) */
+    template < typename T >
+    void assembleFourthOrder( Math::Tensors::FastorTensors::Tensor3333t< T >&                      H,
+                              const std::array< Math::Tensors::FastorTensors::Tensor33t< T >, 3 >& dx_dC,
+                              const Math::Tensors::FastorTensors::Tensor33t< T >&                  CInvT,
+                              const std::array< std::array< T, 3 >, 3 >&                           cDyads,
+                              const T&                                                             cInverse,
+                              const T&                                                             cIdentity )
+    {
+      // sum_c cDyads_bc dx_c, so that the dyadic part needs one product per entry and invariant
+      std::array< Math::Tensors::FastorTensors::Tensor33t< T >, 3 > right;
+      for ( std::size_t b = 0; b < 3; b++ )
+        for ( int k = 0; k < 3; k++ )
+          for ( int l = 0; l < 3; l++ )
+            right[b]( k, l ) = cDyads[b][0] * dx_dC[0]( k, l ) + cDyads[b][1] * dx_dC[1]( k, l ) +
+                               cDyads[b][2] * dx_dC[2]( k, l );
+
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ ) {
+            const T cInverseCInvT_kj = cInverse * CInvT( k, j );
+            for ( int l = 0; l < 3; l++ )
+              H( i, j, k, l ) = dx_dC[0]( i, j ) * right[0]( k, l ) + dx_dC[1]( i, j ) * right[1]( k, l ) +
+                                dx_dC[2]( i, j ) * right[2]( k, l ) + CInvT( i, l ) * cInverseCInvT_kj;
+          }
+
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ ) {
+          H( i, i, j, j ) += cIdentity;
+          H( i, j, j, i ) -= cIdentity;
+        }
+    }
+  } // namespace Detail
+  /// @endcond
+
+  /** @brief Full second derivative \f$\partial^2 x_a/\partial\boldsymbol C\partial\boldsymbol C\f$ of one
+   * invariant, from the compact form in @p inv.
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param inv Invariants of \f$\boldsymbol C\f$ and their derivatives, from #computeInvariants or
+   * #computeIsochoricInvariants.
+   * @param a Index of the invariant (#indexI1, #indexI2 or #indexJ).
+   * @return \f$\partial^2 x_a/\partial\boldsymbol C\partial\boldsymbol C\f$.
+   */
+  template < typename T >
+  Math::Tensors::FastorTensors::Tensor3333t< T > secondDerivative( const InvariantsAndDerivatives< T, 2 >& inv,
+                                                                   const std::size_t                       a )
+  {
+    Math::Tensors::FastorTensors::Tensor3333t< T > d2x_dCdC;
+    Detail::assembleFourthOrder( d2x_dCdC,
+                                 inv.dx_dC,
+                                 inv.CInvT,
+                                 inv.d2x_dCdC.dyads[a],
+                                 inv.d2x_dCdC.inverse[a],
+                                 inv.d2x_dCdC.identity[a] );
+    return d2x_dCdC;
   }
 
   /** @brief Chain rule from the scalar derivatives of \f$f(\boldsymbol x)\f$ to the derivatives of
@@ -280,6 +432,8 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    *   \frac{\partial x_a}{\partial\boldsymbol C}\otimes\frac{\partial x_b}{\partial\boldsymbol C} + \sum_a
    *   \frac{\partial f}{\partial x_a}\frac{\partial^2 x_a}{\partial\boldsymbol C\partial\boldsymbol C}.
    * \f]
+   * The second derivatives of the invariants enter in their compact form (#SecondDerivativeCoefficients), so
+   * the fourth-order tensor is assembled in one pass.
    *
    * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
    * @tparam Order Highest derivative to compute (0, 1 or 2).
@@ -298,46 +452,32 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
     if constexpr ( Order == 0 ) {
       return f.f;
     }
+    else if constexpr ( Order == 1 ) {
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > result;
+      std::get< 0 >( result ) = f.f;
+      Detail::assembleSecondOrder( std::get< 1 >( result ), inv.dx_dC, f.df );
+      return result;
+    }
     else {
-      Math::Tensors::FastorTensors::Tensor33t< T > dPsi_dC;
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ ) {
-          T sum = T( 0. );
-          for ( std::size_t a = 0; a < 3; a++ )
-            sum += f.df[a] * inv.dx_dC[a]( i, j );
-          dPsi_dC( i, j ) = sum;
-        }
+      // filled in place: the result is not copied on the way out
+      std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > >
+        result;
+      std::get< 0 >( result ) = f.f;
+      Detail::assembleSecondOrder( std::get< 1 >( result ), inv.dx_dC, f.df );
 
-      if constexpr ( Order == 1 ) {
-        return std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > >{ f.f, dPsi_dC };
+      // d2f_bc + sum_a df_a Gamma_a,bc, and the coefficients of the two fixed fourth-order tensors
+      std::array< std::array< T, 3 >, 3 > cDyads    = f.d2f;
+      T                                   cInverse  = T( 0. );
+      T                                   cIdentity = T( 0. );
+      for ( std::size_t a = 0; a < 3; a++ ) {
+        for ( std::size_t b = 0; b < 3; b++ )
+          for ( std::size_t c = 0; c < 3; c++ )
+            cDyads[b][c] += f.df[a] * inv.d2x_dCdC.dyads[a][b][c];
+        cInverse += f.df[a] * inv.d2x_dCdC.inverse[a];
+        cIdentity += f.df[a] * inv.d2x_dCdC.identity[a];
       }
-      else {
-        // sum_b d2f_ab dx_b/dC, so that the dyadic part needs one product per entry and invariant
-        std::array< Math::Tensors::FastorTensors::Tensor33t< T >, 3 > d2f_dx;
-        for ( std::size_t a = 0; a < 3; a++ )
-          for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ ) {
-              T sum = T( 0. );
-              for ( std::size_t b = 0; b < 3; b++ )
-                sum += f.d2f[a][b] * inv.dx_dC[b]( k, l );
-              d2f_dx[a]( k, l ) = sum;
-            }
-
-        Math::Tensors::FastorTensors::Tensor3333t< T > d2Psi_dCdC;
-        for ( int i = 0; i < 3; i++ )
-          for ( int j = 0; j < 3; j++ )
-            for ( int k = 0; k < 3; k++ )
-              for ( int l = 0; l < 3; l++ ) {
-                T sum = T( 0. );
-                for ( std::size_t a = 0; a < 3; a++ )
-                  sum += inv.dx_dC[a]( i, j ) * d2f_dx[a]( k, l ) + f.df[a] * inv.d2x_dCdC[a]( i, j, k, l );
-                d2Psi_dCdC( i, j, k, l ) = sum;
-              }
-
-        return std::tuple< T,
-                           Math::Tensors::FastorTensors::Tensor33t< T >,
-                           Math::Tensors::FastorTensors::Tensor3333t< T > >{ f.f, dPsi_dC, d2Psi_dCdC };
-      }
+      Detail::assembleFourthOrder( std::get< 2 >( result ), inv.dx_dC, inv.CInvT, cDyads, cInverse, cIdentity );
+      return result;
     }
   }
 

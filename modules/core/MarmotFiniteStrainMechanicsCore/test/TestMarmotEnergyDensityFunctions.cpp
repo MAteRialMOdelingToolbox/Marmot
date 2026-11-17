@@ -959,7 +959,8 @@ InvariantsOfAnyOrder< T > invariantsOfOrder( int order, const Tensor33t< T >& C 
     const auto inv = isochoric ? computeIsochoricInvariants< 2 >( C ) : computeInvariants< 2 >( C );
     res.x          = inv.x;
     res.dx_dC      = inv.dx_dC;
-    res.d2x_dCdC   = inv.d2x_dCdC;
+    for ( std::size_t a = 0; a < 3; a++ )
+      res.d2x_dCdC[a] = secondDerivative( inv, a );
   }
   return res;
 }
@@ -1146,6 +1147,39 @@ auto testVolumetricSecondOrderBulkModulus()
          get< 2 >( Volumetric::SecondOrder::DollSchweizerhofLogarithmicPotential( I, k ) ) );
 }
 
+// The compressible Mooney-Rivlin, Yeoh and Arruda-Boyce potentials sum their isochoric part and the Ogden
+// volumetric part as scalar functions of one set of invariants. They must equal the DecoupledPotential of the two
+// parts, which evaluates each part on its own, in the energy, the gradient and the Hessian.
+auto testCompressiblePotentialsEqualDecoupledParts()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C  = nonSymmetricC();
+  const double    D1 = 1e-3;
+
+  const auto check = [&]( const char* name, const auto& compressible, const auto& isochoricPart ) {
+    const std::tuple< double, Tensor33d, Tensor3333d >
+                 reference = DecoupledPotential( C, isochoricPart, [D1]( const auto& C_ ) {
+        return Volumetric::SecondOrder::OgdenPotential( C_, 2. / D1, -2. );
+      } );
+    const double scale     = 1. + std::abs( get< 0 >( reference ) );
+    throwExceptionOnFailure( checkIfEqual( get< 0 >( compressible ), get< 0 >( reference ), 1e-14 * scale ) &&
+                               checkIfEqual( get< 1 >( compressible ), get< 1 >( reference ), 1e-13 * scale ) &&
+                               checkIfEqual( get< 2 >( compressible ), get< 2 >( reference ), 1e-13 * scale ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " " << name << " != isochoric part + volumetric part." );
+  };
+
+  check( "MooneyRivlinPotential", SecondOrder::MooneyRivlinPotential( C, 400., 100., D1 ), []( const auto& C_ ) {
+    return Isochoric::SecondOrder::MooneyRivlinPotential( C_, 400., 100. );
+  } );
+  check( "YeohPotential", SecondOrder::YeohPotential( C, 400., 100., 5., D1 ), []( const auto& C_ ) {
+    return Isochoric::SecondOrder::YeohPotential( C_, 400., 100., 5. );
+  } );
+  check( "ArrudaBoyce8ChainPotential",
+         SecondOrder::ArrudaBoyce8ChainPotential( C, 500., 2.5, D1 ),
+         []( const auto& C_ ) { return Isochoric::SecondOrder::ArrudaBoyce8ChainPotential( C_, 500., 2.5 ); } );
+}
+
 int main()
 {
   auto tests = std::vector<
@@ -1171,6 +1205,7 @@ int main()
                                testPenceGouPotentialBOverloadsAgree,
                                testSecondOrderPotentialsMatchFirstOrder,
                                testVolumetricSecondOrderBulkModulus,
+                               testCompressiblePotentialsEqualDecoupledParts,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
                                testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,

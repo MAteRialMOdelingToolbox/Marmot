@@ -416,6 +416,28 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
         U.d2f[iJ][iJ] = kappa / 2. * ( 1. / J + 1. / ( J * J ) );
       return U;
     }
+    /* Isochoric potential fBar: (Ibar1, Ibar2, J) -> ScalarDerivatives plus the Ogden volumetric potential with
+     * kappa = 2 / D1 and theta = -2, i.e. 1 / D1 ( ( J^2 - 1 ) / 2 - ln J ). Both parts are summed as scalar
+     * functions of one set of isochoric invariants, so C is processed once. */
+    template < int Order, bool UsesIbar2, typename T, typename ScalarFunction >
+    auto compressiblePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                const ScalarFunction&                               fBar,
+                                const double                                        D1 )
+    {
+      [[maybe_unused]] constexpr std::size_t iJ = Invariants::RightCauchyGreen::indexJ;
+
+      const auto inv = Invariants::RightCauchyGreen::computeIsochoricInvariants< Order >( C, UsesIbar2 );
+      ScalarDerivatives< T, Order >       f = fBar( inv.x );
+      const ScalarDerivatives< T, Order > U = ogdenVolumetric< Order >( inv.x[Invariants::RightCauchyGreen::indexJ],
+                                                                        2. / D1,
+                                                                        -2. );
+      f.f += U.f;
+      if constexpr ( Order >= 1 )
+        f.df[iJ] += U.df[iJ];
+      if constexpr ( Order >= 2 )
+        f.d2f[iJ][iJ] += U.d2f[iJ][iJ];
+      return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
+    }
   } // namespace Detail
   /** @endcond */
 
@@ -1446,10 +1468,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                            const double                                        C2,
                            const double                                        D1 )
   {
-    return DecoupledPotential(
+    return Detail::compressiblePotential< 0, true >(
       C,
-      [C1, C2]( const auto& Ct ) { return Isochoric::MooneyRivlinPotential( Ct, C1, C2 ); },
-      [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
+      [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 0 >( xBar, C1, C2 ); },
+      D1 );
   }
 
   /** @brief Yeoh hyperelastic energy density function.
@@ -1480,10 +1502,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                    const double                                        C3,
                    const double                                        D1 )
   {
-    return DecoupledPotential(
+    return Detail::compressiblePotential< 0, false >(
       C,
-      [C1, C2, C3]( const auto& Ct ) { return Isochoric::YeohPotential( Ct, C1, C2, C3 ); },
-      [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
+      [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 0 >( xBar, C1, C2, C3 ); },
+      D1 );
   }
 
   /** @brief Compressible Arruda-Boyce 8-chain hyperelastic energy density function, with the same volumetric term
@@ -1509,10 +1531,12 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                 const double                                        lambdaL,
                                 const double                                        D1 )
   {
-    return DecoupledPotential(
+    return Detail::compressiblePotential< 0, false >(
       C,
-      [mu, lambdaL]( const auto& Ct ) { return Isochoric::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL ); },
-      [D1]( const auto& Ct ) { return Volumetric::OgdenPotential( Ct, 2. / D1, -2. ); } );
+      [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+        return Detail::arrudaBoyce8ChainIsochoric< 0 >( xBar, mu, lambdaL );
+      },
+      D1 );
   }
 
   /** @cond */
@@ -1605,10 +1629,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C2,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 1, true >(
         C,
-        [C1, C2]( const auto& Ct ) { return Isochoric::FirstOrder::MooneyRivlinPotential( Ct, C1, C2 ); },
-        [D1]( const auto& Ct ) { return Volumetric::FirstOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 1 >( xBar, C1, C2 ); },
+        D1 );
     }
 
     /** @brief Yeoh potential (see the plain
@@ -1631,10 +1655,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C3,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 1, false >(
         C,
-        [C1, C2, C3]( const auto& Ct ) { return Isochoric::FirstOrder::YeohPotential( Ct, C1, C2, C3 ); },
-        [D1]( const auto& Ct ) { return Volumetric::FirstOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 1 >( xBar, C1, C2, C3 ); },
+        D1 );
     }
 
     /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
@@ -1655,12 +1679,12 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        lambdaL,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 1, false >(
         C,
-        [mu, lambdaL]( const auto& Ct ) {
-          return Isochoric::FirstOrder::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL );
+        [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+          return Detail::arrudaBoyce8ChainIsochoric< 1 >( xBar, mu, lambdaL );
         },
-        [D1]( const auto& Ct ) { return Volumetric::FirstOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        D1 );
     }
   } // namespace FirstOrder
 
@@ -1684,10 +1708,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C2,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 2, true >(
         C,
-        [C1, C2]( const auto& Ct ) { return Isochoric::SecondOrder::MooneyRivlinPotential( Ct, C1, C2 ); },
-        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        [C1, C2]( const std::array< T, 3 >& xBar ) { return Detail::mooneyRivlinIsochoric< 2 >( xBar, C1, C2 ); },
+        D1 );
     }
 
     /** @brief Yeoh potential (see the plain
@@ -1710,10 +1734,10 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        C3,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 2, false >(
         C,
-        [C1, C2, C3]( const auto& Ct ) { return Isochoric::SecondOrder::YeohPotential( Ct, C1, C2, C3 ); },
-        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        [C1, C2, C3]( const std::array< T, 3 >& xBar ) { return Detail::yeohIsochoric< 2 >( xBar, C1, C2, C3 ); },
+        D1 );
     }
 
     /** @brief Compressible Arruda-Boyce 8-chain potential (see the plain
@@ -1734,12 +1758,12 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       const double                                        lambdaL,
       const double                                        D1 )
     {
-      return DecoupledPotential(
+      return Detail::compressiblePotential< 2, false >(
         C,
-        [mu, lambdaL]( const auto& Ct ) {
-          return Isochoric::SecondOrder::ArrudaBoyce8ChainPotential( Ct, mu, lambdaL );
+        [mu, lambdaL]( const std::array< T, 3 >& xBar ) {
+          return Detail::arrudaBoyce8ChainIsochoric< 2 >( xBar, mu, lambdaL );
         },
-        [D1]( const auto& Ct ) { return Volumetric::SecondOrder::OgdenPotential( Ct, 2. / D1, -2. ); } );
+        D1 );
     }
 
     /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
