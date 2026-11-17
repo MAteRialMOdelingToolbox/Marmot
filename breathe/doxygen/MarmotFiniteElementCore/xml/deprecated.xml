@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="deprecated" kind="page">
+    <compoundname>deprecated</compoundname>
+    <title>Deprecated List</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><variablelist>
+<varlistentry><term>Member <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a3e8715c47360084aa06b500e7a7846b5" kindref="member">Marmot::Discretizations::Elements::BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements</ref>  ()</term></varlistentry>
+<listitem><para><anchor id="deprecated_1_deprecated000001"/>Construct the boundary element with <computeroutput>axisymmetric</computeroutput> = true and use <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1abc027b63598e4b76987d1350b7918701" kindref="member">computeSurfaceNormalVectorialLoadVector()</ref>. </para>
+</listitem>
+</variablelist>
+</para>
+    </detaileddescription>
+    <location file="deprecated"/>
+  </compounddef>
+</doxygen>

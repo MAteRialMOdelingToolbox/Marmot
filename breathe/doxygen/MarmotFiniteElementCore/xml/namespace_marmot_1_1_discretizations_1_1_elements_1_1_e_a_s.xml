@@ -142,7 +142,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>EAS interpolation matrix <formula id="70">$\mathbf{M}$</formula>. </para>
+<simplesect kind="return"><para>EAS interpolation matrix <formula id="72">$\mathbf{M}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

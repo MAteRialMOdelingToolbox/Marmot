@@ -21,6 +21,77 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_element_8h_1ac25b14e5334b3c7d2fef10bba888c57d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a759a02da31864400f2363841d4816ba3" kindref="member">voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kindref="member">nDim</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, voigtSize, nNodes *nDim &gt; Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::BFromPlanarB</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, Spatial2D::voigtSize, nNodes *nDim &gt; &amp;BPlanar, const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;N, double r)</argsstring>
+        <name>BFromPlanarB</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::BFromPlanarB</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a00d87dd8f7461ccd909d262371df39e6" kindref="member">Spatial2D::voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kindref="member">nDim</ref> &gt; &amp;</type>
+          <declname>BPlanar</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <briefdescription>
+<para>Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows (11, 22, 12), the hoop row is <formula id="70">$N_i / r$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">BPlanar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Planar B-operator (3 × 2 nNodes), see <ref refid="_marmot_finite_element_8h_1a334c68ff3b01a1dc3bb36a898de9363e" kindref="member">Spatial2D::B</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (1 × nNodes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Radius of the point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>B-operator matrix of size 4 × (2 * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="361" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="361" bodyend="372"/>
+      </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1af287147dc753792af664c2dbfc6cd880" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
@@ -47,7 +118,7 @@
           <declname>x_gauss</declname>
         </param>
         <briefdescription>
-<para>Compute the axisymmetric B-operator from physical derivatives. </para>
+<para>Compute the axisymmetric B-operator from physical derivatives, see <ref refid="_marmot_finite_element_8h_1ac25b14e5334b3c7d2fef10bba888c57d" kindref="member">BFromPlanarB()</ref>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -90,7 +161,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="360" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="360" bodyend="374"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="383" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="383" bodyend="388"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

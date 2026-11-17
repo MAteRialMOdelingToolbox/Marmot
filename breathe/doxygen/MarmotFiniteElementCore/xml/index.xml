@@ -2,6 +2,7 @@
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
   <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element" kind="class"><name>Marmot::Discretizations::Elements::BoundaryElement</name>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a54b638b229bf64d6ddbd19c643ab24ec" kind="variable"><name>nDim</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1ae477243ccdec2f9caf5cdcb4842a67a3" kind="variable"><name>axisymmetric</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a4a3dadd9ee59df86786e0cfd82d808ba" kind="variable"><name>boundaryShape</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a9a146ab02b4645585327b2dcec9dac61" kind="variable"><name>nNodes</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a4383f15e9298c1dd3510b814ba5da71c" kind="variable"><name>nParentCoordinates</name></member>
@@ -9,7 +10,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a48f7da83b1533266e32e9c8045da92d8" kind="variable"><name>mapBoundaryToParentScalar</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1ac6f58b0d66db5af8eba4ae1d28816ad5" kind="variable"><name>mapBoundaryToParentVectorial</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a5a9d3964011899492bb19bbfdec6e49a" kind="variable"><name>coordinates</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a769980c00677bf956e02981c3a009a40" kind="function"><name>BoundaryElement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a1350aca5001afd981703c1e77ce783b2" kind="function"><name>BoundaryElement</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a7bc31a8475392dad18416bf8625f2472" kind="function"><name>computeScalarLoadVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1a111d60ec628cfcb224571cbf34e7bcb2" kind="function"><name>computeDScalarLoadVector_dCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1abc027b63598e4b76987d1350b7918701" kind="function"><name>computeSurfaceNormalVectorialLoadVector</name></member>
@@ -26,6 +27,7 @@
   </compound>
   <compound refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point" kind="struct"><name>Marmot::Discretizations::Elements::BoundaryElement::BoundaryElementQuadraturePoint</name>
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1af069b69ed91f8ca0b177e2ff7170e93e" kind="variable"><name>weight</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a69bccadf5752237f1727c61a2a7a702c" kind="variable"><name>ringFactor</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1ac25f32cc47217118f2d12826ddf2824e" kind="variable"><name>JxW</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a35c01f3c6ad1519cae9b4dae06b3739a" kind="variable"><name>xi</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element_1_1_boundary_element_quadrature_point_1a9630414fc4d5ee1c4ca56a496ee3d902" kind="variable"><name>N</name></member>
@@ -370,6 +372,7 @@
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d_1_1_axisymmetric" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric</name>
     <member refid="_marmot_finite_element_8h_1a759a02da31864400f2363841d4816ba3" kind="variable"><name>voigtSize</name></member>
+    <member refid="_marmot_finite_element_8h_1ac25b14e5334b3c7d2fef10bba888c57d" kind="function"><name>BFromPlanarB</name></member>
     <member refid="_marmot_finite_element_8h_1af287147dc753792af664c2dbfc6cd880" kind="function"><name>B</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d_1_1_quad4" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial2D::Quad4</name>
@@ -471,6 +474,8 @@
   <compound refid="_marmot_mass_lumping_8h" kind="file"><name>MarmotMassLumping.h</name>
   </compound>
   <compound refid="_marmot_small_strain_kinematics_8h" kind="file"><name>MarmotSmallStrainKinematics.h</name>
+  </compound>
+  <compound refid="deprecated" kind="page"><name>deprecated</name>
   </compound>
   <compound refid="dir_6d4da112a1331882b0b6514a341190a0" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core</name>
   </compound>

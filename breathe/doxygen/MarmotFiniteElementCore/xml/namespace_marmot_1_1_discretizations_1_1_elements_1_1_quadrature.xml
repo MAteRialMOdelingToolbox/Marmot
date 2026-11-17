@@ -44,7 +44,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="761" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="761" bodyend="768"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="787" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="787" bodyend="794"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -105,7 +105,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="814" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="814" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="840" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="840" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1aa11069fdccac8dac9a18b05f42996f29" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
@@ -136,7 +136,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="839" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="839" bodyend="842"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="865" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="865" bodyend="868"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a02dd46aedcc17d55bd77b718e73dc365" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
@@ -167,7 +167,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="851" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="851" bodyend="854"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="877" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="877" bodyend="880"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a8ad0dfe0f6369af4fc3c42f613027e9f" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_rule" kindref="compound">QuadratureRule</ref></type>
@@ -198,7 +198,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="861" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="861" bodyend="864"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="887" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="887" bodyend="890"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a19945e9a4ca3fe5cdd84aa2ce56af67f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt; &amp;</type>
@@ -250,7 +250,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="875" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="875" declcolumn="23"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="901" column="23" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="901" declcolumn="23"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_finite_element_8h_1a2e98afe11b4aaf32e9ca67484403d975" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>const std::vector&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info" kindref="compound">QuadraturePointInfo</ref> &gt; &amp;</type>
@@ -302,13 +302,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="885" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="885" bodyend="888"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="911" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="911" bodyend="914"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="748" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="774" column="3"/>
   </compounddef>
 </doxygen>
