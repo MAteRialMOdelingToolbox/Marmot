@@ -1,0 +1,26 @@
+type       backend        mul      div  sqrt(x*x)   exp(log)   pow(pow)   [ns per chained op]
+dual1      autodiff      2.55     2.56       6.25      16.80      38.90
+dual1      boost         3.52     4.98      11.07      19.01      45.66
+dual1      sacado        3.13     6.02       6.24      19.20      56.20
+dual1      ceres         2.96     2.95       6.41      16.76      42.30
+dual1      stan          2.56     6.06       6.29      17.33      40.88
+dual1      tinyad        2.97     6.04       6.21      16.83      39.84
+dual2      autodiff      3.77     3.76       6.55      16.97      40.08
+dual2      boost         5.04     5.92      22.69      73.70      65.12
+dual2      sacado        3.73     8.19       8.07      19.38     109.41
+dual2      ceres         3.56     3.62       6.36      16.94      88.16
+dual2      stan          3.16     8.38       6.51      17.40      83.94
+dual3      autodiff      4.37    11.19      25.95      18.09      54.21
+dual3      boost         4.81     7.86      33.56     382.11      93.69
+dual3      sacado        4.36    17.10      29.79      20.57     233.27
+dual3      ceres         7.22     6.56      16.29      17.50     174.29
+dual3      stan          3.99    13.55      14.87      17.61     166.23
+taylor2    autodiff      4.15     5.00      10.30      17.12      36.36
+taylor2    boost         4.31     5.13      19.27      21.38      63.05
+taylor2    sacado       23.93    27.02      46.54      51.60     148.94
+taylor5    autodiff      6.12    38.99      40.30      17.78      55.31
+taylor5    boost         6.84     8.22      34.85     122.20     111.75
+taylor5    sacado       28.78    49.08      60.16      71.56     192.63
+taylor7    autodiff     18.03    47.32      67.53      61.93     122.46
+taylor7    boost         9.38    15.71      62.22     214.01     154.72
+taylor7    sacado       31.82    63.18      81.27     101.35     253.33

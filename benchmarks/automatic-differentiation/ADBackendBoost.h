@@ -56,10 +56,12 @@ namespace ADBench::BoostDetail {
 namespace ADBench {
 
   struct BoostBackend {
-    static constexpr const char* name = "boost";
-    static constexpr bool        hasTaylor     = true;
-    static constexpr bool        hasVectorMode = false;
-    static constexpr int         maxOrder      = 3;
+    static constexpr const char* name           = "boost";
+    static constexpr bool        hasReverseMode = false;
+    static constexpr bool        hasTaylor      = true;
+    static constexpr bool        hasVectorMode  = false;
+    static constexpr int         maxScalarOrder = 3;
+    static constexpr int         maxVectorOrder = 0;
 
     template < typename S >
     static S constant( double v )
@@ -67,48 +69,46 @@ namespace ADBench {
       return S( v );
     }
 
+    template < std::size_t N >
+    using HyperDual = typename BoostDetail::detail::HyperDualImpl< N >::type;
 
-  template < std::size_t N >
-  using HyperDual = typename BoostDetail::detail::HyperDualImpl< N >::type;
+    template < std::size_t N >
+    using Taylor = boost::math::differentiation::detail::fvar< double, N >;
 
-  template < std::size_t N >
-  using Taylor = boost::math::differentiation::detail::fvar< double, N >;
+    template < std::size_t level, typename S >
+    static void seed( S& x, double v )
+    {
+      constexpr std::size_t N = BoostDetail::detail::Depth< S >::value;
+      static_assert( level >= 1 && level <= N );
+      BoostDetail::detail::coefficients( x )[std::size_t( 1 ) << ( N - level )] = v;
+    }
 
-  template < std::size_t level, typename S >
-  static void seed( S& x, double v )
-  {
-    constexpr std::size_t N = BoostDetail::detail::Depth< S >::value;
-    static_assert( level >= 1 && level <= N );
-    BoostDetail::detail::coefficients( x )[std::size_t( 1 ) << ( N - level )] = v;
-  }
+    template < std::size_t level, typename S >
+    static double derivative( const S& x )
+    {
+      constexpr std::size_t N = BoostDetail::detail::Depth< S >::value;
+      static_assert( level >= 1 && level <= N );
+      std::size_t idx = 0;
+      for ( std::size_t i = 1; i <= level; ++i )
+        idx += std::size_t( 1 ) << ( N - i );
+      return BoostDetail::detail::coefficients( x )[idx];
+    }
 
-  template < std::size_t level, typename S >
-  static double derivative( const S& x )
-  {
-    constexpr std::size_t N = BoostDetail::detail::Depth< S >::value;
-    static_assert( level >= 1 && level <= N );
-    std::size_t idx = 0;
-    for ( std::size_t i = 1; i <= level; ++i )
-      idx += std::size_t( 1 ) << ( N - i );
-    return BoostDetail::detail::coefficients( x )[idx];
-  }
+    template < typename S >
+    static double value( const S& x )
+    {
+      return BoostDetail::detail::coefficients( x )[0];
+    }
 
-  template < typename S >
-  static double value( const S& x )
-  {
-    return BoostDetail::detail::coefficients( x )[0];
-  }
-
-  template < std::size_t N, typename F >
-  static std::array< double, N + 1 > taylorDerivatives( const F& f, double x )
-  {
-    const Taylor< N >           y = f( boost::math::differentiation::make_fvar< double, N >( x ) );
-    std::array< double, N + 1 > out;
-    for ( std::size_t i = 0; i <= N; ++i )
-      out[i] = y.derivative( i );
-    return out;
-  }
-
+    template < std::size_t N, typename F >
+    static std::array< double, N + 1 > taylorDerivatives( const F& f, double x )
+    {
+      const Taylor< N >           y = f( boost::math::differentiation::make_fvar< double, N >( x ) );
+      std::array< double, N + 1 > out;
+      for ( std::size_t i = 0; i <= N; ++i )
+        out[i] = y.derivative( i );
+      return out;
+    }
   };
 
 } // namespace ADBench
@@ -120,9 +120,17 @@ namespace Eigen {
   struct NumTraits< boost::math::differentiation::detail::fvar< R, O > > : NumTraits< double > {
     using Real       = boost::math::differentiation::detail::fvar< R, O >;
     using NonInteger = Real;
-    using Literal    = double; // not fvar: its unconstrained converting ctor would make Eigen treat any matrix as a scalar
-    using Nested     = Real;
-    enum { IsComplex = 0, IsInteger = 0, IsSigned = 1, RequireInitialization = 1, ReadCost = 1, AddCost = 3, MulCost = 3 };
+    using Literal = double; // not fvar: its unconstrained converting ctor would make Eigen treat any matrix as a scalar
+    using Nested  = Real;
+    enum {
+      IsComplex             = 0,
+      IsInteger             = 0,
+      IsSigned              = 1,
+      RequireInitialization = 1,
+      ReadCost              = 1,
+      AddCost               = 3,
+      MulCost               = 3
+    };
   };
 
   template < typename R, std::size_t O, typename BinOp >

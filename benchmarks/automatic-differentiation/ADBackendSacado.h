@@ -48,10 +48,12 @@ namespace ADBench {
   } // namespace SacadoDetail
 
   struct SacadoBackend : NestedFadOps< SacadoDetail::Access > {
-    static constexpr const char* name          = "sacado";
-    static constexpr bool        hasTaylor     = true;
-    static constexpr bool        hasVectorMode = true;
-    static constexpr int         maxOrder      = 3;
+    static constexpr const char* name           = "sacado";
+    static constexpr bool        hasReverseMode = false;
+    static constexpr bool        hasTaylor      = true;
+    static constexpr bool        hasVectorMode  = true;
+    static constexpr int         maxScalarOrder = 3;
+    static constexpr int         maxVectorOrder = 3;
 
     template < std::size_t N >
     using HyperDual = typename SacadoDetail::VecDualImpl< 1, N >::type;
@@ -73,7 +75,7 @@ namespace ADBench {
     static std::array< double, N + 1 > taylorDerivatives( const F& f, double x )
     {
       Sacado::Tay::Taylor< double > x_{ int( N ), x };
-      x_.fastAccessCoeff( 1 ) = 1.0;
+      x_.fastAccessCoeff( 1 )               = 1.0;
       const Sacado::Tay::Taylor< double > y = f( x_ );
       std::array< double, N + 1 >         out;
       double                              fact = 1.;
@@ -95,7 +97,15 @@ namespace Eigen {
     using NonInteger = Real;
     using Literal    = double;
     using Nested     = Real;
-    enum { IsComplex = 0, IsInteger = 0, IsSigned = 1, RequireInitialization = 1, ReadCost = 1, AddCost = 3, MulCost = 3 };
+    enum {
+      IsComplex             = 0,
+      IsInteger             = 0,
+      IsSigned              = 1,
+      RequireInitialization = 1,
+      ReadCost              = 1,
+      AddCost               = 3,
+      MulCost               = 3
+    };
   };
   template < typename T, int N, typename BinOp >
   struct ScalarBinaryOpTraits< Sacado::Fad::SFad< T, N >, double, BinOp > {

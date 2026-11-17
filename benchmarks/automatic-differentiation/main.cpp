@@ -1,4 +1,5 @@
-// Compares forward-mode AD backends (autodiff, Boost.Math, Sacado, Ceres Jet) on Marmot's AD code paths:
+// Compares AD backends (autodiff, Boost.Math, Sacado, Ceres Jet, Stan, TinyAD, Adept) on Marmot's
+// AD code paths:
 // first checks that every backend reproduces autodiff's derivatives, then times each kernel.
 #include "ADSuite.h"
 #include <algorithm>
@@ -59,7 +60,13 @@ int main( int argc, char** argv )
   const double minBatch = argc > 2 ? std::atof( argv[2] ) : 0.05;
 
   std::vector< Suite > suites;
-  for ( auto make : { makeAutodiffSuites, makeBoostSuites, makeSacadoSuites, makeCeresSuites } )
+  for ( auto make : { makeAutodiffSuites,
+                      makeBoostSuites,
+                      makeSacadoSuites,
+                      makeCeresSuites,
+                      makeStanSuites,
+                      makeTinyADSuites,
+                      makeAdeptSuites } )
     for ( auto& s : make() )
       suites.push_back( std::move( s ) );
 
@@ -67,35 +74,40 @@ int main( int argc, char** argv )
 
   // id -> label -> (ns, relerr)
   std::map< std::string, std::map< std::string, std::pair< double, double > > > results;
-  bool                                                                           ok = true;
+  bool                                                                          ok = true;
   for ( const Case& ref : reference.cases ) {
     const std::vector< double > expected = ref.evaluate();
     for ( const Suite& s : suites )
       for ( const Case& c : s.cases )
         if ( c.id == ref.id ) {
-          const double err = maxRelativeDifference( expected, c.evaluate() );
-          ok               = ok && err < 1e-10;
+          const double err         = maxRelativeDifference( expected, c.evaluate() );
+          ok                       = ok && err < 1e-10;
           results[ref.id][s.label] = { timeCase( c, batches, minBatch ), err };
         }
   }
 
+  // one row per backend and mode, one column per kernel
   auto printTable = [&]( const char* title, auto cell ) {
-    std::printf( "\n%s\n%-42s", title, "kernel" );
-    for ( const Suite& s : suites )
-      std::printf( " %11s", s.label.c_str() );
+    std::printf( "\n%s\n%-12s", title, "backend" );
+    for ( const Case& ref : reference.cases )
+      std::printf( " %10s", ref.id.c_str() );
     std::printf( "\n" );
-    for ( const Case& ref : reference.cases ) {
-      std::printf( "%-42s", ref.name.c_str() );
-      for ( const Suite& s : suites ) {
+    for ( const Suite& s : suites ) {
+      std::printf( "%-12s", s.label.c_str() );
+      for ( const Case& ref : reference.cases ) {
         auto it = results[ref.id].find( s.label );
         if ( it == results[ref.id].end() )
-          std::printf( " %11s", "n/a" );
+          std::printf( " %10s", "n/a" );
         else
-          std::printf( " %11s", cell( it->second, results[ref.id][reference.label] ).c_str() );
+          std::printf( " %10s", cell( it->second, results[ref.id][reference.label] ).c_str() );
       }
       std::printf( "\n" );
     }
   };
+
+  std::printf( "Kernels:\n" );
+  for ( const Case& ref : reference.cases )
+    std::printf( "  %-10s %s\n", ref.id.c_str(), ref.name.c_str() );
 
   char buf[64];
   printTable( "Median time per kernel call [ns]", [&]( auto r, auto ) {

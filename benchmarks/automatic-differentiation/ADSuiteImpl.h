@@ -18,7 +18,10 @@ namespace ADBench {
       for ( int i = 0; i < m.size(); ++i )
         out.push_back( m.derived().data()[i] );
     }
-    inline void append( std::vector< double >& out, double d ) { out.push_back( d ); }
+    inline void append( std::vector< double >& out, double d )
+    {
+      out.push_back( d );
+    }
     inline void append( std::vector< double >& out, const std::vector< double >& c )
     {
       out.insert( out.end(), c.begin(), c.end() );
@@ -100,38 +103,65 @@ namespace ADBench {
   std::vector< Suite > makeSuites()
   {
     std::vector< Suite > suites;
-
-    Suite scalar{ B::name, {} };
-    auto  add = [&]( Suite& s, const std::string& id, std::function< std::vector< double >() > f ) {
+    auto                 add = []( Suite& s, const std::string& id, std::function< std::vector< double >() > f ) {
       s.cases.push_back( { id, nameOf( id ), std::move( f ) } );
     };
 
-    add( scalar, "tangent", [] { return flattenTuple( kernelFiniteStrainTangent< B >( testDeformationGradient() ) ); } );
-    add( scalar, "hypoJ2", [] {
-      return flattenTuple( kernelHypoElasticJ2< B >( testStressOld(), testStrainIncrement() ) );
-    } );
-    add( scalar, "hessian", [] { return flattenTuple( kernelEnergyHessian< B >( testRightCauchyGreen() ) ); } );
-    if constexpr ( B::maxOrder >= 3 )
-      add( scalar, "third", [] { return flattenTuple( kernelEnergyThirdDerivative< B >( testRightCauchyGreen() ) ); } );
-    add( scalar, "phasefield", [] { return flatten( kernelPhaseFieldDegradation< B >( 0.35 ) ); } );
-    if constexpr ( B::hasTaylor ) {
-      add( scalar, "b4", [] { return flatten( kernelB4DryingKelvinModuli< B >() ); } );
-      add( scalar, "powerlaw", [] { return flatten( kernelPowerLawKelvinModuli< B >() ); } );
+    // scalar mode: one direction per pass and nesting level, the way Marmot works today
+    if constexpr ( B::maxScalarOrder >= 1 ) {
+      Suite scalar{ B::name, {} };
+      add( scalar, "tangent", [] {
+        return flattenTuple( kernelFiniteStrainTangent< B >( testDeformationGradient() ) );
+      } );
+      add( scalar, "hypoJ2", [] {
+        return flattenTuple( kernelHypoElasticJ2< B >( testStressOld(), testStrainIncrement() ) );
+      } );
+      if constexpr ( B::maxScalarOrder >= 2 ) {
+        add( scalar, "hessian", [] { return flattenTuple( kernelEnergyHessian< B >( testRightCauchyGreen() ) ); } );
+      }
+      if constexpr ( B::maxScalarOrder >= 3 ) {
+        add( scalar, "third", [] {
+          return flattenTuple( kernelEnergyThirdDerivative< B >( testRightCauchyGreen() ) );
+        } );
+      }
+      if constexpr ( B::maxScalarOrder >= 2 ) {
+        add( scalar, "phasefield", [] { return flatten( kernelPhaseFieldDegradation< B >( 0.35 ) ); } );
+      }
+      if constexpr ( B::hasTaylor ) {
+        add( scalar, "b4", [] { return flatten( kernelB4DryingKelvinModuli< B >() ); } );
+        add( scalar, "powerlaw", [] { return flatten( kernelPowerLawKelvinModuli< B >() ); } );
+      }
+      suites.push_back( std::move( scalar ) );
     }
-    suites.push_back( std::move( scalar ) );
 
+    // vector mode: all directions in one pass
     if constexpr ( B::hasVectorMode ) {
       Suite vec{ std::string( B::name ) + "-vec", {} };
-      add( vec, "tangent", [] { return flattenTuple( kernelFiniteStrainTangentVector< B >( testDeformationGradient() ) ); } );
+      add( vec, "tangent", [] {
+        return flattenTuple( kernelFiniteStrainTangentVector< B >( testDeformationGradient() ) );
+      } );
       add( vec, "hypoJ2", [] {
         return flattenTuple( kernelHypoElasticJ2Vector< B >( testStressOld(), testStrainIncrement() ) );
       } );
-      add( vec, "hessian", [] { return flattenTuple( kernelEnergyHessianVector< B >( testRightCauchyGreen() ) ); } );
-      if constexpr ( B::maxOrder >= 3 )
+      if constexpr ( B::maxVectorOrder >= 2 ) {
+        add( vec, "hessian", [] { return flattenTuple( kernelEnergyHessianVector< B >( testRightCauchyGreen() ) ); } );
+      }
+      if constexpr ( B::maxVectorOrder >= 3 ) {
         add( vec, "third", [] {
           return flattenTuple( kernelEnergyThirdDerivativeVector< B >( testRightCauchyGreen() ) );
         } );
+      }
       suites.push_back( std::move( vec ) );
+    }
+
+    // reverse mode (taped): first-order Jacobians from one recording
+    if constexpr ( B::hasReverseMode ) {
+      Suite rev{ std::string( B::name ) + "-rev", {} };
+      if constexpr ( B::reverseFastorEinsumIsCorrect ) {
+        add( rev, "tangent", [] { return flattenTuple( B::finiteStrainTangent( testDeformationGradient() ) ); } );
+      }
+      add( rev, "hypoJ2", [] { return flattenTuple( B::hypoElasticJ2( testStressOld(), testStrainIncrement() ) ); } );
+      suites.push_back( std::move( rev ) );
     }
     return suites;
   }

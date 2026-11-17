@@ -3,6 +3,8 @@
 #include "ADBackendBoost.h"
 #include "ADBackendCeres.h"
 #include "ADBackendSacado.h"
+#include "ADBackendStan.h"
+#include "ADBackendTinyAD.h"
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -36,18 +38,29 @@ namespace {
     double tSqrt = timeOp< S >( [&]( const S& x ) -> S { return sqrt( x * x ); }, x0 );
     double tLog  = timeOp< S >( [&]( const S& x ) -> S { return exp( log( x ) ); }, x0 );
     double tPow  = timeOp< S >( [&]( const S& x ) -> S { return pow( pow( x, 0.75 ), 1. / 0.75 ); }, x0 );
-    std::printf( "%-10s %-9s %8.2f %8.2f %10.2f %10.2f %10.2f\n", type.c_str(), backend, tMul, tDiv, tSqrt, tLog, tPow );
+    std::printf( "%-10s %-9s %8.2f %8.2f %10.2f %10.2f %10.2f\n",
+                 type.c_str(),
+                 backend,
+                 tMul,
+                 tDiv,
+                 tSqrt,
+                 tLog,
+                 tPow );
   }
 
   template < typename B, std::size_t N >
   void hyperDualRow()
   {
-    using S = typename B::template HyperDual< N >;
-    S x     = B::template constant< S >( 1.3 );
-    B::template seed< 1 >( x, 1.0 );
-    if constexpr ( N > 1 )
-      B::template seed< N >( x, 1.0 );
-    row( "dual" + std::to_string( N ), B::name, x );
+    if constexpr ( B::maxScalarOrder < int( N ) )
+      return;
+    else {
+      using S = typename B::template HyperDual< N >;
+      S x     = B::template constant< S >( 1.3 );
+      B::template seed< 1 >( x, 1.0 );
+      if constexpr ( N > 1 )
+        B::template seed< N >( x, 1.0 );
+      row( "dual" + std::to_string( N ), B::name, x );
+    }
   }
 
   template < std::size_t N >
@@ -57,6 +70,8 @@ namespace {
     hyperDualRow< BoostBackend, N >();
     hyperDualRow< SacadoBackend, N >();
     hyperDualRow< CeresBackend, N >();
+    hyperDualRow< StanBackend, N >();
+    hyperDualRow< TinyADBackend, N >();
   }
 
   template < std::size_t N >
@@ -76,8 +91,14 @@ namespace {
 
 int main()
 {
-  std::printf( "%-10s %-9s %8s %8s %10s %10s %10s   [ns per chained op]\n", "type", "backend", "mul", "div",
-               "sqrt(x*x)", "exp(log)", "pow(pow)" );
+  std::printf( "%-10s %-9s %8s %8s %10s %10s %10s   [ns per chained op]\n",
+               "type",
+               "backend",
+               "mul",
+               "div",
+               "sqrt(x*x)",
+               "exp(log)",
+               "pow(pow)" );
   hyperDualRows< 1 >();
   hyperDualRows< 2 >();
   hyperDualRows< 3 >();

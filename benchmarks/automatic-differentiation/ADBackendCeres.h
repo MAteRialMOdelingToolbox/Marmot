@@ -56,10 +56,12 @@ namespace ADBench {
   } // namespace CeresDetail
 
   struct CeresBackend : NestedFadOps< CeresDetail::Access > {
-    static constexpr const char* name          = "ceres";
-    static constexpr bool        hasTaylor     = false;
-    static constexpr bool        hasVectorMode = true;
-    static constexpr int         maxOrder      = 3; // needs the patched jet.h, see ceres-2.2.0-jet-fastor.patch
+    static constexpr const char* name           = "ceres";
+    static constexpr bool        hasReverseMode = false;
+    static constexpr bool        hasTaylor      = false;
+    static constexpr bool        hasVectorMode  = true;
+    static constexpr int         maxScalarOrder = 3;
+    static constexpr int         maxVectorOrder = 3; // needs the patched jet.h, see ceres-2.2.0-jet-fastor.patch
 
     template < std::size_t N >
     using HyperDual = typename CeresDetail::VecDualImpl< 1, N >::type;
@@ -82,19 +84,19 @@ namespace ADBench {
 // ceres::Jet<T, N> only defines scalar arithmetic with its own T. For nested Jets (T = Jet<...>) that rules out
 // expressions like `K / 8. * J` that Marmot's templates use throughout, so add the double overloads (found by ADL).
 namespace ceres {
-#define MARMOT_JET_DOUBLE_OP( OP )                                                                                    \
-  template < typename T, int N, std::enable_if_t< !std::is_arithmetic_v< T >, int > = 0 >                             \
-  inline Jet< T, N > operator OP( const Jet< T, N >& f, double s )                                                    \
-  {                                                                                                                   \
-    return f OP ADBench::CeresDetail::constant< T >( s );                                                             \
-  }                                                                                                                   \
-  template < typename T, int N, std::enable_if_t< !std::is_arithmetic_v< T >, int > = 0 >                             \
-  inline Jet< T, N > operator OP( double s, const Jet< T, N >& f )                                                    \
-  {                                                                                                                   \
-    return ADBench::CeresDetail::constant< T >( s ) OP f;                                                             \
+#define MARMOT_JET_DOUBLE_OP( OP )                                                                                     \
+  template < typename T, int N, std::enable_if_t< !std::is_arithmetic_v< T >, int > = 0 >                              \
+  inline Jet< T, N > operator OP( const Jet< T, N >& f, double s )                                                     \
+  {                                                                                                                    \
+    return f OP ADBench::CeresDetail::constant< T >( s );                                                              \
+  }                                                                                                                    \
+  template < typename T, int N, std::enable_if_t< !std::is_arithmetic_v< T >, int > = 0 >                              \
+  inline Jet< T, N > operator OP( double s, const Jet< T, N >& f )                                                     \
+  {                                                                                                                    \
+    return ADBench::CeresDetail::constant< T >( s ) OP f;                                                              \
   }
-  MARMOT_JET_DOUBLE_OP( + )
-  MARMOT_JET_DOUBLE_OP( - )
+  MARMOT_JET_DOUBLE_OP( +)
+  MARMOT_JET_DOUBLE_OP( -)
   MARMOT_JET_DOUBLE_OP( * )
   MARMOT_JET_DOUBLE_OP( / )
 #undef MARMOT_JET_DOUBLE_OP
