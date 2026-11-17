@@ -1,3 +1,4 @@
+#include "BeamTestUtilities.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -49,26 +50,11 @@ namespace {
     return { 0., 0., 1., J, 4., -5., -2.5, 50., 5., -2.5, 50., -5., 2.5, 50., 5., 2.5, 50. };
   }
 
-  /// an element with all its data (the element keeps pointers to them)
-  struct Beam {
-    std::unique_ptr< Element > el;
-    std::vector< double >      X, props, mat, stateVars;
-
-    Beam( const Type& t, std::vector< double > X_, std::vector< double > props_ )
-      : el( Marmot::Registry::ElementFactory::createElement( t.name, 1 ) ),
-        X( std::move( X_ ) ),
-        props( std::move( props_ ) ),
-        mat( linearElastic )
-    {
-      el->assignNodeCoordinates( X.data() );
-      el->assignProperty( ElementProperties( props.data(), static_cast< int >( props.size() ) ) );
-      el->initializeYourself();
-      el->assignProperty( MaterialSection( "LINEARELASTIC", mat.data(), static_cast< int >( mat.size() ) ) );
-      stateVars.assign( el->getNumberOfRequiredStateVars(), 0.0 );
-      el->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
-      el->setInitialConditions( Element::MarmotMaterialInitialization, nullptr );
-    }
-  };
+  /// an element of type t with the linear elastic material (BeamTests::Beam keeps the data the element points to)
+  BeamTests::Beam beam( const Type& t, std::vector< double > X, std::vector< double > props )
+  {
+    return BeamTests::Beam( t.name, std::move( X ), std::move( props ), "LINEARELASTIC", linearElastic );
+  }
 
   template < class Exception >
   bool throws( const std::function< void() >& f )
@@ -88,12 +74,12 @@ namespace {
 void testInterface()
 {
   for ( const auto& t : types ) {
-    const std::vector< double > X1 = t.nDim == 2 ? std::vector< double >{ 1., 2. }
-                                                 : std::vector< double >{ 1., 2., 3. };
-    const std::vector< double > X2 = t.nDim == 2 ? std::vector< double >{ 61., 82. }
-                                                 : std::vector< double >{ 61., 82., 3. };
-    Beam                        b( t, nodes( t, X1, X2 ), properties( t.nDim ) );
-    Element&                    el          = *b.el;
+    const std::vector< double > X1          = t.nDim == 2 ? std::vector< double >{ 1., 2. }
+                                                          : std::vector< double >{ 1., 2., 3. };
+    const std::vector< double > X2          = t.nDim == 2 ? std::vector< double >{ 61., 82. }
+                                                          : std::vector< double >{ 61., 82., 3. };
+    auto                        b           = beam( t, nodes( t, X1, X2 ), properties( t.nDim ) );
+    Element&                    el          = *b.element;
     const int                   nDofPerNode = t.nDim == 2 ? 3 : 6, nDof = nDofPerNode * t.nNodes;
 
     throwExceptionOnFailure( el.getNNodes() == t.nNodes && el.getNSpatialDimensions() == t.nDim &&
@@ -211,7 +197,7 @@ void testInvalidInput()
                                                  : std::vector< double >{ 0., 0., 0. };
     const std::vector< double > X2 = t.nDim == 2 ? std::vector< double >{ 10., 0. }
                                                  : std::vector< double >{ 10., 0., 0. };
-    auto make = [&]( std::vector< double > X, std::vector< double > props ) { Beam b( t, X, props ); };
+    auto make = [&]( std::vector< double > X, std::vector< double > props ) { auto b = beam( t, X, props ); };
 
     // wrong number of properties
     auto wrong = properties( t.nDim );
@@ -245,12 +231,13 @@ void testCorotationalCutbacks()
 {
   {
     const Type      t = types[4]; // B2D2CR: the second node moved onto the first one
-    Beam            b( t, { 0., 0., 10., 0. }, properties( 2 ) );
+    auto            b = beam( t, { 0., 0., 10., 0. }, properties( 2 ) );
     Eigen::VectorXd U = Eigen::VectorXd::Zero( 6 ), P = Eigen::VectorXd::Zero( 6 );
     Eigen::MatrixXd K = Eigen::MatrixXd::Zero( 6, 6 );
     U( 3 )            = -10.;
-    throwExceptionOnFailure( throws< Marmot::Utilities::StressUpdateFailed >(
-                               [&]() { b.el->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 ); } ),
+    throwExceptionOnFailure( throws< Marmot::Utilities::StressUpdateFailed >( [&]() {
+                               b.element->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 );
+                             } ),
                              "B2D2CR: collapsed chord" );
   }
   {
@@ -258,12 +245,13 @@ void testCorotationalCutbacks()
     for ( int component : { 0, 2 } ) {
       // node 2 rotated by pi about x (twist: the co-rotated frame is undefined) or about z, the local y axis of this
       // section (bending: the local rotation reaches pi)
-      Beam            b( t, { 0., 0., 0., 10., 0., 0. }, properties( 3 ) );
+      auto            b = beam( t, { 0., 0., 0., 10., 0., 0. }, properties( 3 ) );
       Eigen::VectorXd U = Eigen::VectorXd::Zero( 12 ), P = Eigen::VectorXd::Zero( 12 );
       Eigen::MatrixXd K  = Eigen::MatrixXd::Zero( 12, 12 );
       U( 9 + component ) = std::numbers::pi;
-      throwExceptionOnFailure( throws< Marmot::Utilities::StressUpdateFailed >(
-                                 [&]() { b.el->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 ); } ),
+      throwExceptionOnFailure( throws< Marmot::Utilities::StressUpdateFailed >( [&]() {
+                                 b.element->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 );
+                               } ),
                                MakeString() << "B3D2CR: rotation by pi about axis " << component );
     }
   }
@@ -295,7 +283,7 @@ void testCallOrder()
     el->initializeYourself();
     el->setInitialConditions( Element::MarmotMaterialInitialization, nullptr );
 
-    Beam reference( t, X, props ); // initialized before the material section is assigned
+    auto reference = beam( t, X, props ); // initialized before the material section is assigned
     throwExceptionOnFailure( stateVars.size() == reference.stateVars.size(),
                              MakeString() << t.name << ": number of state variables " << stateVars.size() << " vs "
                                           << reference.stateVars.size() );
@@ -306,7 +294,7 @@ void testCallOrder()
       U( i ) = 1e-3 * std::sin( 1.0 + i ); // small displacements and rotations, all dofs
     Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof ), KRef = Eigen::MatrixXd::Zero( nDof, nDof );
     el->computeKernels( U.data(), U.data(), P.data(), K.data(), 0.0, 1.0 );
-    reference.el->computeKernels( U.data(), U.data(), PRef.data(), KRef.data(), 0.0, 1.0 );
+    reference.element->computeKernels( U.data(), U.data(), PRef.data(), KRef.data(), 0.0, 1.0 );
     throwExceptionOnFailure( ( P - PRef ).norm() <= 1e-12 * PRef.norm() && ( K - KRef ).norm() <= 1e-12 * KRef.norm(),
                              t.name + ": both call orders give the same forces and stiffness" );
   }
