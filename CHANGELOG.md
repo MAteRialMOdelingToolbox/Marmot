@@ -88,6 +88,20 @@ All notable changes to Marmot are documented in this file. The format follows
 - `materials/RankineGradientSofteningPlasticity` (`RANKINEGRADIENTSOFTENINGPLASTICITY`), the implicit-gradient
   over-nonlocal extension of `RankineSofteningPlasticity` (Vermeer and Brinkgreve, 1994): the yield stress depends on
   a combination of the local and the nonlocal softening variable.
+- Small-strain axisymmetric elements in `elements/DisplacementFiniteElement`: `CAX4` (4 nodes, full integration),
+  `CAX8` (8 nodes, full integration) and `CAX8R` (8 nodes, reduced integration), with r = x_1 and z = x_2. They are
+  `DisplacementFiniteElement< 2, nNodes >` with the new section `SectionType::Axisymmetric`, which adds the hoop
+  strain u_r / r and integrates over the full ring (2 pi r), so internal forces, energies, masses, body forces and
+  distributed loads are those of the full revolution. The artificial bulk viscosity and the energy gradients are
+  available. `initializeYourself()` rejects a node at r < -1e-12 h (h the size of the element) and a
+  quadrature point at r <= 0.
+- `BoundaryElement( ..., axisymmetric )`: with `axisymmetric = true`, its load vectors are integrated over the ring
+  (2 pi r ds).
+- `Spatial2D::Axisymmetric::BFromPlanarB( BPlanar, N, r )`: the axisymmetric B-operator from the planar one, the
+  single definition of the hoop row; `Spatial2D::Axisymmetric::B` (`GeometryElement::B_axisymmetric`) and the
+  axisymmetric section of `DisplacementFiniteElement` use it.
+- `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
+  and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
@@ -133,6 +147,15 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Spatial2D::gaussPointList1x1/2x2/3x3` | `getQuadraturePoints( ReferenceDomain::Quadrilateral, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointList1x1x1/2x2x2/3x3x3` | `getQuadraturePoints( ReferenceDomain::Hexahedron, gaussExactToDegree( 1/3/5 ) )` |
   | `Spatial3D::gaussPointListTetra4/Tetra10` | `getQuadraturePoints( ReferenceDomain::Tetrahedron, gaussExactToDegree( 1/2 ) )` |
+
+- `DisplacementFiniteElement`: `computeKernels()` and `computeKernelsExplicit()` share one implementation, and the
+  solid, plane strain and axisymmetric sections one material update through the 3D interface. Results are unchanged.
+  The consistent mass takes the thickness or cross section from the element property instead of recovering it from
+  the nearest quadrature point (identical up to rounding).
+
+### Deprecated
+- `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
+  with `axisymmetric = true` and call `computeSurfaceNormalVectorialLoadVector()`.
 
 ### Fixed
 - `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
