@@ -18,6 +18,16 @@ namespace ADBench {
   struct AutodiffBackend {
 
     static constexpr const char* name = "autodiff";
+    static constexpr bool        hasTaylor     = true;
+    static constexpr bool        hasVectorMode = false;
+    static constexpr int         maxOrder      = 3;
+
+    template < typename S >
+    static S constant( double v )
+    {
+      return S( v );
+    }
+
 
   template < std::size_t N >
   using HyperDual = autodiff::HigherOrderDual< N, double >;

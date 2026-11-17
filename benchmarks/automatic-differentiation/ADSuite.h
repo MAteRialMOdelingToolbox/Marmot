@@ -6,17 +6,19 @@
 namespace ADBench {
 
   struct Case {
-    std::string                             name;
-    std::string                             mirrors;  // Marmot code path the kernel stands for
+    std::string                              id;       // kernel family; same id = same outputs across suites
+    std::string                              name;     // row label
     std::function< std::vector< double >() > evaluate; // one kernel call, all outputs flattened
   };
 
   struct Suite {
-    std::string         backend;
+    std::string         label; // backend + mode, e.g. "sacado-vec"
     std::vector< Case > cases;
   };
 
-  Suite makeAutodiffSuite();
-  Suite makeBoostSuite();
+  std::vector< Suite > makeAutodiffSuites();
+  std::vector< Suite > makeBoostSuites();
+  std::vector< Suite > makeSacadoSuites();
+  std::vector< Suite > makeCeresSuites();
 
 } // namespace ADBench

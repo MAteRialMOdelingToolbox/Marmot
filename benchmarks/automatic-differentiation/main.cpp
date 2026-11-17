@@ -1,11 +1,12 @@
-// Compares the autodiff and Boost.Math forward-mode AD backends on Marmot's AD code paths:
-// first checks that both produce the same derivatives, then times each kernel.
+// Compares forward-mode AD backends (autodiff, Boost.Math, Sacado, Ceres Jet) on Marmot's AD code paths:
+// first checks that every backend reproduces autodiff's derivatives, then times each kernel.
 #include "ADSuite.h"
 #include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <map>
 #include <string>
 
 using namespace ADBench;
@@ -14,19 +15,16 @@ namespace {
 
   volatile double sink = 0;
 
-  // median over `batches` of the mean time per call (ns), each batch running long enough to be measurable
+  // median over `batches` of the mean time per call (ns), each batch running at least minBatchSeconds
   double timeCase( const Case& c, int batches, double minBatchSeconds )
   {
     using clock = std::chrono::steady_clock;
-    // calibrate the number of calls per batch
-    long   n = 1;
-    double t = 0;
+    long n      = 1;
     for ( ;; ) {
       auto t0 = clock::now();
       for ( long i = 0; i < n; i++ )
         sink = sink + c.evaluate()[0];
-      t = std::chrono::duration< double >( clock::now() - t0 ).count();
-      if ( t > minBatchSeconds )
+      if ( std::chrono::duration< double >( clock::now() - t0 ).count() > minBatchSeconds )
         break;
       n *= 2;
     }
@@ -45,10 +43,9 @@ namespace {
   {
     if ( a.size() != b.size() )
       return INFINITY;
-    double scale = 0;
+    double scale = 0, diff = 0;
     for ( double x : a )
       scale = std::max( scale, std::abs( x ) );
-    double diff = 0;
     for ( std::size_t i = 0; i < a.size(); i++ )
       diff = std::max( diff, std::abs( a[i] - b[i] ) );
     return diff / std::max( scale, 1e-300 );
@@ -58,24 +55,61 @@ namespace {
 
 int main( int argc, char** argv )
 {
-  const int    batches = argc > 1 ? std::atoi( argv[1] ) : 15;
+  const int    batches  = argc > 1 ? std::atoi( argv[1] ) : 15;
   const double minBatch = argc > 2 ? std::atof( argv[2] ) : 0.05;
 
-  const Suite ad = makeAutodiffSuite();
-  const Suite bm = makeBoostSuite();
+  std::vector< Suite > suites;
+  for ( auto make : { makeAutodiffSuites, makeBoostSuites, makeSacadoSuites, makeCeresSuites } )
+    for ( auto& s : make() )
+      suites.push_back( std::move( s ) );
 
-  bool ok = true;
-  std::printf( "%-46s %12s %12s %8s %10s\n", "kernel", "autodiff[ns]", "boost[ns]", "ratio", "max relerr" );
-  for ( std::size_t i = 0; i < ad.cases.size(); i++ ) {
-    const Case& a   = ad.cases[i];
-    const Case& b   = bm.cases[i];
-    const double err = maxRelativeDifference( a.evaluate(), b.evaluate() );
-    ok               = ok && err < 1e-10;
-    const double ta  = timeCase( a, batches, minBatch );
-    const double tb  = timeCase( b, batches, minBatch );
-    std::printf( "%-46s %12.1f %12.1f %8.2f %10.1e\n", a.name.c_str(), ta, tb, tb / ta, err );
+  const Suite& reference = suites.front(); // autodiff, scalar mode: the current Marmot implementation
+
+  // id -> label -> (ns, relerr)
+  std::map< std::string, std::map< std::string, std::pair< double, double > > > results;
+  bool                                                                           ok = true;
+  for ( const Case& ref : reference.cases ) {
+    const std::vector< double > expected = ref.evaluate();
+    for ( const Suite& s : suites )
+      for ( const Case& c : s.cases )
+        if ( c.id == ref.id ) {
+          const double err = maxRelativeDifference( expected, c.evaluate() );
+          ok               = ok && err < 1e-10;
+          results[ref.id][s.label] = { timeCase( c, batches, minBatch ), err };
+        }
   }
-  std::printf( "\nratio = boost / autodiff (lower is better for boost). Results %s.\n",
-               ok ? "agree (max relerr < 1e-10)" : "DISAGREE" );
+
+  auto printTable = [&]( const char* title, auto cell ) {
+    std::printf( "\n%s\n%-42s", title, "kernel" );
+    for ( const Suite& s : suites )
+      std::printf( " %11s", s.label.c_str() );
+    std::printf( "\n" );
+    for ( const Case& ref : reference.cases ) {
+      std::printf( "%-42s", ref.name.c_str() );
+      for ( const Suite& s : suites ) {
+        auto it = results[ref.id].find( s.label );
+        if ( it == results[ref.id].end() )
+          std::printf( " %11s", "n/a" );
+        else
+          std::printf( " %11s", cell( it->second, results[ref.id][reference.label] ).c_str() );
+      }
+      std::printf( "\n" );
+    }
+  };
+
+  char buf[64];
+  printTable( "Median time per kernel call [ns]", [&]( auto r, auto ) {
+    std::snprintf( buf, sizeof buf, "%.0f", r.first );
+    return std::string( buf );
+  } );
+  printTable( "Time relative to autodiff (current Marmot; < 1 is faster)", [&]( auto r, auto ref ) {
+    std::snprintf( buf, sizeof buf, "%.2f", r.first / ref.first );
+    return std::string( buf );
+  } );
+  printTable( "Max relative deviation from autodiff", [&]( auto r, auto ) {
+    std::snprintf( buf, sizeof buf, "%.1e", r.second );
+    return std::string( buf );
+  } );
+  std::printf( "\nResults %s.\n", ok ? "agree (all max relerr < 1e-10)" : "DISAGREE" );
   return ok ? 0 : 1;
 }

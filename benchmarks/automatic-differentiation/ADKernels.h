@@ -26,12 +26,12 @@ namespace ADBench {
   // Drivers
   // -------------------------------------------------------------------------------------------------------------
 
-  template < typename S, std::size_t... Rest >
+  template < typename B, typename S, std::size_t... Rest >
   Tensor< S, Rest... > lift( const Tensor< double, Rest... >& in )
   {
     Tensor< S, Rest... > out;
     for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i )
-      out.data()[out.get_mem_index( i )] = S( in.data()[in.get_mem_index( i )] );
+      out.data()[out.get_mem_index( i )] = B::template constant< S >( in.data()[in.get_mem_index( i )] );
     return out;
   }
 
@@ -45,7 +45,7 @@ namespace ADBench {
     using S = typename B::template HyperDual< 1 >;
     Tensor33d            F_;
     Tensor3333d          dF_dT_;
-    Tensor< S, 3, 3 >    T_ = lift< S >( T );
+    Tensor< S, 3, 3 >    T_ = lift< B, S >( T );
     Tensor< S, 3, 3 >    FT;
     for ( std::size_t i = 0; i < 9; ++i ) {
       B::template seed< 1 >( T_.data()[i], 1.0 );
@@ -71,7 +71,7 @@ namespace ADBench {
     S                 Fr;
     Tensor33d         dF;
     Tensor3333d       d2F;
-    Tensor< S, 3, 3 > T_ = lift< S >( T );
+    Tensor< S, 3, 3 > T_ = lift< B, S >( T );
     for ( std::size_t i = 0; i < 3; i++ )
       for ( std::size_t j = 0; j < 3; j++ ) {
         B::template seed< 1 >( T_( i, j ), 1.0 );
@@ -102,7 +102,7 @@ namespace ADBench {
     Tensor33d         dF;
     Tensor3333d       d2F;
     Tensor333333d     d3F;
-    Tensor< S, 3, 3 > T_ = lift< S >( T );
+    Tensor< S, 3, 3 > T_ = lift< B, S >( T );
     for ( std::size_t i = 0; i < 3; i++ )
       for ( std::size_t j = 0; j < 3; j++ ) {
         B::template seed< 1 >( T_( i, j ), 1.0 );
@@ -134,7 +134,9 @@ namespace ADBench {
     const Vector6d&                                                         X )
   {
     using S = typename B::template HyperDual< 1 >;
-    Eigen::Matrix< S, 6, 1 > X_ = X.template cast< S >();
+    Eigen::Matrix< S, 6, 1 > X_;
+    for ( int j = 0; j < 6; j++ )
+      X_( j ) = B::template constant< S >( X( j ) );
     Eigen::Matrix< S, 6, 1 > Fr;
     Matrix6d                 J;
     Vector6d                 F_;
@@ -155,76 +157,175 @@ namespace ADBench {
 
   inline constexpr double K = 3500., G = 1500.;
 
-  /// ADCompressibleNeoHooke::computeStressAD + MarmotMaterialFiniteStrainAD: Kirchhoff stress and dTau/dF
-  template < typename B >
-  std::pair< Tensor33d, Tensor3333d > kernelFiniteStrainTangent( const Tensor33d& F )
+  // The physics, written once for any AD scalar S; the kernels below wrap it in a scalar- or vector-mode driver.
+
+  /// ADCompressibleNeoHooke::computeStressAD: Kirchhoff stress from F via the Pence-Gou energy
+  template < typename B, typename S >
+  Tensor< S, 3, 3 > kirchhoffStressPenceGou( const Tensor< S, 3, 3 >& F_ )
   {
-    using S = typename B::template HyperDual< 1 >;
     using namespace Marmot::ContinuumMechanics;
-    std::function< Tensor< S, 3, 3 >( const Tensor< S, 3, 3 >& ) > tau = [&]( const Tensor< S, 3, 3 >& F_ ) {
-      const auto C                = DeformationMeasures::rightCauchyGreen( F_ );
-      const auto [psi_, dPsi_dC]  = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
-      Tensor< S, 3, 3 >      PK2 = Marmot::multiplyFastorTensorWithScalar( dPsi_dC, S( 2.0 ) );
-      return StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
-    };
-    return dF_dT< B >( tau, F );
+    const auto C               = DeformationMeasures::rightCauchyGreen( F_ );
+    const auto [psi_, dPsi_dC] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+    Tensor< S, 3, 3 >      PK2 = Marmot::multiplyFastorTensorWithScalar( dPsi_dC, B::template constant< S >( 2.0 ) );
+    return StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
   }
 
-  /// SecondOrder::d2f_dT2 on the Pence-Gou energy (energy, PK2/2, material tangent)
-  template < typename B >
-  std::tuple< double, Tensor33d, Tensor3333d > kernelEnergyHessian( const Tensor33d& C )
+  template < typename S >
+  S energyPenceGou( const Tensor< S, 3, 3 >& C_ )
   {
-    using S = typename B::template HyperDual< 2 >;
-    std::function< S( const Tensor< S, 3, 3 >& ) > psi = []( const Tensor< S, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB< S >( C_, K, G );
-    };
-    return d2f_dT2< B >( psi, C );
+    return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB< S >( C_, K, G );
   }
 
-  /// CompressibleFiniteStrainLinearViscoelasticity: ThirdOrder::d3f_dT3 on the Yeoh energy (729 passes)
-  template < typename B >
-  std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > kernelEnergyThirdDerivative( const Tensor33d& C )
+  template < typename S >
+  S energyYeoh( const Tensor< S, 3, 3 >& C_ )
   {
-    using S = typename B::template HyperDual< 3 >;
-    std::function< S( const Tensor< S, 3, 3 >& ) > psi = []( const Tensor< S, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::YeohPotential< S >( C_, 500., -10., 1., 1e-3 );
-    };
-    return d3f_dT3< B >( psi, C );
+    return Marmot::ContinuumMechanics::EnergyDensityFunctions::YeohPotential< S >( C_, 500., -10., 1., 1e-3 );
   }
 
-  /// MarmotMaterialHypoElasticAD + ADVonMises-like radial return (Eigen Vector6 of duals, 6 passes)
-  template < typename B >
-  std::pair< Vector6d, Matrix6d > kernelHypoElasticJ2( const Vector6d& stressOld, const Vector6d& dStrain )
+  /// MarmotMaterialHypoElasticAD + ADVonMises-like radial return
+  template < typename B, typename S >
+  Eigen::Matrix< S, 6, 1 > hypoElasticJ2Stress( const Vector6d& stressOld, const Eigen::Matrix< S, 6, 1 >& dE )
   {
-    using S  = typename B::template HyperDual< 1 >;
-    using V6 = Eigen::Matrix< S, 6, 1 >;
-    Matrix6d Cel                                  = Matrix6d::Zero();
+    using V6     = Eigen::Matrix< S, 6, 1 >;
+    Matrix6d Cel = Matrix6d::Zero();
     const double E = 30000., nu = 0.2, fy = 30.;
     const double lam = E * nu / ( 1 + nu ) / ( 1 - 2 * nu ), mu = E / 2 / ( 1 + nu );
     Cel.topLeftCorner< 3, 3 >().setConstant( lam );
     Cel.diagonal().head< 3 >().array() += 2 * mu;
     Cel.diagonal().tail< 3 >().setConstant( mu );
 
-    std::function< V6( const V6& ) > stress = [&]( const V6& dE ) {
-      V6      S_  = stressOld.template cast< S >() + Cel * dE;
-      const S p   = ( S_( 0 ) + S_( 1 ) + S_( 2 ) ) / 3.;
-      V6      dev = S_;
+    V6      S_  = stressOld.template cast< S >() + Cel * dE;
+    const S p   = ( S_( 0 ) + S_( 1 ) + S_( 2 ) ) / 3.;
+    V6      dev = S_;
+    for ( int i = 0; i < 3; i++ )
+      dev( i ) -= p;
+    S J2 = 0.5 * ( dev( 0 ) * dev( 0 ) + dev( 1 ) * dev( 1 ) + dev( 2 ) * dev( 2 ) ) +
+           ( dev( 3 ) * dev( 3 ) + dev( 4 ) * dev( 4 ) + dev( 5 ) * dev( 5 ) );
+    const S q = sqrt( 3. * J2 );
+    if ( B::value( q ) > fy ) {
+      const S scale = fy / q;
+      for ( int i = 0; i < 6; i++ )
+        dev( i ) *= scale;
       for ( int i = 0; i < 3; i++ )
-        dev( i ) -= p;
-      S J2 = 0.5 * ( dev( 0 ) * dev( 0 ) + dev( 1 ) * dev( 1 ) + dev( 2 ) * dev( 2 ) ) +
-             ( dev( 3 ) * dev( 3 ) + dev( 4 ) * dev( 4 ) + dev( 5 ) * dev( 5 ) );
-      const S q = sqrt( 3. * J2 );
-      if ( B::value( q ) > fy ) {
-        const S scale = fy / q;
-        for ( int i = 0; i < 6; i++ )
-          dev( i ) *= scale;
-        for ( int i = 0; i < 3; i++ )
-          dev( i ) += p;
-        return V6( dev );
-      }
-      return S_;
-    };
+        dev( i ) += p;
+      return dev;
+    }
+    return S_;
+  }
+
+  // --- scalar mode: one direction per pass, the way Marmot works today --------------------------------------
+
+  template < typename B >
+  std::pair< Tensor33d, Tensor3333d > kernelFiniteStrainTangent( const Tensor33d& F )
+  {
+    using S = typename B::template HyperDual< 1 >;
+    std::function< Tensor< S, 3, 3 >( const Tensor< S, 3, 3 >& ) > tau = kirchhoffStressPenceGou< B, S >;
+    return dF_dT< B >( tau, F );
+  }
+
+  template < typename B >
+  std::tuple< double, Tensor33d, Tensor3333d > kernelEnergyHessian( const Tensor33d& C )
+  {
+    using S = typename B::template HyperDual< 2 >;
+    std::function< S( const Tensor< S, 3, 3 >& ) > psi = energyPenceGou< S >;
+    return d2f_dT2< B >( psi, C );
+  }
+
+  template < typename B >
+  std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > kernelEnergyThirdDerivative( const Tensor33d& C )
+  {
+    using S = typename B::template HyperDual< 3 >;
+    std::function< S( const Tensor< S, 3, 3 >& ) > psi = energyYeoh< S >;
+    return d3f_dT3< B >( psi, C );
+  }
+
+  template < typename B >
+  std::pair< Vector6d, Matrix6d > kernelHypoElasticJ2( const Vector6d& stressOld, const Vector6d& dStrain )
+  {
+    using S  = typename B::template HyperDual< 1 >;
+    using V6 = Eigen::Matrix< S, 6, 1 >;
+    std::function< V6( const V6& ) > stress = [&]( const V6& dE ) { return hypoElasticJ2Stress< B, S >( stressOld, dE ); };
     return dF_dX< B >( stress, dStrain );
+  }
+
+  // --- vector mode: all directions in a single pass (Sacado SFad<double, N>, ceres::Jet<double, N>) ---------
+
+  template < typename B >
+  std::pair< Tensor33d, Tensor3333d > kernelFiniteStrainTangentVector( const Tensor33d& F )
+  {
+    using S                 = typename B::template VecDual< 9, 1 >;
+    Tensor< S, 3, 3 > F_    = lift< B, S >( F );
+    for ( std::size_t a = 0; a < 9; a++ )
+      B::seedDirection( F_.data()[a], a );
+    const Tensor< S, 3, 3 > tau = kirchhoffStressPenceGou< B, S >( F_ );
+    Tensor33d               tau_;
+    Tensor3333d             dTau_dF;
+    for ( std::size_t j = 0; j < 9; j++ ) {
+      tau_.data()[j] = B::value( tau.data()[j] );
+      for ( std::size_t a = 0; a < 9; a++ )
+        dTau_dF.data()[j * 9 + a] = B::vderivative( tau.data()[j], a );
+    }
+    return { tau_, dTau_dF };
+  }
+
+  template < typename B >
+  std::tuple< double, Tensor33d, Tensor3333d > kernelEnergyHessianVector( const Tensor33d& C )
+  {
+    using S              = typename B::template VecDual< 9, 2 >;
+    Tensor< S, 3, 3 > C_ = lift< B, S >( C );
+    for ( std::size_t a = 0; a < 9; a++ )
+      B::seedDirection( C_.data()[a], a );
+    const S     psi = energyPenceGou< S >( C_ );
+    Tensor33d   dPsi;
+    Tensor3333d d2Psi;
+    for ( std::size_t a = 0; a < 9; a++ ) {
+      dPsi.data()[a] = B::vderivative( psi, a );
+      for ( std::size_t b = 0; b < 9; b++ )
+        d2Psi.data()[a * 9 + b] = B::vderivative( psi, a, b );
+    }
+    return { B::value( psi ), dPsi, d2Psi };
+  }
+
+  template < typename B >
+  std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > kernelEnergyThirdDerivativeVector( const Tensor33d& C )
+  {
+    using S              = typename B::template VecDual< 9, 3 >;
+    Tensor< S, 3, 3 > C_ = lift< B, S >( C );
+    for ( std::size_t a = 0; a < 9; a++ )
+      B::seedDirection( C_.data()[a], a );
+    const S       psi = energyYeoh< S >( C_ );
+    Tensor33d     d1;
+    Tensor3333d   d2;
+    Tensor333333d d3;
+    for ( std::size_t a = 0; a < 9; a++ ) {
+      d1.data()[a] = B::vderivative( psi, a );
+      for ( std::size_t b = 0; b < 9; b++ ) {
+        d2.data()[a * 9 + b] = B::vderivative( psi, a, b );
+        for ( std::size_t c = 0; c < 9; c++ )
+          d3.data()[( a * 9 + b ) * 9 + c] = B::vderivative( psi, a, b, c );
+      }
+    }
+    return { B::value( psi ), d1, d2, d3 };
+  }
+
+  template < typename B >
+  std::pair< Vector6d, Matrix6d > kernelHypoElasticJ2Vector( const Vector6d& stressOld, const Vector6d& dStrain )
+  {
+    using S = typename B::template VecDual< 6, 1 >;
+    Eigen::Matrix< S, 6, 1 > dE;
+    for ( int j = 0; j < 6; j++ ) {
+      dE( j ) = B::template constant< S >( dStrain( j ) );
+      B::seedDirection( dE( j ), j );
+    }
+    const Eigen::Matrix< S, 6, 1 > stress = hypoElasticJ2Stress< B, S >( stressOld, dE );
+    Vector6d                       S_;
+    Matrix6d                       C;
+    for ( int i = 0; i < 6; i++ ) {
+      S_( i ) = B::value( stress( i ) );
+      for ( int j = 0; j < 6; j++ )
+        C( i, j ) = B::vderivative( stress( i ), j );
+    }
+    return { S_, C };
   }
 
   /// MarmotMaterialPhaseFieldEnergyDegradation::generic (scalar, dual2nd with both levels seeded)
@@ -233,7 +334,7 @@ namespace ADBench {
   {
     using S = typename B::template HyperDual< 2 >;
     const double p = 2., a1 = 2.5, a2 = -0.5, a3 = 0.0;
-    S            x( pf );
+    S            x = B::template constant< S >( pf );
     B::template seed< 1 >( x, 1.0 );
     B::template seed< 2 >( x, 1.0 );
     const S s      = 1. - x;

@@ -57,6 +57,16 @@ namespace ADBench {
 
   struct BoostBackend {
     static constexpr const char* name = "boost";
+    static constexpr bool        hasTaylor     = true;
+    static constexpr bool        hasVectorMode = false;
+    static constexpr int         maxOrder      = 3;
+
+    template < typename S >
+    static S constant( double v )
+    {
+      return S( v );
+    }
+
 
   template < std::size_t N >
   using HyperDual = typename BoostDetail::detail::HyperDualImpl< N >::type;

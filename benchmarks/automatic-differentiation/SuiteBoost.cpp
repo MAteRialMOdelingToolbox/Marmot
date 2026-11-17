@@ -1,7 +1,7 @@
 #include "ADBackendBoost.h"
 #include "ADSuiteImpl.h"
 
-ADBench::Suite ADBench::makeBoostSuite()
+std::vector< ADBench::Suite > ADBench::makeBoostSuites()
 {
-  return makeSuite< BoostBackend >();
+  return makeSuites< BoostBackend >();
 }

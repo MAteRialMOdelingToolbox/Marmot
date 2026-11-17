@@ -1,6 +1,8 @@
 // Per-operation cost of the AD number types (ns per op), to locate where the backends differ.
 #include "ADBackendAutodiff.h"
 #include "ADBackendBoost.h"
+#include "ADBackendCeres.h"
+#include "ADBackendSacado.h"
 #include <chrono>
 #include <cmath>
 #include <cstdio>
@@ -10,67 +12,64 @@ using namespace ADBench;
 
 namespace {
 
-  template < typename S >
-  double valueOf( const S& x )
-  {
-    return *reinterpret_cast< const double* >( &x );
-  }
-
   // time `op` applied in a dependent chain of length n, so the result of one step feeds the next
   template < typename S, typename Op >
   double timeOp( Op op, S x0, long n = 2000000 )
   {
-    S                  x  = x0;
-    volatile double    sink;
-    auto               t0 = std::chrono::steady_clock::now();
+    S    x  = x0;
+    auto t0 = std::chrono::steady_clock::now();
     for ( long i = 0; i < n; i++ ) {
       x = op( x );
       asm volatile( "" : "+m"( x ) : : "memory" ); // DoNotOptimize: materialize every coefficient each step
     }
     auto t1 = std::chrono::steady_clock::now();
-    sink    = valueOf( x );
-    (void)sink;
     return std::chrono::duration< double, std::nano >( t1 - t0 ).count() / double( n );
   }
 
   template < typename S >
-  void row( const char* type, const char* backend, S x0 )
+  void row( const std::string& type, const char* backend, S x0 )
   {
-    S c( 1.0000001 );
+    S c = x0 * 0. + 1.0000001;
     asm volatile( "" : "+m"( c ) );
-    double  tMul  = timeOp< S >( [&]( const S& x ) -> S { return x * c; }, x0 );
-    double  tDiv  = timeOp< S >( [&]( const S& x ) -> S { return x / c; }, x0 );
-    double  tSqrt = timeOp< S >( [&]( const S& x ) -> S { return sqrt( x * x ); }, x0 );
-    double  tLog  = timeOp< S >( [&]( const S& x ) -> S { return exp( log( x ) ); }, x0 );
-    double  tPow  = timeOp< S >( [&]( const S& x ) -> S { return pow( pow( x, 0.75 ), 1. / 0.75 ); }, x0 );
-    std::printf( "%-10s %-9s %8.2f %8.2f %10.2f %10.2f %10.2f\n", type, backend, tMul, tDiv, tSqrt, tLog, tPow );
+    double tMul  = timeOp< S >( [&]( const S& x ) -> S { return x * c; }, x0 );
+    double tDiv  = timeOp< S >( [&]( const S& x ) -> S { return x / c; }, x0 );
+    double tSqrt = timeOp< S >( [&]( const S& x ) -> S { return sqrt( x * x ); }, x0 );
+    double tLog  = timeOp< S >( [&]( const S& x ) -> S { return exp( log( x ) ); }, x0 );
+    double tPow  = timeOp< S >( [&]( const S& x ) -> S { return pow( pow( x, 0.75 ), 1. / 0.75 ); }, x0 );
+    std::printf( "%-10s %-9s %8.2f %8.2f %10.2f %10.2f %10.2f\n", type.c_str(), backend, tMul, tDiv, tSqrt, tLog, tPow );
+  }
+
+  template < typename B, std::size_t N >
+  void hyperDualRow()
+  {
+    using S = typename B::template HyperDual< N >;
+    S x     = B::template constant< S >( 1.3 );
+    B::template seed< 1 >( x, 1.0 );
+    if constexpr ( N > 1 )
+      B::template seed< N >( x, 1.0 );
+    row( "dual" + std::to_string( N ), B::name, x );
   }
 
   template < std::size_t N >
   void hyperDualRows()
   {
-    const std::string t = "dual" + std::to_string( N );
-    AutodiffBackend::HyperDual< N > a( 1.3 );
-    BoostBackend::HyperDual< N >    b( 1.3 );
-    AutodiffBackend::seed< 1 >( a, 1.0 );
-    BoostBackend::seed< 1 >( b, 1.0 );
-    if constexpr ( N > 1 ) {
-      AutodiffBackend::seed< N >( a, 1.0 );
-      BoostBackend::seed< N >( b, 1.0 );
-    }
-    row( t.c_str(), "autodiff", a );
-    row( t.c_str(), "boost", b );
+    hyperDualRow< AutodiffBackend, N >();
+    hyperDualRow< BoostBackend, N >();
+    hyperDualRow< SacadoBackend, N >();
+    hyperDualRow< CeresBackend, N >();
   }
 
   template < std::size_t N >
   void taylorRows()
   {
-    const std::string                    t = "taylor" + std::to_string( N );
-    AutodiffBackend::Taylor< N >         a( 1.3 );
+    const std::string            t = "taylor" + std::to_string( N );
+    AutodiffBackend::Taylor< N > a( 1.3 );
     a[1] = 1.0;
-    auto b = boost::math::differentiation::make_fvar< double, N >( 1.3 );
-    row( t.c_str(), "autodiff", a );
-    row( t.c_str(), "boost", b );
+    row( t, "autodiff", a );
+    row( t, "boost", boost::math::differentiation::make_fvar< double, N >( 1.3 ) );
+    Sacado::Tay::Taylor< double > s{ int( N ), 1.3 };
+    s.fastAccessCoeff( 1 ) = 1.0;
+    row( t, "sacado", s );
   }
 
 } // namespace

@@ -1,6 +1,7 @@
 #pragma once
 #include "ADKernels.h"
 #include "ADSuite.h"
+#include <tuple>
 
 namespace ADBench {
 
@@ -48,84 +49,91 @@ namespace ADBench {
     return C;
   }
 
-  template < typename B >
-  Suite makeSuite()
+  inline Vector6d testStressOld()
   {
-    using detail::append;
-    Suite s;
-    s.backend = B::name;
-
-    s.cases.push_back( { "finite-strain tangent (dual, 9 passes)",
-                         "ADCompressibleNeoHooke via MaterialFiniteStrainAD::dF_dT",
-                         [] {
-                           std::vector< double > out;
-                           auto [tau, dTau_dF] = kernelFiniteStrainTangent< B >( testDeformationGradient() );
-                           append( out, tau );
-                           append( out, dTau_dF );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "hypoelastic J2 tangent (Eigen dual, 6 passes)",
-                         "MaterialHypoElasticAD::dF_dX (ADVonMises-like)",
-                         [] {
-                           std::vector< double > out;
-                           Vector6d              sOld, dE;
-                           sOld << 10., 5., -3., 2., 1., 0.5;
-                           dE << 1e-3, -2e-4, 3e-4, 5e-4, -1e-4, 2e-4;
-                           auto [S, C] = kernelHypoElasticJ2< B >( sOld, dE );
-                           append( out, S );
-                           append( out, C );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "energy Hessian (dual2nd, 81 passes)",
-                         "SecondOrder::d2f_dT2 on PenceGouPotentialB",
-                         [] {
-                           std::vector< double > out;
-                           auto [psi, dPsi, d2Psi] = kernelEnergyHessian< B >( testRightCauchyGreen() );
-                           append( out, psi );
-                           append( out, dPsi );
-                           append( out, d2Psi );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "energy 3rd derivative (dual3rd, 729 passes)",
-                         "ThirdOrder::d3f_dT3 (CompressibleFiniteStrainLinearViscoelasticity)",
-                         [] {
-                           std::vector< double > out;
-                           auto [psi, d1, d2, d3] = kernelEnergyThirdDerivative< B >( testRightCauchyGreen() );
-                           append( out, psi );
-                           append( out, d1 );
-                           append( out, d2 );
-                           append( out, d3 );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "phase-field degradation (dual2nd scalar)",
-                         "EnergyDegradationFunctions::SecondOrderDerived::generic",
-                         [] {
-                           std::vector< double > out;
-                           append( out, kernelPhaseFieldDegradation< B >( 0.35 ) );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "B4 drying Kelvin moduli (Taylor 5, 8 taus)",
-                         "B4::computeStress -> KelvinChain::computeElasticModuli<5>",
-                         [] {
-                           std::vector< double > out;
-                           append( out, kernelB4DryingKelvinModuli< B >() );
-                           return out;
-                         } } );
-
-    s.cases.push_back( { "power-law Kelvin moduli (Taylor 7, 12 taus)",
-                         "LinearViscoelasticOrthotropicPowerLaw -> computeElasticModuli<7>",
-                         [] {
-                           std::vector< double > out;
-                           append( out, kernelPowerLawKelvinModuli< B >() );
-                           return out;
-                         } } );
-
+    Vector6d s;
+    s << 10., 5., -3., 2., 1., 0.5;
     return s;
+  }
+
+  inline Vector6d testStrainIncrement()
+  {
+    Vector6d e;
+    e << 1e-3, -2e-4, 3e-4, 5e-4, -1e-4, 2e-4;
+    return e;
+  }
+
+  template < typename... T >
+  std::vector< double > flatten( const T&... parts )
+  {
+    std::vector< double > out;
+    ( detail::append( out, parts ), ... );
+    return out;
+  }
+
+  template < typename Tuple >
+  std::vector< double > flattenTuple( const Tuple& t )
+  {
+    return std::apply( []( const auto&... parts ) { return flatten( parts... ); }, t );
+  }
+
+  inline const char* nameOf( const std::string& id )
+  {
+    if ( id == "tangent" )
+      return "finite-strain tangent dTau/dF (9 dirs)";
+    if ( id == "hypoJ2" )
+      return "hypoelastic J2 tangent, Eigen (6 dirs)";
+    if ( id == "hessian" )
+      return "energy Hessian d2psi/dC2";
+    if ( id == "third" )
+      return "energy 3rd derivative d3psi/dC3";
+    if ( id == "phasefield" )
+      return "phase-field degradation (dual2nd scalar)";
+    if ( id == "b4" )
+      return "B4 drying Kelvin moduli (Taylor 5)";
+    if ( id == "powerlaw" )
+      return "power-law Kelvin moduli (Taylor 7)";
+    return id.c_str();
+  }
+
+  template < typename B >
+  std::vector< Suite > makeSuites()
+  {
+    std::vector< Suite > suites;
+
+    Suite scalar{ B::name, {} };
+    auto  add = [&]( Suite& s, const std::string& id, std::function< std::vector< double >() > f ) {
+      s.cases.push_back( { id, nameOf( id ), std::move( f ) } );
+    };
+
+    add( scalar, "tangent", [] { return flattenTuple( kernelFiniteStrainTangent< B >( testDeformationGradient() ) ); } );
+    add( scalar, "hypoJ2", [] {
+      return flattenTuple( kernelHypoElasticJ2< B >( testStressOld(), testStrainIncrement() ) );
+    } );
+    add( scalar, "hessian", [] { return flattenTuple( kernelEnergyHessian< B >( testRightCauchyGreen() ) ); } );
+    if constexpr ( B::maxOrder >= 3 )
+      add( scalar, "third", [] { return flattenTuple( kernelEnergyThirdDerivative< B >( testRightCauchyGreen() ) ); } );
+    add( scalar, "phasefield", [] { return flatten( kernelPhaseFieldDegradation< B >( 0.35 ) ); } );
+    if constexpr ( B::hasTaylor ) {
+      add( scalar, "b4", [] { return flatten( kernelB4DryingKelvinModuli< B >() ); } );
+      add( scalar, "powerlaw", [] { return flatten( kernelPowerLawKelvinModuli< B >() ); } );
+    }
+    suites.push_back( std::move( scalar ) );
+
+    if constexpr ( B::hasVectorMode ) {
+      Suite vec{ std::string( B::name ) + "-vec", {} };
+      add( vec, "tangent", [] { return flattenTuple( kernelFiniteStrainTangentVector< B >( testDeformationGradient() ) ); } );
+      add( vec, "hypoJ2", [] {
+        return flattenTuple( kernelHypoElasticJ2Vector< B >( testStressOld(), testStrainIncrement() ) );
+      } );
+      add( vec, "hessian", [] { return flattenTuple( kernelEnergyHessianVector< B >( testRightCauchyGreen() ) ); } );
+      if constexpr ( B::maxOrder >= 3 )
+        add( vec, "third", [] {
+          return flattenTuple( kernelEnergyThirdDerivativeVector< B >( testRightCauchyGreen() ) );
+        } );
+      suites.push_back( std::move( vec ) );
+    }
+    return suites;
   }
 
 } // namespace ADBench

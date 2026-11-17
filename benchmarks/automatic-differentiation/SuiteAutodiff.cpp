@@ -1,7 +1,7 @@
 #include "ADBackendAutodiff.h"
 #include "ADSuiteImpl.h"
 
-ADBench::Suite ADBench::makeAutodiffSuite()
+std::vector< ADBench::Suite > ADBench::makeAutodiffSuites()
 {
-  return makeSuite< AutodiffBackend >();
+  return makeSuites< AutodiffBackend >();
 }

@@ -1,125 +1,140 @@
-# autodiff vs. Boost.Math forward-mode AD
+# Forward-mode AD backends for Marmot
 
-Evaluates replacing [autodiff](https://github.com/autodiff/autodiff) (last commit Jan 2025) with
-[Boost.Math `autodiff`](https://www.boost.org/doc/libs/release/libs/math/doc/html/math_toolkit/autodiff.html)
-(`boost::math::differentiation::fvar`) as Marmot's AD backend.
+Compares candidate replacements for [autodiff](https://github.com/autodiff/autodiff) on Marmot's AD code paths.
+autodiff's last commit was in January 2025, and its "Update to Eigen 5" issue (#392) has been open since February 2026.
+The candidates:
 
-Both backends are wrapped in adapters with one identical vocabulary
-(`HyperDual<N>`, `Taylor<N>`, `seed<level>`, `derivative<level>`, `value`, `taylorDerivatives<N>`),
-so the drivers and kernels in `ADKernels.h` are shared verbatim between backends.
-The kernels mirror Marmot's AD code paths and call the actual Marmot templates where possible.
+* [Boost.Math `autodiff`](https://www.boost.org/doc/libs/release/libs/math/doc/html/math_toolkit/autodiff.html) (`fvar`), Boost 1.88
+* [Sacado](https://github.com/trilinos/Trilinos/tree/master/packages/sacado) (`Fad::SFad`, `Tay::Taylor`), Trilinos 17.3.0, header-only
+* [Ceres `Jet`](http://ceres-solver.org/automatic_derivatives.html) (`ceres::Jet<T, N>`), ceres-solver 2.2.0, header-only, **patched** (see below)
+
+Every backend is wrapped in an adapter with one vocabulary.
+`ADKernels.h` therefore contains the physics and the drivers only once.
+The kernels call the actual Marmot templates: Pence-Gou/Yeoh energies, `rightCauchyGreen` and `KirchhoffStressFromPK2`.
+
+Two differentiation modes are measured:
+
+* **scalar mode**: one direction per pass, nested for higher orders. This is what Marmot does today (`autodiff::dual`, `dual2nd`, `dual3rd`).
+* **vector mode** (`-vec`): all directions in one pass.
+  Examples: `SFad<double, 9>` for the 9 components of F; `SFad<SFad<double, 9>, 9>` for a full Hessian in one evaluation.
+  Sacado and Ceres support this; autodiff and Boost do not.
+  Using it means changing Marmot's driver functions (`dF_dT`, `d2f_dT2`, …); `ADKernels.h` shows the vector-mode versions.
 
 ## Build and run
 
 ```bash
 cmake -S benchmarks/automatic-differentiation -B build-ad-bench -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_PREFIX_PATH="<eigen-3.4 prefix>;<conda env>"
+      -DCMAKE_PREFIX_PATH="<eigen-3.4 prefix>;<conda env>" \
+      -DSACADO_SOURCE_DIR=<Trilinos>/packages/sacado \
+      -DCERES_SOURCE_DIR=<ceres-solver 2.2.0>
 cmake --build build-ad-bench
 ./build-ad-bench/ad-backend-benchmark [batches=15] [min-seconds-per-batch=0.05]   # kernels + correctness
 ./build-ad-bench/ad-op-benchmark                                                  # per-operation cost
 ```
 
-Eigen 3.4 is required for the comparison, because autodiff 1.1.2 does not compile against Eigen 5 (see below).
+* Sacado: only its source tree is needed. `sacado-config/Sacado_config.h` stands in for the CMake-generated config (no Kokkos, Teuchos or MPI).
+  A sparse checkout is enough: `git clone --depth 1 --branch trilinos-release-17-3-0 --filter=blob:none --sparse … && git sparse-checkout set packages/sacado`.
+* Ceres: CMake copies `include/ceres` into the build tree and applies `ceres-2.2.0-jet-fastor.patch`.
+* Eigen 3.4 is required, because autodiff 1.1.2 does not compile against Eigen 5.
 
 ## Results
 
-Setup: AMD Threadripper 7970X, pinned to one core, `-O3 -march=native`, Boost 1.88, autodiff 1.1.2, Eigen 3.4.0, Fastor (conda).
-Times are the median ns per kernel call. Ratio = boost / autodiff.
+Setup: AMD Threadripper 7970X, one pinned core, `-O3 -march=native`, Eigen 3.4.0.
+Each value is the kernel time relative to autodiff scalar mode, the current Marmot implementation. **< 1 is faster.**
+n/a means the library has no Taylor mode, or vector mode does not apply.
+All results agree with autodiff to ≤ 7.4e-14 relative (≤ 2e-15 except for Taylor 5).
+Run-to-run noise is about ±15 %.
 
-| kernel (Marmot path)                                                  | GCC 14.3 autodiff | GCC boost | **GCC ratio** | clang 22 autodiff | clang boost | **clang ratio** |
-|-----------------------------------------------------------------------|------:|------:|------:|------:|------:|------:|
-| finite-strain tangent, dual, 9 passes (`MaterialFiniteStrainAD::dF_dT`) |  1848 |  2441 | 1.32 |  1798 |  1892 | 1.05 |
-| hypoelastic J2 tangent, Eigen dual, 6 passes (`MaterialHypoElasticAD`) |   492 |   541 | 1.10 |   336 |   487 | 1.45 |
-| energy Hessian, dual2nd, 81 passes (`SecondOrder::d2f_dT2`)           |  4397 |  9809 | 2.23 |  5557 |  4912 | 0.88 |
-| energy 3rd derivative, dual3rd, 729 passes (`ThirdOrder::d3f_dT3`)    | 90323 | 661931 | **7.33** | 147597 | 480431 | 3.26 |
-| phase-field degradation, dual2nd scalar                               |    24 |   106 | 4.42 |    20 |    20 | 1.00 |
-| B4 drying Kelvin moduli, Taylor 5, per stress update                  |  1315 |  4085 | 3.11 |  1176 |  1881 | 1.60 |
-| power-law Kelvin moduli, Taylor 7                                     |  1136 |  3014 | 2.65 |  1274 |  1536 | 1.21 |
+### GCC 14.3 (Marmot's main compiler)
 
-All derivatives agree between the backends (max relative difference ≤ 1.5e-15, ≤ 7.4e-14 for Taylor 5).
-Run-to-run noise is about ±15 % on the first-order kernels.
+| kernel (Marmot path)                                       | autodiff [ns] | boost | sacado | **sacado-vec** | ceres | ceres-vec |
+|------------------------------------------------------------|------:|-----:|------:|------:|------:|------:|
+| finite-strain tangent dTau/dF (`MaterialFiniteStrainAD`)   |  1716 | 1.36 | 1.24 | **0.75** | 1.31 | 1.54 |
+| hypoelastic J2 tangent, Eigen (`MaterialHypoElasticAD`)   |   480 | 1.15 | 0.94 | **0.44** | 0.95 | 1.27 |
+| energy Hessian d²ψ/dC² (`d2f_dT2`)                         |  4101 | 1.97 | 3.06 | **0.82** | 2.45 | 1.22 |
+| energy 3rd derivative d³ψ/dC³ (`d3f_dT3`, every stress update) | 84466 | 9.35 | 4.47 | **0.94** | 7.40 | 1.74 |
+| phase-field degradation (dual2nd scalar)                   |    25 | 3.97 | 3.59 | n/a | 5.79 | n/a |
+| B4 drying Kelvin moduli (Taylor 5, every stress update)    |  1294 | 2.98 | 3.59 | n/a | n/a | n/a |
+| power-law Kelvin moduli (Taylor 7)                         |  1114 | 2.81 | 3.04 | n/a | n/a | n/a |
 
-Per-operation cost (GCC, ns per chained op, see `ad-op-benchmark`):
+### clang 22.1
+
+| kernel                                   | autodiff [ns] | boost | sacado | sacado-vec | ceres | **ceres-vec** |
+|------------------------------------------|------:|-----:|------:|------:|------:|------:|
+| finite-strain tangent dTau/dF            |  1738 | 0.97 | 1.54 | 1.15 | 1.13 | **0.48** |
+| hypoelastic J2 tangent, Eigen            |   406 | 1.21 | 1.01 | 0.65 | 1.07 | **0.57** |
+| energy Hessian d²ψ/dC²                   |  5265 | 0.91 | 2.26 | 0.88 | 1.12 | **0.35** |
+| energy 3rd derivative d³ψ/dC³            | 141880 | 3.27 | 1.93 | 0.65 | 1.25 | **0.36** |
+| phase-field degradation (dual2nd scalar) |    16 | 1.04 | 10.90 | n/a | 0.96 | n/a |
+| B4 drying Kelvin moduli (Taylor 5)       |  1022 | 1.67 | 3.28 | n/a | n/a | n/a |
+| power-law Kelvin moduli (Taylor 7)       |  1266 | 1.16 | 2.41 | n/a | n/a | n/a |
+
+### Per operation (GCC, ns per chained op, `ad-op-benchmark`)
 
 | type    | backend  | mul | div | sqrt | exp∘log | pow∘pow |
 |---------|----------|----:|----:|-----:|--------:|--------:|
-| dual    | autodiff | 3.8 | 3.8 | 10.9 | 20.2 | 43.6 |
-| dual    | boost    | 4.1 | 9.8 | 12.6 | 22.3 | 52.6 |
-| dual2nd | autodiff | 5.0 | 5.3 | 16.0 | 22.8 | 48.9 |
-| dual2nd | boost    | 11.6 | 18.0 | 35.1 | 102.2 | 96.6 |
-| dual3rd | autodiff | 7.9 | 10.5 | 20.7 | 26.8 | 53.0 |
-| dual3rd | boost    | 27.6 | 32.9 | 112.2 | 446.1 | 227.6 |
-| Taylor5 | autodiff | 7.4 | 10.2 | 22.5 | 25.6 | 73.8 |
-| Taylor5 | boost    | 21.5 | 35.8 | 110.1 | 220.4 | 256.3 |
+| dual    | autodiff | 3.6 | 3.6 | 10.7 | 21.0 | 41.9 |
+| dual    | sacado   | 3.7 | 6.7 | 10.9 | 24.5 | 97.7 |
+| dual    | ceres    | 3.7 | 4.3 | 11.4 | 19.6 | 55.7 |
+| dual2nd | autodiff | 5.2 | 4.9 | 14.4 | 20.8 | 47.8 |
+| dual2nd | sacado   | 4.8 | 9.1 | 16.6 | 36.4 | 117.0 |
+| dual2nd | ceres    | 5.2 | 4.7 | 7.6 | 18.6 | 103.7 |
+| dual3rd | autodiff | 8.8 | 13.3 | 20.6 | 25.9 | 54.4 |
+| dual3rd | sacado   | 7.6 | 16.2 | 25.6 | 86.0 | 366.7 |
+| dual3rd | ceres    | 8.7 | 13.0 | 16.3 | 28.4 | 281.5 |
+| Taylor5 | autodiff | 7.0 | 10.1 | 22.1 | 26.8 | 70.7 |
+| Taylor5 | sacado   | 40.6 | 74.2 | 94.4 | 96.8 | 282.4 |
 
-### Why Boost is slower for higher orders
+The Boost rows and the clang table are printed by `ad-op-benchmark`.
 
-`fvar` treats a nested `fvar<fvar<double,1>,1>` as a multivariate truncated Taylor polynomial.
-Every elementary function is evaluated generically:
-it computes all derivatives up to the *summed* order,
-then runs a Horner scheme of full nested `fvar` multiplications with `factorial()` scaling (`apply_derivatives`).
-autodiff's nested `Dual<T, G>` applies the chain rule level by level, which is much cheaper for hyper-duals.
-Clang optimizes Boost's generic coefficient loops considerably better than GCC.
-Raising GCC's inlining limits did not help.
+## Findings per library
 
-## Compatibility findings
+**Sacado**
+* Vector mode is the only option that is faster than autodiff with GCC, and it is faster on every kernel it covers:
+  0.44–0.94× (0.65–1.15× with clang).
+* Scalar mode is slower than autodiff, mainly because `pow(x, double)` is 2–7× slower and Marmot's energies are full of `pow(J, -2./3)`.
+* `Tay::Taylor` has a run-time degree and allocates on the heap, so it is 2.4–3.6× slower than autodiff's `Real<N>`.
+  It is not a replacement for the Kelvin-chain Taylor mode.
+* Works with Fastor and the Marmot templates unchanged.
+  Eigen needs `NumTraits` and `ScalarBinaryOpTraits` (in `ADBackendSacado.h`).
+* Dependency: Sacado ships only inside Trilinos. Header-only use needs the 2.1 MB `packages/sacado/src` tree and a config stub.
+  It could be vendored (BSD-3) or taken from a Trilinos install.
 
-* **autodiff 1.1.2 does not compile against Eigen 5.0** (`autodiff/common/eigen.hpp`: `IndexedView` template mismatch).
-  CI currently works only because it pins Eigen 3.4.0.
-  This is the most concrete cost of autodiff being unmaintained.
-* **Boost `fvar` and Fastor**: the Marmot energy, deformation and stress templates compile unchanged with `fvar`.
-* **Boost `fvar` and Eigen**: `fvar` has an unconstrained converting constructor.
-  Without help, Eigen therefore treats any matrix as a promotable scalar, which makes `A * B` ambiguous.
-  This happens in both Eigen 3.4 and 5.
-  It is fixed in `ADBackendBoost.h` by specializing `Eigen::internal::promote_scalar_arg` to promote only arithmetic types,
-  together with `NumTraits`/`ScalarBinaryOpTraits`.
-  With that, the Boost backend works with Eigen 3.4 and Eigen 5.0.
-* **No mutable coefficient access in `fvar`**: seeding needs the coefficient storage.
-  Its layout is identical to autodiff's nested `Dual` (2^N doubles, level-k epsilon at index 2^(N-k)).
-  The adapter accesses it through one guarded `coefficients()` helper (`static_assert` on size and standard layout).
-  Marmot's `increaseDualOrderWithShift` and related helpers already rely on the same kind of layout access with autodiff.
-* Header parse time: autodiff (dual + real + eigen) 0.83 s, Boost.Math autodiff 1.07 s.
+**Ceres `Jet`**
+* **Upstream Ceres does not work with Fastor.**
+  Jet's value constructor is `explicit`, and Fastor does `T x = 0.` and `x = 0` internally.
+  Nested Jets (2nd/3rd order) also lack `double ⊕ Jet<Jet>` arithmetic and `Jet<Jet>(double)` construction.
+  The numbers above use a patched `jet.h`: the constructor made implicit, plus one constructor from arithmetic types
+  (`ceres-2.2.0-jet-fastor.patch`).
+  The mixed `double` operators are added in `ADBackendCeres.h`.
+  Using Ceres would therefore mean carrying a fork of `jet.h`.
+* Strongly compiler-dependent.
+  Vector mode is the fastest option with clang (0.35–0.57×) but slower than autodiff with GCC (1.2–1.7×),
+  because Jet's derivative part is an Eigen vector and GCC vectorizes it poorly here.
+* No Taylor mode.
 
-## Suggested changes for a Boost.Math migration
+**Boost.Math** (detailed in the previous revision of this README)
+* No vector mode, slow nested hyper-duals with GCC (2–9×), and Taylor mode 2.8–3× slower with GCC.
 
-1. **Backend-neutral AD types header** (do this regardless of the backend).
-   Add `Marmot/MarmotAutomaticDifferentiationTypes.h` with the adapter vocabulary from `ADBackendBoost.h`:
-   `dual`, `dual2nd`, `dual3rd`, `HyperDual<N>`, `Taylor<N>`, `seed<level>`, `derivative<level>`, `value`, `taylorDerivatives<N>`.
-   Then replace the `autodiff::` spellings in the 39 files that use them.
-   After that, swapping the backend touches one header.
-2. **Port the core helpers** (`MarmotAutomaticDifferentiation{,ForFastor}.h/.cpp`).
-   Reimplement `valnode`, `increaseDualOrderWithShift`, `decreaseDualOrder*` and `shiftTo2ndOrderDual` on `coefficients()`.
-   The drivers (`dF_dT`, `df_dT`, `d2f_dT2`, `d3f_dT3`, `dF_dX`, `dF_dX_2nd`) port 1:1, as shown in `ADKernels.h`.
-3. **Kelvin chain**: replace `autodiff::derivatives( phi, along( 1. ), at( tau_ ) )[k]` with `taylorDerivatives<k>( phi, tau * k )[k]`,
-   and change the `std::function< autodiff::Real<k> (...) >` signatures to `Taylor<k>`.
-4. **Eigen glue**: move the `NumTraits` / `ScalarBinaryOpTraits` / `promote_scalar_arg` specializations into the types header.
-   `Vector6dual`, `MatrixXdual` and similar become `Eigen::Matrix<dual, …>`.
-5. **Utilities**: `Math::makeReal`, `Testing::getString` and `Testing::checkIfEqual` get `fvar` overloads.
-   Also check the `autodiff::dual` workaround in `MarmotTensorExponential.h`.
-6. **CMake**: replace the `autodiff::autodiff` dependency with Boost.Math headers.
-   Boost.Math can be used standalone; the `autodiff.hpp` include set was not tested in standalone mode here.
-7. **Mitigate the higher-order slowdown** (backend-independent, but needed before switching):
-   * `d3f_dT3` evaluates all 729 index triples, although the third derivative is fully symmetric.
-     Computing only the 165 unique triples and permuting cuts the cost about 4.4×.
-     This matters because `CompressibleFiniteStrainLinearViscoelasticity` calls it in every stress update.
-   * `d2f_dT2` likewise needs only 45 of 81 passes.
+**Common to all three**
+* None of them beats autodiff's `Real<N>` for the Kelvin-chain Taylor mode.
+  autodiff's `forward/real` is a small, self-contained header and could be vendored or replaced by an in-house `Taylor<N>`.
+* autodiff 1.1.2 does not compile with Eigen 5 (`IndexedView` mismatch in `autodiff/common/eigen.hpp`).
 
 ## Recommendation
 
-A full switch to Boost.Math is not a clear win at the moment.
-It is correct everywhere and actively maintained, and it works with Eigen 5.
-But with GCC, Marmot's main compiler, it costs:
+**Sacado in vector mode** is the only tested library that beats the current implementation with GCC, on every first-, second- and third-order kernel.
+It also needs no patching, and it has a long-term maintainer (Sandia; used by deal.II for exactly this purpose).
 
-* about 1.1–1.3× on the first-order tangent paths, which are the most common AD use;
-* 2–4× on `dual2nd` and Taylor mode, including B4's per-update Kelvin-chain moduli;
-* about 7× on `dual3rd`.
+Suggested plan:
 
-With clang it is close to parity, except for `dual3rd` (about 3×).
+1. Introduce the backend-neutral AD types header and route all `autodiff::` uses through it, as proposed earlier.
+2. Port the drivers `dF_dT`, `dF_dX`, `d2f_dT2`, `d3f_dT3` and `df_dT` to vector mode on `Sacado::Fad::SFad<…, N>`.
+   `ADKernels.h` contains the reference implementations.
+   The material code only sees the scalar type, so most call sites stay unchanged.
+3. Keep Taylor mode (`Real<N>`) separate:
+   vendor autodiff's `forward/real` header, or write a small in-house `Taylor<N>`, and benchmark it against today's.
+4. Decide how to ship Sacado: vendor `packages/sacado/src` with the config stub, or depend on an installed Trilinos.
+5. Re-measure in full simulations, particularly `CompressibleFiniteStrainLinearViscoelasticity` (3rd order) and the AD finite-strain materials.
 
-The suggested order:
-
-* Do steps 1–5 (the backend-neutral layer) now; they are useful whatever backend Marmot ends up with.
-* Keep autodiff behind that layer for now, vendored, with a patched `eigen.hpp` for Eigen 5.
-* Use step 7 to remove most of the higher-order cost.
-* Then re-run this benchmark through the layer. Boost becomes the drop-in fallback if autodiff breaks again,
-  and the right choice if the first-order overhead turns out to be acceptable in full simulations.
+Ceres is only worth reconsidering if Marmot moves to clang and accepts maintaining a patched `jet.h`.
