@@ -1,4 +1,5 @@
 #include "Marmot/CompressibleFiniteStrainLinearViscoelasticity.h"
+#include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -6,7 +7,10 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include "Marmot/MarmotTesting.h"
+#include <functional>
 #include <string>
+#include <utility>
+#include <vector>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
@@ -598,6 +602,87 @@ void testYeohAndMooneyRivlinMatchSharedPotentials( double onlyShearCreep )
                "MooneyRivlin" );
 }
 
+// Test I-16: energy density and its first three derivatives w.r.t. C equal those of the plain potential obtained
+// with third-order dual numbers, for every hyperelastic base.
+void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
+{
+  namespace EDF = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  using Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3;
+  using Dual3rdTensor = Tensor33t< autodiff::dual3rd >;
+
+  struct Exposed : CompressibleFiniteStrainLinearViscoelasticity {
+    using CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity;
+    using CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives;
+  };
+
+  Tensor33d F = Spatial3D::I;
+  F( 0, 0 ) += 0.08;
+  F( 1, 1 ) -= 0.02;
+  F( 2, 2 ) -= 0.015;
+  F( 0, 1 )         = 0.03;
+  F( 1, 2 )         = -0.02;
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+
+  const double K = 3500., G = 1500., C1 = 700., C2 = -50., C3 = 20., C2MooneyRivlin = 200., mu = 1500., lambdaL = 3.;
+  const double D1 = 2. / K;
+
+  using Potential = std::function< autodiff::dual3rd( const Dual3rdTensor& ) >;
+  const std::vector< std::pair< std::vector< double >, Potential > > cases = {
+    { { 0., 0., K, G, 0. }, [=]( const Dual3rdTensor& C_ ) { return EDF::standardNeoHooke( C_, K, G ); } },
+    { { 1., 0., C1, C2, C3, D1, 0. },
+      [=]( const Dual3rdTensor& C_ ) { return EDF::YeohPotential( C_, C1, C2, C3, D1 ); } },
+    { { 2., 0., C1, C2MooneyRivlin, D1, 0. },
+      [=]( const Dual3rdTensor& C_ ) { return EDF::MooneyRivlinPotential( C_, C1, C2MooneyRivlin, D1 ); } },
+    { { 3., 0., K, G, 0. }, [=]( const Dual3rdTensor& C_ ) { return EDF::PenceGouPotentialB( C_, K, G ); } },
+    { { 4., 0., mu, lambdaL, D1, 0. },
+      [=]( const Dual3rdTensor& C_ ) { return EDF::ArrudaBoyce8ChainPotential( C_, mu, lambdaL, D1 ); } },
+  };
+
+  for ( const auto& [matProps, potential] : cases ) {
+    const Exposed material( matProps.data(), static_cast< int >( matProps.size() ), 0 );
+    const auto [psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = material.computeEnergyDensityAndDerivatives( C );
+
+    const Potential potentialOfSymmetricPart = [&potential]( const Dual3rdTensor& C_ ) {
+      Dual3rdTensor CSym;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          CSym( i, j ) = 0.5 * ( C_( i, j ) + C_( j, i ) );
+      return potential( CSym );
+    };
+    const auto [psiRef, dPsiRef, d2PsiRef, d3PsiRef] = d3f_dT3< 3 >( potentialOfSymmetricPart, C );
+
+    // The reference holds the derivatives of Psi( sym( C ) ), i.e. the minor-symmetric parts, which is what the
+    // material returns. The exception is NeoHooke: the third derivative of the closed form
+    // ThirdOrder::standardNeoHooke is the one w.r.t. a general C and is projected here before comparing.
+    Tensor333333d d3Psi = d3Psi_dCdCdC;
+    if ( matProps[0] == 0. )
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ )
+              for ( int m = 0; m < 3; m++ )
+                for ( int n = 0; n < 3; n++ ) {
+                  const auto& d3            = d3Psi_dCdCdC;
+                  d3Psi( i, j, k, l, m, n ) = .125 * ( d3( i, j, k, l, m, n ) + d3( j, i, k, l, m, n ) +
+                                                       d3( i, j, l, k, m, n ) + d3( j, i, l, k, m, n ) +
+                                                       d3( i, j, k, l, n, m ) + d3( j, i, k, l, n, m ) +
+                                                       d3( i, j, l, k, n, m ) + d3( j, i, l, k, n, m ) );
+                }
+
+    const Tensor33d     difference1 = dPsi_dC - dPsiRef;
+    const Tensor3333d   difference2 = d2Psi_dCdC - d2PsiRef;
+    const Tensor333333d difference3 = d3Psi - d3PsiRef;
+
+    throwExceptionOnFailure( std::abs( psi - psiRef ) < 1e-10 * K &&
+                               Fastor::max( Fastor::abs( difference1 ) ) < 1e-10 * K &&
+                               Fastor::max( Fastor::abs( difference2 ) ) < 1e-10 * K &&
+                               Fastor::max( Fastor::abs( difference3 ) ) < 1e-9 * K,
+                             "I-16: energy density derivatives do not match third-order autodiff for base " +
+                               std::to_string( static_cast< int >( matProps[0] ) ) + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+  }
+}
+
 // runs a test for full creep (onlyShearCreep=0) and shear creep only (onlyShearCreep=1)
 static std::function< void() > forBothCreepModes( void ( *test )( double ) )
 {
@@ -625,6 +710,7 @@ int main()
     testFullCreepViscoelasticRelaxation,                      // I-13: full creep (onlyShearCreep=0) relaxation
     testAnalyticalInitialShearModulusMatchesInitialStiffness, // I-14: analytical G0 for every base
     forBothCreepModes( testYeohAndMooneyRivlinMatchSharedPotentials ), // I-15: Yeoh, MooneyRivlin stress
+    testEnergyDensityDerivativesMatchThirdOrderAutodiff,               // I-16: derivatives vs third-order autodiff
   };
 
   executeTestsAndCollectExceptions( tests );

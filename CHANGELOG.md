@@ -56,6 +56,10 @@ All notable changes to Marmot are documented in this file. The format follows
   `DecoupledPotential` and `makeDecoupledPotential` combine an isochoric and a volumetric part. The compressible
   `ArrudaBoyce8ChainPotential(C, mu, lambdaL, D1)` is new, as are the `FirstOrder` overloads of the compressible
   `MooneyRivlinPotential` and `YeohPotential`.
+- `Math::Differentiation::Automatic::dF_dSymmetricT`: gradient of a tensor-valued function with respect to a
+  symmetric square tensor by first-order dual numbers along the dim (dim + 1) / 2 symmetric directions. The output
+  may have any shape and the function does not have to be transpose-equivariant; e.g. the closed-form second
+  derivative of a potential w.r.t. C yields its third derivative with 6 evaluations.
 - Single-pass `DecoupledPotential`: every isochoric and volumetric potential also exists as a scalar function type
   (`Isochoric::NeoHooke`, `Yeoh`, `MooneyRivlin`, `ArrudaBoyce8Chain`; `Volumetric::Penalty`, `SussmanBathe`,
   `SimoTaylor`, `Ogden`, `LiuHofstetterMang`, `DollSchweizerhof`, `GeneralizedDollSchweizerhof`,
@@ -145,6 +149,11 @@ All notable changes to Marmot are documented in this file. The format follows
   must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
   `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
   generic facilities (tested), now without a registered element.
+- `CompressibleFiniteStrainLinearViscoelasticity` obtains the third derivative of the energy density for the bases
+  `Yeoh`, `MooneyRivlin`, `PenceGouNeoHooke` and `ArrudaBoyce` by differentiating the closed-form `SecondOrder`
+  potentials with first-order dual numbers (6 evaluations) instead of applying third-order dual numbers to the plain
+  potentials (6 x 81 evaluations), using `dF_dSymmetricT`. Results agree to round-off; this evaluation is about 25
+  to 35 times faster (about 2.5 µs instead of 60 to 95 µs per material point).
 - `CompressibleFiniteStrainLinearViscoelasticity` takes the initial shear modulus for `onlyShearCreep = 1` from one
   function, `initialShearModulus()`, with the analytical expression of each hyperelastic base; the Arruda-Boyce one
   is written as `mu (3 lambdaL^2 - 1) / (3 (lambdaL^2 - 1))`. For full creep the initial compliance is the closed

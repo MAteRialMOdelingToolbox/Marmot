@@ -12,8 +12,9 @@
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
 #include <autodiff/forward/dual/dual.hpp>
-#include <functional>
 #include <stdexcept>
+#include <tuple>
+#include <utility>
 
 namespace Marmot::Materials {
 
@@ -34,6 +35,52 @@ namespace Marmot::Materials {
       return materialProperties[nMaterialProperties - 1];
   }
 
+  namespace {
+
+    /* Minor-symmetric part of a fourth-order tensor, 1/4 ( H_ijkl + H_jikl + H_ijlk + H_jilk ). */
+    template < typename T >
+    Tensor3333t< T > minorSymmetricPart( const Tensor3333t< T >& H )
+    {
+      Tensor3333t< T > HSym;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = i; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = k; l < 3; l++ ) {
+              const T symmetrized = .25 * ( H( i, j, k, l ) + H( j, i, k, l ) + H( i, j, l, k ) + H( j, i, l, k ) );
+              HSym( i, j, k, l )  = symmetrized;
+              HSym( j, i, k, l )  = symmetrized;
+              HSym( i, j, l, k )  = symmetrized;
+              HSym( j, i, l, k )  = symmetrized;
+            }
+      return HSym;
+    }
+
+    /* Energy density and its first three derivatives w.r.t. a symmetric C from a closed-form SecondOrder potential
+     * (energy, dPsi/dC, d2Psi/dCdC; generic in the scalar type). The third derivative is the derivative of the
+     * closed-form second derivative by first-order dual numbers, which takes 6 evaluations (one per independent
+     * entry of C) instead of the 6 x 81 evaluations of third-order dual numbers on the plain potential.
+     *
+     * The potentials are functions of a general (not necessarily symmetric) C, so their derivatives w.r.t. the
+     * independent entries C_ij and C_ji differ (e.g. tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only the
+     * symmetric part acts on symmetric increments of C: all derivatives are those of Psi( sym( C ) ), i.e. projected
+     * onto their minor-symmetric parts. */
+    template < typename SecondOrderPotential >
+    std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > differentiateSecondOrderPotential(
+      const SecondOrderPotential& potential,
+      const Tensor33d&            C )
+    {
+      const auto [d2Psi_dCdC, d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::
+        dF_dSymmetricT( [&potential]( const Tensor33t< autodiff::dual >&
+                                        C_ad ) { return minorSymmetricPart( std::get< 2 >( potential( C_ad ) ) ); },
+                        C );
+
+      const auto [psi, dPsi_dC_general, d2Psi_dCdC_general] = potential( C );
+      const Tensor33d dPsi_dC                               = .5 * ( dPsi_dC_general + transpose( dPsi_dC_general ) );
+
+      return { psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC };
+    }
+  } // namespace
+
   std::tuple< double,
               Marmot::Math::Tensors::FastorTensors::Tensor33d,
               Marmot::Math::Tensors::FastorTensors::Tensor3333d,
@@ -41,13 +88,6 @@ namespace Marmot::Materials {
   CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives(
     const Marmot::Math::Tensors::FastorTensors::Tensor33d& C ) const
   {
-
-    // select hyperelastic base
-    // compute enregy density and derivatives
-    // with autodiff
-    // we need a function mapping from tensor33 with dual3rd to dual3rd
-    std::function< autodiff::dual3rd( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
-      energyDensityFunction;
 
     // every base uses its full compressible potential with the parameters in the order of its interface
     // -- see the class docs.
@@ -57,46 +97,32 @@ namespace Marmot::Materials {
     switch ( hyperelasticBase ) {
     case NeoHooke: return EDF::ThirdOrder::standardNeoHooke( C, par( 0 ), par( 1 ) );
     case Yeoh:
-      energyDensityFunction =
-        [C1 = par( 0 ), C2 = par( 1 ), C3 = par( 2 ), D1 = par( 3 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-          return EDF::YeohPotential( C_ad, C1, C2, C3, D1 );
-        };
-      break;
+      return differentiateSecondOrderPotential(
+        [C1 = par( 0 ), C2 = par( 1 ), C3 = par( 2 ), D1 = par( 3 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::YeohPotential( C_ad, C1, C2, C3, D1 );
+        },
+        C );
     case PenceGouNeoHooke:
-      energyDensityFunction = [K = par( 0 ), G = par( 1 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return EDF::PenceGouPotentialB( C_ad, K, G );
-      };
-      break;
+      return differentiateSecondOrderPotential( [K = par( 0 ), G = par( 1 )](
+                                                  const auto&
+                                                    C_ad ) { return EDF::SecondOrder::PenceGouPotentialB( C_ad, K, G ); },
+                                                C );
     case MooneyRivlin:
-      energyDensityFunction =
-        [C1 = par( 0 ), C2 = par( 1 ), D1 = par( 2 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-          return EDF::MooneyRivlinPotential( C_ad, C1, C2, D1 );
-        };
-      break;
+      return differentiateSecondOrderPotential(
+        [C1 = par( 0 ), C2 = par( 1 ), D1 = par( 2 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::MooneyRivlinPotential( C_ad, C1, C2, D1 );
+        },
+        C );
     case ArrudaBoyce:
-      energyDensityFunction =
-        [mu = par( 0 ), lambdaL = par( 1 ), D1 = par( 2 )]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-          return EDF::ArrudaBoyce8ChainPotential( C_ad, mu, lambdaL, D1 );
-        };
-      break;
+      return differentiateSecondOrderPotential(
+        [mu = par( 0 ), lambdaL = par( 1 ), D1 = par( 2 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::ArrudaBoyce8ChainPotential( C_ad, mu, lambdaL, D1 );
+        },
+        C );
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
     }
-    // The potentials are functions of a general (not necessarily symmetric) C, so their derivatives w.r.t. the
-    // independent entries C_ij and C_ji differ (e.g. tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only
-    // the symmetric part acts on symmetric increments of C. Differentiating through sym(C) projects every
-    // derivative onto its minor-symmetric part; without this, the stiffness inverted for onlyShearCreep = 0 is
-    // singular in the shear block.
-    const auto energyDensityOfSymmetricPart = [&energyDensityFunction]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-      Tensor33t< autodiff::dual3rd > CSym;
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          CSym( i, j ) = 0.5 * ( C_ad( i, j ) + C_ad( j, i ) );
-      return energyDensityFunction( CSym );
-    };
-
-    return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityOfSymmetricPart, C, true );
   }
 
   double CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus() const
