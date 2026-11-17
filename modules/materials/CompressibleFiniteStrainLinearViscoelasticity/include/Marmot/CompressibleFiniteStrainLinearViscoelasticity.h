@@ -136,6 +136,17 @@ namespace Marmot::Materials {
     }
 
     /**
+     * @brief Initial (infinitesimal) shear modulus of the selected hyperelastic base.
+     * @details @f$G_0 = 2\left(\partial\Psi/\partial\bar I_1 + \partial\Psi/\partial\bar I_2\right)@f$
+     * at @f$\mathbf{C}=\mathbf{I}@f$: @f$G@f$ for @c NeoHooke and @c PenceGouNeoHooke, @f$2C_1@f$ for
+     * @c Yeoh, @f$2(C_1+C_2)@f$ for @c MooneyRivlin and
+     * @f$\mu\,\frac{3\lambda_L^2-1}{3(\lambda_L^2-1)}@f$ for @c ArrudaBoyce. With @c onlyShearCreep the
+     * initial compliance is @f$\frac{1}{2G_0}\mathbb{I}@f$.
+     * @return Initial shear modulus @f$G_0@f$.
+     */
+    double initialShearModulus() const;
+
+    /**
      * @brief Compute strain energy density and derivatives with respect to @f$\mathbf{C}@f$.
      * @param[in] C Right Cauchy-Green deformation tensor.
      * @return Tuple containing energy density and first, second and third derivatives.

@@ -99,6 +99,27 @@ namespace Marmot::Materials {
     return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityOfSymmetricPart, C, true );
   }
 
+  double CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus() const
+  {
+    // G0 = 2 ( dPsi/dIbar1 + dPsi/dIbar2 ) at C = I
+    const auto& par = elasticProperties;
+
+    switch ( hyperelasticBase ) {
+    case NeoHooke:
+    case PenceGouNeoHooke: return par( 1 );
+    case Yeoh: return 2. * par( 0 );
+    case MooneyRivlin: return 2. * ( par( 0 ) + par( 1 ) );
+    case ArrudaBoyce: {
+      // tends to mu for lambdaL -> infinity
+      const double lambdaL2 = par( 1 ) * par( 1 );
+      return par( 0 ) * ( 3. * lambdaL2 - 1. ) / ( 3. * ( lambdaL2 - 1. ) );
+    }
+    default:
+      throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus: "
+                                "Unknown hyperelastic base." );
+    }
+  }
+
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
     const double* materialProperties,
     int           nMaterialProperties,
@@ -119,40 +140,14 @@ namespace Marmot::Materials {
                                    << __PRETTY_FUNCTION__ << ": ArrudaBoyce locking stretch lambdaL must be > 1, got "
                                    << elasticProperties[1] );
 
-    if ( onlyShearCreep == 1.0 ) {
-      double G = 0;
-      switch ( hyperelasticBase ) {
-      case NeoHooke: G = elasticProperties[1]; break;
-      case Yeoh: G = 2 * elasticProperties[0]; break;
-      // reference shear modulus G0 = 2 ( dPsi/dIbar1 + dPsi/dIbar2 ) at C = I
-      case MooneyRivlin: G = 2 * ( elasticProperties[0] + elasticProperties[1] ); break;
-      case PenceGouNeoHooke: G = elasticProperties[1]; break;
-      // mu is NOT the infinitesimal shear modulus at finite lambdaL: G0 = 2*dPsi_iso/dIbar1
-      // evaluated at Ibar1=3 (the reference configuration), which for the closed-form
-      // Arruda-Boyce potential (see Detail::arrudaBoyce8ChainIsochoric) works out to
-      // mu/3 + 2*mu/(3*(1-1/lambdaL^2)); only in the lambdaL->infinity limit does this reduce to mu.
-      case ArrudaBoyce: {
-        const double lambdaL = elasticProperties[1];
-        const double w0      = 1. - 1. / ( lambdaL * lambdaL );
-        G                    = elasticProperties[0] / 3. + 2. * elasticProperties[0] / ( 3. * w0 );
-        break;
-      }
-      default:
-        throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::"
-                                  "CompressibleFiniteStrainLinearViscoelasticity: Unknown hyperelastic base." );
-      }
-
-      initialCompliance = .5 / G * Spatial3D::I4;
-    }
-
-    else {
-
-      // start from initial stiffness tensor dPK2 / dE,
-      Tensor3333d initialStiffness = 4. *
-                                     std::get< 2 >( computeEnergyDensityAndDerivatives( evaluate( Spatial3D::I ) ) );
-
-      initialCompliance = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( initialStiffness );
-    }
+    // shear creep only: the deviatoric initial stiffness is 2 G0 times the deviatoric projector, so the
+    // compliance follows from the analytical initial shear modulus alone;
+    // full creep: invert the initial stiffness dPK2/dE = 4 d2Psi/dCdC at C = I
+    if ( onlyShearCreep == 1.0 )
+      initialCompliance = .5 / initialShearModulus() * Spatial3D::I4;
+    else
+      initialCompliance = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor(
+        evaluate( 4. * std::get< 2 >( computeEnergyDensityAndDerivatives( evaluate( Spatial3D::I ) ) ) ) );
 
     initializeStateLayout();
   }

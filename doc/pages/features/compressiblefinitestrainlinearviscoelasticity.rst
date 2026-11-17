@@ -41,6 +41,11 @@ The material parameters are provided as a flat vector with the following layout:
 
 .. rubric:: Elastic properties by base model
 
+With ``onlyShearCreep = 1`` the initial compliance of the generalized Maxwell model is
+:math:`\frac{1}{2G_0}\,\mathbb{I}` with the analytical initial shear modulus
+:math:`G_0 = 2\left(\partial\Psi/\partial\bar I_1 + \partial\Psi/\partial\bar I_2\right)` at
+:math:`\mathbf{C}=\mathbf{I}` of the selected base model.
+
 .. list-table::
    :header-rows: 1
    :align: left
@@ -49,27 +54,33 @@ The material parameters are provided as a flat vector with the following layout:
      - **selector value**
      - **n**\ :sub:`e`
      - **Properties (in order)**
+     - **Initial shear modulus** :math:`G_0`
    * - NeoHooke
      - 0
      - 2
      - :math:`K` (bulk modulus), :math:`G` (shear modulus)
+     - :math:`G`
    * - Yeoh
      - 1
      - 4
      - :math:`C_{1}`, :math:`C_{2}`, :math:`C_{3}`, :math:`D_1` (volumetric compliance)
+     - :math:`2C_1`
    * - MooneyRivlin
      - 2
      - 3
      - :math:`C_{1}`, :math:`C_{2}`, :math:`D_1` (volumetric compliance)
+     - :math:`2(C_1+C_2)`
    * - PenceGouNeoHooke
      - 3
      - 2
      - :math:`K` (bulk modulus), :math:`G` (shear modulus)
+     - :math:`G`
    * - ArrudaBoyce
      - 4
      - 3
      - :math:`\mu` (shear-modulus-like parameter), :math:`\lambda_L` (locking stretch),
        :math:`D_1` (volumetric compliance)
+     - :math:`\mu\,\dfrac{3\lambda_L^2-1}{3(\lambda_L^2-1)}`
 
 .. list-table::
    :header-rows: 1

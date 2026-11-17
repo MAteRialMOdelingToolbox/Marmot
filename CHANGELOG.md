@@ -123,6 +123,9 @@ All notable changes to Marmot are documented in this file. The format follows
   must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
   `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
   generic facilities (tested), now without a registered element.
+- `CompressibleFiniteStrainLinearViscoelasticity` takes the initial shear modulus for `onlyShearCreep = 1` from one
+  function, `initialShearModulus()`, with the analytical expression of each hyperelastic base; the Arruda-Boyce one
+  is written as `mu (3 lambdaL^2 - 1) / (3 (lambdaL^2 - 1))`. Results are unchanged.
 - `FirstOrder::PenceGouPotentialB` and `SecondOrder::PenceGouPotentialB` evaluate their derivatives through the
   invariant helper. Results agree with the previous closed forms to round-off; the `FirstOrder` overload takes about
   half the time, the `SecondOrder` overload the same. The plain `PenceGouPotentialB` is unchanged.

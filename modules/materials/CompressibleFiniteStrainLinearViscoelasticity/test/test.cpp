@@ -1,3 +1,4 @@
+#include "Marmot/CompressibleFiniteStrainLinearViscoelasticity.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -495,6 +496,50 @@ void testFullCreepViscoelasticRelaxation()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// Test I-14: for every hyperelastic base the analytical initial shear modulus G0 defines the deviatoric
+// part of the initial stiffness dPK2/dE = 4 d2Psi/dCdC at C = I: Dev : dPK2/dE : Dev = 2 G0 Dev. This is
+// what justifies initialCompliance = 0.5/G0 * I4 for onlyShearCreep = 1.
+void testAnalyticalInitialShearModulusMatchesInitialStiffness()
+{
+  struct Exposed : CompressibleFiniteStrainLinearViscoelasticity {
+    using CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity;
+    using CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives;
+    using CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus;
+  };
+
+  // [hyperelasticBase, onlyShearCreep, <elastic params>, nMaxwell], expected G0
+  const std::vector< std::pair< std::vector< double >, double > > cases = {
+    { { 0.0, 1.0, 3500.0, 1500.0, 0.0 }, 1500.0 },                                   // NeoHooke: G
+    { { 1.0, 1.0, 700.0, -50.0, 20.0, 2.0 / 3500.0, 0.0 }, 1400.0 },                 // Yeoh: 2 C1
+    { { 2.0, 1.0, 500.0, 200.0, 2.0 / 3500.0, 0.0 }, 1400.0 },                       // MooneyRivlin: 2 (C1 + C2)
+    { { 3.0, 1.0, 3500.0, 1500.0, 0.0 }, 1500.0 },                                   // PenceGouNeoHooke: G
+    { { 4.0, 1.0, 1500.0, 3.0, 2.0 / 3500.0, 0.0 }, 1500.0 * 26.0 / ( 3.0 * 8.0 ) }, // ArrudaBoyce, lambdaL = 3
+  };
+
+  const Tensor3333d& Dev = Spatial3D::DeviatoricSymmetric;
+
+  for ( const auto& [matProps, G0Expected] : cases ) {
+    const Exposed material( matProps.data(), static_cast< int >( matProps.size() ), 0 );
+    const double  G0 = material.initialShearModulus();
+
+    throwExceptionOnFailure( checkIfEqual( G0, G0Expected, 1e-10 * G0Expected ),
+                             "I-14: unexpected analytical initial shear modulus for base " +
+                               std::to_string( static_cast< int >( matProps[0] ) ) + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+
+    const Tensor3333d initialStiffness = 4. * std::get< 2 >( material.computeEnergyDensityAndDerivatives(
+                                                Fastor::evaluate( Spatial3D::I ) ) );
+    const Tensor3333d
+      deviatoricStiffness = Fastor::einsum< ijmn, mnKL >( Dev, Fastor::einsum< ijmn, mnKL >( initialStiffness, Dev ) );
+    const Tensor3333d difference = deviatoricStiffness - 2. * G0 * Dev;
+
+    throwExceptionOnFailure( Fastor::max( Fastor::abs( difference ) ) < 1e-9 * G0,
+                             "I-14: deviatoric initial stiffness is not 2 G0 Dev for base " +
+                               std::to_string( static_cast< int >( matProps[0] ) ) + " in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
+  }
+}
+
 // runs a NeoHooke test for full creep (onlyShearCreep=0) and shear creep only (onlyShearCreep=1)
 static std::function< void() > forBothCreepModes( void ( *test )( double ) )
 {
@@ -507,19 +552,20 @@ static std::function< void() > forBothCreepModes( void ( *test )( double ) )
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
-    forBothCreepModes( testUndeformedResponse ),           // I-1: F=I gives zero stress
-    forBothCreepModes( testUniaxialElasticResponse ),      // I-2: Uniaxial elastic stretch reference values
-    forBothCreepModes( testStressTensorSymmetry ),         // I-3: Kirchhoff stress symmetry
-    forBothCreepModes( testPureRotationZeroStress ),       // I-4: Pure rotation gives zero stress
-    forBothCreepModes( testObjectivity ),                  // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
-    testViscoelasticRelaxation,                            // I-6: Viscoelastic relaxation
-    forBothCreepModes( testSubsteppedConsistency ),        // I-7: Substepped == regular
-    testArrudaBoyceUndeformedResponse,                     // I-8: ArrudaBoyce F=I gives zero stress
-    testArrudaBoyceMatchesSharedPotential,                 // I-9: ArrudaBoyce matches shared potential
-    testUndeformedResponsePenceGouNeoHooke,                // I-10: F=I gives zero stress (PenceGouNeoHooke)
-    testTriaxialResponsePenceGouNeoHookeMatchesAnalytical, // I-11: PenceGouNeoHooke matches analytical reference
-    testArrudaBoyceViscoelasticShearCreep,                 // I-12: ArrudaBoyce viscoelastic shear creep
-    testFullCreepViscoelasticRelaxation,                   // I-13: full creep (onlyShearCreep=0) relaxation
+    forBothCreepModes( testUndeformedResponse ),              // I-1: F=I gives zero stress
+    forBothCreepModes( testUniaxialElasticResponse ),         // I-2: Uniaxial elastic stretch reference values
+    forBothCreepModes( testStressTensorSymmetry ),            // I-3: Kirchhoff stress symmetry
+    forBothCreepModes( testPureRotationZeroStress ),          // I-4: Pure rotation gives zero stress
+    forBothCreepModes( testObjectivity ),                     // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
+    testViscoelasticRelaxation,                               // I-6: Viscoelastic relaxation
+    forBothCreepModes( testSubsteppedConsistency ),           // I-7: Substepped == regular
+    testArrudaBoyceUndeformedResponse,                        // I-8: ArrudaBoyce F=I gives zero stress
+    testArrudaBoyceMatchesSharedPotential,                    // I-9: ArrudaBoyce matches shared potential
+    testUndeformedResponsePenceGouNeoHooke,                   // I-10: F=I gives zero stress (PenceGouNeoHooke)
+    testTriaxialResponsePenceGouNeoHookeMatchesAnalytical,    // I-11: PenceGouNeoHooke matches analytical reference
+    testArrudaBoyceViscoelasticShearCreep,                    // I-12: ArrudaBoyce viscoelastic shear creep
+    testFullCreepViscoelasticRelaxation,                      // I-13: full creep (onlyShearCreep=0) relaxation
+    testAnalyticalInitialShearModulusMatchesInitialStiffness, // I-14: analytical G0 for every base
   };
 
   executeTestsAndCollectExceptions( tests );
