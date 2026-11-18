@@ -25,6 +25,7 @@
 #include "Marmot/HeatConduction.h"
 #include "Marmot/MarmotJournal.h"
 #include <Eigen/Cholesky>
+#include <cmath>
 #include <stdexcept>
 
 namespace Marmot::Materials {
@@ -66,13 +67,20 @@ namespace Marmot::Materials {
     }
 
     rhoC0 = p[0] * p[1];
-    if ( !( rhoC0 >= 0.0 ) )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__ << ": the heat capacity rho * c must not be negative." );
+    if ( !( rhoC0 >= 0.0 ) || !std::isfinite( rhoC0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
+                                                                   << ": the heat capacity rho * c must be finite "
+                                                                      "and not negative." );
 
-    if ( Eigen::LLT< Marmot::Math::Matrix3d >( k0 ).info() != Eigen::Success )
+    if ( !std::isfinite( betaK ) || !std::isfinite( betaC ) || !std::isfinite( TReference ) )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__ << ": the conductivity must be positive definite." );
+                                   << __PRETTY_FUNCTION__ << ": beta_k, beta_c and T_ref must be finite." );
+
+    // the Cholesky decomposition does not report a NaN or infinite conductivity
+    if ( !k0.allFinite() || Eigen::LLT< Marmot::Math::Matrix3d >( k0 ).info() != Eigen::Success )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": the conductivity must be finite and positive definite." );
 
     stateLayout.finalize();
   }
