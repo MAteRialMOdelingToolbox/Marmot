@@ -91,11 +91,6 @@ namespace Marmot::ContinuumMechanics {
       return T;
     }
 
-    Marmot::Math::Matrix3d getPlaneStressTangent( const Marmot::Math::Matrix6d& C )
-    {
-      return dStressPlaneStressDStress() * C * dStrainDStrainPlaneStress( C );
-    }
-
     Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& strain, double nu )
     {
       const Marmot::Math::Vector6d& e                = strain;

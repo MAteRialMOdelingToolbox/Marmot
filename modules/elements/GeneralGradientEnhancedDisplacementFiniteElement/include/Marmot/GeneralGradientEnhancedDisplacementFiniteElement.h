@@ -631,7 +631,7 @@ namespace Marmot::Discretizations::Elements {
      * @param dDissipation_dQ Gradient of the dissipation.
      * @details Supported for all sections with a material that is a
      * Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider. In plane stress, the energy tangents are
-     * condensed with the out-of-plane strain.
+     * condensed with the free strains (Marmot::ContinuumMechanics::ReducedStress).
      */
     void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
@@ -1039,30 +1039,42 @@ namespace Marmot::Discretizations::Elements {
           else
             qp.material->computePlaneStress( res, tan, inc );
           S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
-          C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
 
-          // static condensation of the out-of-plane strain from dS33 = 0: dE33 = dE33/dE dE + dE33/dK dK
-          using RowNonlocal                     = Eigen::Matrix< double, 1, nNonlocalVariables >;
-          const Marmot::Math::Vector6d  dSdE33  = tan.dStressddStrain.col( 2 );
-          Eigen::Matrix< double, 1, 6 > dE33_dE = -tan.dStressddStrain.row( 2 ) / dSdE33( 2 );
-          dE33_dE( 2 )                          = 0.;
-          const RowNonlocal dE33_dK             = -tan.dStressddK.row( 2 ) / dSdE33( 2 );
+          /* static condensation of the free strains from dsigma_f = 0, f = {33, 13, 23}:
+           * deps_f = deps_f/deps_p deps_p + deps_f/dK dK, with p = {11, 22, 12} the in-plane components */
+          using namespace ContinuumMechanics::ReducedStress;
+          const auto condensation = condense( tan.dStressddStrain, planeStressPrescribed, planeStressFree );
+          C                       = condensation.dStressP_dStrainP;
 
-          tan.dStressddK += dSdE33 * dE33_dK;
-          const Eigen::Vector< double, nNonlocalVariables > dKLocal_dE33 = tan.dKLocalddStrain.col( 2 );
-          tan.dKLocalddStrain += dKLocal_dE33 * dE33_dE;
-          tan.dKLocalddK += dKLocal_dE33 * dE33_dK;
+          using MatrixNonlocal6 = Eigen::Matrix< double, 6, nNonlocalVariables >;
+          Eigen::Matrix< double, 3, nNonlocalVariables > dStressF_dK;
+          for ( int i = 0; i < 3; i++ )
+            dStressF_dK.row( i ) = tan.dStressddK.row( planeStressFree[i] );
+          const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = -condensation.CffCOD.solve( dStressF_dK );
+
+          // the 3D strain wrt the in-plane strain and wrt the nonlocal variables
+          Eigen::Matrix< double, 6, 3 > dStrain_dStrainP = Eigen::Matrix< double, 6, 3 >::Zero();
+          MatrixNonlocal6               dStrain_dK       = MatrixNonlocal6::Zero();
+          for ( int i = 0; i < 3; i++ ) {
+            dStrain_dStrainP( planeStressPrescribed[i], i ) = 1.;
+            dStrain_dStrainP.row( planeStressFree[i] )      = condensation.dStrainF_dStrainP.row( i );
+            dStrain_dK.row( planeStressFree[i] )            = dStrainF_dK.row( i );
+          }
+
+          tan.dStressddK += tan.dStressddStrain * dStrain_dK;
+          tan.dKLocalddK += tan.dKLocalddStrain * dStrain_dK;
+          const Eigen::Matrix< double, nNonlocalVariables, 3 > dKLocal_dStrainP = tan.dKLocalddStrain *
+                                                                                  dStrain_dStrainP;
+          tan.dKLocalddStrain.setZero();
+          for ( int i = 0; i < 3; i++ )
+            tan.dKLocalddStrain.col( planeStressPrescribed[i] ) = dKLocal_dStrainP.col( i );
 
           // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
           if ( energyGradients ) {
-            const double dPsi_dE33 = energyTan.dElasticEnergyDensity_dStrain( 2 );
-            const double dD_dE33   = energyTan.dDissipation_dStrain( 2 );
-            energyTan.dElasticEnergyDensity_dK += dPsi_dE33 * dE33_dK.transpose();
-            energyTan.dDissipation_dK += dD_dE33 * dE33_dK.transpose();
-            dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-              Marmot::Math::Vector6d( energyTan.dElasticEnergyDensity_dStrain + dPsi_dE33 * dE33_dE.transpose() ) );
-            dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-              Marmot::Math::Vector6d( energyTan.dDissipation_dStrain + dD_dE33 * dE33_dE.transpose() ) );
+            energyTan.dElasticEnergyDensity_dK += dStrain_dK.transpose() * energyTan.dElasticEnergyDensity_dStrain;
+            energyTan.dDissipation_dK += dStrain_dK.transpose() * energyTan.dDissipation_dStrain;
+            dElasticEnergyDensity_dStrain = dStrain_dStrainP.transpose() * energyTan.dElasticEnergyDensity_dStrain;
+            dDissipation_dStrain          = dStrain_dStrainP.transpose() * energyTan.dDissipation_dStrain;
           }
         }
         else if ( sectionType == SectionType::PlaneStrain ) {

@@ -343,14 +343,6 @@ namespace Marmot::ContinuumMechanics {
   namespace PlaneStress {
 
     /**
-     * @brief Extracts the plane stress stiffness matrix from a 3D stiffness matrix.
-     *
-     * @param C 3D stiffness matrix (\f$6\times6\f$) in Voigt notation.
-     * @return Plane stress stiffness matrix (\f$3\times3\f$) in Voigt notation.
-     */
-    Eigen::Matrix3d getPlaneStressTangent( const Marmot::Math::Matrix6d& C );
-
-    /**
      * @brief Computes the plane stress derivative of the stress with respect to the deformation gradient.
      *
      * @details Reduces the 3D derivative of the stress tensor with respect to the deformation gradient

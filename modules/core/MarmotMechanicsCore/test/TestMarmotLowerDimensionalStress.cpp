@@ -215,39 +215,6 @@ void test_dStressPlaneStressDStress()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
-void test_getPlaneStressTangent()
-{
-  Marmot::Math::Matrix6d C = create_C_Matrix();
-
-  // Compute the result using the getPlaneStressTangent function
-  Marmot::Math::Matrix3d computedResult = getPlaneStressTangent( C );
-
-  // Expected results
-  Matrix< double, 3, 6 > dStressPlaneStressDStress;
-  // clang-format off
-  dStressPlaneStressDStress <<
-    1, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0;
-  // clang-format on
-
-  Matrix< double, 6, 3 > dStrainDStrainPlaneStress;
-  // clang-format off
-  dStrainDStrainPlaneStress <<
-    1,        0,        0,
-    0,        1,        0,
-    -1.0/3.0, -1.0/3.0, 0,
-    0,        0,        1,
-    0,        0,        0,
-    0,        0,        0;
-  // clang-format on
-
-  Marmot::Math::Matrix3d expectedResult = dStressPlaneStressDStress * C * dStrainDStrainPlaneStress;
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
 void test_planeStressCompensationStrain()
 {
   Marmot::Math::Vector6d strain;
@@ -319,7 +286,6 @@ int main()
                                                        test_dStrainDStrainPlaneStrain,
                                                        test_compute_dStress_dDeformationGradient,
                                                        test_dStressPlaneStressDStress,
-                                                       test_getPlaneStressTangent,
                                                        test_planeStressCompensationStrain,
                                                        test_planeStressTangentTransformationMatrix,
                                                        test_dStrainDStrainPlaneStress };
