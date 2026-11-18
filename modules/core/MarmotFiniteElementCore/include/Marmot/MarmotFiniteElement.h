@@ -852,13 +852,13 @@ namespace Marmot::Discretizations::Elements {
      * so the first rule that reaches a requested degree is the cheapest. A new rule is added here, at its place in
      * that order; the lookup getQuadraturePoints() needs no change.
      *
-     * | Domain        | Gauss: points -> degree      | Newton-Cotes | Gauss-Lobatto                  |
-     * |---------------|------------------------------|--------------|--------------------------------|
-     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5       | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
-     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5 | 2x2 -> 1     | -                              |
-     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5      | -            | -                              |
-     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5       | 3 -> 1       | -                              |
-     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5      | -            | -                              |
+     * | Domain        | Gauss: points -> degree        | Newton-Cotes | Gauss-Lobatto                  |
+     * |---------------|--------------------------------|--------------|--------------------------------|
+     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7 | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
+     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5   | 2x2 -> 1     | -                              |
+     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5        | -            | -                              |
+     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5         | 3 -> 1       | -                              |
+     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5        | -            | -                              |
      *
      * The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its
      * tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in
