@@ -68,6 +68,9 @@ namespace Marmot::Discretizations::Elements {
       HeatRadiation,   ///< Radiative heat flux out of the body, q = c ((T - T_0)^4 - (T_inf - T_0)^4), c the product
                        ///< of the emissivity and the Stefan-Boltzmann constant, T_0 the absolute zero of the
                        ///< temperature scale (0 for K, -273.15 for degrees Celsius): load = [c, T_inf, T_0]
+      MoistureFlux,    ///< Prescribed moisture flux into the body per unit area: load = [q]
+      MoistureFilm,    ///< Moisture exchange with the environment (film), q = beta (h - h_inf), out of the body:
+                       ///< load = [beta, h_inf]
     };
 
     /** @brief Virtual destructor for safe polymorphic cleanup. */

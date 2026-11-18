@@ -82,7 +82,7 @@ namespace Marmot::Materials {
     int getNumberOfFields() const override { return 1; }
 
     /// @return False for a zero heat capacity \f$\rho c_0\f$: steady state heat conduction
-    bool hasStorage() const override { return rhoC0 > 0.0; }
+    bool hasStorage( [[maybe_unused]] int field ) const override { return rhoC0 > 0.0; }
 
     /**
      * @brief Enthalpy increment, heat flux and their algorithmic tangent.

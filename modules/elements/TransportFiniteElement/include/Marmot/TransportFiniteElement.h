@@ -48,7 +48,7 @@ namespace Marmot::Discretizations::Elements {
    * @tparam nNodes Number of element nodes.
    * @tparam nFields Number of transported scalar fields per node (1 for heat conduction or moisture diffusion, 2 for
    * coupled heat and moisture transport).
-   * @brief Continuum element for (coupled) transient scalar transport, e.g. heat conduction.
+   * @brief Continuum element for (coupled) transient scalar transport, e.g. heat conduction or moisture diffusion.
    *
    * @details The element integrates the balance \f$\dot m_a + \nabla\cdot\mathbf{q}_a = r_a + s_a\f$ of each field
    * \f$\phi_a\f$, with the content \f$m_a\f$, the flux \f$\mathbf{q}_a\f$ and the material source \f$r_a\f$ from a
@@ -66,8 +66,9 @@ namespace Marmot::Discretizations::Elements {
    * the limit \f$\Delta t \to 0\f$ of the balance multiplied by \f$\Delta t\f$: no time passes, so nothing flows
    * and the content cannot change, \f$\mathbf{P}_e = \sum_{qp}\mathbf{N}_\phi^\mathsf{T}\Delta\mathbf{m}\,J_0 w\f$,
    * and the distributed and body loads vanish. Prescribed field values then spread by the capacity-weighted
-   * projection only. A material without storage (Marmot::Materials::TransportMaterial::hasStorage(), e.g. a zero heat
-   * capacity) instead gives the steady state equations, whatever the time increment.
+   * projection only. A field without storage (Marmot::Materials::TransportMaterial::hasStorage(), e.g. a zero heat
+   * capacity) instead obeys the steady state equations, whatever the time increment. The distinction is made field by
+   * field: in a coupled element, the rows of a field without storage are steady, the others instantaneous.
    *
    * The dofs are ordered node by node, the fields of a node in the order of the field names given to the
    * constructor: dof \f$i\,n_f + a\f$ is field \f$a\f$ at node \f$i\f$. With the interpolation operator
@@ -130,15 +131,18 @@ namespace Marmot::Discretizations::Elements {
     const SectionType sectionType;
     /// The names of the nodal fields, e.g. "temperature"
     const FieldNames fieldNames;
-    /// Whether the material stores content; false: steady state transport, see the class description
-    bool withStorage = true;
+    /// Whether the material stores content of a field; false: steady state transport of that field, see the class
+    /// description
+    std::array< bool, nFields > withStorage;
 
     /**
-     * @brief Whether a time increment lets no time pass: then, with storage, nothing flows (see the class description).
+     * @brief Whether a time increment lets no time pass for a field: then, with storage, nothing of it flows (see the
+     * class description).
      * @param dT The time increment.
-     * @return True for a zero time increment of an element with storage.
+     * @param field The index of the field.
+     * @return True for a zero time increment and a field with storage.
      */
-    bool isInstantaneous( double dT ) const { return withStorage && !( dT > 0.0 ); }
+    bool isInstantaneous( double dT, int field ) const { return withStorage[field] && !( dT > 0.0 ); }
 
     /// Data and state of a quadrature point
     struct QuadraturePoint {
@@ -312,21 +316,26 @@ namespace Marmot::Discretizations::Elements {
      * @param dQ Their increment.
      * @param Pe Residual (accumulated).
      * @param Ke Tangent (accumulated).
-     * @param time Time at the beginning of the increment.
+     * @param time Time at the end of the increment (the current time).
      * @param dT Time increment, see the class description for a zero one.
      */
     void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
       override;
 
     /**
-     * @brief Surface flux loads: HeatFlux, HeatFilm and HeatRadiation, acting on the field "temperature".
+     * @brief Surface flux loads: HeatFlux, HeatFilm and HeatRadiation, acting on the field "temperature", and
+     * MoistureFlux and MoistureFilm, acting on the field "relative humidity".
      * @details The EXTERNAL load \f$\mathbf{P} = -\int_\Gamma \mathbf{N}^\mathsf{T} q_n\,\mathrm{d}\Gamma\f$ (inflow
      * positive) is added to @p P, the tangent of the residual \f$-\partial\mathbf{P}/\partial\mathbf{Q}\f$ to @p K:
      * - HeatFlux, load = [\f$\bar q\f$]: \f$q_n = -\bar q\f$ (\f$\bar q\f$ flows into the body),
      * - HeatFilm, load = [\f$h\f$, \f$T_\infty\f$]: \f$q_n = h\,(T - T_\infty)\f$,
      * - HeatRadiation, load = [\f$c\f$, \f$T_\infty\f$, \f$T_0\f$]:
      *   \f$q_n = c\,((T - T_0)^4 - (T_\infty - T_0)^4)\f$, \f$c = \varepsilon\sigma\f$, \f$T_0\f$ the absolute zero
-     *   of the temperature scale used.
+     *   of the temperature scale used,
+     * - MoistureFlux, load = [\f$\bar q\f$]: \f$q_n = -\bar q\f$ (\f$\bar q\f$ flows into the body),
+     * - MoistureFilm, load = [\f$\beta\f$, \f$h_\infty\f$]: \f$q_n = \beta\,(h - h_\infty)\f$, the moisture
+     *   exchange with an environment of relative humidity \f$h_\infty\f$ (surface emissivity / film coefficient
+     *   \f$\beta\f$, in units of the moisture flux of the material per unit relative humidity).
      *
      * Plane elements multiply by the thickness, axisymmetric ones integrate over the ring. Nothing is added for a
      * zero time increment of an element with storage (see the class description).
@@ -356,7 +365,7 @@ namespace Marmot::Discretizations::Elements {
      * @param load The source per unit volume, one value per field.
      * @param QTotal Not used.
      * @param time Not used.
-     * @param dT Time increment: nothing is added for a zero time increment of an element with storage.
+     * @param dT Time increment: nothing is added to the fields with storage for a zero time increment.
      */
     void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
       override;
@@ -405,6 +414,7 @@ namespace Marmot::Discretizations::Elements {
       sectionType( sectionType ),
       fieldNames( fieldNames )
   {
+    withStorage.fill( true );
     if ( ( nDim == 3 ) != ( sectionType == SectionType::Solid ) )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__
@@ -453,9 +463,10 @@ namespace Marmot::Discretizations::Elements {
       materials.push_back( std::move( material ) );
     }
 
-    withStorage = false;
+    withStorage.fill( false );
     for ( size_t i = 0; i < qps.size(); i++ ) {
-      withStorage     = withStorage || materials[i]->hasStorage();
+      for ( int a = 0; a < nFields; a++ )
+        withStorage[a] = withStorage[a] || materials[i]->hasStorage( a );
       qps[i].material = std::move( materials[i] );
     }
   }
@@ -545,9 +556,19 @@ namespace Marmot::Discretizations::Elements {
     Eigen::Map< RhsSized >             Pe( Pe_ );
     Eigen::Map< KeSizedMatrix >        Ke( Ke_ );
 
-    const RhsSized QOld          = QTotal - dQ;
-    const bool     instantaneous = isInstantaneous( dT );
-    const double   oneOverDeltaT = withStorage && !instantaneous ? 1.0 / dT : 0.0;
+    const RhsSized QOld = QTotal - dQ;
+
+    // field by field: an instantaneous field (zero time increment, with storage) balances its content increment and
+    // does not flow; the others balance rate, source and flux, with rate 1 / dT (with storage, dT > 0) or 0 (steady)
+    Eigen::Matrix< double, nFields, 1 >   rateFactor;
+    Eigen::Matrix< double, nFields, 1 >   flowing;
+    Eigen::Matrix< double, nGradient, 1 > flowingGradient;
+    for ( int a = 0; a < nFields; a++ ) {
+      const bool instantaneous = isInstantaneous( dT, a );
+      rateFactor( a )          = instantaneous ? 1.0 : ( withStorage[a] ? 1.0 / dT : 0.0 );
+      flowing( a )             = instantaneous ? 0.0 : 1.0;
+      flowingGradient.template segment< 3 >( 3 * a ).setConstant( flowing( a ) );
+    }
 
     Material::FieldState                fieldState;
     Material::Response                  response;
@@ -571,22 +592,16 @@ namespace Marmot::Discretizations::Elements {
       state.gradient = fieldState.gradient;
       state.flux     = response.flux;
 
-      if ( instantaneous ) {
-        // dT = 0: the balance multiplied by dT, nothing flows, the content does not change
-        const Eigen::Matrix< double, nFields, nFields > capacity = tangent.dContentIncrement_dField;
-        const Eigen::Matrix< double, nFields, 1 >       dContent = response.contentIncrement;
-        Pe += qp.NPhi.transpose() * dContent * qp.J0xW;
-        Ke += qp.NPhi.transpose() * capacity * qp.NPhi * qp.J0xW;
-        continue;
-      }
+      // rows of instantaneous fields (dT = 0): the balance multiplied by dT, nothing flows, the content does not change
+      const Eigen::Matrix< double, nFields, nFields > capacity = rateFactor.asDiagonal() *
+                                                                   tangent.dContentIncrement_dField -
+                                                                 flowing.asDiagonal() * tangent.dSource_dField;
+      const Eigen::Matrix< double, nGradient, nFields >   dQ_dPhi = flowingGradient.asDiagonal() * tangent.dFlux_dField;
+      const Eigen::Matrix< double, nGradient, nGradient > dQ_dGradPhi = flowingGradient.asDiagonal() *
+                                                                        tangent.dFlux_dGradient;
+      const Eigen::Matrix< double, nGradient, 1 > flux = flowingGradient.cwiseProduct( response.flux );
 
-      const Eigen::Matrix< double, nFields, nFields > capacity = oneOverDeltaT * tangent.dContentIncrement_dField -
-                                                                 tangent.dSource_dField;
-      const Eigen::Matrix< double, nGradient, nFields >   dQ_dPhi     = tangent.dFlux_dField;
-      const Eigen::Matrix< double, nGradient, nGradient > dQ_dGradPhi = tangent.dFlux_dGradient;
-      const Eigen::Matrix< double, nGradient, 1 >         flux        = response.flux;
-
-      rate = oneOverDeltaT * response.contentIncrement - response.source;
+      rate = rateFactor.cwiseProduct( response.contentIncrement ) - flowing.cwiseProduct( response.source );
 
       Pe += ( qp.NPhi.transpose() * rate - qp.BPhi.transpose() * flux ) * qp.J0xW;
       Ke += ( qp.NPhi.transpose() * capacity * qp.NPhi -
@@ -605,6 +620,8 @@ namespace Marmot::Discretizations::Elements {
     case Marmot::Discretizations::Elements::Element::HeatFlux:
     case Marmot::Discretizations::Elements::Element::HeatFilm:
     case Marmot::Discretizations::Elements::Element::HeatRadiation: fieldName = "temperature"; break;
+    case Marmot::Discretizations::Elements::Element::MoistureFlux:
+    case Marmot::Discretizations::Elements::Element::MoistureFilm: fieldName = "relative humidity"; break;
     default:
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": element " << elLabel
@@ -633,8 +650,8 @@ namespace Marmot::Discretizations::Elements {
   {
     const int field = fieldIndexOfLoad( loadType );
 
-    if ( isInstantaneous( dT ) )
-      return; // no time passes: no heat flows in
+    if ( isInstantaneous( dT, field ) )
+      return; // no time passes: nothing flows in
 
     Eigen::Map< RhsSized >             P( P_ );
     Eigen::Map< KeSizedMatrix >        K( K_ );
@@ -656,11 +673,14 @@ namespace Marmot::Discretizations::Elements {
     Eigen::MatrixXd dPb_dQ = Eigen::MatrixXd::Zero( nFaceNodes, nFaceNodes );
 
     switch ( loadType ) {
-    case Marmot::Discretizations::Elements::Element::HeatFlux: {
+    case Marmot::Discretizations::Elements::Element::HeatFlux:
+    case Marmot::Discretizations::Elements::Element::MoistureFlux: {
       Pb = load[0] * boundaryEl.computeScalarLoadVector();
       break;
     }
-    case Marmot::Discretizations::Elements::Element::HeatFilm: {
+    case Marmot::Discretizations::Elements::Element::HeatFilm:
+    case Marmot::Discretizations::Elements::Element::MoistureFilm: {
+      // q_n = h (T - T_inf), or q_n = beta (h - h_inf) for moisture
       const double h = load[0], TInf = load[1];
       // the external load density is the inflow, the negative of the outward flux
       const auto inflow = [h, TInf]( double T, double& f, double& df_dT ) {
@@ -706,11 +726,10 @@ namespace Marmot::Discretizations::Elements {
                                                                           [[maybe_unused]] double        time,
                                                                           double                         dT )
   {
-    if ( isInstantaneous( dT ) )
-      return; // no time passes: the source produces nothing
-
-    Eigen::Map< RhsSized >                                        P( P_ );
-    const Eigen::Map< const Eigen::Matrix< double, nFields, 1 > > s( load );
+    Eigen::Map< RhsSized >              P( P_ );
+    Eigen::Matrix< double, nFields, 1 > s;
+    for ( int a = 0; a < nFields; a++ )
+      s( a ) = isInstantaneous( dT, a ) ? 0.0 : load[a]; // no time passes: the source produces nothing
 
     for ( const auto& qp : qps )
       P += qp.NPhi.transpose() * s * qp.J0xW;

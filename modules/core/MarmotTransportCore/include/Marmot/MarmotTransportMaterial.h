@@ -127,9 +127,9 @@ namespace Marmot::Materials {
       FieldMatrix        dSource_dField;           ///< \f$\partial r_a / \partial\phi_b\f$
     };
 
-    /// Time at the beginning of the increment and size of the time increment
+    /// Time at the end of the increment and size of the time increment: the increment spans [time - dT, time]
     struct TimeIncrement {
-      double time; ///< time at the beginning of the increment
+      double time; ///< time at the end of the increment (the "current time" elements receive)
       double dT;   ///< size of the time increment
     };
 
@@ -140,12 +140,15 @@ namespace Marmot::Materials {
     virtual int getNumberOfFields() const = 0;
 
     /**
-     * @brief Whether the content depends on the fields at all.
-     * @return False for a material without storage (steady state transport), whose content increment is always zero.
-     * @details Elements use it to tell the two meanings of a zero time increment apart: with storage, no time passes
-     * and nothing may flow, without storage the steady state equations hold at every time.
+     * @brief Whether the content of a field depends on the fields at all.
+     * @param field The index of the field, 0 ... getNumberOfFields() - 1.
+     * @return False for a field without storage (steady state transport of this field), whose content increment is
+     * always zero.
+     * @details Elements use it to tell the two meanings of a zero time increment apart, field by field: with storage,
+     * no time passes and nothing of the field may flow, without storage the steady state equations of the field hold
+     * at every time.
      */
-    virtual bool hasStorage() const { return true; }
+    virtual bool hasStorage( [[maybe_unused]] int field ) const { return true; }
 
     /**
      * @brief Compute the content increment, the flux and the source at the end of the increment, and their
