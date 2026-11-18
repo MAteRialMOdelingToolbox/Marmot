@@ -654,7 +654,7 @@ namespace Marmot::Discretizations::Elements {
      * @param dDissipation_dQ Gradient of the dissipation.
      * @details Supported for all sections (plane stress, plane strain, axisymmetric and solid) with a material that is
      * a Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider. In plane stress, the energy tangents are
-     * condensed with the out-of-plane strain.
+     * condensed with the free strains (Marmot::ContinuumMechanics::ReducedStress).
      */
     void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
@@ -755,28 +755,30 @@ namespace Marmot::Discretizations::Elements {
                                    double                                                dT );
 
     /**
-     * @brief Static condensation of the out-of-plane strain in plane stress, from \f$\Delta\sigma_{33} = 0\f$:
-     * \f$\Delta\varepsilon_{33} = \frac{\partial \varepsilon_{33}}{\partial \boldsymbol{\varepsilon}}
-     * \Delta\boldsymbol{\varepsilon} + \frac{\partial \varepsilon_{33}}{\partial \knl} \Delta\knl\f$, in the coupling
-     * tangents and, if requested, the energy tangents.
+     * @brief Static condensation of the free strains in plane stress, see Marmot::ContinuumMechanics::ReducedStress:
+     * from \f$\Delta\sigma_f = 0\f$, \f$f = \{33, 13, 23\}\f$, \f$\Delta\varepsilon_f = \frac{\partial
+     * \varepsilon_f}{\partial \varepsilon_p} \Delta\varepsilon_p + \frac{\partial \varepsilon_f}{\partial \knl}
+     * \Delta\knl\f$ with the in-plane components \f$p = \{11, 22, 12\}\f$.
+     * @details Afterwards the derivatives with respect to the strain (stress, local driving variables and, if
+     * requested, energy densities) are the total derivatives with respect to the in-plane strain, stored at the
+     * in-plane components with zeros elsewhere; the derivatives with respect to the non-local fields include the
+     * free strains.
      * @param tan The material tangents after the plane stress update.
      * @param energyTan The energy tangents after the plane stress update.
      * @param energyGradients Whether the energy tangents are condensed too.
      */
-    static void condenseOutOfPlaneStrain( MaterialTangents&                               tan,
-                                          typename EnergyTangentProvider::energyTangents& energyTan,
-                                          bool                                            energyGradients );
+    static void condenseFreeStrains( MaterialTangents&                               tan,
+                                     typename EnergyTangentProvider::energyTangents& energyTan,
+                                     bool                                            energyGradients );
 
     /**
      * @brief Block of the 3D tangent carried by the section.
      * @tparam nComponents Strain components of the section.
-     * @param C Tangent in 3D Voigt notation.
-     * @param planeStress Whether the 2D section is plane stress, which condenses the out-of-plane strain.
+     * @param C Tangent in 3D Voigt notation; in plane stress after condenseFreeStrains().
      * @return The section block.
      */
     template < ContinuumMechanics::Voigt::VoigtSize nComponents >
-    static Eigen::Matrix< double, nComponents, nComponents > sectionTangent( const Marmot::Math::Matrix6d& C,
-                                                                             bool planeStress );
+    static Eigen::Matrix< double, nComponents, nComponents > sectionTangent( const Marmot::Math::Matrix6d& C );
 
     /**
      * @brief Artificial bulk viscous stress at a quadrature point, see
@@ -1264,7 +1266,7 @@ namespace Marmot::Discretizations::Elements {
         qp.energyTangentProvider->computePlaneStressWithEnergyTangents( res, tan, inc, energyTan );
       else
         qp.material->computePlaneStress( res, tan, inc );
-      condenseOutOfPlaneStrain( tan, energyTan, energyGradients );
+      condenseFreeStrains( tan, energyTan, energyGradients );
     }
     else {
       if ( energyGradients )
@@ -1305,7 +1307,7 @@ namespace Marmot::Discretizations::Elements {
       Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFU > > kKU( Ke.bottomLeftCorner( sizeDoFK, sizeDoFU ) );
       Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFK > > kKK( Ke.bottomRightCorner( sizeDoFK, sizeDoFK ) );
 
-      const SectionMatrix C = sectionTangent< nComponents >( tan.dStressddStrain, planeStress );
+      const SectionMatrix C = sectionTangent< nComponents >( tan.dStressddStrain );
       kUU += B->transpose() * C * *B * qp.J0xW;
 
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
@@ -1353,29 +1355,59 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    condenseOutOfPlaneStrain( MaterialTangents&                               tan,
-                              typename EnergyTangentProvider::energyTangents& energyTan,
-                              bool                                            energyGradients )
+    condenseFreeStrains( MaterialTangents&                               tan,
+                         typename EnergyTangentProvider::energyTangents& energyTan,
+                         bool                                            energyGradients )
   {
-    using RowNonlocal                     = Eigen::Matrix< double, 1, nNonlocalVariables >;
-    const Marmot::Math::Vector6d  dSdE33  = tan.dStressddStrain.col( 2 );
-    Eigen::Matrix< double, 1, 6 > dE33_dE = -tan.dStressddStrain.row( 2 ) / dSdE33( 2 );
-    dE33_dE( 2 )                          = 0.;
-    const RowNonlocal dE33_dK             = -tan.dStressddK.row( 2 ) / dSdE33( 2 );
+    using namespace ContinuumMechanics::ReducedStress;
+    using MatrixNonlocal6 = Eigen::Matrix< double, 6, nNonlocalVariables >;
 
-    tan.dStressddK += dSdE33 * dE33_dK;
-    const NonlocalValues dKLocal_dE33 = tan.dKLocalddStrain.col( 2 );
-    tan.dKLocalddStrain += dKLocal_dE33 * dE33_dE;
-    tan.dKLocalddK += dKLocal_dE33 * dE33_dK;
+    const auto condensation = condense( tan.dStressddStrain, planeStressPrescribed, planeStressFree );
+
+    Eigen::Matrix< double, 3, nNonlocalVariables > dStressF_dK;
+    for ( int j = 0; j < 3; j++ )
+      dStressF_dK.row( j ) = tan.dStressddK.row( planeStressFree[j] );
+    const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = freeStrainSensitivity( condensation,
+                                                                                              dStressF_dK );
+
+    // the 3D strain wrt the in-plane strain and wrt the nonlocal variables
+    Eigen::Matrix< double, 6, 3 > dStrain_dStrainP = Eigen::Matrix< double, 6, 3 >::Zero();
+    MatrixNonlocal6               dStrain_dK       = MatrixNonlocal6::Zero();
+    for ( int j = 0; j < 3; j++ ) {
+      dStrain_dStrainP( planeStressPrescribed[j], j ) = 1.;
+      dStrain_dStrainP.row( planeStressFree[j] )      = condensation.dStrainF_dStrainP.row( j );
+      dStrain_dK.row( planeStressFree[j] )            = dStrainF_dK.row( j );
+    }
+
+    // the derivatives wrt the nonlocal variables include the free strains
+    tan.dStressddK += tan.dStressddStrain * dStrain_dK;
+    tan.dKLocalddK += tan.dKLocalddStrain * dStrain_dK;
+
+    // the derivatives wrt the strain become those wrt the in-plane strain, stored at the in-plane components
+    const Eigen::Matrix< double, nNonlocalVariables, 3 > dKLocal_dStrainP = tan.dKLocalddStrain * dStrain_dStrainP;
+    tan.dKLocalddStrain.setZero();
+    tan.dStressddStrain.setZero();
+    for ( int j = 0; j < 3; j++ ) {
+      tan.dKLocalddStrain.col( planeStressPrescribed[j] ) = dKLocal_dStrainP.col( j );
+      for ( int i = 0; i < 3; i++ )
+        tan.dStressddStrain( planeStressPrescribed[i], planeStressPrescribed[j] ) = condensation.dStressP_dStrainP( i,
+                                                                                                                    j );
+    }
 
     // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
     if ( energyGradients ) {
-      const double dPsi_dE33 = energyTan.dElasticEnergyDensity_dStrain( 2 );
-      const double dD_dE33   = energyTan.dDissipation_dStrain( 2 );
-      energyTan.dElasticEnergyDensity_dK += dPsi_dE33 * dE33_dK.transpose();
-      energyTan.dDissipation_dK += dD_dE33 * dE33_dK.transpose();
-      energyTan.dElasticEnergyDensity_dStrain += dPsi_dE33 * dE33_dE.transpose();
-      energyTan.dDissipation_dStrain += dD_dE33 * dE33_dE.transpose();
+      energyTan.dElasticEnergyDensity_dK += dStrain_dK.transpose() * energyTan.dElasticEnergyDensity_dStrain;
+      energyTan.dDissipation_dK += dStrain_dK.transpose() * energyTan.dDissipation_dStrain;
+
+      const Eigen::Vector3d dElasticEnergyDensity_dStrainP = dStrain_dStrainP.transpose() *
+                                                             energyTan.dElasticEnergyDensity_dStrain;
+      const Eigen::Vector3d dDissipation_dStrainP = dStrain_dStrainP.transpose() * energyTan.dDissipation_dStrain;
+      energyTan.dElasticEnergyDensity_dStrain.setZero();
+      energyTan.dDissipation_dStrain.setZero();
+      for ( int j = 0; j < 3; j++ ) {
+        energyTan.dElasticEnergyDensity_dStrain( planeStressPrescribed[j] ) = dElasticEnergyDensity_dStrainP( j );
+        energyTan.dDissipation_dStrain( planeStressPrescribed[j] )          = dDissipation_dStrainP( j );
+      }
     }
   }
 
@@ -1385,11 +1417,12 @@ namespace Marmot::Discretizations::Elements {
     nDim,
     nNodes,
     nNonlocalVariables,
-    nNonLocalNodes >::sectionTangent( const Marmot::Math::Matrix6d& C, bool planeStress )
+    nNonLocalNodes >::sectionTangent( const Marmot::Math::Matrix6d& C )
   {
+    // eps_33 = 0 (plane strain) and gamma_rt = gamma_zt = 0 (axisymmetric) are kinematic, so the block is exact; in
+    // plane stress, C carries the condensed in-plane tangent at the in-plane components
     if constexpr ( nComponents == ContinuumMechanics::Voigt::TwoD )
-      return planeStress ? ContinuumMechanics::PlaneStress::getPlaneStressTangent( C )
-                         : ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C );
+      return ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C );
     else if constexpr ( nComponents == ContinuumMechanics::Voigt::Axial )
       return Spatial2D::Axisymmetric::sectionTangent( C );
     else

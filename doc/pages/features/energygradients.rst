@@ -35,20 +35,23 @@ a potential.
 Plane stress
 ^^^^^^^^^^^^
 
-In plane stress, the material's update is iterated until :math:`\sigma_{33} = 0`, which determines the out-of-plane
-strain increment :math:`\Delta\varepsilon_{33}` as a function of the in-plane strain increment and the non-local
-variables. The energy tangents of the converged 3D update are condensed by the total derivative
+In plane stress, the material's update is iterated until :math:`\sigma_f = 0` for the free components
+:math:`f = \{33, 13, 23\}` (``Marmot::ContinuumMechanics::ReducedStress``), which determines the strain increments
+:math:`\Delta\varepsilon_f` as functions of the in-plane strain increment and the non-local variables. The energy
+tangents of the converged 3D update are condensed by the total derivative
 
-.. math:: \frac{\mathrm{d} g}{\mathrm{d} \Delta\varepsilon_{\alpha\beta}}
-   = \frac{\partial g}{\partial \Delta\varepsilon_{\alpha\beta}}
-   + \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial
-   \Delta\varepsilon_{\alpha\beta}}, \qquad
+.. math:: \frac{\mathrm{d} g}{\mathrm{d} \Delta\varepsilon_{p}}
+   = \frac{\partial g}{\partial \Delta\varepsilon_{p}}
+   + \frac{\partial g}{\partial \Delta\varepsilon_f} \frac{\partial \Delta\varepsilon_f}{\partial
+   \Delta\varepsilon_{p}}, \qquad
    \frac{\mathrm{d} g}{\mathrm{d} \bar\kappa}
    = \frac{\partial g}{\partial \bar\kappa}
-   + \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial \bar\kappa},
+   + \frac{\partial g}{\partial \Delta\varepsilon_f} \frac{\partial \Delta\varepsilon_f}{\partial \bar\kappa},
 
-for :math:`g = \psi, D`, with :math:`\partial \Delta\varepsilon_{33} / \partial (\cdot) = -(\partial \sigma_{33} /
-\partial (\cdot)) / (\partial \sigma_{33} / \partial \Delta\varepsilon_{33})` from :math:`\mathrm{d}\sigma_{33} = 0`.
+for :math:`g = \psi, D` and the in-plane components :math:`p = \{11, 22, 12\}`, with
+:math:`\partial \Delta\varepsilon_f / \partial (\cdot) = -\mathbf{C}_{ff}^{-1}\, \partial \sigma_f / \partial (\cdot)`
+from :math:`\mathrm{d}\sigma_f = 0`, :math:`\mathbf{C}_{ff} = \partial \sigma_f / \partial \Delta\varepsilon_f`
+(its pseudo-inverse if it is singular, e.g. for a fully softened crack without out-of-plane shear stiffness).
 
 Usage
 -----
