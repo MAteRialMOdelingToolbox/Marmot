@@ -1,4 +1,4 @@
-autodiff=1.1.2
+autodiff==1.1.2
 breathe
 doxygen
 eigen>=5
