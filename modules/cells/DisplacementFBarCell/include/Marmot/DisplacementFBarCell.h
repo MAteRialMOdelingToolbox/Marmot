@@ -25,6 +25,7 @@
 #pragma once
 #include "Marmot/DisplacementCell.h"
 #include <cmath>
+#include <type_traits>
 #include <vector>
 
 namespace Marmot::Discretizations::Cells {
@@ -119,6 +120,17 @@ namespace Marmot::Discretizations::Cells {
       const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
 
     /**
+     * @brief Evaluates the volume change of the cell at a given point instead of the geometric center of its material
+     * points, until the next assignMaterialPoints(); see Cell::setProjectionPoint(). Outside the cell, the cell's
+     * basis is extended (aggregated MPM: all cells of an aggregate evaluate @f$ \Delta\boldsymbol{F}_c @f$ at the same
+     * point of the field they share).
+     * @param[in] coordinates The point, in physical coordinates.
+     * @return true for Lagrangian geometries; false for B-spline geometries, whose gradients are not extended beyond
+     * the cell (the center of the material points is kept).
+     */
+    bool setProjectionPoint( const double* coordinates ) override;
+
+    /**
      * @brief Interpolates the nodal increments to the hosted material points; they receive the displacement increment
      * and the modified incremental deformation gradient @f$ \Delta\bar{\boldsymbol{F}}_p @f$ (see the class
      * description).
@@ -183,6 +195,19 @@ namespace Marmot::Discretizations::Cells {
 
     _dF_c.eye();
     _dF_p.assign( locations.size(), _dF_c );
+  }
+
+  template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
+  bool DisplacementFBarCell< nDim, nNodes, CellBase, GeometryCell >::setProjectionPoint( const double* coordinates )
+  {
+    if constexpr ( std::is_same_v< GeometryCell, LagrangianCellGeometry< nDim, nNodes > > ) {
+      _center.xi        = GeometryCell::findReferenceCoordinate( Eigen::Map< const XiSized >( coordinates ) );
+      const auto dN_dY_ = GeometryCell::dNdX( _center.xi );
+      _center.dN_dY     = Fastor::Tensor< double, nDim, nNodes >( dN_dY_.data(), Fastor::ColumnMajor );
+      return true;
+    }
+    else
+      return false;
   }
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >

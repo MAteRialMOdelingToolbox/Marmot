@@ -439,6 +439,90 @@ namespace {
     checkRotationAndPressure( g );
   }
 
+  // the projection point (aggregated MPM): at the center of the points it changes nothing; two cells carrying one
+  // bilinear field (the second one its extension) and evaluating the volume change at one common point give all their
+  // points the same volume change; the tangent stays exact for a point outside the cell; B-spline cells decline
+  void checkProjectionPoint()
+  {
+    const auto g = lagrangian< 2 >();
+    {
+      Setup< 2 >      a( g, Points::ThreeOffCenter );
+      Setup< 2 >      b( g, Points::ThreeOffCenter );
+      Eigen::Vector2d center = Eigen::Vector2d::Zero();
+      for ( auto& mp : b.mps ) {
+        Eigen::Vector2d x;
+        mp->getCoordinatesAtCenter( x.data() );
+        center += x / b.mps.size();
+      }
+      throwExceptionOnFailure( b.cell->setProjectionPoint( center.data() ),
+                               "DisplacementFBar/Quad4 must use a projection point" );
+      const Eigen::VectorXd dQ = increment( a.nDof, 0.05 );
+      const auto [Pa, Ka]      = a.trial( dQ );
+      const auto [Pb, Kb]      = b.trial( dQ );
+      throwExceptionOnFailure( ( Pa - Pb ).norm() <= 1e-12 * Pa.norm() && ( Ka - Kb ).norm() <= 1e-12 * Ka.norm(),
+                               "DisplacementFBar/Quad4: the projection point at the center must change nothing" );
+    }
+    {
+      // cell 1 on [0,2] x [0,1], cell 2 on [2,4] x [0,1]; the field u = H x + c xy, common point in cell 1
+      CellGeometry< 2 > g2 = g;
+      g2.nodes             = { 2.0, 0.0, 4.0, 0.0, 4.0, 1.0, 2.0, 1.0 };
+      g2.lower << 2.0, 0.0;
+      g2.upper << 4.0, 1.0;
+      Setup< 2 >      s1( g, Points::ThreeOffCenter );
+      Setup< 2 >      s2( g2, Points::Symmetric );
+      Eigen::Matrix2d H;
+      H << 0.02, -0.03, 0.01, 0.04;
+      const Eigen::Vector2d c( 0.03, -0.02 );
+      auto                  field = [&]( const CellGeometry< 2 >& gg ) {
+        Eigen::VectorXd dQ( 8 );
+        for ( int A = 0; A < 4; A++ ) {
+          const Eigen::Vector2d X( gg.nodes[2 * A], gg.nodes[2 * A + 1] );
+          dQ.segment< 2 >( 2 * A ) = H * X + c * X[0] * X[1];
+        }
+        return dQ;
+      };
+      const Eigen::Vector2d point( 0.7, 0.4 );
+      s1.cell->setProjectionPoint( point.data() );
+      s2.cell->setProjectionPoint( point.data() );
+      s1.kernels( field( g ) );
+      s2.kernels( field( g2 ) );
+      std::vector< double > dets;
+      for ( auto* s : { &s1, &s2 } )
+        for ( auto& mp : s->mps ) {
+          Eigen::Map< const Eigen::Matrix3d > dF( mp->getStateView( "delta deformation gradient" ).stateLocation );
+          dets.push_back( dF.determinant() );
+        }
+      for ( double d : dets )
+        throwExceptionOnFailure( std::abs( d - dets[0] ) < 1e-13 && std::abs( d - 1 ) > 1e-3,
+                                 "DisplacementFBar/Quad4: two cells of one field must share the volume change of the "
+                                 "common projection point" );
+
+      // exact tangent with the point outside the cell, also after a step
+      for ( bool afterStep : { false, true } ) {
+        Setup< 2 > s( g2, Points::ThreeOffCenter );
+        s.cell->setProjectionPoint( point.data() );
+        if ( afterStep ) {
+          s.accept( increment( s.nDof, 0.04 ) );
+          s.cell->setProjectionPoint( point.data() );
+        }
+        const Eigen::VectorXd dQ = increment( s.nDof, 0.03 );
+        const auto [P, K]        = s.trial( dQ );
+        const double err = tangentError( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ, K );
+        throwExceptionOnFailure( err < 1e-7,
+                                 Marmot::Utilities::MakeString()
+                                   << "DisplacementFBar/Quad4, projection point outside the cell: tangent "
+                                      "inconsistent, relative error "
+                                   << err );
+      }
+    }
+    {
+      Setup< 2 >   s( bSpline< 2 >( 2 ), Points::Symmetric );
+      const double x[2] = { 0.0, 0.0 };
+      throwExceptionOnFailure( !s.cell->setProjectionPoint( x ),
+                               "B-spline F-bar cells must decline the projection point" );
+    }
+  }
+
 } // namespace
 
 int main()
@@ -446,7 +530,8 @@ int main()
   std::vector< std::function< void() > > testFunctions = { []() { checkCell< 2 >( lagrangian< 2 >() ); },
                                                            []() { checkCell< 2 >( lagrangian< 2 >( true ) ); },
                                                            []() { checkCell< 3 >( lagrangian< 3 >() ); },
-                                                           []() { checkCell< 3 >( lagrangian< 3 >( true ) ); } };
+                                                           []() { checkCell< 3 >( lagrangian< 3 >( true ) ); },
+                                                           []() { checkProjectionPoint(); } };
   for ( int p = 1; p <= 3; p++ ) {
     testFunctions.push_back( [p]() { checkCell< 2 >( bSpline< 2 >( p ) ); } );
     testFunctions.push_back( [p]() { checkCell< 3 >( bSpline< 3 >( p ) ); } );

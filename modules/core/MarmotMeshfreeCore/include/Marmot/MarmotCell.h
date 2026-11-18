@@ -130,6 +130,19 @@ namespace Marmot::Discretizations::Cells {
       const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints ) = 0;
 
     /**
+     * @brief Optional: sets the point at which a cell-level projection of the cell (e.g. the volume change of an
+     * F-bar cell) is evaluated, instead of the cell's own choice, until the next assignMaterialPoints().
+     * @details Meant for cells that share one interpolation, e.g. the cells of an aggregate in the aggregated material
+     * point method, whose boundary cells carry the extension of the field of an interior cell: evaluating the
+     * projection of all of them at one common point imposes one constraint per aggregate instead of one per cell. The
+     * point may lie outside the cell (the cell's basis is then extended). A cell without such a projection ignores
+     * the point and returns false (the default).
+     * @param[in] coordinates The point, in physical coordinates (nDim values).
+     * @return Whether the cell uses the point.
+     */
+    virtual bool setProjectionPoint( [[maybe_unused]] const double* coordinates ) { return false; }
+
+    /**
      * @brief Integrates the internal force vector and its tangent over the assigned material points.
      * @details Uses the material point responses computed in the preceding
      * Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself(). Results are added to the output
