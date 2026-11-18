@@ -120,8 +120,8 @@ All notable changes to Marmot are documented in this file. The format follows
   `f` (Newton, tolerance relative to the largest stress of the call, 1e-12, 1e-9 from the 9th evaluation, at most 15)
   and returns the condensed tangent, the sensitivity `dStrainF_dStrainP = -Cff^+ Cfp` and the complete orthogonal
   decomposition of `Cff` (pseudo-inverse `Cff^+`, the inverse if it is regular), so that callers condense further
-  derivatives the same way; `condense( C, p, f )` is its algebra for a given
-  tangent. The index sets of plane stress (`planeStressPrescribed`, `planeStressFree`) and uniaxial stress
+  derivatives the same way (`freeStrainSensitivity( condensation, dStressF_dX )`, which checks that a singular `Cff`
+  can compensate them); `condense( C, p, f )` is its algebra for a given tangent. The index sets of plane stress (`planeStressPrescribed`, `planeStressFree`) and uniaxial stress
   (`uniaxialStressPrescribed`, `uniaxialStressFree`) are defined there.
 
 ### Changed

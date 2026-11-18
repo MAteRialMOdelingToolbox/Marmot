@@ -113,15 +113,39 @@ namespace Marmot::ContinuumMechanics {
       /// \boldsymbol{\varepsilon}_p = -\mathbf{C}_{ff}^{+} \mathbf{C}_{fp}\f$.
       Eigen::Matrix< double, nF, nP > dStrainF_dStrainP;
       /// @brief The complete orthogonal decomposition of \f$\mathbf{C}_{ff}\f$ (threshold rankTolerance), to condense
-      /// further derivatives with the same pseudo-inverse: `-CffCOD.solve( dStressF_dK )` is
-      /// \f$\mathrm{d}\boldsymbol{\varepsilon}_f / \mathrm{d}\mathbf{K}\f$ (the minimum norm solution; if
-      /// \f$\mathbf{C}_{ff}\f$ is singular, the caller checks that its right-hand side lies in the range of
-      /// \f$\mathbf{C}_{ff}\f$ where it matters).
+      /// further derivatives with the same pseudo-inverse, see freeStrainSensitivity().
       Eigen::CompleteOrthogonalDecomposition< Eigen::Matrix< double, nF, nF > > CffCOD;
       /// @brief computeReducedStress(): the number of evaluations of the 3D stress update (1 if the initial guess
       /// satisfies the stress-free conditions); 0 from condense().
       int nIterations = 0;
+      /// @brief The tangent of the stress-free components \f$\mathbf{C}_{ff}\f$, decomposed in CffCOD.
+      Eigen::Matrix< double, nF, nF > Cff;
     };
+
+    /**
+     * @brief Checks the index sets of a reduced stress state.
+     * @tparam nP_ number of prescribed components
+     * @tparam nF_ number of stress-free components
+     * @param p the prescribed components
+     * @param f the stress-free components
+     * @throws std::invalid_argument unless @p p and @p f are distinct Voigt indices in [0, 6)
+     */
+    template < std::size_t nP_, std::size_t nF_ >
+    void checkIndexSets( const std::array< int, nP_ >& p, const std::array< int, nF_ >& f )
+    {
+      static_assert( nP_ > 0 && nF_ > 0 && nP_ + nF_ <= 6, "ReducedStress: invalid number of components" );
+      std::array< bool, 6 > used{};
+      auto                  use = [&]( int i ) {
+        if ( i < 0 || i > 5 || used[i] )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << __PRETTY_FUNCTION__
+                                       << ": the prescribed and the free components must be distinct Voigt indices "
+                                                           "in [0, 6)" );
+        used[i] = true;
+      };
+      std::for_each( p.begin(), p.end(), use );
+      std::for_each( f.begin(), f.end(), use );
+    }
 
     /**
      * @brief The static condensation of a 3D tangent: the condensed tangent, the sensitivity of the free strains and
@@ -143,21 +167,9 @@ namespace Marmot::ContinuumMechanics {
     template < std::size_t nP_, std::size_t nF_ >
     auto condense( const Marmot::Math::Matrix6d& C, const std::array< int, nP_ >& p, const std::array< int, nF_ >& f )
     {
-      static_assert( nP_ > 0 && nF_ > 0 && nP_ + nF_ <= 6, "ReducedStress: invalid number of components" );
       constexpr int nP = static_cast< int >( nP_ );
       constexpr int nF = static_cast< int >( nF_ );
-
-      std::array< bool, 6 > used{};
-      auto                  use = [&]( int i ) {
-        if ( i < 0 || i > 5 || used[i] )
-          throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                       << __PRETTY_FUNCTION__
-                                       << ": the prescribed and the free components must be distinct Voigt indices "
-                                                           "in [0, 6)" );
-        used[i] = true;
-      };
-      std::for_each( p.begin(), p.end(), use );
-      std::for_each( f.begin(), f.end(), use );
+      checkIndexSets( p, f );
 
       Eigen::Matrix< double, nF, nF > Cff;
       Eigen::Matrix< double, nF, nP > Cfp;
@@ -183,6 +195,7 @@ namespace Marmot::ContinuumMechanics {
       Condensation< nP, nF > condensation;
       condensation.CffCOD.setThreshold( rankTolerance );
       condensation.CffCOD.compute( Cff );
+      condensation.Cff = Cff;
 
       if ( condensation.CffCOD.rank() < nF ) {
         // consistency of the singular block: sigma_p independent of the null space of C_ff, C_fp in its range
@@ -233,6 +246,8 @@ namespace Marmot::ContinuumMechanics {
      * @param f the stress-free components
      * @return the condensation of the tangent of the converged 3D state, a Condensation<nP, nF>, with the number of
      * evaluations
+     * @throws std::invalid_argument if @p p and @p f are no valid index sets (checkIndexSets(), before the first
+     * evaluation)
      * @throws Marmot::Utilities::StressUpdateFailed if the iteration does not converge, a stress is not finite, the
      * condensation is inconsistent (condense()), or \f$\mathbf{C}_{ff}\f$ is singular and the residual
      * \f$\boldsymbol{\sigma}_f\f$ has a component outside its range larger than consistencyTolerance \f$s\f$, which no
@@ -249,6 +264,7 @@ namespace Marmot::ContinuumMechanics {
       constexpr double relaxedTolerance = relaxedConvergenceTolerance;
       constexpr int    nRelaxed         = 8;
       constexpr int    nMaxIterations   = 15;
+      checkIndexSets( p, f ); // before the first access at f
 
       Marmot::Math::Vector6d         stress;
       Marmot::Math::Matrix6d         dStress_dStrain;
@@ -285,11 +301,7 @@ namespace Marmot::ContinuumMechanics {
 
         const Eigen::Matrix< double, nF, 1 > correction = condensation.CffCOD.solve( stressF );
         if ( condensation.CffCOD.rank() < nF ) {
-          Eigen::Matrix< double, nF, nF > Cff;
-          for ( int i = 0; i < nF; i++ )
-            for ( int j = 0; j < nF; j++ )
-              Cff( i, j ) = dStress_dStrain( f[i], f[j] );
-          const double outsideRange = ( stressF - Cff * correction ).cwiseAbs().maxCoeff();
+          const double outsideRange = ( stressF - condensation.Cff * correction ).cwiseAbs().maxCoeff();
           if ( outsideRange > consistencyTolerance * stressScale )
             throw Marmot::Utilities::StressUpdateFailed(
               Marmot::Utilities::MakeString()
@@ -300,6 +312,45 @@ namespace Marmot::ContinuumMechanics {
         for ( int i = 0; i < nF; i++ )
           dStrain( f[i] ) -= correction( i );
       }
+    }
+
+    /**
+     * @brief The sensitivity of the free strains to a further variable \f$\mathbf{x}\f$ of the stress update (e.g.,
+     * nonlocal variables), with the same pseudo-inverse as the condensation: \f$\mathrm{d}\boldsymbol{\varepsilon}_f /
+     * \mathrm{d}\mathbf{x} = -\mathbf{C}_{ff}^{+}\, \partial\boldsymbol{\sigma}_f / \partial\mathbf{x}\f$, such that
+     * the free stresses stay zero.
+     * @tparam nP number of prescribed components
+     * @tparam nF number of stress-free components
+     * @tparam nX number of further variables
+     * @param condensation the condensation of the tangent (condense(), computeReducedStress())
+     * @param dStressF_dX \f$\partial\boldsymbol{\sigma}_f / \partial\mathbf{x}\f$
+     * @return \f$\mathrm{d}\boldsymbol{\varepsilon}_f / \mathrm{d}\mathbf{x}\f$
+     * @throws Marmot::Utilities::StressUpdateFailed if \f$\mathbf{C}_{ff}\f$ is singular and a column of
+     * @p dStressF_dX has a component outside its range larger than consistencyTolerance times the column's scale
+     * (\f$\max(|\partial\sigma_{f_i}/\partial x_j|, \max|\mathbf{C}_{ff}|\, \max_i|\mathrm{d}\varepsilon_{f_i} /
+     * \mathrm{d}x_j|)\f$): no change of the free strains then keeps the free stresses zero when \f$\mathbf{x}\f$
+     * changes.
+     */
+    template < int nP, int nF, int nX >
+    Eigen::Matrix< double, nF, nX > freeStrainSensitivity( const Condensation< nP, nF >&          condensation,
+                                                           const Eigen::Matrix< double, nF, nX >& dStressF_dX )
+    {
+      const Eigen::Matrix< double, nF, nX > dStrainF_dX = -condensation.CffCOD.solve( dStressF_dX );
+      if ( condensation.CffCOD.rank() < nF ) {
+        const Eigen::Matrix< double, nF, nX > residual = dStressF_dX + condensation.Cff * dStrainF_dX;
+        const double                          CffMax   = condensation.Cff.cwiseAbs().maxCoeff();
+        for ( int j = 0; j < nX; j++ ) {
+          const double scale = std::max( dStressF_dX.col( j ).cwiseAbs().maxCoeff(),
+                                         CffMax * dStrainF_dX.col( j ).cwiseAbs().maxCoeff() );
+          if ( residual.col( j ).cwiseAbs().maxCoeff() > consistencyTolerance * scale )
+            throw Marmot::Utilities::StressUpdateFailed(
+              Marmot::Utilities::MakeString()
+              << __PRETTY_FUNCTION__ << ": the tangent of the stress-free components is singular (rank "
+              << condensation.CffCOD.rank() << " of " << nF << ") and dStressF_dX (column " << j
+              << ") is outside its range" );
+        }
+      }
+      return dStrainF_dX;
     }
 
   } // namespace ReducedStress
