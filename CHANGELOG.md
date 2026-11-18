@@ -24,6 +24,11 @@ All notable changes to Marmot are documented in this file. The format follows
   operations on the seeded inputs only update their Hessian rows. It is the new `HessianDual` of
   `SecondOrder::d2f_dT2`, which therefore evaluates the function once instead of once per pair of directions: the
   Pence-Gou energy Hessian takes 0.65 us instead of 2.4 us (symmetric) or 3.6 us (full), 4x the analytical one.
+- `ThirdOrder::d3f_dT3` evaluates the function once per unordered triple of directions (165 instead of 729 for a
+  3x3 tensor; with `isSymmetric`, transposed triples are skipped as well), since mixed partial derivatives do not
+  depend on the order of differentiation: the Yeoh energy's third derivative, which
+  `CompressibleFiniteStrainLinearViscoelasticity` computes in every stress update, takes 11.7 us instead of 55 us.
+  Results are unchanged.
 - Optional AD backends, selected at configure time; the choice is part of the API and ABI and exported to consumers:
   - `-DMARMOT_USE_AUTODIFF=ON` (`MARMOT_AD_AUTODIFF`): autodiff for the hyper-dual and Taylor numbers.
   - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`/`_SACADO`): the `JacobianDual`

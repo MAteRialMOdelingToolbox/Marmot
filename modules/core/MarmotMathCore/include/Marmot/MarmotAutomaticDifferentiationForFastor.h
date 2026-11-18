@@ -24,6 +24,7 @@
  */
 
 #pragma once
+#include <algorithm>
 /* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
  * flags nor leaks into consumers. */
 #ifdef _MSC_VER
@@ -487,11 +488,13 @@ namespace Marmot::Math::Differentiation::Automatic {
      * shape (dim, dim, dim, dim, dim, dim)
      *
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
+     *
+     *  F is evaluated once per unordered triple of the dim^2 directions (165 for dim = 3 instead of 729), since mixed
+     *  partial derivatives do not depend on the order of differentiation.
      *  @param isSymmetric if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is
      *  assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built
-     *  from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2
-     *  -- a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows -- by
-     *  exploiting the identity
+     *  from tensor invariants). This further skips the triples whose transpose is evaluated anyway, exploiting the
+     *  identity
      *  \f$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
      *  F/\partial T_{ji}\partial T_{lk}\partial T_{nm} \f$, which holds at a symmetric T for such functions (note:
      *  this mirrors all three index pairs simultaneously; mirroring any pair independently is in general NOT
@@ -506,51 +509,93 @@ namespace Marmot::Math::Differentiation::Automatic {
              const Fastor::Tensor< double, dim, dim >&    T,
              bool                                         isSymmetric = false )
     {
-      double                                                 F_;
-      dual3rd                                                F_right;
+      // Mixed partial derivatives do not depend on the order of differentiation: F is evaluated only for the sorted
+      // triples a <= b <= c of directions (a = dim * i + j for T_ij), seeded on the levels 1, 2 and 3, and the third
+      // derivative is copied to all permutations. With isSymmetric, a triple is skipped if its transpose (all three
+      // directions T_ij -> T_ji) sorts lower, and its derivatives are copied from the transpose. The first and second
+      // derivatives come out of the same evaluations; the few that none of them provides are evaluated separately.
+      constexpr size_t n          = dim * dim;
+      auto             transposed = []( size_t a ) { return ( a % dim ) * dim + a / dim; };
+
+      double                                                 F_ = 0.0;
       Fastor::Tensor< double, dim, dim >                     dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim >           d2F_dT2;
       Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > d3F_dT3;
       Fastor::Tensor< dual3rd, dim, dim >                    T_right = Tensors::makeHigherOrderDual< 3 >( T );
+      dual3rd*                                               t       = T_right.data();
+      std::array< bool, n >                                  hasD1{};
+      std::array< std::array< bool, n >, n >                 hasD2{};
 
-      for ( size_t i = 0; i < dim; i++ ) {
-        for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
-          seed< 1 >( T_right( i, j ), 1.0 );
+      auto setD3 = [&]( size_t a, size_t b, size_t c, double v ) {
+        const std::array< size_t, 3 >                   d     = { a, b, c };
+        constexpr std::array< std::array< int, 3 >, 6 > perms = {
+          { { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 }, { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 } } };
+        for ( const auto& p : perms )
+          d3F_dT3( d[p[0]] / dim, d[p[0]] % dim, d[p[1]] / dim, d[p[1]] % dim, d[p[2]] / dim, d[p[2]] % dim ) = v;
+      };
+      auto setD2 = [&]( size_t a, size_t b, double v ) {
+        d2F_dT2( a / dim, a % dim, b / dim, b % dim ) = v;
+        d2F_dT2( b / dim, b % dim, a / dim, a % dim ) = v;
+        hasD2[a][b] = hasD2[b][a] = true;
+      };
+      auto setD1 = [&]( size_t a, double v ) {
+        dF_dT_( a / dim, a % dim ) = v;
+        hasD1[a]                   = true;
+      };
 
-          for ( size_t k = 0; k < dim; k++ ) {
-            for ( size_t l = 0; l < dim; l++ ) {
+      for ( size_t a = 0; a < n; a++ )
+        for ( size_t b = a; b < n; b++ )
+          for ( size_t c = b; c < n; c++ ) {
+            std::array< size_t, 3 > dT = { transposed( a ), transposed( b ), transposed( c ) };
+            std::sort( dT.begin(), dT.end() );
+            if ( isSymmetric && dT < std::array< size_t, 3 >{ a, b, c } )
+              continue;
 
-              seed< 2 >( T_right( k, l ), 1.0 );
+            seed< 1 >( t[a], 1.0 );
+            seed< 2 >( t[b], 1.0 );
+            seed< 3 >( t[c], 1.0 );
+            const dual3rd F_right = F( T_right );
+            seed< 3 >( t[c], 0.0 );
+            seed< 2 >( t[b], 0.0 );
+            seed< 1 >( t[a], 0.0 );
 
-              for ( size_t m = 0; m < dim; m++ ) {
-                for ( size_t n = 0; n < dim; n++ ) {
-
-                  seed< 3 >( T_right( m, n ), 1.0 );
-                  F_right           = F( T_right );
-                  const double val3 = derivative< 3 >( F_right );
-
-                  d3F_dT3( i, j, k, l, m, n ) = val3;
-                  if ( isSymmetric && j != i )
-                    d3F_dT3( j, i, l, k, n, m ) = val3;
-
-                  seed< 3 >( T_right( m, n ), 0.0 );
-                }
-              }
-
-              const double val2     = derivative< 2 >( F_right );
-              d2F_dT2( i, j, k, l ) = val2;
-              if ( isSymmetric && j != i )
-                d2F_dT2( j, i, l, k ) = val2;
-
-              seed< 2 >( T_right( k, l ), 0.0 );
+            F_ = value( F_right );
+            setD3( a, b, c, derivative< 3 >( F_right ) );
+            setD2( a, b, derivative< 2 >( F_right ) );
+            setD1( a, derivative< 1 >( F_right ) );
+            if ( isSymmetric ) {
+              setD3( transposed( a ), transposed( b ), transposed( c ), derivative< 3 >( F_right ) );
+              setD2( transposed( a ), transposed( b ), derivative< 2 >( F_right ) );
+              setD1( transposed( a ), derivative< 1 >( F_right ) );
             }
           }
-          dF_dT_( i, j ) = derivative< 1 >( F_right );
-          F_             = value( F_right );
-          if ( isSymmetric && j != i )
-            dF_dT_( j, i ) = dF_dT_( i, j );
-          seed< 1 >( T_right( i, j ), 0.0 );
+
+      // second derivatives not yet provided (only possible with isSymmetric)
+      for ( size_t a = 0; a < n; a++ )
+        for ( size_t b = a; b < n; b++ ) {
+          if ( hasD2[a][b] )
+            continue;
+          seed< 1 >( t[a], 1.0 );
+          seed< 2 >( t[b], 1.0 );
+          const dual3rd F_right = F( T_right );
+          seed< 2 >( t[b], 0.0 );
+          seed< 1 >( t[a], 0.0 );
+          setD2( a, b, derivative< 2 >( F_right ) );
+          setD1( a, derivative< 1 >( F_right ) );
         }
+
+      // first derivatives not yet provided (only possible with isSymmetric)
+      for ( size_t a = 0; a < n; a++ ) {
+        if ( hasD1[a] )
+          continue;
+        if ( isSymmetric && hasD1[transposed( a )] ) {
+          setD1( a, dF_dT_( transposed( a ) / dim, transposed( a ) % dim ) );
+          continue;
+        }
+        seed< 1 >( t[a], 1.0 );
+        const dual3rd F_right = F( T_right );
+        seed< 1 >( t[a], 0.0 );
+        setD1( a, derivative< 1 >( F_right ) );
       }
 
       return { F_, dF_dT_, d2F_dT2, d3F_dT3 };
