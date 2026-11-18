@@ -50,8 +50,10 @@ All notable changes to Marmot are documented in this file. The format follows
   linear; cubic / quintic Hermite transverse interpolation), node fields displacement and rotation, sections given
   as section points (any shape, `[n, y_i, A_i ...]` in 2D, `[v, J, n, y_i, z_i, A_i ...]` in 3D) with one material
   instance per point (any hypoelastic material), Saint-Venant torsion scaled to G J. `BeamFiberSection` integrates
-  the section independently of the kinematics. A body force acts at the section points: line load and, for a section
-  whose centroid is off the axis, its line moment.
+  the section independently of the kinematics; its 2D fibers are in uniaxial stress (`computeUniaxialStress`), its 3D
+  fibers in the beam stress state σ22 = σ33 = σ23 = 0 (`ReducedStress::computeReducedStress` with its index sets
+  `BeamFiberSection::beamStressPrescribed = {0, 3, 4}`, `beamStressFree = {1, 2, 5}`). A body force acts at the
+  section points: line load and, for a section whose centroid is off the axis, its line moment.
 - `B2D2CR` and `B3D2CR`: co-rotational (finite rotation) variants of `B2D2` / `B3D2` with the same properties
   and section (2D: Crisfield; 3D: Battini and Pacoste, exact geometric stiffness by forward automatic
   differentiation); arbitrary rigid rotations, small local strains.
