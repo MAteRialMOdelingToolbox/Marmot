@@ -200,6 +200,21 @@ namespace {
     }
     const double expected = 5.0 * ( 1.0 - std::exp( -time / 30.0 ) );
     throwExceptionOnFailure( checkIfEqual( consumed, expected, 1e-13 * expected ), "self-desiccation integral" );
+
+    // increments much longer than the time constant (dT / tau_s > 709, where exp overflows): finite and still exact
+    for ( double dT : { 25000.0, 1.0e7 } ) {
+      time += dT;
+      evaluate( *material, fs, r, t, time, dT );
+      throwExceptionOnFailure( std::isfinite( r.source( 0 ) ) && r.source( 0 ) <= 0.0,
+                               "self-desiccation sink of a very long increment" );
+      consumed -= r.source( 0 ) * dT;
+    }
+    throwExceptionOnFailure( checkIfEqual( consumed, 5.0, 1e-13 * 5.0 ), "self-desiccation integral, long increments" );
+
+    // one increment from the onset over (practically) the whole reaction
+    evaluate( *material, fs, r, t, 1.0e6, 1.0e6 );
+    throwExceptionOnFailure( checkIfEqual( -r.source( 0 ) * 1.0e6, 5.0, 1e-13 * 5.0 ),
+                             "self-desiccation in one long increment" );
   }
 
   void testInvalidInput()
