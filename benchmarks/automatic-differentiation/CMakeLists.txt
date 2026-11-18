@@ -95,7 +95,8 @@ foreach(_target ad-backend-benchmark ad-op-benchmark adept-fastor-einsum-repro)
   target_include_directories(${_target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${MARMOT_CORE_INCLUDE_DIRS}
                                                 ${CMAKE_CURRENT_SOURCE_DIR}/sacado-config)
   target_include_directories(${_target} SYSTEM PRIVATE ${AD_BACKEND_INCLUDE_DIRS})
-  target_compile_definitions(${_target} PRIVATE BOOST_DISABLE_ASSERTS _REENTRANT)
+  # the autodiff adapter is the Marmot types header, configured with autodiff as the reference
+  target_compile_definitions(${_target} PRIVATE BOOST_DISABLE_ASSERTS _REENTRANT MARMOT_AD_AUTODIFF)
   target_link_libraries(${_target} PRIVATE Eigen3::Eigen adept)
   target_compile_options(${_target} PRIVATE -O3 -march=native)
 endforeach()

@@ -13,17 +13,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # The default build, with the Python bindings.
+          # The default build (Marmot's own AD types), with the Python bindings.
           - name: default
             cmake_options: -DMARMOT_BUILD_PYTHON_BINDINGS=ON
           # Exports only the MARMOT_API-marked API, as the Windows DLL does; the Python bindings are not supported
           # then. tests/consumer links the shared library and checks that the exported API is complete.
           - name: export-api-only
             cmake_options: -DMARMOT_EXPORT_API_ONLY=ON
-          # Marmot's own vector-mode backend of the AD drivers; code differentiated by these drivers must build and
-          # pass the tests with all backends.
-          - name: vector-mode
-            cmake_options: -DMARMOT_AD_VECTOR_BACKEND=Marmot
+          # The optional autodiff backend of the hyper-dual and Taylor numbers, with the first-derivative drivers
+          # evaluating one direction per pass; code using the AD vocabulary must build and pass the tests with all
+          # backends.
+          - name: autodiff
+            cmake_options: -DMARMOT_USE_AUTODIFF=ON -DMARMOT_AD_VECTOR_BACKEND=None
+            autodiff: true
           # The optional Sacado backend of the vector-mode AD drivers (found through Trilinos' CMake package).
           - name: sacado
             cmake_options: -DMARMOT_AD_VECTOR_BACKEND=Sacado
@@ -53,6 +55,7 @@ jobs:
       # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
       # from its pinned commit.
       - name: Install Autodiff
+        if: ${{ matrix.autodiff }}
         shell: bash -leo pipefail {0}
         run: |
           git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git

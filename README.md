@@ -36,20 +36,19 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 [changelog](CHANGELOG.md) lists every renamed class and namespace.
 
 `Marmot` requires the
-[Eigen](https://gitlab.com/libeigen/eigen) (≥5.0),
-[autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
+[Eigen](https://gitlab.com/libeigen/eigen) (≥5.0)
 and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
-For the automatic differentiation of tangents, `-DMARMOT_AD_VECTOR_BACKEND=Marmot` selects Marmot's own vector mode
-(no further dependency), which computes all first derivatives in one evaluation; optionally,
-[Sacado](https://trilinos.github.io/sacado.html) (part of Trilinos) can be used likewise with
-`-DMARMOT_AD_VECTOR_BACKEND=Sacado`.
+Automatic differentiation uses Marmot's own number types; optionally,
+[autodiff](https://github.com/autodiff/autodiff) (`-DMARMOT_USE_AUTODIFF=ON`) and
+[Sacado](https://trilinos.github.io/sacado.html) (part of Trilinos, `-DMARMOT_AD_VECTOR_BACKEND=Sacado`) can be used
+instead.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
 
 For a quick start we recommend to use conda.
 A conda environment including all needed dependencies can be created by running
 
 ```bash
-conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers eigen autodiff fastor
+conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers eigen fastor
 ```
 To activate the environment use
 

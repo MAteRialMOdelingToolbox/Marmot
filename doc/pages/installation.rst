@@ -4,16 +4,19 @@ Installation
 Requirements
 ************
 
-Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library,
-`autodiff <https://github.com/autodiff/autodiff>`_,
+Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library
 and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
 Marmot requires Eigen 5.
+
+Automatic differentiation uses Marmot's own number types. The libraries
+`autodiff <https://github.com/autodiff/autodiff>`_ and `Sacado <https://trilinos.github.io/sacado.html>`_ can be
+used instead (see `Build options`_), but are not required.
 autodiff 1.1.2 does not compile against Eigen 5 without the patch of
 `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, which is not merged upstream yet;
-Step 5 applies it. The autodiff 1.1.2 of the conda channel below carries it.
+Step 5 applies it.
 
 Prebuilt conda package
 **********************
@@ -97,10 +100,10 @@ Get Eigen:
         ..
     make install
 
-Get autodiff:
+Optionally, get autodiff (only for ``-DMARMOT_USE_AUTODIFF=ON``):
 
 .. code-block:: console
-   :caption: Step 5
+   :caption: Step 5 (optional)
 
     cd $MARMOTROOT
     git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
@@ -157,14 +160,17 @@ The following CMake options adjust the build:
   vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
-* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot`` uses Marmot's own vector-mode automatic differentiation
-  (``MarmotAutomaticDifferentiationVectorMode.h``, expression templates, no further dependency) instead of autodiff
-  for the automatic differentiation drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD
-  material base classes ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. It computes all derivatives in one
-  evaluation of the differentiated function instead of one evaluation per direction, which makes these tangents about
-  1.9 to 3.1 times faster. ``-DMARMOT_AD_VECTOR_BACKEND=Sacado`` does the same with
-  `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos), see below; it is about as fast. autodiff is required
-  either way and still used for second and third derivatives. The default is ``autodiff``.
+* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None`` selects the number type of the automatic differentiation
+  drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD material base classes
+  ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. The default, ``Marmot``, is Marmot's own vector mode
+  (``MarmotAutomaticDifferentiationVectorMode.h``, expression templates): it computes all derivatives in one
+  evaluation of the differentiated function. ``Sacado`` does the same with
+  `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos), see below. ``None`` uses the first-order dual numbers
+  and evaluates the function once per direction, which makes these tangents about 1.9 to 3.1 times slower.
+* ``-DMARMOT_USE_AUTODIFF=ON`` uses `autodiff <https://github.com/autodiff/autodiff>`_ instead of Marmot's own
+  hyper-dual and Taylor numbers (``MarmotAutomaticDifferentiationScalarMode.h``), which compute the second and third
+  derivatives and the Taylor expansions, e.g., of the energy functions and the creep compliances. Marmot's own types
+  are as fast as or faster than autodiff. The default is ``OFF``, so autodiff is not needed.
 
 Sacado backend
 ______________
@@ -187,10 +193,10 @@ Sacado_config.h>``. A Trilinos with Sacado as its only package is enough:
     cmake --build Trilinos-build --parallel
     cmake --install Trilinos-build
 
-The backend changes the number type of the AD material interfaces (``computeStressAD``), i.e., Marmot's API and ABI.
-``Marmot::Marmot`` therefore passes the definition ``MARMOT_AD_VECTOR_BACKEND_MARMOT`` or
-``MARMOT_AD_VECTOR_BACKEND_SACADO`` on to its consumers, and code compiled against Marmot's headers without CMake must
-define it as well if Marmot was built with that backend.
+The AD backends change number types in Marmot's interfaces (e.g. ``computeStressAD``), i.e., Marmot's API and ABI.
+``Marmot::Marmot`` therefore passes the definitions ``MARMOT_AD_VECTOR_BACKEND_MARMOT``,
+``MARMOT_AD_VECTOR_BACKEND_SACADO`` and ``MARMOT_AD_AUTODIFF`` on to its consumers, as selected, and code compiled
+against Marmot's headers without CMake must define them alike.
 Code differentiated by these drivers must use the number type ``JacobianDual< nDirections >`` (or the ``ADScalar`` of
 the material base classes) instead of ``dual`` to build with all backends.
 
@@ -226,15 +232,15 @@ Other CMake projects use the installed library through ``find_package``:
     find_package(Marmot REQUIRED)
     target_link_libraries(<target> PRIVATE Marmot::Marmot)
 
-``Marmot::Marmot`` brings along Eigen, autodiff and Fastor (and Sacado, if Marmot was built with it); autodiff, Fastor
-and Sacado are found either through their CMake packages or, if they were installed as plain headers, through a header
-search.
+``Marmot::Marmot`` brings along Eigen and Fastor (and autodiff and Sacado, if Marmot was built with them); Fastor,
+autodiff and Sacado are found either through their CMake packages or, if they were installed as plain headers, through
+a header search.
 
 Building on Windows
 *******************
 
 Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
-Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
+Install Eigen and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
 then build Marmot from a *Developer PowerShell for VS 2022*:
 
 .. code-block:: console
@@ -256,7 +262,7 @@ marked at the smallest granularity that links (a single member rather than its c
 reached through virtual functions only).
 Everything else is used through the virtual functions of the objects the factories create.
 Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
-since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+since that would include every Eigen, Fastor and automatic differentiation template instantiated in Marmot.
 Code that needs more of Marmot must mark it ``MARMOT_API``, following the rule above.
 To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
 which exports only the ``MARMOT_API`` symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.

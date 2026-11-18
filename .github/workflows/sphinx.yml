@@ -36,26 +36,6 @@ jobs:
           make install
           cd ../..
 
-      # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
-      # from its pinned commit.
-      - name: Install Autodiff
-        shell: bash -l {0}
-        run: |
-          git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
-          curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
-          git -C autodiff apply ../autodiff-eigen5.diff
-          cd autodiff
-          mkdir build
-          cd build
-          cmake -DAUTODIFF_BUILD_TESTS=OFF \
-            -DAUTODIFF_BUILD_PYTHON=OFF \
-            -DAUTODIFF_BUILD_EXAMPLES=OFF \
-            -DAUTODIFF_BUILD_DOCS=OFF \
-            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-            ..
-          make install
-          cd ../..
-
       - name: Install Fastor
         shell: bash -l {0}
         run: |

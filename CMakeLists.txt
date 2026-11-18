@@ -141,30 +141,44 @@ endif()
 # Marmot target below.
 add_compile_definitions(FASTOR_DONT_ALIGN)
 
-# Backend of the automatic differentiation drivers that compute Jacobians (JacobianDual in
-# MarmotAutomaticDifferentiationTypes.h). autodiff, which Marmot always uses, evaluates one direction per pass;
-# Marmot's own vector mode (no dependency) and the optional Sacado (Trilinos) compute all directions in a single
-# pass, which is faster. The choice changes the number type in the interfaces of the AD material base classes, i.e.
-# the API and ABI, so every translation unit that includes Marmot's headers must agree on it, like FASTOR_DONT_ALIGN.
-set(MARMOT_AD_VECTOR_BACKEND "autodiff" CACHE STRING
-    "Backend of Marmot's vector-mode AD drivers: autodiff, Marmot or Sacado")
-set_property(CACHE MARMOT_AD_VECTOR_BACKEND PROPERTY STRINGS autodiff Marmot Sacado)
+# Automatic differentiation backends (see MarmotAutomaticDifferentiationTypes.h). Both choices change number types in
+# Marmot's interfaces (e.g. computeStressAD of the AD material base classes), i.e. the API and ABI, so every
+# translation unit that includes Marmot's headers must agree on them, like FASTOR_DONT_ALIGN.
+#  - MARMOT_USE_AUTODIFF: the hyper-dual and Taylor numbers (dual, dual2nd, dual3rd, Taylor) are Marmot's own by
+#    default; ON uses the (optional) autodiff library instead.
+#  - MARMOT_AD_VECTOR_BACKEND: the number type of the drivers that compute Jacobians (JacobianDual). Marmot's own
+#    vector mode (default, no dependency) and Sacado (optional, Trilinos) compute all directions in a single pass;
+#    None uses dual and evaluates one direction per pass, which is slower.
+option(MARMOT_USE_AUTODIFF "Use autodiff for the hyper-dual and Taylor numbers instead of Marmot's own" OFF)
+if(MARMOT_USE_AUTODIFF)
+    add_compile_definitions(MARMOT_AD_AUTODIFF)
+endif()
+set(MARMOT_AD_VECTOR_BACKEND "Marmot" CACHE STRING "Backend of Marmot's vector-mode AD drivers: Marmot, Sacado or None")
+set_property(CACHE MARMOT_AD_VECTOR_BACKEND PROPERTY STRINGS Marmot Sacado None)
 if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Marmot")
     add_compile_definitions(MARMOT_AD_VECTOR_BACKEND_MARMOT)
 elseif(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
     add_compile_definitions(MARMOT_AD_VECTOR_BACKEND_SACADO)
 endif()
 
-## find Eigen, autodiff, Fastor and, if selected, Sacado as imported targets (Eigen3::Eigen, autodiff::autodiff,
-## Fastor::Fastor, Sacado::Sacado). The same file is installed and used by MarmotConfig.cmake, so consumers resolve
+## find Eigen, Fastor and, if selected, autodiff and Sacado as imported targets (Eigen3::Eigen, Fastor::Fastor,
+## autodiff::autodiff, Sacado::Sacado). The same file is installed and used by MarmotConfig.cmake, so consumers resolve
 ## them alike.
 include(cmake/MarmotDependencies.cmake)
 if(NOT MARMOT_DEPENDENCIES_FOUND)
     message(FATAL_ERROR "${MARMOT_DEPENDENCIES_MESSAGE}")
 endif()
 message("--> found Eigen ${Eigen3_VERSION}")
+if(MARMOT_USE_AUTODIFF)
+    message("--> AD hyper-dual and Taylor numbers: autodiff")
+else()
+    message("--> AD hyper-dual and Taylor numbers: Marmot")
+endif()
 message("--> AD vector-mode backend: ${MARMOT_AD_VECTOR_BACKEND}")
-set(MARMOT_AD_BACKEND_TARGETS autodiff::autodiff)
+set(MARMOT_AD_BACKEND_TARGETS "")
+if(MARMOT_USE_AUTODIFF)
+    list(APPEND MARMOT_AD_BACKEND_TARGETS autodiff::autodiff)
+endif()
 if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
     list(APPEND MARMOT_AD_BACKEND_TARGETS Sacado::Sacado)
 endif()
@@ -334,7 +348,10 @@ target_compile_options(${PROJECT_NAME} INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/big
 # FASTOR_DONT_ALIGN (see above) changes Fastor::Tensor's alignment, so consumers of Marmot::Marmot must
 # compile with it as well.
 target_compile_definitions(${PROJECT_NAME} INTERFACE FASTOR_DONT_ALIGN)
-# Likewise the AD vector-mode backend (see MARMOT_AD_VECTOR_BACKEND above).
+# Likewise the AD backends (see MARMOT_USE_AUTODIFF and MARMOT_AD_VECTOR_BACKEND above).
+if(MARMOT_USE_AUTODIFF)
+    target_compile_definitions(${PROJECT_NAME} INTERFACE MARMOT_AD_AUTODIFF)
+endif()
 if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Marmot")
     target_compile_definitions(${PROJECT_NAME} INTERFACE MARMOT_AD_VECTOR_BACKEND_MARMOT)
 elseif(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
@@ -351,7 +368,7 @@ foreach(_inc_dir IN LISTS MARMOT_INCLUDE_DIRS)
     target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
 endforeach()
 
-# PUBLIC: Marmot's headers include Eigen, autodiff (and Sacado) and Fastor, so consumers need them too
+# PUBLIC: Marmot's headers include Eigen, Fastor (and autodiff, Sacado if selected), so consumers need them too
 # (MarmotConfig.cmake recreates these targets on the consumer side).
 target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen ${MARMOT_AD_BACKEND_TARGETS} Fastor::Fastor)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES})

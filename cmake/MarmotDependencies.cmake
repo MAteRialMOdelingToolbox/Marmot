@@ -3,8 +3,8 @@
 # * Locates Marmot's header-only dependencies and provides them as imported targets:
 # *
 # *   Eigen3::Eigen        (Eigen's CMake package)
-# *   autodiff::autodiff   (autodiff's CMake package, or a plain header search)
 # *   Fastor::Fastor       (Fastor's CMake package, or a plain header search)
+# *   autodiff::autodiff   (only if MARMOT_USE_AUTODIFF is ON: autodiff's CMake package, or a plain header search)
 # *   Sacado::Sacado       (only if MARMOT_AD_VECTOR_BACKEND is Sacado: Trilinos' Sacado CMake package, or a
 # *                         plain header search)
 # *
@@ -54,8 +54,12 @@ macro(marmot_find_header_only_dependency package target header)
     endif()
 endmacro()
 
-marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
 marmot_find_header_only_dependency(Fastor Fastor::Fastor Fastor)
+
+# autodiff (optional backend of the hyper-dual and Taylor numbers, see MarmotAutomaticDifferentiationTypes.h)
+if(MARMOT_USE_AUTODIFF)
+    marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
+endif()
 
 # Sacado (optional vector-mode AD backend, see MarmotAutomaticDifferentiationTypes.h). Only its header-only part
 # is used, so Sacado::Sacado carries just the include directories, not Trilinos' (static) sacado library. An
@@ -82,8 +86,8 @@ if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
                 "but MARMOT_AD_VECTOR_BACKEND is Sacado. ")
         endif()
     endif()
-elseif(NOT MARMOT_AD_VECTOR_BACKEND MATCHES "^(autodiff|Marmot)$")
+elseif(NOT MARMOT_AD_VECTOR_BACKEND MATCHES "^(Marmot|None)$")
     set(MARMOT_DEPENDENCIES_FOUND FALSE)
     string(APPEND MARMOT_DEPENDENCIES_MESSAGE
-        "MARMOT_AD_VECTOR_BACKEND must be autodiff, Marmot or Sacado, not '${MARMOT_AD_VECTOR_BACKEND}'. ")
+        "MARMOT_AD_VECTOR_BACKEND must be Marmot, Sacado or None, not '${MARMOT_AD_VECTOR_BACKEND}'. ")
 endif()

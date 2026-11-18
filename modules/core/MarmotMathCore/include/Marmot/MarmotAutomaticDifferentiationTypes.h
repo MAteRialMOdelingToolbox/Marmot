@@ -30,13 +30,14 @@
  *  declared here, so that the backends can be exchanged in one place.
  *
  *  Backends:
- *  - autodiff (https://autodiff.github.io), always used: HyperDual, Taylor and, by default, JacobianDual.
- *  - Marmot's own vector mode (MarmotAutomaticDifferentiationVectorMode.h), optional: if Marmot is configured with
- *    MARMOT_AD_VECTOR_BACKEND=Marmot (which defines MARMOT_AD_VECTOR_BACKEND_MARMOT), JacobianDual is a
- *    VectorMode::Dual, and the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX) compute all directions in a
- *    single evaluation (vector mode) instead of one direction per evaluation.
- *  - Sacado (https://trilinos.github.io/sacado.html), optional: likewise with MARMOT_AD_VECTOR_BACKEND=Sacado (which
- *    defines MARMOT_AD_VECTOR_BACKEND_SACADO), with JacobianDual a Sacado::Fad::SFad.
+ *  - Hyper-dual and Taylor numbers (dual, dual2nd, dual3rd, HyperDual, Taylor): Marmot's own scalar mode
+ *    (MarmotAutomaticDifferentiationScalarMode.h), or autodiff (https://autodiff.github.io) if Marmot is configured
+ *    with MARMOT_USE_AUTODIFF=ON (which defines MARMOT_AD_AUTODIFF).
+ *  - JacobianDual, the number type of the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX), by
+ *    MARMOT_AD_VECTOR_BACKEND: Marmot's own vector mode (MarmotAutomaticDifferentiationVectorMode.h; `Marmot`, which
+ *    defines MARMOT_AD_VECTOR_BACKEND_MARMOT) or Sacado (https://trilinos.github.io/sacado.html; `Sacado`, which
+ *    defines MARMOT_AD_VECTOR_BACKEND_SACADO) compute all directions in a single evaluation (vector mode); with
+ *    `None`, JacobianDual is dual and the drivers evaluate the function once per direction.
  *
  *  Vocabulary:
  *  - HyperDual<order>: nested dual number with one independent direction per nesting level; level 1 is the
@@ -44,7 +45,7 @@
  *  - Taylor<order>: univariate truncated Taylor number carrying the derivatives 0..order of one variable.
  *  - JacobianDual<nDirections>: number type of the first-derivative drivers df_dT, dF_dT and dF_dX< n >, with
  *    nDirections independent variables. Code differentiated by these drivers must use this type, not dual, to work
- *    with both backends. With autodiff it is dual.
+ *    with all backends.
  *  - seed<level>( x, v ) sets the derivative of x along nesting level `level` to v, derivative<level>( y ) reads the
  *    mixed derivative of y along the levels 1..level, value( y ) reads the primal value.
  *  - For vector-mode numbers (isVectorDual), seedDirection( x, i ) makes x the independent variable i and
@@ -52,11 +53,9 @@
  */
 
 #pragma once
+#include "Marmot/MarmotAutomaticDifferentiationScalarMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
 #include <array>
-#include <autodiff/forward/dual.hpp>
-#include <autodiff/forward/dual/eigen.hpp>
-#include <autodiff/forward/real.hpp>
 #include <cstddef>
 #include <type_traits>
 #if defined( MARMOT_AD_VECTOR_BACKEND_MARMOT ) && defined( MARMOT_AD_VECTOR_BACKEND_SACADO )
@@ -64,6 +63,11 @@
 #endif
 #ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
 #  include <Sacado_No_Kokkos.hpp>
+#endif
+#ifdef MARMOT_AD_AUTODIFF
+#  include <autodiff/forward/dual.hpp>
+#  include <autodiff/forward/dual/eigen.hpp>
+#  include <autodiff/forward/real.hpp>
 #endif
 
 namespace Marmot::Math::Differentiation::Automatic {
@@ -75,8 +79,13 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  N nesting levels and all mixed derivatives. Seeding different variables on different levels yields mixed
    *  higher-order derivatives in one evaluation.
    */
+#ifdef MARMOT_AD_AUTODIFF
   template < size_t order >
   using HyperDual = autodiff::HigherOrderDual< order, double >;
+#else
+  template < size_t order >
+  using HyperDual = ScalarMode::HyperDual< order >;
+#endif
 
   /** @brief First order dual number */
   using dual = HyperDual< 1 >;
@@ -90,8 +99,13 @@ namespace Marmot::Math::Differentiation::Automatic {
   /** @brief Univariate truncated Taylor number carrying the derivatives 0..order of one variable
    *  @tparam order highest derivative order
    */
+#ifdef MARMOT_AD_AUTODIFF
   template < size_t order >
   using Taylor = autodiff::Real< order, double >;
+#else
+  template < size_t order >
+  using Taylor                      = ScalarMode::Taylor< order >;
+#endif
 
   /** @brief Dynamic-size Eigen column vector of first order dual numbers */
   using VectorXdual = Eigen::Matrix< dual, Eigen::Dynamic, 1 >;
@@ -106,7 +120,11 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @tparam Scalar type to check
    */
   template < typename Scalar >
+#ifdef MARMOT_AD_AUTODIFF
   inline constexpr bool isHyperDual = autodiff::detail::isDual< Scalar >;
+#else
+  inline constexpr bool isHyperDual = ScalarMode::isDual< Scalar >;
+#endif
 
   /** @brief Sets the derivative of a hyper-dual number along one nesting level
    *  @tparam level nesting level (1 = outermost) to seed
@@ -120,7 +138,15 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < size_t level, typename Scalar, typename Value >
   void seed( Scalar& x, Value&& value )
   {
+#ifdef MARMOT_AD_AUTODIFF
     autodiff::seed< level >( x, static_cast< double >( value ) );
+#else
+    static_assert( level >= 1 && level <= ScalarMode::orderOf< Scalar >, "invalid nesting level" );
+    if constexpr ( level == 1 )
+      x.grad() = static_cast< double >( value );
+    else
+      seed< level - 1 >( x.val(), value );
+#endif
   }
 
   /** @brief Reads the mixed derivative of a hyper-dual number along the nesting levels 1..level
@@ -132,7 +158,14 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < size_t level, typename Scalar >
   double derivative( const Scalar& x )
   {
+#ifdef MARMOT_AD_AUTODIFF
     return autodiff::derivative< level >( x );
+#else
+    if constexpr ( level == 0 )
+      return ScalarMode::primalValue( x );
+    else
+      return derivative< level - 1 >( x.grad() );
+#endif
   }
 
   /** @brief Reads the primal value of a hyper-dual or vector-mode number
@@ -193,7 +226,11 @@ namespace Marmot::Math::Differentiation::Automatic {
     if constexpr ( isVectorDual< Scalar > )
       return x.val();
     else
+#ifdef MARMOT_AD_AUTODIFF
       return autodiff::detail::val( x );
+#else
+      return ScalarMode::primalValue( x );
+#endif
   }
 
   /** @brief Makes a vector-mode number the independent variable `direction`
@@ -265,11 +302,23 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < size_t order, typename Function >
   std::array< double, order + 1 > taylorDerivatives( const Function& f, double x )
   {
-    Taylor< order >                 x_( x );
-    const auto                      d = autodiff::derivatives( f, autodiff::along( 1. ), autodiff::at( x_ ) );
     std::array< double, order + 1 > out{};
+#ifdef MARMOT_AD_AUTODIFF
+    Taylor< order > x_( x );
+    const auto      d = autodiff::derivatives( f, autodiff::along( 1. ), autodiff::at( x_ ) );
     for ( size_t k = 0; k <= order; ++k )
       out[k] = d[k];
+#else
+    Taylor< order > x_( x );
+    if constexpr ( order >= 1 )
+      x_[1] = 1.0;
+    const Taylor< order > y         = f( x_ );
+    double                factorial = 1.0;
+    for ( size_t k = 0; k <= order; ++k ) {
+      factorial *= k ? double( k ) : 1.0;
+      out[k] = y[k] * factorial;
+    }
+#endif
     return out;
   }
 

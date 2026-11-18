@@ -750,11 +750,11 @@ namespace Marmot::Math::Tensors {
   }
 
   /**
-   * @brief Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor
-   * @tparam order order of the HigherOrderDual
+   * @brief Construct a Fastor tensor of hyper-dual numbers (HyperDual) from a Fastor double tensor
+   * @tparam order order of the hyper-dual numbers
    * @tparam Rest a pack of sizes specifying the dimensions of the tensor
    * @param in a Fastor tensor of type double
-   * @return a Fastor tensor of type autodiff::HigherOrderDual
+   * @return a Fastor tensor of hyper-dual numbers
    *
    */
   template < size_t order, size_t... Rest >

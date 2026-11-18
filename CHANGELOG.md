@@ -7,20 +7,23 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
-- `Math::Differentiation::Automatic::VectorMode::Dual< nDirections >` (`MarmotAutomaticDifferentiationVectorMode.h`):
-  Marmot's own vector-mode forward automatic differentiation, without dependencies. Arithmetic yields expression
-  templates that compute values and local partial derivatives once, when the expression is formed, and all partial
-  derivatives in one vectorizable loop on assignment. Configured with `-DMARMOT_AD_VECTOR_BACKEND=Marmot`, it is the
-  `JacobianDual` of the first-derivative drivers (exported to consumers as `MARMOT_AD_VECTOR_BACKEND_MARMOT`):
-  tangents of `ADVonMises` 3.1x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.6x and `ADCompressibleNeoHooke` 1.9x
-  faster than with autodiff, and as fast as or faster than with Sacado.
-- Optional Sacado (Trilinos) backend for automatic differentiation: configured with
-  `-DMARMOT_AD_VECTOR_BACKEND=Sacado`, the first-derivative drivers `df_dT`, `dF_dT` and `dF_dX< n >`, and hence the
-  tangents of the AD material base classes, compute all directions in one evaluation instead of one per direction
-  (e.g., `ADVonMises` 2.8x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.3x, `ADCompressibleNeoHooke` 1.4x
-  faster). autodiff stays the default and is still used for everything else (hyper-dual numbers of 2nd and 3rd
-  order, Taylor mode). The choice is part of the API and ABI, so it is exported to consumers
-  (`MARMOT_AD_VECTOR_BACKEND_SACADO`).
+- Marmot's own automatic differentiation types, without dependencies (`Math::Differentiation::Automatic`):
+  - `ScalarMode::Dual< T >` / `ScalarMode::HyperDual< order >` (`MarmotAutomaticDifferentiationScalarMode.h`):
+    nested hyper-dual numbers of any order, and `ScalarMode::Taylor< order >`, univariate truncated Taylor numbers.
+    They back `dual`, `dual2nd`, `dual3rd`, `HyperDual` and `Taylor`. As fast as or faster than autodiff (GCC 14,
+    relative to autodiff: energy Hessian 1.0, third derivative 1.07, phase-field degradation 0.58, B4 and power-law
+    Kelvin moduli (Taylor order 5 and 7) 0.92 and 0.53).
+  - `VectorMode::Dual< nDirections >` (`MarmotAutomaticDifferentiationVectorMode.h`): vector-mode numbers with
+    expression templates that compute values and local partial derivatives once, when the expression is formed, and
+    all partial derivatives in one vectorizable loop on assignment. It is the `JacobianDual` of the first-derivative
+    drivers `df_dT`, `dF_dT` and `dF_dX< n >`, which therefore compute all directions in one evaluation: tangents of
+    `ADVonMises` 3.1x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.6x and `ADCompressibleNeoHooke` 1.9x faster
+    than before (one direction per evaluation with autodiff).
+- Optional AD backends, selected at configure time; the choice is part of the API and ABI and exported to consumers:
+  - `-DMARMOT_USE_AUTODIFF=ON` (`MARMOT_AD_AUTODIFF`): autodiff for the hyper-dual and Taylor numbers.
+  - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`/`_SACADO`): the `JacobianDual`
+    of the first-derivative drivers; `Sacado` uses Sacado (Trilinos) in vector mode, about as fast as `Marmot`, and
+    `None` the first-order dual numbers, one direction per evaluation.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
@@ -126,11 +129,15 @@ All notable changes to Marmot are documented in this file. The format follows
   along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
+- **Breaking:** autodiff is no longer required: by default, all automatic differentiation uses Marmot's own types
+  (see Added), and the conda package no longer depends on autodiff. `-DMARMOT_USE_AUTODIFF=ON
+  -DMARMOT_AD_VECTOR_BACKEND=None` restores the previous behaviour. Results agree with autodiff to about 1e-15
+  (relative).
 - **Breaking:** The first-derivative drivers `df_dT` and `dF_dT` take functions of `JacobianDual< nDirections >`
   numbers, and `MaterialFiniteStrainAD` and `MaterialHypoElasticAD` pass `ADScalar` numbers
-  (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. With the default backend
-  these are `dual`, as before, so code that spells out `dual` still builds; to also build with the vector-mode
-  backends (`Marmot`, Sacado), it must use the new names. `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
+  (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. These are vector-mode
+  numbers by default, so code differentiated by these drivers must use the new names instead of `dual`.
+  `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
   `MaterialHypoElasticAD`).
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
   requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch

@@ -114,7 +114,8 @@ Kernels and the Marmot code paths they mirror:
 | tinyad | 1.44 | 1.16 | n/a | n/a | n/a | n/a | n/a |
 | tinyad-vec | 2.85 | 0.39 | 0.41 | n/a | n/a | n/a | n/a |
 | adept-rev | wrong | 5.18 | n/a | n/a | n/a | n/a | n/a |
-| **marmot-vec**¹ | **0.36** | **0.46** | n/a | n/a | n/a | n/a | n/a |
+| marmot¹ | 0.95 | 1.05 | 1.01 | 1.05 | 0.58 | 1.07 | 0.53 |
+| **marmot-vec**¹ | **0.42** | **0.46** | n/a | n/a | n/a | n/a | n/a |
 
 ### clang 22.1
 
@@ -130,11 +131,13 @@ Kernels and the Marmot code paths they mirror:
 | tinyad | 0.88 | 1.06 | n/a | n/a | n/a | n/a | n/a |
 | **tinyad-vec** | **0.78** | **0.51** | **0.30** | n/a | n/a | n/a | n/a |
 | adept-rev | wrong | 6.71 | n/a | n/a | n/a | n/a | n/a |
-| **marmot-vec**¹ | **0.42** | **0.57** | n/a | n/a | n/a | n/a | n/a |
+| marmot¹ | 1.10 | 1.02 | 0.88 | 0.68 | 0.98 | 0.83 | 0.56 |
+| **marmot-vec**¹ | **0.43** | **0.57** | n/a | n/a | n/a | n/a | n/a |
 
-¹ Marmot's own `VectorMode::Dual` (`MarmotAutomaticDifferentiationVectorMode.h`), first derivatives only. Measured
-later than the other rows, with other jobs running on the machine (`results/kernels-*-marmot.txt`, which also repeat
-all other rows of that run): there, sacado-vec took 0.56 / 0.46 (GCC) and 1.04 / 0.64 (clang).
+¹ Marmot's own types: `ScalarMode::Dual` / `ScalarMode::Taylor` (`MarmotAutomaticDifferentiationScalarMode.h`) and
+`VectorMode::Dual` (`MarmotAutomaticDifferentiationVectorMode.h`, first derivatives only). Measured later than the
+other rows, with other jobs running on the machine (`results/kernels-*-marmot.txt`, which also repeat all other rows
+of that run): there, sacado-vec took 0.63 / 0.44 (GCC) and 1.07 / 0.64 (clang).
 
 `ad-op-benchmark` (in `results/`) shows the cost per elementary operation. All alternatives match autodiff on `*` and
 `sqrt`. Their nested (2nd/3rd order) `pow( x, double )` is 2–5× slower, and Marmot's energies use it heavily, e.g.
@@ -188,13 +191,20 @@ all other rows of that run): there, sacado-vec took 0.56 / 0.46 (GCC) and 1.04 /
 * Eigen's own `pow( AutoDiffScalar, double )` calls `pow( x.value(), y )` after `using std::pow`, which GCC 14's
   libstdc++ rejects with a hard error for nested types.
 
-## Marmot's own vector mode
+## Marmot's own types
 
-`Marmot::Math::Differentiation::Automatic::VectorMode::Dual< N >` (`-DMARMOT_AD_VECTOR_BACKEND=Marmot`) is a
-first-derivative vector-mode number written for these drivers. Like Sacado it uses expression templates, but its nodes
-compute their value and local partial derivatives once when they are formed, so elementary functions are never
-re-evaluated per direction, and an assignment is a single linear-combination loop over a local array that the compiler
-vectorizes. It is the fastest backend on both first-derivative kernels with GCC and clang.
+Marmot now uses its own AD types by default; autodiff (`-DMARMOT_USE_AUTODIFF=ON`) and Sacado
+(`-DMARMOT_AD_VECTOR_BACKEND=Sacado`) are optional.
+
+* `VectorMode::Dual< N >` (the default `JacobianDual`) is a first-derivative vector-mode number written for the
+  Jacobian drivers. Like Sacado it uses expression templates, but its nodes compute their value and local partial
+  derivatives once when they are formed, so elementary functions are never re-evaluated per direction, and an
+  assignment is a single linear-combination loop over a local array that the compiler vectorizes. It is the fastest
+  backend on both first-derivative kernels with GCC and clang.
+* `ScalarMode::Dual< T >` (nested: `dual`, `dual2nd`, `dual3rd`) and `ScalarMode::Taylor< N >` replace autodiff's
+  `HigherOrderDual` and `Real`. Hyper-dual functions use the chain rule with f'( a ) expressed by f( a ), so each
+  calls its `double` counterpart once; products work in place on every nesting level; Taylor numbers use O(N²)
+  recurrences in compile-time unrolled loops. They match autodiff with GCC and are faster with clang.
 
 ## Recommendation
 
