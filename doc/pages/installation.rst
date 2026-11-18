@@ -10,9 +10,10 @@ and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
-Both Eigen 3.4 and Eigen 5 are supported.
-Eigen 5 requires an autodiff version with Eigen 5 support;
-autodiff 1.1.2 and older do not compile against Eigen 5 (see `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_).
+Marmot requires Eigen 5.
+autodiff 1.1.2 does not compile against Eigen 5 without the patch of
+`autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, which is not merged upstream yet;
+Step 5 applies it. The autodiff 1.1.2 of the conda channel below carries it.
 
 Prebuilt conda package
 **********************
@@ -83,12 +84,14 @@ Get Eigen:
    :caption: Step 4
 
     cd $MARMOTROOT
-    git clone --branch 3.4.0  https://gitlab.com/libeigen/eigen.git
+    git clone --branch 5.0.1  https://gitlab.com/libeigen/eigen.git
     cd eigen
     mkdir build
     cd build
     cmake \
         -DBUILD_TESTING=OFF  \
+        -DEIGEN_BUILD_BLAS=OFF \
+        -DEIGEN_BUILD_LAPACK=OFF \
         -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
         ..
@@ -100,7 +103,9 @@ Get autodiff:
    :caption: Step 5
 
     cd $MARMOTROOT
-    git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
+    git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
+    curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
+    git -C autodiff apply ../autodiff-eigen5.diff
     cd autodiff
     mkdir build
     cd build

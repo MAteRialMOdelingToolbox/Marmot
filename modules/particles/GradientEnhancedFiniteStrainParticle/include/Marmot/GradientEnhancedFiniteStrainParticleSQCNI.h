@@ -699,8 +699,7 @@ namespace Marmot::Discretizations::Meshfree {
       Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim >::_mp.dY_dX();
       F = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F_.data() );
 
-      Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-      svd.compute( F, Eigen::ComputeFullU | Eigen::ComputeFullV );
+      const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F );
 
       Eigen::Matrix< double, nDim, nDim > R = svd.matrixU() * svd.matrixV().transpose();
 
@@ -712,8 +711,7 @@ namespace Marmot::Discretizations::Meshfree {
       Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim >::_mp.dY_dX();
       F = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F_.data() );
 
-      Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-      svd.compute( F, Eigen::ComputeFullU | Eigen::ComputeFullV );
+      const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F );
 
       Eigen::Matrix< double, nDim, nDim > R = svd.matrixU() * svd.matrixV().transpose();
 
