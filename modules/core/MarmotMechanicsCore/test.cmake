@@ -67,5 +67,5 @@ add_marmot_test("TestMarmotInterfaceMaterialHypoElastic" "${CURR_TEST_SOURCE_DIR
 # Tests for MarmotMicroplane
 add_marmot_test("TestMarmotMicroplane" "${CURR_TEST_SOURCE_DIR}/TestMarmotMicroplane.cpp")
 
-# Tests for the beam stress reduction of MaterialHypoElastic
-add_marmot_test("TestMarmotMaterialHypoElasticReducedStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElasticReducedStress.cpp" REQUIRES LinearElastic VonMises)
+# Tests for the reduced stress states (MarmotLowerDimensionalStress)
+add_marmot_test("TestMarmotReducedStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotReducedStress.cpp" REQUIRES LinearElastic VonMises RankineSofteningPlasticity)

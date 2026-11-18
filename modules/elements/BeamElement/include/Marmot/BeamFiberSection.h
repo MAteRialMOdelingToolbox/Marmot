@@ -26,6 +26,7 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotUtils.h"
@@ -59,8 +60,8 @@ namespace Marmot::Discretizations::Elements {
    *
    * Torsion (3D): Saint-Venant torsion without warping, about the centroid \f$(y_c, z_c)\f$ of the points: the points
    * carry the shear strains \f$\gamma_{12} = - \alpha_T ( z_f - z_c ) \chi\f$, \f$\gamma_{13} = \alpha_T ( y_f - y_c )
-   * \chi\f$ (material evaluated by Marmot::Materials::MaterialHypoElastic::computeBeamStress, \f$\sigma_{22} =
-   * \sigma_{33} = \sigma_{23} = 0\f$), scaled by \f$\alpha_T = \sqrt{J / \sum_f ( (y_f-y_c)^2 + (z_f-z_c)^2 ) A_f}\f$
+   * \chi\f$ (the material in the beam stress state \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$, see
+   * computeFiberStress3D()), scaled by \f$\alpha_T = \sqrt{J / \sum_f ( (y_f-y_c)^2 + (z_f-z_c)^2 ) A_f}\f$
    * such that the elastic torsional stiffness is \f$G J\f$ with the given torsion constant \f$J\f$ (exact for circles
    * and tubes, where \f$\alpha_T = 1\f$). The shear center offset and warping are neglected; plastic torsion is
    * approximate.
@@ -78,6 +79,12 @@ namespace Marmot::Discretizations::Elements {
   public:
     static constexpr int nGeneralized    = nDim == 2 ? 2 : 4;
     static constexpr int nFiberStateVars = 5; ///< fiber stress (3), energy and dissipation density
+    /// @brief The beam stress state of a 3D fiber, prescribed components: \f$\varepsilon_{11}, \gamma_{12},
+    /// \gamma_{13}\f$ (Voigt indices, in the order of the stored fiber stress).
+    static constexpr std::array< int, 3 > beamStressPrescribed = { 0, 3, 4 };
+    /// @brief The beam stress state of a 3D fiber, stress-free components: \f$\sigma_{22} = \sigma_{33} =
+    /// \sigma_{23} = 0\f$.
+    static constexpr std::array< int, 3 > beamStressFree = { 1, 2, 5 };
 
     using VectorGen = Eigen::Matrix< double, nGeneralized, 1 >;
     using MatrixGen = Eigen::Matrix< double, nGeneralized, nGeneralized >;
@@ -258,16 +265,7 @@ namespace Marmot::Discretizations::Elements {
           fs[4] = state.dissipation;
         }
         else {
-          Marmot::Materials::MaterialHypoElastic::stateBeam state;
-          state.stress               = Eigen::Map< const Eigen::Vector3d >( fs );
-          state.elasticEnergyDensity = fs[3];
-          state.dissipation          = fs[4];
-          state.stateVars            = fs + nFiberStateVars;
-          fiber.material->computeBeamStress( state, dStress_dStrain, dEps, { time, dT } );
-          Eigen::Map< Eigen::Vector3d > sigmaNew( fs );
-          sigmaNew = state.stress;
-          fs[3]    = state.elasticEnergyDensity;
-          fs[4]    = state.dissipation;
+          dStress_dStrain = computeFiberStress3D( *fiber.material, fs, dEps, { time, dT } );
         }
 
         const Eigen::Map< const Eigen::Vector3d > sigma( fs );
@@ -276,6 +274,71 @@ namespace Marmot::Discretizations::Elements {
         dSectionForces_dSectionStrains += S.transpose() * dStress_dStrain * S * fiber.area;
         energy += fs[3] * fiber.area;
         dissipation += fs[4] * fiber.area;
+      }
+    }
+
+    /**
+     * @brief The beam stress state of a 3D fiber: Marmot::ContinuumMechanics::ReducedStress::computeReducedStress()
+     * with the prescribed strains beamStressPrescribed and the stress-free components beamStressFree around the 3D
+     * stress update of the fiber's material, each evaluation from the start of the increment.
+     * @param[in]     material     the fiber's material
+     * @param[in,out] fs           the fiber state \f$[ \sigma_{11}, \sigma_{12}, \sigma_{13}, \psi, d, \text{material
+     * state} ]\f$ (see BeamFiberSection): in at the start, out at the end of the
+     * increment; the material state variables are reset to the start of the increment if the iteration fails
+     * @param[in]     dEps         the increment \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12}, \Delta\gamma_{13} ]\f$
+     * @param[in]     timeInfo     the (pseudo-)time and its increment
+     * @return the condensed tangent \f$\partial [ \sigma_{11}, \sigma_{12}, \sigma_{13} ] / \partial [
+     * \varepsilon_{11}, \gamma_{12}, \gamma_{13} ]\f$
+     * @throws Marmot::Utilities::StressUpdateFailed if the iteration fails (cutback)
+     */
+    static Eigen::Matrix3d computeFiberStress3D( const Marmot::Materials::MaterialHypoElastic&           material,
+                                                 double*                                                 fs,
+                                                 const Eigen::Vector3d&                                  dEps,
+                                                 const Marmot::Materials::MaterialHypoElastic::timeInfo& timeInfo )
+    {
+      using Marmot::Math::Matrix6d;
+      using Marmot::Math::Vector6d;
+      constexpr auto& p = beamStressPrescribed;
+      constexpr auto& f = beamStressFree;
+
+      // the start of the increment; the free stresses vanish
+      Eigen::Map< Eigen::VectorXd > stateVars( fs + nFiberStateVars, material.getNumberOfRequiredStateVars() );
+      const Eigen::VectorXd         stateVarsOld = stateVars;
+      Vector6d                      stressOld    = Vector6d::Zero();
+      for ( int i = 0; i < 3; i++ )
+        stressOld( p[i] ) = fs[i];
+
+      Marmot::Materials::MaterialHypoElastic::state3D state;
+      state.stateVars = stateVars.data();
+
+      auto computeStress3D = [&]( const Vector6d& dStrain, Vector6d& stress, Matrix6d& dStress_dStrain ) {
+        stateVars                  = stateVarsOld;
+        state.stress               = stressOld;
+        state.elasticEnergyDensity = fs[3];
+        state.dissipation          = fs[4];
+        material.computeStress( state, dStress_dStrain, dStrain, timeInfo );
+        stress = state.stress;
+      };
+
+      // initial guess: no lateral strains
+      Vector6d dStrain = Vector6d::Zero();
+      for ( int i = 0; i < 3; i++ )
+        dStrain( p[i] ) = dEps( i );
+
+      try {
+        const auto condensation = Marmot::ContinuumMechanics::ReducedStress::computeReducedStress( computeStress3D,
+                                                                                                   dStrain,
+                                                                                                   p,
+                                                                                                   f );
+        for ( int i = 0; i < 3; i++ )
+          fs[i] = state.stress( p[i] );
+        fs[3] = state.elasticEnergyDensity;
+        fs[4] = state.dissipation;
+        return condensation.dStressP_dStrainP;
+      }
+      catch ( const Marmot::Utilities::StressUpdateFailed& ) {
+        stateVars = stateVarsOld;
+        throw;
       }
     }
 
