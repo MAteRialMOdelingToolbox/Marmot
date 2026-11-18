@@ -527,6 +527,115 @@ void testTooFewMaterialProperties()
   throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+// Drives a fresh material point through a sequence of constant-increment strain segments and returns the
+// stress and tangent after every increment.
+std::vector< std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > > runStrainSegments(
+  const std::vector< double >&                                   materialProperties,
+  const std::vector< std::pair< Marmot::Math::Vector6d, int > >& segments )
+{
+  auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7",
+                                              materialProperties.data(),
+                                              static_cast< int >( materialProperties.size() ) );
+
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Matrix6d                          dStressDDStrain = Marmot::Math::Matrix6d::Zero();
+  std::vector< double >                           stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
+  state.stateVars      = stateVars.data();
+  double       timeOld = 0.0;
+  const double dT      = 0.1;
+
+  std::vector< std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > > history;
+  for ( const auto& [dStrain, nIncrements] : segments ) {
+    for ( int i = 0; i < nIncrements; i++ ) {
+      Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+      mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
+      timeOld += dT;
+      history.emplace_back( state.stress, dStressDDStrain );
+    }
+  }
+  return history;
+}
+
+// Dimensional consistency: the same strain path computed once in MPa and once in Pa (all stress-like
+// properties multiplied by 1e6 and stressUnit = 1e6) must give stresses and tangents that differ by exactly
+// the factor 1e6 in every increment. The path covers tensile softening, unloading through the unloading
+// transition, and confined compression beyond the volumetric stresses c18 (62.5 MPa) and c21 (250 MPa),
+// followed by shear. As a check that the path is sensitive to the dimensional fixed parameters, the Pa
+// computation without stressUnit has to differ.
+void testStressUnitInvariance()
+{
+  const double scale = 1e6; // MPa -> Pa
+
+  // {E, nu, k1, k2, k3, k4, k5, c3, fc, transitionWidth, transitionExponent, stressUnit}
+  const std::vector< double > propertiesMPa = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 4.0, 36.0, 4.0, 0.4, 1.0 };
+  std::vector< double >       propertiesPa  = propertiesMPa;
+  for ( const int i : { 0, 8, 9 } ) // E, fc, transitionWidth
+    propertiesPa[i] *= scale;
+  propertiesPa[11] = scale;
+
+  std::vector< double > propertiesPaWithoutStressUnit = propertiesPa;
+  propertiesPaWithoutStressUnit[11]                   = 1.0;
+
+  const std::vector< std::pair< Marmot::Math::Vector6d, int > > segments =
+    { { { 2e-5, 0., 0., 0., 0., 0. }, 15 },        // oedometric extension into tensile softening
+      { { -2e-5, 0., 0., 0., 0., 0. }, 15 },       // unloading through the unloading transition
+      { { -1e-3, -6e-4, -2e-4, 0., 0., 0. }, 20 }, // confined compression, -sig_v > c21
+      { { 0., 0., 0., 2e-4, -1e-4, 1e-4 }, 10 } }; // shear under confinement
+
+  const auto historyMPa = runStrainSegments( propertiesMPa, segments );
+  const auto historyPa  = runStrainSegments( propertiesPa, segments );
+
+  for ( size_t i = 0; i < historyMPa.size(); i++ ) {
+    throwExceptionOnFailure( checkIfEqual< double >( historyPa[i].first / scale, historyMPa[i].first, 1e-9 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " stress failed in increment " << i );
+    throwExceptionOnFailure( checkIfEqual< double >( historyPa[i].second / scale, historyMPa[i].second, 1e-6 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " tangent failed in increment " << i );
+  }
+
+  const auto historyPaWithoutStressUnit = runStrainSegments( propertiesPaWithoutStressUnit, segments );
+  const bool sensitive = ( historyPaWithoutStressUnit.back().first / scale - historyMPa.back().first ).norm() > 1e-3;
+  throwExceptionOnFailure( sensitive,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " strain path is insensitive to stressUnit" );
+}
+
+// A non-positive stressUnit must be rejected with std::invalid_argument.
+void testInvalidStressUnit()
+{
+  const std::array< double, 12 > materialProperties =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 4.0, 36.0, 4.0, 0.4, 0.0 };
+
+  bool rejected = false;
+  try {
+    createMarmotMaterialHypoElastic( "MICROPLANEM7",
+                                     materialProperties.data(),
+                                     static_cast< int >( materialProperties.size() ) );
+  }
+  catch ( const std::invalid_argument& e ) {
+    rejected = std::string( e.what() ).find( "stressUnit must be positive" ) != std::string::npos;
+  }
+
+  throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+// Property layout: stressUnit (index 11) precedes the density (index 12), which is only required for explicit
+// simulations.
+void testDensityFollowsStressUnit()
+{
+  const std::array< double, 13 > materialProperties =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9 };
+
+  auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7",
+                                              materialProperties.data(),
+                                              static_cast< int >( materialProperties.size() ) );
+
+  std::vector< double > stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
+  throwExceptionOnFailure( checkIfEqual( mat->getDensity( stateVars.data() ), 2.4e-9 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
 int main()
 {
   testOedometricCompression();
@@ -542,5 +651,8 @@ int main()
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
   testTooFewMaterialProperties();
+  testStressUnitInvariance();
+  testInvalidStressUnit();
+  testDensityFollowsStressUnit();
   return 0;
 }

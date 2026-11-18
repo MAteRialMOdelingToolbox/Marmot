@@ -11,11 +11,11 @@ namespace Marmot::Materials {
 
   double MicroplaneM7::getDensity( const double* stateVars ) const
   {
-    if ( this->nMaterialProperties < 12 ) {
+    if ( this->nMaterialProperties < 13 ) {
       throw std::runtime_error( std::string(
-        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 12." ) );
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 13." ) );
     }
-    return this->materialProperties[11];
+    return this->materialProperties[12];
   }
 
   // constructor

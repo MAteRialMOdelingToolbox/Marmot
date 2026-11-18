@@ -66,6 +66,9 @@ namespace Marmot::Materials {
     typedef Eigen::Matrix< double, 6, nqp >               nmp6_sized;
 
     /// @brief The free (calibratable) material parameters.
+    ///
+    /// @details All stress-like parameters (E, fc, transitionWidth) are given in the user's stress
+    /// unit, which #stressUnit relates to MPa.
     struct Parameters {
       double E;                  ///< @brief Young's modulus.
       double nu;                 ///< @brief Poisson's ratio.
@@ -75,17 +78,21 @@ namespace Marmot::Materials {
       double k4;                 ///< @brief Shape of the volumetric boundary (typical value 100).
       double k5;                 ///< @brief Volumetric-deviatoric coupling at low pressures (typical value 1e-4).
       double c3;                 ///< @brief Slope of the postpeak in uniaxial tension (default 4.0).
-      double fc;                 ///< @brief Compressive strength in MPa, for the deviatoric boundary (default 36.0).
+      double fc;                 ///< @brief Compressive strength, for the deviatoric boundary (default 36 MPa).
       double transitionWidth;    ///< @brief Stress offset from the virtual elastic loading path where the
-                                 ///< unloading transition starts (default 4.0).
+                                 ///< unloading transition starts (default 4 MPa).
       double transitionExponent; ///< @brief Exponent of the unloading transition function (default 0.4).
+      double stressUnit; ///< @brief Value of 1 MPa in the user's stress unit (default 1.0, i.e. stresses in MPa;
+                         ///< e.g. 1e6 for Pa, 1e-3 for GPa). Scales the dimensional fixed parameters and the
+                         ///< default values of fc and transitionWidth.
     };
 
     /// @brief Reads E, nu, k1 ... k5 from the material properties 0 to 6, and the optional c3, fc,
-    /// transitionWidth and transitionExponent from the properties @p firstOptional to
-    /// @p firstOptional + 3, using their default values for the ones not given. All properties in
+    /// transitionWidth, transitionExponent and stressUnit from the properties @p firstOptional to
+    /// @p firstOptional + 4, using their default values for the ones not given. All properties in
     /// front of @p firstOptional are required.
-    /// @throws std::invalid_argument if fewer than @p firstOptional material properties are given.
+    /// @throws std::invalid_argument if fewer than @p firstOptional material properties are given, or if
+    /// stressUnit is not positive.
     static Parameters readParameters( const double* materialProperties, int nMaterialProperties, int firstOptional );
 
     explicit MicroplaneM7Formulation( const Parameters& parameters );
@@ -93,10 +100,12 @@ namespace Marmot::Materials {
     /// @brief The free material parameters.
     const Parameters p;
 
-    // Fixed material parameters of the M7 model according to Caner and Bazant (2013)
+    // Fixed material parameters of the M7 model according to Caner and Bazant (2013). They are
+    // calibrated in MPa; the dimensional ones are converted to the user's stress unit with
+    // Parameters::stressUnit, all others are dimensionless.
     // clang-format off
-    const double fc0_reference = 15.08;   ///< @brief Reference compressive strength in MPa.
-    const double E0_reference  = 20.0e3;  ///< @brief Reference Young's modulus in MPa.
+    const double fc0_reference = 15.08 * p.stressUnit;   ///< @brief Reference compressive strength (15.08 MPa).
+    const double E0_reference  = 20.0e3 * p.stressUnit;  ///< @brief Reference Young's modulus (20000 MPa).
     const double c1            = 8.9e-2;  ///< @brief Controls the uniaxial tensile strength.
     const double c2            = 17.6e-2; ///< @brief Controls the roundness of the peak in uniaxial tension.
     const double c4            = 50.0;    ///< @brief Controls the slope of the postpeak tail in uniaxial compression.
@@ -113,10 +122,10 @@ namespace Marmot::Materials {
     const double c15           = 4000.0;  ///< @brief Controls the transition from the unloading slope at high confinement to that at low confinement.
     const double c16           = 60.0;    ///< @brief Controls the unloading slope at high hydrostatic compression.
     const double c17           = 1.4;     ///< @brief Controls the tensile strength.
-    const double c18           = 62.5;    ///< @brief [MPa] Controls the tensile cracking under compression; value per the correction in Caner and Bazant (2013).
+    const double c18           = 62.5 * p.stressUnit;  ///< @brief Controls the tensile cracking under compression (62.5 MPa); value per the correction in Caner and Bazant (2013).
     const double c19           = 1000.0;  ///< @brief Controls the tensile softening rate induced by compression.
     const double c20           = 1.8;     ///< @brief Controls the volumetric-deviatoric coupling at high pressures.
-    const double c21           = 250.0;   ///< @brief [MPa]
+    const double c21           = 250.0 * p.stressUnit; ///< @brief Cap of the compressive volumetric stress in the volumetric-deviatoric coupling of the volumetric boundary (250 MPa).
     // clang-format on
 
     /// @brief Kinematic (N-T split) projection tensors and integration weights for all #nqp

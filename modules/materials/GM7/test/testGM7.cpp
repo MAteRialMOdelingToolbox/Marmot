@@ -492,6 +492,35 @@ void testTooFewMaterialProperties()
   throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+// Property layout: stressUnit (index 13) precedes the density (index 14) and the nonlocal viscosity (index 15),
+// which are only required for explicit simulations.
+void testPropertyLayout()
+{
+  // {E, nu, k1, k2, k3, k4, k5, c, m, c3, fc, transitionWidth, transitionExponent, stressUnit, density, viscosity}
+  std::array< double, 16 > materialProperties =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9, 0.5 };
+
+  auto                  mat = createGM7( materialProperties.data(), static_cast< int >( materialProperties.size() ) );
+  std::vector< double > stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
+
+  throwExceptionOnFailure( checkIfEqual( mat->getDensity( stateVars.data() ), 2.4e-9 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " density failed" );
+  for ( const double viscosity : mat->getNonlocalViscosity( stateVars.data() ) )
+    throwExceptionOnFailure( checkIfEqual( viscosity, 0.5 ),
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " nonlocal viscosity failed" );
+
+  // index 13 is read as stressUnit, which has to be positive
+  materialProperties[13] = 0.0;
+  bool rejected          = false;
+  try {
+    createGM7( materialProperties.data(), static_cast< int >( materialProperties.size() ) );
+  }
+  catch ( const std::invalid_argument& e ) {
+    rejected = std::string( e.what() ).find( "stressUnit must be positive" ) != std::string::npos;
+  }
+  throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " stressUnit failed" );
+}
+
 int main()
 {
   testOedometricCompression();
@@ -508,5 +537,6 @@ int main()
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
   testTooFewMaterialProperties();
+  testPropertyLayout();
   return 0;
 }
