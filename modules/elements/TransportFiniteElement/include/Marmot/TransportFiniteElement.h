@@ -336,6 +336,9 @@ namespace Marmot::Discretizations::Elements {
      * - MoistureFilm, load = [\f$\beta\f$, \f$h_\infty\f$]: \f$q_n = \beta\,(h - h_\infty)\f$, the moisture
      *   exchange with an environment of relative humidity \f$h_\infty\f$ (surface emissivity / film coefficient
      *   \f$\beta\f$, in units of the moisture flux of the material per unit relative humidity).
+     * - LatentHeatFilm, load = [\f$c\f$, \f$h_\infty\f$]: heat flux on the field "temperature" carried by the
+     *   evaporating moisture, \f$q_n = c\,(h - h_\infty)\f$, \f$c = L_v\beta\f$ (elements with both fields: the
+     *   tangent couples the temperature rows to the relative humidity).
      *
      * Plane elements multiply by the thickness, axisymmetric ones integrate over the ring. Nothing is added for a
      * zero time increment of an element with storage (see the class description).
@@ -400,6 +403,14 @@ namespace Marmot::Discretizations::Elements {
      * @throws std::invalid_argument for a load type that is no transport load, or if the element has no such field.
      */
     int fieldIndexOfLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType ) const;
+
+    /**
+     * @brief The index of a field.
+     * @param fieldName The name of the field.
+     * @return The index into fieldNames.
+     * @throws std::invalid_argument if the element has no such field.
+     */
+    int fieldIndex( const std::string& fieldName ) const;
   };
 
   template < int nDim, int nNodes, int nFields >
@@ -619,7 +630,8 @@ namespace Marmot::Discretizations::Elements {
     switch ( loadType ) {
     case Marmot::Discretizations::Elements::Element::HeatFlux:
     case Marmot::Discretizations::Elements::Element::HeatFilm:
-    case Marmot::Discretizations::Elements::Element::HeatRadiation: fieldName = "temperature"; break;
+    case Marmot::Discretizations::Elements::Element::HeatRadiation:
+    case Marmot::Discretizations::Elements::Element::LatentHeatFilm: fieldName = "temperature"; break;
     case Marmot::Discretizations::Elements::Element::MoistureFlux:
     case Marmot::Discretizations::Elements::Element::MoistureFilm: fieldName = "relative humidity"; break;
     default:
@@ -627,7 +639,12 @@ namespace Marmot::Discretizations::Elements {
                                    << __PRETTY_FUNCTION__ << ": element " << elLabel
                                    << ": load type not supported by transport elements." );
     }
+    return fieldIndex( fieldName );
+  }
 
+  template < int nDim, int nNodes, int nFields >
+  int TransportFiniteElement< nDim, nNodes, nFields >::fieldIndex( const std::string& fieldName ) const
+  {
     for ( int a = 0; a < nFields; a++ )
       if ( fieldNames[a] == fieldName )
         return a;
@@ -669,6 +686,7 @@ namespace Marmot::Discretizations::Elements {
     const Eigen::VectorXi& nodes      = boundaryEl.getBoundaryNodeIndicesInParent();
     const int              nFaceNodes = static_cast< int >( nodes.size() );
 
+    int             dependsOn = field; // the field the load depends on, for the tangent
     Eigen::VectorXd Pb;
     Eigen::MatrixXd dPb_dQ = Eigen::MatrixXd::Zero( nFaceNodes, nFaceNodes );
 
@@ -707,6 +725,20 @@ namespace Marmot::Discretizations::Elements {
       boundaryEl.computeFieldDependentScalarLoadVector( Tb, inflow, Pb, dPb_dQ );
       break;
     }
+    case Marmot::Discretizations::Elements::Element::LatentHeatFilm: {
+      // q_n = c (h - h_inf) on the temperature rows, depending on the relative humidity
+      const double c = load[0], hInf = load[1];
+      dependsOn         = fieldIndex( "relative humidity" );
+      const auto inflow = [c, hInf]( double h, double& f, double& df_dh ) {
+        f     = -c * ( h - hInf );
+        df_dh = -c;
+      };
+      Eigen::VectorXd hb( nFaceNodes );
+      for ( int k = 0; k < nFaceNodes; k++ )
+        hb( k ) = QTotal( nodes( k ) * nFields + dependsOn );
+      boundaryEl.computeFieldDependentScalarLoadVector( hb, inflow, Pb, dPb_dQ );
+      break;
+    }
     default: throw std::invalid_argument( "Invalid load type for a transport element" );
     }
 
@@ -714,7 +746,7 @@ namespace Marmot::Discretizations::Elements {
       const int row = nodes( k ) * nFields + field;
       P( row ) += factor * Pb( k );
       for ( int l = 0; l < nFaceNodes; l++ )
-        K( row, nodes( l ) * nFields + field ) -= factor * dPb_dQ( k, l );
+        K( row, nodes( l ) * nFields + dependsOn ) -= factor * dPb_dQ( k, l );
     }
   }
 

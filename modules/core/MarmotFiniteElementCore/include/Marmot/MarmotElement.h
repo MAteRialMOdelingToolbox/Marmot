@@ -71,6 +71,9 @@ namespace Marmot::Discretizations::Elements {
       MoistureFlux,    ///< Prescribed moisture flux into the body per unit area: load = [q]
       MoistureFilm,    ///< Moisture exchange with the environment (film), q = beta (h - h_inf), out of the body:
                        ///< load = [beta, h_inf]
+      LatentHeatFilm,  ///< Heat flux out of the body carried by the evaporating moisture (thermo-hygro elements),
+                       ///< q = c (h - h_inf) with c = L_v beta (latent heat times the moisture film coefficient):
+                       ///< load = [c, h_inf]
     };
 
     /** @brief Virtual destructor for safe polymorphic cleanup. */

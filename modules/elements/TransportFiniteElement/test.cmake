@@ -8,3 +8,7 @@ add_marmot_test("TestTransportFiniteElement" "${CURR_TEST_SOURCE_DIR}/TestTransp
 # Tests for the moisture diffusion elements DC*H
 add_marmot_test("TestMoistureTransportElements" "${CURR_TEST_SOURCE_DIR}/TestMoistureTransportElements.cpp"
                 REQUIRES MoistureDiffusion)
+
+# Tests for the coupled heat and moisture transport elements DC*TH
+add_marmot_test("TestThermoHygroElements" "${CURR_TEST_SOURCE_DIR}/TestThermoHygroElements.cpp"
+                REQUIRES ThermoHygro)

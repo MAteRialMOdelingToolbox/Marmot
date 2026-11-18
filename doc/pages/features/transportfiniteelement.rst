@@ -1,13 +1,14 @@
 .. _transportfiniteelement:
 
-Transport Finite Element (heat conduction, moisture diffusion)
-==============================================================
+Transport Finite Element (heat conduction, moisture diffusion, coupled heat and moisture transport)
+=================================================================================================
 
 Theory
 ------
 
 ``TransportFiniteElement< nDim, nNodes, nFields >`` integrates the balance of :math:`n_f` scalar fields
-:math:`\phi_a` (the temperature for heat conduction, the pore relative humidity for moisture diffusion),
+:math:`\phi_a` (the temperature for heat conduction, the pore relative humidity for moisture diffusion, both for
+coupled heat and moisture transport),
 
 .. math::
 
@@ -50,8 +51,10 @@ Elements
 --------
 
 Named after the diffusive heat transfer elements of Abaqus, with a suffix for the nodal fields (``T``: temperature,
-``H``: relative humidity). The same eight shapes are registered for both fields: ``DC2D3H``, ``DC2D4H``, ``DC2D8H``,
-``DCAX4H``, ``DCAX8H``, ``DC3D4H``, ``DC3D8H``, ``DC3D20H`` carry the field ``relative humidity``.
+``H``: relative humidity, ``TH``: both). The same eight shapes are registered for each suffix: ``DC2D3H``, ``DC2D4H``,
+``DC2D8H``, ``DCAX4H``, ``DCAX8H``, ``DC3D4H``, ``DC3D8H``, ``DC3D20H`` carry the field ``relative humidity``;
+``DC2D3TH`` ... ``DC3D20TH`` (``nFields = 2``) carry ``temperature`` and ``relative humidity``, in this order at each
+node, and take a two-field material such as :ref:`THERMOHYGRO <thermohygro>`.
 
 =========== ======== ====== ============== ================
 Name        Section  Shape  Quadrature     Fields
@@ -84,6 +87,12 @@ On ``relative humidity``:
 
 - ``MoistureFlux`` [:math:`\bar q`]: moisture flux into the body per unit area, :math:`q_n = -\bar q`;
 - ``MoistureFilm`` [:math:`\beta, h_\infty`]: exchange with the environment, :math:`q_n = \beta\,(h - h_\infty)`.
+
+On ``temperature``, depending on ``relative humidity`` (``DC*TH`` only):
+
+- ``LatentHeatFilm`` [:math:`c, h_\infty`]: the latent heat taken away by the evaporating water,
+  :math:`q_n = c\,(h - h_\infty)`, :math:`c = L_v\beta` with the coefficient :math:`\beta` of the moisture film. Its
+  tangent couples the temperature rows to the relative humidity.
 
 Films and radiation depend on the field and add their tangent. The body force is a volumetric source, one value per
 field.
