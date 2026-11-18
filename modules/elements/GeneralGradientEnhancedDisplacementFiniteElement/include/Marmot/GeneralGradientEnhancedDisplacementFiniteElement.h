@@ -1048,17 +1048,17 @@ namespace Marmot::Discretizations::Elements {
 
           using MatrixNonlocal6 = Eigen::Matrix< double, 6, nNonlocalVariables >;
           Eigen::Matrix< double, 3, nNonlocalVariables > dStressF_dK;
-          for ( int i = 0; i < 3; i++ )
-            dStressF_dK.row( i ) = tan.dStressddK.row( planeStressFree[i] );
+          for ( int j = 0; j < 3; j++ )
+            dStressF_dK.row( j ) = tan.dStressddK.row( planeStressFree[j] );
           const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = -condensation.CffCOD.solve( dStressF_dK );
 
           // the 3D strain wrt the in-plane strain and wrt the nonlocal variables
           Eigen::Matrix< double, 6, 3 > dStrain_dStrainP = Eigen::Matrix< double, 6, 3 >::Zero();
           MatrixNonlocal6               dStrain_dK       = MatrixNonlocal6::Zero();
-          for ( int i = 0; i < 3; i++ ) {
-            dStrain_dStrainP( planeStressPrescribed[i], i ) = 1.;
-            dStrain_dStrainP.row( planeStressFree[i] )      = condensation.dStrainF_dStrainP.row( i );
-            dStrain_dK.row( planeStressFree[i] )            = dStrainF_dK.row( i );
+          for ( int j = 0; j < 3; j++ ) {
+            dStrain_dStrainP( planeStressPrescribed[j], j ) = 1.;
+            dStrain_dStrainP.row( planeStressFree[j] )      = condensation.dStrainF_dStrainP.row( j );
+            dStrain_dK.row( planeStressFree[j] )            = dStrainF_dK.row( j );
           }
 
           tan.dStressddK += tan.dStressddStrain * dStrain_dK;
@@ -1066,8 +1066,8 @@ namespace Marmot::Discretizations::Elements {
           const Eigen::Matrix< double, nNonlocalVariables, 3 > dKLocal_dStrainP = tan.dKLocalddStrain *
                                                                                   dStrain_dStrainP;
           tan.dKLocalddStrain.setZero();
-          for ( int i = 0; i < 3; i++ )
-            tan.dKLocalddStrain.col( planeStressPrescribed[i] ) = dKLocal_dStrainP.col( i );
+          for ( int j = 0; j < 3; j++ )
+            tan.dKLocalddStrain.col( planeStressPrescribed[j] ) = dKLocal_dStrainP.col( j );
 
           // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
           if ( energyGradients ) {
