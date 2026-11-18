@@ -1,19 +1,19 @@
 .. _transportfiniteelement:
 
-Transport Finite Element (heat conduction)
-==========================================
+Transport Finite Element (heat conduction, moisture diffusion)
+==============================================================
 
 Theory
 ------
 
 ``TransportFiniteElement< nDim, nNodes, nFields >`` integrates the balance of :math:`n_f` scalar fields
-:math:`\phi_a` (the temperature for heat conduction),
+:math:`\phi_a` (the temperature for heat conduction, the pore relative humidity for moisture diffusion),
 
 .. math::
 
    \dot m_a + \nabla\cdot\mathbf{q}_a = r_a + s_a ,
 
-with the content :math:`m_a` (enthalpy per unit volume), the flux :math:`\mathbf{q}_a` and the material source
+with the content :math:`m_a` (enthalpy per unit volume, or water content), the flux :math:`\mathbf{q}_a` and the material source
 :math:`r_a` of a transport material (:cpp:class:`Marmot::Materials::TransportMaterial`), and the external body source
 :math:`s_a`. On the boundary, the field is prescribed or the outward normal flux :math:`q_{n,a}` is given by a surface
 load. The weak form is
@@ -41,14 +41,17 @@ a field dependent capacity. With the interpolation operator :math:`\mathbf{N}_\p
 with :math:`J_0 w` including the thickness (plane), :math:`2\pi r` (axisymmetric) or 1 (solid). A zero time increment
 lets no time pass: the element balances the content increment only (:math:`\mathbf{P}_e = \sum
 \mathbf{N}_\phi^\mathsf{T}\Delta\mathbf{m}\,J_0 w`) and the loads vanish, unless the material has no storage
-(zero capacity), which gives the steady state equations for any time increment.
+(zero capacity), which gives the steady state equations for any time increment. The distinction is made field by field
+(``TransportMaterial::hasStorage( field )``).
 
 The dofs are ordered node by node, the fields of a node in the order of the element's field names.
 
 Elements
 --------
 
-Named after the diffusive heat transfer elements of Abaqus, with a suffix for the nodal fields (``T``: temperature):
+Named after the diffusive heat transfer elements of Abaqus, with a suffix for the nodal fields (``T``: temperature,
+``H``: relative humidity). The same eight shapes are registered for both fields: ``DC2D3H``, ``DC2D4H``, ``DC2D8H``,
+``DCAX4H``, ``DCAX8H``, ``DC3D4H``, ``DC3D8H``, ``DC3D20H`` carry the field ``relative humidity``.
 
 =========== ======== ====== ============== ================
 Name        Section  Shape  Quadrature     Fields
@@ -69,16 +72,21 @@ Element properties: the thickness of plane elements. Axisymmetric elements use :
 Loads
 -----
 
-Distributed loads act on the field ``temperature`` (load values in brackets); plane elements multiply by the
-thickness, axisymmetric ones integrate over the ring:
+Distributed loads act on the field of their physics (load values in brackets); plane elements multiply by the
+thickness, axisymmetric ones integrate over the ring. On ``temperature``:
 
 - ``HeatFlux`` [:math:`\bar q`]: heat flux into the body per unit area, :math:`q_n = -\bar q`;
 - ``HeatFilm`` [:math:`h, T_\infty`]: convection, :math:`q_n = h\,(T - T_\infty)`;
 - ``HeatRadiation`` [:math:`c, T_\infty, T_0`]: radiation, :math:`q_n = c\,((T-T_0)^4 - (T_\infty-T_0)^4)`, with
   :math:`c = \varepsilon\sigma` and :math:`T_0` the absolute zero of the temperature scale (0 for K, -273.15 for °C).
 
-Film and radiation depend on the temperature and add their tangent. The body force is a volumetric heat source, one
-value per field.
+On ``relative humidity``:
+
+- ``MoistureFlux`` [:math:`\bar q`]: moisture flux into the body per unit area, :math:`q_n = -\bar q`;
+- ``MoistureFilm`` [:math:`\beta, h_\infty`]: exchange with the environment, :math:`q_n = \beta\,(h - h_\infty)`.
+
+Films and radiation depend on the field and add their tangent. The body force is a volumetric source, one value per
+field.
 
 States per quadrature point: ``field``, ``field gradient``, ``flux`` (three components per field), and the states of
 the material.

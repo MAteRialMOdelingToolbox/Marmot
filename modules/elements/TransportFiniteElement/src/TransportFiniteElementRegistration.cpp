@@ -27,70 +27,69 @@
 #include "Marmot/TransportFiniteElement.h"
 
 /* Naming: DC<section><nodes><fields>, after the diffusive heat transfer elements DC2D4, DC3D8, DCAX4 of Abaqus, with a
- * suffix for the nodal fields: T = temperature. The integration is full: the capacity N^T N is integrated exactly on
- * an undistorted element (degree 2 p).
+ * suffix for the nodal fields: T = temperature, H = (pore) relative humidity. The integration is full: the capacity
+ * N^T N is integrated exactly on an undistorted element (degree 2 p).
  */
 namespace {
   using namespace Marmot::Discretizations::Elements;
 
+  /// the nodal field of the single field transport elements, by suffix
+  struct Temperature {
+    static constexpr const char* name = "temperature";
+  };
+  struct RelativeHumidity {
+    static constexpr const char* name = "relative humidity";
+  };
+
   template < class T,
+             class Field,
              Marmot::Discretizations::Elements::Quadrature::QuadratureRule quadratureRule,
              typename T::SectionType                                       sectionType >
-  Marmot::Registry::ElementFactory::elementFactoryFunction makeHeatFactoryFunction()
+  Marmot::Registry::ElementFactory::elementFactoryFunction makeTransportFactoryFunction()
   {
     return []( int elementID ) -> Marmot::Discretizations::Elements::Element* {
-      return new T( elementID, quadratureRule, sectionType, { "temperature" } );
+      return new T( elementID, quadratureRule, sectionType, { Field::name } );
     };
   }
 
-  using Q = Marmot::Discretizations::Elements::Quadrature::QuadratureRule;
+  /// register the eight single field element types DC2D3, DC2D4, DC2D8, DCAX4, DCAX8, DC3D4, DC3D8, DC3D20 + suffix
+  template < class Field >
+  bool registerSingleFieldElements( const std::string& suffix )
+  {
+    using Marmot::Registry::ElementFactory;
+    using P3  = TransportFiniteElement< 2, 3, 1 >;
+    using P4  = TransportFiniteElement< 2, 4, 1 >;
+    using P8  = TransportFiniteElement< 2, 8, 1 >;
+    using S4  = TransportFiniteElement< 3, 4, 1 >;
+    using S8  = TransportFiniteElement< 3, 8, 1 >;
+    using S20 = TransportFiniteElement< 3, 20, 1 >;
 
-  const static bool DC2D3T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC2D3T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 2, 3, 1 >,
-                                              Quadrature::gaussExactToDegree( 2 ),
-                                              TransportFiniteElement< 2, 3, 1 >::Plane >() );
+    constexpr auto q2 = Quadrature::gaussExactToDegree( 2 );
+    constexpr auto q4 = Quadrature::gaussExactToDegree( 4 );
 
-  const static bool DC2D4T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC2D4T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 2, 4, 1 >,
-                                              Quadrature::gaussExactToDegree( 2 ),
-                                              TransportFiniteElement< 2, 4, 1 >::Plane >() );
+    bool ok = true;
+    ok &= ElementFactory::registerElement( "DC2D3" + suffix,
+                                           makeTransportFactoryFunction< P3, Field, q2, P3::Plane >() );
+    ok &= ElementFactory::registerElement( "DC2D4" + suffix,
+                                           makeTransportFactoryFunction< P4, Field, q2, P4::Plane >() );
+    ok &= ElementFactory::registerElement( "DC2D8" + suffix,
+                                           makeTransportFactoryFunction< P8, Field, q4, P8::Plane >() );
+    ok &= ElementFactory::registerElement( "DCAX4" + suffix,
+                                           makeTransportFactoryFunction< P4, Field, q2, P4::Axisymmetric >() );
+    ok &= ElementFactory::registerElement( "DCAX8" + suffix,
+                                           makeTransportFactoryFunction< P8, Field, q4, P8::Axisymmetric >() );
+    ok &= ElementFactory::registerElement( "DC3D4" + suffix,
+                                           makeTransportFactoryFunction< S4, Field, q2, S4::Solid >() );
+    ok &= ElementFactory::registerElement( "DC3D8" + suffix,
+                                           makeTransportFactoryFunction< S8, Field, q2, S8::Solid >() );
+    ok &= ElementFactory::registerElement( "DC3D20" + suffix,
+                                           makeTransportFactoryFunction< S20, Field, q4, S20::Solid >() );
+    return ok;
+  }
 
-  const static bool DC2D8T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC2D8T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 2, 8, 1 >,
-                                              Quadrature::gaussExactToDegree( 4 ),
-                                              TransportFiniteElement< 2, 8, 1 >::Plane >() );
-
-  const static bool DCAX4T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DCAX4T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 2, 4, 1 >,
-                                              Quadrature::gaussExactToDegree( 2 ),
-                                              TransportFiniteElement< 2, 4, 1 >::Axisymmetric >() );
-
-  const static bool DCAX8T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DCAX8T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 2, 8, 1 >,
-                                              Quadrature::gaussExactToDegree( 4 ),
-                                              TransportFiniteElement< 2, 8, 1 >::Axisymmetric >() );
-
-  const static bool DC3D4T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC3D4T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 3, 4, 1 >,
-                                              Quadrature::gaussExactToDegree( 2 ),
-                                              TransportFiniteElement< 3, 4, 1 >::Solid >() );
-
-  const static bool DC3D8T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC3D8T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 3, 8, 1 >,
-                                              Quadrature::gaussExactToDegree( 2 ),
-                                              TransportFiniteElement< 3, 8, 1 >::Solid >() );
-
-  const static bool DC3D20T_isRegistered = Marmot::Registry::ElementFactory::
-    registerElement( "DC3D20T",
-                     makeHeatFactoryFunction< TransportFiniteElement< 3, 20, 1 >,
-                                              Quadrature::gaussExactToDegree( 4 ),
-                                              TransportFiniteElement< 3, 20, 1 >::Solid >() );
+  // heat conduction: DC2D3T ... DC3D20T
+  const static bool heatElementsAreRegistered = registerSingleFieldElements< Temperature >( "T" );
+  // moisture diffusion: DC2D3H ... DC3D20H
+  const static bool moistureElementsAreRegistered = registerSingleFieldElements< RelativeHumidity >( "H" );
 
 } // namespace
