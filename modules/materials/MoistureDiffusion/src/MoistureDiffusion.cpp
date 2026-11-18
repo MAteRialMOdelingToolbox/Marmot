@@ -138,8 +138,10 @@ namespace Marmot::Materials {
       return 0.0;
     if ( !( dT > 0.0 ) )
       return -dwInf / tauS * std::exp( -time / tauS );
-    // exact average over [time - dT, time]: dwInf (exp(-(t - dT) / tau) - exp(-t / tau)) / dT
-    return -dwInf * std::exp( -time / tauS ) * std::expm1( dT / tauS ) / dT;
+    // exact average over [time - dT, time]: dwInf (exp(-(t - dT) / tau) - exp(-t / tau)) / dT; written with the
+    // exponential at the beginning of the increment and expm1 of the negative argument, which cannot overflow for
+    // dT >> tau (exp(-t / tau) expm1(dT / tau) is 0 * inf = NaN from dT / tau > 709 on)
+    return dwInf * std::exp( -( time - dT ) / tauS ) * std::expm1( -dT / tauS ) / dT;
   }
 
   void MoistureDiffusion::computeTransport( Response&            response,
