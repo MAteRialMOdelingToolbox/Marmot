@@ -26,7 +26,7 @@ jobs:
         shell: bash -l {0}
         run: |
           mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge --file doc/requirements.txt
-          mamba list "^(eigen|autodiff|fastor)$" --show-channel-urls
+          mamba list "^(eigen|autodiff|fastor)$"
 
       - name: Building Marmot documentation
         shell: bash -l {0}

@@ -202,6 +202,8 @@ Building with Python Bindings
 *****************************
 
 Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_.
+It does not yet build with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment
+(`#154 <https://github.com/MAteRialMOdelingToolbox/Marmot/issues/154>`_).
 To enable the Python module, configure CMake with `-DMARMOT_BUILD_PYTHON_BINDINGS=ON`:
 
 .. code-block:: console
