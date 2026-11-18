@@ -1,0 +1,52 @@
+Kernels:
+  tangent    finite-strain tangent dTau/dF (9 dirs)
+  hypoJ2     hypoelastic J2 tangent, Eigen (6 dirs)
+  hessian    energy Hessian d2psi/dC2
+  third      energy 3rd derivative d3psi/dC3
+  phasefield phase-field degradation (dual2nd scalar)
+  b4         B4 drying Kelvin moduli (Taylor 5)
+  powerlaw   power-law Kelvin moduli (Taylor 7)
+
+Median time per kernel call [ns]
+backend         tangent     hypoJ2    hessian      third phasefield         b4   powerlaw
+autodiff           1800        412       3849      88159         20       1312       1173
+boost              2183        468       7712     666136         92       3662       2431
+sacado             1876        424       8114     313622         71       4046       2855
+sacado-vec         1011        187       2852      68886        n/a        n/a        n/a
+ceres              1891        398       7596     788021        120        n/a        n/a
+ceres-vec          4907        695       8982     274033        n/a        n/a        n/a
+stan               1755        458       5946     170369         15        n/a        n/a
+tinyad             2204        516        n/a        n/a        n/a        n/a        n/a
+tinyad-vec         3818        166       1675        n/a        n/a        n/a        n/a
+adept-rev           n/a       2244        n/a        n/a        n/a        n/a        n/a
+marmot-vec          642        191        n/a        n/a        n/a        n/a        n/a
+
+Time relative to autodiff (current Marmot; < 1 is faster)
+backend         tangent     hypoJ2    hessian      third phasefield         b4   powerlaw
+autodiff           1.00       1.00       1.00       1.00       1.00       1.00       1.00
+boost              1.21       1.14       2.00       7.56       4.67       2.79       2.07
+sacado             1.04       1.03       2.11       3.56       3.59       3.08       2.43
+sacado-vec         0.56       0.46       0.74       0.78        n/a        n/a        n/a
+ceres              1.05       0.97       1.97       8.94       6.13        n/a        n/a
+ceres-vec          2.73       1.69       2.33       3.11        n/a        n/a        n/a
+stan               0.98       1.11       1.54       1.93       0.78        n/a        n/a
+tinyad             1.22       1.25        n/a        n/a        n/a        n/a        n/a
+tinyad-vec         2.12       0.40       0.44        n/a        n/a        n/a        n/a
+adept-rev           n/a       5.45        n/a        n/a        n/a        n/a        n/a
+marmot-vec         0.36       0.46        n/a        n/a        n/a        n/a        n/a
+
+Max relative deviation from autodiff
+backend         tangent     hypoJ2    hessian      third phasefield         b4   powerlaw
+autodiff        0.0e+00    0.0e+00    0.0e+00    0.0e+00    0.0e+00    0.0e+00    0.0e+00
+boost           2.4e-16    1.3e-16    8.8e-16    1.5e-15    3.4e-16    7.4e-14    1.4e-16
+sacado          4.1e-16    1.3e-16    7.4e-16    1.5e-15    3.4e-16    2.7e-14    1.4e-16
+sacado-vec      4.1e-16    1.3e-16    7.4e-16    1.5e-15        n/a        n/a        n/a
+ceres           3.2e-16    1.3e-16    8.8e-16    1.9e-15    3.4e-16        n/a        n/a
+ceres-vec       3.2e-16    1.3e-16    8.8e-16    1.9e-15        n/a        n/a        n/a
+stan            2.4e-16    1.3e-16    7.4e-16    1.4e-15    3.4e-16        n/a        n/a
+tinyad          2.4e-16    1.3e-16        n/a        n/a        n/a        n/a        n/a
+tinyad-vec      2.4e-16    1.3e-16    8.8e-16        n/a        n/a        n/a        n/a
+adept-rev           n/a    1.3e-16        n/a        n/a        n/a        n/a        n/a
+marmot-vec      2.4e-16    1.3e-16        n/a        n/a        n/a        n/a        n/a
+
+Results agree (all max relerr < 1e-10).

@@ -23,5 +23,6 @@ namespace ADBench {
   std::vector< Suite > makeStanSuites();
   std::vector< Suite > makeTinyADSuites();
   std::vector< Suite > makeAdeptSuites();
+  std::vector< Suite > makeMarmotSuites();
 
 } // namespace ADBench

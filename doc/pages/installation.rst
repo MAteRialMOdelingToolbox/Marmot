@@ -157,12 +157,14 @@ The following CMake options adjust the build:
   vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
-* ``-DMARMOT_AD_VECTOR_BACKEND=Sacado`` uses `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos) instead of
-  autodiff for the automatic differentiation drivers that compute Jacobians (first derivatives), e.g., the tangents
-  of the AD material base classes ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. Sacado computes all
-  derivatives in one evaluation of the differentiated function instead of one evaluation per direction, which makes
-  these tangents about 1.4 to 2.8 times faster. autodiff is required either way and still used for second and third
-  derivatives. The default is ``autodiff``. See below.
+* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot`` uses Marmot's own vector-mode automatic differentiation
+  (``MarmotAutomaticDifferentiationVectorMode.h``, expression templates, no further dependency) instead of autodiff
+  for the automatic differentiation drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD
+  material base classes ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. It computes all derivatives in one
+  evaluation of the differentiated function instead of one evaluation per direction, which makes these tangents about
+  1.9 to 3.1 times faster. ``-DMARMOT_AD_VECTOR_BACKEND=Sacado`` does the same with
+  `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos), see below; it is about as fast. autodiff is required
+  either way and still used for second and third derivatives. The default is ``autodiff``.
 
 Sacado backend
 ______________
@@ -186,10 +188,11 @@ Sacado_config.h>``. A Trilinos with Sacado as its only package is enough:
     cmake --install Trilinos-build
 
 The backend changes the number type of the AD material interfaces (``computeStressAD``), i.e., Marmot's API and ABI.
-``Marmot::Marmot`` therefore passes the definition ``MARMOT_AD_VECTOR_BACKEND_SACADO`` on to its consumers, and code
-compiled against Marmot's headers without CMake must define it as well if Marmot was built with Sacado.
+``Marmot::Marmot`` therefore passes the definition ``MARMOT_AD_VECTOR_BACKEND_MARMOT`` or
+``MARMOT_AD_VECTOR_BACKEND_SACADO`` on to its consumers, and code compiled against Marmot's headers without CMake must
+define it as well if Marmot was built with that backend.
 Code differentiated by these drivers must use the number type ``JacobianDual< nDirections >`` (or the ``ADScalar`` of
-the material base classes) instead of ``dual`` to build with both backends.
+the material base classes) instead of ``dual`` to build with all backends.
 
 Modules
 *******

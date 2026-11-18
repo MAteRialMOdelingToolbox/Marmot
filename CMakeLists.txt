@@ -141,14 +141,17 @@ endif()
 # Marmot target below.
 add_compile_definitions(FASTOR_DONT_ALIGN)
 
-# Backend of the automatic differentiation drivers that compute full Jacobians, Hessians and third derivatives
-# (MultiDual in MarmotAutomaticDifferentiationTypes.h). autodiff, which Marmot always uses, evaluates one direction
-# per pass; the optional Sacado (Trilinos) computes all directions in a single pass, which is faster. The choice
-# changes the number type in the interfaces of the AD material base classes, i.e. the API and ABI, so every
-# translation unit that includes Marmot's headers must agree on it, like FASTOR_DONT_ALIGN.
-set(MARMOT_AD_VECTOR_BACKEND "autodiff" CACHE STRING "Backend of Marmot's vector-mode AD drivers: autodiff or Sacado")
-set_property(CACHE MARMOT_AD_VECTOR_BACKEND PROPERTY STRINGS autodiff Sacado)
-if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+# Backend of the automatic differentiation drivers that compute Jacobians (JacobianDual in
+# MarmotAutomaticDifferentiationTypes.h). autodiff, which Marmot always uses, evaluates one direction per pass;
+# Marmot's own vector mode (no dependency) and the optional Sacado (Trilinos) compute all directions in a single
+# pass, which is faster. The choice changes the number type in the interfaces of the AD material base classes, i.e.
+# the API and ABI, so every translation unit that includes Marmot's headers must agree on it, like FASTOR_DONT_ALIGN.
+set(MARMOT_AD_VECTOR_BACKEND "autodiff" CACHE STRING
+    "Backend of Marmot's vector-mode AD drivers: autodiff, Marmot or Sacado")
+set_property(CACHE MARMOT_AD_VECTOR_BACKEND PROPERTY STRINGS autodiff Marmot Sacado)
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Marmot")
+    add_compile_definitions(MARMOT_AD_VECTOR_BACKEND_MARMOT)
+elseif(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
     add_compile_definitions(MARMOT_AD_VECTOR_BACKEND_SACADO)
 endif()
 
@@ -332,7 +335,9 @@ target_compile_options(${PROJECT_NAME} INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/big
 # compile with it as well.
 target_compile_definitions(${PROJECT_NAME} INTERFACE FASTOR_DONT_ALIGN)
 # Likewise the AD vector-mode backend (see MARMOT_AD_VECTOR_BACKEND above).
-if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Marmot")
+    target_compile_definitions(${PROJECT_NAME} INTERFACE MARMOT_AD_VECTOR_BACKEND_MARMOT)
+elseif(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
     target_compile_definitions(${PROJECT_NAME} INTERFACE MARMOT_AD_VECTOR_BACKEND_SACADO)
 endif()
 

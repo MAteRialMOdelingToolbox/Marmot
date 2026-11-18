@@ -20,8 +20,11 @@ jobs:
           # then. tests/consumer links the shared library and checks that the exported API is complete.
           - name: export-api-only
             cmake_options: -DMARMOT_EXPORT_API_ONLY=ON
-          # The optional Sacado backend of the vector-mode AD drivers (found through Trilinos' CMake package);
-          # code differentiated by these drivers must build and pass the tests with both backends.
+          # Marmot's own vector-mode backend of the AD drivers; code differentiated by these drivers must build and
+          # pass the tests with all backends.
+          - name: vector-mode
+            cmake_options: -DMARMOT_AD_VECTOR_BACKEND=Marmot
+          # The optional Sacado backend of the vector-mode AD drivers (found through Trilinos' CMake package).
           - name: sacado
             cmake_options: -DMARMOT_AD_VECTOR_BACKEND=Sacado
             sacado: true

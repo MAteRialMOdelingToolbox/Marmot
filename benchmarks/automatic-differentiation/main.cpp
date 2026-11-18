@@ -1,4 +1,4 @@
-// Compares AD backends (autodiff, Boost.Math, Sacado, Ceres Jet, Stan, TinyAD, Adept) on Marmot's
+// Compares AD backends (autodiff, Boost.Math, Sacado, Ceres Jet, Stan, TinyAD, Adept, Marmot's VectorMode) on Marmot's
 // AD code paths:
 // first checks that every backend reproduces autodiff's derivatives, then times each kernel.
 #include "ADSuite.h"
@@ -66,7 +66,8 @@ int main( int argc, char** argv )
                       makeCeresSuites,
                       makeStanSuites,
                       makeTinyADSuites,
-                      makeAdeptSuites } )
+                      makeAdeptSuites,
+                      makeMarmotSuites } )
     for ( auto& s : make() )
       suites.push_back( std::move( s ) );
 

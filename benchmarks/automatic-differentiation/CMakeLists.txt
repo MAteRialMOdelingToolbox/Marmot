@@ -85,7 +85,7 @@ set(AD_BACKEND_INCLUDE_DIRS
 foreach(_target ad-backend-benchmark ad-op-benchmark adept-fastor-einsum-repro)
   if(_target STREQUAL "ad-backend-benchmark")
     add_executable(${_target} main.cpp SuiteAutodiff.cpp SuiteBoost.cpp SuiteSacado.cpp SuiteCeres.cpp SuiteStan.cpp
-      SuiteTinyAD.cpp SuiteAdept.cpp
+      SuiteTinyAD.cpp SuiteAdept.cpp SuiteMarmot.cpp
       ${MARMOT_ROOT}/modules/core/MarmotMathCore/src/MarmotTensor.cpp) # CommonTensors initializers
   elseif(_target STREQUAL "ad-op-benchmark")
     add_executable(${_target} opbench.cpp)

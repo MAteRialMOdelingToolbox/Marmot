@@ -31,10 +31,12 @@
  *
  *  Backends:
  *  - autodiff (https://autodiff.github.io), always used: HyperDual, Taylor and, by default, JacobianDual.
- *  - Sacado (https://trilinos.github.io/sacado.html), optional: if Marmot is configured with
- *    MARMOT_AD_VECTOR_BACKEND=Sacado (which defines MARMOT_AD_VECTOR_BACKEND_SACADO), JacobianDual is a
- *    Sacado::Fad::SFad, and the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX) compute all directions in a
+ *  - Marmot's own vector mode (MarmotAutomaticDifferentiationVectorMode.h), optional: if Marmot is configured with
+ *    MARMOT_AD_VECTOR_BACKEND=Marmot (which defines MARMOT_AD_VECTOR_BACKEND_MARMOT), JacobianDual is a
+ *    VectorMode::Dual, and the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX) compute all directions in a
  *    single evaluation (vector mode) instead of one direction per evaluation.
+ *  - Sacado (https://trilinos.github.io/sacado.html), optional: likewise with MARMOT_AD_VECTOR_BACKEND=Sacado (which
+ *    defines MARMOT_AD_VECTOR_BACKEND_SACADO), with JacobianDual a Sacado::Fad::SFad.
  *
  *  Vocabulary:
  *  - HyperDual<order>: nested dual number with one independent direction per nesting level; level 1 is the
@@ -50,12 +52,16 @@
  */
 
 #pragma once
+#include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
 #include <array>
 #include <autodiff/forward/dual.hpp>
 #include <autodiff/forward/dual/eigen.hpp>
 #include <autodiff/forward/real.hpp>
 #include <cstddef>
 #include <type_traits>
+#if defined( MARMOT_AD_VECTOR_BACKEND_MARMOT ) && defined( MARMOT_AD_VECTOR_BACKEND_SACADO )
+#  error "MARMOT_AD_VECTOR_BACKEND_MARMOT and MARMOT_AD_VECTOR_BACKEND_SACADO are mutually exclusive"
+#endif
 #ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
 #  include <Sacado_No_Kokkos.hpp>
 #endif
@@ -143,6 +149,11 @@ namespace Marmot::Math::Differentiation::Automatic {
      */
     template < typename Scalar >
     struct IsVectorDual : std::false_type {};
+    /** @brief Implementation of isVectorDual for Marmot's own VectorMode::Dual
+     *  @tparam nDirections number of derivatives
+     */
+    template < size_t nDirections >
+    struct IsVectorDual< VectorMode::Dual< nDirections > > : std::true_type {};
 #ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
     /** @brief Implementation of isVectorDual for Sacado::Fad::SFad
      *  @tparam nDirections number of derivatives
@@ -155,10 +166,14 @@ namespace Marmot::Math::Differentiation::Automatic {
   /** @brief Number type of the first-derivative drivers (df_dT, dF_dT, dF_dX< n >)
    *  @tparam nDirections number of independent variables
    *
-   *  With the Sacado backend a Sacado::Fad::SFad< double, nDirections >, which carries all partial derivatives after a
-   *  single evaluation; otherwise dual, which carries one direction per evaluation.
+   *  With the Marmot backend a VectorMode::Dual< nDirections >, and with the Sacado backend a
+   *  Sacado::Fad::SFad< double, nDirections >, which carry all partial derivatives after a single evaluation; otherwise
+   *  dual, which carries one direction per evaluation.
    */
-#ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
+#if defined( MARMOT_AD_VECTOR_BACKEND_MARMOT )
+  template < size_t nDirections >
+  using JacobianDual = VectorMode::Dual< nDirections >;
+#elif defined( MARMOT_AD_VECTOR_BACKEND_SACADO )
   template < size_t nDirections >
   using JacobianDual = Sacado::Fad::SFad< double, static_cast< int >( nDirections ) >;
 #else
@@ -166,7 +181,7 @@ namespace Marmot::Math::Differentiation::Automatic {
   using JacobianDual = dual;
 #endif
 
-  /** @brief True if Scalar is a vector-mode number, i.e., a JacobianDual of the Sacado backend
+  /** @brief True if Scalar is a vector-mode number, i.e., a VectorMode::Dual or a JacobianDual of the Sacado backend
    *  @tparam Scalar type to check
    */
   template < typename Scalar >
@@ -189,7 +204,10 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   void seedDirection( Scalar& x, size_t direction )
   {
-    x.fastAccessDx( static_cast< int >( direction ) ) = 1.0;
+    if constexpr ( VectorMode::isDual< Scalar > )
+      x.dx( direction ) = 1.0;
+    else
+      x.fastAccessDx( static_cast< int >( direction ) ) = 1.0;
   }
 
   /** @brief Reads a partial derivative of a vector-mode number
@@ -201,7 +219,10 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   double partialDerivative( const Scalar& x, size_t i )
   {
-    return x.fastAccessDx( static_cast< int >( i ) );
+    if constexpr ( VectorMode::isDual< Scalar > )
+      return x.dx( i );
+    else
+      return x.fastAccessDx( static_cast< int >( i ) );
   }
 
   /** @brief Contiguous coefficient storage of a hyper-dual number

@@ -7,6 +7,9 @@ add_marmot_test("TestMarmotAutomaticDifferentiation" "${CURR_TEST_SOURCE_DIR}/Te
 # Tests for MarmotAutomaticDifferentiation
 add_marmot_test("TestMarmotAutomaticDifferentiationForFastor" "${CURR_TEST_SOURCE_DIR}/TestMarmotAutomaticDifferentiationForFastor.cpp" REQUIRES MarmotFiniteStrainMechanicsCore)
 
+# Tests for Marmot's own vector-mode automatic differentiation
+add_marmot_test("TestMarmotAutomaticDifferentiationVectorMode" "${CURR_TEST_SOURCE_DIR}/TestMarmotAutomaticDifferentiationVectorMode.cpp")
+
 # Tests for MarmotMath
 add_marmot_test("TestMarmotMath" "${CURR_TEST_SOURCE_DIR}/TestMarmotMath.cpp")
 

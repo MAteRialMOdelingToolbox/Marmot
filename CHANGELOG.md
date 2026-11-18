@@ -7,6 +7,13 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- `Math::Differentiation::Automatic::VectorMode::Dual< nDirections >` (`MarmotAutomaticDifferentiationVectorMode.h`):
+  Marmot's own vector-mode forward automatic differentiation, without dependencies. Arithmetic yields expression
+  templates that compute values and local partial derivatives once, when the expression is formed, and all partial
+  derivatives in one vectorizable loop on assignment. Configured with `-DMARMOT_AD_VECTOR_BACKEND=Marmot`, it is the
+  `JacobianDual` of the first-derivative drivers (exported to consumers as `MARMOT_AD_VECTOR_BACKEND_MARMOT`):
+  tangents of `ADVonMises` 3.1x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.6x and `ADCompressibleNeoHooke` 1.9x
+  faster than with autodiff, and as fast as or faster than with Sacado.
 - Optional Sacado (Trilinos) backend for automatic differentiation: configured with
   `-DMARMOT_AD_VECTOR_BACKEND=Sacado`, the first-derivative drivers `df_dT`, `dF_dT` and `dF_dX< n >`, and hence the
   tangents of the AD material base classes, compute all directions in one evaluation instead of one per direction
@@ -122,8 +129,8 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** The first-derivative drivers `df_dT` and `dF_dT` take functions of `JacobianDual< nDirections >`
   numbers, and `MaterialFiniteStrainAD` and `MaterialHypoElasticAD` pass `ADScalar` numbers
   (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. With the default backend
-  these are `dual`, as before, so code that spells out `dual` still builds; to also build with Sacado, it must use
-  the new names. `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
+  these are `dual`, as before, so code that spells out `dual` still builds; to also build with the vector-mode
+  backends (`Marmot`, Sacado), it must use the new names. `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
   `MaterialHypoElasticAD`).
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
   requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
