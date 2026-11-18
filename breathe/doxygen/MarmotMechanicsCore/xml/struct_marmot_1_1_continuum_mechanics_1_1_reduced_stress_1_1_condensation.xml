@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::ReducedStress::Condensation</compoundname>
+    <includes refid="_marmot_lower_dimensional_stress_8h" local="no">MarmotLowerDimensionalStress.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nP</declname>
+        <defname>nP</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nF</declname>
+        <defname>nF</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nP, nP &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nP, nP &gt; Marmot::ContinuumMechanics::ReducedStress::Condensation&lt; nP, nF &gt;::dStressP_dStrainP</definition>
+        <argsstring></argsstring>
+        <name>dStressP_dStrainP</name>
+        <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::dStressP_dStrainP</qualifiedname>
+        <briefdescription>
+<para>The condensed tangent <formula id="91">$\mathbf{C}_{pp} - \mathbf{C}_{pf} \mathbf{C}_{ff}^{+} \mathbf{C}_{fp}$</formula> ( <formula id="92">$\mathbf{C}_{ff}^{+} = \mathbf{C}_{ff}^{-1}$</formula> if it is regular). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="111" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nF, nP &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nF, nP &gt; Marmot::ContinuumMechanics::ReducedStress::Condensation&lt; nP, nF &gt;::dStrainF_dStrainP</definition>
+        <argsstring></argsstring>
+        <name>dStrainF_dStrainP</name>
+        <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::dStrainF_dStrainP</qualifiedname>
+        <briefdescription>
+<para>The sensitivity of the free strains  <formula id="93">$\partial \boldsymbol{\varepsilon}_f / \partial
+\boldsymbol{\varepsilon}_p = -\mathbf{C}_{ff}^{+} \mathbf{C}_{fp}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="114" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" prot="public" static="no" mutable="no">
+        <type>Eigen::CompleteOrthogonalDecomposition&lt; Eigen::Matrix&lt; double, nF, nF &gt; &gt;</type>
+        <definition>Eigen::CompleteOrthogonalDecomposition&lt; Eigen::Matrix&lt; double, nF, nF &gt; &gt; Marmot::ContinuumMechanics::ReducedStress::Condensation&lt; nP, nF &gt;::CffCOD</definition>
+        <argsstring></argsstring>
+        <name>CffCOD</name>
+        <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::CffCOD</qualifiedname>
+        <briefdescription>
+<para>The complete orthogonal decomposition of <formula id="65">$\mathbf{C}_{ff}$</formula> (threshold rankTolerance), to condense further derivatives with the same pseudo-inverse, see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" kindref="member">freeStrainSensitivity()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="117" column="46" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1afc06f430da44d83dd791af9f124cba9f" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::ContinuumMechanics::ReducedStress::Condensation&lt; nP, nF &gt;::nIterations</definition>
+        <argsstring></argsstring>
+        <name>nIterations</name>
+        <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::nIterations</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref>: the number of evaluations of the 3D stress update (1 if the initial guess satisfies the stress-free conditions); 0 from <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="120" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nF, nF &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nF, nF &gt; Marmot::ContinuumMechanics::ReducedStress::Condensation&lt; nP, nF &gt;::Cff</definition>
+        <argsstring></argsstring>
+        <name>Cff</name>
+        <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::Cff</qualifiedname>
+        <briefdescription>
+<para>The tangent of the stress-free components <formula id="65">$\mathbf{C}_{ff}$</formula>, decomposed in CffCOD. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="122" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The static condensation of a 3D tangent to a reduced stress state. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nP</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of prescribed components </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of stress-free components </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="108" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" bodystart="108" bodyend="123"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::ReducedStress::Condensation</scope><name>Cff</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::ReducedStress::Condensation</scope><name>CffCOD</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::ReducedStress::Condensation</scope><name>dStrainF_dStrainP</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::ReducedStress::Condensation</scope><name>dStressP_dStrainP</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1afc06f430da44d83dd791af9f124cba9f" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::ReducedStress::Condensation</scope><name>nIterations</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -164,7 +164,7 @@
 <parametername direction="out">energyTan</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.</para>
+<para>Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the free strains <formula id="36">$\varepsilon_{33}, \gamma_{13}, \gamma_{23}$</formula> is left to the element.</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -172,7 +172,7 @@ The default is the plane stress iteration of <ref refid="class_marmot_1_1_materi
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="90" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="90" bodyend="101"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="91" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="91" bodyend="102"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -190,7 +190,7 @@ The default is the plane stress iteration of <ref refid="class_marmot_1_1_materi
 </parameterlist>
 A material provides the derivatives of its updated elastic energy density and dissipation wrt the strain increment and the nonlocal variables by inheriting from this class next to <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">MaterialGradientEnhancedHypoElastic</ref>. Elements find the capability with <computeroutput>dynamic_cast</computeroutput> and call this variant instead of <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kindref="member">MaterialGradientEnhancedHypoElastic::computeStress</ref> only when they assemble energy gradients. The standard material interface is not affected. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="43" bodyend="124"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="43" bodyend="125"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1ace7a23fcf529b69f72419e9958e8a7a0" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>computePlaneStressWithEnergyTangents</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1a4d08c0d60cb83a1ec89fc9702fa91608" prot="public" virt="pure-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</scope><name>computeStressWithEnergyTangents</name></member>

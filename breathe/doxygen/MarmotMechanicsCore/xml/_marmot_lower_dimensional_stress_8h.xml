@@ -2,16 +2,25 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_marmot_lower_dimensional_stress_8h" kind="file" language="C++">
     <compoundname>MarmotLowerDimensionalStress.h</compoundname>
+    <includes local="yes">Marmot/MarmotExceptions.h</includes>
+    <includes local="yes">Marmot/MarmotJournal.h</includes>
+    <includes local="yes">Marmot/MarmotTypedefs.h</includes>
     <includes refid="_marmot_voigt_8h" local="yes">Marmot/MarmotVoigt.h</includes>
+    <includes local="no">Eigen/QR</includes>
+    <includes local="no">algorithm</includes>
+    <includes local="no">array</includes>
+    <includes local="no">cmath</includes>
+    <includes local="no">cstddef</includes>
+    <includes local="no">utility</includes>
     <incdepgraph>
-      <node id="11">
+      <node id="12">
         <label>Marmot/HaighWestergaard.h</label>
         <link refid="_haigh_westergaard_8h"/>
-        <childnode refid="6" relation="include">
-        </childnode>
         <childnode refid="8" relation="include">
         </childnode>
-        <childnode refid="2" relation="include">
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -19,57 +28,91 @@
         <link refid="_marmot_lower_dimensional_stress_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-      </node>
-      <node id="2">
-        <label>Marmot/MarmotVoigt.h</label>
-        <link refid="_marmot_voigt_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
         <childnode refid="5" relation="include">
         </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotVoigt.h</label>
+        <link refid="_marmot_voigt_8h_source"/>
         <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
         <childnode refid="10" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
       </node>
-      <node id="3">
-        <label>Fastor/Fastor.h</label>
-      </node>
-      <node id="4">
-        <label>Marmot/MarmotFastorTensorBasics.h</label>
-      </node>
-      <node id="5">
-        <label>Marmot/MarmotJournal.h</label>
+      <node id="13">
+        <label>Eigen/QR</label>
       </node>
       <node id="6">
-        <label>Marmot/MarmotMath.h</label>
+        <label>Fastor/Fastor.h</label>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotExceptions.h</label>
       </node>
       <node id="7">
-        <label>Marmot/MarmotTensor.h</label>
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotJournal.h</label>
       </node>
       <node id="8">
-        <label>Marmot/MarmotTypedefs.h</label>
+        <label>Marmot/MarmotMath.h</label>
       </node>
       <node id="9">
-        <label>array</label>
+        <label>Marmot/MarmotTensor.h</label>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="14">
+        <label>algorithm</label>
       </node>
       <node id="10">
+        <label>array</label>
+      </node>
+      <node id="15">
+        <label>cmath</label>
+      </node>
+      <node id="16">
+        <label>cstddef</label>
+      </node>
+      <node id="11">
         <label>utility</label>
       </node>
     </incdepgraph>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" prot="public">Marmot::ContinuumMechanics::ReducedStress::Condensation</innerclass>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress">Marmot::ContinuumMechanics::UniaxialStress</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress">Marmot::ContinuumMechanics::ReducedStress</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_strain">Marmot::ContinuumMechanics::PlaneStrain</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress">Marmot::ContinuumMechanics::PlaneStress</innernamespace>
     <briefdescription>
@@ -105,40 +148,215 @@
 <codeline lineno="26"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
 <codeline lineno="27"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics<sp/>{</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">UniaxialStress<sp/>{</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>getUniaxialStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>Marmot::Math::Matrix6d<sp/>&gt;&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="45"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>UniaxialStress</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="46"><highlight class="normal"></highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStrain<sp/>{</highlight></codeline>
-<codeline lineno="48"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="59"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStrain();</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStrain</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"></highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStress<sp/>{</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"></highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
-<codeline lineno="125"><highlight class="normal"></highlight></codeline>
-<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"></highlight></codeline>
-<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStress(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
-<codeline lineno="144"><highlight class="normal"></highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/>dStressPlaneStressDStress();</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="152"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotExceptions.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotJournal.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotTypedefs.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/QR&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;array&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstddef&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;utility&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="75" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" kindref="compound">ReducedStress</ref><sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a8cbd17dd10bc305872d072a63cf016e8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>3<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a8cbd17dd10bc305872d072a63cf016e8" kindref="member">planeStressPrescribed</ref><sp/>=<sp/>{<sp/>0,<sp/>1,<sp/>3<sp/>};</highlight></codeline>
+<codeline lineno="81" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a85a420e288c8b009757ef1cab1368951" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>3<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a85a420e288c8b009757ef1cab1368951" kindref="member">planeStressFree</ref><sp/>=<sp/>{<sp/>2,<sp/>4,<sp/>5<sp/>};</highlight></codeline>
+<codeline lineno="83" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a82ad4fa3944cdaf8cbfdcb88313686c3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>1<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a82ad4fa3944cdaf8cbfdcb88313686c3" kindref="member">uniaxialStressPrescribed</ref><sp/>=<sp/>{<sp/>0<sp/>};</highlight></codeline>
+<codeline lineno="85" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ad43aa7d0e4b9175ea991de3d383cacc0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>5<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ad43aa7d0e4b9175ea991de3d383cacc0" kindref="member">uniaxialStressFree</ref><sp/>=<sp/>{<sp/>1,<sp/>2,<sp/>3,<sp/>4,<sp/>5<sp/>};</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a01f9ba733623a81667f432dd00c8cd1d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a01f9ba733623a81667f432dd00c8cd1d" kindref="member">convergenceTolerance</ref><sp/>=<sp/>1e-12;</highlight></codeline>
+<codeline lineno="91" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a1e14661102aa77540331fd40cafac87a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a1e14661102aa77540331fd40cafac87a" kindref="member">relaxedConvergenceTolerance</ref><sp/>=<sp/>1e-9;</highlight></codeline>
+<codeline lineno="94" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ae842e38f540c9546ffdaac17ee0baebc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ae842e38f540c9546ffdaac17ee0baebc" kindref="member">rankTolerance</ref><sp/>=<sp/>1e-12;</highlight></codeline>
+<codeline lineno="100" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kindref="member">consistencyTolerance</ref><sp/>=<sp/>1e-9;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nP,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nF<sp/>&gt;</highlight></codeline>
+<codeline lineno="108" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" kindref="compound">Condensation</ref><sp/>{</highlight></codeline>
+<codeline lineno="111" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nP,<sp/>nP<sp/>&gt;<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" kindref="member">dStressP_dStrainP</ref>;</highlight></codeline>
+<codeline lineno="114" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nP<sp/>&gt;<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" kindref="member">dStrainF_dStrainP</ref>;</highlight></codeline>
+<codeline lineno="117" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::CompleteOrthogonalDecomposition&lt;<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nF<sp/>&gt;<sp/>&gt;<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>;</highlight></codeline>
+<codeline lineno="120" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1afc06f430da44d83dd791af9f124cba9f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1afc06f430da44d83dd791af9f124cba9f" kindref="member">nIterations</ref><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="122" refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nF<sp/>&gt;<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" kindref="member">Cff</ref>;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nP_,<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nF_<sp/>&gt;</highlight></codeline>
+<codeline lineno="134" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a0603bb10468df5bce696952840c28dfa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a0603bb10468df5bce696952840c28dfa" kindref="member">checkIndexSets</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nP_<sp/>&gt;&amp;<sp/>p,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nF_<sp/>&gt;&amp;<sp/>f<sp/>)</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(<sp/>nP_<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>nF_<sp/>&gt;<sp/>0<sp/>&amp;&amp;<sp/>nP_<sp/>+<sp/>nF_<sp/>&lt;=<sp/>6,<sp/></highlight><highlight class="stringliteral">&quot;ReducedStress:<sp/>invalid<sp/>number<sp/>of<sp/>components&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::array&lt;<sp/>bool,<sp/>6<sp/>&gt;<sp/>used{};</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>use<sp/>=<sp/>[&amp;](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>i<sp/>&lt;<sp/>0<sp/>||<sp/>i<sp/>&gt;<sp/>5<sp/>||<sp/>used[i]<sp/>)</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::invalid_argument(<sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>prescribed<sp/>and<sp/>the<sp/>free<sp/>components<sp/>must<sp/>be<sp/>distinct<sp/>Voigt<sp/>indices<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;in<sp/>[0,<sp/>6)&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>used[i]<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::for_each(<sp/>p.begin(),<sp/>p.end(),<sp/>use<sp/>);</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::for_each(<sp/>f.begin(),<sp/>f.end(),<sp/>use<sp/>);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nP_,<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nF_<sp/>&gt;</highlight></codeline>
+<codeline lineno="168" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nP_<sp/>&gt;&amp;<sp/>p,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nF_<sp/>&gt;&amp;<sp/>f<sp/>)</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nP<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>nP_<sp/>);</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nF<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>nF_<sp/>);</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a0603bb10468df5bce696952840c28dfa" kindref="member">checkIndexSets</ref>(<sp/>p,<sp/>f<sp/>);</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nF<sp/>&gt;<sp/>Cff;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nP<sp/>&gt;<sp/>Cfp;</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nP,<sp/>nF<sp/>&gt;<sp/>Cpf;</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nP,<sp/>nP<sp/>&gt;<sp/>Cpp;</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nF;<sp/>i++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>nF;<sp/>j++<sp/>)</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Cff(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>C(<sp/>f[i],<sp/>f[j]<sp/>);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>nP;<sp/>j++<sp/>)</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Cfp(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>C(<sp/>f[i],<sp/>p[j]<sp/>);</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nP;<sp/>i++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>nF;<sp/>j++<sp/>)</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Cpf(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>C(<sp/>p[i],<sp/>f[j]<sp/>);</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>nP;<sp/>j++<sp/>)</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Cpp(<sp/>i,<sp/>j<sp/>)<sp/>=<sp/>C(<sp/>p[i],<sp/>p[j]<sp/>);</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!C.allFinite()<sp/>)</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(<sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>tangent<sp/>is<sp/>not<sp/>finite&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"></highlight></codeline>
+<codeline lineno="195"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" kindref="compound">Condensation&lt; nP, nF &gt;</ref><sp/>condensation;</highlight></codeline>
+<codeline lineno="196"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.setThreshold(<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ae842e38f540c9546ffdaac17ee0baebc" kindref="member">rankTolerance</ref><sp/>);</highlight></codeline>
+<codeline lineno="197"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.compute(<sp/>Cff<sp/>);</highlight></codeline>
+<codeline lineno="198"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" kindref="member">Cff</ref><sp/>=<sp/>Cff;</highlight></codeline>
+<codeline lineno="199"><highlight class="normal"></highlight></codeline>
+<codeline lineno="200"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.rank()<sp/>&lt;<sp/>nF<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="201"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>consistency<sp/>of<sp/>the<sp/>singular<sp/>block:<sp/>sigma_p<sp/>independent<sp/>of<sp/>the<sp/>null<sp/>space<sp/>of<sp/>C_ff,<sp/>C_fp<sp/>in<sp/>its<sp/>range</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">MatrixFF<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nF<sp/>&gt;;</highlight></codeline>
+<codeline lineno="203"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MatrixFF<sp/>nullSpaceProjector<sp/>=<sp/>MatrixFF::Identity()<sp/>-<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.solve(<sp/>Cff<sp/>);</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>MatrixFF<sp/>complementOfRange<sp/><sp/>=<sp/>MatrixFF::Identity()<sp/>-<sp/>Cff<sp/>*<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.pseudoInverse();</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/>scale<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>C.cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/>pDependsOnNull<sp/><sp/><sp/><sp/><sp/>=<sp/>(<sp/>Cpf<sp/>*<sp/>nullSpaceProjector<sp/>).cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/>fpOutsideRange<sp/><sp/><sp/><sp/><sp/>=<sp/>(<sp/>complementOfRange<sp/>*<sp/>Cfp<sp/>).cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="208"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>pDependsOnNull<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kindref="member">consistencyTolerance</ref><sp/>*<sp/>scale<sp/>||<sp/>fpOutsideRange<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kindref="member">consistencyTolerance</ref><sp/>*<sp/>scale<sp/>)</highlight></codeline>
+<codeline lineno="209"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(</highlight></codeline>
+<codeline lineno="210"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="211"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>tangent<sp/>of<sp/>the<sp/>stress-free<sp/>components<sp/>is<sp/>singular<sp/>(rank<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="212"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.rank()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nF<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>and<sp/>the<sp/>condensation<sp/>is<sp/>inconsistent&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="213"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="214"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" kindref="member">dStrainF_dStrainP</ref><sp/>=<sp/>-condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.solve(<sp/>Cfp<sp/>);</highlight></codeline>
+<codeline lineno="216"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" kindref="member">dStressP_dStrainP</ref><sp/>=<sp/>Cpp<sp/>+<sp/>Cpf<sp/>*<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" kindref="member">dStrainF_dStrainP</ref>;</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>condensation;</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"></highlight></codeline>
+<codeline lineno="256"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nP_,<sp/>std::</highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nF_,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>StressUpdate3D<sp/>&gt;</highlight></codeline>
+<codeline lineno="257" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress</ref>(<sp/>StressUpdate3D&amp;&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>computeStress3D,</highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStrain,</highlight></codeline>
+<codeline lineno="259"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nP_<sp/>&gt;&amp;<sp/>p,</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::array&lt;<sp/>int,<sp/>nF_<sp/>&gt;&amp;<sp/>f<sp/>)</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>nF<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>nF_<sp/>);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>tolerance<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a01f9ba733623a81667f432dd00c8cd1d" kindref="member">convergenceTolerance</ref>;</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>relaxedTolerance<sp/>=<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a1e14661102aa77540331fd40cafac87a" kindref="member">relaxedConvergenceTolerance</ref>;</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>nRelaxed<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>8;</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>nMaxIterations<sp/><sp/><sp/>=<sp/>15;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a0603bb10468df5bce696952840c28dfa" kindref="member">checkIndexSets</ref>(<sp/>p,<sp/>f<sp/>);<sp/></highlight><highlight class="comment">//<sp/>before<sp/>the<sp/>first<sp/>access<sp/>at<sp/>f</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="268"><highlight class="normal"></highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stress;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Math::Matrix6d<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStress_dStrain;</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>1<sp/>&gt;<sp/>stressF;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stressScale<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>iteration<sp/>=<sp/>1;;<sp/>iteration++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="274"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stress.setZero();</highlight></codeline>
+<codeline lineno="275"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStress_dStrain.setZero();</highlight></codeline>
+<codeline lineno="276"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>computeStress3D(<sp/>std::as_const(<sp/>dStrain<sp/>),<sp/>stress,<sp/>dStress_dStrain<sp/>);</highlight></codeline>
+<codeline lineno="277"><highlight class="normal"></highlight></codeline>
+<codeline lineno="278"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!stress.allFinite()<sp/>)</highlight></codeline>
+<codeline lineno="279"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(<sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="280"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>stress<sp/>is<sp/>not<sp/>finite&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="281"><highlight class="normal"></highlight></codeline>
+<codeline lineno="282"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stressScale<sp/>=<sp/>std::max(<sp/>stressScale,<sp/>stress.cwiseAbs().maxCoeff()<sp/>);</highlight></codeline>
+<codeline lineno="283"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nF;<sp/>i++<sp/>)</highlight></codeline>
+<codeline lineno="284"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>stressF(<sp/>i<sp/>)<sp/>=<sp/>stress(<sp/>f[i]<sp/>);</highlight></codeline>
+<codeline lineno="285"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>residual<sp/>=<sp/>stressF.cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="286"><highlight class="normal"></highlight></codeline>
+<codeline lineno="287"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>condensation<sp/>=<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense</ref>(<sp/>dStress_dStrain,<sp/>p,<sp/>f<sp/>);</highlight></codeline>
+<codeline lineno="288"><highlight class="normal"></highlight></codeline>
+<codeline lineno="289"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>residual<sp/>&lt;=<sp/>tolerance<sp/>*<sp/>stressScale<sp/>||</highlight></codeline>
+<codeline lineno="290"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<sp/>iteration<sp/>&gt;<sp/>nRelaxed<sp/>&amp;&amp;<sp/>residual<sp/>&lt;=<sp/>relaxedTolerance<sp/>*<sp/>stressScale<sp/>)<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="291"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>condensation.nIterations<sp/>=<sp/>iteration;</highlight></codeline>
+<codeline lineno="292"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>condensation;</highlight></codeline>
+<codeline lineno="293"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="294"><highlight class="normal"></highlight></codeline>
+<codeline lineno="295"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>iteration<sp/>&gt;=<sp/>nMaxIterations<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="296"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(</highlight></codeline>
+<codeline lineno="297"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="298"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>no<sp/>convergence<sp/>of<sp/>the<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nF<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>stress-free<sp/>components<sp/>after<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="299"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>nMaxIterations<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>iterations,<sp/>max<sp/>|sigma_f|<sp/>=<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>residual<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>stress<sp/>scale<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>stressScale<sp/>);</highlight></codeline>
+<codeline lineno="300"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="301"><highlight class="normal"></highlight></codeline>
+<codeline lineno="302"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>1<sp/>&gt;<sp/>correction<sp/>=<sp/>condensation.CffCOD.solve(<sp/>stressF<sp/>);</highlight></codeline>
+<codeline lineno="303"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>condensation.CffCOD.rank()<sp/>&lt;<sp/>nF<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="304"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>outsideRange<sp/>=<sp/>(<sp/>stressF<sp/>-<sp/>condensation.Cff<sp/>*<sp/>correction<sp/>).cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="305"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>outsideRange<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kindref="member">consistencyTolerance</ref><sp/>*<sp/>stressScale<sp/>)</highlight></codeline>
+<codeline lineno="306"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(</highlight></codeline>
+<codeline lineno="307"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="308"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>tangent<sp/>of<sp/>the<sp/>stress-free<sp/>components<sp/>is<sp/>singular<sp/>(rank<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="309"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>condensation.CffCOD.rank()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nF<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>and<sp/>the<sp/>stress<sp/>residual<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>outsideRange</highlight></codeline>
+<codeline lineno="310"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>is<sp/>outside<sp/>its<sp/>range&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="311"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="312"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nF;<sp/>i++<sp/>)</highlight></codeline>
+<codeline lineno="313"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dStrain(<sp/>f[i]<sp/>)<sp/>-=<sp/>correction(<sp/>i<sp/>);</highlight></codeline>
+<codeline lineno="314"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="315"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="316"><highlight class="normal"></highlight></codeline>
+<codeline lineno="334"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nP,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nF,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nX<sp/>&gt;</highlight></codeline>
+<codeline lineno="335" refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nX<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" kindref="member">freeStrainSensitivity</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" kindref="compound">Condensation&lt; nP, nF &gt;</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>condensation,</highlight></codeline>
+<codeline lineno="336"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nX<sp/>&gt;&amp;<sp/>dStressF_dX<sp/>)</highlight></codeline>
+<codeline lineno="337"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="338"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nX<sp/>&gt;<sp/>dStrainF_dX<sp/>=<sp/>-condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.solve(<sp/>dStressF_dX<sp/>);</highlight></codeline>
+<codeline lineno="339"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.rank()<sp/>&lt;<sp/>nF<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="340"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nF,<sp/>nX<sp/>&gt;<sp/>residual<sp/>=<sp/>dStressF_dX<sp/>+<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" kindref="member">Cff</ref><sp/>*<sp/>dStrainF_dX;</highlight></codeline>
+<codeline lineno="341"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CffMax<sp/><sp/><sp/>=<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" kindref="member">Cff</ref>.cwiseAbs().maxCoeff();</highlight></codeline>
+<codeline lineno="342"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>j<sp/>=<sp/>0;<sp/>j<sp/>&lt;<sp/>nX;<sp/>j++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="343"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>scale<sp/>=<sp/>std::max(<sp/>dStressF_dX.col(<sp/>j<sp/>).cwiseAbs().maxCoeff(),</highlight></codeline>
+<codeline lineno="344"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>CffMax<sp/>*<sp/>dStrainF_dX.col(<sp/>j<sp/>).cwiseAbs().maxCoeff()<sp/>);</highlight></codeline>
+<codeline lineno="345"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>residual.col(<sp/>j<sp/>).cwiseAbs().maxCoeff()<sp/>&gt;<sp/><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kindref="member">consistencyTolerance</ref><sp/>*<sp/>scale<sp/>)</highlight></codeline>
+<codeline lineno="346"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>Marmot::Utilities::StressUpdateFailed(</highlight></codeline>
+<codeline lineno="347"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="348"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>tangent<sp/>of<sp/>the<sp/>stress-free<sp/>components<sp/>is<sp/>singular<sp/>(rank<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="349"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>condensation.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kindref="member">CffCOD</ref>.rank()<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;<sp/>of<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>nF<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>and<sp/>dStressF_dX<sp/>(column<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>j</highlight></codeline>
+<codeline lineno="350"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>is<sp/>outside<sp/>its<sp/>range&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="351"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="352"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="353"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dStrainF_dX;</highlight></codeline>
+<codeline lineno="354"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="355"><highlight class="normal"></highlight></codeline>
+<codeline lineno="356"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ReducedStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="357"><highlight class="normal"></highlight></codeline>
+<codeline lineno="358"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStrain<sp/>{</highlight></codeline>
+<codeline lineno="359"><highlight class="normal"></highlight></codeline>
+<codeline lineno="369"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="370"><highlight class="normal"></highlight></codeline>
+<codeline lineno="382"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="383"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="384"><highlight class="normal"></highlight></codeline>
+<codeline lineno="391"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStrain();</highlight></codeline>
+<codeline lineno="392"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStrain</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="393"><highlight class="normal"></highlight></codeline>
+<codeline lineno="394"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStress<sp/>{</highlight></codeline>
+<codeline lineno="395"><highlight class="normal"></highlight></codeline>
+<codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="409"><highlight class="normal"></highlight></codeline>
+<codeline lineno="427"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
+<codeline lineno="428"><highlight class="normal"></highlight></codeline>
+<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
+<codeline lineno="439"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="440"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h"/>
   </compounddef>

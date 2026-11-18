@@ -12,8 +12,8 @@
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_strain">Marmot::ContinuumMechanics::PlaneStrain</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress">Marmot::ContinuumMechanics::PlaneStress</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity">Marmot::ContinuumMechanics::Plasticity</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress">Marmot::ContinuumMechanics::ReducedStress</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_time_integration">Marmot::ContinuumMechanics::TimeIntegration</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress">Marmot::ContinuumMechanics::UniaxialStress</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity">Marmot::ContinuumMechanics::Viscoelasticity</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoplasticity">Marmot::ContinuumMechanics::Viscoplasticity</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt">Marmot::ContinuumMechanics::Voigt</innernamespace>

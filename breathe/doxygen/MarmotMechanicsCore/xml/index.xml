@@ -113,6 +113,13 @@
     <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a206716a550aea85f4178b4846d2ecf66" kind="function"><name>registerBondSlipLaw</name></member>
     <member refid="class_marmot_1_1_registry_1_1_bond_slip_law_factory_1a054a1372416eb735c87f83a1f5325c3d" kind="function"><name>bondSlipLawFactoryFunctionByName</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation" kind="struct"><name>Marmot::ContinuumMechanics::ReducedStress::Condensation</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a2aa080eeca0d06b230785b35cacd40b1" kind="variable"><name>dStressP_dStrainP</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a117b4242835a0cf1784b3386862a0033" kind="variable"><name>dStrainF_dStrainP</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1aae89d50a7f305c1f0076fa452a3ff57f" kind="variable"><name>CffCOD</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1afc06f430da44d83dd791af9f124cba9f" kind="variable"><name>nIterations</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1_1_condensation_1a0be825306b4f90dbacd9be67b2b8619c" kind="variable"><name>Cff</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kind="struct"><name>Marmot::ContinuumMechanics::Microplane::Discretization::Data</name>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" kind="variable"><name>normals</name></member>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kind="variable"><name>weights</name></member>
@@ -590,20 +597,28 @@
     <member refid="_marmot_lower_dimensional_stress_8h_1aa73b81d393dd2a741e4c9fbbb1ffe564" kind="function"><name>dStrainDStrainPlaneStrain</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress" kind="namespace"><name>Marmot::ContinuumMechanics::PlaneStress</name>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a1ff0049fc293db48a6553b5fe0a6cdae" kind="function"><name>getPlaneStressTangent</name></member>
     <member refid="_marmot_lower_dimensional_stress_8h_1a5e42733c08010df0e4de83622473149e" kind="function"><name>compute_dStress_dDeformationGradient</name></member>
     <member refid="_marmot_lower_dimensional_stress_8h_1afce5599c6c018d4a85e20a1f2b30db70" kind="function"><name>planeStressCompensationStrain</name></member>
     <member refid="_marmot_lower_dimensional_stress_8h_1ae84a6130763caa4169084a99d510a657" kind="function"><name>planeStressTangentTransformationMatrix</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1aabec7427f4147f76bc530572cbf78071" kind="function"><name>dStrainDStrainPlaneStress</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a16e505ff2bf94ba0933185e16105411b" kind="function"><name>dStressPlaneStressDStress</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity</name>
   </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" kind="namespace"><name>Marmot::ContinuumMechanics::ReducedStress</name>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a8cbd17dd10bc305872d072a63cf016e8" kind="variable"><name>planeStressPrescribed</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a85a420e288c8b009757ef1cab1368951" kind="variable"><name>planeStressFree</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a82ad4fa3944cdaf8cbfdcb88313686c3" kind="variable"><name>uniaxialStressPrescribed</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ad43aa7d0e4b9175ea991de3d383cacc0" kind="variable"><name>uniaxialStressFree</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a01f9ba733623a81667f432dd00c8cd1d" kind="variable"><name>convergenceTolerance</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a1e14661102aa77540331fd40cafac87a" kind="variable"><name>relaxedConvergenceTolerance</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1ae842e38f540c9546ffdaac17ee0baebc" kind="variable"><name>rankTolerance</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1aa62a8075dfb5048f9fdb1ba063a92ac3" kind="variable"><name>consistencyTolerance</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a0603bb10468df5bce696952840c28dfa" kind="function"><name>checkIndexSets</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kind="function"><name>condense</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kind="function"><name>computeReducedStress</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" kind="function"><name>freeStrainSensitivity</name></member>
+  </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_time_integration" kind="namespace"><name>Marmot::ContinuumMechanics::TimeIntegration</name>
     <member refid="_newmark_beta_integrator_8h_1acefc537ef15c5a11cd75bc81c8e2266f" kind="function"><name>newmarkBetaIntegration</name></member>
-  </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress" kind="namespace"><name>Marmot::ContinuumMechanics::UniaxialStress</name>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a1db222ae45b3ee1995f27cfb5dd1ef0d" kind="function"><name>getUniaxialStressTangent</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity</name>
   </compound>

@@ -16,7 +16,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="107" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="107" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="108" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="108" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1a0ff209109b17cf6403db8ff83dd13572" prot="public" static="no" mutable="no">
         <type><ref refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1energy_tangents" kindref="compound">energyTangents</ref> &amp;</type>
@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="109" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="109" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="110" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="110" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -86,7 +86,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="117" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="117" bodyend="122"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="118" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="118" bodyend="123"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -113,7 +113,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="105" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="105" bodyend="123"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" line="106" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h" bodystart="106" bodyend="124"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1a0ff209109b17cf6403db8ff83dd13572" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents</scope><name>energyTan</name></member>
       <member refid="struct_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_energy_tangent_provider_1_1_stress_update_with_energy_tangents_1a63ff30c708da9bc62fd97dd80b7237e7" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider::StressUpdateWithEnergyTangents</scope><name>operator()</name></member>

@@ -133,19 +133,22 @@ shape functions of the non-local field. The material provides the derivatives of
 a potential.</p>
 <section id="plane-stress">
 <h3>Plane stress<a class="headerlink" href="#plane-stress" title="Link to this heading"></a></h3>
-<p>In plane stress, the material’s update is iterated until <span class="math notranslate nohighlight">\(\sigma_{33} = 0\)</span>, which determines the out-of-plane
-strain increment <span class="math notranslate nohighlight">\(\Delta\varepsilon_{33}\)</span> as a function of the in-plane strain increment and the non-local
-variables. The energy tangents of the converged 3D update are condensed by the total derivative</p>
+<p>In plane stress, the material’s update is iterated until <span class="math notranslate nohighlight">\(\sigma_f = 0\)</span> for the free components
+<span class="math notranslate nohighlight">\(f = \{33, 13, 23\}\)</span> (<code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::ReducedStress</span></code>), which determines the strain increments
+<span class="math notranslate nohighlight">\(\Delta\varepsilon_f\)</span> as functions of the in-plane strain increment and the non-local variables. The energy
+tangents of the converged 3D update are condensed by the total derivative</p>
 <div class="math notranslate nohighlight">
-\[\frac{\mathrm{d} g}{\mathrm{d} \Delta\varepsilon_{\alpha\beta}}
-= \frac{\partial g}{\partial \Delta\varepsilon_{\alpha\beta}}
-+ \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial
-\Delta\varepsilon_{\alpha\beta}}, \qquad
+\[\frac{\mathrm{d} g}{\mathrm{d} \Delta\varepsilon_{p}}
+= \frac{\partial g}{\partial \Delta\varepsilon_{p}}
++ \frac{\partial g}{\partial \Delta\varepsilon_f} \frac{\partial \Delta\varepsilon_f}{\partial
+\Delta\varepsilon_{p}}, \qquad
 \frac{\mathrm{d} g}{\mathrm{d} \bar\kappa}
 = \frac{\partial g}{\partial \bar\kappa}
-+ \frac{\partial g}{\partial \Delta\varepsilon_{33}} \frac{\partial \Delta\varepsilon_{33}}{\partial \bar\kappa},\]</div>
-<p>for <span class="math notranslate nohighlight">\(g = \psi, D\)</span>, with <span class="math notranslate nohighlight">\(\partial \Delta\varepsilon_{33} / \partial (\cdot) = -(\partial \sigma_{33} /
-\partial (\cdot)) / (\partial \sigma_{33} / \partial \Delta\varepsilon_{33})\)</span> from <span class="math notranslate nohighlight">\(\mathrm{d}\sigma_{33} = 0\)</span>.</p>
++ \frac{\partial g}{\partial \Delta\varepsilon_f} \frac{\partial \Delta\varepsilon_f}{\partial \bar\kappa},\]</div>
+<p>for <span class="math notranslate nohighlight">\(g = \psi, D\)</span> and the in-plane components <span class="math notranslate nohighlight">\(p = \{11, 22, 12\}\)</span>, with
+<span class="math notranslate nohighlight">\(\partial \Delta\varepsilon_f / \partial (\cdot) = -\mathbf{C}_{ff}^{-1}\, \partial \sigma_f / \partial (\cdot)\)</span>
+from <span class="math notranslate nohighlight">\(\mathrm{d}\sigma_f = 0\)</span>, <span class="math notranslate nohighlight">\(\mathbf{C}_{ff} = \partial \sigma_f / \partial \Delta\varepsilon_f\)</span>
+(its pseudo-inverse if it is singular, e.g. for a fully softened crack without out-of-plane shear stiffness).</p>
 </section>
 </section>
 <section id="usage">
@@ -334,7 +337,7 @@ The default is the plane stress iteration of MaterialGradientEnhancedHypoElastic
 <li><p><strong>res</strong> – <strong>[inout]</strong> Response, as for MaterialGradientEnhancedHypoElastic::computePlaneStress. </p></li>
 <li><p><strong>tan</strong> – <strong>[inout]</strong> Algorithmic tangents of the converged 3D update. </p></li>
 <li><p><strong>inc</strong> – <strong>[in]</strong> Increment of the in-plane strain and the nonlocal variables. </p></li>
-<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.</p></li>
+<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the free strains <span class="math notranslate nohighlight">\(\varepsilon_{33}, \gamma_{13}, \gamma_{23}\)</span> is left to the element.</p></li>
 </ul>
 </dd>
 </dl>

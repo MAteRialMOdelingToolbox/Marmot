@@ -211,7 +211,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given linearized strain increment <formula id="81">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="82">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para>For a given linearized strain increment <formula id="119">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="120">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">state</parametername>
@@ -332,11 +332,53 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Plane stress implementation of <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress</ref>. </para>
+<para>Plane stress implementation of <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress()</ref>: <formula id="71">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula> for the prescribed in-plane strain increment <formula id="121">$[\Delta\varepsilon_{11}, \Delta\varepsilon_{22}, \Delta\gamma_{12}]$</formula>, by <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">Marmot::ContinuumMechanics::ReducedStress::computeReducedStress()</ref> around <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress</ref>, with the isochoric initial guess <formula id="122">$\Delta\varepsilon_{33} = -\Delta\varepsilon_{11} - \Delta\varepsilon_{22}$</formula>. The tangent is the condensed tangent of the converged 3D state. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in-plane stress, energies and state variables </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dStress_dStrain2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the condensed in-plane tangent </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the in-plane strain increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeInfo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Structure carrying time information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>Marmot::Utilities::StressUpdateFailed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the plane stress iteration fails; the state variables are then those of the start of the increment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="201" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="211" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1abcb057a3f2d7c917058320792ae64416" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -363,11 +405,53 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Uniaxial stress implementation of <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress</ref>. </para>
+<para>Uniaxial stress implementation of <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress()</ref>: all stress components but <formula id="73">$\sigma_{11}$</formula> vanish for the prescribed strain increment <formula id="123">$\Delta\varepsilon_{11}$</formula>, by <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">Marmot::ContinuumMechanics::ReducedStress::computeReducedStress()</ref> around <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kindref="member">computeStress</ref>, with the initial guess of zero lateral and shear strains. The tangent is the condensed tangent of the converged 3D state. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress1D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stress, energies and state variables </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dStress_dStrain1D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the condensed tangent <formula id="124">$\mathrm{d}\sigma_{11} / \mathrm{d}\varepsilon_{11}$</formula> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the strain increment <formula id="123">$\Delta\varepsilon_{11}$</formula> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeInfo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Structure carrying time information </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>Marmot::Utilities::StressUpdateFailed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the uniaxial stress iteration fails; the state variables are then those of the start of the increment </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="209" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="228" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1acb4501a1200b25c9aa11a5de4966912e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -410,7 +494,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="220" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="220" bodyend="223"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="239" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="239" bodyend="242"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1afc038e4f4ca974dfe22727fc82eafc57" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -428,7 +512,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="229" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="229" bodyend="229"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="248" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="248" bodyend="248"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ae23273e1dbdcb870ff86abc0ad686d36" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -471,7 +555,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="238" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="238" bodyend="243"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="257" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="257" bodyend="262"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a1b06c2f83f1a7bc53b008a503d856352" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -502,7 +586,7 @@ The default implementation computes the 3D algorithmic tangent and returns <comp
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="252" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="271" column="20"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ad5c74cc37accb172fe25e0d437fb9def" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -533,21 +617,21 @@ The default implementation computes the 3D algorithmic tangent and returns <comp
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="259" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="278" column="20"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
 <para>Derived abstract base class for elastic materials expressed purely in rate form.</para>
-<para>In general, the nominal stress rate tensor <formula id="73">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="74">$ \sig $</formula>, the stretching rate tensor <formula id="75">$ \epsRate $</formula> and the time <formula id="76">$ t $</formula>.</para>
-<para><formula id="77">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
+<para>In general, the nominal stress rate tensor <formula id="111">$ \sigRate $</formula> can be written as a function of the nominal stress tensor <formula id="112">$ \sig $</formula>, the stretching rate tensor <formula id="113">$ \epsRate $</formula> and the time <formula id="114">$ t $</formula>.</para>
+<para><formula id="115">\[  \displaystyle \sigRate = f( \sig, \epsRate, t, ...) \]</formula></para>
 <para>In course of numerical time integration, this relation will be formulated incrementally as</para>
-<para><formula id="78">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
+<para><formula id="116">\[  \displaystyle \Delta \sig = f ( \sig_n, \Delta\eps, \Delta t, t_n, ...) \]</formula></para>
 <para>with</para>
-<para><formula id="79">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
+<para><formula id="117">\[  \displaystyle \Delta\eps =  \epsRate\, \Delta t \]</formula></para>
 <para>and the algorithmic tangent</para>
-<para><formula id="80">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
+<para><formula id="118">\[ \displaystyle \frac{d \sig }{d \eps } =  \frac{d \Delta \sig }{d \Delta \eps } \]</formula></para>
 <para>This formulation is compatible with an Abaqus interface. </para>
     </detaileddescription>
     <inheritancegraph>
@@ -562,7 +646,7 @@ The default implementation computes the 3D algorithmic tangent and returns <comp
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="59" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="59" bodyend="260"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="59" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="59" bodyend="279"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a7000dd6ed0cbe88c29158f13dc140ece" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic</scope><name>characteristicElementLength</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a88adc93e02091a821ee9e3049faf2c2a" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialHypoElastic</scope><name>computePlaneStress</name></member>

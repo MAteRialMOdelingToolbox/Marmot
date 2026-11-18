@@ -300,7 +300,7 @@ The default is the plane stress iteration of <a class="reference internal" href=
 <li><p><strong>res</strong> – <strong>[inout]</strong> Response, as for <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"><span class="std std-ref">MaterialGradientEnhancedHypoElastic::computePlaneStress</span></a>. </p></li>
 <li><p><strong>tan</strong> – <strong>[inout]</strong> Algorithmic tangents of the converged 3D update. </p></li>
 <li><p><strong>inc</strong> – <strong>[in]</strong> Increment of the in-plane strain and the nonlocal variables. </p></li>
-<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.</p></li>
+<li><p><strong>energyTan</strong> – <strong>[out]</strong> Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the free strains <span class="math notranslate nohighlight">\(\varepsilon_{33}, \gamma_{13}, \gamma_{23}\)</span> is left to the element.</p></li>
 </ul>
 </dd>
 </dl>
@@ -422,12 +422,13 @@ This method can be used when only the stress response is needed without the tang
 <span id="_CPPv3NK6Marmot9Materials35MaterialGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment"></span><span id="_CPPv2NK6Marmot9Materials35MaterialGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment"></span><span id="Marmot::Materials::MaterialGradientEnhancedHypoElastic::computePlaneStress__responseR.tangentsR.incrementCRC"></span><span class="target" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePlaneStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials35MaterialGradientEnhancedHypoElastic18computePlaneStressER8responseR8tangentsRK9increment" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the plane stress response of the material model. </p>
 <p>
-This method provides a default implementation for computing the plane stress response using an iterative approach. It assumes an initial guess of isochoric deformation and iteratively corrects the out-of-plane strain until convergence is achieved. Derived classes can override this method if a different approach for plane stress computation is desired. </p>
+The default implementation is <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a133158b47d2c9a2aa36cccea061684a3"><span class="std std-ref">iteratePlaneStress()</span></a> around <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60"><span class="std std-ref">computeStress()</span></a>:  <span class="math notranslate nohighlight">\(\sigma_{33} = \sigma_{13} =
+\sigma_{23} = 0\)</span> for the prescribed in-plane strain increment. Derived classes can override this method if a different approach for plane stress computation is desired. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed plane stress and other response variables. </p></li>
-<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the computed algorithmic tangent matrices for plane stress. </p></li>
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed stress and other response variables. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the algorithmic tangents of the converged 3D state; the condensation to plane stress is left to the caller (Marmot::ContinuumMechanics::ReducedStress::condense()). </p></li>
 <li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
 </ul>
 </dd>
@@ -606,7 +607,7 @@ c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \)</span>, whose stable increment
 <span id="_CPPv3I0EN6Marmot9Materials35MaterialGradientEnhancedHypoElastic18iteratePlaneStressEiR8responseR8tangentsRK9incrementRR15ComputeStress3D"></span><span id="_CPPv2I0EN6Marmot9Materials35MaterialGradientEnhancedHypoElastic18iteratePlaneStressEiR8responseR8tangentsRK9incrementRR15ComputeStress3D"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ComputeStress3D</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a133158b47d2c9a2aa36cccea061684a3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iteratePlaneStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span>, <span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span>, <a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials35MaterialGradientEnhancedHypoElastic18iteratePlaneStressEviR8responseR8tangentsRK9incrementRR15ComputeStress3D" title="Marmot::Materials::MaterialGradientEnhancedHypoElastic::iteratePlaneStress::ComputeStress3D"><span class="n"><span class="pre">ComputeStress3D</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">computeStress3D</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials35MaterialGradientEnhancedHypoElastic18iteratePlaneStressEviR8responseR8tangentsRK9incrementRR15ComputeStress3D" title="Link to this definition"></a><br /></dt>
 <dd><p>The plane stress iteration of <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"><span class="std std-ref">computePlaneStress()</span></a> around a given 3D stress update. </p>
 <p>
-The last call of <code class="docutils literal notranslate"><span class="pre">computeStress3D</span></code> is the one at the converged out-of-plane strain, so additional outputs of the callable refer to the converged 3D state. </p>
+Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() with the free components <span class="math notranslate nohighlight">\(\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\)</span>; every call of <code class="docutils literal notranslate"><span class="pre">computeStress3D</span></code> starts from the response and the state variables of the start of the increment. The last call of <code class="docutils literal notranslate"><span class="pre">computeStress3D</span></code> is the one at the converged strain, so additional outputs of the callable refer to the converged 3D state. Throws Marmot::Utilities::StressUpdateFailed if the iteration fails; <code class="docutils literal notranslate"><span class="pre">res</span></code> and the state variables are then those of the start of the increment. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ComputeStress3D</strong> – Callable with the signature of <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60"><span class="std std-ref">computeStress()</span></a>. </p>
@@ -616,7 +617,8 @@ The last call of <code class="docutils literal notranslate"><span class="pre">co
 <li><p><strong>nStateVars</strong> – Number of state variables of the material. </p></li>
 <li><p><strong>res</strong> – <strong>[inout]</strong> Response, as for <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"><span class="std std-ref">computePlaneStress()</span></a>. </p></li>
 <li><p><strong>tan</strong> – <strong>[inout]</strong> Tangents of the last call of <code class="docutils literal notranslate"><span class="pre">computeStress3D</span></code>, i.e., of the converged 3D state. </p></li>
-<li><p><strong>inc</strong> – <strong>[in]</strong> Increment, as for <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"><span class="std std-ref">computePlaneStress()</span></a>. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Increment, as for <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2"><span class="std std-ref">computePlaneStress()</span></a>: its components  <span class="math notranslate nohighlight">\(\Delta\varepsilon_{11},
+\Delta\varepsilon_{22}, \Delta\gamma_{12}\)</span> are prescribed, its <span class="math notranslate nohighlight">\(\Delta\gamma_{13}, \Delta\gamma_{23}\)</span> are the initial guess (zero from the elements), and <span class="math notranslate nohighlight">\(\Delta\varepsilon_{33}\)</span> starts from the isochoric guess. </p></li>
 <li><p><strong>computeStress3D</strong> – The 3D stress update, e.g., a variant of <a class="reference internal" href="#class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60"><span class="std std-ref">computeStress()</span></a> with additional outputs.</p></li>
 </ul>
 </dd>
@@ -1277,6 +1279,8 @@ This function returns the value of the generic degradation function along with i
 <div class="docutils container">
 <em>#include “Marmot/MarmotJournal.h”</em></div>
 <div class="docutils container">
+<em>#include “Marmot/MarmotLowerDimensionalStress.h”</em></div>
+<div class="docutils container">
 <em>#include “Marmot/MarmotMath.h”</em></div>
 <div class="docutils container">
 <em>#include “Marmot/MarmotStateHelpers.h”</em></div>
@@ -1294,21 +1298,22 @@ This function returns the value of the generic degradation function along with i
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialGeneralGradientEnhancedHypoElastic.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e9aaac038443c967b66dfb20cf9baa7560a92fe3.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-5114526b10ce689e22eba498953ff7125dea9d88.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
-    &quot;4&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
-    &quot;5&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;6&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;7&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;9&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;10&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;11&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;4&quot; [label=&quot;Marmot/MarmotLowerDimensionalStress.h&quot; tooltip=&quot;Marmot/MarmotLowerDimensionalStress.h&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;7&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;8&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;9&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;10&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;12&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -1319,6 +1324,7 @@ This function returns the value of the generic degradation function along with i
     &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -1355,7 +1361,7 @@ This function returns the value of the generic degradation function along with i
 <em>#include &lt;unordered_map&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-b43f04085805b7f879dd9fa43358ba0486e50159.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-51f31b39d028172146656efc039fa5136024a7a4.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -1363,17 +1369,18 @@ This function returns the value of the generic degradation function along with i
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
-    &quot;5&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
-    &quot;6&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;7&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;8&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;13&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
-    &quot;9&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;10&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;14&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
-    &quot;15&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
-    &quot;12&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotLowerDimensionalStress.h&quot; tooltip=&quot;Marmot/MarmotLowerDimensionalStress.h&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;7&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;8&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;9&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;14&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
+    &quot;10&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;11&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;12&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;15&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;16&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;13&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -1384,11 +1391,12 @@ This function returns the value of the generic degradation function along with i
     &quot;2&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;16&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -1403,7 +1411,7 @@ This function returns the value of the generic degradation function along with i
 <em>#include “Marmot/MarmotTypedefs.h”</em></div>
 <p>Include dependency graph for MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-09aeb3940a2b2a9ff9fa7ae7f75fee3365169084.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-bd44889c448cc03dbd61749ee5f6f921bda68375.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -1411,14 +1419,15 @@ This function returns the value of the generic degradation function along with i
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticEnergyTangents.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
-    &quot;5&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
-    &quot;6&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;7&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;8&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;9&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;10&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;12&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotLowerDimensionalStress.h&quot; tooltip=&quot;Marmot/MarmotLowerDimensionalStress.h&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;7&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;8&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;9&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;10&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;11&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;12&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;13&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -1429,8 +1438,9 @@ This function returns the value of the generic degradation function along with i
     &quot;2&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -1478,24 +1488,25 @@ This function returns the value of the generic degradation function along with i
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotWaveSpeedContract.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d39bf465de0f41ac7c49f4038de91cd43a984ca2.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-77d94357da5bacf53de4f3a79ac7577c60d4c464.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;14&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
+    &quot;15&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotExceptions.h&quot; tooltip=&quot;Marmot/MarmotExceptions.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
-    &quot;5&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
-    &quot;6&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;13&quot; [label=&quot;Marmot/MarmotTesting.h&quot; tooltip=&quot;Marmot/MarmotTesting.h&quot;]
-    &quot;7&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;8&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;9&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;10&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;12&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotLowerDimensionalStress.h&quot; tooltip=&quot;Marmot/MarmotLowerDimensionalStress.h&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotMath.h&quot; tooltip=&quot;Marmot/MarmotMath.h&quot;]
+    &quot;7&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
+    &quot;14&quot; [label=&quot;Marmot/MarmotTesting.h&quot; tooltip=&quot;Marmot/MarmotTesting.h&quot;]
+    &quot;8&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;9&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;10&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;11&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;12&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;13&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -1506,13 +1517,14 @@ This function returns the value of the generic degradation function along with i
     &quot;3&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
