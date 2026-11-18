@@ -27,6 +27,7 @@
 #include "Marmot/MarmotMPMLibrary.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
+#include <array>
 #include <cmath>
 #include <functional>
 #include <memory>
@@ -523,6 +524,271 @@ namespace {
     }
   }
 
+  // ---------------------------------------------------------------------------------------------------------------
+  // F-bar patch: three Quad4 cells sharing nodes (or one), driven in the host's two passes; global dofs
+
+  // FINITESTRAINJ2PLASTICITY: K, G, fy, fyInf, eta, H, implementationType, density
+  const std::vector< double > j2Props = { 833., 385., 6., 6., 0., 0., 1., 1.0 };
+
+  struct Patch {
+    // global nodes (0,0) (2,0) (4,0) (0,1) (2,1) (4,1) (0,2) (2,2); cells [0,1,4,3] [1,2,5,4] [3,4,7,6]
+    std::vector< double >                                                                    X;
+    std::vector< std::array< int, 4 > >                                                      conn;
+    std::array< std::vector< double >, 3 >                                                   cellNodes;
+    std::vector< std::unique_ptr< Marmot::Discretizations::Cells::Cell > >                   cells;
+    std::vector< std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* > >    cellMps;
+    std::vector< std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > > mps;
+    std::vector< std::vector< double > >                                                     stateVars;
+    std::unique_ptr< Marmot::Discretizations::MaterialSection >                              section;
+    int                                                                                      nDof;
+    bool                                                                                     patch;
+
+    Patch( int nCells, bool plastic, bool patchMode = true, bool fBar = true ) : patch( patchMode )
+    {
+      X    = { 0, 0, 2, 0, 4, 0, 0, 1, 2, 1, 4, 1, 0, 2, 2, 2 };
+      conn = { { 0, 1, 4, 3 }, { 1, 2, 5, 4 }, { 3, 4, 7, 6 } };
+      conn.resize( nCells );
+      nDof = 16;
+      section.reset( plastic ? new Marmot::Discretizations::MaterialSection( "FINITESTRAINJ2PLASTICITY",
+                                                                             j2Props.data(),
+                                                                             (int)j2Props.size() )
+                             : new Marmot::Discretizations::MaterialSection( "COMPRESSIBLENEOHOOKE",
+                                                                             matProps.data(),
+                                                                             (int)matProps.size() ) );
+      // material points in fractions of each cell, off the cell centers
+      const std::vector< std::vector< std::array< double, 2 > > > fractions =
+        { { { 0.80, 0.60 }, { 0.65, 0.85 }, { 0.9, 0.9 } },
+          { { 0.2, 0.3 }, { 0.7, 0.2 }, { 0.3, 0.75 }, { 0.8, 0.8 } },
+          { { 0.15, 0.85 }, { 0.3, 0.6 } } };
+      int label_ = 1;
+      for ( int c = 0; c < nCells; c++ ) {
+        auto& nodes = cellNodes[c]; // the cell keeps a view of its node coordinates
+        for ( int a : conn[c] )
+          nodes.insert( nodes.end(), { X[2 * a], X[2 * a + 1] } );
+        cells.emplace_back(
+          Marmot::Registry::CellFactory::createCell( fBar ? "DisplacementFBar/Quad4" : "Displacement/Quad4",
+                                                     c + 1,
+                                                     nodes.data(),
+                                                     8 ) );
+        cellMps.emplace_back();
+        for ( const auto& f : fractions[c] ) {
+          const double x[2] = { nodes[0] + f[0] * 2.0, nodes[1] + f[1] * 1.0 };
+          mps.emplace_back( Marmot::Registry::MaterialPointFactory::createMaterialPoint( "Displacement/PlaneStrain",
+                                                                                         label_++,
+                                                                                         x,
+                                                                                         2,
+                                                                                         0.1 + 0.05 * c ) );
+          cellMps.back().push_back( mps.back().get() );
+        }
+      }
+      for ( auto& mp : mps ) {
+        mp->assignMaterial( *section );
+        stateVars.emplace_back( mp->getNumberOfRequiredStateVars(), 0.0 );
+        mp->assignStateVars( stateVars.back().data(), static_cast< int >( stateVars.back().size() ) );
+        mp->initializeYourself();
+      }
+      assign();
+    }
+
+    void assign()
+    {
+      for ( size_t c = 0; c < cells.size(); c++ )
+        cells[c]->assignMaterialPoints( cellMps[c] );
+    }
+
+    Eigen::VectorXd gather( const Eigen::VectorXd& U, size_t c ) const
+    {
+      Eigen::VectorXd q( 8 );
+      for ( int a = 0; a < 4; a++ )
+        q.segment< 2 >( 2 * a ) = U.segment< 2 >( 2 * conn[c][a] );
+      return q;
+    }
+
+    // the host's evaluation: pass 1 (patch value), interpolation, material points, kernels, patch coupling
+    std::pair< Eigen::VectorXd, Eigen::MatrixXd > kernels( const Eigen::VectorXd& U, double* JA = nullptr )
+    {
+      Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof ), dv = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+      if ( patch ) {
+        double v = 0, w = 0;
+        for ( size_t c = 0; c < cells.size(); c++ ) {
+          double          vc, wc;
+          Eigen::VectorXd dvc( 8 );
+          cells[c]->computeProjectionContribution( gather( U, c ).data(), &vc, &wc, dvc.data() );
+          v += vc;
+          w += wc;
+          for ( int a = 0; a < 4; a++ )
+            dv.segment< 2 >( 2 * conn[c][a] ) += dvc.segment< 2 >( 2 * a );
+        }
+        for ( auto& cell : cells )
+          cell->setProjectedValue( v / w );
+        dv /= w;
+        if ( JA )
+          *JA = v / w;
+      }
+      for ( auto& mp : mps )
+        mp->prepareYourself( 1.0, 1.0 );
+      for ( size_t c = 0; c < cells.size(); c++ )
+        cells[c]->interpolateFieldsToMaterialPoints( gather( U, c ).data() );
+      for ( auto& mp : mps )
+        mp->computeYourself( 1.0, 1.0 );
+      for ( size_t c = 0; c < cells.size(); c++ ) {
+        Eigen::VectorXd Pc = Eigen::VectorXd::Zero( 8 ), a( 8 );
+        Eigen::MatrixXd Kc = Eigen::MatrixXd::Zero( 8, 8 );
+        const auto      q  = gather( U, c );
+        cells[c]->computeMaterialPointKernels( q.data(), Pc.data(), Kc.data(), 1.0, 1.0 );
+        Eigen::VectorXd aG = Eigen::VectorXd::Zero( nDof );
+        if ( patch )
+          cells[c]->getProjectionSensitivity( a.data() );
+        for ( int A = 0; A < 4; A++ ) {
+          P.segment< 2 >( 2 * conn[c][A] ) += Pc.segment< 2 >( 2 * A );
+          if ( patch )
+            aG.segment< 2 >( 2 * conn[c][A] ) += a.segment< 2 >( 2 * A );
+          for ( int B = 0; B < 4; B++ )
+            K.block< 2, 2 >( 2 * conn[c][A], 2 * conn[c][B] ) += Kc.block< 2, 2 >( 2 * A, 2 * B );
+        }
+        if ( patch )
+          K += aG * dv.transpose();
+      }
+      return { P, K };
+    }
+
+    std::pair< Eigen::VectorXd, Eigen::MatrixXd > trial( const Eigen::VectorXd& U, double* JA = nullptr )
+    {
+      const auto backup = stateVars;
+      auto       result = kernels( U, JA );
+      stateVars         = backup;
+      for ( size_t i = 0; i < mps.size(); i++ )
+        mps[i]->assignStateVars( stateVars[i].data(), static_cast< int >( stateVars[i].size() ) );
+      return result;
+    }
+
+    void accept( const Eigen::VectorXd& U )
+    {
+      kernels( U );
+      for ( auto& mp : mps )
+        mp->acceptStateAndPosition();
+      assign(); // a new increment: the host reassigns (the points stay in their cells)
+    }
+
+    double volumeChange( size_t k ) const
+    {
+      Eigen::Map< const Eigen::Matrix3d > dF( mps[k]->getStateView( "delta deformation gradient" ).stateLocation );
+      return dF.determinant();
+    }
+  };
+
+  void checkPatch()
+  {
+    for ( int nCells : { 1, 3 } )
+      for ( bool plastic : { false, true } )
+        for ( bool afterStep : { false, true } ) {
+          const std::string what = Marmot::Utilities::MakeString()
+                                   << "DisplacementFBar/Quad4 patch of " << nCells << " cell(s), "
+                                   << ( plastic ? "J2 plastic" : "elastic" ) << ( afterStep ? ", second" : ", first" )
+                                   << " step";
+          Patch        s( nCells, plastic );
+          const double scale = plastic ? 0.25 : 1.0;
+          if ( afterStep )
+            s.accept( increment( s.nDof, 0.03 * scale ) );
+          const Eigen::VectorXd U = increment( s.nDof, ( afterStep ? 0.02 : 0.04 ) * scale );
+          double                JA;
+          const auto [P, K]            = s.trial( U, &JA );
+          const auto            backup = s.stateVars;
+          std::vector< double > alphaPn;
+          if ( plastic )
+            for ( auto& mp : s.mps )
+              alphaPn.push_back( mp->getStateView( "alphaP" ).stateLocation[0] );
+          s.kernels( U ); // the state of the trial, to read the volume changes
+          double v = 0, w = 0;
+          for ( size_t k = 0; k < s.mps.size(); k++ ) {
+            throwExceptionOnFailure( std::abs( s.volumeChange( k ) - JA ) < 1e-13 && std::abs( JA - 1 ) > 1e-4,
+                                     Marmot::Utilities::MakeString()
+                                       << what << ": every point must receive the volume change of the patch, "
+                                       << s.volumeChange( k ) << " vs " << JA );
+            Eigen::Map< const Eigen::Matrix3d > Fn( s.mps[k]->getStateView( "deformation gradient" ).stateLocation );
+            v += s.mps[k]->getVolumeUndeformed() * Fn.determinant();
+            w += s.mps[k]->getVolumeUndeformed() * Fn.determinant() / JA;
+          }
+          // the patch keeps its volume: sum V_n dJ_A = sum V_n det dF_p (checked through the mean of the J's)
+          throwExceptionOnFailure( std::abs( v / w - JA ) < 1e-12, what + ": patch volume" );
+          if ( plastic ) {
+            bool yielded = false;
+            for ( size_t k = 0; k < s.mps.size(); k++ )
+              yielded |= s.mps[k]->getStateView( "alphaP" ).stateLocation[0] > alphaPn[k] + 1e-8;
+            throwExceptionOnFailure( yielded, what + ": the test must reach the plastic regime" );
+          }
+          s.stateVars = backup;
+          for ( size_t i = 0; i < s.mps.size(); i++ )
+            s.mps[i]->assignStateVars( s.stateVars[i].data(), static_cast< int >( s.stateVars[i].size() ) );
+          const double err = tangentError( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, U, K );
+          throwExceptionOnFailure( err < 1e-7,
+                                   Marmot::Utilities::MakeString()
+                                     << what << ": tangent of the patch inconsistent, relative error " << err );
+        }
+
+    // at a zero increment from the reference state the tangent of the patch is symmetric positive semidefinite
+    {
+      Patch                 s( 3, false );
+      const Eigen::VectorXd U                               = Eigen::VectorXd::Zero( s.nDof );
+      const auto [P, K]                                     = s.trial( U );
+      const double                                     asym = ( K - K.transpose() ).norm() / K.norm();
+      Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd > eig( 0.5 * ( K + K.transpose() ) );
+      throwExceptionOnFailure( asym < 1e-12 && eig.eigenvalues().minCoeff() > -1e-9 * eig.eigenvalues().maxCoeff(),
+                               Marmot::Utilities::MakeString()
+                                 << "F-bar patch at zero increment: asymmetry " << asym << ", lowest eigenvalue "
+                                 << eig.eigenvalues().minCoeff() );
+    }
+
+    // rigid rotation: no load; homogeneous increment: the DisplacementCell
+    {
+      Patch           s( 3, false );
+      const double    phi = 0.5;
+      Eigen::Matrix2d R;
+      R << std::cos( phi ), -std::sin( phi ), std::sin( phi ), std::cos( phi );
+      Eigen::Matrix2d H;
+      H << 0.02, -0.03, 0.01, 0.04;
+      Eigen::VectorXd Ur( s.nDof ), Uh( s.nDof );
+      for ( int a = 0; a < 8; a++ ) {
+        const Eigen::Vector2d Xa( s.X[2 * a], s.X[2 * a + 1] );
+        Ur.segment< 2 >( 2 * a ) = ( R - Eigen::Matrix2d::Identity() ) * Xa;
+        Uh.segment< 2 >( 2 * a ) = H * Xa;
+      }
+      const auto Pr = s.trial( Ur ).first;
+      throwExceptionOnFailure( Pr.norm() < 1e-8,
+                               Marmot::Utilities::MakeString()
+                                 << "F-bar patch: rigid rotation must not load the patch, |P| = " << Pr.norm() );
+      Patch      plain( 3, false, false, false );
+      const auto Ph = s.trial( Uh ).first;
+      const auto Pp = plain.trial( Uh ).first;
+      throwExceptionOnFailure( ( Ph - Pp ).norm() <= 1e-10 * Pp.norm(),
+                               "F-bar patch: a homogeneous increment must reproduce the DisplacementCell" );
+    }
+
+    // a patch of one cell is the cell-average variant: the volume-weighted mean of the det dF_p of the cell
+    {
+      Patch                 s( 1, false );
+      Patch                 plain( 1, false, false, false );
+      const Eigen::VectorXd U = increment( s.nDof, 0.04 );
+      double                JA;
+      s.trial( U, &JA );
+      plain.kernels( U );
+      double v = 0, w = 0;
+      for ( size_t k = 0; k < plain.mps.size(); k++ ) {
+        v += plain.mps[k]->getVolumeUndeformed() * plain.volumeChange( k );
+        w += plain.mps[k]->getVolumeUndeformed();
+      }
+      throwExceptionOnFailure( std::abs( JA - v / w ) < 1e-13,
+                               "F-bar patch of one cell: the volume change must be the mean over the cell" );
+    }
+
+    // the B-spline cells support the patch too
+    {
+      Setup< 2 > s( bSpline< 2 >( 2 ), Points::ThreeOffCenter );
+      throwExceptionOnFailure( s.cell->hasPatchProjection(), "B-spline F-bar cells must support the patch" );
+    }
+  }
+
 } // namespace
 
 int main()
@@ -531,7 +797,8 @@ int main()
                                                            []() { checkCell< 2 >( lagrangian< 2 >( true ) ); },
                                                            []() { checkCell< 3 >( lagrangian< 3 >() ); },
                                                            []() { checkCell< 3 >( lagrangian< 3 >( true ) ); },
-                                                           []() { checkProjectionPoint(); } };
+                                                           []() { checkProjectionPoint(); },
+                                                           []() { checkPatch(); } };
   for ( int p = 1; p <= 3; p++ ) {
     testFunctions.push_back( [p]() { checkCell< 2 >( bSpline< 2 >( p ) ); } );
     testFunctions.push_back( [p]() { checkCell< 3 >( bSpline< 3 >( p ) ); } );
