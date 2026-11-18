@@ -28,7 +28,6 @@
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
-#include <array>
 #include <cmath>
 #include <vector>
 
@@ -145,23 +144,6 @@ namespace Marmot::Materials {
       state1D() : stress( 0.0 ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr ) {}
     };
 
-    /// @brief Structure holding the material state at a material point (fiber) of a beam: the axial and the
-    /// transverse shear stresses, \f$[ \sigma_{11}, \sigma_{12}, \sigma_{13} ]\f$, all other stresses vanish.
-    struct stateBeam {
-      Marmot::Math::Vector3d stress;               ///< [sigma11, sigma12, sigma13]
-      double                 elasticEnergyDensity; ///< Elastic strain energy density
-      double                 dissipation;          ///< Dissipation
-      double*                stateVars;            ///< Pointer to array of state variables
-
-      stateBeam()
-        : stress( Marmot::Math::Vector3d::Zero() ),
-          elasticEnergyDensity( 0.0 ),
-          dissipation( 0.0 ),
-          stateVars( nullptr )
-      {
-      }
-    };
-
     /// @brief Structure carrying (pseudo-)time information passed to the material routines.
     struct timeInfo {
       double time; ///< Current (pseudo-)time
@@ -214,7 +196,17 @@ namespace Marmot::Materials {
     }
 
     /**
-     * Plane stress implementation of @ref computeStress.
+     * Plane stress implementation of computeStress(): \f$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\f$ for the
+     * prescribed in-plane strain increment \f$[\Delta\varepsilon_{11}, \Delta\varepsilon_{22}, \Delta\gamma_{12}]\f$,
+     * by Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() around @ref computeStress, with the
+     * isochoric initial guess \f$\Delta\varepsilon_{33} = -\Delta\varepsilon_{11} - \Delta\varepsilon_{22}\f$.
+     * The tangent is the condensed tangent of the converged 3D state.
+     * @param[in,out] stress2D in-plane stress, energies and state variables
+     * @param[out] dStress_dStrain2D the condensed in-plane tangent
+     * @param[in] dStrain2D the in-plane strain increment
+     * @param[in] timeInfo Structure carrying time information
+     * @throws Marmot::Utilities::StressUpdateFailed if the plane stress iteration fails; the state variables are
+     * then those of the start of the increment
      */
     virtual void computePlaneStress( state2D&                      stress2D,
                                      Marmot::Math::Matrix3d&       dStress_dStrain2D,
@@ -222,72 +214,22 @@ namespace Marmot::Materials {
                                      const timeInfo&               timeInfo ) const;
 
     /**
-     * Uniaxial stress implementation of @ref computeStress.
+     * Uniaxial stress implementation of computeStress(): all stress components but \f$\sigma_{11}\f$ vanish for
+     * the prescribed strain increment \f$\Delta\varepsilon_{11}\f$, by
+     * Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() around @ref computeStress, with the initial
+     * guess of zero lateral and shear strains. The tangent is the condensed tangent of the converged 3D state.
+     * @param[in,out] stress1D stress, energies and state variables
+     * @param[out] dStress_dStrain1D the condensed tangent \f$\mathrm{d}\sigma_{11} / \mathrm{d}\varepsilon_{11}\f$
+     * @param[in] dStrain the strain increment \f$\Delta\varepsilon_{11}\f$
+     * @param[in] timeInfo Structure carrying time information
+     * @throws Marmot::Utilities::StressUpdateFailed if the uniaxial stress iteration fails; the state variables are
+     * then those of the start of the increment
      */
     virtual void computeUniaxialStress( state1D&        stress1D,
                                         double&         dStress_dStrain1D,
                                         const double    dStrain,
                                         const timeInfo& timeInfo ) const;
 
-    /**
-     * Beam stress implementation of @ref computeStress. The stress state of a fiber of a beam, with the prescribed
-     * axial strain and transverse shear strains \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12}, \Delta\gamma_{13} ]\f$
-     * and \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$ (computeStressWithFreeComponents()). The tangent is the
-     * condensed 3x3 tangent \f$\partial [ \sigma_{11}, \sigma_{12}, \sigma_{13} ] / \partial [ \varepsilon_{11},
-     * \gamma_{12}, \gamma_{13} ]\f$. Throws StressUpdateFailed if the iteration does not converge.
-     *
-     * @param[in,out] stateBeam           stresses, energy, dissipation and state variables of the fiber
-     * @param[out]    dStress_dStrainBeam the condensed tangent
-     * @param[in]     dStrainBeam         the increment \f$[ \Delta\varepsilon_{11}, \Delta\gamma_{12},
-     * \Delta\gamma_{13} ]\f$
-     * @param[in]     timeInfo            (pseudo-)time and its increment
-     */
-    virtual void computeBeamStress( stateBeam&                    stateBeam,
-                                    Marmot::Math::Matrix3d&       dStress_dStrainBeam,
-                                    const Marmot::Math::Vector3d& dStrainBeam,
-                                    const timeInfo&               timeInfo ) const;
-
-  protected:
-    /**
-     * @brief A reduced stress state by static condensation of the free components: the strain components
-     * \f$\boldsymbol{\varepsilon}_p\f$ are prescribed, the stress components \f$\boldsymbol{\sigma}_f = \mathbf{0}\f$,
-     * all other strain increments are zero.
-     *
-     * @details Indices in Marmot's Voigt order \f$[11, 22, 33, 12, 13, 23]\f$ (shear strains as engineering strains),
-     * e.g. plane stress \f$p = \{0, 1, 3\}, f = \{2\}\f$, uniaxial stress \f$p = \{0\}, f = \{1, 2\}\f$, beam stress
-     * \f$p = \{0, 3, 4\}, f = \{1, 2, 5\}\f$. Newton's method on the free strains: the 3D material (computeStress())
-     * is evaluated from the start-of-increment state every iteration (the state variables are reset), the free strains
-     * are corrected by \f$\Delta\boldsymbol{\varepsilon}_f \leftarrow \Delta\boldsymbol{\varepsilon}_f -
-     * \mathbf{C}_{ff}^{-1} \boldsymbol{\sigma}_f\f$, until \f$\max|\sigma_f| \leq 10^{-12} s\f$ (or \f$10^{-9} s\f$
-     * after 8 iterations), with the stress scale \f$s = \max(1, \max|\sigma|)\f$ of the prescribed components: the
-     * round-off of \f$\boldsymbol{\sigma}_f\f$ is relative to the size of the stresses, so an absolute tolerance cannot
-     * be met for large stresses. The tangent is the condensed one, \f$\mathbf{C}_{pp} - \mathbf{C}_{pf}
-     * \mathbf{C}_{ff}^{-1} \mathbf{C}_{fp}\f$.
-     *
-     * The definition is in MarmotMaterialHypoElastic.cpp and explicitly instantiated there only for the three reduced
-     * stress states that use it: `<3, 1>` (computePlaneStress()), `<1, 2>` (computeUniaxialStress()) and `<3, 3>`
-     * (computeBeamStress()). Another combination compiles but does not link; add its instantiation there.
-     *
-     * @tparam nP number of prescribed components
-     * @tparam nF number of free components
-     * @param[in,out] state            in: the start-of-increment stress (its free components are ignored), energy,
-     * dissipation and state variables; out: the updated ones
-     * @param[out]    dStressP_dStrainP the condensed tangent of the prescribed components
-     * @param[in,out] dStrain          in: the prescribed strain increments at p and an initial guess at f (others
-     * zero); out: the converged increment
-     * @param[in]     p                the prescribed components
-     * @param[in]     f                the free components
-     * @param[in]     timeInfo         (pseudo-)time and its increment
-     */
-    template < int nP, int nF >
-    void computeStressWithFreeComponents( state3D&                         state,
-                                          Eigen::Matrix< double, nP, nP >& dStressP_dStrainP,
-                                          Marmot::Math::Vector6d&          dStrain,
-                                          const std::array< int, nP >&     p,
-                                          const std::array< int, nF >&     f,
-                                          const timeInfo&                  timeInfo ) const;
-
-  public:
     /**
      * @brief Get a view to the state variables.
      * @param stateName Name of the state variable

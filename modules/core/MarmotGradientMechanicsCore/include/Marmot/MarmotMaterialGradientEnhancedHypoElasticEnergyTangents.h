@@ -80,7 +80,8 @@ namespace Marmot::Materials {
      * @param[in,out] tan Algorithmic tangents of the converged 3D update.
      * @param[in] inc Increment of the in-plane strain and the nonlocal variables.
      * @param[out] energyTan Derivatives of the updated elastic energy density and dissipation wrt the 3D strain
-     * increment and the nonlocal variables; the condensation of the out-of-plane strain is left to the element.
+     * increment and the nonlocal variables; the condensation of the free strains
+     * \f$\varepsilon_{33}, \gamma_{13}, \gamma_{23}\f$ is left to the element.
      * @details The default is the plane stress iteration of MaterialGradientEnhancedHypoElastic::computePlaneStress
      * (MaterialGradientEnhancedHypoElastic::iteratePlaneStress) around computeStressWithEnergyTangents(). A material
      * that overrides MaterialGradientEnhancedHypoElastic::computePlaneStress overrides this method consistently, so

@@ -55,12 +55,6 @@ All notable changes to Marmot are documented in this file. The format follows
 - `B2D2CR` and `B3D2CR`: co-rotational (finite rotation) variants of `B2D2` / `B3D2` with the same properties
   and section (2D: Crisfield; 3D: Battini and Pacoste, exact geometric stiffness by forward automatic
   differentiation); arbitrary rigid rotations, small local strains.
-- `Materials::MaterialHypoElastic::computeBeamStress`: beam stress reduction (σ22 = σ33 = σ23 = 0; axial and
-  transverse shear strains prescribed, condensed 3x3 tangent).
-- `Materials::MaterialHypoElastic::computeStressWithFreeComponents< nP, nF >`: one implementation of the reduced
-  stress states, by static condensation of the free components (prescribed strains at p, zero stresses at f, Newton
-  on the free strains from the start-of-increment state, condensed tangent `Cpp - Cpf Cff^-1 Cfp`, convergence relative
-  to the stress). `computePlaneStress`, `computeUniaxialStress` and `computeBeamStress` call it.
 - Quadrature catalogue: the 4-point Gauss-Legendre rule on `Line` (degree 7).
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
@@ -118,6 +112,15 @@ All notable changes to Marmot are documented in this file. The format follows
   axisymmetric section of `DisplacementFiniteElement` use it.
 - `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
   and the reference measure, used for the quadrature weights and the consistent mass.
+- `Marmot::ContinuumMechanics::ReducedStress` (`MarmotLowerDimensionalStress.h`, header only): one static
+  condensation for reduced stress states with prescribed strain components `p` and stress-free components `f`.
+  `computeReducedStress( computeStress3D, dStrain, p, f )` iterates a 3D stress update (a callable) on the strains at
+  `f` (Newton, tolerance relative to the largest stress of the call, 1e-12, 1e-9 from the 9th evaluation, at most 15)
+  and returns the condensed tangent, the sensitivity `dStrainF_dStrainP = -Cff^+ Cfp` and the complete orthogonal
+  decomposition of `Cff` (pseudo-inverse `Cff^+`, the inverse if it is regular), so that callers condense further
+  derivatives the same way; `condense( C, p, f )` is its algebra for a given
+  tangent. The index sets of plane stress (`planeStressPrescribed`, `planeStressFree`) and uniaxial stress
+  (`uniaxialStressPrescribed`, `uniaxialStressFree`) are defined there.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -171,12 +174,43 @@ All notable changes to Marmot are documented in this file. The format follows
   solid, plane strain and axisymmetric sections one material update through the 3D interface. Results are unchanged.
   The consistent mass takes the thickness or cross section from the element property instead of recovering it from
   the nearest quadrature point (identical up to rounding).
+- `MarmotGradientMechanicsCore` requires `MarmotMechanicsCore` (for `ReducedStress`); a build with a `CORE_MODULES`
+  filter that selects the former must select the latter, too.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
   with `axisymmetric = true` and call `computeSurfaceNormalVectorialLoadVector()`.
 
+### Removed
+- **Breaking:** `ContinuumMechanics::UniaxialStress::getUniaxialStressTangent()` (its only user was
+  `MaterialHypoElastic::computeUniaxialStress()`) and `ContinuumMechanics::PlaneStress::getPlaneStressTangent()` (used
+  by `MaterialHypoElastic::computePlaneStress()` and `GeneralGradientEnhancedDisplacementFiniteElement`): the condensed
+  tangent comes from `ReducedStress`.
+
 ### Fixed
+- **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`
+  and `computeUniaxialStress()` (still virtual) and `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()` (the
+  default `computePlaneStress()` and `computePlaneStressWithEnergyTangents()`) are thin wrappers around
+  `ReducedStress::computeReducedStress()` with the full definitions of the stress states: plane stress
+  σ33 = σ13 = σ23 = 0, uniaxial stress all stresses but σ11 zero. They held γ13 = γ23 = 0 (plane stress) and
+  γ12 = γ13 = γ23 = 0 (uniaxial stress) instead, which is exact only for materials without coupling between normal and
+  out-of-plane shear components (isotropic, orthotropic in the axes of the plane); for other materials, e.g. an
+  orthotropic `LinearElastic` with axes rotated out of the plane, stresses and tangents change. Further:
+  - The tolerances are relative to the largest stress component of the call (1e-12, 1e-9 after 8 iterations) instead
+    of absolute (1e-10 / 1e-8 for plane stress, 1e-13 / 1e-10 for uniaxial stress, in the units of the material) or,
+    in the gradient-enhanced iteration, relative to max(1, |σ|) with 1e-10 / 1e-5 and a strain criterion; at most 15
+    evaluations instead of 13.
+  - A singular tangent of the stress-free components `Cff` throws `StressUpdateFailed` (cutback) only if the reduced
+    problem is inconsistent (the stress at `p` depends on a strain along the null space of `Cff`, or `σ_f` or `Cfp`
+    has a part outside its range; thresholds relative, `ReducedStress::consistencyTolerance`), instead of using a
+    compliance clamped to 1e10; the state variables are then reset to the start of the increment. A consistent
+    singular `Cff`, e.g. a fully softened Rankine crack without out-of-plane shear stiffness, is condensed with its
+    pseudo-inverse (minimum norm corrections: the undetermined strains keep their initial guess).
+  - The uniaxial tangent is the condensation of the converged iteration; it condensed all five other components while
+    the iteration freed only the lateral normal strains.
+  - No `Journal` warning before the throw.
+  - `GeneralGradientEnhancedDisplacementFiniteElement` condenses the coupling tangents and the energy gradients in plane
+    stress with all three free strains (`ReducedStress::condense()`), not only with ε33.
 - `VonMises` and `ADVonMises`: the return mapping converges on a residual relative to the norm of the deviatoric
   trial stress, `|g| <= 1e-12 * ||s_trial||`, instead of an absolute one (`VonMises` 1e-12 MPa, `ADVonMises`
   1e-10 MPa). `g` is a difference of numbers of the size of `||s_trial||`, so its round-off is about
@@ -199,12 +233,6 @@ All notable changes to Marmot are documented in this file. The format follows
   dissipation increment is the plastic work f_y(κₙ₊₁) Δκ of the return mapping instead of 2G Δλ n : Δε. The yield
   stress is floored at zero, so that a softening law flows without stress beyond zero strength instead of reversing
   the stress, and a trial stress without deviatoric part is elastic. This applies to `computeStressExplicit()` too.
-- **Results:** `MaterialHypoElastic::computePlaneStress` and `computeUniaxialStress` (all plane stress elements, the
-  truss and the 2D beam fibers) converge on a residual relative to the stress, `|sigma_f| <= 1e-12 max(1, |sigma|)`,
-  instead of an absolute one (plane stress 1e-10, uniaxial 1e-13). The round-off of the free stress components is
-  about eps |sigma|, so the absolute tolerance could not be met for large stresses: in SI units (Pa) both iterations
-  failed already for a linear elastic material. Results change at round-off level. The uniaxial tangent is condensed
-  over the iterated components (sigma22, sigma33) instead of all five; for isotropic materials both are equal.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
