@@ -26,6 +26,7 @@
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTransportMaterialFactory.h"
 #include <cmath>
+#include <limits>
 #include <memory>
 #include <stdexcept>
 
@@ -139,6 +140,18 @@ namespace {
     throwExceptionOnFailure( throws( negativeCapacity, 3 ), "negative capacity must be rejected" );
     const double indefinite[] = { 1., 1., 1., 1., 1., 2., 0., 0., 0., 0., 0. };
     throwExceptionOnFailure( throws( indefinite, 11 ), "indefinite conductivity must be rejected" );
+    const double nan                 = std::numeric_limits< double >::quiet_NaN();
+    const double inf                 = std::numeric_limits< double >::infinity();
+    const double nanConductivity[]   = { 1., 1., nan };
+    const double infConductivity[]   = { 1., 1., inf };
+    const double nanOffDiagonal[]    = { 1., 1., 1., 1., 1., nan, 0., 0., 0., 0., 0. };
+    const double infCapacity[]       = { inf, 1., 1. };
+    const double nanTemperatureLaw[] = { 1., 1., 1., nan, 0., 0. };
+    throwExceptionOnFailure( throws( nanConductivity, 3 ), "NaN conductivity must be rejected" );
+    throwExceptionOnFailure( throws( infConductivity, 3 ), "infinite conductivity must be rejected" );
+    throwExceptionOnFailure( throws( nanOffDiagonal, 11 ), "NaN conductivity component must be rejected" );
+    throwExceptionOnFailure( throws( infCapacity, 3 ), "infinite capacity must be rejected" );
+    throwExceptionOnFailure( throws( nanTemperatureLaw, 6 ), "NaN beta_k must be rejected" );
 
     // a conductivity factor 1 + beta_k (T - T_ref) <= 0 is reported, not used
     const double                  p[]      = { 1., 1., 1., -0.01, 0., 0. };
