@@ -29,18 +29,18 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the B-spline basis function <formula id="25">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
+<para>Evaluate the B-spline basis function <formula id="203">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="29">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+<para><formula id="206">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
              + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
-\]</formula> where a term is omitted ( <formula id="30">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="31">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
+\]</formula> where a term is omitted ( <formula id="207">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="208">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Degree <formula id="26">$ p $</formula> of the B-spline (order <formula id="32">$ p + 1 $</formula>). </para>
+<para>Degree <formula id="54">$ p $</formula> of the B-spline (order <formula id="209">$ p + 1 $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -49,7 +49,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="33">$ u $</formula>. </para>
+<para>Parameter value <formula id="210">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -57,7 +57,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="34">$ z $</formula>; entries <formula id="35">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="211">$ z $</formula>; entries <formula id="212">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -65,11 +65,11 @@
 <parametername direction="in">i</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Index <formula id="24">$ i $</formula> of the basis function. </para>
+<para>Index <formula id="44">$ i $</formula> of the basis function. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="25">$ N_{i,p}(u) $</formula>. </para>
+<simplesect kind="return"><para><formula id="203">$ N_{i,p}(u) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -103,18 +103,18 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the derivative <formula id="28">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
+<para>Evaluate the derivative <formula id="205">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="36">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
+<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="213">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
   + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N&apos;_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
-\]</formula> omitting terms with a knot difference below <formula id="31">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="37">$ = 0 $</formula>.</para>
+\]</formula> omitting terms with a knot difference below <formula id="208">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="214">$ = 0 $</formula>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Degree <formula id="26">$ p $</formula> of the B-spline. </para>
+<para>Degree <formula id="54">$ p $</formula> of the B-spline. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -123,7 +123,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="33">$ u $</formula>. </para>
+<para>Parameter value <formula id="210">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -131,7 +131,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="34">$ z $</formula>; entries <formula id="35">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="211">$ z $</formula>; entries <formula id="212">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -139,11 +139,11 @@
 <parametername direction="in">i</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Index <formula id="24">$ i $</formula> of the basis function. </para>
+<para>Index <formula id="44">$ i $</formula> of the basis function. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="28">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
+<simplesect kind="return"><para><formula id="205">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -172,7 +172,7 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="38">$ [z_i, z_{i+1}) $</formula>. </para>
+<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="215">$ [z_i, z_{i+1}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -180,7 +180,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="33">$ u $</formula>. </para>
+<para>Parameter value <formula id="210">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -188,7 +188,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="34">$ z $</formula>. </para>
+<para>Knot vector <formula id="211">$ z $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -196,11 +196,11 @@
 <parametername direction="in">i</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Index <formula id="24">$ i $</formula> of the basis function. </para>
+<para>Index <formula id="44">$ i $</formula> of the basis function. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="39">$ 1 $</formula> if <formula id="40">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="41">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="160">$ 1 $</formula> if <formula id="216">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="217">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -237,7 +237,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="33">$ u $</formula> (unused). </para>
+<para>Parameter value <formula id="210">$ u $</formula> (unused). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -257,7 +257,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="41">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="217">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -283,13 +283,13 @@
 <para>Compute the size of the complete monomial basis of a given order. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the size of the H vector based on the completeness order and the dimension, cf. Eq. (3.67) in the book by Belytschko, Chen, Hillman, i.e., the number of monomials <formula id="53">$ \boldsymbol{x}^{\boldsymbol{\alpha}} $</formula> with <formula id="54">$ |\boldsymbol{\alpha}| \le n $</formula> in <formula id="8">$ d $</formula> dimensions, <formula id="55">$ \binom{d + n}{d} $</formula>.</para>
+<para>Computes the size of the H vector based on the completeness order and the dimension, cf. Eq. (3.67) in the book by Belytschko, Chen, Hillman, i.e., the number of monomials <formula id="218">$ \boldsymbol{x}^{\boldsymbol{\alpha}} $</formula> with <formula id="166">$ |\boldsymbol{\alpha}| \le n $</formula> in <formula id="49">$ d $</formula> dimensions, <formula id="171">$ \binom{d + n}{d} $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="1">$ n $</formula> (zero for a negative order). </para>
+<para>Completeness order <formula id="76">$ n $</formula> (zero for a negative order). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -297,7 +297,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="56">$ d \ge 1 $</formula>. </para>
+<para>Spatial dimension <formula id="219">$ d \ge 1 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -339,7 +339,7 @@
 <para>Recursive kernel of computeMonomialBasis(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Multiplies the entries starting at <computeroutput>idxEnd</computeroutput> by the powers <formula id="57">$ x_k^i $</formula> of the coordinates <formula id="58">$ k \le $</formula> <computeroutput>dim</computeroutput>, for all exponent combinations of total degree <formula id="59">$ \le $</formula> <computeroutput>order</computeroutput>. The loop over the exponent of coordinate <computeroutput>dim</computeroutput> is the outermost one, the recursion handles the lower coordinates.</para>
+<para>Multiplies the entries starting at <computeroutput>idxEnd</computeroutput> by the powers <formula id="220">$ x_k^i $</formula> of the coordinates <formula id="221">$ k \le $</formula> <computeroutput>dim</computeroutput>, for all exponent combinations of total degree <formula id="123">$ \le $</formula> <computeroutput>order</computeroutput>. The loop over the exponent of coordinate <computeroutput>dim</computeroutput> is the outermost one, the recursion handles the lower coordinates.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
@@ -419,7 +419,7 @@
 <para>Recursive kernel of computeMonomialBasisGradient(). </para>
         </briefdescription>
         <detaileddescription>
-<para>Same traversal as _computeMonomialBasisRecursion(). By the product rule, column <formula id="60">$ k $</formula> of an entry is multiplied by <formula id="61">$ \partial x_k^i / \partial x_k = i\, x_k^{i-1} $</formula> for its own coordinate and by <formula id="62">$ x_j^i $</formula> for all other coordinates <formula id="63">$ j \neq k $</formula>.</para>
+<para>Same traversal as _computeMonomialBasisRecursion(). By the product rule, column <formula id="109">$ k $</formula> of an entry is multiplied by <formula id="222">$ \partial x_k^i / \partial x_k = i\, x_k^{i-1} $</formula> for its own coordinate and by <formula id="223">$ x_j^i $</formula> for all other coordinates <formula id="224">$ j \neq k $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
@@ -441,7 +441,7 @@
 <parametername direction="inout">res</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient matrix (basis size <formula id="64">$ \times d $</formula>), initialized with ones by the caller. </para>
+<para>Gradient matrix (basis size <formula id="225">$ \times d $</formula>), initialized with ones by the caller. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -488,16 +488,16 @@
           <declname>res</declname>
         </param>
         <briefdescription>
-<para>Evaluate the complete monomial basis <formula id="65">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="1">$ n $</formula>. </para>
+<para>Evaluate the complete monomial basis <formula id="226">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="76">$ n $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>The entries are all monomials <formula id="66">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="67">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="68">$ n = 2 $</formula>: <formula id="69">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="70">$ n = 1 $</formula>: <formula id="71">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="39">$ 1 $</formula>.</para>
+<para>The entries are all monomials <formula id="227">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="228">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="229">$ n = 2 $</formula>: <formula id="230">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="231">$ n = 1 $</formula>: <formula id="232">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="160">$ 1 $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="1">$ n $</formula>. </para>
+<para>Completeness order <formula id="76">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -505,7 +505,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="0">$ \boldsymbol{x} $</formula> (the dimension <formula id="8">$ d $</formula> is taken from its size). </para>
+<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> (the dimension <formula id="49">$ d $</formula> is taken from its size). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -542,16 +542,16 @@
           <declname>res</declname>
         </param>
         <briefdescription>
-<para>Evaluate the gradient <formula id="72">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the monomial basis. </para>
+<para>Evaluate the gradient <formula id="233">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the monomial basis. </para>
         </briefdescription>
         <detaileddescription>
-<para>Row <formula id="60">$ k $</formula> corresponds to entry <formula id="60">$ k $</formula> of computeMonomialBasis() (same ordering), column <formula id="24">$ i $</formula> to <formula id="73">$ \partial / \partial x_i $</formula>.</para>
+<para>Row <formula id="109">$ k $</formula> corresponds to entry <formula id="109">$ k $</formula> of computeMonomialBasis() (same ordering), column <formula id="44">$ i $</formula> to <formula id="234">$ \partial / \partial x_i $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="1">$ n $</formula>. </para>
+<para>Completeness order <formula id="76">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -559,7 +559,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="0">$ \boldsymbol{x} $</formula> (the dimension <formula id="8">$ d $</formula> is taken from its size). </para>
+<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> (the dimension <formula id="49">$ d $</formula> is taken from its size). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -567,7 +567,7 @@
 <parametername direction="out">res</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <formula id="64">$ \times d $</formula>. </para>
+<para>Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <formula id="225">$ \times d $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

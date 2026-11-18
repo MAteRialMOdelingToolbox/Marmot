@@ -98,10 +98,19 @@
 <a class="reference external" href="https://github.com/autodiff/autodiff">autodiff</a>,
 and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
 <p>These are header-only libraries, so no compilation is required.</p>
-<p>Marmot requires Eigen 5.
-autodiff 1.1.2 does not compile against Eigen 5 without the patch of
-<a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>, which is not merged upstream yet;
-Step 5 applies it. The autodiff 1.1.2 of the conda channel below carries it.</p>
+<p>Marmot requires Eigen 5. Two of the dependencies need patches that are not released upstream:
+autodiff 1.1.2 does not compile against Eigen 5 without
+<a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>, and Fastor needs a patch on arm64 (Apple Silicon).
+The conda channel <code class="docutils literal notranslate"><span class="pre">https://repo.prefix.dev/matthiasneuner/edelweiss</span></code>
+(recipes: <a class="reference external" href="https://github.com/matthiasneuner/edelweiss-conda-channel">edelweiss-conda-channel</a>)
+provides all three with these patches; install them from there, together with conda-forge:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen&gt;=5" autodiff=1.1.2 fastor</span>
+</pre></div>
+</div>
+<p>Since they are headers only, they can also serve a build with another compiler, e.g., the system compiler of an
+Abaqus installation: point <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code> to the environment.
+Marmot’s CI builds and tests with the locked environment of EdelweissFE (<code class="docutils literal notranslate"><span class="pre">conda-lock.yml</span></code>),
+which EdelweissFE and EdelweissMeshfree use, too.</p>
 </section>
 <section id="prebuilt-conda-package">
 <h2>Prebuilt conda package<a class="headerlink" href="#prebuilt-conda-package" title="Link to this heading"></a></h2>
@@ -130,8 +139,8 @@ environment:</p>
 <section id="installation-steps">
 <h3>Installation steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h3>
 <p>If necessary, get Miniforge:</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> curl -L -O \</span>
 <span class="go">     "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"</span>
 <span class="go"> bash "Miniforge3-$(uname)-$(uname -m).sh" -b -p ./miniforge3</span>
@@ -139,8 +148,8 @@ environment:</p>
 </div>
 </div>
 <p>Add conda to your environment:</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Step 2</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Step 2</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
 <span class="go"> export PATH=$MARMOTROOT/miniforge3/bin:$PATH</span>
 <span class="go"> conda init --all</span>
@@ -148,70 +157,19 @@ environment:</p>
 </pre></div>
 </div>
 </div>
-<p>Restart shell and activate conda</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Step 3</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<p>Restart shell and activate conda, then install the compilers and the dependencies:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Step 3</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
 <span class="go"> conda activate</span>
-<span class="go"> mamba install cmake make compilers</span>
-</pre></div>
-</div>
-</div>
-<p>Get Eigen:</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone --branch 5.0.1  https://gitlab.com/libeigen/eigen.git</span>
-<span class="go"> cd eigen</span>
-<span class="go"> mkdir build</span>
-<span class="go"> cd build</span>
-<span class="go"> cmake \</span>
-<span class="go">     -DBUILD_TESTING=OFF  \</span>
-<span class="go">     -DEIGEN_BUILD_BLAS=OFF \</span>
-<span class="go">     -DEIGEN_BUILD_LAPACK=OFF \</span>
-<span class="go">     -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \</span>
-<span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
-<span class="go">     ..</span>
-<span class="go"> make install</span>
-</pre></div>
-</div>
-</div>
-<p>Get autodiff:</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Step 5</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git</span>
-<span class="go"> curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff</span>
-<span class="go"> git -C autodiff apply ../autodiff-eigen5.diff</span>
-<span class="go"> cd autodiff</span>
-<span class="go"> mkdir build</span>
-<span class="go"> cd build</span>
-<span class="go"> cmake \</span>
-<span class="go">     -DAUTODIFF_BUILD_TESTS=OFF \</span>
-<span class="go">     -DAUTODIFF_BUILD_PYTHON=OFF \</span>
-<span class="go">     -DAUTODIFF_BUILD_EXAMPLES=OFF \</span>
-<span class="go">     -DAUTODIFF_BUILD_DOCS=OFF \</span>
-<span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
-<span class="go">     ..</span>
-<span class="go"> make install</span>
-</pre></div>
-</div>
-</div>
-<p>Get Fastor:</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">Step 6</span><a class="headerlink" href="#id6" title="Link to this code"></a></div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone --branch V0.6.4 https://github.com/romeric/Fastor.git</span>
-<span class="go"> cd Fastor</span>
-<span class="go"> cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .</span>
-<span class="go"> make install</span>
-<span class="go"> cd ../</span>
+<span class="go"> mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge \</span>
+<span class="go">     cmake make compilers "eigen&gt;=5" autodiff=1.1.2 fastor</span>
 </pre></div>
 </div>
 </div>
 <p>Get Marmot:</p>
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">Step 7</span><a class="headerlink" href="#id7" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
 <span class="go"> git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git</span>
 <span class="go"> cd Marmot</span>
@@ -270,8 +228,9 @@ CMake packages or, if they were installed as plain headers, through a header sea
 <section id="building-on-windows">
 <h2>Building on Windows<a class="headerlink" href="#building-on-windows" title="Link to this heading"></a></h2>
 <p>Marmot builds as a DLL with MSVC (Visual Studio 2022), in the <code class="docutils literal notranslate"><span class="pre">Release</span></code> configuration.
-Install Eigen, autodiff and Fastor into a common prefix as above (<code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> instead of <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>),
-then build Marmot from a <em>Developer PowerShell for VS 2022</em>:</p>
+Install the dependencies from the conda channel as above (conda puts their headers under
+<code class="docutils literal notranslate"><span class="pre">%CONDA_PREFIX%\Library</span></code>), then build Marmot from a <em>Developer PowerShell for VS 2022</em>,
+with <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;</span></code> = <code class="docutils literal notranslate"><span class="pre">%CONDA_PREFIX%\Library</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH=&lt;prefix&gt; -DCMAKE_INSTALL_PREFIX=&lt;prefix&gt;</span>
 <span class="go">cmake --build Marmot/build --config Release --parallel</span>
 <span class="go">ctest --test-dir Marmot/build -C Release --output-on-failure</span>
@@ -309,6 +268,8 @@ configuring with <code class="docutils literal notranslate"><span class="pre">-D
 <section id="building-with-python-bindings">
 <h2>Building with Python Bindings<a class="headerlink" href="#building-with-python-bindings" title="Link to this heading"></a></h2>
 <p>Marmot optionally provides a Python interface using <a class="reference external" href="https://github.com/wjakob/nanobind">nanobind</a>.
+It does not yet build with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment
+(<a class="reference external" href="https://github.com/MAteRialMOdelingToolbox/Marmot/issues/154">#154</a>).
 To enable the Python module, configure CMake with <cite>-DMARMOT_BUILD_PYTHON_BINDINGS=ON</cite>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..</span>
 <span class="go">make install</span>
