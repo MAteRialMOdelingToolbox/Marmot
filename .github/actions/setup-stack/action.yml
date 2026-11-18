@@ -1,0 +1,28 @@
+name: Set up the stack
+description: >-
+  Install EdelweissFE's locked conda environment (conda-lock.yml of EdelweissFE master, conda packages, no solving):
+  the compilers, CMake, Eigen, autodiff, Fastor and Python with which Marmot is shipped, and with which EdelweissFE
+  and EdelweissMeshfree are tested. Patches of the dependencies (autodiff's Eigen 5 support, Fastor on arm64) live
+  only in the recipes of the conda channel matthiasneuner/edelweiss.
+
+inputs:
+  init-shell:
+    description: Shells to initialise for `micromamba activate` (space separated), e.g. "bash" or "cmd.exe bash".
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    # The one lock file of the stack: EdelweissFE's weekly Lockfile workflow keeps it current.
+    - name: Download the lock file
+      shell: bash
+      run: |
+        curl -sfL --retry 3 -o "$RUNNER_TEMP/conda-lock.yml" \
+          https://raw.githubusercontent.com/Edelweiss-Numerics/EdelweissFE/master/conda-lock.yml
+
+    - uses: mamba-org/setup-micromamba@v2
+      with:
+        environment-file: ${{ runner.temp }}/conda-lock.yml
+        environment-name: stack
+        cache-environment: true
+        init-shell: ${{ inputs.init-shell }}
