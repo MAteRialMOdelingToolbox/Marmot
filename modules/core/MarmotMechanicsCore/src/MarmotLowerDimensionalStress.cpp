@@ -82,15 +82,6 @@ namespace Marmot::ContinuumMechanics {
       return dS_dF;
     }
 
-    Matrix< double, 3, 6 > dStressPlaneStressDStress()
-    {
-      Matrix< double, 3, 6 > T = Matrix< double, 3, 6 >::Zero();
-      T( 0, 0 )                = 1;
-      T( 1, 1 )                = 1;
-      T( 2, 3 )                = 1;
-      return T;
-    }
-
     Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& strain, double nu )
     {
       const Marmot::Math::Vector6d& e                = strain;
@@ -110,18 +101,6 @@ namespace Marmot::ContinuumMechanics {
       const double           t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
       const double           t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
       T.row( 2 ).head( 3 ) << t31, t32, 0.0;
-      return T;
-    }
-
-    Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Marmot::Math::Matrix6d& tangent )
-    {
-      Matrix< double, 6, 3 > T = Matrix< double, 6, 3 >::Zero();
-      T( 0, 0 )                = 1;
-      T( 1, 1 )                = 1;
-      T( 3, 2 )                = 1;
-      T( 2, 0 )                = -tangent( 2, 0 ) / tangent( 2, 2 );
-      T( 2, 1 )                = -tangent( 2, 1 ) / tangent( 2, 2 );
-      T( 2, 2 )                = -tangent( 2, 3 ) / tangent( 2, 2 );
       return T;
     }
 

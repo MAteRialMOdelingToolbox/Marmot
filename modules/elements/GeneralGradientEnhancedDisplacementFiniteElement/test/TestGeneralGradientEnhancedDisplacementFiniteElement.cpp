@@ -2864,7 +2864,10 @@ namespace {
   /* A damaging elastic material with the energy tangent capability: psi = (1 - omega(K)) psi0(eps) with
    * omega = 1 - exp(-alpha K^2), the local driving variable tr(eps), and the dissipation increment
    * psi0 (omega(K) - omega(K - dK)). Smooth in the strain and the non-local field, so central differences of the
-   * energies check the energy tangents everywhere.
+   * energies check the energy tangents everywhere. In general, the damage acts on a stiffness D of its own:
+   * psi = psi0(eps) - omega(K) psiD(eps), psiD = eps . D eps / 2, the dissipation increment psiD (omega(K) -
+   * omega(K - dK)) and the driving variable w . eps. Here, C is isotropic, D = C and w the trace;
+   * CoupledEnergyTangentDamageMaterial replaces these members.
    */
   class EnergyTangentDamageMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >,
                                       public Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider< 1 > {
@@ -2878,7 +2881,10 @@ namespace {
      * @param materialNumber The material's label.
      */
     EnergyTangentDamageMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
-      : Base( materialProperties, nMaterialProperties, materialNumber )
+      : Base( materialProperties, nMaterialProperties, materialNumber ),
+        C( ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) ),
+        D( C ),
+        drivingWeights( ( Marmot::Math::Vector6d() << 1., 1., 1., 0., 0., 0. ).finished() )
     {
       stateLayout.add( "strain", 6 );
       stateLayout.finalize();
@@ -2927,6 +2933,14 @@ namespace {
       return { this->materialProperties[3] };
     }
 
+  protected:
+    /// @brief The elastic stiffness.
+    Marmot::Math::Matrix6d C;
+    /// @brief The stiffness the damage acts on.
+    Marmot::Math::Matrix6d D;
+    /// @brief The weights w of the local driving variable w . eps.
+    Marmot::Math::Vector6d drivingWeights;
+
   private:
     void update( Base::response& res, Base::tangents& tan, const Base::increment& inc, energyTangents* energyTan ) const
     {
@@ -2935,34 +2949,33 @@ namespace {
       auto         strain = stateLayout.getAs< Eigen::Map< Vector6d > >( res.stateVars, "strain" );
       strain += inc.dStrain;
 
-      const auto     C        = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
-                                                                                 this->materialProperties[1] );
       const double   K        = inc.K( 0 );
       const double   KOld     = K - inc.dK( 0 );
       const double   omega    = 1. - std::exp( -alpha * K * K );
       const double   omegaOld = 1. - std::exp( -alpha * KOld * KOld );
       const double   dOmegadK = 2. * alpha * K * std::exp( -alpha * K * K );
       const Vector6d Ceps     = C * strain;
+      const Vector6d Deps     = D * strain;
       const double   psi0     = 0.5 * strain.dot( Ceps );
-      const Vector6d trace    = ( Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
+      const double   psiD     = 0.5 * strain.dot( Deps );
 
-      res.stress               = ( 1. - omega ) * Ceps;
-      res.KLocal( 0 )          = trace.dot( strain );
+      res.stress               = Ceps - omega * Deps;
+      res.KLocal( 0 )          = drivingWeights.dot( strain );
       res.c( 0 )               = this->materialProperties[4];
-      res.elasticEnergyDensity = ( 1. - omega ) * psi0;
-      res.dissipation += psi0 * ( omega - omegaOld );
+      res.elasticEnergyDensity = psi0 - omega * psiD;
+      res.dissipation += psiD * ( omega - omegaOld );
 
-      tan.dStressddStrain    = ( 1. - omega ) * C;
-      tan.dStressddK         = -dOmegadK * Ceps;
-      tan.dKLocalddStrain    = trace.transpose();
+      tan.dStressddStrain    = C - omega * D;
+      tan.dStressddK         = -dOmegadK * Deps;
+      tan.dKLocalddStrain    = drivingWeights.transpose();
       tan.dKLocalddK( 0, 0 ) = 0.;
       tan.dcddK( 0, 0 )      = 0.;
 
       if ( energyTan ) {
-        energyTan->dElasticEnergyDensity_dStrain = ( 1. - omega ) * Ceps;
-        energyTan->dElasticEnergyDensity_dK( 0 ) = -dOmegadK * psi0;
-        energyTan->dDissipation_dStrain          = ( omega - omegaOld ) * Ceps;
-        energyTan->dDissipation_dK( 0 )          = dOmegadK * psi0;
+        energyTan->dElasticEnergyDensity_dStrain = Ceps - omega * Deps;
+        energyTan->dElasticEnergyDensity_dK( 0 ) = -dOmegadK * psiD;
+        energyTan->dDissipation_dStrain          = ( omega - omegaOld ) * Deps;
+        energyTan->dDissipation_dK( 0 )          = dOmegadK * psiD;
       }
     }
   };
@@ -2970,6 +2983,50 @@ namespace {
   [[maybe_unused]] const bool energyTangentDamageMaterialRegistered = Marmot::Registry::
     MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< EnergyTangentDamageMaterial >(
       "ENERGYTANGENTDAMAGEMATERIAL" );
+
+  /* EnergyTangentDamageMaterial with normal - shear coupling: an orthotropic stiffness C with its axes rotated out
+   * of the 1-2 plane, damage on an isotropic D (if D = C, d sigma_f / dK is proportional to sigma_f, which vanishes in
+   * plane stress), and a driving variable that depends on all six strains. In plane stress, the out-of-plane shear
+   * strains 13, 23 are then coupled to the in-plane strains and to K, so that the rows 13, 23 of the element's
+   * dStrain_dK and the columns 13, 23 of dKLocal_dStrain do not vanish (they do for an isotropic material).
+   */
+  class CoupledEnergyTangentDamageMaterial : public EnergyTangentDamageMaterial {
+  public:
+    /**
+     * @brief Construct from the properties of EnergyTangentDamageMaterial; E and nu scale the orthotropic stiffness.
+     * @param materialProperties The six properties.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    CoupledEnergyTangentDamageMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : EnergyTangentDamageMaterial( materialProperties, nMaterialProperties, materialNumber )
+    {
+      using namespace ContinuumMechanics;
+      const double                 E  = materialProperties[0];
+      const double                 nu = materialProperties[1];
+      const Marmot::Math::Matrix6d C0 = Elasticity::Orthotropic::stiffnessTensor( E,
+                                                                                  0.4 * E,
+                                                                                  0.6 * E,
+                                                                                  nu,
+                                                                                  1.2 * nu,
+                                                                                  0.8 * nu,
+                                                                                  0.3 * E,
+                                                                                  0.2 * E,
+                                                                                  0.25 * E );
+      const Marmot::Math::Matrix3d R  = ( Eigen::AngleAxisd( 0.7, Eigen::Vector3d::UnitZ() ) *
+                                         Eigen::AngleAxisd( 0.5, Eigen::Vector3d::UnitX() ) *
+                                         Eigen::AngleAxisd( 0.3, Eigen::Vector3d::UnitY() ) )
+                                         .toRotationMatrix();
+      const Marmot::Math::Matrix6d T = Voigt::Transformations::transformationMatrixStressVoigt( R );
+      C                              = T * C0 * T.transpose();
+      D                              = Elasticity::Isotropic::stiffnessTensor( 0.1 * E, nu );
+      drivingWeights << 1., 0.8, 1.2, 0.5, 0.9, -0.7;
+    }
+  };
+
+  [[maybe_unused]] const bool coupledEnergyTangentDamageMaterialRegistered = Marmot::Registry::
+    MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< CoupledEnergyTangentDamageMaterial >(
+      "COUPLEDENERGYTANGENTDAMAGEMATERIAL" );
 
   // E, nu, density, non-local viscosity, c, alpha
   const std::vector< double > energyTangentDamageProperties = { 20000.0, 0.2, 1.0, 1.0, 1.0, 2.0e4 };
@@ -2979,6 +3036,110 @@ namespace {
     { 30000., 0.2, 3., -2000., 0., 0., 2., 2., 7.85e-9, 1e-3 };
 
 } // namespace
+
+/* Plane stress with normal - shear coupling (CoupledEnergyTangentDamageMaterial): the tangent of computeKernels()
+ * against central differences. The plane stress test with AT2PhaseField does not see the 13, 23 part of the element's
+ * condensation (dStrain_dK, dKLocal_dStrain), which vanishes for an isotropic material; here it does not, as the first
+ * check shows.
+ */
+void testComputeKernelsPlaneStressTangentWithNormalShearCoupling()
+{
+  using namespace ContinuumMechanics::ReducedStress;
+  using Material = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+  const Marmot::Discretizations::MaterialSection section( "COUPLEDENERGYTANGENTDAMAGEMATERIAL",
+                                                          energyTangentDamageProperties.data(),
+                                                          static_cast< int >( energyTangentDamageProperties.size() ) );
+
+  // the material point: the 13, 23 rows of dStrainF_dK and the 13, 23 weights of the driving variable are not zero
+  {
+    std::unique_ptr< Material > material(
+      Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( section.materialName,
+                                                                                         section.materialProperties,
+                                                                                         section.nMaterialProperties,
+                                                                                         1 ) );
+    std::vector< double > stateVars( material->getNumberOfRequiredStateVars(), 0.0 );
+    Material::response    res{ Marmot::Math::Vector6d::Zero(), {}, {}, stateVars.data(), 0., 0. };
+    Material::tangents    tan;
+    Material::increment   inc{ ( Marmot::Math::Vector6d() << 4e-3, -1e-3, 0., 2e-3, 0., 0. ).finished(),
+                             Eigen::Vector< double, 1 >( 6e-3 ),
+                             Eigen::Vector< double, 1 >( 6e-3 ),
+                             0.,
+                             1. };
+    material->computePlaneStress( res, tan, inc );
+
+    const auto condensation = condense( tan.dStressddStrain, planeStressPrescribed, planeStressFree );
+    Eigen::Matrix< double, 3, 1 > dStressF_dK;
+    for ( int j = 0; j < 3; j++ )
+      dStressF_dK( j ) = tan.dStressddK( planeStressFree[j], 0 );
+    const Eigen::Matrix< double, 3, 1 > dStrainF_dK = freeStrainSensitivity( condensation, dStressF_dK );
+    // scales: the strain change of a K change that changes the stress by its in-plane sensitivity
+    const double dStrainScale = tan.dStressddK.cwiseAbs().maxCoeff() / tan.dStressddStrain.cwiseAbs().maxCoeff();
+    throwExceptionOnFailure( dStrainF_dK.tail( 2 ).cwiseAbs().minCoeff() > 0.05 * dStrainScale &&
+                               condensation.dStrainF_dStrainP.bottomRows( 2 ).cwiseAbs().minCoeff() > 1e-2,
+                             "the coupled material must couple the out-of-plane shear strains in plane stress" );
+    throwExceptionOnFailure( std::abs( res.stress( 4 ) ) + std::abs( res.stress( 5 ) ) <=
+                               1e-12 * res.stress.cwiseAbs().maxCoeff(),
+                             "the coupled material is not in plane stress" );
+  }
+
+  // the element
+  constexpr int nDim          = 2;
+  constexpr int nNodes        = 4;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const auto                  intType       = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.1, 1.1, 0.9, -0.1, 1.0 };
+
+  auto element = std::make_unique< ElemType >( 1, intType, ElemType::SectionType::PlaneStress );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+  element->assignProperty( elProps );
+  element->assignProperty( section );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int  nDof       = element->getNDofPerElement();
+  const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+  Eigen::VectorXd Q0( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q0[i] = 0.01 * std::sin( 1.7 * ( i + 1 ) );
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+    resetState();
+    Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+    element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+
+  resetState();
+  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+  element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  // block by block (u, K), relative to each block: the K blocks are small against the displacement stiffness
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+  const int             nU   = nNodes * nDim;
+  const int             nK   = nDof - nU;
+  for ( auto [r0, nRows, c0, nCols, block] : { std::tuple{ 0, nU, 0, nU, "uu" },
+                                               std::tuple{ 0, nU, nU, nK, "uK" },
+                                               std::tuple{ nU, nK, 0, nU, "Ku" },
+                                               std::tuple{ nU, nK, nU, nK, "KK" } } ) {
+    const double relativeError = ( K - numK ).block( r0, c0, nRows, nCols ).cwiseAbs().maxCoeff() /
+                                 K.block( r0, c0, nRows, nCols ).cwiseAbs().maxCoeff();
+    throwExceptionOnFailure( relativeError < 1e-6,
+                             Marmot::Utilities::MakeString() << "computeKernels() stiffness matrix does not match the "
+                                                                "numerical tangent (PlaneStress, "
+                                                                "normal - shear coupling), block "
+                                                             << block << ", relative error " << relativeError );
+  }
+}
 
 /* Energy gradients of computeKernels() against central differences of the summed quadrature point energies, for a
  * second increment dQ2 = a2 cos(...) + r dQ1 from the state after a first increment dQ1 = a1 sin(...).
@@ -3079,6 +3240,10 @@ void testEnergyGradients()
                                                                 energyTangentDamageProperties.data(),
                                                                 static_cast< int >(
                                                                   energyTangentDamageProperties.size() ) );
+  const Marmot::Discretizations::MaterialSection coupledDamageSection( "COUPLEDENERGYTANGENTDAMAGEMATERIAL",
+                                                                       energyTangentDamageProperties.data(),
+                                                                       static_cast< int >(
+                                                                         energyTangentDamageProperties.size() ) );
   const Marmot::Discretizations::MaterialSection rankineSection( "RANKINEGRADIENTSOFTENINGPLASTICITY",
                                                                  rankineGradientSofteningProperties.data(),
                                                                  static_cast< int >(
@@ -3098,6 +3263,13 @@ void testEnergyGradients()
                                 1e-3,
                                 0.,
                                 "Quad4 PlaneStress" );
+  checkEnergyGradients< 2, 4 >( distortedElementCoordinates( 2, quad, {} ),
+                                Quad4::SectionType::PlaneStress,
+                                coupledDamageSection,
+                                2e-3,
+                                1e-3,
+                                0.,
+                                "Quad4 PlaneStress normal - shear coupling" );
   checkEnergyGradients< 3, 8 >( distortedElementCoordinates( 3, hexa, {} ),
                                 Hexa8::SectionType::Solid,
                                 damageSection,
@@ -3275,6 +3447,7 @@ int main()
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
     testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation,
+    testComputeKernelsPlaneStressTangentWithNormalShearCoupling,
     testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation,
     testComputeKernelsThrowsForMismatchedSectionType,
     testComputeKernelsExplicitMatchesImplicitResidual,
