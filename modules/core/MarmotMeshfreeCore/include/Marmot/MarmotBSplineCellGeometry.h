@@ -145,6 +145,36 @@ namespace Marmot::Discretizations::Cells {
     }
 
     /**
+     * @brief Shape function gradients at a point given in physical coordinates, also outside of the cell: the
+     * gradients of the polynomial extension of NAtCoordinates() (identity map).
+     * @param[in] coord Physical coordinates (= parametric coordinates).
+     * @return @f$ \partial N_a/\partial X_i @f$ (row @f$ i @f$, column @f$ a @f$).
+     */
+    dNdXSized dNdXAtCoordinates( const XiSized& coord ) const
+    {
+      constexpr int                     nN = order + 1;
+      Eigen::Matrix< double, nN, nDim > N1D, dN1D;
+      for ( int d = 0; d < nDim; d++ )
+        for ( int a = 0; a < nN; a++ ) {
+          const double* z = this->_knotVectorsNormalized.col( d ).data();
+          N1D( a, d )     = Marmot::Math::BOnKnotSpan< order >( coord( d ), z, a, order );
+          dN1D( a, d )    = Marmot::Math::dBOnKnotSpan< order >( coord( d ), z, a, order );
+        }
+      dNdXSized dN_;
+      for ( int A = 0; A < dN_.cols(); A++ )
+        for ( int i = 0; i < nDim; i++ ) {
+          int    index = A;
+          double value = 1;
+          for ( int d = 0; d < nDim; d++ ) {
+            value *= d == i ? dN1D( index % nN, d ) : N1D( index % nN, d );
+            index /= nN;
+          }
+          dN_( i, A ) = value;
+        }
+      return dN_;
+    }
+
+    /**
      * @brief Shape function gradients; the parametric derivatives, no Jacobian transformation (identity map).
      * @param[in] xi Parametric (= physical) coordinates.
      * @return @f$ \partial N_a/\partial \xi_i @f$ (row @f$ i @f$, column @f$ a @f$).

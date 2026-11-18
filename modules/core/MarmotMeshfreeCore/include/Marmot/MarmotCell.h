@@ -306,6 +306,21 @@ namespace Marmot::Discretizations::Cells {
     virtual void getInterpolationVector( double* vec, const double* coordinates ) const = 0;
 
     /**
+     * @brief Evaluates the gradients @f$ \partial N_A/\partial X_i @f$ of the cell interpolation at a point, e.g. for
+     * the normal derivatives on the faces of a ghost penalty stabilization. Optional: cells deriving from
+     * CellWithGeometry implement it from their geometry (also outside of the cell, the gradients of the polynomial
+     * extension of getInterpolationVector()); the default throws.
+     * @param[out] dNdX        Gradients, nDim x getNNodes(), column-major (the nDim derivatives of node 0 first).
+     * @param[in]  coordinates Point coordinates (nDim values).
+     * @throws std::runtime_error if the cell does not provide its interpolation gradients.
+     */
+    virtual void getInterpolationGradient( [[maybe_unused]] double*       dNdX,
+                                           [[maybe_unused]] const double* coordinates ) const
+    {
+      throw std::runtime_error( "Cell::getInterpolationGradient is not implemented for cell shape " + getCellShape() );
+    }
+
+    /**
      * @brief Body load types supported by the cell.
      * @return Map from upper-case load type name (e.g. @c "BODYFORCE") to the id passed to computeBodyLoad().
      */

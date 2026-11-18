@@ -162,6 +162,16 @@ namespace Marmot::Discretizations::Cells {
     }
 
     /**
+     * @brief Shape function gradients w.r.t. the physical coordinates at a point given in physical coordinates, also
+     * outside of the cell: dNdX() at the unclamped parametric coordinates of findReferenceCoordinate(), the gradients
+     * of the polynomial extension NAtCoordinates().
+     * @param[in] coord Physical coordinates.
+     * @return @f$ \partial N_A/\partial X_i @f$ (row @f$ i @f$, column @f$ A @f$).
+     * @throws std::runtime_error if the inverse mapping does not converge.
+     */
+    dNdXSized dNdXAtCoordinates( const XiSized& coord ) const { return dNdX( findReferenceCoordinate( coord ) ); }
+
+    /**
      * @brief Determinant of the Jacobian of the isoparametric map.
      * @param[in] xi Parametric coordinates.
      * @return @f$ \det \boldsymbol{J}(\boldsymbol{\xi}) @f$.

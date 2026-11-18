@@ -64,6 +64,21 @@ namespace Marmot::Discretizations::Cells {
       Eigen::Map< NSized > interpolationVector( vec );
       interpolationVector = GeometryCell::NAtCoordinates( Eigen::Map< const XiSized >( coordinates ) );
     }
+
+    /**
+     * @brief Gradients of the shape functions of the cell w.r.t. the physical coordinates at an arbitrary point, also
+     * outside of the cell (the gradients of the polynomial extension), see dNdXAtCoordinates() of the geometry
+     * policies.
+     * @param[out] dNdX Gradients, nDim x getNNodes(), column-major (the nDim derivatives of node 0 first).
+     * @param[in] coordinates Coordinates of the point (nDim values).
+     */
+    void getInterpolationGradient( double* dNdX, const double* coordinates ) const override
+    {
+      using XiSized   = typename GeometryCell::XiSized;
+      using dNdXSized = typename GeometryCell::dNdXSized;
+      Eigen::Map< dNdXSized > gradient( dNdX );
+      gradient = GeometryCell::dNdXAtCoordinates( Eigen::Map< const XiSized >( coordinates ) );
+    }
   };
 
 } // namespace Marmot::Discretizations::Cells

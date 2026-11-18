@@ -164,4 +164,34 @@ namespace Marmot::Math {
     }
   }
 
+  /**
+   * @brief Derivative @f$ \mathrm{d}N_{i,p}/\mathrm{d}u @f$ of the polynomial piece of the B-spline basis function on
+   * the knot span @f$ [z_s, z_{s+1}) @f$, extended to all @f$ u @f$, see BOnKnotSpan().
+   *
+   * @details @f$ N'_{i,p} = \frac{p}{z_{i+p} - z_i} N_{i,p-1} - \frac{p}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1} @f$ with
+   * the pieces of degree @f$ p-1 @f$ on the same span (terms with a vanishing knot difference are left out).
+   *
+   * @tparam p Degree @f$ p @f$ of the B-spline.
+   * @param[in] u       Parameter value @f$ u @f$.
+   * @param[in] knotVec Knot vector @f$ z @f$; entries @f$ z_i, \dots, z_{i+p+1} @f$ are accessed.
+   * @param[in] i       Index @f$ i @f$ of the basis function.
+   * @param[in] span    Index @f$ s @f$ of the knot span.
+   * @return The derivative of the polynomial piece of @f$ N_{i,p} @f$ on span @f$ s @f$, at @f$ u @f$.
+   */
+  template < int p >
+  double dBOnKnotSpan( double u, const double* knotVec, int i, int span )
+  {
+    if constexpr ( p == 0 )
+      return 0.0;
+    else {
+      const auto& z      = knotVec;
+      double      result = 0;
+      if ( z[p + i] - z[i] >= 1e-14 )
+        result += p / ( z[p + i] - z[i] ) * BOnKnotSpan< p - 1 >( u, z, i, span );
+      if ( z[p + i + 1] - z[i + 1] >= 1e-14 )
+        result -= p / ( z[p + i + 1] - z[i + 1] ) * BOnKnotSpan< p - 1 >( u, z, i + 1, span );
+      return result;
+    }
+  }
+
 } // namespace Marmot::Math
