@@ -17,15 +17,13 @@ using namespace Marmot::Testing;
 using namespace Marmot::Testing::BeamTests;
 using namespace Marmot::Math;
 using Marmot::Discretizations::ElementProperties;
+using Marmot::Utilities::MakeString;
 
 namespace {
 
   const double                E = 210000., nu = 0.3, G = E / ( 2 * ( 1 + nu ) );
   const std::vector< double > linearElastic = { E, nu, 7.85e-9 };
 
-  /// drive the beam from U = 0 to U in nSteps equal, accepted increments, as an analysis would: the material sees
-  /// moderate trial stresses (the return mapping of a nearly perfectly plastic material is then well conditioned on
-  /// every platform)
   /// the linear elastic solution of the first node clamped, the second node (the other end) loaded by f, plus the
   /// nodal loads fAll (all nodes, e.g., of a body force); returns the dofs of the second node
   Eigen::VectorXd cantilever( Beam& beam, const Eigen::VectorXd& f, const Eigen::VectorXd& fAll = Eigen::VectorXd() )
@@ -38,6 +36,9 @@ namespace {
     return u.head( n );
   }
 
+  /// drive the beam from U = 0 to U in nSteps equal, accepted increments, as an analysis would: the material sees
+  /// moderate trial stresses (the return mapping of a nearly perfectly plastic material is then well conditioned on
+  /// every platform)
   void loadInSteps( Beam& beam, const Eigen::VectorXd& U, int nSteps )
   {
     Eigen::VectorXd UOld = Eigen::VectorXd::Zero( U.size() );
@@ -727,6 +728,121 @@ void testEccentricBodyForce()
   }
 }
 
+namespace {
+
+  using MHE = Marmot::Materials::MaterialHypoElastic;
+
+  /// a 3D fiber with its own material and state [sigma11, sigma12, sigma13, psi, d, material state], updated by
+  /// BeamFiberSection::computeFiberStress3D() from the committed state
+  struct FiberPoint {
+    std::vector< double >  properties; ///< the material keeps a pointer to its properties
+    std::unique_ptr< MHE > material;
+    std::vector< double >  state;
+
+    FiberPoint( const std::string& name, const std::vector< double >& properties_ )
+      : properties( properties_ ),
+        material( Marmot::Registry::MaterialHypoElasticFactory::createMaterial( name,
+                                                                                properties.data(),
+                                                                                int( properties.size() ),
+                                                                                1 ) )
+    {
+      const int nFiber = Marmot::Discretizations::Elements::BeamFiberSection< 3 >::nFiberStateVars;
+      state.assign( nFiber + material->getNumberOfRequiredStateVars(), 0.0 );
+      material->initializeYourself( state.data() + nFiber, material->getNumberOfRequiredStateVars() );
+    }
+
+    Vector3d stress() const { return Vector3d( state[0], state[1], state[2] ); }
+    double   dissipation() const { return state[4]; }
+
+    /// stress and tangent for the strain increment [eps11, gamma12, gamma13], from the committed state; commits if
+    /// requested
+    std::pair< Vector3d, Matrix3d > update( const Vector3d& dStrain, bool commit )
+    {
+      const auto     committed = state;
+      const Matrix3d C     = Marmot::Discretizations::Elements::BeamFiberSection< 3 >::computeFiberStress3D( *material,
+                                                                                                         state.data(),
+                                                                                                         dStrain,
+                                                                                                             { 0.0, 1.0 } );
+      const Vector3d sigma = this->stress();
+      if ( !commit )
+        state = committed;
+      return { sigma, C };
+    }
+  };
+
+} // namespace
+
+/// the beam stress state of a 3D fiber, linear elastic: sigma11 = E eps11, sigma1k = G gamma1k, tangent diag(E, G, G),
+/// in MPa and in Pa (the tolerance of the reduced stress iteration is relative to the stress)
+void testFiberStressLinearElastic()
+{
+  for ( const double scale : { 1., 1e6 } ) {
+    FiberPoint     p( "LINEARELASTIC", { E * scale, nu } );
+    const Vector3d dStrain( 1e-3, 2e-3, -0.5e-3 );
+    const auto [stress, C] = p.update( dStrain, true );
+    throwExceptionOnFailure( checkIfEqual< double >( stress / scale,
+                                                     Vector3d( E * 1e-3, G * 2e-3, -G * 0.5e-3 ),
+                                                     1e-9 ),
+                             MakeString() << "linear elastic beam stress: " << stress.transpose() );
+    throwExceptionOnFailure( checkIfEqual< double >( C / scale,
+                                                     Vector3d( E, G, G ).asDiagonal().toDenseMatrix(),
+                                                     1e-6 ),
+                             MakeString() << "linear elastic beam tangent:\n"
+                                          << C );
+  }
+}
+
+/// without shear strains, the beam stress of a 3D fiber equals the uniaxial stress of a 2D fiber (von Mises, plastic)
+void testFiberStressEqualsUniaxialWithoutShear()
+{
+  const std::vector< double > vm = { E, nu, 500., 1000., 0., 1., 7.85e-9 };
+  FiberPoint                  beam( "VONMISES", vm );
+  FiberPoint                  uni( "VONMISES", vm );
+  MHE::state1D                s1;
+  s1.stateVars = uni.state.data() + Marmot::Discretizations::Elements::BeamFiberSection< 3 >::nFiberStateVars;
+  for ( int i = 0; i < 5; i++ ) {
+    double C1 = 0;
+    uni.material->computeUniaxialStress( s1, C1, 1e-3, { 0.0, 1.0 } );
+    const auto [stress, C] = beam.update( Vector3d( 1e-3, 0, 0 ), true );
+    throwExceptionOnFailure( std::abs( stress( 0 ) - s1.stress ) < 1e-8 * std::abs( s1.stress ) &&
+                               std::abs( C( 0, 0 ) - C1 ) < 1e-6 * std::abs( C1 ),
+                             MakeString() << "beam stress != uniaxial stress: " << stress( 0 ) << " " << s1.stress );
+  }
+}
+
+/// the beam stress state of a 3D fiber, von Mises in combined tension and shear: the condensed tangent matches central
+/// differences in a plastic state, and perfect plasticity reaches the yield surface
+/// sigma11^2 + 3 (sigma12^2 + sigma13^2) = fy^2
+void testFiberStressVonMisesTangentAndYieldSurface()
+{
+  FiberPoint p( "VONMISES", { E, nu, 500., 2000., 0., 1., 7.85e-9 } );
+  p.update( Vector3d( 2e-3, 1e-3, 0.5e-3 ), true );
+  const Vector3d dStrain( 1e-3, 1.5e-3, -0.2e-3 );
+  const auto [stress, C] = p.update( dStrain, false );
+  Matrix3d     numC;
+  const double h = 1e-9;
+  for ( int j = 0; j < 3; j++ ) {
+    Vector3d dp = dStrain, dm = dStrain;
+    dp( j ) += h;
+    dm( j ) -= h;
+    numC.col( j ) = ( p.update( dp, false ).first - p.update( dm, false ).first ) / ( 2 * h );
+  }
+  // max-norm relative to the largest entry
+  throwExceptionOnFailure( ( C - numC ).cwiseAbs().maxCoeff() <= 1e-5 * numC.cwiseAbs().maxCoeff(),
+                           MakeString() << "von Mises beam tangent:\n"
+                                        << C << "\nnumerical:\n"
+                                        << numC );
+  throwExceptionOnFailure( p.dissipation() >= 0, "dissipation" );
+
+  FiberPoint perfect( "VONMISES", { E, nu, 500., 0., 0., 1., 7.85e-9 } );
+  Vector3d   s;
+  for ( int i = 0; i < 20; i++ )
+    s = perfect.update( Vector3d( 1e-3, 1e-3, 0.5e-3 ), true ).first;
+  const double equivalent = std::sqrt( s( 0 ) * s( 0 ) + 3 * ( s( 1 ) * s( 1 ) + s( 2 ) * s( 2 ) ) );
+  throwExceptionOnFailure( std::abs( equivalent - 500. ) < 1e-6 * 500.,
+                           MakeString() << "von Mises yield surface in beam stress: " << equivalent );
+}
+
 int main()
 {
   executeTestsAndCollectExceptions( {
@@ -742,6 +858,9 @@ int main()
     testPlasticLimits,
     testPlasticHingeCantilever,
     testInvalidInput,
+    testFiberStressLinearElastic,
+    testFiberStressEqualsUniaxialWithoutShear,
+    testFiberStressVonMisesTangentAndYieldSurface,
   } );
   return 0;
 }
