@@ -1050,7 +1050,8 @@ namespace Marmot::Discretizations::Elements {
           Eigen::Matrix< double, 3, nNonlocalVariables > dStressF_dK;
           for ( int j = 0; j < 3; j++ )
             dStressF_dK.row( j ) = tan.dStressddK.row( planeStressFree[j] );
-          const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = -condensation.CffCOD.solve( dStressF_dK );
+          const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = freeStrainSensitivity( condensation,
+                                                                                                    dStressF_dK );
 
           // the 3D strain wrt the in-plane strain and wrt the nonlocal variables
           Eigen::Matrix< double, 6, 3 > dStrain_dStrainP = Eigen::Matrix< double, 6, 3 >::Zero();
