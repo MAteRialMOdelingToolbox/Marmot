@@ -13,7 +13,6 @@ using namespace Eigen;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 using namespace Marmot::ContinuumMechanics::PlaneStrain;
 using namespace Marmot::ContinuumMechanics::PlaneStress;
-using namespace Marmot::ContinuumMechanics::UniaxialStress;
 using namespace Marmot::Testing;
 
 Marmot::Math::Matrix6d create_C_Matrix()
@@ -23,20 +22,6 @@ Marmot::Math::Matrix6d create_C_Matrix()
   double                 nu = 0.25;
   Marmot::Math::Matrix6d C  = stiffnessTensor( E, nu );
   return C;
-}
-
-void test_getUniaxialStressTangent()
-{
-  Marmot::Math::Matrix6d C = create_C_Matrix();
-
-  // Compute the result using the getUniaxialStressTangent function
-  double computedResult = getUniaxialStressTangent( C );
-
-  // Expected uniaxial stress tangent for isotropic material = E
-  double expectedResult = 1000.0;
-
-  throwExceptionOnFailure( checkIfEqual( computedResult, expectedResult, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_reduce3D_dStress_dDeformationGradient()
@@ -329,8 +314,7 @@ void test_dStrainDStrainPlaneStress()
 int main()
 {
 
-  auto tests = std::vector< std::function< void() > >{ test_getUniaxialStressTangent,
-                                                       test_reduce3D_dStress_dDeformationGradient,
+  auto tests = std::vector< std::function< void() > >{ test_reduce3D_dStress_dDeformationGradient,
                                                        test_getPlaneStrainTangent,
                                                        test_dStrainDStrainPlaneStrain,
                                                        test_compute_dStress_dDeformationGradient,

@@ -6,19 +6,6 @@ using namespace Eigen;
 
 namespace Marmot::ContinuumMechanics {
 
-  namespace UniaxialStress {
-    double getUniaxialStressTangent( const Ref< const Marmot::Math::Matrix6d >& C )
-    {
-      Marmot::Math::Vector6d b;
-      b << 1, 0, 0, 0, 0, 0;
-      Marmot::Math::Matrix6d A = C;
-      A.row( 0 ) << 1, 0, 0, 0, 0, 0;
-      Marmot::Math::Vector6d dEdEUniaxial = A.colPivHouseholderQr().solve( b );
-      return C.row( 0 ) * dEdEUniaxial;
-    }
-
-  } // namespace UniaxialStress
-
   namespace PlaneStrain {
 
     Marmot::Math::Tensors::Tensor322d reduce3D_dStress_dDeformationGradient(
