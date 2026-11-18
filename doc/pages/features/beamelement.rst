@@ -70,8 +70,9 @@ of Marmot can be used. A point has the strains
 
 and is evaluated in uniaxial stress (2D, ``computeUniaxialStress``) or in the beam stress state
 :math:`\sigma_{22} = \sigma_{33} = \sigma_{23} = 0` (3D,
-``Marmot::Materials::MaterialHypoElastic::computeBeamStress``: Newton iteration on the free strains with state
-reset, condensed 3x3 tangent). The section forces :math:`(N, M_y, M_z, T)`
+``BeamFiberSection::computeFiberStress3D`` with ``Marmot::ContinuumMechanics::ReducedStress::computeReducedStress``,
+prescribed :math:`p = \{0, 3, 4\}`, stress-free :math:`f = \{1, 2, 5\}`: Newton iteration on the free strains with
+state reset, condensed 3x3 tangent). The section forces :math:`(N, M_y, M_z, T)`
 are the work conjugates of :math:`(\varepsilon_0, \kappa_y, \kappa_z, \chi)`. Unsymmetric sections and
 non-principal axes (:math:`\int yz\,\mathrm{d}A \neq 0`) and sections off the axis couple naturally. Torsion is
 Saint-Venant torsion about the centroid :math:`(y_c, z_c)` of the points without warping; the factor

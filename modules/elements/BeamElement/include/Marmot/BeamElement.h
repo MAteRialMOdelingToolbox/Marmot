@@ -77,7 +77,8 @@ namespace Marmot::Discretizations::Elements {
    * its own material instance (created by name through the hypoelastic material factory from the
    * Marmot::Discretizations::MaterialSection) and state. 2D fibers are in uniaxial stress
    * (Marmot::Materials::MaterialHypoElastic::computeUniaxialStress), 3D fibers additionally carry the torsional shear
-   * strains (Marmot::Materials::MaterialHypoElastic::computeBeamStress). The torsional shear strains are scaled so that
+   * strains, in the beam stress state \f$\sigma_{22} = \sigma_{33} = \sigma_{23} = 0\f$
+   * (BeamFiberSection::computeFiberStress3D()). The torsional shear strains are scaled so that
    * the section has the torsional stiffness \f$GJ\f$ of the given torsion constant: the torque is right for any
    * section, but the fiber shear stresses are Saint-Venant stresses only for circles and tubes (for a square of side
    * \f$a\f$: \f$0.46\,G a \chi\f$ at the middle of a side instead of \f$0.68\,G a \chi\f$, \f$0.65\,G a \chi\f$ at the
