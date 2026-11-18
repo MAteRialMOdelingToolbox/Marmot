@@ -249,7 +249,7 @@ void testTensorToScalarSecondOrder()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< dual2nd( const Tensor33t< dual2nd >& ) > f = [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_ ) {
+  SecondOrder::tensor_to_scalar_function_type< 3 > f = [&]( const Tensor33t< HessianDual< 9 > >& C_ ) {
     return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
   };
 
@@ -280,7 +280,7 @@ void testTensorToScalarSecondOrderSymmetric()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< dual2nd( const Tensor33t< dual2nd >& ) > f = [&]( const Fastor::Tensor< dual2nd, 3, 3 >& C_ ) {
+  SecondOrder::tensor_to_scalar_function_type< 3 > f = [&]( const Tensor33t< HessianDual< 9 > >& C_ ) {
     return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
   };
 
@@ -294,6 +294,14 @@ void testTensorToScalarSecondOrderSymmetric()
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-12 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << "symmetric d2f_dT2 doesn't match the dense computation" );
+
+  auto [psi_, dPsi_dC_analytical, d2Psi_dC2_analytical] = Marmot::ContinuumMechanics::Elasticity::
+    EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C, K, G );
+  throwExceptionOnFailure( checkIfEqual( psi_full, psi_, 1e-12 ) &&
+                             checkIfEqual< double >( dPsi_dC_full, dPsi_dC_analytical, 1e-12 ) &&
+                             checkIfEqual< double >( d2Psi_dC2_full, d2Psi_dC2_analytical, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "d2f_dT2 doesn't match the analytical derivatives" );
 }
 
 void testTensorToScalarSecondOrderMixed()

@@ -48,13 +48,19 @@
  *    with all backends.
  *  - seed<level>( x, v ) sets the derivative of x along nesting level `level` to v, derivative<level>( y ) reads the
  *    mixed derivative of y along the levels 1..level, value( y ) reads the primal value.
- *  - For vector-mode numbers (isVectorDual), seedDirection( x, i ) makes x the independent variable i and
- *    partialDerivative( y, i ) reads the partial derivative of y with respect to variable i.
+ *  - HessianDual<nDirections>: number type of the second-derivative driver d2f_dT2, with nDirections independent
+ *    variables. With MARMOT_AD_VECTOR_BACKEND=Marmot a VectorMode::Dual2nd, which carries the gradient and the Hessian
+ *    after a single evaluation (isHessianDual); otherwise dual2nd, and d2f_dT2 evaluates the function once per pair of
+ *    directions. Code differentiated by d2f_dT2 must use this type, not dual2nd, to work with all backends.
+ *  - For vector-mode numbers (isVectorDual, isHessianDual), seedDirection( x, i ) makes x the independent variable i
+ *    and partialDerivative( y, i ) reads the partial derivative of y with respect to variable i;
+ *    secondPartialDerivative( y, i, j ) reads a second partial derivative of a HessianDual.
  */
 
 #pragma once
 #include "Marmot/MarmotAutomaticDifferentiationScalarMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
+#include "Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h"
 #include <array>
 #include <cstddef>
 #include <type_traits>
@@ -214,6 +220,26 @@ namespace Marmot::Math::Differentiation::Automatic {
   using JacobianDual = dual;
 #endif
 
+  /** @brief Number type of the second-derivative driver d2f_dT2
+   *  @tparam nDirections number of independent variables
+   *
+   *  With the Marmot backend a VectorMode::Dual2nd< nDirections >, which carries the gradient and the Hessian after a
+   *  single evaluation; otherwise dual2nd, which carries one pair of directions per evaluation.
+   */
+#if defined( MARMOT_AD_VECTOR_BACKEND_MARMOT )
+  template < size_t nDirections >
+  using HessianDual = VectorMode::Dual2nd< nDirections >;
+#else
+  template < size_t nDirections >
+  using HessianDual = dual2nd;
+#endif
+
+  /** @brief True if Scalar is a second-order vector-mode number (VectorMode::Dual2nd)
+   *  @tparam Scalar type to check
+   */
+  template < typename Scalar >
+  inline constexpr bool isHessianDual = VectorMode::isDual2nd< Scalar >;
+
   /** @brief True if Scalar is a vector-mode number, i.e., a VectorMode::Dual or a JacobianDual of the Sacado backend
    *  @tparam Scalar type to check
    */
@@ -223,7 +249,7 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   double value( const Scalar& x )
   {
-    if constexpr ( isVectorDual< Scalar > )
+    if constexpr ( isVectorDual< Scalar > || isHessianDual< Scalar > )
       return x.val();
     else
 #ifdef MARMOT_AD_AUTODIFF
@@ -234,21 +260,23 @@ namespace Marmot::Math::Differentiation::Automatic {
   }
 
   /** @brief Makes a vector-mode number the independent variable `direction`
-   *  @tparam Scalar vector-mode number type (isVectorDual)
+   *  @tparam Scalar vector-mode number type (isVectorDual or isHessianDual)
    *  @param x number to seed; its derivatives must be zero
    *  @param direction index of the independent variable, less than the number of directions of Scalar
    */
   template < typename Scalar >
   void seedDirection( Scalar& x, size_t direction )
   {
-    if constexpr ( VectorMode::isDual< Scalar > )
+    if constexpr ( isHessianDual< Scalar > )
+      x.seed( direction );
+    else if constexpr ( VectorMode::isDual< Scalar > )
       x.dx( direction ) = 1.0;
     else
       x.fastAccessDx( static_cast< int >( direction ) ) = 1.0;
   }
 
   /** @brief Reads a partial derivative of a vector-mode number
-   *  @tparam Scalar vector-mode number type (isVectorDual)
+   *  @tparam Scalar vector-mode number type (isVectorDual or isHessianDual)
    *  @param x number
    *  @param i index of the independent variable
    *  @return partial derivative of x with respect to variable i
@@ -256,10 +284,23 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   double partialDerivative( const Scalar& x, size_t i )
   {
-    if constexpr ( VectorMode::isDual< Scalar > )
+    if constexpr ( VectorMode::isDual< Scalar > || isHessianDual< Scalar > )
       return x.dx( i );
     else
       return x.fastAccessDx( static_cast< int >( i ) );
+  }
+
+  /** @brief Reads a second partial derivative of a second-order vector-mode number
+   *  @tparam Scalar second-order vector-mode number type (isHessianDual)
+   *  @param x number
+   *  @param i index of the first independent variable
+   *  @param j index of the second independent variable
+   *  @return second partial derivative of x with respect to variables i and j
+   */
+  template < typename Scalar >
+  double secondPartialDerivative( const Scalar& x, size_t i, size_t j )
+  {
+    return x.dxx( i, j );
   }
 
   /** @brief Contiguous coefficient storage of a hyper-dual number

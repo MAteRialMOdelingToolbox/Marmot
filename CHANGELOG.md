@@ -19,6 +19,11 @@ All notable changes to Marmot are documented in this file. The format follows
     drivers `df_dT`, `dF_dT` and `dF_dX< n >`, which therefore compute all directions in one evaluation: tangents of
     `ADVonMises` 3.1x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.6x and `ADCompressibleNeoHooke` 1.9x faster
     than before (one direction per evaluation with autodiff).
+- `VectorMode::Dual2nd< nDirections >` (`MarmotAutomaticDifferentiationVectorModeSecondOrder.h`): second-order
+  vector-mode numbers carrying value, gradient and Hessian, tracking the directions each number depends on so that
+  operations on the seeded inputs only update their Hessian rows. It is the new `HessianDual` of
+  `SecondOrder::d2f_dT2`, which therefore evaluates the function once instead of once per pair of directions: the
+  Pence-Gou energy Hessian takes 0.65 us instead of 2.4 us (symmetric) or 3.6 us (full), 4x the analytical one.
 - Optional AD backends, selected at configure time; the choice is part of the API and ABI and exported to consumers:
   - `-DMARMOT_USE_AUTODIFF=ON` (`MARMOT_AD_AUTODIFF`): autodiff for the hyper-dual and Taylor numbers.
   - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`/`_SACADO`): the `JacobianDual`
@@ -129,6 +134,9 @@ All notable changes to Marmot are documented in this file. The format follows
   along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
+- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers (`dual2nd` with
+  `MARMOT_AD_VECTOR_BACKEND=Sacado|None`); functions passed to it must use the new name. With the default backend
+  `isSymmetric` has no effect.
 - **Breaking:** autodiff is no longer required: by default, all automatic differentiation uses Marmot's own types
   (see Added), and the conda package no longer depends on autodiff. `-DMARMOT_USE_AUTODIFF=ON
   -DMARMOT_AD_VECTOR_BACKEND=None` restores the previous behaviour. Results agree with autodiff to about 1e-15

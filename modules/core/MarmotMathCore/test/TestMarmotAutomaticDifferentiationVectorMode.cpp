@@ -1,4 +1,6 @@
+#include "Marmot/MarmotAutomaticDifferentiationScalarMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
+#include "Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTesting.h"
@@ -210,13 +212,189 @@ void testFastor()
     }
 }
 
+namespace {
+
+  using H3 = Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd< 3 >;
+
+  H3 variable( double value, std::size_t direction )
+  {
+    H3 x = value;
+    x.seed( direction );
+    return x;
+  }
+
+  void checkClose( double a, double b, const std::string& what, double tol = 1e-12 )
+  {
+    throwExceptionOnFailure( std::abs( a - b ) <= tol * std::max( 1.0, std::abs( b ) ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " " << what << ": got " << a << ", expected " << b );
+  }
+
+  /** a function of three variables, for second-order vector mode and nested hyper-dual numbers alike */
+  template < typename T >
+  T composite( const T& x, const T& y, const T& z )
+  {
+    return exp( x * y ) * sin( z ) / ( 1. + x ) + pow( x, 2.5 ) * log( y ) - sqrt( x * x + z * z ) + atan2( y, z ) -
+           tanh( 2. * x - y ) * cbrt( z ) + pow( y, z ) - 3. / ( x + y + z );
+  }
+
+} // namespace
+
+void testSecondOrderElementaryFunctions()
+{
+  // f( x ) with x the variable 1 of 3: value, f', f'' in ( 1, 1 ), everything else zero
+  const double x = 0.6;
+  struct Case {
+    std::string                      name;
+    std::function< H3( const H3& ) > f;
+    double                           f0, f1, f2;
+  };
+  const std::vector< Case > cases = {
+    { "sqrt",
+      []( const H3& a ) { return sqrt( a ); },
+      std::sqrt( x ),
+      0.5 / std::sqrt( x ),
+      -0.25 * std::pow( x, -1.5 ) },
+    { "cbrt",
+      []( const H3& a ) { return cbrt( a ); },
+      std::cbrt( x ),
+      std::pow( x, -2. / 3 ) / 3,
+      -2. / 9 * std::pow( x, -5. / 3 ) },
+    { "exp", []( const H3& a ) { return exp( a ); }, std::exp( x ), std::exp( x ), std::exp( x ) },
+    { "log", []( const H3& a ) { return log( a ); }, std::log( x ), 1 / x, -1 / ( x * x ) },
+    { "log10",
+      []( const H3& a ) { return log10( a ); },
+      std::log10( x ),
+      1 / ( x * std::numbers::ln10 ),
+      -1 / ( x * x * std::numbers::ln10 ) },
+    { "pow( x, 2.5 )",
+      []( const H3& a ) { return pow( a, 2.5 ); },
+      std::pow( x, 2.5 ),
+      2.5 * std::pow( x, 1.5 ),
+      3.75 * std::pow( x, 0.5 ) },
+    { "pow( x, 2 )", []( const H3& a ) { return pow( a, 2 ); }, x * x, 2 * x, 2 },
+    { "pow( 2, x )",
+      []( const H3& a ) { return pow( 2., a ); },
+      std::pow( 2, x ),
+      std::pow( 2, x ) * std::log( 2 ),
+      std::pow( 2, x ) * std::pow( std::log( 2 ), 2 ) },
+    { "sin", []( const H3& a ) { return sin( a ); }, std::sin( x ), std::cos( x ), -std::sin( x ) },
+    { "cos", []( const H3& a ) { return cos( a ); }, std::cos( x ), -std::sin( x ), -std::cos( x ) },
+    { "tan",
+      []( const H3& a ) { return tan( a ); },
+      std::tan( x ),
+      1 + std::pow( std::tan( x ), 2 ),
+      2 * std::tan( x ) * ( 1 + std::pow( std::tan( x ), 2 ) ) },
+    { "asin",
+      []( const H3& a ) { return asin( a ); },
+      std::asin( x ),
+      std::pow( 1 - x * x, -0.5 ),
+      x * std::pow( 1 - x * x, -1.5 ) },
+    { "acos",
+      []( const H3& a ) { return acos( a ); },
+      std::acos( x ),
+      -std::pow( 1 - x * x, -0.5 ),
+      -x * std::pow( 1 - x * x, -1.5 ) },
+    { "atan",
+      []( const H3& a ) { return atan( a ); },
+      std::atan( x ),
+      1 / ( 1 + x * x ),
+      -2 * x / std::pow( 1 + x * x, 2 ) },
+    { "sinh", []( const H3& a ) { return sinh( a ); }, std::sinh( x ), std::cosh( x ), std::sinh( x ) },
+    { "cosh", []( const H3& a ) { return cosh( a ); }, std::cosh( x ), std::sinh( x ), std::cosh( x ) },
+    { "tanh",
+      []( const H3& a ) { return tanh( a ); },
+      std::tanh( x ),
+      1 - std::pow( std::tanh( x ), 2 ),
+      -2 * std::tanh( x ) * ( 1 - std::pow( std::tanh( x ), 2 ) ) },
+    { "abs( -x )", []( const H3& a ) { return abs( -a ); }, x, 1, 0 },
+    { "1 / x", []( const H3& a ) { return 1. / a; }, 1 / x, -1 / ( x * x ), 2 / ( x * x * x ) },
+    { "2 - 3 x", []( const H3& a ) { return 2. - a * 3.; }, 2 - 3 * x, -3, 0 },
+  };
+  for ( const auto& c : cases ) {
+    const H3 y = c.f( variable( x, 1 ) );
+    checkClose( y.val(), c.f0, c.name + " value" );
+    checkClose( y.dx( 1 ), c.f1, c.name + " first derivative" );
+    checkClose( y.dxx( 1, 1 ), c.f2, c.name + " second derivative" );
+    for ( std::size_t i = 0; i < 3; i++ )
+      for ( std::size_t j = 0; j < 3; j++ )
+        if ( i != 1 || j != 1 )
+          checkClose( y.dxx( i, j ), 0.0, c.name + " other second derivatives" );
+    throwExceptionOnFailure( y.dx( 0 ) == 0.0 && y.dx( 2 ) == 0.0,
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << c.name << " other derivatives" );
+  }
+}
+
+void testSecondOrderBinaryOperations()
+{
+  // x and y are the variables 0 and 2 of 3, so the operands depend on different directions
+  const double x = 0.7, y = 1.3;
+  const H3     x_ = variable( x, 0 ), y_ = variable( y, 2 );
+
+  const H3 p = x_ * y_;
+  checkClose( p.val(), x * y, "x y" );
+  checkClose( p.dx( 0 ), y, "d( x y )/dx" );
+  checkClose( p.dx( 2 ), x, "d( x y )/dy" );
+  checkClose( p.dxx( 0, 2 ), 1, "d2( x y )/dxdy" );
+  checkClose( p.dxx( 2, 0 ), 1, "d2( x y )/dydx" );
+  checkClose( p.dxx( 0, 0 ) + p.dxx( 2, 2 ) + p.dxx( 1, 1 ), 0, "d2( x y )/dx2, dy2" );
+
+  const H3 q = x_ / y_;
+  checkClose( q.dx( 2 ), -x / ( y * y ), "d( x / y )/dy" );
+  checkClose( q.dxx( 0, 2 ), -1 / ( y * y ), "d2( x / y )/dxdy" );
+  checkClose( q.dxx( 2, 2 ), 2 * x / ( y * y * y ), "d2( x / y )/dy2" );
+
+  const H3 w = pow( x_, y_ );
+  checkClose( w.dxx( 0, 2 ), std::pow( x, y - 1 ) * ( 1 + y * std::log( x ) ), "d2 x^y/dxdy" );
+
+  const H3     a  = atan2( y_, x_ );
+  const double r2 = x * x + y * y;
+  checkClose( a.val(), std::atan2( y, x ), "atan2" );
+  checkClose( a.dx( 0 ), -y / r2, "d atan2/dx" );
+  checkClose( a.dxx( 0, 2 ), ( y * y - x * x ) / ( r2 * r2 ), "d2 atan2/dxdy" );
+
+  H3 s = x_;
+  s += y_;
+  s -= 2. * x_;
+  s *= y_;
+  s /= x_;
+  // ( y - x ) y / x
+  checkClose( s.val(), ( y - x ) * y / x, "compound assignment" );
+  checkClose( s.dxx( 0, 2 ), -2 * y / ( x * x ), "compound assignment d2/dxdy" );
+  throwExceptionOnFailure( x_ < y_ && x_ == x && 0 < x_ && s != x_,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " comparisons" );
+}
+
+void testSecondOrderAgainstHyperDual()
+{
+  // the full Hessian of a composite function of 3 variables against nested hyper-dual numbers, one pair at a time
+  using Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDual;
+  const std::array< double, 3 > v = { 0.7, 1.3, 0.4 };
+  const H3                      f = composite( variable( v[0], 0 ), variable( v[1], 1 ), variable( v[2], 2 ) );
+  for ( std::size_t i = 0; i < 3; i++ )
+    for ( std::size_t j = 0; j < 3; j++ ) {
+      std::array< HyperDual< 2 >, 3 > x;
+      for ( std::size_t k = 0; k < 3; k++ )
+        x[k] = v[k];
+      x[i].grad()            = 1.0;
+      x[j].val().grad()      = 1.0;
+      const HyperDual< 2 > g = composite( x[0], x[1], x[2] );
+      checkClose( f.val(), g.val().val(), "composite value" );
+      checkClose( f.dx( i ), g.grad().val(), "composite gradient" );
+      checkClose( f.dxx( i, j ), g.grad().grad(), "composite Hessian" );
+    }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testArithmetic,
                                                        testAssignmentAndAliasing,
                                                        testElementaryFunctions,
                                                        testEigen,
-                                                       testFastor };
+                                                       testFastor,
+                                                       testSecondOrderElementaryFunctions,
+                                                       testSecondOrderBinaryOperations,
+                                                       testSecondOrderAgainstHyperDual };
 
   executeTestsAndCollectExceptions( tests );
 

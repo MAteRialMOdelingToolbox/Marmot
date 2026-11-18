@@ -162,9 +162,10 @@ The following CMake options adjust the build:
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
 * ``-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None`` selects the number type of the automatic differentiation
   drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD material base classes
-  ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. The default, ``Marmot``, is Marmot's own vector mode
-  (``MarmotAutomaticDifferentiationVectorMode.h``, expression templates): it computes all derivatives in one
-  evaluation of the differentiated function. ``Sacado`` does the same with
+  ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``, and of the Hessian driver ``SecondOrder::d2f_dT2``. The
+  default, ``Marmot``, is Marmot's own vector mode (``MarmotAutomaticDifferentiationVectorMode.h``, expression
+  templates, and ``MarmotAutomaticDifferentiationVectorModeSecondOrder.h`` for Hessians): it computes all derivatives
+  in one evaluation of the differentiated function. ``Sacado`` does the same with
   `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos), see below. ``None`` uses the first-order dual numbers
   and evaluates the function once per direction, which makes these tangents about 1.9 to 3.1 times slower.
 * ``-DMARMOT_USE_AUTODIFF=ON`` uses `autodiff <https://github.com/autodiff/autodiff>`_ instead of Marmot's own

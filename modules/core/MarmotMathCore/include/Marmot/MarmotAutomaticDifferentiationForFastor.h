@@ -319,13 +319,15 @@ namespace Marmot::Math::Differentiation::Automatic {
   namespace SecondOrder {
 
     /** @typedef tensor_to_scalar_function_type
-     *  @brief Alias for a function mapping a tensor to a scalar with second order dual numbers
+     *  @brief Alias for a function mapping a tensor to a scalar with HessianDual numbers, whose dim * dim directions
+     *  are the components of the tensor
      *  @tparam dim dimension of the input tensor (dim x dim)
      *
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
      */
     template < size_t dim >
-    using tensor_to_scalar_function_type = std::function< dual2nd( const Fastor::Tensor< dual2nd, dim, dim >& T ) >;
+    using tensor_to_scalar_function_type = std::function< HessianDual< dim * dim >(
+      const Fastor::Tensor< HessianDual< dim * dim >, dim, dim >& T ) >;
 
     /** @brief Computes the second derivative of a function that maps a tensor to a scalar
      *  @tparam dim dimension of the input tensor (dim x dim)
@@ -344,6 +346,9 @@ namespace Marmot::Math::Differentiation::Automatic {
      *  \f$ \partial^2 F / \partial T_{ij}\partial T_{kl} = \partial^2 F/\partial T_{ji}\partial T_{lk} \f$, which
      *  holds at a symmetric T for such functions (note: this mirrors both index pairs simultaneously; mirroring
      *  either pair independently is in general NOT valid)
+     *
+     *  With the vector-mode backend (isHessianDual), F is evaluated once and isSymmetric is irrelevant; otherwise F is
+     *  evaluated once per pair of directions.
      */
     template < size_t dim >
     std::tuple< double, Fastor::Tensor< double, dim, dim >, Fastor::Tensor< double, dim, dim, dim, dim > > d2f_dT2(
@@ -351,39 +356,62 @@ namespace Marmot::Math::Differentiation::Automatic {
       const Fastor::Tensor< double, dim, dim >&    T,
       bool                                         isSymmetric = false )
     {
+      using scalar = HessianDual< dim * dim >;
+
       double                                       F_;
-      dual2nd                                      F_right;
       Fastor::Tensor< double, dim, dim >           dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim > d2F_dT2;
-      Fastor::Tensor< dual2nd, dim, dim >          T_right = Tensors::makeHigherOrderDual< 2 >( T );
 
-      for ( size_t i = 0; i < dim; i++ ) {
-        for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
-          seed< 1 >( T_right( i, j ), 1.0 );
-
-          for ( size_t k = 0; k < dim; k++ ) {
-            for ( size_t l = 0; l < dim; l++ ) {
-
-              seed< 2 >( T_right( k, l ), 1.0 );
-              F_right          = F( T_right );
-              const double val = derivative< 2 >( F_right );
-
-              d2F_dT2( i, j, k, l ) = val;
-              if ( isSymmetric && j != i )
-                d2F_dT2( j, i, l, k ) = val;
-
-              seed< 2 >( T_right( k, l ), 0.0 );
-            }
+      if constexpr ( isHessianDual< scalar > ) {
+        Fastor::Tensor< scalar, dim, dim > T_right;
+        for ( size_t i = 0; i < dim; i++ )
+          for ( size_t j = 0; j < dim; j++ ) {
+            T_right( i, j ).val() = T( i, j );
+            seedDirection( T_right( i, j ), dim * i + j );
           }
-          dF_dT_( i, j ) = derivative< 1 >( F_right );
-          F_             = value( F_right );
-          if ( isSymmetric && j != i )
-            dF_dT_( j, i ) = dF_dT_( i, j );
-          seed< 1 >( T_right( i, j ), 0.0 );
-        }
+        const scalar F_right = F( T_right );
+        F_                   = value( F_right );
+        for ( size_t i = 0; i < dim; i++ )
+          for ( size_t j = 0; j < dim; j++ ) {
+            dF_dT_( i, j ) = partialDerivative( F_right, dim * i + j );
+            for ( size_t k = 0; k < dim; k++ )
+              for ( size_t l = 0; l < dim; l++ )
+                d2F_dT2( i, j, k, l ) = secondPartialDerivative( F_right, dim * i + j, dim * k + l );
+          }
+        return { F_, dF_dT_, d2F_dT2 };
       }
+      else {
+        scalar                             F_right;
+        Fastor::Tensor< scalar, dim, dim > T_right = Tensors::makeHigherOrderDual< 2 >( T );
 
-      return { F_, dF_dT_, d2F_dT2 };
+        for ( size_t i = 0; i < dim; i++ ) {
+          for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
+            seed< 1 >( T_right( i, j ), 1.0 );
+
+            for ( size_t k = 0; k < dim; k++ ) {
+              for ( size_t l = 0; l < dim; l++ ) {
+
+                seed< 2 >( T_right( k, l ), 1.0 );
+                F_right          = F( T_right );
+                const double val = derivative< 2 >( F_right );
+
+                d2F_dT2( i, j, k, l ) = val;
+                if ( isSymmetric && j != i )
+                  d2F_dT2( j, i, l, k ) = val;
+
+                seed< 2 >( T_right( k, l ), 0.0 );
+              }
+            }
+            dF_dT_( i, j ) = derivative< 1 >( F_right );
+            F_             = value( F_right );
+            if ( isSymmetric && j != i )
+              dF_dT_( j, i ) = dF_dT_( i, j );
+            seed< 1 >( T_right( i, j ), 0.0 );
+          }
+        }
+
+        return { F_, dF_dT_, d2F_dT2 };
+      }
     }
 
     /** @typedef tensor_and_scalar_to_scalar_function_type
