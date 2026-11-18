@@ -459,6 +459,128 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
   }
 }
 
+// the interpolation vector at a point outside of a Lagrangian cell is the polynomial extension of the shape functions
+// (no clamping), as needed by the aggregated MPM (Coombs et al., CMAME 442 (2025) 118012, eq. 12 and Fig. 5): a node
+// at the parametric coordinate 3 of a linear element gets the 1D values (1 - 3)/2 = -1 and (1 + 3)/2 = 2. It is
+// provided by the geometry layer (CellWithGeometry), hence the same for every cell type, which is checked for the
+// cells of two physics (prefix "Displacement" or "GradientEnhancedFiniteStrain").
+template < int nDim >
+void checkExtrapolatedInterpolationVector( const std::string& prefix )
+{
+  constexpr int nNodes        = 1 << nDim;
+  const double  signs[8][3]   = { { -1, -1, -1 },
+                                  { 1, -1, -1 },
+                                  { 1, 1, -1 },
+                                  { -1, 1, -1 },
+                                  { -1, -1, 1 },
+                                  { 1, -1, 1 },
+                                  { 1, 1, 1 },
+                                  { -1, 1, 1 } };
+  const auto    shapeFunction = [&]( int A, const Eigen::Matrix< double, nDim, 1 >& xi ) {
+    double N = 1;
+    for ( int d = 0; d < nDim; d++ )
+      N *= ( 1 + signs[A][d] * xi[d] ) / 2;
+    return N;
+  };
+
+  auto g = lagrangian< nDim >();
+  g.name = prefix + ( nDim == 2 ? "/Quad4" : "/Hexa8" );
+  for ( bool distorted : { false, true } ) {
+    if ( distorted ) { // a skewed, non-affine cell
+      if constexpr ( nDim == 2 )
+        g.nodes = { 0.0, 0.0, 2.0, 0.0, 1.7, 1.2, 0.2, 0.9 };
+      else {
+        g.nodes[3 * 6 + 0] = 2.3;
+        g.nodes[3 * 6 + 2] = 1.2;
+        g.nodes[3 * 4 + 1] = -0.1;
+      }
+    }
+    std::unique_ptr< Marmot::Discretizations::Cells::Cell > cell(
+      Marmot::Registry::CellFactory::createCell( g.name, 1, g.nodes.data(), static_cast< int >( g.nodes.size() ) ) );
+
+    // parametric points outside of the cell, among them the Fig. 5 node (xi = 3 on the edge xi_2 = -1) and points
+    // beyond a corner and on the other side
+    std::vector< Eigen::Matrix< double, nDim, 1 > > xis;
+    xis.push_back( Eigen::Matrix< double, nDim, 1 >::Constant( -1.0 ) );
+    xis.back()[0] = 3.0;
+    xis.push_back( Eigen::Matrix< double, nDim, 1 >::LinSpaced( 3.0, -0.4 ) );
+    xis.push_back( Eigen::Matrix< double, nDim, 1 >::Constant( -2.5 ) );
+    xis.push_back( Eigen::Matrix< double, nDim, 1 >::LinSpaced( 0.3, 2.0 ) );
+
+    for ( const auto& xi : xis ) {
+      Eigen::Matrix< double, nNodes, 1 > expected;
+      Eigen::Matrix< double, nDim, 1 >   x = Eigen::Matrix< double, nDim, 1 >::Zero();
+      for ( int A = 0; A < nNodes; A++ ) {
+        expected[A] = shapeFunction( A, xi );
+        x += expected[A] * Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( &g.nodes[A * nDim] );
+      }
+
+      Eigen::Matrix< double, nNodes, 1 > N;
+      cell->getInterpolationVector( N.data(), x.data() );
+      throwExceptionOnFailure( !cell->isCoordinateInCell( x.data() ) && ( N - expected ).norm() < 1e-12,
+                               Marmot::Utilities::MakeString()
+                                 << g.name << ( distorted ? " (distorted)" : "" )
+                                 << ": interpolation vector at xi = " << xi.transpose() << " is " << N.transpose()
+                                 << ", expected " << expected.transpose() );
+    }
+
+    if ( !distorted ) { // Fig. 5 literally: the two nodes of the edge xi_2 = -1 get -1 and 2, the others 0
+      Eigen::Matrix< double, nNodes, 1 > N;
+      Eigen::Matrix< double, nDim, 1 >   x = Eigen::Matrix< double, nDim, 1 >::Zero();
+      x[0]                                 = 4.0; // xi = 3 on [0, 2]
+      cell->getInterpolationVector( N.data(), x.data() );
+      Eigen::Matrix< double, nNodes, 1 > expected = Eigen::Matrix< double, nNodes, 1 >::Zero();
+      expected[0]                                 = -1.0;
+      expected[1]                                 = 2.0;
+      throwExceptionOnFailure( ( N - expected ).norm() < 1e-12, g.name + ": the Fig. 5 values -1, 2 of AgMPM" );
+    }
+  }
+}
+
+// the same for the B-spline cells: outside of the knot span, the polynomial extension of the span polynomials (not the
+// global B-splines, which vanish outside of their supports), with partition of unity and linear precision
+template < int nDim >
+void checkExtrapolatedBSplineInterpolationVector( const std::string& prefix, int p )
+{
+  auto g = bSpline< nDim >( p );
+  g.name = prefix + g.name.substr( g.name.find( '/' ) );
+  std::unique_ptr< Marmot::Discretizations::Cells::Cell > cell(
+    Marmot::Registry::CellFactory::createBSplineCell( g.name,
+                                                      1,
+                                                      g.nodes.data(),
+                                                      static_cast< int >( g.nodes.size() ),
+                                                      g.knots.data(),
+                                                      static_cast< int >( g.knots.size() ) ) );
+  const int nNodes = cell->getNNodes();
+
+  using Vec = Eigen::Matrix< double, nDim, 1 >;
+  for ( const Vec& x : { Vec( g.upper + 1.5 * Vec::Ones() ),
+                         Vec( g.lower - 0.7 * Vec::Ones() ),
+                         Vec( g.lower + Vec::LinSpaced( 2.5, -1.2 ) ) } ) {
+    Eigen::VectorXd N( nNodes );
+    cell->getInterpolationVector( N.data(), x.data() );
+    Vec reproduced = Vec::Zero();
+    for ( int A = 0; A < nNodes; A++ )
+      reproduced += N[A] * Eigen::Map< const Vec >( &g.nodes[A * nDim] );
+    throwExceptionOnFailure( !cell->isCoordinateInCell( x.data() ) && std::abs( N.sum() - 1 ) < 1e-12 &&
+                               ( reproduced - x ).norm() < 1e-12 * ( 1 + x.norm() ) && N.minCoeff() < 0,
+                             Marmot::Utilities::MakeString()
+                               << g.name << ": extrapolated interpolation vector at " << x.transpose()
+                               << " is no partition of unity with linear precision: " << N.transpose() );
+  }
+
+  if ( p == 1 ) { // Fig. 5 of AgMPM: span [1, 2], the point u = 3 is at xi = 3 of the span; v = 1 at the lower edge
+    Vec x = Vec::Ones();
+    x[0]  = 3.0;
+    Eigen::VectorXd N( nNodes );
+    cell->getInterpolationVector( N.data(), x.data() );
+    Eigen::VectorXd expected = Eigen::VectorXd::Zero( nNodes );
+    expected[0]              = -1.0;
+    expected[1]              = 2.0;
+    throwExceptionOnFailure( ( N - expected ).norm() < 1e-12, g.name + ": the Fig. 5 values -1, 2 of AgMPM" );
+  }
+}
+
 void testUnknownNamesAreRejected()
 {
   const double x[2] = { 0, 0 };
@@ -485,12 +607,21 @@ void testUnknownNamesAreRejected()
 
 int main()
 {
-  std::vector< std::function< void() > > testFunctions =
-    { testUnknownNamesAreRejected,
-      []() { checkCell< 2 >( lagrangian< 2 >() ); },
-      []() { checkCell< 3 >( lagrangian< 3 >() ); },
-      []() { checkStressStateOfTheMaterialPoints< 2 >( lagrangian< 2 >() ); },
-      []() { checkStressStateOfTheMaterialPoints< 3 >( lagrangian< 3 >() ); } };
+  std::vector< std::function< void() > > testFunctions = {
+    testUnknownNamesAreRejected,
+    []() { checkCell< 2 >( lagrangian< 2 >() ); },
+    []() { checkCell< 3 >( lagrangian< 3 >() ); },
+    []() { checkStressStateOfTheMaterialPoints< 2 >( lagrangian< 2 >() ); },
+    []() { checkStressStateOfTheMaterialPoints< 3 >( lagrangian< 3 >() ); },
+  };
+  for ( const std::string prefix : { "Displacement", "GradientEnhancedFiniteStrain" } ) {
+    testFunctions.push_back( [prefix]() { checkExtrapolatedInterpolationVector< 2 >( prefix ); } );
+    testFunctions.push_back( [prefix]() { checkExtrapolatedInterpolationVector< 3 >( prefix ); } );
+    for ( int p = 1; p <= 3; p++ ) {
+      testFunctions.push_back( [prefix, p]() { checkExtrapolatedBSplineInterpolationVector< 2 >( prefix, p ); } );
+      testFunctions.push_back( [prefix, p]() { checkExtrapolatedBSplineInterpolationVector< 3 >( prefix, p ); } );
+    }
+  }
   for ( int p = 1; p <= 3; p++ ) {
     testFunctions.push_back( [p]() { checkCell< 2 >( bSpline< 2 >( p ) ); } );
     testFunctions.push_back( [p]() { checkCell< 3 >( bSpline< 3 >( p ) ); } );

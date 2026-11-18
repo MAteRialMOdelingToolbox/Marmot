@@ -93,7 +93,8 @@ namespace Marmot::Discretizations::Cells {
    *
    * @details A geometry policy must provide the types @c XiSized (@f$ n_\mathrm{dim} @f$ vector), @c NSized
    * (@f$ 1\times n_\mathrm{nodes} @f$) and @c dNdXSized (@f$ n_\mathrm{dim}\times n_\mathrm{nodes} @f$) and the
-   * methods @c findReferenceCoordinate, @c N, @c dNdX and @c detJ with the signatures of CellGeometry.
+   * methods @c findReferenceCoordinate, @c N, @c dNdX and @c detJ with the signatures of CellGeometry, and
+   * @c NAtCoordinates (shape functions at physical coordinates, extrapolated outside of the cell).
    * The cells additionally call @c isCoordinateInCell, @c getBoundingBox and @c getElementShape, which the
    * concept does not check. Implementations: Marmot::Discretizations::Cells::LagrangianCellGeometry,
    * Marmot::Discretizations::Cells::BSplineCellGeometry.
@@ -136,6 +137,10 @@ namespace Marmot::Discretizations::Cells {
     {
       geom.detJ( typename GeometryCellImpl::XiSized() )
     } -> std::same_as< double >;
+
+    {
+      geom.NAtCoordinates( typename GeometryCellImpl::XiSized() )
+    } -> std::same_as< typename GeometryCellImpl::NSized >;
   };
 
 } // namespace Marmot::Discretizations::Cells

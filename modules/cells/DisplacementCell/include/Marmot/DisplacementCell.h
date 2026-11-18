@@ -27,6 +27,7 @@
 #include "Marmot/MarmotBSplineCellGeometry.h"
 #include "Marmot/MarmotCell.h"
 #include "Marmot/MarmotCellGeometry.h"
+#include "Marmot/MarmotCellWithGeometry.h"
 #include "Marmot/MarmotDofLayoutTools.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotLagrangianCellGeometry.h"
@@ -75,7 +76,7 @@ namespace Marmot::Discretizations::Cells {
    * @tparam GeometryCell Geometry policy, Lagrangian or B-spline.
    */
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
-  class DisplacementCell : public CellBase, public GeometryCell {
+  class DisplacementCell : public CellWithGeometry< CellBase, GeometryCell > {
 
   protected:
     /// Supported body loads.
@@ -138,7 +139,7 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] geometry Geometry of the cell (copied).
      */
     DisplacementCell( int cellLabel, const GeometryCell& geometry )
-      : GeometryCell( geometry ), _cellLabel( cellLabel ){};
+      : CellWithGeometry< CellBase, GeometryCell >( geometry ), _cellLabel( cellLabel ){};
 
     /**
      * @brief Node fields of the cell.
@@ -290,13 +291,6 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] dQ Nodal displacement increments (node-wise, nDim values per node).
      */
     void interpolateFieldsToMaterialPoints( const double* dQ ) const;
-
-    /**
-     * @brief Shape functions of the cell at an arbitrary point.
-     * @param[out] vec Shape functions (nNodes values).
-     * @param[in] coordinates Coordinates of the point (nDim values).
-     */
-    void getInterpolationVector( double* vec, const double* coordinates ) const;
   };
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
@@ -542,17 +536,6 @@ namespace Marmot::Discretizations::Cells {
                                    << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
-  }
-
-  template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
-  void DisplacementCell< nDim, nNodes, CellBase, GeometryCell >::getInterpolationVector(
-    double*       N,
-    const double* coordinates ) const
-  {
-    const auto refCoord = GeometryCell::findReferenceCoordinate( XiSized( coordinates ) );
-
-    Eigen::Map< Eigen::Matrix< double, nNodes, 1 > > interpolationVector( N );
-    interpolationVector = GeometryCell::N( refCoord ).transpose();
   }
 
   /**

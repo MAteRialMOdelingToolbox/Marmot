@@ -133,6 +133,19 @@ namespace Marmot::Discretizations::Cells {
     NSized N( const XiSized& xi ) const { return ParentLagrangianGeometryElement::N( xi ); }
 
     /**
+     * @brief Shape functions at a point given in physical coordinates, also outside of the cell.
+     * @details N() at the parametric coordinates found by the inverse isoparametric mapping
+     * (findReferenceCoordinate()), which is not clamped to the reference domain: outside of the cell, this is the
+     * polynomial extension of the shape functions (e.g. @f$ -1 @f$ and @f$ 2 @f$ at @f$ \xi = 3 @f$ for a linear edge),
+     * the basis extrapolation of the aggregated MPM.
+     * @param[in] coord Physical coordinates.
+     * @return @f$ N_a @f$.
+     * @throws std::runtime_error if the inverse mapping does not converge (a point far outside of a strongly distorted
+     * cell).
+     */
+    NSized NAtCoordinates( const XiSized& coord ) const { return N( findReferenceCoordinate( coord ) ); }
+
+    /**
      * @brief Shape function gradients w.r.t. the physical coordinates,
      * @f$ \partial N_A/\partial X_i = (\partial N_A/\partial \xi_j)\,J^{-1}_{ji} @f$,
      * @f$ J_{ij} = \partial X_i/\partial \xi_j @f$.

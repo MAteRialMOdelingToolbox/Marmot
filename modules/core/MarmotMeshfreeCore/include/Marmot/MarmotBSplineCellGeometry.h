@@ -114,6 +114,37 @@ namespace Marmot::Discretizations::Cells {
     NSized N( const XiSized& xi ) const { return ParentBSplineGeometryElement::N( xi ); }
 
     /**
+     * @brief Shape functions at a point given in physical coordinates, also outside of the cell.
+     * @details Inside the knot span identical to N(); outside, the polynomial extension of the cell's span
+     * polynomials (see Marmot::Math::BOnKnotSpan()), not the values of the global B-splines, which vanish outside
+     * their supports. This is the basis extrapolation of the aggregated MPM.
+     * @param[in] coord Physical coordinates (= parametric coordinates, identity map).
+     * @return @f$ N_a @f$, a partition of unity with linear precision for every @p coord.
+     */
+    NSized NAtCoordinates( const XiSized& coord ) const
+    {
+      constexpr int                     nN = order + 1;
+      Eigen::Matrix< double, nN, nDim > N1D;
+      for ( int d = 0; d < nDim; d++ )
+        for ( int a = 0; a < nN; a++ )
+          N1D( a, d ) = Marmot::Math::BOnKnotSpan< order >( coord( d ),
+                                                            this->_knotVectorsNormalized.col( d ).data(),
+                                                            a,
+                                                            order );
+      NSized N_;
+      for ( int A = 0; A < N_.size(); A++ ) {
+        int    index = A;
+        double value = 1;
+        for ( int d = 0; d < nDim; d++ ) {
+          value *= N1D( index % nN, d );
+          index /= nN;
+        }
+        N_( A ) = value;
+      }
+      return N_;
+    }
+
+    /**
      * @brief Shape function gradients; the parametric derivatives, no Jacobian transformation (identity map).
      * @param[in] xi Parametric (= physical) coordinates.
      * @return @f$ \partial N_a/\partial \xi_i @f$ (row @f$ i @f$, column @f$ a @f$).
