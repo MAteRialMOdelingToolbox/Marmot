@@ -1342,8 +1342,15 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
   Taylor< order > pow( const Taylor< order >& x, S n )
   {
     const double n_ = static_cast< double >( n );
+    // small integer exponents by multiplication, which is faster and exact
     if ( n_ == 2.0 )
       return x * x;
+    if ( n_ == 3.0 )
+      return x * x * x;
+    if ( n_ == 4.0 ) {
+      const Taylor< order > x2 = x * x;
+      return x2 * x2;
+    }
     return power( x, n_, std::pow( x[0], n_ ) );
   }
 
@@ -1683,8 +1690,15 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
   {
     using std::pow;
     const double n_ = static_cast< double >( n );
+    // small integer exponents by multiplication, which is faster and exact
     if ( n_ == 2.0 )
       return x * x;
+    if ( n_ == 3.0 )
+      return x * x * x;
+    if ( n_ == 4.0 ) {
+      const Dual< T > x2 = x * x;
+      return x2 * x2;
+    }
     if ( n_ == 0.0 )
       return Dual< T >( 1.0 );
     const T p = pow( x.val(), n_ );
