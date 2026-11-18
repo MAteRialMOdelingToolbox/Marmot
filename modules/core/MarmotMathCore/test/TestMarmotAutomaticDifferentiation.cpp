@@ -51,27 +51,38 @@ void testADForVectorValuedFunctions()
   throwExceptionOnFailure( checkIfEqual< double >( J, 2 * Eigen::MatrixXd::Identity( 3, 3 ) ),
                            "Error in vector function jacobian with dual" );
 
-  // check jacobian with dual2nd
-  auto vector_func_2nd = [&]( const VectorXdual2nd x ) {
-    const VectorXdual2nd res = 2 * x;
+  // check jacobian with dual2nd: F( x ) = ( x0 x1, x1^2, x0 + x2^3 ), with x carrying its derivative with respect to an
+  // outer variable t (dx/dt = s); F_ and J_ must carry dF/dt and dJ/dt
+  auto vector_func_2nd = [&]( const VectorXdual2nd& x ) {
+    VectorXdual2nd res( 3 );
+    res( 0 ) = x( 0 ) * x( 1 );
+    res( 1 ) = x( 1 ) * x( 1 );
+    res( 2 ) = x( 0 ) + x( 2 ) * x( 2 ) * x( 2 );
     return res;
   };
 
-  VectorXdual XDual( 3 );
-  XDual( 0 ) = dual( 1 );
-  seed< 1 >( XDual( 0 ), 1 );
-  XDual( 1 ) = dual( 2 );
-  seed< 1 >( XDual( 1 ), 1 );
-  XDual( 2 ) = dual( 3 );
-  seed< 1 >( XDual( 2 ), 1 );
+  const double x[3] = { 1.5, -0.5, 2.0 }, s[3] = { 0.5, -1.0, 2.0 };
+  VectorXdual  XDual( 3 );
+  for ( int i = 0; i < 3; i++ ) {
+    XDual( i ) = dual( x[i] );
+    seed< 1 >( XDual( i ), s[i] );
+  }
 
   auto [F_, J_] = dF_dX_2nd( vector_func_2nd, XDual );
 
-  MatrixXdual target = 2 * MatrixXdual::Identity( 3, 3 );
-
-  throwExceptionOnFailure( checkIfEqual< dual >( F_, 2. * XDual ),
-                           "Error in vector function evaluation for jacobian computation with dual2nd" );
-  throwExceptionOnFailure( checkIfEqual< dual >( J, target ), "Error in vector function jacobian with dual2nd" );
+  const double F2[3]     = { x[0] * x[1], x[1] * x[1], x[0] + x[2] * x[2] * x[2] };
+  const double dF2[3]    = { s[0] * x[1] + x[0] * s[1], 2 * x[1] * s[1], s[0] + 3 * x[2] * x[2] * s[2] };
+  const double J2[3][3]  = { { x[1], x[0], 0 }, { 0, 2 * x[1], 0 }, { 1, 0, 3 * x[2] * x[2] } };
+  const double dJ2[3][3] = { { s[1], s[0], 0 }, { 0, 2 * s[1], 0 }, { 0, 0, 6 * x[2] * s[2] } };
+  for ( int i = 0; i < 3; i++ ) {
+    throwExceptionOnFailure( checkIfEqual( value( F_( i ) ), F2[i], 1e-14 ) &&
+                               checkIfEqual( derivative< 1 >( F_( i ) ), dF2[i], 1e-14 ),
+                             "Error in vector function evaluation for jacobian computation with dual2nd" );
+    for ( int j = 0; j < 3; j++ )
+      throwExceptionOnFailure( checkIfEqual( value( J_( i, j ) ), J2[i][j], 1e-14 ) &&
+                                 checkIfEqual( derivative< 1 >( J_( i, j ) ), dJ2[i][j], 1e-14 ),
+                               "Error in vector function jacobian with dual2nd" );
+  }
 }
 
 void testShiftTo2ndOrderDualForVectors()

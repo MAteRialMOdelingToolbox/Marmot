@@ -260,7 +260,8 @@ namespace Marmot::Math::Differentiation::Automatic {
    *
    *  This function takes a 2nd order dual-valued vector-to-vector function and a point as input, and returns a
    * dual-valued pair containing the function value and the Jacobian matrix at that point. Note that the function is
-   * 2nd order dual-valued, but the input is only 1st order dual-valued.
+   * 2nd order dual-valued, but the input is only 1st order dual-valued: its derivative is that with respect to an outer
+   * variable t, and the returned F and dF/dX carry their derivatives with respect to t.
    */
   std::pair< VectorXdual, MatrixXdual > dF_dX_2nd( const vector_to_vector_function_type_dual2nd& F,
                                                    const VectorXdual&                            X );

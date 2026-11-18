@@ -87,9 +87,11 @@ namespace Marmot::Math::Differentiation::Automatic {
       }
 
       seed< 1 >( X_( j ), 0.0 );
-      F_( j ) = dual( value( F_right( j ) ) );
-      seed< 1 >( F_( j ), derivative< 1 >( F_right( j ) ) );
     }
+
+    // the value nodes ( F, dF/dt ), with t the outer variable of X, do not depend on the seeded direction j
+    for ( size_t i = 0; i < sizeX; i++ )
+      F_( i ) = decreaseDualOrder< 2 >( F_right( i ) );
 
     return { F_, J };
   }
