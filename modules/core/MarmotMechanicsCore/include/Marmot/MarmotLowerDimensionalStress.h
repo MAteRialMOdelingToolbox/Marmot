@@ -436,20 +436,5 @@ namespace Marmot::ContinuumMechanics {
      * @return 6x6 transformation matrix (\f$\mathbf{T}\f$) for plane stress correction.
      */
     Marmot::Math::Matrix6d planeStressTangentTransformationMatrix( const Marmot::Math::Matrix6d& tangent );
-
-    /**
-     * @brief Computes the derivative of the 3D strain tensor with respect to the plane stress strain tensor.
-     *
-     * @param tangent 6x6 material tangent stiffness matrix (\f$\mathbf{C}\f$).
-     * @return 6x3 matrix representing \f$\frac{\partial \varepsilon_{3D}}{\partial \varepsilon_{\sigma_{plane}}}\f$.
-     */
-    Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Marmot::Math::Matrix6d& tangent );
-
-    /**
-     * @brief Computes the derivative of the plane stress tensor with respect to the 3D stress tensor.
-     *
-     * @return 3x6 matrix representing \f$\frac{\partial \sigma_{plane}}{\partial \sigma_{3D}}\f$.
-     */
-    Eigen::Matrix< double, 3, 6 > dStressPlaneStressDStress();
   } // namespace PlaneStress
 } // namespace Marmot::ContinuumMechanics

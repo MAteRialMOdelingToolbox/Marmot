@@ -176,6 +176,9 @@ All notable changes to Marmot are documented in this file. The format follows
   `MaterialHypoElastic::computeUniaxialStress()`) and `ContinuumMechanics::PlaneStress::getPlaneStressTangent()` (used
   by `MaterialHypoElastic::computePlaneStress()` and `GeneralGradientEnhancedDisplacementFiniteElement`): the condensed
   tangent comes from `ReducedStress`.
+- **Breaking:** `ContinuumMechanics::PlaneStress::dStrainDStrainPlaneStress( C )` and `dStressPlaneStressDStress()`,
+  without a caller since `getPlaneStressTangent()` is gone; they defined plane stress by σ33 = 0 only. Plane stress is
+  `ReducedStress::planeStressPrescribed` / `planeStressFree` with `ReducedStress::condense()`.
 
 ### Fixed
 - **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`
