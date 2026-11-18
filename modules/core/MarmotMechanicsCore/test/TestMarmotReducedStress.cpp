@@ -449,6 +449,64 @@ void testFailures()
     invalid = true;
   }
   throwExceptionOnFailure( invalid, here( __PRETTY_FUNCTION__, "overlapping index sets must be rejected" ) );
+
+  // an index out of range is rejected before the stress update or the strain is accessed at it
+  bool rejected = false, evaluated = false;
+  try {
+    Vector6d dStrain = Vector6d::Zero();
+    computeReducedStress( [&]( const Vector6d&, Vector6d&, Matrix6d& ) { evaluated = true; },
+                          dStrain,
+                          std::array< int, 1 >{ 0 },
+                          std::array< int, 1 >{ 6 } );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected && !evaluated,
+                           here( __PRETTY_FUNCTION__, "an index out of range must be rejected before the update" ) );
+}
+
+// freeStrainSensitivity(): the free strains keep the free stresses zero when a further variable x changes; with a
+// singular C_ff, a dStressF_dX in its range passes, one with a component along its null space throws
+void testFreeStrainSensitivity()
+{
+  using Matrix32 = Eigen::Matrix< double, 3, 2 >;
+
+  // regular C_ff: dStrainF_dX = -C_ff^-1 dStressF_dX
+  {
+    const auto condensation = condense( anisotropicStiffness(), planeStressPrescribed, planeStressFree );
+    Matrix32   dStressF_dX;
+    dStressF_dX << 1e9, -2e8, 3e8, 5e8, -4e8, 1e8;
+    const Matrix32 dStrainF_dX = freeStrainSensitivity( condensation, dStressF_dX );
+    throwExceptionOnFailure( checkRelative( condensation.Cff * dStrainF_dX, -dStressF_dX, 1e-12 ),
+                             here( __PRETTY_FUNCTION__, "regular: C_ff dStrainF_dX != -dStressF_dX" ) );
+  }
+
+  // singular C_ff: no shear stiffness in 13 and 23
+  Matrix6d C              = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  C( 4, 4 )               = 0;
+  C( 5, 5 )               = 0;
+  const auto condensation = condense( C, planeStressPrescribed, planeStressFree );
+
+  Matrix32 inRange           = Matrix32::Zero();
+  inRange( 0, 0 )            = 1e9; // only sigma_33 depends on x
+  inRange( 0, 1 )            = -3e8;
+  const Matrix32 dStrainF_dX = freeStrainSensitivity( condensation, inRange );
+  throwExceptionOnFailure( checkRelative( condensation.Cff * dStrainF_dX, -inRange, 1e-12 ),
+                           here( __PRETTY_FUNCTION__, "singular: C_ff dStrainF_dX != -dStressF_dX" ) );
+  throwExceptionOnFailure( maxAbs( dStrainF_dX.bottomRows< 2 >() ) <= 1e-14 * maxAbs( dStrainF_dX ),
+                           here( __PRETTY_FUNCTION__, "singular: the undetermined shear strains have a sensitivity" ) );
+
+  Matrix32 outsideRange = inRange;
+  outsideRange( 1, 1 )  = 1e6; // sigma_13 depends on x, but no shear strain can compensate
+  bool thrown           = false;
+  try {
+    freeStrainSensitivity( condensation, outsideRange );
+  }
+  catch ( const Marmot::Utilities::StressUpdateFailed& ) {
+    thrown = true;
+  }
+  throwExceptionOnFailure( thrown, here( __PRETTY_FUNCTION__, "singular: dStressF_dX outside the range must throw" ) );
 }
 
 // MaterialHypoElastic::computePlaneStress / computeUniaxialStress with LinearElastic, orthotropic with axes rotated
@@ -606,6 +664,7 @@ int main()
     testScaleFreeTolerance,
     testConsistentSingularCff,
     testFailures,
+    testFreeStrainSensitivity,
     testMaterialHypoElasticAnisotropic,
     testMaterialHypoElasticPlastic,
     testRankineFullSofteningPlaneStress,
