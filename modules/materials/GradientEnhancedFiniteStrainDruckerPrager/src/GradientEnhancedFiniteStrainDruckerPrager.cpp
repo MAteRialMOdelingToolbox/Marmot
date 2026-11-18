@@ -136,10 +136,9 @@ namespace Marmot::Materials {
      */
     Tensor33d rotationOf( const Tensor33d& F )
     {
-      const Eigen::JacobiSVD< Eigen::Matrix3d > svd( Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >(
-                                                       F.data() ),
-                                                     Eigen::ComputeFullU | Eigen::ComputeFullV );
-      Tensor33d                                 R;
+      const Eigen::JacobiSVD< Eigen::Matrix3d, Eigen::ComputeFullU | Eigen::ComputeFullV > svd(
+        Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >( F.data() ) );
+      Tensor33d R;
       Eigen::Map< Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >( R.data() ) = svd.matrixU() *
                                                                                  svd.matrixV().transpose();
       return R;

@@ -340,14 +340,12 @@ namespace Marmot::Discretizations::Meshfree {
       case SmoothingDomainUpdateType::None: F_smoothing.setIdentity(); break;
       case SmoothingDomainUpdateType::DeformationGradient: F_smoothing = F_physics; break;
       case SmoothingDomainUpdateType::RotationOnly: {
-        Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-        svd.compute( F_physics, Eigen::ComputeFullU | Eigen::ComputeFullV );
+        const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F_physics );
         F_smoothing = svd.matrixU() * svd.matrixV().transpose();
         break;
       }
       case SmoothingDomainUpdateType::RotationAndPrincipalStretch: {
-        Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-        svd.compute( F_physics, Eigen::ComputeFullU | Eigen::ComputeFullV );
+        const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F_physics );
         DeformationGradientSized R  = svd.matrixU() * svd.matrixV().transpose();
         DeformationGradientSized U_ = DeformationGradientSized::Identity();
         U_.diagonal()               = ( R.transpose() * F_physics ).diagonal();

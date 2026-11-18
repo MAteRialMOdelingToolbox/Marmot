@@ -35,11 +35,11 @@ jobs:
       - name: Install Eigen
         shell: bash -leo pipefail {0}
         run: |
-          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          git clone --branch 5.0.1 https://gitlab.com/libeigen/eigen.git
           cd eigen
           mkdir build
           cd build
-          cmake -DBUILD_TESTING=OFF  ..
+          cmake -DBUILD_TESTING=OFF -DEIGEN_BUILD_BLAS=OFF -DEIGEN_BUILD_LAPACK=OFF ..
           sudo make install
           cd ../..
 
@@ -48,10 +48,14 @@ jobs:
       # is case-insensitive, so `mkdir build` fails with "File exists" and `cd build`
       # with "Not a directory". On Linux the two names are distinct, which is why
       # build_ubuntu is unaffected.
+      # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
+      # from its pinned commit.
       - name: Install Autodiff
         shell: bash -leo pipefail {0}
         run: |
-          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
+          curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
+          git -C autodiff apply ../autodiff-eigen5.diff
           cd autodiff
           mkdir build-cmake
           cd build-cmake
