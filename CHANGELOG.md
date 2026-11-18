@@ -7,6 +7,13 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- Optional Sacado (Trilinos) backend for automatic differentiation: configured with
+  `-DMARMOT_AD_VECTOR_BACKEND=Sacado`, the first-derivative drivers `df_dT`, `dF_dT` and `dF_dX< n >`, and hence the
+  tangents of the AD material base classes, compute all directions in one evaluation instead of one per direction
+  (e.g., `ADVonMises` 2.8x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.3x, `ADCompressibleNeoHooke` 1.4x
+  faster). autodiff stays the default and is still used for everything else (hyper-dual numbers of 2nd and 3rd
+  order, Taylor mode). The choice is part of the API and ABI, so it is exported to consumers
+  (`MARMOT_AD_VECTOR_BACKEND_SACADO`).
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
@@ -112,6 +119,12 @@ All notable changes to Marmot are documented in this file. The format follows
   along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
+- **Breaking:** The first-derivative drivers `df_dT` and `dF_dT` take functions of `JacobianDual< nDirections >`
+  numbers, and `MaterialFiniteStrainAD` and `MaterialHypoElasticAD` pass `ADScalar` numbers
+  (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. With the default backend
+  these are `dual`, as before, so code that spells out `dual` still builds; to also build with Sacado, it must use
+  the new names. `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
+  `MaterialHypoElasticAD`).
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
   requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
   (autodiff#397).

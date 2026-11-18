@@ -20,8 +20,7 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
   Map< VectorXd >              stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
 
   // remember old state
-  const VectorXd               stateVarsOld = stateVars;
-  const Marmot::Math::Vector6d SOld         = S;
+  const VectorXd stateVarsOld = stateVars;
 
   double elasticEnergyDensity;
   double dissipation;
@@ -31,12 +30,10 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
   // autodiff part
   // ----------------------------------------
   // compute stress and tangent with autodiff
-  std::tie( S, C ) = dF_dX(
-    [&]( const Marmot::Math::Vector6dual dE_ ) {
+  std::tie( S, C ) = dF_dX< 6 >(
+    [&]( const Vector6AD& dE_ ) {
       // reset stateVars to old state
       stateVars = stateVarsOld;
-
-      Marmot::Math::Vector6dual s( SOld );
 
       // construct AD state
       state3DAD stateAD = state3DAD( state );
@@ -46,7 +43,7 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
       elasticEnergyDensity = stateAD.elasticEnergyDensity;
       dissipation          = stateAD.dissipation;
 
-      Marmot::Math::Vector6dual res = stateAD.stress;
+      Vector6AD res = stateAD.stress;
       return res;
     },
     dEps );

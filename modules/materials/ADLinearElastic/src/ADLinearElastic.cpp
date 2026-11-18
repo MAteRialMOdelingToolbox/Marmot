@@ -27,12 +27,10 @@ namespace Marmot::Materials {
                                            << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
   }
 
-  void ADLinearElastic::computeStressAD( state3DAD&                       state,
-                                         const Marmot::Math::Vector6dual& dStrain,
-                                         const timeInfo&                  timeInfo ) const
+  void ADLinearElastic::computeStressAD( state3DAD& state, const Vector6AD& dStrain, const timeInfo& timeInfo ) const
   {
 
-    const Marmot::Math::Vector6dual dStress = C * dStrain;
+    const Vector6AD dStress = C * dStrain;
 
     state.elasticEnergyDensity += Math::Tensors::makeReal( dStrain.dot( state.stress + 0.5 * dStress ) );
     state.stress += dStress;

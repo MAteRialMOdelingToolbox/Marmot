@@ -141,18 +141,35 @@ endif()
 # Marmot target below.
 add_compile_definitions(FASTOR_DONT_ALIGN)
 
-## find Eigen, autodiff and Fastor as imported targets (Eigen3::Eigen, autodiff::autodiff, Fastor::Fastor).
-## The same file is installed and used by MarmotConfig.cmake, so consumers resolve them alike.
+# Backend of the automatic differentiation drivers that compute full Jacobians, Hessians and third derivatives
+# (MultiDual in MarmotAutomaticDifferentiationTypes.h). autodiff, which Marmot always uses, evaluates one direction
+# per pass; the optional Sacado (Trilinos) computes all directions in a single pass, which is faster. The choice
+# changes the number type in the interfaces of the AD material base classes, i.e. the API and ABI, so every
+# translation unit that includes Marmot's headers must agree on it, like FASTOR_DONT_ALIGN.
+set(MARMOT_AD_VECTOR_BACKEND "autodiff" CACHE STRING "Backend of Marmot's vector-mode AD drivers: autodiff or Sacado")
+set_property(CACHE MARMOT_AD_VECTOR_BACKEND PROPERTY STRINGS autodiff Sacado)
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+    add_compile_definitions(MARMOT_AD_VECTOR_BACKEND_SACADO)
+endif()
+
+## find Eigen, autodiff, Fastor and, if selected, Sacado as imported targets (Eigen3::Eigen, autodiff::autodiff,
+## Fastor::Fastor, Sacado::Sacado). The same file is installed and used by MarmotConfig.cmake, so consumers resolve
+## them alike.
 include(cmake/MarmotDependencies.cmake)
 if(NOT MARMOT_DEPENDENCIES_FOUND)
     message(FATAL_ERROR "${MARMOT_DEPENDENCIES_MESSAGE}")
 endif()
 message("--> found Eigen ${Eigen3_VERSION}")
+message("--> AD vector-mode backend: ${MARMOT_AD_VECTOR_BACKEND}")
+set(MARMOT_AD_BACKEND_TARGETS autodiff::autodiff)
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+    list(APPEND MARMOT_AD_BACKEND_TARGETS Sacado::Sacado)
+endif()
 
 # MSVC: hand the dependencies' header directories to the compiler as external includes explicitly, so that
 # /external:W0 (above) silences their warnings (e.g. C4702 in Fastor) whatever the generator does with SYSTEM.
 if(MSVC)
-    foreach(_dep_target Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+    foreach(_dep_target Eigen3::Eigen ${MARMOT_AD_BACKEND_TARGETS} Fastor::Fastor)
         get_target_property(_dep_include_dirs ${_dep_target} INTERFACE_INCLUDE_DIRECTORIES)
         foreach(_dep_include_dir IN LISTS _dep_include_dirs)
             if(_dep_include_dir AND NOT _dep_include_dir MATCHES "\\$<")
@@ -314,6 +331,10 @@ target_compile_options(${PROJECT_NAME} INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/big
 # FASTOR_DONT_ALIGN (see above) changes Fastor::Tensor's alignment, so consumers of Marmot::Marmot must
 # compile with it as well.
 target_compile_definitions(${PROJECT_NAME} INTERFACE FASTOR_DONT_ALIGN)
+# Likewise the AD vector-mode backend (see MARMOT_AD_VECTOR_BACKEND above).
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+    target_compile_definitions(${PROJECT_NAME} INTERFACE MARMOT_AD_VECTOR_BACKEND_SACADO)
+endif()
 
 # Include-directory strategy:
 #   BUILD_INTERFACE  – source-tree paths, for targets of this build linking ${PROJECT_NAME} (e.g. the bindings).
@@ -325,9 +346,9 @@ foreach(_inc_dir IN LISTS MARMOT_INCLUDE_DIRS)
     target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
 endforeach()
 
-# PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
+# PUBLIC: Marmot's headers include Eigen, autodiff (and Sacado) and Fastor, so consumers need them too
 # (MarmotConfig.cmake recreates these targets on the consumer side).
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen ${MARMOT_AD_BACKEND_TARGETS} Fastor::Fastor)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES})
 
 if(MARMOT_ENABLE_COVERAGE)

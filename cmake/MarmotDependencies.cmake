@@ -5,6 +5,8 @@
 # *   Eigen3::Eigen        (Eigen's CMake package)
 # *   autodiff::autodiff   (autodiff's CMake package, or a plain header search)
 # *   Fastor::Fastor       (Fastor's CMake package, or a plain header search)
+# *   Sacado::Sacado       (only if MARMOT_AD_VECTOR_BACKEND is Sacado: Trilinos' Sacado CMake package, or a
+# *                         plain header search)
 # *
 # * Shared by Marmot's top-level CMakeLists.txt and the installed MarmotConfig.cmake, so that
 # * Marmot and its consumers resolve the dependencies the same way.
@@ -54,3 +56,34 @@ endmacro()
 
 marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
 marmot_find_header_only_dependency(Fastor Fastor::Fastor Fastor)
+
+# Sacado (optional vector-mode AD backend, see MarmotAutomaticDifferentiationTypes.h). Only its header-only part
+# is used, so Sacado::Sacado carries just the include directories, not Trilinos' (static) sacado library. An
+# installed Trilinos provides the package Sacado with the target Sacado::all_libs; a bare copy of the installed
+# headers (including the generated Sacado_config.h) is found by a header search.
+if(MARMOT_AD_VECTOR_BACKEND STREQUAL "Sacado")
+    if(NOT TARGET Sacado::Sacado)
+        find_package(Sacado QUIET CONFIG)
+        if(TARGET Sacado::all_libs)
+            get_target_property(_marmot_sacado_include_dirs Sacado::all_libs INTERFACE_INCLUDE_DIRECTORIES)
+            add_library(Sacado::Sacado INTERFACE IMPORTED)
+            set_target_properties(Sacado::Sacado PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${_marmot_sacado_include_dirs}")
+        endif()
+    endif()
+    if(NOT TARGET Sacado::Sacado)
+        find_path(MARMOT_Sacado_INCLUDE_DIR Sacado_No_Kokkos.hpp)
+        if(MARMOT_Sacado_INCLUDE_DIR AND EXISTS "${MARMOT_Sacado_INCLUDE_DIR}/Sacado_config.h")
+            add_library(Sacado::Sacado INTERFACE IMPORTED)
+            set_target_properties(Sacado::Sacado PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${MARMOT_Sacado_INCLUDE_DIR}")
+        else()
+            set(MARMOT_DEPENDENCIES_FOUND FALSE)
+            string(APPEND MARMOT_DEPENDENCIES_MESSAGE
+                "Sacado not found (neither as a CMake package nor as installed headers with Sacado_config.h), "
+                "but MARMOT_AD_VECTOR_BACKEND is Sacado. ")
+        endif()
+    endif()
+elseif(NOT MARMOT_AD_VECTOR_BACKEND STREQUAL "autodiff")
+    set(MARMOT_DEPENDENCIES_FOUND FALSE)
+    string(APPEND MARMOT_DEPENDENCIES_MESSAGE
+        "MARMOT_AD_VECTOR_BACKEND must be autodiff or Sacado, not '${MARMOT_AD_VECTOR_BACKEND}'. ")
+endif()

@@ -157,6 +157,39 @@ The following CMake options adjust the build:
   vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
+* ``-DMARMOT_AD_VECTOR_BACKEND=Sacado`` uses `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos) instead of
+  autodiff for the automatic differentiation drivers that compute Jacobians (first derivatives), e.g., the tangents
+  of the AD material base classes ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``. Sacado computes all
+  derivatives in one evaluation of the differentiated function instead of one evaluation per direction, which makes
+  these tangents about 1.4 to 2.8 times faster. autodiff is required either way and still used for second and third
+  derivatives. The default is ``autodiff``. See below.
+
+Sacado backend
+______________
+
+Only Sacado's headers are used. They are found through the CMake package of an installed Trilinos
+(``-DSacado_DIR=<prefix>/lib/cmake/Sacado`` if it is not in a default location) or, for a copy of the installed headers
+without CMake files, through ``-DMARMOT_Sacado_INCLUDE_DIR=<directory containing Sacado_No_Kokkos.hpp and
+Sacado_config.h>``. A Trilinos with Sacado as its only package is enough:
+
+.. code-block:: console
+
+    git clone --depth 1 --branch trilinos-release-17-3-0 https://github.com/trilinos/Trilinos.git
+    cmake -S Trilinos -B Trilinos-build \
+        -DTrilinos_ENABLE_Sacado=ON \
+        -DTrilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF \
+        -DTrilinos_ENABLE_TESTS=OFF \
+        -DTrilinos_ENABLE_Fortran=OFF \
+        -DTPL_ENABLE_MPI=OFF \
+        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
+    cmake --build Trilinos-build --parallel
+    cmake --install Trilinos-build
+
+The backend changes the number type of the AD material interfaces (``computeStressAD``), i.e., Marmot's API and ABI.
+``Marmot::Marmot`` therefore passes the definition ``MARMOT_AD_VECTOR_BACKEND_SACADO`` on to its consumers, and code
+compiled against Marmot's headers without CMake must define it as well if Marmot was built with Sacado.
+Code differentiated by these drivers must use the number type ``JacobianDual< nDirections >`` (or the ``ADScalar`` of
+the material base classes) instead of ``dual`` to build with both backends.
 
 Modules
 *******
@@ -190,8 +223,9 @@ Other CMake projects use the installed library through ``find_package``:
     find_package(Marmot REQUIRED)
     target_link_libraries(<target> PRIVATE Marmot::Marmot)
 
-``Marmot::Marmot`` brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
-CMake packages or, if they were installed as plain headers, through a header search.
+``Marmot::Marmot`` brings along Eigen, autodiff and Fastor (and Sacado, if Marmot was built with it); autodiff, Fastor
+and Sacado are found either through their CMake packages or, if they were installed as plain headers, through a header
+search.
 
 Building on Windows
 *******************

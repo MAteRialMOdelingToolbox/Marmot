@@ -38,15 +38,13 @@ namespace Marmot::Materials {
     using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Elasticity tensor for isotropic materials
-    const Marmot::Math::Differentiation::Automatic::MatrixXdual C;
+    const Marmot::Math::Matrix6d C;
 
     ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
     double getDensity( const double* stateVars ) const override;
 
   protected:
-    void computeStressAD( state3DAD&                       state,
-                          const Marmot::Math::Vector6dual& dStrain,
-                          const timeInfo&                  timeInfo ) const override;
+    void computeStressAD( state3DAD& state, const Vector6AD& dStrain, const timeInfo& timeInfo ) const override;
   };
 } // namespace Marmot::Materials

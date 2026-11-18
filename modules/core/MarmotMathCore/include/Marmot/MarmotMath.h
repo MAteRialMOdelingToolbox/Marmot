@@ -200,13 +200,16 @@ namespace Marmot::Math {
     double makeReal( const std::complex< double >& value );
     double makeReal( const Marmot::Math::Differentiation::Automatic::Taylor< 1 >& value );
 
-    /** @brief Converts hyper-dual numbers of any order to double precision floating point numbers
-     *  @tparam Scalar hyper-dual number type
-     *  @param number Input hyper-dual number
-     *  @return Primal value of the hyper-dual number
+    /** @brief Converts hyper-dual numbers of any order and JacobianDual numbers to double precision floating point
+     * numbers
+     *  @tparam Scalar hyper-dual or JacobianDual number type
+     *  @param number Input number
+     *  @return Primal value of the number
      */
     template < typename Scalar,
-               std::enable_if_t< Marmot::Math::Differentiation::Automatic::isHyperDual< Scalar >, bool > = true >
+               std::enable_if_t< Marmot::Math::Differentiation::Automatic::isHyperDual< Scalar > ||
+                                   Marmot::Math::Differentiation::Automatic::isVectorDual< Scalar >,
+                                 bool > = true >
     double makeReal( const Scalar& number )
     {
       return Marmot::Math::Differentiation::Automatic::value( number );
@@ -245,7 +248,7 @@ namespace Marmot::Math {
       int             inSize = static_cast< int >( in.size() );
       Eigen::VectorXd out( inSize );
       for ( int i = 0; i < inSize; i++ ) {
-        out( i ) = double( in( i ) );
+        out( i ) = makeReal( in( i ) );
       }
       return out;
     }

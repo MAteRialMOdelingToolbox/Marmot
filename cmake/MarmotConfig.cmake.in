@@ -14,14 +14,19 @@
 # *   - Eigen3   (Eigen3::Eigen)
 # *   - autodiff (autodiff::autodiff; CMake package or plain headers)
 # *   - Fastor   (Fastor::Fastor; CMake package or plain headers)
+# *   - Sacado   (Sacado::Sacado; only if Marmot was built with MARMOT_AD_VECTOR_BACKEND=Sacado)
 # *
 # * ---------------------------------------------------------------------
 # */
 
 @PACKAGE_INIT@
 
-# MarmotTargets.cmake references Eigen3::Eigen, autodiff::autodiff and Fastor::Fastor; recreate them the
-# same way Marmot's own build found them before loading it.
+# The AD vector-mode backend Marmot was built with; consumers must use the same one (MarmotTargets.cmake sets
+# the matching compile definition).
+set(MARMOT_AD_VECTOR_BACKEND "@MARMOT_AD_VECTOR_BACKEND@")
+
+# MarmotTargets.cmake references Eigen3::Eigen, autodiff::autodiff, Fastor::Fastor (and Sacado::Sacado); recreate
+# them the same way Marmot's own build found them before loading it.
 include("${CMAKE_CURRENT_LIST_DIR}/MarmotDependencies.cmake")
 if(NOT MARMOT_DEPENDENCIES_FOUND)
     set(Marmot_FOUND FALSE)

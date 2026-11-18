@@ -192,6 +192,61 @@ namespace Marmot::Math::Differentiation::Automatic {
   std::pair< Eigen::VectorXd, Eigen::MatrixXd > dF_dX( const vector_to_vector_function_type_dual& F,
                                                        const Eigen::VectorXd&                     X );
 
+  /** @typedef fixed_size_vector_to_vector_function_type
+   *  @brief A type alias for a function mapping a fixed-size vector to a vector of the same size, with JacobianDual
+   *  numbers (one direction per vector component)
+   *  @tparam n size of the vectors
+   */
+  template < int n >
+  using fixed_size_vector_to_vector_function_type = std::function< Eigen::Vector< JacobianDual< n >, n >(
+    const Eigen::Vector< JacobianDual< n >, n >& X ) >;
+
+  /** @brief Computes the Jacobian of a fixed-size vector-to-vector function using automatic differentiation
+   *  @tparam n size of the vectors; not deduced from a lambda, so it must be given explicitly, e.g. dF_dX< 6 >( ... )
+   *  @param F The vector-to-vector function to differentiate
+   *  @param X The point at which to evaluate the Jacobian
+   *  @return A pair containing the function value and the Jacobian matrix at the given point
+   *
+   *  With the Sacado backend, F is evaluated once; otherwise once per component of X.
+   */
+  template < int n >
+  std::pair< Eigen::Vector< double, n >, Eigen::Matrix< double, n, n > > dF_dX(
+    const fixed_size_vector_to_vector_function_type< n >& F,
+    const Eigen::Vector< double, n >&                     X )
+  {
+    using scalar = JacobianDual< n >;
+
+    Eigen::Vector< scalar, n >    X_ = X.template cast< scalar >();
+    Eigen::Vector< scalar, n >    F_right;
+    Eigen::Vector< double, n >    F_;
+    Eigen::Matrix< double, n, n > J;
+
+    if constexpr ( isVectorDual< scalar > ) {
+      for ( int j = 0; j < n; j++ )
+        seedDirection( X_( j ), j );
+      F_right = F( X_ );
+      for ( int i = 0; i < n; i++ ) {
+        F_( i ) = value( F_right( i ) );
+        for ( int j = 0; j < n; j++ )
+          J( i, j ) = partialDerivative( F_right( i ), j );
+      }
+    }
+    else {
+      // J_ij = d F_i / d x_j
+      for ( int j = 0; j < n; j++ ) {
+        seed< 1 >( X_( j ), 1.0 );
+        F_right = F( X_ );
+        for ( int i = 0; i < n; i++ )
+          J( i, j ) = derivative< 1 >( F_right( i ) );
+        seed< 1 >( X_( j ), 0.0 );
+      }
+      for ( int i = 0; i < n; i++ )
+        F_( i ) = value( F_right( i ) );
+    }
+
+    return { F_, J };
+  }
+
   /** @typedef vector_to_vector_function_type_dual2nd
    *  @brief A type alias for a vector-to-vector function that takes and returns second order dual-valued vectors
    */

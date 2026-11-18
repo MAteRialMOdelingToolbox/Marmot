@@ -26,15 +26,27 @@
 /** @file MarmotAutomaticDifferentiationTypes.h
  *  @brief Backend-neutral number types and primitive operations for forward-mode automatic differentiation.
  *
- *  This is the only Marmot header that names the AD backend (currently autodiff, https://autodiff.github.io). All
- *  other Marmot code uses the types and functions declared here, so that the backend can be exchanged in one place.
+ *  This is the only Marmot header that names the AD backends. All other Marmot code uses the types and functions
+ *  declared here, so that the backends can be exchanged in one place.
+ *
+ *  Backends:
+ *  - autodiff (https://autodiff.github.io), always used: HyperDual, Taylor and, by default, JacobianDual.
+ *  - Sacado (https://trilinos.github.io/sacado.html), optional: if Marmot is configured with
+ *    MARMOT_AD_VECTOR_BACKEND=Sacado (which defines MARMOT_AD_VECTOR_BACKEND_SACADO), JacobianDual is a
+ *    Sacado::Fad::SFad, and the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX) compute all directions in a
+ *    single evaluation (vector mode) instead of one direction per evaluation.
  *
  *  Vocabulary:
  *  - HyperDual<order>: nested dual number with one independent direction per nesting level; level 1 is the
  *    outermost level. dual, dual2nd and dual3rd are the orders 1, 2 and 3.
  *  - Taylor<order>: univariate truncated Taylor number carrying the derivatives 0..order of one variable.
+ *  - JacobianDual<nDirections>: number type of the first-derivative drivers df_dT, dF_dT and dF_dX< n >, with
+ *    nDirections independent variables. Code differentiated by these drivers must use this type, not dual, to work
+ *    with both backends. With autodiff it is dual.
  *  - seed<level>( x, v ) sets the derivative of x along nesting level `level` to v, derivative<level>( y ) reads the
  *    mixed derivative of y along the levels 1..level, value( y ) reads the primal value.
+ *  - For vector-mode numbers (isVectorDual), seedDirection( x, i ) makes x the independent variable i and
+ *    partialDerivative( y, i ) reads the partial derivative of y with respect to variable i.
  */
 
 #pragma once
@@ -44,6 +56,9 @@
 #include <autodiff/forward/real.hpp>
 #include <cstddef>
 #include <type_traits>
+#ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
+#  include <Sacado_No_Kokkos.hpp>
+#endif
 
 namespace Marmot::Math::Differentiation::Automatic {
 
@@ -114,15 +129,79 @@ namespace Marmot::Math::Differentiation::Automatic {
     return autodiff::derivative< level >( x );
   }
 
-  /** @brief Reads the primal value of a hyper-dual number
-   *  @tparam Scalar hyper-dual number type
-   *  @param x hyper-dual number
+  /** @brief Reads the primal value of a hyper-dual or vector-mode number
+   *  @tparam Scalar hyper-dual number type or JacobianDual
+   *  @param x number
    *  @return primal (zeroth order) value of x
    */
   template < typename Scalar >
+  double value( const Scalar& x );
+
+  namespace Detail {
+    /** @brief Implementation of isVectorDual
+     *  @tparam Scalar type to check
+     */
+    template < typename Scalar >
+    struct IsVectorDual : std::false_type {};
+#ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
+    /** @brief Implementation of isVectorDual for Sacado::Fad::SFad
+     *  @tparam nDirections number of derivatives
+     */
+    template < int nDirections >
+    struct IsVectorDual< Sacado::Fad::SFad< double, nDirections > > : std::true_type {};
+#endif
+  } // namespace Detail
+
+  /** @brief Number type of the first-derivative drivers (df_dT, dF_dT, dF_dX< n >)
+   *  @tparam nDirections number of independent variables
+   *
+   *  With the Sacado backend a Sacado::Fad::SFad< double, nDirections >, which carries all partial derivatives after a
+   *  single evaluation; otherwise dual, which carries one direction per evaluation.
+   */
+#ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
+  template < size_t nDirections >
+  using JacobianDual = Sacado::Fad::SFad< double, static_cast< int >( nDirections ) >;
+#else
+  template < size_t nDirections >
+  using JacobianDual = dual;
+#endif
+
+  /** @brief True if Scalar is a vector-mode number, i.e., a JacobianDual of the Sacado backend
+   *  @tparam Scalar type to check
+   */
+  template < typename Scalar >
+  inline constexpr bool isVectorDual = Detail::IsVectorDual< Scalar >::value;
+
+  template < typename Scalar >
   double value( const Scalar& x )
   {
-    return autodiff::detail::val( x );
+    if constexpr ( isVectorDual< Scalar > )
+      return x.val();
+    else
+      return autodiff::detail::val( x );
+  }
+
+  /** @brief Makes a vector-mode number the independent variable `direction`
+   *  @tparam Scalar vector-mode number type (isVectorDual)
+   *  @param x number to seed; its derivatives must be zero
+   *  @param direction index of the independent variable, less than the number of directions of Scalar
+   */
+  template < typename Scalar >
+  void seedDirection( Scalar& x, size_t direction )
+  {
+    x.fastAccessDx( static_cast< int >( direction ) ) = 1.0;
+  }
+
+  /** @brief Reads a partial derivative of a vector-mode number
+   *  @tparam Scalar vector-mode number type (isVectorDual)
+   *  @param x number
+   *  @param i index of the independent variable
+   *  @return partial derivative of x with respect to variable i
+   */
+  template < typename Scalar >
+  double partialDerivative( const Scalar& x, size_t i )
+  {
+    return x.fastAccessDx( static_cast< int >( i ) );
   }
 
   /** @brief Contiguous coefficient storage of a hyper-dual number
@@ -174,3 +253,37 @@ namespace Marmot::Math::Differentiation::Automatic {
   }
 
 } // namespace Marmot::Math::Differentiation::Automatic
+
+#ifdef MARMOT_AD_VECTOR_BACKEND_SACADO
+namespace Eigen {
+  /** @brief Eigen support for the vector-mode numbers of the Sacado backend */
+  template < int nDirections >
+  struct NumTraits< Sacado::Fad::SFad< double, nDirections > > : NumTraits< double > {
+    using Real       = Sacado::Fad::SFad< double, nDirections >;
+    using NonInteger = Real;
+    using Literal    = double;
+    using Nested     = Real;
+    enum {
+      IsComplex             = 0,
+      IsInteger             = 0,
+      IsSigned              = 1,
+      RequireInitialization = 1,
+      ReadCost              = 1,
+      AddCost               = 3,
+      MulCost               = 3
+    };
+  };
+
+  /** @brief Lets Eigen mix the vector-mode numbers of the Sacado backend with double */
+  template < int nDirections, typename BinaryOp >
+  struct ScalarBinaryOpTraits< Sacado::Fad::SFad< double, nDirections >, double, BinaryOp > {
+    using ReturnType = Sacado::Fad::SFad< double, nDirections >;
+  };
+
+  /** @brief Lets Eigen mix double with the vector-mode numbers of the Sacado backend */
+  template < int nDirections, typename BinaryOp >
+  struct ScalarBinaryOpTraits< double, Sacado::Fad::SFad< double, nDirections >, BinaryOp > {
+    using ReturnType = Sacado::Fad::SFad< double, nDirections >;
+  };
+} // namespace Eigen
+#endif

@@ -64,11 +64,13 @@ namespace Marmot::Math::Differentiation::Automatic {
   }
 
   /** @typedef tensor_to_scalar_function_type
-   *  @brief Alias for a function mapping a tensor to a scalar with dual numbers
+   *  @brief Alias for a function mapping a tensor to a scalar with JacobianDual numbers, one direction per
+   *  tensor component
    *  @tparam Rest dimensions of the tensor
    * */
   template < size_t... Rest >
-  using tensor_to_scalar_function_type = std::function< dual( const Fastor::Tensor< dual, Rest... >& T ) >;
+  using tensor_to_scalar_function_type = std::function< JacobianDual< ( Rest * ... ) >(
+    const Fastor::Tensor< JacobianDual< ( Rest * ... ) >, Rest... >& T ) >;
 
   /** @brief Compute the gradient of a tensor-to-scalar function
    *  @tparam Rest dimensions of the tensor
@@ -87,41 +89,54 @@ namespace Marmot::Math::Differentiation::Automatic {
                                            const Fastor::Tensor< double, Rest... >&         T,
                                            bool                                             isSymmetric = false )
   {
+    using scalar = JacobianDual< ( Rest * ... ) >;
+
     Fastor::Tensor< double, Rest... > df_dT( 0.0 );
-    Fastor::Tensor< dual, Rest... >   T_right = Tensors::makeDual( T );
+    Fastor::Tensor< scalar, Rest... > T_right = Tensors::makeOtherScalarType< scalar >( T );
 
     double* df_dT_data   = df_dT.data();
-    dual*   T_right_data = T_right.data();
+    scalar* T_right_data = T_right.data();
 
-    if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::value ) {
-      if ( isSymmetric ) {
-        constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::dim;
-
-        for ( size_t row = 0; row < dim; ++row ) {
-          for ( size_t col = row; col < dim; ++col ) {
-            const Fastor::FASTOR_INDEX lin_ij  = row * dim + col;
-            const Fastor::FASTOR_INDEX lin_ji  = col * dim + row;
-            const int                  mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
-
-            seed< 1 >( T_right_data[mem_idx], 1.0 );
-            const double val = derivative< 1 >( f( T_right ) );
-            seed< 1 >( T_right_data[mem_idx], 0.0 );
-
-            df_dT_data[df_dT.get_mem_index( lin_ij )] = val;
-            if ( col != row )
-              df_dT_data[df_dT.get_mem_index( lin_ji )] = val;
-          }
-        }
-
-        return df_dT;
-      }
+    if constexpr ( isVectorDual< scalar > ) {
+      // all directions in one evaluation; isSymmetric would not save anything
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+        seedDirection( T_right_data[T_right.get_mem_index( i )], i );
+      const scalar f_right = f( T_right );
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+        df_dT_data[df_dT.get_mem_index( i )] = partialDerivative( f_right, i );
     }
+    else {
 
-    for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-      const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
-      seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
-      df_dT_data[df_dT.get_mem_index( i )] = derivative< 1 >( f( T_right ) );
-      seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
+      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::value ) {
+        if ( isSymmetric ) {
+          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::dim;
+
+          for ( size_t row = 0; row < dim; ++row ) {
+            for ( size_t col = row; col < dim; ++col ) {
+              const Fastor::FASTOR_INDEX lin_ij  = row * dim + col;
+              const Fastor::FASTOR_INDEX lin_ji  = col * dim + row;
+              const int                  mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
+
+              seed< 1 >( T_right_data[mem_idx], 1.0 );
+              const double val = derivative< 1 >( f( T_right ) );
+              seed< 1 >( T_right_data[mem_idx], 0.0 );
+
+              df_dT_data[df_dT.get_mem_index( lin_ij )] = val;
+              if ( col != row )
+                df_dT_data[df_dT.get_mem_index( lin_ji )] = val;
+            }
+          }
+
+          return df_dT;
+        }
+      }
+
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
+        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
+        seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
+        df_dT_data[df_dT.get_mem_index( i )] = derivative< 1 >( f( T_right ) );
+        seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
+      }
     }
 
     return df_dT;
@@ -218,68 +233,85 @@ namespace Marmot::Math::Differentiation::Automatic {
    */
   template < size_t... RestF, size_t... RestT >
   std::pair< Fastor::Tensor< double, RestF... >, Fastor::Tensor< double, RestF..., RestT... > > dF_dT(
-    std::function< Fastor::Tensor< dual, RestF... >( const Fastor::Tensor< dual, RestT... >& ) >& F,
-    const Fastor::Tensor< double, RestT... >&                                                     T,
-    bool                                                                                          isSymmetric = false )
+    std::function< Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestF... >(
+      const Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestT... >& ) >& F,
+    const Fastor::Tensor< double, RestT... >&                                 T,
+    bool                                                                      isSymmetric = false )
   {
+    using scalar = JacobianDual< ( RestT * ... ) >;
 
     Fastor::Tensor< double, RestF... >           F_( 0.0 );
     Fastor::Tensor< double, RestF..., RestT... > dF_dT_( 0.0 );
-    Fastor::Tensor< dual, RestT... >             T_right = Tensors::makeDual( T );
+    Fastor::Tensor< scalar, RestT... >           T_right = Tensors::makeOtherScalarType< scalar >( T );
 
-    Fastor::Tensor< dual, RestF... > F_at_T_right( 0.0 );
+    Fastor::Tensor< scalar, RestF... > F_at_T_right( 0.0 );
 
     double* dF_dT_data        = dF_dT_.data();
-    dual*   T_right_data      = T_right.data();
-    dual*   F_at_T_right_data = F_at_T_right.data();
+    scalar* T_right_data      = T_right.data();
+    scalar* F_at_T_right_data = F_at_T_right.data();
 
-    if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
-                   Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
-                   Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
-                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
-      if ( isSymmetric ) {
-        constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
-
-        for ( size_t row = 0; row < dim; ++row ) {
-          for ( size_t col = row; col < dim; ++col ) {
-            const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
-            const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-            const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
-            seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
-            F_at_T_right = F( T_right );
-
-            for ( size_t outRow = 0; outRow < dim; ++outRow ) {
-              for ( size_t outCol = 0; outCol < dim; ++outCol ) {
-                const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
-                const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
-                const double val = derivative< 1 >( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] );
-                dF_dT_data[dF_dT_.get_mem_index( out_ab * T.size() + lin_ij )] = val;
-                if ( col != row )
-                  dF_dT_data[dF_dT_.get_mem_index( out_ba * T.size() + lin_ji )] = val;
-              }
-            }
-            seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
-          }
-        }
-
-        F_ = Tensors::makeReal( F_at_T_right );
-        return { F_, dF_dT_ };
-      }
-    }
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-      const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
-      seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
+    if constexpr ( isVectorDual< scalar > ) {
+      // all directions in one evaluation; isSymmetric would not save anything
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+        seedDirection( T_right_data[T_right.get_mem_index( i )], i );
       F_at_T_right = F( T_right );
-
       for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
-        dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = derivative< 1 >(
-          F_at_T_right_data[F_at_T_right.get_mem_index( j )] );
+        const scalar& F_j                = F_at_T_right_data[F_at_T_right.get_mem_index( j )];
+        F_.data()[F_.get_mem_index( j )] = value( F_j );
+        for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = partialDerivative( F_j, i );
       }
-      seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
     }
+    else {
 
-    F_ = Tensors::makeReal( F_at_T_right );
+      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
+                       Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
+        if ( isSymmetric ) {
+          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
+
+          for ( size_t row = 0; row < dim; ++row ) {
+            for ( size_t col = row; col < dim; ++col ) {
+              const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
+              const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
+              const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
+              seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
+              F_at_T_right = F( T_right );
+
+              for ( size_t outRow = 0; outRow < dim; ++outRow ) {
+                for ( size_t outCol = 0; outCol < dim; ++outCol ) {
+                  const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
+                  const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
+                  const double val = derivative< 1 >( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] );
+                  dF_dT_data[dF_dT_.get_mem_index( out_ab * T.size() + lin_ij )] = val;
+                  if ( col != row )
+                    dF_dT_data[dF_dT_.get_mem_index( out_ba * T.size() + lin_ji )] = val;
+                }
+              }
+              seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
+            }
+          }
+
+          F_ = Tensors::makeReal( F_at_T_right );
+          return { F_, dF_dT_ };
+        }
+      }
+
+      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
+        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
+        seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
+        F_at_T_right = F( T_right );
+
+        for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
+          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = derivative< 1 >(
+            F_at_T_right_data[F_at_T_right.get_mem_index( j )] );
+        }
+        seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
+      }
+
+      F_ = Tensors::makeReal( F_at_T_right );
+    }
 
     return { F_, dF_dT_ };
   }

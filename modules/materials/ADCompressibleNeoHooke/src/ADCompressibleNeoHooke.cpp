@@ -43,10 +43,8 @@ namespace Marmot::Materials {
       PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
-    Tensor33t< Marmot::Math::Differentiation::Automatic::dual >
-      PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,
-                                                                   Marmot::Math::Differentiation::Automatic::dual(
-                                                                     2.0 ) );
+    Tensor33t< ADScalar< 3 > > PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,
+                                                                                            ADScalar< 3 >( 2.0 ) );
 
     const auto tau                = Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                  = tau;

@@ -8,7 +8,7 @@ Marmot is a high-performance C++20 shared library (`libMarmot`) providing finite
 
 Optional Python bindings (`modules/python`, built with [nanobind](https://github.com/wjakob/nanobind)) expose material point solvers (`marmot.solvers.HypoElasticSolver`, `marmot.solvers.FiniteStrainSolver`) for quick material testing and prototyping — see `doc/pages/python_bindings.md`.
 
-Dependencies (located by `cmake/MarmotDependencies.cmake` as imported targets): Eigen (>= 3.3, incl. Eigen 5), autodiff and Fastor (CMake package, or a plain header search; no version enforced — CI pins autodiff v1.1.0 and Fastor V0.6.4).
+Dependencies (located by `cmake/MarmotDependencies.cmake` as imported targets): Eigen (>= 3.3, incl. Eigen 5), autodiff and Fastor (CMake package, or a plain header search; no version enforced — CI pins autodiff v1.1.0 and Fastor V0.6.4). Optional: Sacado (Trilinos; CMake package or installed headers) with `-DMARMOT_AD_VECTOR_BACKEND=Sacado`, which computes the Jacobians of the first-derivative AD drivers (and thus the tangents of the AD materials) in one evaluation.
 
 ## Build & Test
 
@@ -86,7 +86,7 @@ Rules:
 7. Registration statics go in **unnamed namespaces** in `src/<Name>Registration.cpp`.
 8. C++17 nested namespace syntax only (`namespace Marmot::ContinuumMechanics::Elasticity {`); namespaces are PascalCase.
 9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
-10. The automatic differentiation backend (autodiff) is included and named only in `Marmot/MarmotAutomaticDifferentiationTypes.h`. All other code uses its backend-neutral vocabulary in `Marmot::Math::Differentiation::Automatic`: the types `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >`, `Taylor< order >` (and the Eigen aliases `VectorXdual`, …) and the functions `seed< level >`, `derivative< level >`, `value` and `taylorDerivatives< order >` — never the backend's members (`.val`, `.grad`) or functions.
+10. The automatic differentiation backends (autodiff, and the optional Sacado selected by `MARMOT_AD_VECTOR_BACKEND=Sacado`) are included and named only in `Marmot/MarmotAutomaticDifferentiationTypes.h`. All other code uses its backend-neutral vocabulary in `Marmot::Math::Differentiation::Automatic`: the types `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >`, `Taylor< order >`, `JacobianDual< nDirections >` (and the Eigen aliases `VectorXdual`, …) and the functions `seed< level >`, `derivative< level >`, `value`, `seedDirection`, `partialDerivative` and `taylorDerivatives< order >` — never the backends' members (`.val`, `.grad`, `.fastAccessDx`) or functions. Code differentiated by the first-derivative drivers `df_dT`, `dF_dT` and `dF_dX< n >` (including `computeStressAD` of the AD material base classes, via their `ADScalar`) uses `JacobianDual`, not `dual`, and must build and pass the tests with both backends. With Sacado, arithmetic yields expression templates that refer to their operands: never store one in `auto` or return one from a lambda with a deduced return type; name the number type instead.
 
 `scripts/checkNamespaceConventions.sh` greps for violations; CI treats findings as errors.
 

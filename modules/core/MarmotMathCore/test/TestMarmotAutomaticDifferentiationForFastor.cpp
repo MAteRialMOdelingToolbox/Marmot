@@ -23,9 +23,10 @@ void testTensorToScalar()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< dual( const Fastor::Tensor< dual, 3, 3 >& ) > psi = [&]( const Fastor::Tensor< dual, 3, 3 >& Ce_ ) {
-    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-  };
+  std::function< JacobianDual< 9 >( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& ) > psi =
+    [&]( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& Ce_ ) {
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+    };
 
   // autodiff solution
   Tensor33d dPsi_dC = df_dT( psi, C );
@@ -79,9 +80,10 @@ void testTensorToScalarSymmetric()
   const double K = 3500;
   const double G = 1000;
 
-  std::function< dual( const Fastor::Tensor< dual, 3, 3 >& ) > psi = [&]( const Fastor::Tensor< dual, 3, 3 >& Ce_ ) {
-    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
-  };
+  std::function< JacobianDual< 9 >( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& ) > psi =
+    [&]( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& Ce_ ) {
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+    };
 
   Tensor33d dPsi_dC_full = df_dT( psi, C );
   Tensor33d dPsi_dC_sym  = df_dT( psi, C, true );
@@ -188,10 +190,12 @@ void testTensorToTensor()
   Tensor33d F;
   F.random();
 
-  std::function< Tensor33t< dual >( const Tensor33t< dual >& ) > f = [&]( const Fastor::Tensor< dual, 3, 3 >& F_ ) {
-    Tensor33t< dual > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_ );
-    return C;
-  };
+  std::function< Tensor33t< JacobianDual< 9 > >( const Tensor33t< JacobianDual< 9 > >& ) > f =
+    [&]( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& F_ ) {
+      Tensor33t< JacobianDual< 9 > > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
+        F_ );
+      return C;
+    };
 
   // autodiff solution
   auto [C, dC_dF] = dF_dT( f, F );
@@ -219,10 +223,11 @@ void testTensorToTensorSymmetric()
 
   // f(C) = C*C: transpose-equivariant (f(A^T) = f(A)^T for any A), same-dimension square output, so the
   // symmetry-exploiting path (which relies on that property) is applicable
-  std::function< Tensor33t< dual >( const Tensor33t< dual >& ) > f = []( const Fastor::Tensor< dual, 3, 3 >& C_ ) {
-    return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
-                                                                                                                 C_ );
-  };
+  std::function< Tensor33t< JacobianDual< 9 > >( const Tensor33t< JacobianDual< 9 > >& ) > f =
+    []( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& C_ ) {
+      return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
+                                                                                                                   C_ );
+    };
 
   auto [Fval_full, dF_dC_full] = dF_dT( f, C );
   auto [Fval_sym, dF_dC_sym]   = dF_dT( f, C, true );
@@ -436,12 +441,13 @@ void testNonSquareRank2Shapes()
   // must be usable without triggering the isSymmetric-only code path's compile-time shape requirements
 
   // df_dT with a non-square-rank2 (rank-1 vector) input: f(T) = sum(T_i^2), gradient = 2*T
-  std::function< dual( const Fastor::Tensor< dual, 4 >& ) > f = []( const Fastor::Tensor< dual, 4 >& T ) {
-    dual result = 0.0;
-    for ( size_t i = 0; i < 4; i++ )
-      result += T( i ) * T( i );
-    return result;
-  };
+  std::function< JacobianDual< 4 >( const Fastor::Tensor< JacobianDual< 4 >, 4 >& ) > f =
+    []( const Fastor::Tensor< JacobianDual< 4 >, 4 >& T ) {
+      JacobianDual< 4 > result = 0.0;
+      for ( size_t i = 0; i < 4; i++ )
+        result += T( i ) * T( i );
+      return result;
+    };
 
   Fastor::Tensor< double, 4 > T{ 1., 2., 3., 4. };
   Fastor::Tensor< double, 4 > dF_dT_result = df_dT( f, T );
@@ -452,9 +458,9 @@ void testNonSquareRank2Shapes()
                              << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
 
   // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
-  std::function< Fastor::Tensor< dual, 2 >( const Fastor::Tensor< dual, 3, 3 >& ) > g =
-    []( const Fastor::Tensor< dual, 3, 3 >& C_ ) {
-      Fastor::Tensor< dual, 2 > out( 0.0 );
+  std::function< Fastor::Tensor< JacobianDual< 9 >, 2 >( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& ) > g =
+    []( const Fastor::Tensor< JacobianDual< 9 >, 3, 3 >& C_ ) {
+      Fastor::Tensor< JacobianDual< 9 >, 2 > out( 0.0 );
       out( 0 ) = C_( 0, 0 ) * C_( 0, 0 );
       out( 1 ) = C_( 1, 1 ) + C_( 2, 2 );
       return out;

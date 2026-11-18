@@ -39,6 +39,9 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 [Eigen](https://gitlab.com/libeigen/eigen) (≥5.0),
 [autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
 and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
+Optionally, [Sacado](https://trilinos.github.io/sacado.html) (part of Trilinos) can be used for the automatic
+differentiation of tangents with `-DMARMOT_AD_VECTOR_BACKEND=Sacado`, which computes all first derivatives in one
+evaluation.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
 
 For a quick start we recommend to use conda.

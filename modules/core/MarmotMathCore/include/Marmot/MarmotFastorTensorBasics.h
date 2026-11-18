@@ -715,7 +715,11 @@ namespace Marmot::Math::Tensors {
     T*                                in_data  = in.data();
 
     for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = static_cast< double >( in_data[in.get_mem_index( i )] );
+      if constexpr ( Marmot::Math::Differentiation::Automatic::isVectorDual< T > )
+        out_data[out.get_mem_index( i )] = Marmot::Math::Differentiation::Automatic::value(
+          in_data[in.get_mem_index( i )] );
+      else
+        out_data[out.get_mem_index( i )] = static_cast< double >( in_data[in.get_mem_index( i )] );
     }
     return out;
   }
