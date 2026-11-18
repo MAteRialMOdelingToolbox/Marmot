@@ -202,6 +202,28 @@ namespace {
     std::cout << "closed forms of the couplings OK (maturity rate at 60 C: " << a << ")" << std::endl;
   }
 
+  /// time increments much longer than the time constants of the sources (where exp(dT / tau) overflows): the heat of
+  /// hydration and the self-desiccation of the whole increment are finite and exact, with and without maturity
+  void testSourcesOfLongIncrements()
+  {
+    auto withoutMaturity = coupled;
+    withoutMaturity[29]  = 0.0; // E_h / R
+    for ( const auto& p : { coupled, withoutMaturity } ) {
+      auto th = create( "THERMOHYGRO", p.data(), 32 );
+      // at the reference temperature the maturity rate is 1: the equivalent age is the time
+      const auto fs = twoFieldState( 20.0, 20.0, 0.85, 0.85 );
+      for ( double dT : { 3000.0, 1.0e7 } ) {
+        const auto c = evaluate( *th, fs, dT, dT, 0.0 );
+        throwExceptionOnFailure( c.r.source.allFinite() && c.t.dSource_dField.allFinite(),
+                                 "sources of a very long increment are finite" );
+        throwExceptionOnFailure( checkIfEqual( c.r.source( 0 ) * dT, 60.0, 1e-12 * 60.0 ),
+                                 "heat of hydration of a very long increment" );
+        throwExceptionOnFailure( checkIfEqual( -c.r.source( 1 ) * dT, 5.0, 1e-12 * 5.0 ),
+                                 "self-desiccation of a very long increment" );
+      }
+    }
+  }
+
   /// all four blocks of all tangents by central differences, for several states and both time increments
   void testTangentsByFiniteDifferences()
   {
@@ -322,6 +344,7 @@ int main()
 {
   testUncoupledLimit();
   testClosedForms();
+  testSourcesOfLongIncrements();
   testTangentsByFiniteDifferences();
   testStorageAndInputs();
   return 0;

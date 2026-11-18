@@ -219,7 +219,8 @@ namespace Marmot::Materials {
       te = timeIncrement.time;
       rH = moisture.selfDesiccationSource( timeIncrement.time, dT );
       if ( QInf > 0.0 )
-        rT = dT > 0.0 ? QInf * std::exp( -timeIncrement.time / tauQ ) * std::expm1( dT / tauQ ) / dT
+        // as the sink: the exponential at the beginning of the increment, which cannot overflow for dT >> tau_q
+        rT = dT > 0.0 ? -QInf * std::exp( -( timeIncrement.time - dT ) / tauQ ) * std::expm1( -dT / tauQ ) / dT
                       : QInf / tauQ * std::exp( -timeIncrement.time / tauQ );
     }
     else {
@@ -233,7 +234,9 @@ namespace Marmot::Materials {
         }
         const double e = std::exp( -te / tau );
         dRate_dT       = A * e / tau * da_dT;
-        return dT > 0.0 ? A * e * std::expm1( dTe / tau ) / dT : A * e / tau * a;
+        // A (exp(-t_e,n / tau) - exp(-t_e / tau)) / dT, in a form which cannot overflow for an increment of the
+        // equivalent age much longer than tau (exp(-t_e / tau) expm1(dTe / tau) is 0 * inf = NaN there)
+        return dT > 0.0 ? -A * std::exp( -teN / tau ) * std::expm1( -dTe / tau ) / dT : A * e / tau * a;
       };
       rT              = averageRate( QInf, tauQ, drT_dT );
       double dSink_dT = 0.0;
