@@ -164,7 +164,7 @@
 <parametername direction="out">energyTan</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the free strains <formula id="18">$\varepsilon_{33}, \gamma_{13}, \gamma_{23}$</formula> is left to the element.</para>
+<para>Derivatives of the updated elastic energy density and dissipation wrt the 3D strain increment and the nonlocal variables; the condensation of the free strains <formula id="36">$\varepsilon_{33}, \gamma_{13}, \gamma_{23}$</formula> is left to the element.</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

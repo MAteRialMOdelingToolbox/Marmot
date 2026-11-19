@@ -60,6 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="displacementfinitestrainelement.html">Displacement Finite Strain Element</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">General Gradient-Enhanced Displacement Finite Element</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#axisymmetric-elements">Axisymmetric elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#evaluation-at-the-quadrature-points">Evaluation at the quadrature points</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
@@ -189,27 +190,106 @@ source function with respect to the crack phase field <span class="math notransl
 <p>where <span class="math notranslate nohighlight">\(\Gamma_e\)</span> is the element boundary, <span class="math notranslate nohighlight">\(\mathbf{n}\)</span> its outward unit normal, <span class="math notranslate nohighlight">\(\mathbf{N}\)</span> the shape-function matrix
 of the displacement field, <span class="math notranslate nohighlight">\(p\)</span> the pressure magnitude, and <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> the body-force vector per unit volume.
 The minus sign for pressure follows an outward-normal convention.</p>
-<p>For 2D and 1D problems, the integration measure <span class="math notranslate nohighlight">\(J_0 w\)</span> is scaled by thickness
-<span class="math notranslate nohighlight">\(t\)</span> or cross-sectional area <span class="math notranslate nohighlight">\(A\)</span>, respectively: <span class="math notranslate nohighlight">\(J_0 w \leftarrow J_0 w\, t\)</span>
-(2D), <span class="math notranslate nohighlight">\(J_0 w \leftarrow J_0 w\, A\)</span> (1D).
-Here, <span class="math notranslate nohighlight">\(t\)</span> denotes thickness and <span class="math notranslate nohighlight">\(A\)</span> denotes cross-sectional area.</p>
-<p>Constitutive updates are carried out per quadrature point using a Marmot material model of the following types:</p>
+<p>For plane stress and plane strain, the integration measure <span class="math notranslate nohighlight">\(J_0 w\)</span> is scaled by the thickness <span class="math notranslate nohighlight">\(t\)</span>,
+<span class="math notranslate nohighlight">\(J_0 w \leftarrow J_0 w\, t\)</span>; axisymmetric elements integrate over the ring, see below.</p>
+<p>Constitutive updates are carried out per quadrature point using a Marmot material model, through its 3D interface
+(solid, plane strain and axisymmetric) or its plane stress iteration, for the sections</p>
 <ul class="simple">
 <li><p>3D solid</p></li>
 <li><p>Plane stress</p></li>
 <li><p>Plane strain</p></li>
-<li><p>1D uniaxial stress</p></li>
+<li><p>Axisymmetric</p></li>
 </ul>
 <p>Each quadrature point stores stress, strain and a material state vector; the element
 accumulates the history incrementally and may suggest a reduced time step if required
 by the material.</p>
 </section>
+<section id="axisymmetric-elements">
+<h2>Axisymmetric elements<a class="headerlink" href="#axisymmetric-elements" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GCAX4</span></code> (4 nodes), <code class="docutils literal notranslate"><span class="pre">GCAX8</span></code> and <code class="docutils literal notranslate"><span class="pre">GCAX8R</span></code> (8 nodes) are <code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement&lt;2,</span>
+<span class="pre">nNodes&gt;</span></code> with the section <code class="docutils literal notranslate"><span class="pre">Axisymmetric</span></code>, the gradient-enhanced counterparts of <code class="docutils literal notranslate"><span class="pre">CAX4</span></code>, <code class="docutils literal notranslate"><span class="pre">CAX8</span></code> and <code class="docutils literal notranslate"><span class="pre">CAX8R</span></code>
+(<a class="reference internal" href="displacementfiniteelement.html"><span class="doc">Displacement Finite Element</span></a>). The body of revolution is meshed in its meridional plane, with the radius
+<span class="math notranslate nohighlight">\(r = x_1\)</span> and the axial coordinate <span class="math notranslate nohighlight">\(z = x_2\)</span>. The displacement <span class="math notranslate nohighlight">\((u_r, u_z)\)</span> and the nonlocal fields do
+not depend on the angle <span class="math notranslate nohighlight">\(\theta\)</span>, and the strain has the hoop component
+<span class="math notranslate nohighlight">\(\varepsilon_{\theta\theta} = u_r / r\)</span> in addition to the in-plane ones:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\Delta\eps = \begin{bmatrix} \Delta\varepsilon_{rr} \\ \Delta\varepsilon_{zz} \\
+\Delta\varepsilon_{\theta\theta} \\ \Delta\gamma_{rz} \end{bmatrix}
+= \sum_i \begin{bmatrix} \partial N_i / \partial r &amp; 0 \\ 0 &amp; \partial N_i / \partial z \\
+N_i / r &amp; 0 \\ \partial N_i / \partial z &amp; \partial N_i / \partial r \end{bmatrix}
+\begin{bmatrix} \Delta u_{r,i} \\ \Delta u_{z,i} \end{bmatrix}.\end{split}\]</div>
+<p>Volume and boundary are integrated over the full ring,</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}V = 2\pi r\, \mathrm{d}A, \qquad \mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s,\]</div>
+<p>i.e., <span class="math notranslate nohighlight">\(J_0 w = w \det\mathbf{J}\, 2\pi r\)</span> at a quadrature point. This holds for the balance equations of the
+nonlocal fields as well: the gradient of a field that does not depend on <span class="math notranslate nohighlight">\(\theta\)</span> has the components
+<span class="math notranslate nohighlight">\((\partial \knl / \partial r, \partial \knl / \partial z)\)</span> only, and the weak form</p>
+<div class="math notranslate nohighlight">
+\[\int_V \Nk_A\, \knl + c\, \Nk_{A,i}\, \knl_{,i} - \Nk_A\, \kl \, \mathrm{d}V, \qquad \mathrm{d}V = 2\pi r\,
+\mathrm{d}A,\]</div>
+<p>is the screened Poisson equation in cylindrical coordinates, <span class="math notranslate nohighlight">\(\knl - c \left( \frac{1}{r} \frac{\partial}{\partial
+r} \left( r \frac{\partial \knl}{\partial r} \right) + \frac{\partial^2 \knl}{\partial z^2} \right) = \kl\)</span>, with the
+homogeneous Neumann condition on the boundary and on the axis.</p>
+<p>The material is called through the 3D interface with the strain increment
+<span class="math notranslate nohighlight">\((\Delta\varepsilon_{rr}, \Delta\varepsilon_{zz}, \Delta\varepsilon_{\theta\theta}, \Delta\gamma_{rz}, 0, 0)\)</span>.
+The stress, the coupling tangents <span class="math notranslate nohighlight">\(\partial \sig / \partial \knl\)</span> and <span class="math notranslate nohighlight">\(\partial \kl / \partial \eps\)</span>, and the
+energy tangents are taken in the components (rr, zz, <span class="math notranslate nohighlight">\(\theta\theta\)</span>, rz); the tangent of the element is the upper
+left <span class="math notranslate nohighlight">\(4 \times 4\)</span> block of the 3D tangent, which is exact for any material, since <span class="math notranslate nohighlight">\(\gamma_{r\theta} =
+\gamma_{z\theta} = 0\)</span> is kinematic.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Element</strong></p></th>
+<th class="head"><p><strong>Nodes</strong></p></th>
+<th class="head"><p><strong>Quadrature</strong></p></th>
+<th class="head"><p><strong>Zero energy modes of</strong> <span class="math notranslate nohighlight">\(\mathbf{K}_{uu}\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GCAX4</span></code></p></td>
+<td><p>4</p></td>
+<td><p>Gauss 2x2 (<code class="docutils literal notranslate"><span class="pre">gaussExactToDegree(</span> <span class="pre">2</span> <span class="pre">)</span></code>)</p></td>
+<td><p>1 (axial translation)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GCAX8</span></code></p></td>
+<td><p>8</p></td>
+<td><p>Gauss 3x3 (<code class="docutils literal notranslate"><span class="pre">gaussExactToDegree(</span> <span class="pre">4</span> <span class="pre">)</span></code>)</p></td>
+<td><p>1 (axial translation)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GCAX8R</span></code></p></td>
+<td><p>8</p></td>
+<td><p>Gauss 2x2 (<code class="docutils literal notranslate"><span class="pre">gaussExactToDegree(</span> <span class="pre">3</span> <span class="pre">)</span></code>)</p></td>
+<td><p>2 (axial translation, one hourglass mode)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Internal and external forces, reactions, energies and masses are those of the full <span class="math notranslate nohighlight">\(360^\circ\)</span> ring. The
+residual of a nonlocal field is integrated over the ring as well, so its nodal values are those of the ring.</p></li>
+<li><p>The radial displacement on the axis, <span class="math notranslate nohighlight">\(u_r = 0\)</span> at <span class="math notranslate nohighlight">\(r = 0\)</span>, is not imposed by the element; prescribe it.
+The nonlocal fields need no condition on the axis.</p></li>
+<li><p>Mesh in <span class="math notranslate nohighlight">\(r \geq 0\)</span> only. <code class="docutils literal notranslate"><span class="pre">initializeYourself()</span></code> rejects a node at <span class="math notranslate nohighlight">\(r &lt; -10^{-12} h\)</span>, with <span class="math notranslate nohighlight">\(h\)</span>
+the diagonal of the element’s bounding box, so that round-off of nodes on the axis is accepted, and a quadrature
+point at <span class="math notranslate nohighlight">\(r \leq 0\)</span>.</p></li>
+<li><p>A thickness assigned as element property is ignored.</p></li>
+<li><p>Mixed-order elements, e.g. <code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement&lt;2,</span> <span class="pre">8,</span> <span class="pre">1,</span> <span class="pre">4&gt;</span></code> with a linear nonlocal
+field, can be instantiated with the axisymmetric section; they are not registered.</p></li>
+<li><p>The explicit update and the artificial bulk viscosity are available; the latter acts on
+<span class="math notranslate nohighlight">\(\Delta\varepsilon_{rr} + \Delta\varepsilon_{zz} + \Delta\varepsilon_{\theta\theta}\)</span>, including the hoop
+strain.</p></li>
+<li><p>The energy gradients (<a class="reference internal" href="energygradients.html"><span class="doc">Energy gradients</span></a>) are available with a material that provides energy tangents.</p></li>
+<li><p>Distributed loads: pressure, integrated over the ring.</p></li>
+</ul>
+</section>
 <section id="evaluation-at-the-quadrature-points">
 <h2>Evaluation at the quadrature points<a class="headerlink" href="#evaluation-at-the-quadrature-points" title="Link to this heading"></a></h2>
+<p>The implicit and the explicit kernel share one material update and integration per quadrature point for all sections;
+the explicit one skips the tangent blocks and the energy gradients and adds the artificial bulk viscosity.</p>
 <p>The element stores the shape functions <span class="math notranslate nohighlight">\(\mathbf{N}\)</span> and their gradients <span class="math notranslate nohighlight">\(\partial_{\mathbf{x}} \mathbf{N}\)</span> per
 quadrature point, but not the strain-displacement matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>, which is mostly zeros. The implicit kernel forms
-<span class="math notranslate nohighlight">\(\mathbf{B}\)</span> on the fly, because the tangent blocks need it. Neither kernel needs it for the strain increment and the
-internal force: they are computed as the symmetric part of the displacement gradient and from the stress directly
+<span class="math notranslate nohighlight">\(\mathbf{B}\)</span> on the fly, because the tangent blocks need it. In the plane and solid sections, neither kernel needs it
+for the strain increment and the internal force (the axisymmetric section forms its operator, which carries the hoop row):
+they are computed as the symmetric part of the displacement gradient and from the stress directly
 (<code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::SmallStrain::strainIncrement</span></code> and <code class="docutils literal notranslate"><span class="pre">addInternalForce</span></code>),</p>
 <div class="math notranslate nohighlight">
 \[\Delta \eps = \operatorname{sym} \left( \Delta \mathbf{U}\, \partial_{\mathbf{x}} \mathbf{N}^\mathsf{T} \right), \qquad
@@ -262,7 +342,7 @@ they are stored only once.</p>
 </figure>
 <p>General Gradient Enhanced Displacement-based finite element template. </p>
 <p>
-Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulations via a section assumption. Holds quadrature-point state and delegates constitutive updates to <a class="reference internal" href="meshfreeapproximation.html#namespaceMarmot"><span class="std std-ref">Marmot</span></a> materials while assembling element residuals and tangents, taking non-local effects into account. </p>
+Uses linearized kinematics (small strains) and supports 2D (plane stress, plane strain and axisymmetric) and 3D formulations via a section assumption. Holds quadrature-point state and delegates constitutive updates to <a class="reference internal" href="meshfreeapproximation.html#namespaceMarmot"><span class="std std-ref">Marmot</span></a> materials while assembling element residuals and tangents, taking non-local effects into account. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -279,10 +359,12 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionTypeE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionTypeE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionTypeE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a41747a846d7813303bcdaead01754f88"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SectionType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionTypeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Kinematic section assumption used by the element. </p>
-<p>Controls which constitutive call is performed at quadrature points.<ul class="simple">
+<p>Controls the kinematics and which constitutive call is performed at quadrature points.<ul class="simple">
 <li><p>PlaneStress</p></li>
 <li><p>PlaneStrain</p></li>
-<li><p>Solid </p></li>
+<li><p>Solid</p></li>
+<li><p>Axisymmetric: 2D only, <span class="math notranslate nohighlight">\(r = x_1 \geq 0\)</span> and <span class="math notranslate nohighlight">\(z = x_2\)</span>, with the hoop strain <span class="math notranslate nohighlight">\(\varepsilon_{\theta\theta} = u_r / r\)</span>; integrated over the full ring,  <span class="math notranslate nohighlight">\(\mathrm{d}V = 2\pi r\,
+  \mathrm{d}A\)</span>, also in the Helmholtz equation of the non-local fields. </p></li>
 </ul>
 </p>
 <p><em>Values:</em></p>
@@ -299,6 +381,11 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType5SolidE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType5SolidE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType5SolidE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a41747a846d7813303bcdaead01754f88a3c8760a7b5ef9f088430fb9704e02db6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Solid</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType5SolidE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType12AxisymmetricE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType12AxisymmetricE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType12AxisymmetricE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a41747a846d7813303bcdaead01754f88ab50d4ebfa31dfa28a898f0c3a7aba4c9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Axisymmetric</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement11SectionType12AxisymmetricE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -326,6 +413,11 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6BSizedE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6BSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6BSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a27eff37acba7136b2a8106a99a3c8ed4"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">BSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement6BSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18BSizedAxisymmetricE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18BSizedAxisymmetricE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18BSizedAxisymmetricE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ac0c49c7c015b99476c4df58745a5f9bd"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BSizedAxisymmetric</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">BSizedAxisymmetric</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18BSizedAxisymmetricE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp type">
@@ -436,8 +528,11 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>elementID</strong> – Unique element label. </p></li>
 <li><p><strong>quadratureRule</strong> – Quadrature rule: family and degree of exactness. </p></li>
-<li><p><strong>sectionType</strong> – Section assumption (1D/2D/3D). </p></li>
+<li><p><strong>sectionType</strong> – Section assumption (2D/3D). </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for an axisymmetric section with nDim other than 2. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,6 +637,26 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18initializeYourselfEv">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18initializeYourselfEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18initializeYourselfEv"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::initializeYourself"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ab5e41133d3530a59e9881211a6f7636e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Precompute geometry-related quantities at quadrature points (detJ, J0xW, N, dNdX, and N_K, dNdX_K if they differ). </p>
+<p><span class="math notranslate nohighlight">\(J_0 w = w \det\mathbf{J}\, s(\boldsymbol{\xi})\)</span> with the section factor of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ae6a98d75069e33d3746ec5d886569575"><span class="std std-ref">sectionFactorAt()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for an axisymmetric section with a node at <span class="math notranslate nohighlight">\(r &lt; -10^{-12} h\)</span>, <span class="math notranslate nohighlight">\(h\)</span> the diagonal of the element’s bounding box, or a quadrature point at <span class="math notranslate nohighlight">\(r \leq 0\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15sectionFactorAtERK7XiSized">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15sectionFactorAtERK7XiSized"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15sectionFactorAtERK7XiSized"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::sectionFactorAt__XiSizedCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ae6a98d75069e33d3746ec5d886569575"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sectionFactorAt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement7XiSizedE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xi</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15sectionFactorAtERK7XiSized" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor between the volume and the reference area or length of the element at <code class="docutils literal notranslate"><span class="pre">xi</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xi</strong> – Parametric coordinates. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The thickness (plane stress and plane strain), <span class="math notranslate nohighlight">\(2\pi r(\boldsymbol{\xi})\)</span> (axisymmetric), or 1 (solid). </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
@@ -565,11 +680,11 @@ Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D formulati
 <p>Pressure contributions are integrated on the boundary <span class="math notranslate nohighlight">\(\Gamma_e\)</span>:   <div class="math notranslate nohighlight">
 \[\mathbf{\fextp} = - \int_{\Gamma_e} p\, \mathbf{N}^\mathsf{T} \mathbf{n}\, \mathrm{d}\Gamma\, .
 \]</div>
- </p>
+ Axisymmetric elements integrate over the ring, <span class="math notranslate nohighlight">\(\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\)</span>. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>loadType</strong> – Pressure or SurfaceTraction. </p></li>
+<li><p><strong>loadType</strong> – Pressure. </p></li>
 <li><p><strong>P</strong> – Element RHS contribution (accumulated). </p></li>
 <li><p><strong>K</strong> – Optional stiffness contribution (unused). </p></li>
 <li><p><strong>elementFace</strong> – Boundary face index. </p></li>
@@ -614,7 +729,7 @@ J_0\, w_{qp} \, .
 \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
 J_0\, w_{qp} \, .
 \]</div>
- If pNewdT&lt;1, the routine returns early to signal time step reduction. </p>
+ Axisymmetric elements use the 4-row operator (rr, zz, <span class="math notranslate nohighlight">\(\theta\theta\)</span>, rz) with the hoop row <span class="math notranslate nohighlight">\(N_i / r\)</span>, see Spatial2D::Axisymmetric::BFromPlanarB(), and <span class="math notranslate nohighlight">\(J_0 w\)</span> includes <span class="math notranslate nohighlight">\(2\pi r\)</span>. If pNewdT&lt;1, the routine returns early to signal time step reduction. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -634,7 +749,7 @@ J_0\, w_{qp} \, .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22computeKernelsExplicitEPKdPKdPddd">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeKernelsExplicit__doubleCP.doubleCP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a484a8a9a12260776859282aa609c24c1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22computeKernelsExplicitEPKdPKdPddd" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute internal force without tangents. </p>
-<p>Uses the small-strain relation <span class="math notranslate nohighlight">\(\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\)</span>, which in 3D is evaluated as the symmetric part of the displacement gradient, without forming B (see Discretizations::Elements::SmallStrain::strainIncrement() and addInternalForce()), interpolates the non-local variables as <span class="math notranslate nohighlight">\( \knl = \Nk\, \mathbf{\qk}\)</span>. Internal forces are evaluated by Gauss quadrature:    <div class="math notranslate nohighlight">
+<p>Uses the small-strain relation <span class="math notranslate nohighlight">\(\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\)</span>, which in the plane and solid sections is evaluated as the symmetric part of the displacement gradient, without forming B (see Discretizations::Elements::SmallStrain::strainIncrement() and addInternalForce()); the axisymmetric section forms its 4-row operator, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5b8f92389e8b745d10698f066d81432"><span class="std std-ref">computeKernels()</span></a>. Interpolates the non-local variables as <span class="math notranslate nohighlight">\( \knl = \Nk\, \mathbf{\qk}\)</span>. Internal forces are evaluated by Gauss quadrature:    <div class="math notranslate nohighlight">
 \[\mathbf{\fk} = \sum_{qp} \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x}
 \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
 J_0\, w_{qp} \, . \]</div>
@@ -734,7 +849,7 @@ Where the non-local field carries a micro-inertia the returned increment is the 
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26assignEnergyGradientOutputEPdPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26assignEnergyGradientOutputEPdPd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::assignEnergyGradientOutput__doubleP.doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa6391c7f1af8b345733c98f73303bce0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignEnergyGradientOutput</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dElasticEnergy_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dDissipation_dQ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26assignEnergyGradientOutputEPdPd" title="Link to this definition"></a><br /></dt>
 <dd><p>Assign the arrays <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5b8f92389e8b745d10698f066d81432"><span class="std std-ref">computeKernels()</span></a> writes the energy gradients to, see <a class="reference internal" href="energygradients.html#classMarmot_1_1Discretizations_1_1Elements_1_1EnergyGradientProvider"><span class="std std-ref">EnergyGradientProvider</span></a>. </p>
 <p>
-Supported for all sections with a material that is a <a class="reference internal" href="energygradients.html#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider"><span class="std std-ref">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</span></a>. In plane stress, the energy tangents are condensed with the free strains (Marmot::ContinuumMechanics::ReducedStress). </p>
+Supported for all sections (plane stress, plane strain, axisymmetric and solid) with a material that is a <a class="reference internal" href="energygradients.html#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider"><span class="std std-ref">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</span></a>. In plane stress, the energy tangents are condensed with the free strains (Marmot::ContinuumMechanics::ReducedStress). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -858,11 +973,122 @@ Supported for all sections with a material that is a <a class="reference interna
 
 </div>
 <div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-types">Private Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialResponseE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialResponseE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialResponseE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aee06d26c1971ca1f2fc1cdcc7520f9eb"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialResponse</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_i_iEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElementE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">response</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialResponseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Response of the material at a quadrature point. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialTangentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialTangentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialTangentsE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a8384cded202602316546e380be03172f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialTangents</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_i_iEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElementE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialTangentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Algorithmic tangents of the material at a quadrature point. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14NonlocalValuesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14NonlocalValuesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14NonlocalValuesE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1acadcfbd92a3cc01a7926ef355e160c99"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonlocalValues</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_i_iEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElementE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::nNonlocalVariables"><span class="n"><span class="pre">nNonlocalVariables</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14NonlocalValuesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Values of the non-local fields at a quadrature point. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26checkEnergyGradientSupportEv">
 <span id="_CPPv3NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26checkEnergyGradientSupportEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26checkEnergyGradientSupportEv"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::checkEnergyGradientSupportC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a722a6b344cbc77108a31f64dfe87be05"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkEnergyGradientSupport</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement26checkEnergyGradientSupportEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Throws std::invalid_argument unless the materials of all quadrature points provide energy tangents (<a class="reference internal" href="energygradients.html#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticEnergyTangentProvider"><span class="std std-ref">Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider</span></a>). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22integrateInternalForceEPKdPKdPdPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22integrateInternalForceEPKdPKdPdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22integrateInternalForceEPKdPKdPdPddd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::integrateInternalForce__doubleCP.doubleCP.doubleP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a476080e7d4c3c82546cf8c1cc89637f9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">integrateInternalForce</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ke</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement22integrateInternalForceEPKdPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Internal force, and the tangent if requested, of all quadrature points; shared by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5b8f92389e8b745d10698f066d81432"><span class="std std-ref">computeKernels()</span></a> and <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a484a8a9a12260776859282aa609c24c1"><span class="std std-ref">computeKernelsExplicit()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>QTotal</strong> – Total degrees of freedom, field-wise. </p></li>
+<li><p><strong>dQ</strong> – Incremental degrees of freedom, field-wise. </p></li>
+<li><p><strong>Pe</strong> – Internal force vector (accumulated). </p></li>
+<li><p><strong>Ke</strong> – Tangent stiffness matrix (accumulated), nullptr for the explicit update. </p></li>
+<li><p><strong>time</strong> – Time data forwarded to materials. </p></li>
+<li><p><strong>dT</strong> – Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement24integrateQuadraturePointEvR15QuadraturePointPKN5Eigen6MatrixId11nComponents8sizeDoFUEEPKdPKdPdPdbdd">
+<span id="_CPPv3I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement24integrateQuadraturePointER15QuadraturePointPKN5Eigen6MatrixId11nComponents8sizeDoFUEEPKdPKdPdPdbdd"></span><span id="_CPPv2I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement24integrateQuadraturePointER15QuadraturePointPKN5Eigen6MatrixId11nComponents8sizeDoFUEEPKdPKdPdPdbdd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics5VoigtE" title="Marmot::ContinuumMechanics::Voigt"><span class="n"><span class="pre">Voigt</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics5Voigt9VoigtSizeE" title="Marmot::ContinuumMechanics::Voigt::VoigtSize"><span class="n"><span class="pre">VoigtSize</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nComponents</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a5763c889fd30de9b0b50bef4120c2f7b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">integrateQuadraturePoint</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePointE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">qp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement24integrateQuadraturePointEvR15QuadraturePointPKN5Eigen6MatrixId11nComponents8sizeDoFUEEPKdPKdPdPdbdd" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::integrateQuadraturePoint::nComponents"><span class="n"><span class="pre">nComponents</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement8sizeDoFUE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::sizeDoFU"><span class="n"><span class="pre">sizeDoFU</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">B</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ke</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">energyGradients</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement24integrateQuadraturePointEvR15QuadraturePointPKN5Eigen6MatrixId11nComponents8sizeDoFUEEPKdPKdPdPdbdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Material update and integration at one quadrature point, for every section, implicit and explicit. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nComponents</strong> – Strain components of the section: 3 (plane), 4 (axisymmetric), 6 (solid). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>qp</strong> – The quadrature point. </p></li>
+<li><p><strong>B</strong> – Strain operator of the section. The axisymmetric section always needs it; the plane and solid sections evaluate the strain and the internal force from dNdX and need it for the tangent only, so it may be nullptr in the explicit update. </p></li>
+<li><p><strong>QTotal</strong> – Total degrees of freedom, field-wise. </p></li>
+<li><p><strong>dQ</strong> – Incremental degrees of freedom, field-wise. </p></li>
+<li><p><strong>Pe</strong> – Internal force vector (accumulated). </p></li>
+<li><p><strong>Ke</strong> – Tangent stiffness matrix (accumulated), nullptr for the explicit update. </p></li>
+<li><p><strong>energyGradients</strong> – Whether the energy gradients are accumulated into the assigned outputs. </p></li>
+<li><p><strong>time</strong> – Time data forwarded to materials. </p></li>
+<li><p><strong>dT</strong> – Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement17bulkViscousStressER15QuadraturePointRK16MaterialResponseRK14NonlocalValuesdd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement17bulkViscousStressER15QuadraturePointRK16MaterialResponseRK14NonlocalValuesdd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement17bulkViscousStressER15QuadraturePointRK16MaterialResponseRK14NonlocalValuesdd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::bulkViscousStress__QuadraturePointR.MaterialResponseCR.NonlocalValuesCR.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a3c3983cb9281218a877adc15dc21a621"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bulkViscousStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePointE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">qp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialResponseE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::MaterialResponse"><span class="n"><span class="pre">MaterialResponse</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14NonlocalValuesE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::NonlocalValues"><span class="n"><span class="pre">NonlocalValues</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volumetricStrainIncrement</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement17bulkViscousStressER15QuadraturePointRK16MaterialResponseRK14NonlocalValuesdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Artificial bulk viscous stress at a quadrature point, see <a class="reference internal" href="explicitdynamicsdevices.html#namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity"><span class="std std-ref">Marmot::Discretizations::Elements::BulkViscosity</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qp</strong> – The quadrature point, after its material update. </p></li>
+<li><p><strong>res</strong> – The updated material response. </p></li>
+<li><p><strong>K</strong> – The non-local fields at the quadrature point. </p></li>
+<li><p><strong>volumetricStrainIncrement</strong> – Trace of the strain increment. </p></li>
+<li><p><strong>dT</strong> – Time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The viscous stress added to the normal components. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement8radiusAtERK7XiSized">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement8radiusAtERK7XiSized"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement8radiusAtERK7XiSized"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::radiusAt__XiSizedCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a0afa77d6503c7ae6f1860c81321ba78b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">radiusAt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement7XiSizedE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xi</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement8radiusAtERK7XiSized" title="Link to this definition"></a><br /></dt>
+<dd><p>Radius <span class="math notranslate nohighlight">\(r = x_1\)</span> of a point of the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xi</strong> – Parametric coordinates. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The radius. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement13axisymmetricBERK15QuadraturePoint">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement13axisymmetricBERK15QuadraturePoint"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement13axisymmetricBERK15QuadraturePoint"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::axisymmetricB__QuadraturePointCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a9b74fdd8a607058b68817e3ae20101e1"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement18BSizedAxisymmetricE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::BSizedAxisymmetric"><span class="n"><span class="pre">BSizedAxisymmetric</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">axisymmetricB</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePointE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">qp</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement13axisymmetricBERK15QuadraturePoint" title="Link to this definition"></a><br /></dt>
+<dd><p>Axisymmetric strain operator, rows (rr, zz, <span class="math notranslate nohighlight">\(\theta\theta\)</span>, rz): the planar operator with the hoop row <span class="math notranslate nohighlight">\(N_i / r\)</span>, see Spatial2D::Axisymmetric::BFromPlanarB(). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>qp</strong> – The quadrature point. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The operator. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -878,6 +1104,44 @@ Supported for all sections with a material that is a <a class="reference interna
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21dDissipation_dQOutputE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21dDissipation_dQOutputE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21dDissipation_dQOutputE"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::dDissipation_dQOutput__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a8b0d8ec37d1edc6520c22fb993d65b8c"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">dDissipation_dQOutput</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21dDissipation_dQOutputE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement19condenseFreeStrainsER16MaterialTangentsRN21EnergyTangentProvider14energyTangentsEb">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement19condenseFreeStrainsER16MaterialTangentsRN21EnergyTangentProvider14energyTangentsEb"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement19condenseFreeStrainsER16MaterialTangentsRN21EnergyTangentProvider14energyTangentsEb"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::condenseFreeStrains__MaterialTangentsR.EnergyTangentProvider::energyTangentsR.b"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a982512388d085c4b525f0108298ee9d1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">condenseFreeStrains</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement16MaterialTangentsE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::MaterialTangents"><span class="n"><span class="pre">MaterialTangents</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement21EnergyTangentProviderE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::EnergyTangentProvider"><span class="n"><span class="pre">EnergyTangentProvider</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">energyTangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">energyTan</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">energyGradients</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement19condenseFreeStrainsER16MaterialTangentsRN21EnergyTangentProvider14energyTangentsEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Static condensation of the free strains in plane stress, see Marmot::ContinuumMechanics::ReducedStress: from <span class="math notranslate nohighlight">\(\Delta\sigma_f = 0\)</span>, <span class="math notranslate nohighlight">\(f = \{33, 13, 23\}\)</span>,   <span class="math notranslate nohighlight">\(\Delta\varepsilon_f = \frac{\partial
+\varepsilon_f}{\partial \varepsilon_p} \Delta\varepsilon_p + \frac{\partial \varepsilon_f}{\partial \knl}
+\Delta\knl\)</span> with the in-plane components <span class="math notranslate nohighlight">\(p = \{11, 22, 12\}\)</span>. </p>
+<p>Afterwards the derivatives with respect to the strain (stress, local driving variables and, if requested, energy densities) are the total derivatives with respect to the in-plane strain, stored at the in-plane components with zeros elsewhere; the derivatives with respect to the non-local fields include the free strains. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tan</strong> – The material tangents after the plane stress update. </p></li>
+<li><p><strong>energyTan</strong> – The energy tangents after the plane stress update. </p></li>
+<li><p><strong>energyGradients</strong> – Whether the energy tangents are condensed too. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentEN5Eigen6MatrixId11nComponents11nComponentsEERKN6Marmot4Math8Matrix6dE">
+<span id="_CPPv3I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentERKN6Marmot4Math8Matrix6dE"></span><span id="_CPPv2I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentERKN6Marmot4Math8Matrix6dE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics5VoigtE" title="Marmot::ContinuumMechanics::Voigt"><span class="n"><span class="pre">Voigt</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics5Voigt9VoigtSizeE" title="Marmot::ContinuumMechanics::Voigt::VoigtSize"><span class="n"><span class="pre">VoigtSize</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nComponents</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ab720223a476c5b1caec62a50334e463b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentEN5Eigen6MatrixId11nComponents11nComponentsEERKN6Marmot4Math8Matrix6dE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::sectionTangent::nComponents"><span class="n"><span class="pre">nComponents</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentEN5Eigen6MatrixId11nComponents11nComponentsEERKN6Marmot4Math8Matrix6dE" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::sectionTangent::nComponents"><span class="n"><span class="pre">nComponents</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sectionTangent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_N18ContinuumMechanics5Voigt9VoigtSizeEEN6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement14sectionTangentEN5Eigen6MatrixId11nComponents11nComponentsEERKN6Marmot4Math8Matrix6dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Block of the 3D tangent carried by the section. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nComponents</strong> – Strain components of the section. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>C</strong> – Tangent in 3D <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ac28d2460eb1e76422761f23c8baa3f0e"><span class="std std-ref">Voigt</span></a> notation; in plane stress after <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a982512388d085c4b525f0108298ee9d1"><span class="std std-ref">condenseFreeStrains()</span></a>. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The section block. </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <dl class="cpp struct">
@@ -1004,7 +1268,7 @@ Supported for all sections with a material that is a <a class="reference interna
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint4J0xWE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint4J0xWE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint4J0xWE"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::QuadraturePoint::J0xW__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1_1QuadraturePoint_1a8c538f055f3b13b2a73e916b19eef554"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">J0xW</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement15QuadraturePoint4J0xWE" title="Link to this definition"></a><br /></dt>
-<dd><p>Integration weight times detJ (times thickness or cross section in 2D and 1D). </p>
+<dd><p>Integration weight times detJ times the section factor, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ae6a98d75069e33d3746ec5d886569575"><span class="std std-ref">sectionFactorAt()</span></a>. </p>
 </dd></dl>
 
 <dl class="cpp var">

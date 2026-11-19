@@ -7153,7 +7153,21 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics5Voigt24voigtToAxisymmetricVoigtERKN6Marmot4Math8Vector6dE">
 <span id="_CPPv3N6Marmot18ContinuumMechanics5Voigt24voigtToAxisymmetricVoigtERKN6Marmot4Math8Vector6dE"></span><span id="_CPPv2N6Marmot18ContinuumMechanics5Voigt24voigtToAxisymmetricVoigtERKN6Marmot4Math8Vector6dE"></span><span id="Marmot::ContinuumMechanics::Voigt::voigtToAxisymmetricVoigt__Marmot::Math::Vector6dCR"></span><span class="target" id="_marmot_voigt_8h_1a359cfbca9955d1adf4937a818e44ce5e"></span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector4dE" title="Marmot::Math::Vector4d"><span class="n"><span class="pre">Vector4d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">voigtToAxisymmetricVoigt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">voigt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot18ContinuumMechanics5Voigt24voigtToAxisymmetricVoigtERKN6Marmot4Math8Vector6dE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>Converts a 3D vector in Voigt notation to the components of an axisymmetric section. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The components <span class="math notranslate nohighlight">\(r\theta\)</span> and <span class="math notranslate nohighlight">\(z\theta\)</span> are dropped; they vanish in the axisymmetric section. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>voigt</strong> – 6-component 3D vector in Voigt notation, with <span class="math notranslate nohighlight">\(x_1 = r\)</span>, <span class="math notranslate nohighlight">\(x_2 = z\)</span> and <span class="math notranslate nohighlight">\(x_3 = \theta\)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>4-component vector  <span class="math notranslate nohighlight">\(\begin{bmatrix} \sigma_{rr} &amp; \sigma_{zz} &amp; \sigma_{\theta\theta} &amp; \sigma_{rz}
+\end{bmatrix}^T\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot18ContinuumMechanics5Voigt17planeVoigtToVoigtERKN5Eigen8Vector3dE">
@@ -7197,19 +7211,20 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 <p>Considered cases:<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">1</span></code>: Returns the <span class="math notranslate nohighlight">\(\sigma_{11}\)</span> component.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">3</span></code>: Returns the plane stress components using <code class="docutils literal notranslate"><span class="pre">voigtToPlaneVoigt()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">4</span></code>: Returns the axisymmetric components using <code class="docutils literal notranslate"><span class="pre">voigtToAxisymmetricVoigt()</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">6</span></code>: Returns the input 3D vector unchanged. </p></li>
 </ul>
 </p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>voigtSize</strong> – Target Voigt dimension (1, 3, or 6). </p>
+<dd class="field-odd"><p><strong>voigtSize</strong> – Target Voigt dimension (1, 3, 4, or 6). </p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Voigt3D</strong> – Input 6-component 3D Voigt vector. </p>
 </dd>
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code> is not 1, 3, or 6. </p>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code> is not 1, 3, 4, or 6. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Reduced Voigt vector of size <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code>. </p>
@@ -7231,19 +7246,20 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
 \]</div>
 </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">3</span></code>: Returns a 3D Voigt vector by calling <code class="docutils literal notranslate"><span class="pre">planeVoigtToVoigt()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">4</span></code>: Returns a 3D Voigt vector by calling <code class="docutils literal notranslate"><span class="pre">axisymmetricVoigtToVoigt()</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">voigtSize</span> <span class="pre">=</span> <span class="pre">6</span></code>: Returns the input vector unchanged. </p></li>
 </ul>
 </p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>voigtSize</strong> – Dimension of the input Voigt vector (1, 3, or 6). </p>
+<dd class="field-odd"><p><strong>voigtSize</strong> – Dimension of the input Voigt vector (1, 3, 4, or 6). </p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>Voigt</strong> – Input Voigt vector of size <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code>. </p>
 </dd>
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code> is not 1, 3, or 6. </p>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">voigtSize</span></code> is not 1, 3, 4, or 6. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>6-component 3D Voigt vector. </p>

@@ -61,6 +61,8 @@
     <member refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" kind="typedef"><name>mVector6dualConst</name></member>
     <member refid="_marmot_typedefs_8h_1ae192ab789425faed28e987da5b0387d5" kind="typedef"><name>Vector6t</name></member>
     <member refid="_marmot_typedefs_8h_1a9668f248233504e273c6c369a01dd073" kind="typedef"><name>VectorXt</name></member>
+    <member refid="_marmot_eigen_systems_8h_1a6875b17c5951047ce4a1196823a15083" kind="function"><name>computeEigenSystemJacobi</name></member>
+    <member refid="_marmot_eigen_systems_8h_1abc9ef5f4db091f0ac8fd68222ab51b72" kind="function"><name>computeEigenSystemWithCardano</name></member>
     <member refid="_marmot_math_8h_1ad3a65166e9b849eb54ccef942368b6e6" kind="function"><name>isNaN</name></member>
     <member refid="_marmot_math_8h_1aa14a646adfd201e379c86f6bd85d942a" kind="function"><name>linearInterpolation</name></member>
     <member refid="_marmot_math_8h_1a20088570076b71e5f4f0bb08fa7ba44d" kind="function"><name>exp</name></member>
@@ -82,8 +84,6 @@
     <member refid="_marmot_math_8h_1a963f6ddfedacd4c9afb3a13bcd1e705b" kind="function"><name>orthonormalCoordinateSystem</name></member>
     <member refid="_marmot_math_8h_1adebc2432366832f97c34c377d24d4261" kind="function"><name>transformToLocalSystem</name></member>
     <member refid="_marmot_math_8h_1abbe32fe2bc90fcd454c73e7703756ef4" kind="function"><name>transformToGlobalSystem</name></member>
-    <member refid="_marmot_eigen_systems_8h_1a6875b17c5951047ce4a1196823a15083" kind="function"><name>computeEigenSystemJacobi</name></member>
-    <member refid="_marmot_eigen_systems_8h_1abc9ef5f4db091f0ac8fd68222ab51b72" kind="function"><name>computeEigenSystemWithCardano</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_constants" kind="namespace"><name>Marmot::Math::Constants</name>
     <member refid="_marmot_constants_8h_1a0c341b2a24f3821a0084c6f0613fcc7a" kind="variable"><name>Pi</name></member>
@@ -104,12 +104,16 @@
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation" kind="namespace"><name>Marmot::Math::Differentiation</name>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic" kind="namespace"><name>Marmot::Math::Differentiation::Automatic</name>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a245828095f0e5ee2429d48564dd8f705" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a75be42631adeb3731094f799dde28866" kind="typedef"><name>scalar_to_scalar_function_type_2nd</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a7a447d8635245248d44e3e24d80b7491" kind="typedef"><name>vector_to_vector_function_type_dual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a4c15d8657165879acd21f35a5461cf39" kind="typedef"><name>vector_to_vector_function_type_dual2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" kind="function"><name>dF_dT</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a2afdde05e6788d8b8cca4803bb8706d6" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ab58699cec7336eaad3c324323f0e20f9" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1af462ba5c9fdc269359785fc5869d6bb1" kind="function"><name>valnode</name></member>
@@ -122,10 +126,6 @@
     <member refid="_marmot_automatic_differentiation_8h_1a629ecc6fc9564cc5c84dee59f52c0dca" kind="function"><name>df_dx</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ae4311162cf38b03781d4c6d29aa0cb95" kind="function"><name>dF_dX</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad7e747ac5d288bb95b5340d86d9458e0" kind="function"><name>dF_dX_2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" kind="function"><name>dF_dT</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_second_order" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::SecondOrder</name>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a8ceb3ccbc5c389be12b6481ac5735d18" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
@@ -146,19 +146,19 @@
     <member refid="_marmot_numerical_differentiation_8h_1afbf7a18b877ae6105a8fab1043535caa" kind="function"><name>centralDifference</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex" kind="namespace"><name>Marmot::Math::Differentiation::Numerical::Complex</name>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1aad426c0732e89062dde0ffbc525c7af0" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a8fadc3ea40d7fc2d0ac6a8ec34bf13f9" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1ae67c78899043d4549336c4c601bc1842" kind="typedef"><name>vector_to_vector_function_type</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1aad426c0732e89062dde0ffbc525c7af0" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a3293b52b0e5b348a974ee153825a58fe" kind="variable"><name>imaginaryPerturbationSize</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1afbab8c06fc83b85e3750248f258bed38" kind="variable"><name>imaginaryPerturbation</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a6d575f471386defeb660b857f78a413e" kind="variable"><name>imaginaryUnit</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a876881159e9216387a7474d2624a1e16" kind="variable"><name>complexUnit</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1aa9cec5c682586df22bf72e5ab5969ef5" kind="variable"><name>i_</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a3293b52b0e5b348a974ee153825a58fe" kind="variable"><name>imaginaryPerturbationSize</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1afbab8c06fc83b85e3750248f258bed38" kind="variable"><name>imaginaryPerturbation</name></member>
+    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1adf194f384d9b186335bea2e6dd6e825c" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1ae60ad03c27227b75cb0cbf9423a5c3f3" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1ab082fa4671e1a873edf646bd05a8dd6c" kind="function"><name>forwardDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1aabdd1713285e16221e4176b14444906e" kind="function"><name>centralDifference</name></member>
     <member refid="_marmot_numerical_differentiation_8h_1a644c5602d47a9c2bdcac5e77db3cccd7" kind="function"><name>fourthOrderAccurateDerivative</name></member>
-    <member refid="_marmot_numerical_differentiation_for_fastor_8h_1adf194f384d9b186335bea2e6dd6e825c" kind="function"><name>forwardDifference</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex_1_1_scalar_to_tensor" kind="namespace"><name>Marmot::Math::Differentiation::Numerical::Complex::ScalarToTensor</name>
     <member refid="_marmot_numerical_differentiation_for_fastor_8h_1a8fe09b6a8252eadd2c2783ff3857f609" kind="function"><name>forwardDifference</name></member>
@@ -214,12 +214,6 @@
     <member refid="_marmot_tensor_8h_1a2df7561bac3e966ceb27a51dda465d49" kind="variable"><name>LeviCivita3D</name></member>
     <member refid="_marmot_tensor_8h_1a725e6f60df1b84a8a9c390feca6df233" kind="variable"><name>LeviCivita2D</name></member>
     <member refid="_marmot_tensor_8h_1add2f9db4d78b6dae8038a7b20efe786c" kind="variable"><name>I2</name></member>
-    <member refid="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_tensor_8h_1ac02a8d7d36016510aa285200b45377e2" kind="function"><name>Initialize_I2xI2</name></member>
     <member refid="_marmot_tensor_8h_1a1c30cdd0117f0e2200e5efefd60c37ea" kind="function"><name>Initialize_Isym</name></member>
     <member refid="_marmot_tensor_8h_1a6f4037a7b4286b1ac0442213c89eaf6b" kind="function"><name>Initialize_Iskew</name></member>
@@ -239,6 +233,12 @@
     <member refid="_marmot_tensor_8h_1a260cc89a6abebf8cabbf79a66175a935" kind="function"><name>flatten</name></member>
     <member refid="_marmot_tensor_8h_1a3533c009eec60defc76174258f46fc0c" kind="function"><name>contractionDims</name></member>
     <member refid="_marmot_tensor_8h_1a06a8d4268486247fb010fe77c04d48f9" kind="function"><name>dyadicProduct</name></member>
+    <member refid="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9b770ce8de913d0b9edf18670d93f684" kind="function"><name>mapEigenToFastor</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1acd430f186d90c7a20afd6f81c6b6884f" kind="function"><name>mapEigenToFastor</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a036f7c4a03ff896c1e64ed93be0bc943" kind="function"><name>mapEigenToFastor</name></member>

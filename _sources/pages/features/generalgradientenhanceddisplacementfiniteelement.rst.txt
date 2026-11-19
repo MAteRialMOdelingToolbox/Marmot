@@ -124,12 +124,11 @@ where :math:`\Gamma_e` is the element boundary, :math:`\mathbf{n}` its outward u
 of the displacement field, :math:`p` the pressure magnitude, and :math:`\mathbf{f}` the body-force vector per unit volume.
 The minus sign for pressure follows an outward-normal convention.
 
-For 2D and 1D problems, the integration measure :math:`J_0 w` is scaled by thickness
-:math:`t` or cross-sectional area :math:`A`, respectively: :math:`J_0 w \leftarrow J_0 w\, t`
-(2D), :math:`J_0 w \leftarrow J_0 w\, A` (1D).
-Here, :math:`t` denotes thickness and :math:`A` denotes cross-sectional area.
+For plane stress and plane strain, the integration measure :math:`J_0 w` is scaled by the thickness :math:`t`,
+:math:`J_0 w \leftarrow J_0 w\, t`; axisymmetric elements integrate over the ring, see below.
 
-Constitutive updates are carried out per quadrature point using a Marmot material model of the following types:
+Constitutive updates are carried out per quadrature point using a Marmot material model, through its 3D interface
+(solid, plane strain and axisymmetric) or its plane stress iteration, for the sections
 
 - 3D solid
 
@@ -137,19 +136,106 @@ Constitutive updates are carried out per quadrature point using a Marmot materia
 
 - Plane strain
 
-- 1D uniaxial stress
+- Axisymmetric
 
 Each quadrature point stores stress, strain and a material state vector; the element
 accumulates the history incrementally and may suggest a reduced time step if required
 by the material.
 
+Axisymmetric elements
+---------------------
+
+``GCAX4`` (4 nodes), ``GCAX8`` and ``GCAX8R`` (8 nodes) are ``GeneralGradientEnhancedDisplacementFiniteElement<2,
+nNodes>`` with the section ``Axisymmetric``, the gradient-enhanced counterparts of ``CAX4``, ``CAX8`` and ``CAX8R``
+(:doc:`displacementfiniteelement`). The body of revolution is meshed in its meridional plane, with the radius
+:math:`r = x_1` and the axial coordinate :math:`z = x_2`. The displacement :math:`(u_r, u_z)` and the nonlocal fields do
+not depend on the angle :math:`\theta`, and the strain has the hoop component
+:math:`\varepsilon_{\theta\theta} = u_r / r` in addition to the in-plane ones:
+
+.. math::
+
+   \Delta\eps = \begin{bmatrix} \Delta\varepsilon_{rr} \\ \Delta\varepsilon_{zz} \\
+   \Delta\varepsilon_{\theta\theta} \\ \Delta\gamma_{rz} \end{bmatrix}
+   = \sum_i \begin{bmatrix} \partial N_i / \partial r & 0 \\ 0 & \partial N_i / \partial z \\
+   N_i / r & 0 \\ \partial N_i / \partial z & \partial N_i / \partial r \end{bmatrix}
+   \begin{bmatrix} \Delta u_{r,i} \\ \Delta u_{z,i} \end{bmatrix}.
+
+Volume and boundary are integrated over the full ring,
+
+.. math::
+
+   \mathrm{d}V = 2\pi r\, \mathrm{d}A, \qquad \mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s,
+
+i.e., :math:`J_0 w = w \det\mathbf{J}\, 2\pi r` at a quadrature point. This holds for the balance equations of the
+nonlocal fields as well: the gradient of a field that does not depend on :math:`\theta` has the components
+:math:`(\partial \knl / \partial r, \partial \knl / \partial z)` only, and the weak form
+
+.. math::
+
+   \int_V \Nk_A\, \knl + c\, \Nk_{A,i}\, \knl_{,i} - \Nk_A\, \kl \, \mathrm{d}V, \qquad \mathrm{d}V = 2\pi r\,
+   \mathrm{d}A,
+
+is the screened Poisson equation in cylindrical coordinates, :math:`\knl - c \left( \frac{1}{r} \frac{\partial}{\partial
+r} \left( r \frac{\partial \knl}{\partial r} \right) + \frac{\partial^2 \knl}{\partial z^2} \right) = \kl`, with the
+homogeneous Neumann condition on the boundary and on the axis.
+
+The material is called through the 3D interface with the strain increment
+:math:`(\Delta\varepsilon_{rr}, \Delta\varepsilon_{zz}, \Delta\varepsilon_{\theta\theta}, \Delta\gamma_{rz}, 0, 0)`.
+The stress, the coupling tangents :math:`\partial \sig / \partial \knl` and :math:`\partial \kl / \partial \eps`, and the
+energy tangents are taken in the components (rr, zz, :math:`\theta\theta`, rz); the tangent of the element is the upper
+left :math:`4 \times 4` block of the 3D tangent, which is exact for any material, since :math:`\gamma_{r\theta} =
+\gamma_{z\theta} = 0` is kinematic.
+
+.. list-table::
+   :header-rows: 1
+   :align: left
+
+   * - **Element**
+     - **Nodes**
+     - **Quadrature**
+     - **Zero energy modes of** :math:`\mathbf{K}_{uu}`
+   * - ``GCAX4``
+     - 4
+     - Gauss 2x2 (``gaussExactToDegree( 2 )``)
+     - 1 (axial translation)
+   * - ``GCAX8``
+     - 8
+     - Gauss 3x3 (``gaussExactToDegree( 4 )``)
+     - 1 (axial translation)
+   * - ``GCAX8R``
+     - 8
+     - Gauss 2x2 (``gaussExactToDegree( 3 )``)
+     - 2 (axial translation, one hourglass mode)
+
+Notes:
+
+- Internal and external forces, reactions, energies and masses are those of the full :math:`360^\circ` ring. The
+  residual of a nonlocal field is integrated over the ring as well, so its nodal values are those of the ring.
+- The radial displacement on the axis, :math:`u_r = 0` at :math:`r = 0`, is not imposed by the element; prescribe it.
+  The nonlocal fields need no condition on the axis.
+- Mesh in :math:`r \geq 0` only. ``initializeYourself()`` rejects a node at :math:`r < -10^{-12} h`, with :math:`h`
+  the diagonal of the element's bounding box, so that round-off of nodes on the axis is accepted, and a quadrature
+  point at :math:`r \leq 0`.
+- A thickness assigned as element property is ignored.
+- Mixed-order elements, e.g. ``GeneralGradientEnhancedDisplacementFiniteElement<2, 8, 1, 4>`` with a linear nonlocal
+  field, can be instantiated with the axisymmetric section; they are not registered.
+- The explicit update and the artificial bulk viscosity are available; the latter acts on
+  :math:`\Delta\varepsilon_{rr} + \Delta\varepsilon_{zz} + \Delta\varepsilon_{\theta\theta}`, including the hoop
+  strain.
+- The energy gradients (:doc:`energygradients`) are available with a material that provides energy tangents.
+- Distributed loads: pressure, integrated over the ring.
+
 Evaluation at the quadrature points
 -----------------------------------
 
+The implicit and the explicit kernel share one material update and integration per quadrature point for all sections;
+the explicit one skips the tangent blocks and the energy gradients and adds the artificial bulk viscosity.
+
 The element stores the shape functions :math:`\mathbf{N}` and their gradients :math:`\partial_{\mathbf{x}} \mathbf{N}` per
 quadrature point, but not the strain-displacement matrix :math:`\mathbf{B}`, which is mostly zeros. The implicit kernel forms
-:math:`\mathbf{B}` on the fly, because the tangent blocks need it. Neither kernel needs it for the strain increment and the
-internal force: they are computed as the symmetric part of the displacement gradient and from the stress directly
+:math:`\mathbf{B}` on the fly, because the tangent blocks need it. In the plane and solid sections, neither kernel needs it
+for the strain increment and the internal force (the axisymmetric section forms its operator, which carries the hoop row):
+they are computed as the symmetric part of the displacement gradient and from the stress directly
 (``Marmot::Discretizations::Elements::SmallStrain::strainIncrement`` and ``addInternalForce``),
 
 .. math::

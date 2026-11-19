@@ -372,8 +372,12 @@
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d_1_1_axisymmetric" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric</name>
     <member refid="_marmot_finite_element_8h_1a759a02da31864400f2363841d4816ba3" kind="variable"><name>voigtSize</name></member>
+    <member refid="_marmot_finite_element_8h_1add885a597ed3a2d9b9a93e0d025cf4fd" kind="variable"><name>axisTolerance</name></member>
     <member refid="_marmot_finite_element_8h_1ac25b14e5334b3c7d2fef10bba888c57d" kind="function"><name>BFromPlanarB</name></member>
     <member refid="_marmot_finite_element_8h_1af287147dc753792af664c2dbfc6cd880" kind="function"><name>B</name></member>
+    <member refid="_marmot_finite_element_8h_1a03397ef98a30c8429d25ca9ffb8c23a7" kind="function"><name>checkNodesAreInTheMeridianHalfPlane</name></member>
+    <member refid="_marmot_finite_element_8h_1a519cc4e0f7a5cc5fdbb4b72554e4113b" kind="function"><name>checkRadiusOfQuadraturePoint</name></member>
+    <member refid="_marmot_finite_element_8h_1abbaa6f6118e7567e14d040c6b6af46e2" kind="function"><name>sectionTangent</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d_1_1_quad4" kind="namespace"><name>Marmot::Discretizations::Elements::Spatial2D::Quad4</name>
     <member refid="_marmot_finite_element_8h_1a60be44ddc73fdf579824b21023f2f7ec" kind="typedef"><name>CoordinateSized</name></member>

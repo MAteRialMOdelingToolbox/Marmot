@@ -28,7 +28,7 @@
 </parameterlist>
 <simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
 </simplesect>
-This function returns the value of the quadratic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="0">\[ g(\phi) = (1 - \phi)^2,\]</formula> and its derivatives are given by <formula id="9">\[ g&apos;(\phi) = -2(1 - \phi), \quad g&apos;&apos;(\phi) = 2. \]</formula> </para>
+This function returns the value of the quadratic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="23">\[ g(\phi) = (1 - \phi)^2,\]</formula> and its derivatives are given by <formula id="32">\[ g&apos;(\phi) = -2(1 - \phi), \quad g&apos;&apos;(\phi) = 2. \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -59,7 +59,7 @@ This function returns the value of the quadratic degradation function along with
 </parameterlist>
 <simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
 </simplesect>
-This function returns the value of the cubic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="2">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> and its derivatives are given by <formula id="10">\[ g&apos;(\phi) = -6(1 - \phi)\phi, \quad g&apos;&apos;(\phi) = 12\phi - 6. \]</formula> </para>
+This function returns the value of the cubic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="25">\[ g(\phi) = 3(1 - \phi)^2 - 2(1 - \phi)^3,\]</formula> and its derivatives are given by <formula id="33">\[ g&apos;(\phi) = -6(1 - \phi)\phi, \quad g&apos;&apos;(\phi) = 12\phi - 6. \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -90,7 +90,7 @@ This function returns the value of the cubic degradation function along with its
 </parameterlist>
 <simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
 </simplesect>
-This function returns the value of the quartic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="3">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> and its derivatives are given by  <formula id="11">\[ g&apos;(\phi) = -12(1 - \phi)^2 + 12(1 - \phi)^3, \quad g&apos;&apos;(\phi) = 24(1 - \phi) -
+This function returns the value of the quartic degradation function along with its first and second derivatives. The degradation function is defined as <formula id="26">\[ g(\phi) = 4(1 - \phi)^3 - 3(1 - \phi)^4,\]</formula> and its derivatives are given by  <formula id="34">\[ g&apos;(\phi) = -12(1 - \phi)^2 + 12(1 - \phi)^3, \quad g&apos;&apos;(\phi) = 24(1 - \phi) -
 36(1 - \phi)^2. \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -170,8 +170,8 @@ This function returns the value of the quartic degradation function along with i
 </parameterlist>
 <simplesect kind="return"><para>A tuple containing the degradation function value, its first derivative, and its second derivative with respect to the phase field variable.</para>
 </simplesect>
-This function returns the value of the generic degradation function along with its first and second derivatives. The degradation function is defined as  <formula id="12">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi
-(1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="1">$\phi$</formula> is the phase field variable, and <formula id="5">$p$</formula>, <formula id="6">$a_1$</formula>, <formula id="7">$a_2$</formula>, and <formula id="8">$a_3$</formula> are parameters that control the shape of the degradation function. The first and second derivatives are computed using automatic differentiation with hyper-dual numbers. </para>
+This function returns the value of the generic degradation function along with its first and second derivatives. The degradation function is defined as  <formula id="35">\[ g(\phi) = \frac{(1 - \phi)^p}{(1 - \phi)^p + a_1 \phi
+(1 + a_2 \phi (1 + a_3 \phi))},\]</formula> where <formula id="24">$\phi$</formula> is the phase field variable, and <formula id="28">$p$</formula>, <formula id="29">$a_1$</formula>, <formula id="30">$a_2$</formula>, and <formula id="31">$a_3$</formula> are parameters that control the shape of the degradation function. The first and second derivatives are computed using automatic differentiation with hyper-dual numbers. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

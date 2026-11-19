@@ -17,17 +17,17 @@
 <para>Computes the plane stress derivative of the stress with respect to the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the 3D derivative of the stress tensor with respect to the deformation gradient <formula id="92">$ F_{ij} $</formula> to a plane stress setting.</para>
+<para>Reduces the 3D derivative of the stress tensor with respect to the deformation gradient <formula id="102">$ F_{ij} $</formula> to a plane stress setting.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>dStressdDeformationGradient3D</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of 3D stress w.r.t. deformation gradient ( <formula id="29">$6 \times 3 \times 3$</formula> tensor). </para>
+<para>Derivative of 3D stress w.r.t. deformation gradient ( <formula id="103">$6 \times 3 \times 3$</formula> tensor). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Reduced derivative of stress w.r.t. deformation gradient ( <formula id="93">$3 \times 2 \times 2$</formula> tensor) for plane stress. </para>
+<simplesect kind="return"><para>Reduced derivative of stress w.r.t. deformation gradient ( <formula id="104">$3 \times 2 \times 2$</formula> tensor) for plane stress. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -53,7 +53,7 @@
 <para>Computes the out-of-plane strain correction component for plane stress conditions. </para>
         </briefdescription>
         <detaileddescription>
-<para>Determines the correction <formula id="94">$\varepsilon_{33}^{\text{corr}}$</formula> such that the resulting stress satisfies plane stress conditions. <formula id="95">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula>, so that the resulting stress satisfies plane stress:    <formula id="96">\[    \sigma^\text{plane} = \mathbb{C} : (\boldsymbol{\varepsilon}^{\text{el}} +
+<para>Determines the correction <formula id="105">$\varepsilon_{33}^{\text{corr}}$</formula> such that the resulting stress satisfies plane stress conditions. <formula id="106">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula>, so that the resulting stress satisfies plane stress:    <formula id="107">\[    \sigma^\text{plane} = \mathbb{C} : (\boldsymbol{\varepsilon}^{\text{el}} +
 \boldsymbol{\varepsilon}^{\text{corr}})
 \]</formula></para>
 <para><parameterlist kind="param"><parameteritem>
@@ -61,7 +61,7 @@
 <parametername>elasticStrain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The in-plane elastic strain vector <formula id="95">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula> (6 components, Voigt notation). </para>
+<para>The in-plane elastic strain vector <formula id="106">$ \boldsymbol{\varepsilon}^{\text{el}} $</formula> (6 components, Voigt notation). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -73,7 +73,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>A 6-component strain vector <formula id="97">$ \boldsymbol{\varepsilon}^{\text{corr}} $</formula> containing the computed out-of-plane correction component <formula id="94">$\varepsilon_{33}^{\text{corr}}$</formula> (Voigt notation). </para>
+<simplesect kind="return"><para>A 6-component strain vector <formula id="108">$ \boldsymbol{\varepsilon}^{\text{corr}} $</formula> containing the computed out-of-plane correction component <formula id="105">$\varepsilon_{33}^{\text{corr}}$</formula> (Voigt notation). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -95,17 +95,17 @@
 <para>Computes the transformation matrix for the plane stress tangent. </para>
         </briefdescription>
         <detaileddescription>
-<para>Returns the 6x6 transformation matrix <formula id="98">$\mathbf{T}$</formula> relating arbitrary strain increments to plane stress increments using the material stiffness.</para>
+<para>Returns the 6x6 transformation matrix <formula id="109">$\mathbf{T}$</formula> relating arbitrary strain increments to plane stress increments using the material stiffness.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>tangent</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>6x6 material tangent stiffness matrix ( <formula id="99">$\mathbf{C}$</formula>). </para>
+<para>6x6 material tangent stiffness matrix ( <formula id="110">$\mathbf{C}$</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>6x6 transformation matrix ( <formula id="98">$\mathbf{T}$</formula>) for plane stress correction. </para>
+<simplesect kind="return"><para>6x6 transformation matrix ( <formula id="109">$\mathbf{T}$</formula>) for plane stress correction. </para>
 </simplesect>
 </para>
         </detaileddescription>
