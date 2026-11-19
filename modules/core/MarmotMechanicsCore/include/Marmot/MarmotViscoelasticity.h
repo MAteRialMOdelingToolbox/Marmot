@@ -45,7 +45,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      * \f]
      * creep for long times.
      *
-     * @tparam T_ Scalar or autodiff type of the argument.
+     * @tparam T_ Scalar or automatic differentiation type of the argument.
      *
      * @param[in] tau Retardation time or evaluation point.
      * @param[in] m Scaling factor.
@@ -69,7 +69,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      * \f]
      * creep for short times.
      *
-     * @tparam T_ Scalar or autodiff type of the argument.
+     * @tparam T_ Scalar or automatic differentiation type of the argument.
      *
      * @param[in] tau Retardation time or evaluation point.
      * @param[in] m Scaling factor.
@@ -95,7 +95,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      *   \Psi(\tau) = m \, \tau^{-n}.
      * \f]
      *
-     * @tparam T_ Scalar or autodiff type of the argument.
+     * @tparam T_ Scalar or automatic differentiation type of the argument.
      * @param[in] tau Relaxation time or evaluation point.
      * @param[in] m Scaling factor.
      * @param[in] n Positive exponent controlling the relaxation rate.

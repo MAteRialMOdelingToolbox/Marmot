@@ -50,14 +50,8 @@
 #include <ostream>
 #include <type_traits>
 
-/** @brief Forces inlining of the elementary operations of the scalar-mode numbers, whose nesting otherwise exceeds the
- *  compilers' inlining heuristics for third order hyper-dual numbers */
-#if defined( _MSC_VER )
-#  define MARMOT_AD_INLINE __forceinline
-#else
-#  define MARMOT_AD_INLINE inline __attribute__( ( always_inline ) )
-#endif
-
+// The elementary operations are marked [[gnu::always_inline]]: for third order hyper-dual numbers their nesting exceeds
+// the inlining heuristics of GCC and clang, which then leave them as calls. MSVC ignores the attribute.
 namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
 
   /** @brief An arithmetic constant (e.g. double or int), which carries no derivatives
@@ -74,7 +68,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @param f function of the index
    */
   template < std::size_t begin, std::size_t end, typename F >
-  MARMOT_AD_INLINE void staticFor( F&& f )
+  [[gnu::always_inline]] inline void staticFor( F&& f )
   {
     if constexpr ( begin < end ) {
       f( std::integral_constant< std::size_t, begin >{} );
@@ -204,7 +198,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @param b summand
      *  @return this number
      */
-    MARMOT_AD_INLINE Dual& operator+=( const Dual& b )
+    [[gnu::always_inline]] inline Dual& operator+=( const Dual& b )
     {
       val_ += b.val_;
       grad_ += b.grad_;
@@ -215,7 +209,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @param b subtrahend
      *  @return this number
      */
-    MARMOT_AD_INLINE Dual& operator-=( const Dual& b )
+    [[gnu::always_inline]] inline Dual& operator-=( const Dual& b )
     {
       val_ -= b.val_;
       grad_ -= b.grad_;
@@ -226,7 +220,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @param b factor
      *  @return this number
      */
-    MARMOT_AD_INLINE Dual& operator*=( const Dual& b )
+    [[gnu::always_inline]] inline Dual& operator*=( const Dual& b )
     {
       // in place on every nesting level; b.grad_ is copied first, since b may be this number
       const T bGrad = b.grad_;
@@ -240,7 +234,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @param b divisor
      *  @return this number
      */
-    MARMOT_AD_INLINE Dual& operator/=( const Dual& b ) { return *this = *this / b; }
+    [[gnu::always_inline]] inline Dual& operator/=( const Dual& b ) { return *this = *this / b; }
 
     /** @brief Adds a constant
      *  @tparam S arithmetic type
@@ -248,7 +242,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @return this number
      */
     template < Constant S >
-    MARMOT_AD_INLINE Dual& operator+=( S c )
+    [[gnu::always_inline]] inline Dual& operator+=( S c )
     {
       val_ += static_cast< double >( c );
       return *this;
@@ -260,7 +254,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @return this number
      */
     template < Constant S >
-    MARMOT_AD_INLINE Dual& operator-=( S c )
+    [[gnu::always_inline]] inline Dual& operator-=( S c )
     {
       val_ -= static_cast< double >( c );
       return *this;
@@ -272,7 +266,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @return this number
      */
     template < Constant S >
-    MARMOT_AD_INLINE Dual& operator*=( S c )
+    [[gnu::always_inline]] inline Dual& operator*=( S c )
     {
       val_ *= static_cast< double >( c );
       grad_ *= static_cast< double >( c );
@@ -285,7 +279,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
      *  @return this number
      */
     template < Constant S >
-    MARMOT_AD_INLINE Dual& operator/=( S c )
+    [[gnu::always_inline]] inline Dual& operator/=( S c )
     {
       val_ /= static_cast< double >( c );
       grad_ /= static_cast< double >( c );
@@ -309,7 +303,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator+( const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator+( const Dual< T >& a )
   {
     return a;
   }
@@ -320,7 +314,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return -a
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator-( const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator-( const Dual< T >& a )
   {
     return Dual< T >( -a.val(), -a.grad() );
   }
@@ -332,7 +326,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a + b
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator+( const Dual< T >& a, const Dual< T >& b )
+  [[gnu::always_inline]] inline Dual< T > operator+( const Dual< T >& a, const Dual< T >& b )
   {
     return Dual< T >( a.val() + b.val(), a.grad() + b.grad() );
   }
@@ -345,7 +339,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a + c
    */
   template < typename T, Constant S >
-  MARMOT_AD_INLINE Dual< T > operator+( const Dual< T >& a, S c )
+  [[gnu::always_inline]] inline Dual< T > operator+( const Dual< T >& a, S c )
   {
     return Dual< T >( a.val() + static_cast< double >( c ), a.grad() );
   }
@@ -358,7 +352,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c + a
    */
   template < Constant S, typename T >
-  MARMOT_AD_INLINE Dual< T > operator+( S c, const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator+( S c, const Dual< T >& a )
   {
     return Dual< T >( static_cast< double >( c ) + a.val(), a.grad() );
   }
@@ -370,7 +364,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a - b
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator-( const Dual< T >& a, const Dual< T >& b )
+  [[gnu::always_inline]] inline Dual< T > operator-( const Dual< T >& a, const Dual< T >& b )
   {
     return Dual< T >( a.val() - b.val(), a.grad() - b.grad() );
   }
@@ -383,7 +377,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a - c
    */
   template < typename T, Constant S >
-  MARMOT_AD_INLINE Dual< T > operator-( const Dual< T >& a, S c )
+  [[gnu::always_inline]] inline Dual< T > operator-( const Dual< T >& a, S c )
   {
     return Dual< T >( a.val() - static_cast< double >( c ), a.grad() );
   }
@@ -396,7 +390,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c - a
    */
   template < Constant S, typename T >
-  MARMOT_AD_INLINE Dual< T > operator-( S c, const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator-( S c, const Dual< T >& a )
   {
     return Dual< T >( static_cast< double >( c ) - a.val(), -a.grad() );
   }
@@ -408,7 +402,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a * b
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator*( const Dual< T >& a, const Dual< T >& b )
+  [[gnu::always_inline]] inline Dual< T > operator*( const Dual< T >& a, const Dual< T >& b )
   {
     Dual< T > r = a;
     return r *= b;
@@ -422,7 +416,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a * c
    */
   template < typename T, Constant S >
-  MARMOT_AD_INLINE Dual< T > operator*( const Dual< T >& a, S c )
+  [[gnu::always_inline]] inline Dual< T > operator*( const Dual< T >& a, S c )
   {
     const double c_ = static_cast< double >( c );
     return Dual< T >( a.val() * c_, a.grad() * c_ );
@@ -436,7 +430,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c * a
    */
   template < Constant S, typename T >
-  MARMOT_AD_INLINE Dual< T > operator*( S c, const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator*( S c, const Dual< T >& a )
   {
     const double c_ = static_cast< double >( c );
     return Dual< T >( c_ * a.val(), c_ * a.grad() );
@@ -448,7 +442,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return 1 / x
    */
   template < typename T >
-  MARMOT_AD_INLINE T reciprocal( const T& x )
+  [[gnu::always_inline]] inline T reciprocal( const T& x )
   {
     if constexpr ( isDual< T > ) {
       const auto r = reciprocal( x.val() );
@@ -465,7 +459,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a / b
    */
   template < typename T >
-  MARMOT_AD_INLINE Dual< T > operator/( const Dual< T >& a, const Dual< T >& b )
+  [[gnu::always_inline]] inline Dual< T > operator/( const Dual< T >& a, const Dual< T >& b )
   {
     if constexpr ( isDual< T > ) {
       const T inverse = reciprocal( b.val() );
@@ -486,7 +480,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a / c
    */
   template < typename T, Constant S >
-  MARMOT_AD_INLINE Dual< T > operator/( const Dual< T >& a, S c )
+  [[gnu::always_inline]] inline Dual< T > operator/( const Dual< T >& a, S c )
   {
     const double c_ = static_cast< double >( c );
     return Dual< T >( a.val() / c_, a.grad() / c_ );
@@ -500,7 +494,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c / a
    */
   template < Constant S, typename T >
-  MARMOT_AD_INLINE Dual< T > operator/( S c, const Dual< T >& a )
+  [[gnu::always_inline]] inline Dual< T > operator/( S c, const Dual< T >& a )
   {
     return static_cast< double >( c ) * reciprocal( a );
   }
@@ -892,7 +886,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator+( const Taylor< order >& a )
+  [[gnu::always_inline]] inline Taylor< order > operator+( const Taylor< order >& a )
   {
     return a;
   }
@@ -903,7 +897,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return -a
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator-( const Taylor< order >& a )
+  [[gnu::always_inline]] inline Taylor< order > operator-( const Taylor< order >& a )
   {
     Taylor< order > r = a;
     return r *= -1.0;
@@ -916,7 +910,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a + b
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator+( Taylor< order > a, const Taylor< order >& b )
+  [[gnu::always_inline]] inline Taylor< order > operator+( Taylor< order > a, const Taylor< order >& b )
   {
     return a += b;
   }
@@ -929,7 +923,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a + c
    */
   template < std::size_t order, Constant S >
-  MARMOT_AD_INLINE Taylor< order > operator+( Taylor< order > a, S c )
+  [[gnu::always_inline]] inline Taylor< order > operator+( Taylor< order > a, S c )
   {
     return a += c;
   }
@@ -942,7 +936,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c + a
    */
   template < Constant S, std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator+( S c, Taylor< order > a )
+  [[gnu::always_inline]] inline Taylor< order > operator+( S c, Taylor< order > a )
   {
     return a += c;
   }
@@ -954,7 +948,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a - b
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator-( Taylor< order > a, const Taylor< order >& b )
+  [[gnu::always_inline]] inline Taylor< order > operator-( Taylor< order > a, const Taylor< order >& b )
   {
     return a -= b;
   }
@@ -967,7 +961,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a - c
    */
   template < std::size_t order, Constant S >
-  MARMOT_AD_INLINE Taylor< order > operator-( Taylor< order > a, S c )
+  [[gnu::always_inline]] inline Taylor< order > operator-( Taylor< order > a, S c )
   {
     return a -= c;
   }
@@ -980,7 +974,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c - a
    */
   template < Constant S, std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator-( S c, const Taylor< order >& a )
+  [[gnu::always_inline]] inline Taylor< order > operator-( S c, const Taylor< order >& a )
   {
     return -a + c;
   }
@@ -992,7 +986,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a * b
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator*( const Taylor< order >& a, const Taylor< order >& b )
+  [[gnu::always_inline]] inline Taylor< order > operator*( const Taylor< order >& a, const Taylor< order >& b )
   {
     Taylor< order > r;
     staticFor< 0, order + 1 >( [&]( auto k_ ) {
@@ -1015,7 +1009,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a * c
    */
   template < std::size_t order, Constant S >
-  MARMOT_AD_INLINE Taylor< order > operator*( Taylor< order > a, S c )
+  [[gnu::always_inline]] inline Taylor< order > operator*( Taylor< order > a, S c )
   {
     return a *= c;
   }
@@ -1028,7 +1022,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c * a
    */
   template < Constant S, std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator*( S c, Taylor< order > a )
+  [[gnu::always_inline]] inline Taylor< order > operator*( S c, Taylor< order > a )
   {
     return a *= c;
   }
@@ -1040,7 +1034,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a / b
    */
   template < std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator/( const Taylor< order >& a, const Taylor< order >& b )
+  [[gnu::always_inline]] inline Taylor< order > operator/( const Taylor< order >& a, const Taylor< order >& b )
   {
     // a = q b, solved for q_k
     Taylor< order > q;
@@ -1065,7 +1059,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return a / c
    */
   template < std::size_t order, Constant S >
-  MARMOT_AD_INLINE Taylor< order > operator/( Taylor< order > a, S c )
+  [[gnu::always_inline]] inline Taylor< order > operator/( Taylor< order > a, S c )
   {
     return a /= c;
   }
@@ -1078,7 +1072,7 @@ namespace Marmot::Math::Differentiation::Automatic::ScalarMode {
    *  @return c / a
    */
   template < Constant S, std::size_t order >
-  MARMOT_AD_INLINE Taylor< order > operator/( S c, const Taylor< order >& a )
+  [[gnu::always_inline]] inline Taylor< order > operator/( S c, const Taylor< order >& a )
   {
     return Taylor< order >( c ) / a;
   }

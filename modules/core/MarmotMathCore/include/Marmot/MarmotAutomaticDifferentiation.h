@@ -207,7 +207,7 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @param X The point at which to evaluate the Jacobian
    *  @return A pair containing the function value and the Jacobian matrix at the given point
    *
-   *  With the Marmot vector-mode backend, F is evaluated once; otherwise once per component of X.
+   *  F is evaluated once.
    */
   template < int n >
   std::pair< Eigen::Vector< double, n >, Eigen::Matrix< double, n, n > > dF_dX(
@@ -221,27 +221,13 @@ namespace Marmot::Math::Differentiation::Automatic {
     Eigen::Vector< double, n >    F_;
     Eigen::Matrix< double, n, n > J;
 
-    if constexpr ( isVectorDual< scalar > ) {
+    for ( int j = 0; j < n; j++ )
+      seedDirection( X_( j ), j );
+    F_right = F( X_ );
+    for ( int i = 0; i < n; i++ ) {
+      F_( i ) = value( F_right( i ) );
       for ( int j = 0; j < n; j++ )
-        seedDirection( X_( j ), j );
-      F_right = F( X_ );
-      for ( int i = 0; i < n; i++ ) {
-        F_( i ) = value( F_right( i ) );
-        for ( int j = 0; j < n; j++ )
-          J( i, j ) = partialDerivative( F_right( i ), j );
-      }
-    }
-    else {
-      // J_ij = d F_i / d x_j
-      for ( int j = 0; j < n; j++ ) {
-        seed< 1 >( X_( j ), 1.0 );
-        F_right = F( X_ );
-        for ( int i = 0; i < n; i++ )
-          J( i, j ) = derivative< 1 >( F_right( i ) );
-        seed< 1 >( X_( j ), 0.0 );
-      }
-      for ( int i = 0; i < n; i++ )
-        F_( i ) = value( F_right( i ) );
+        J( i, j ) = partialDerivative( F_right( i ), j );
     }
 
     return { F_, J };

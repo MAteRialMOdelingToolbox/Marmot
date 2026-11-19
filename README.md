@@ -38,8 +38,7 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 `Marmot` requires the
 [Eigen](https://gitlab.com/libeigen/eigen) (≥5.0)
 and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
-Automatic differentiation uses Marmot's own number types; optionally,
-[autodiff](https://github.com/autodiff/autodiff) (`-DMARMOT_USE_AUTODIFF=ON`) can be used instead.
+Automatic differentiation uses Marmot's own number types.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
 
 For a quick start we recommend to use conda.

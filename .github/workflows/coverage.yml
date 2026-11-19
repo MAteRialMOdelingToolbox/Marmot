@@ -82,7 +82,6 @@ jobs:
           lcov --remove coverage.info \
             '/usr/*' \
             '*/eigen/*' \
-            '*/autodiff/*' \
             '*/Fastor/*' \
             '*/build/*' \
             --output-file coverage.filtered.info \

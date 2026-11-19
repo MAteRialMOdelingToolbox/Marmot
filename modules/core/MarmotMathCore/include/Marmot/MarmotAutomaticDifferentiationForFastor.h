@@ -77,18 +77,14 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @tparam Rest dimensions of the tensor
    *  @param f function mapping a tensor to a scalar
    *  @param T input tensor at which the gradient is evaluated
-   *  @param isSymmetric if true and T is a square rank-2 tensor, T (and thus the resulting gradient) is assumed to
-   *  be symmetric, e.g. the right Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are
-   *  seeded, and the result is mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction
-   *  in function evaluations for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never
-   *  reaches 1/2 as dim grows, so this never fully halves the evaluation count. Ignored for tensors that are not
-   *  square rank-2.
+   *  @param isSymmetric has no effect: all partial derivatives are computed in one evaluation of f; kept for source
+   *  compatibility
    *  @return gradient of f with respect to T, same shape as T
    */
   template < size_t... Rest >
   Fastor::Tensor< double, Rest... > df_dT( const tensor_to_scalar_function_type< Rest... >& f,
                                            const Fastor::Tensor< double, Rest... >&         T,
-                                           bool                                             isSymmetric = false )
+                                           [[maybe_unused]] bool                            isSymmetric = false )
   {
     using scalar = JacobianDual< ( Rest * ... ) >;
 
@@ -98,47 +94,12 @@ namespace Marmot::Math::Differentiation::Automatic {
     double* df_dT_data   = df_dT.data();
     scalar* T_right_data = T_right.data();
 
-    if constexpr ( isVectorDual< scalar > ) {
-      // all directions in one evaluation; isSymmetric would not save anything
-      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
-        seedDirection( T_right_data[T_right.get_mem_index( i )], i );
-      const scalar f_right = f( T_right );
-      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
-        df_dT_data[df_dT.get_mem_index( i )] = partialDerivative( f_right, i );
-    }
-    else {
-
-      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::value ) {
-        if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::dim;
-
-          for ( size_t row = 0; row < dim; ++row ) {
-            for ( size_t col = row; col < dim; ++col ) {
-              const Fastor::FASTOR_INDEX lin_ij  = row * dim + col;
-              const Fastor::FASTOR_INDEX lin_ji  = col * dim + row;
-              const int                  mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
-
-              seed< 1 >( T_right_data[mem_idx], 1.0 );
-              const double val = derivative< 1 >( f( T_right ) );
-              seed< 1 >( T_right_data[mem_idx], 0.0 );
-
-              df_dT_data[df_dT.get_mem_index( lin_ij )] = val;
-              if ( col != row )
-                df_dT_data[df_dT.get_mem_index( lin_ji )] = val;
-            }
-          }
-
-          return df_dT;
-        }
-      }
-
-      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
-        seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
-        df_dT_data[df_dT.get_mem_index( i )] = derivative< 1 >( f( T_right ) );
-        seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
-      }
-    }
+    // all directions in one evaluation
+    for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+      seedDirection( T_right_data[T_right.get_mem_index( i )], i );
+    const scalar f_right = f( T_right );
+    for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+      df_dT_data[df_dT.get_mem_index( i )] = partialDerivative( f_right, i );
 
     return df_dT;
   }
@@ -222,14 +183,8 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @tparam RestT dimensions of the input tensor
    *  @param F function mapping a tensor to a tensor
    *  @param T input tensor at which the gradient is evaluated
-   *  @param isSymmetric if true, T is a square rank-2 tensor and F's output is also a square rank-2 tensor of the
-   *  same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
-   *  assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
-   *  necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
-   *  reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 -- a ~1.5x reduction for dim=3,
-   *  approaching (but never reaching) a 2x reduction as dim grows -- by only seeding the upper triangle of T and,
-   *  for each evaluation, filling both the direct entry and its transpose-mirrored counterpart
-   *  \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
+   *  @param isSymmetric has no effect: all partial derivatives are computed in one evaluation of F; kept for source
+   *  compatibility
    *  @return pair of function value and gradient of F with respect to T, gradient has shape (RestF..., RestT...)
    */
   template < size_t... RestF, size_t... RestT >
@@ -237,7 +192,7 @@ namespace Marmot::Math::Differentiation::Automatic {
     std::function< Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestF... >(
       const Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestT... >& ) >& F,
     const Fastor::Tensor< double, RestT... >&                                 T,
-    bool                                                                      isSymmetric = false )
+    [[maybe_unused]] bool                                                     isSymmetric = false )
   {
     using scalar = JacobianDual< ( RestT * ... ) >;
 
@@ -251,67 +206,15 @@ namespace Marmot::Math::Differentiation::Automatic {
     scalar* T_right_data      = T_right.data();
     scalar* F_at_T_right_data = F_at_T_right.data();
 
-    if constexpr ( isVectorDual< scalar > ) {
-      // all directions in one evaluation; isSymmetric would not save anything
+    // all directions in one evaluation
+    for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
+      seedDirection( T_right_data[T_right.get_mem_index( i )], i );
+    F_at_T_right = F( T_right );
+    for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
+      const scalar& F_j                = F_at_T_right_data[F_at_T_right.get_mem_index( j )];
+      F_.data()[F_.get_mem_index( j )] = value( F_j );
       for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
-        seedDirection( T_right_data[T_right.get_mem_index( i )], i );
-      F_at_T_right = F( T_right );
-      for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
-        const scalar& F_j                = F_at_T_right_data[F_at_T_right.get_mem_index( j )];
-        F_.data()[F_.get_mem_index( j )] = value( F_j );
-        for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i )
-          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = partialDerivative( F_j, i );
-      }
-    }
-    else {
-
-      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
-                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
-                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
-                       Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
-        if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
-
-          for ( size_t row = 0; row < dim; ++row ) {
-            for ( size_t col = row; col < dim; ++col ) {
-              const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
-              const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-              const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
-              seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
-              F_at_T_right = F( T_right );
-
-              for ( size_t outRow = 0; outRow < dim; ++outRow ) {
-                for ( size_t outCol = 0; outCol < dim; ++outCol ) {
-                  const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
-                  const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
-                  const double val = derivative< 1 >( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] );
-                  dF_dT_data[dF_dT_.get_mem_index( out_ab * T.size() + lin_ij )] = val;
-                  if ( col != row )
-                    dF_dT_data[dF_dT_.get_mem_index( out_ba * T.size() + lin_ji )] = val;
-                }
-              }
-              seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
-            }
-          }
-
-          F_ = Tensors::makeReal( F_at_T_right );
-          return { F_, dF_dT_ };
-        }
-      }
-
-      for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
-        seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
-        F_at_T_right = F( T_right );
-
-        for ( Fastor::FASTOR_INDEX j = 0; j < F_at_T_right.size(); ++j ) {
-          dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = derivative< 1 >(
-            F_at_T_right_data[F_at_T_right.get_mem_index( j )] );
-        }
-        seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
-      }
-
-      F_ = Tensors::makeReal( F_at_T_right );
+        dF_dT_data[dF_dT_.get_mem_index( j * T.size() + i )] = partialDerivative( F_j, i );
     }
 
     return { F_, dF_dT_ };
@@ -339,23 +242,14 @@ namespace Marmot::Math::Differentiation::Automatic {
      *          second derivative has shape (dim, dim, dim, dim)
      *
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
-     *  @param isSymmetric if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is
-     *  assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built
-     *  from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2
-     *  -- a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows -- by
-     *  exploiting the identity
-     *  \f$ \partial^2 F / \partial T_{ij}\partial T_{kl} = \partial^2 F/\partial T_{ji}\partial T_{lk} \f$, which
-     *  holds at a symmetric T for such functions (note: this mirrors both index pairs simultaneously; mirroring
-     *  either pair independently is in general NOT valid)
-     *
-     *  With the vector-mode backend (isHessianDual), F is evaluated once and isSymmetric is irrelevant; otherwise F is
-     *  evaluated once per pair of directions.
+     *  @param isSymmetric has no effect: the gradient and the Hessian are computed in one evaluation of F; kept for
+     *  source compatibility
      */
     template < size_t dim >
     std::tuple< double, Fastor::Tensor< double, dim, dim >, Fastor::Tensor< double, dim, dim, dim, dim > > d2f_dT2(
       const tensor_to_scalar_function_type< dim >& F,
       const Fastor::Tensor< double, dim, dim >&    T,
-      bool                                         isSymmetric = false )
+      [[maybe_unused]] bool                        isSymmetric = false )
     {
       using scalar = HessianDual< dim * dim >;
 
@@ -363,56 +257,22 @@ namespace Marmot::Math::Differentiation::Automatic {
       Fastor::Tensor< double, dim, dim >           dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim > d2F_dT2;
 
-      if constexpr ( isHessianDual< scalar > ) {
-        Fastor::Tensor< scalar, dim, dim > T_right;
-        for ( size_t i = 0; i < dim; i++ )
-          for ( size_t j = 0; j < dim; j++ ) {
-            T_right( i, j ).val() = T( i, j );
-            seedDirection( T_right( i, j ), dim * i + j );
-          }
-        const scalar F_right = F( T_right );
-        F_                   = value( F_right );
-        for ( size_t i = 0; i < dim; i++ )
-          for ( size_t j = 0; j < dim; j++ ) {
-            dF_dT_( i, j ) = partialDerivative( F_right, dim * i + j );
-            for ( size_t k = 0; k < dim; k++ )
-              for ( size_t l = 0; l < dim; l++ )
-                d2F_dT2( i, j, k, l ) = secondPartialDerivative( F_right, dim * i + j, dim * k + l );
-          }
-        return { F_, dF_dT_, d2F_dT2 };
-      }
-      else {
-        scalar                             F_right;
-        Fastor::Tensor< scalar, dim, dim > T_right = Tensors::makeHigherOrderDual< 2 >( T );
-
-        for ( size_t i = 0; i < dim; i++ ) {
-          for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
-            seed< 1 >( T_right( i, j ), 1.0 );
-
-            for ( size_t k = 0; k < dim; k++ ) {
-              for ( size_t l = 0; l < dim; l++ ) {
-
-                seed< 2 >( T_right( k, l ), 1.0 );
-                F_right          = F( T_right );
-                const double val = derivative< 2 >( F_right );
-
-                d2F_dT2( i, j, k, l ) = val;
-                if ( isSymmetric && j != i )
-                  d2F_dT2( j, i, l, k ) = val;
-
-                seed< 2 >( T_right( k, l ), 0.0 );
-              }
-            }
-            dF_dT_( i, j ) = derivative< 1 >( F_right );
-            F_             = value( F_right );
-            if ( isSymmetric && j != i )
-              dF_dT_( j, i ) = dF_dT_( i, j );
-            seed< 1 >( T_right( i, j ), 0.0 );
-          }
+      Fastor::Tensor< scalar, dim, dim > T_right;
+      for ( size_t i = 0; i < dim; i++ )
+        for ( size_t j = 0; j < dim; j++ ) {
+          T_right( i, j ).val() = T( i, j );
+          seedDirection( T_right( i, j ), dim * i + j );
         }
-
-        return { F_, dF_dT_, d2F_dT2 };
-      }
+      const scalar F_right = F( T_right );
+      F_                   = value( F_right );
+      for ( size_t i = 0; i < dim; i++ )
+        for ( size_t j = 0; j < dim; j++ ) {
+          dF_dT_( i, j ) = partialDerivative( F_right, dim * i + j );
+          for ( size_t k = 0; k < dim; k++ )
+            for ( size_t l = 0; l < dim; l++ )
+              d2F_dT2( i, j, k, l ) = secondPartialDerivative( F_right, dim * i + j, dim * k + l );
+        }
+      return { F_, dF_dT_, d2F_dT2 };
     }
 
     /** @typedef tensor_and_scalar_to_scalar_function_type

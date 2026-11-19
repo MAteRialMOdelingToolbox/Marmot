@@ -11,11 +11,7 @@ These are header-only libraries, so no compilation is required.
 
 Marmot requires Eigen 5.
 
-Automatic differentiation uses Marmot's own number types. The library
-`autodiff <https://github.com/autodiff/autodiff>`_ can be used instead (see `Build options`_), but is not required.
-autodiff 1.1.2 does not compile against Eigen 5 without the patch of
-`autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, which is not merged upstream yet;
-Step 5 applies it.
+Automatic differentiation uses Marmot's own number types and needs no further library.
 
 Prebuilt conda package
 **********************
@@ -99,31 +95,10 @@ Get Eigen:
         ..
     make install
 
-Optionally, get autodiff (only for ``-DMARMOT_USE_AUTODIFF=ON``):
-
-.. code-block:: console
-   :caption: Step 5 (optional)
-
-    cd $MARMOTROOT
-    git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
-    curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
-    git -C autodiff apply ../autodiff-eigen5.diff
-    cd autodiff
-    mkdir build
-    cd build
-    cmake \
-        -DAUTODIFF_BUILD_TESTS=OFF \
-        -DAUTODIFF_BUILD_PYTHON=OFF \
-        -DAUTODIFF_BUILD_EXAMPLES=OFF \
-        -DAUTODIFF_BUILD_DOCS=OFF \
-        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-        ..
-    make install
-
 Get Fastor:
 
 .. code-block:: console
-   :caption: Step 6
+   :caption: Step 5
 
     cd $MARMOTROOT
     git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
@@ -135,7 +110,7 @@ Get Fastor:
 Get Marmot:
 
 .. code-block:: console
-   :caption: Step 7
+   :caption: Step 6
 
     cd $MARMOTROOT
     git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git
@@ -159,24 +134,6 @@ The following CMake options adjust the build:
   vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
-* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot|None`` selects the number type of the automatic differentiation
-  drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD material base classes
-  ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``, and of the Hessian driver ``SecondOrder::d2f_dT2``. The
-  default, ``Marmot``, is Marmot's own vector mode (``MarmotAutomaticDifferentiationVectorMode.h``, expression
-  templates, and ``MarmotAutomaticDifferentiationVectorModeSecondOrder.h`` for Hessians): it computes all derivatives
-  in one evaluation of the differentiated function. ``None`` uses the first-order dual numbers
-  and evaluates the function once per direction, which makes these tangents about 1.9 to 3.1 times slower.
-* ``-DMARMOT_USE_AUTODIFF=ON`` uses `autodiff <https://github.com/autodiff/autodiff>`_ instead of Marmot's own
-  hyper-dual and Taylor numbers (``MarmotAutomaticDifferentiationScalarMode.h``), which compute the second and third
-  derivatives and the Taylor expansions, e.g., of the energy functions and the creep compliances. Marmot's own types
-  are as fast as or faster than autodiff. The default is ``OFF``, so autodiff is not needed.
-
-The AD backends change number types in Marmot's interfaces (e.g. ``computeStressAD``), i.e., Marmot's API and ABI.
-``Marmot::Marmot`` therefore passes the definitions ``MARMOT_AD_VECTOR_BACKEND_MARMOT`` and ``MARMOT_AD_AUTODIFF``
-on to its consumers, as selected, and code compiled
-against Marmot's headers without CMake must define them alike.
-Code differentiated by these drivers must use the number type ``JacobianDual< nDirections >`` (or the ``ADScalar`` of
-the material base classes) instead of ``dual`` to build with all backends.
 
 Modules
 *******
@@ -210,9 +167,8 @@ Other CMake projects use the installed library through ``find_package``:
     find_package(Marmot REQUIRED)
     target_link_libraries(<target> PRIVATE Marmot::Marmot)
 
-``Marmot::Marmot`` brings along Eigen and Fastor (and autodiff, if Marmot was built with it); Fastor and
-autodiff are found either through their CMake packages or, if they were installed as plain headers, through
-a header search.
+``Marmot::Marmot`` brings along Eigen and Fastor; Fastor is found either through its CMake package or, if it was
+installed as plain headers, through a header search.
 
 Building on Windows
 *******************

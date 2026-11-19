@@ -4,7 +4,6 @@
 # *
 # *   Eigen3::Eigen        (Eigen's CMake package)
 # *   Fastor::Fastor       (Fastor's CMake package, or a plain header search)
-# *   autodiff::autodiff   (only if MARMOT_USE_AUTODIFF is ON: autodiff's CMake package, or a plain header search)
 # *
 # * Shared by Marmot's top-level CMakeLists.txt and the installed MarmotConfig.cmake, so that
 # * Marmot and its consumers resolve the dependencies the same way.
@@ -53,14 +52,3 @@ macro(marmot_find_header_only_dependency package target header)
 endmacro()
 
 marmot_find_header_only_dependency(Fastor Fastor::Fastor Fastor)
-
-# autodiff (optional backend of the hyper-dual and Taylor numbers, see MarmotAutomaticDifferentiationTypes.h)
-if(MARMOT_USE_AUTODIFF)
-    marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
-endif()
-
-if(NOT MARMOT_AD_VECTOR_BACKEND MATCHES "^(Marmot|None)$")
-    set(MARMOT_DEPENDENCIES_FOUND FALSE)
-    string(APPEND MARMOT_DEPENDENCIES_MESSAGE
-        "MARMOT_AD_VECTOR_BACKEND must be Marmot or None, not '${MARMOT_AD_VECTOR_BACKEND}'. ")
-endif()

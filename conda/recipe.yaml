@@ -37,7 +37,7 @@ requirements:
     - ninja
     - ${{ compiler('cxx') }}
   host:
-    # Eigen 5 only. Automatic differentiation uses Marmot's own types (the default), so autodiff is not needed.
+    # Eigen 5 only.
     - eigen >=5
     - fastor
   run:

@@ -71,7 +71,7 @@ namespace Marmot::Math {
   typedef std::complex< double >               complexDouble; ///< Standard complex double scalar
   typedef Eigen::Matrix< complexDouble, 6, 1 > Vector6cd;     ///< 6-component complex double column vector
 
-  // autodiff dual matrix definitions
+  // dual number matrix definitions
   typedef Eigen::Matrix< Marmot::Math::Differentiation::Automatic::dual, 6, 1 >
     Vector6dual; ///< 6-component Marmot::Math::Differentiation::Automatic::dual column vector
   typedef Eigen::Map< Vector6dual >       mVector6dual;      ///< Non-owning map over a Vector6dual

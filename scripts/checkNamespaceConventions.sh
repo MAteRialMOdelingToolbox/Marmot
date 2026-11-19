@@ -39,7 +39,7 @@ report "use FirstOrder/SecondOrder/ThirdOrder, not *OrderDerived namespaces" \
 report "lowercase namespace name" \
   "$(grep -nE "^\s*namespace +[A-Za-z_][A-Za-z0-9_]*(::[A-Za-z_][A-Za-z0-9_]*)* *\{" $ALL 2>/dev/null \
     | grep -E "namespace +[a-z]|::[a-z]" \
-    | grep -vE "namespace +(nanobind|std|autodiff|nb)\b")"
+    | grep -vE "namespace +(nanobind|std|nb)\b")"
 
 # 5. using-directives / using-declarations at global or namespace scope in
 #    headers. Tracks braces: a 'using' line (aliases 'using X = ...' excluded)
@@ -73,12 +73,13 @@ report "old-style 'namespace Marmot {' opener (use C++17 'namespace Marmot::X {'
 report "namespace deeper than 6 levels" \
   "$(grep -nE "namespace +(\w+::){6,}\w+ *\{" $ALL 2>/dev/null)"
 
-# 8. The optional automatic differentiation backend autodiff is named in one header only: everything else uses the
-#    backend-neutral types and functions of Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). Comment
-#    lines are skipped.
-report "AD backend used outside MarmotAutomaticDifferentiationTypes.h" \
-  "$(grep -nE "autodiff::|#include *[<\"]autodiff/" $ALL 2>/dev/null \
-    | grep -v "MarmotAutomaticDifferentiationTypes.h:" \
+# 8. The automatic differentiation implementations (ScalarMode, VectorMode) are named only in their own headers and
+#    tests and in MarmotAutomaticDifferentiationTypes.h: everything else uses the types and functions of
+#    Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). Comment lines are skipped.
+report "AD implementation named outside the AD headers" \
+  "$(grep -nE "(ScalarMode|VectorMode)::" $ALL 2>/dev/null \
+    | grep -vE "MarmotAutomaticDifferentiation(Types|ScalarMode|VectorMode|VectorModeSecondOrder)\.h:" \
+    | grep -vE "TestMarmotAutomaticDifferentiation(ScalarMode|VectorMode)\.cpp:" \
     | grep -vE "^[^:]+:[0-9]+: *(//|/?\*)")"
 
 if [ $FAIL -ne 0 ]; then

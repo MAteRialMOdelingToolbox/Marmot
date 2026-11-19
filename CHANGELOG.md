@@ -29,10 +29,6 @@ All notable changes to Marmot are documented in this file. The format follows
   depend on the order of differentiation: the Yeoh energy's third derivative, which
   `CompressibleFiniteStrainLinearViscoelasticity` computes in every stress update, takes 11.7 us instead of 55 us.
   Results are unchanged.
-- Optional AD backends, selected at configure time; the choice is part of the API and ABI and exported to consumers:
-  - `-DMARMOT_USE_AUTODIFF=ON` (`MARMOT_AD_AUTODIFF`): autodiff for the hyper-dual and Taylor numbers.
-  - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`): the `JacobianDual` and
-    `HessianDual` of the AD drivers; `None` uses the first-order dual numbers, one direction per evaluation.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
@@ -130,30 +126,28 @@ All notable changes to Marmot are documented in this file. The format follows
   and the reference measure, used for the quadrature weights and the consistent mass.
 
 ### Changed
-- **Breaking:** Automatic differentiation is backend-neutral. `Marmot/MarmotAutomaticDifferentiationTypes.h` is the
-  only header that includes autodiff; Marmot code uses its vocabulary in `Math::Differentiation::Automatic`:
+- **Breaking:** Automatic differentiation no longer uses autodiff. Marmot code uses the vocabulary of
+  `Marmot/MarmotAutomaticDifferentiationTypes.h` in `Math::Differentiation::Automatic`:
   `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >` (was `autodiff::HigherOrderDual< order, double >`),
   `Taylor< order >` (was `autodiff::Real< order, double >`), `VectorXdual`, `VectorXdual2nd`, `MatrixXdual`, and
   `seed< level >`, `derivative< level >`, `value`, `taylorDerivatives< order >` (was `autodiff::derivatives( f,
   along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
-- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers (`dual2nd` with
-  `MARMOT_AD_VECTOR_BACKEND=None`); functions passed to it must use the new name. With the default backend
-  `isSymmetric` has no effect.
-- **Breaking:** autodiff is no longer required: by default, all automatic differentiation uses Marmot's own types
-  (see Added), and the conda package no longer depends on autodiff. `-DMARMOT_USE_AUTODIFF=ON
-  -DMARMOT_AD_VECTOR_BACKEND=None` restores the previous behaviour. Results agree with autodiff to about 1e-15
+- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers instead of `dual2nd`.
+  `isSymmetric` of `d2f_dT2`, `df_dT` and `dF_dT` has no effect any more, since all directions are computed in one
+  evaluation.
+- **Breaking:** autodiff is no longer a dependency: all automatic differentiation uses Marmot's own types (see
+  Added), and the conda package no longer depends on autodiff. Results agree with autodiff to about 1e-15
   (relative).
 - **Breaking:** The first-derivative drivers `df_dT` and `dF_dT` take functions of `JacobianDual< nDirections >`
   numbers, and `MaterialFiniteStrainAD` and `MaterialHypoElasticAD` pass `ADScalar` numbers
   (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. These are vector-mode
-  numbers by default, so code differentiated by these drivers must use the new names instead of `dual`.
+  numbers, so code differentiated by these drivers must use the new names instead of `dual`.
   `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
   `MaterialHypoElasticAD`).
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
-  requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
-  (autodiff#397).
+  requires `eigen >=5`). CI builds and tests with Eigen 5.0.1.
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
   the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
   response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`

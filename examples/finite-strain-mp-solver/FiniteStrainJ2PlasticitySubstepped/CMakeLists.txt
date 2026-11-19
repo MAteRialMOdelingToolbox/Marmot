@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Marmot and its dependencies (Eigen, autodiff, Fastor) are resolved through
+# Marmot and its dependencies (Eigen, Fastor) are resolved through
 # find_package. If Marmot is installed into a non-default prefix, point
 # CMAKE_PREFIX_PATH at it; an activated conda environment is searched
 # automatically (CMake derives search prefixes from PATH).

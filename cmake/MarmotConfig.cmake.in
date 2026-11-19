@@ -13,20 +13,14 @@
 # * Prerequisites, located by the installed MarmotDependencies.cmake:
 # *   - Eigen3   (Eigen3::Eigen)
 # *   - Fastor   (Fastor::Fastor; CMake package or plain headers)
-# *   - autodiff (autodiff::autodiff; only if Marmot was built with MARMOT_USE_AUTODIFF=ON)
 # *
 # * ---------------------------------------------------------------------
 # */
 
 @PACKAGE_INIT@
 
-# The AD backends Marmot was built with; consumers must use the same ones (MarmotTargets.cmake sets the matching
-# compile definitions).
-set(MARMOT_USE_AUTODIFF "@MARMOT_USE_AUTODIFF@")
-set(MARMOT_AD_VECTOR_BACKEND "@MARMOT_AD_VECTOR_BACKEND@")
-
-# MarmotTargets.cmake references Eigen3::Eigen, Fastor::Fastor (and autodiff::autodiff); recreate them
-# the same way Marmot's own build found them before loading it.
+# MarmotTargets.cmake references Eigen3::Eigen and Fastor::Fastor; recreate them the same way Marmot's own
+# build found them before loading it.
 include("${CMAKE_CURRENT_LIST_DIR}/MarmotDependencies.cmake")
 if(NOT MARMOT_DEPENDENCIES_FOUND)
     set(Marmot_FOUND FALSE)

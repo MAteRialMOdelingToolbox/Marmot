@@ -116,10 +116,9 @@ breathe_projects_source = {
 }
 
 # Options for the Doxygen runs Breathe starts for breathe_projects_source: MARMOT_API (symbol export marker, see
-# MarmotPortability.h) and MARMOT_AD_INLINE (forced inlining, see MarmotAutomaticDifferentiationScalarMode.h) have to
-# vanish, or Sphinx cannot parse the declarations of the functions they mark.
+# MarmotPortability.h) has to vanish, or Sphinx cannot parse the declarations of exported free functions.
 breathe_doxygen_config_options = {
-    "PREDEFINED": "MARMOT_API= MARMOT_AD_INLINE=inline",
+    "PREDEFINED": "MARMOT_API=",
     "MACRO_EXPANSION": "YES",
     "EXPAND_ONLY_PREDEF": "YES",
 }
