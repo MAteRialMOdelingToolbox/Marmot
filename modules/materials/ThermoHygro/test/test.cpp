@@ -30,6 +30,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 /* The coupled heat and moisture transport material THERMOHYGRO: uncoupled limit against HEATCONDUCTION +
@@ -222,6 +223,21 @@ namespace {
                                  "self-desiccation of a very long increment" );
       }
     }
+
+    // a zero time increment without maturity: the rate Q_inf / tau_q exp(-t / tau_q) at the time t
+    const auto th = create( "THERMOHYGRO", withoutMaturity.data(), 32 );
+    const auto c  = evaluate( *th, twoFieldState( 20.0, 20.0, 0.85, 0.85 ), 1.0, 0.0, 0.0 );
+    throwExceptionOnFailure( checkIfEqual( c.r.source( 0 ), 60.0 / 2.0 * std::exp( -0.5 ), 1e-12 * 30.0 ),
+                             "rate of the heat of hydration in a zero time increment" );
+
+    // with maturity but without heat of hydration: no heat source and no tangent
+    auto noHydrationHeat = coupled;
+    noHydrationHeat[30]  = 0.0;
+    const auto th0       = create( "THERMOHYGRO", noHydrationHeat.data(), 32 );
+    const auto c0        = evaluate( *th0, twoFieldState( 35.0, 30.0, 0.85, 0.85 ), 10.0, 5.0 );
+    throwExceptionOnFailure( c0.r.source( 0 ) == 0.0 && c0.t.dSource_dField( 0, 0 ) == 0.0 &&
+                               c0.t.dSource_dField( 0, 1 ) == 0.0 && c0.r.source( 1 ) < 0.0,
+                             "Q_inf = 0: no heat of hydration, but self-desiccation" );
   }
 
   /// all four blocks of all tangents by central differences, for several states and both time increments
@@ -306,7 +322,8 @@ namespace {
                                                                          { 31, 0.0 },
                                                                          { 21, 30.0 },
                                                                          { 11, 0.0 },
-                                                                         { 0, -1.0 } } ) {
+                                                                         { 0, -1.0 },
+                                                                         { 24, std::nan( "" ) } } ) {
       auto bad   = coupled;
       bad[index] = value;
       try {
@@ -323,19 +340,29 @@ namespace {
       catch ( const std::invalid_argument& ) {
         rejected++;
       }
-    throwExceptionOnFailure( rejected == 15, Marmot::Utilities::MakeString() << "rejected " << rejected << " of 15" );
+    throwExceptionOnFailure( rejected == 16, Marmot::Utilities::MakeString() << "rejected " << rejected << " of 16" );
 
-    // below absolute zero: reported
-    bool       threw = false;
-    const auto th    = create( "THERMOHYGRO", coupled.data(), 32 );
-    try {
-      evaluate( *th, twoFieldState( -300.0, 20.0, 0.8, 0.8 ), 5.0, 0.5 );
-    }
-    catch ( const std::runtime_error& ) {
-      threw = true;
-    }
-    throwExceptionOnFailure( threw, "absolute temperature <= 0 must throw" );
-    std::cout << "storage flags and 15 invalid inputs OK" << std::endl;
+    // states outside the model are reported: below absolute zero (kappa = 0, else the isotherm, evaluated at
+    // h - kappa (T - T_ref), fails first), and a non-positive moisture factor of the conductivity 1 + beta_kh h
+    const auto throwsAt = []( const std::vector< double >& p, double T, double h ) {
+      const auto th = create( "THERMOHYGRO", p.data(), 32 );
+      try {
+        evaluate( *th, twoFieldState( T, 20.0, h, 0.8 ), 5.0, 0.5 );
+      }
+      catch ( const std::runtime_error& e ) {
+        return std::string( e.what() );
+      }
+      return std::string();
+    };
+    auto noKappa = coupled;
+    noKappa[24]  = 0.0;
+    throwExceptionOnFailure( throwsAt( noKappa, -300.0, 0.8 ).find( "absolute temperature" ) != std::string::npos,
+                             "absolute temperature <= 0 must throw" );
+    auto negativeBetaKh = coupled;
+    negativeBetaKh[27]  = -0.9;
+    throwExceptionOnFailure( throwsAt( negativeBetaKh, 20.0, 1.2 ).find( "moisture factor" ) != std::string::npos,
+                             "1 + beta_kh h <= 0 must throw" );
+    std::cout << "storage flags, 16 invalid inputs and 2 invalid states OK" << std::endl;
   }
 
 } // namespace
