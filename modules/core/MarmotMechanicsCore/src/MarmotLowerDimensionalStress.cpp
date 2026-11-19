@@ -81,28 +81,5 @@ namespace Marmot::ContinuumMechanics {
       // clang-format on
       return dS_dF;
     }
-
-    Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& strain, double nu )
-    {
-      const Marmot::Math::Vector6d& e                = strain;
-      const double                  strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
-      Marmot::Math::Vector6d        result;
-      result << 0, 0, strainCorrComp33, 0, 0, 0;
-      return result;
-    }
-
-    Marmot::Math::Matrix6d planeStressTangentTransformationMatrix( const Marmot::Math::Matrix6d& tangent )
-    {
-      /* Returns the transformation Matrix T which fullfills
-       * planeStressIncrement = C : T * strainIncrement
-       * for isotropic material behavior only!
-       * */
-      Marmot::Math::Matrix6d T   = Marmot::Math::Matrix6d::Identity();
-      const double           t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
-      const double           t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
-      T.row( 2 ).head( 3 ) << t31, t32, 0.0;
-      return T;
-    }
-
   } // namespace PlaneStress
 } // namespace Marmot::ContinuumMechanics
