@@ -406,35 +406,5 @@ namespace Marmot::ContinuumMechanics {
      */
     Marmot::Math::Tensors::Tensor322d compute_dStress_dDeformationGradient(
       const Marmot::Math::Tensors::Tensor633d& dStressdDeformationGradient3D );
-
-    /**
-     * @brief Computes the out-of-plane strain correction component for plane stress conditions.
-     *
-     * @details Determines the correction \f$\varepsilon_{33}^{\text{corr}}\f$ such that the resulting
-     * stress satisfies plane stress conditions.
-     * \f$ \boldsymbol{\varepsilon}^{\text{el}} \f$, so that the resulting stress satisfies plane stress:
-     * \f[
-     *     \sigma^\text{plane} = \mathbb{C} : (\boldsymbol{\varepsilon}^{\text{el}} +
-     * \boldsymbol{\varepsilon}^{\text{corr}})
-     * \f]
-     *
-     * @param elasticStrain The in-plane elastic strain vector \f$ \boldsymbol{\varepsilon}^{\text{el}} \f$ (6
-     * components, Voigt notation).
-     * @param nu Poisson's ratio of the material.
-     * @return A 6-component strain vector \f$ \boldsymbol{\varepsilon}^{\text{corr}} \f$ containing the computed
-     * out-of-plane correction component \f$\varepsilon_{33}^{\text{corr}}\f$ (Voigt notation).
-     */
-    Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& elasticStrain, double nu );
-
-    /**
-     * @brief Computes the transformation matrix for the plane stress tangent.
-     *
-     * @details Returns the 6x6 transformation matrix \f$\mathbf{T}\f$ relating arbitrary strain increments
-     * to plane stress increments using the material stiffness.
-     *
-     * @param tangent 6x6 material tangent stiffness matrix (\f$\mathbf{C}\f$).
-     * @return 6x6 transformation matrix (\f$\mathbf{T}\f$) for plane stress correction.
-     */
-    Marmot::Math::Matrix6d planeStressTangentTransformationMatrix( const Marmot::Math::Matrix6d& tangent );
   } // namespace PlaneStress
 } // namespace Marmot::ContinuumMechanics

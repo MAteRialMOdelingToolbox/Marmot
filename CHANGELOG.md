@@ -179,6 +179,9 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** `ContinuumMechanics::PlaneStress::dStrainDStrainPlaneStress( C )` and `dStressPlaneStressDStress()`,
   without a caller since `getPlaneStressTangent()` is gone; they defined plane stress by σ33 = 0 only. Plane stress is
   `ReducedStress::planeStressPrescribed` / `planeStressFree` with `ReducedStress::condense()`.
+- **Breaking:** `ContinuumMechanics::PlaneStress::planeStressCompensationStrain( strain, nu )` and
+  `planeStressTangentTransformationMatrix( C )`, without a caller; they were a third definition of plane stress (σ33 = 0
+  only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
 - **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`
