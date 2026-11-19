@@ -382,6 +382,11 @@ namespace Marmot::Math::Differentiation::Automatic::VectorMode {
      */
     double& dx( std::size_t i ) { return dx_[i]; }
 
+    /** @brief Primal value
+     *  @return value
+     */
+    explicit operator double() const { return val_; }
+
     /** @brief Adds an expression
      *  @tparam E expression type
      *  @param e expression

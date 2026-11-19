@@ -213,7 +213,7 @@ namespace Marmot::Math {
                                  bool > = true >
     double makeReal( const Scalar& number )
     {
-      return Marmot::Math::Differentiation::Automatic::value( number );
+      return static_cast< double >( number );
     }
 
     /** @brief Extracts the real part of a arbitrary scalartype-valued Matrix
