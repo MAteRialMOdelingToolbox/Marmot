@@ -59,7 +59,7 @@ namespace Marmot::Discretizations::Elements {
    * - @b T<d>D<n> (SmallStrain, geometrically linear): hypoelastic materials
    *   (Marmot::Materials::MaterialHypoElastic), e.g. LINEARELASTIC, VONMISES;
    * - @b T<d>D<n>CR (FiniteStrain): finite strain materials (Marmot::Materials::MaterialFiniteStrain) whose response
-   *   to a diagonal deformation gradient is diagonal, e.g. the isotropic COMPRESSIBLENEOHOOKE,
+   *   to a diagonal deformation gradient is diagonal, e.g. the isotropic COMPRESSIBLEHYPERELASTICITY,
    *   FINITESTRAINJ2PLASTICITY, VONMISES/HUGHES-WINGET.
    *
    * - @b SmallStrain: the axial strain is \f$\varepsilon = \boldsymbol{T} \cdot \frac{\partial \boldsymbol{u}}
@@ -383,7 +383,8 @@ namespace Marmot::Discretizations::Elements {
             << ( kinematics == SmallStrain
                    ? "the geometrically linear truss T<d>D<n> takes hypoelastic materials; for finite strain "
                      "materials use T<d>D<n>CR"
-                   : "the finite strain truss T<d>D<n>CR takes finite strain materials (e.g., COMPRESSIBLENEOHOOKE, "
+                   : "the finite strain truss T<d>D<n>CR takes finite strain materials (e.g., "
+                     "COMPRESSIBLEHYPERELASTICITY, "
                      "VONMISES/HUGHES-WINGET); for hypoelastic materials use T<d>D<n>" ) );
         }
       }

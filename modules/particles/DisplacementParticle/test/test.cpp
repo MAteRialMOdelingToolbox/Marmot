@@ -44,8 +44,10 @@ using namespace Marmot::Testing;
 
 namespace {
 
-  // COMPRESSIBLENEOHOOKE: K, G, rho
-  const std::vector< double > matProps = { 3500., 1500., 2.0 };
+  // COMPRESSIBLEHYPERELASTICITY: isochoric NeoHooke (0), volumetric DollSchweizerhof (6), mu = G, kappa = K,
+  // alpha = 1, beta = 3, rho -- the compressible Neo-Hooke model of Pence & Gou (variant B) with K, G
+  const double                density  = 2.0;
+  const std::vector< double > matProps = { 0., 6., 1500., 3500., 1., 3., density };
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >
@@ -87,7 +89,7 @@ namespace {
                                                                          vertices.data(),
                                                                          static_cast< int >( vertices.size() ),
                                                                          volume,
-                                                                         "COMPRESSIBLENEOHOOKE",
+                                                                         "COMPRESSIBLEHYPERELASTICITY",
                                                                          matProps.data(),
                                                                          static_cast< int >( matProps.size() ),
                                                                          approximation ) );
@@ -378,7 +380,7 @@ namespace {
         implemented = false;
       }
       if ( implemented )
-        throwExceptionOnFailure( std::abs( m.sum() - nDim * matProps[2] * V ) < 1e-12 * ( 1. + V ),
+        throwExceptionOnFailure( std::abs( m.sum() - nDim * density * V ) < 1e-12 * ( 1. + V ),
                                  Marmot::Utilities::MakeString()
                                    << name << ": lumped mass " << m.sum() << " != nDim rho V" );
     }
@@ -639,7 +641,7 @@ namespace {
           double sum = 0;
           for ( int A = 0; A < s.nNodes(); A++ )
             sum += p[A * nDim + i];
-          throwExceptionOnFailure( std::abs( sum - matProps[2] * s.particle->getVolumeUndeformed() *
+          throwExceptionOnFailure( std::abs( sum - density * s.particle->getVolumeUndeformed() *
                                                      vel.stateLocation[i] ) < 1e-10 * ( 1 + std::abs( sum ) ),
                                    name + ": lumped momentum is not m v" );
         }

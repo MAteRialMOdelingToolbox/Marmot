@@ -46,6 +46,45 @@ All notable changes to Marmot are documented in this file. The format follows
     `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
   - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
     around a given 3D stress update.
+- Shared hyperelastic strain energy density functions in `MarmotEnergyDensityFunctions.h`, split into
+  `EnergyDensityFunctions::Isochoric` (`NeoHookePotential`, `YeohPotential`, `MooneyRivlinPotential`,
+  `ArrudaBoyce8ChainPotential`) and `EnergyDensityFunctions::Volumetric` (`PenaltyPotential` and the functions of
+  Doll & Schweizerhof (2000), https://doi.org/10.1115/1.321146: `SussmanBathePotential`, `SimoTaylorPotential`,
+  `OgdenPotential`, `LiuHofstetterMangPotential`, `DollSchweizerhofPotential`,
+  `GeneralizedDollSchweizerhofPotential`, `DollSchweizerhofExponentialPotential`,
+  `DollSchweizerhofLogarithmicPotential`), each with a `FirstOrder` overload returning the energy and ∂Ψ/∂C.
+  `DecoupledPotential` and `makeDecoupledPotential` combine an isochoric and a volumetric part. The compressible
+  `ArrudaBoyce8ChainPotential(C, mu, lambdaL, D1)` is new, as are the `FirstOrder` overloads of the compressible
+  `MooneyRivlinPotential` and `YeohPotential`.
+- `Math::Differentiation::Automatic::dF_dSymmetricT`: gradient of a tensor-valued function with respect to a
+  symmetric square tensor by first-order dual numbers along the dim (dim + 1) / 2 symmetric directions. The output
+  may have any shape and the function does not have to be transpose-equivariant; e.g. the closed-form second
+  derivative of a potential w.r.t. C yields its third derivative with 6 evaluations.
+- Single-pass `DecoupledPotential`: every isochoric and volumetric potential also exists as a scalar function type
+  (`Isochoric::NeoHooke`, `Yeoh`, `MooneyRivlin`, `ArrudaBoyce8Chain`; `Volumetric::Penalty`, `SussmanBathe`,
+  `SimoTaylor`, `Ogden`, `LiuHofstetterMang`, `DollSchweizerhof`, `GeneralizedDollSchweizerhof`,
+  `DollSchweizerhofExponential`, `DollSchweizerhofLogarithmic`), e.g.
+  `SecondOrder::DecoupledPotential( C, Isochoric::Yeoh{ C10, C20, C30 }, Volumetric::SimoTaylor{ kappa } )`. The
+  plain, `FirstOrder::` and `SecondOrder::` overloads add the scalar derivatives of both parts before the chain rule,
+  so the invariants of C are computed once and the tensors assembled once, for any pair. `makeDecoupledPotential`
+  accepts these types too. User-defined parts qualify through the concepts `IsochoricScalarFunction` and
+  `VolumetricScalarFunction`. The compressible `MooneyRivlinPotential`, `YeohPotential` and
+  `ArrudaBoyce8ChainPotential` are such pairs with `Volumetric::Ogden{ 2 / D1, -2 }`.
+- `CompressibleFiniteStrainLinearViscoelasticity`: hyperelastic base `ArrudaBoyce` (`baseModel = 4`, elastic
+  properties mu, lambdaL, D1); a locking stretch lambdaL <= 1 is rejected.
+- `MarmotRightCauchyGreenInvariants.h` (`ContinuumMechanics::Invariants::RightCauchyGreen`): the principal invariants
+  (I1, I2, J) and the isochoric invariants (Ī1, Ī2, J) of the right Cauchy-Green tensor with their first and second
+  derivatives w.r.t. C (`computeInvariants`, `computeIsochoricInvariants`), and `composeWithInvariants`, the chain
+  rule from the scalar derivatives of a function of these invariants to ∂Ψ/∂C and ∂²Ψ/∂C∂C. A hyperelastic
+  potential then only states its scalar function and scalar derivatives. The derivatives hold for a general,
+  non-symmetric C, as automatic and complex-step differentiation produce them.
+- `SecondOrder` overloads (energy, ∂Ψ/∂C and ∂²Ψ/∂C∂C in closed form) of every potential in
+  `EnergyDensityFunctions::Isochoric` and `EnergyDensityFunctions::Volumetric`, and of the compressible
+  `MooneyRivlinPotential`, `YeohPotential` and `ArrudaBoyce8ChainPotential`. The plain, `FirstOrder` and
+  `SecondOrder` overloads of a potential evaluate the same scalar function through the invariant helper.
+  The second derivatives of the invariants are kept as a few scalar coefficients (`SecondDerivativeCoefficients`),
+  from which the fourth-order tensor is assembled in one pass, and the compressible potentials process C once
+  for both of their parts.
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -113,6 +152,16 @@ All notable changes to Marmot are documented in this file. The format follows
   (`uniaxialStressPrescribed`, `uniaxialStressFree`) are defined there.
 
 ### Changed
+- **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
+  `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
+  whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,
+  3 `ArrudaBoyce8Chain`) and the volumetric part (1 `SussmanBathe`, 2 `Penalty`, 3 `SimoTaylor`, 4 `Ogden`,
+  5 `LiuHofstetterMang`, 6 `DollSchweizerhof`, 7 `DollSchweizerhofExponential`, 8 `DollSchweizerhofLogarithmic`,
+  numbered as U1 to U8 in Doll & Schweizerhof (2000)), followed by the parameters of the isochoric part, those of the
+  volumetric part and, optionally, the density. Inputs with `COMPRESSIBLENEOHOOKE` and the properties `K, G[, rho]`
+  keep their results (to round-off) as `COMPRESSIBLEHYPERELASTICITY` with `0, 6, G, K, 1, 3[, rho]`. The header is
+  `Marmot/CompressibleHyperelasticity.h`, the module `CompressibleHyperelasticity`; the examples moved to
+  `examples/*/CompressibleHyperelasticity`.
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
   requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
   (autodiff#397).
@@ -122,6 +171,19 @@ All notable changes to Marmot are documented in this file. The format follows
   must use 0), and the quadrature point states are those of the truss element (`stress`, `strain`,
   `normal force`, ...). `ElementSpatialWrapper` and the uniaxial-stress section of `DisplacementFiniteElement` stay as
   generic facilities (tested), now without a registered element.
+- `CompressibleFiniteStrainLinearViscoelasticity` obtains the third derivative of the energy density for the bases
+  `Yeoh`, `MooneyRivlin`, `PenceGouNeoHooke` and `ArrudaBoyce` by differentiating the closed-form `SecondOrder`
+  potentials with first-order dual numbers (6 evaluations) instead of applying third-order dual numbers to the plain
+  potentials (6 x 81 evaluations), using `dF_dSymmetricT`. Results agree to round-off; this evaluation is about 25
+  to 35 times faster (about 2.5 µs instead of 60 to 95 µs per material point).
+- `CompressibleFiniteStrainLinearViscoelasticity` takes the initial shear modulus for `onlyShearCreep = 1` from one
+  function, `initialShearModulus()`, with the analytical expression of each hyperelastic base; the Arruda-Boyce one
+  is written as `mu (3 lambdaL^2 - 1) / (3 (lambdaL^2 - 1))`. For full creep the initial compliance is the closed
+  form `1/(2 G0) Dev + 1/(9 K0) I(x)I` with the analytical `initialBulkModulus()`, instead of the numerically
+  inverted initial stiffness from automatic differentiation. Results agree to round-off.
+- `FirstOrder::PenceGouPotentialB` and `SecondOrder::PenceGouPotentialB` evaluate their derivatives through the
+  invariant helper. Results agree with the previous closed forms to round-off; the `FirstOrder` overload takes about
+  half the time, the `SecondOrder` overload the same. The plain `PenceGouPotentialB` is unchanged.
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
   them) has the sign of the finite elements: a positive pressure pushes on the face, against its outward normal. It
@@ -226,6 +288,9 @@ All notable changes to Marmot are documented in this file. The format follows
   dissipation increment is the plastic work f_y(κₙ₊₁) Δκ of the return mapping instead of 2G Δλ n : Δε. The yield
   stress is floored at zero, so that a softening law flows without stress beyond zero strength instead of reversing
   the stress, and a trial stress without deviatoric part is elastic. This applies to `computeStressExplicit()` too.
+- **Results:** `CompressibleFiniteStrainLinearViscoelasticity` with `baseModel = MooneyRivlin` and
+  `onlyShearCreep = 1` takes the reference shear modulus 2 (C1 + C2) of the Mooney-Rivlin potential; it took 2 C1
+  before. Results change for inputs with C2 ≠ 0.
 - **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
   `MaterialHypoElasticAD`. The fixes:
   - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was

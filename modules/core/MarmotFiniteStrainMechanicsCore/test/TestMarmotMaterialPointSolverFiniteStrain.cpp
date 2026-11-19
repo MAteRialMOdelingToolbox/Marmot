@@ -120,12 +120,12 @@ namespace {
 // ---------------------------------------------------------------------------------------------
 void testResetToInitialStateUndoesAccumulatedDeformation()
 {
-  // CompressibleNeoHooke is hyperelastic (path-independent): its stress is a pure function of the
+  // CompressibleHyperelasticity is hyperelastic (path-independent): its stress is a pure function of the
   // current deformation gradient, not of the solver's "previous stress" -- so resetToInitialState()
   // is verified here by its actual load-bearing effect, undoing the internally accumulated
   // displacement gradient (gradU), rather than by an (inapplicable) stress-persistence check.
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE";
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
@@ -246,8 +246,8 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
 // ---------------------------------------------------------------------------------------------
 void testSolveStepThrowsSolverIncrementsExhausted()
 {
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE";
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
@@ -289,8 +289,8 @@ void testSolveStepThrowsSolverIncrementsExhausted()
 // ---------------------------------------------------------------------------------------------
 void testSolveStepCapsNewlyAssignedDTStartToAvoidOvershoot()
 {
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE";
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
@@ -444,8 +444,8 @@ void testSolveIncrementThrowsWhenIterationsExhausted()
 // ---------------------------------------------------------------------------------------------
 void testPrintHistoryDoesNotThrow()
 {
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE";
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
@@ -467,8 +467,8 @@ void testPrintHistoryDoesNotThrow()
 
 void testExportHistoryToCSVWritesExpectedContentWithNoStateVars()
 {
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE"; // no state variables
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY"; // no state variables
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
@@ -566,8 +566,8 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
 
 void testExportHistoryToCSVThrowsForInvalidPath()
 {
-  std::vector< double > materialProperties = { 3500., 1500. };
-  std::string           matName            = "COMPRESSIBLENEOHOOKE";
+  std::vector< double > materialProperties = { 0., 6., 1500., 3500., 1., 3. };
+  std::string           matName            = "COMPRESSIBLEHYPERELASTICITY";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),

@@ -27,15 +27,15 @@ namespace {
     std::vector< double > materialProperties;
   };
   const std::vector< double > linearElastic = { 210000., 0.3, 7.85e-9 };
-  const std::vector< double > neoHooke      = { 3000., 1000., 1e-9 };
+  const std::vector< double > neoHooke      = { 0., 6., 1000., 3000., 1., 3., 1e-9 }; // NeoHooke, DollSchweizerhof
   const std::vector< Type >   types         = { { "T2D2", 2, 2, "LINEARELASTIC", linearElastic },
                                                 { "T2D3", 2, 3, "LINEARELASTIC", linearElastic },
                                                 { "T3D2", 3, 2, "LINEARELASTIC", linearElastic },
                                                 { "T3D3", 3, 3, "LINEARELASTIC", linearElastic },
-                                                { "T2D2CR", 2, 2, "COMPRESSIBLENEOHOOKE", neoHooke },
-                                                { "T2D3CR", 2, 3, "COMPRESSIBLENEOHOOKE", neoHooke },
-                                                { "T3D2CR", 3, 2, "COMPRESSIBLENEOHOOKE", neoHooke },
-                                                { "T3D3CR", 3, 3, "COMPRESSIBLENEOHOOKE", neoHooke } };
+                                                { "T2D2CR", 2, 2, "COMPRESSIBLEHYPERELASTICITY", neoHooke },
+                                                { "T2D3CR", 2, 3, "COMPRESSIBLEHYPERELASTICITY", neoHooke },
+                                                { "T3D2CR", 3, 2, "COMPRESSIBLEHYPERELASTICITY", neoHooke },
+                                                { "T3D3CR", 3, 3, "COMPRESSIBLEHYPERELASTICITY", neoHooke } };
 
   /// a straight bar from X1 to X2 (node order end, end, mid)
   std::vector< double > nodes( const Type& t, const std::vector< double >& X1, const std::vector< double >& X2 )
@@ -248,7 +248,7 @@ void testMaterialPairingHint()
   const auto cr = messageOf( "T3D2CR", "LINEARELASTIC", linearElastic );
   throwExceptionOnFailure( cr.find( "for hypoelastic materials use T<d>D<n>" ) != std::string::npos,
                            "T3D2CR with a hypoelastic material: " + cr );
-  const auto small = messageOf( "T3D2", "COMPRESSIBLENEOHOOKE", neoHooke );
+  const auto small = messageOf( "T3D2", "COMPRESSIBLEHYPERELASTICITY", neoHooke );
   throwExceptionOnFailure( small.find( "use T<d>D<n>CR" ) != std::string::npos,
                            "T3D2 with a finite strain material: " + small );
 }
