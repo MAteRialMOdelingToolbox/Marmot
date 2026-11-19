@@ -154,7 +154,12 @@ All notable changes to Marmot are documented in this file. The format follows
   (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. These are vector-mode
   numbers, so code differentiated by these drivers must use the new names instead of `dual`.
   `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
-  `MaterialHypoElasticAD`).
+  `MaterialHypoElasticAD`). `df_dT` and `SecondOrder::d2f_dT2` deduce the dimensions from the tensor argument only, so
+  they also accept lambdas; `dF_dT` takes the number type as its first template parameter. (Deducing the dimensions
+  through the number type of the function crashes MSVC 19.44.)
+- All of Marmot's automatic differentiation numbers convert explicitly to `double` (their value), so Fastor's
+  `Tensor::cast` converts tensors of them in both directions; `makeReal`, `makeDual`, `makeHigherOrderDual`,
+  `makeOtherScalarType` and `fastorTensorFromDoubleTensor` use it.
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
   requires `eigen >=5`). CI builds and tests with Eigen 5.0.1.
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of

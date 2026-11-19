@@ -38,6 +38,7 @@
 #include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <functional>
+#include <type_traits>
 
 namespace Marmot::Math::Differentiation::Automatic {
 
@@ -80,11 +81,14 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @param isSymmetric has no effect: all partial derivatives are computed in one evaluation of f; kept for source
    *  compatibility
    *  @return gradient of f with respect to T, same shape as T
+   *
+   *  The dimensions are deduced from T only: f is a non-deduced parameter, since MSVC 19.44 crashes (C1001) when it
+   *  deduces Rest through the fold expression in the number type of f.
    */
   template < size_t... Rest >
-  Fastor::Tensor< double, Rest... > df_dT( const tensor_to_scalar_function_type< Rest... >& f,
-                                           const Fastor::Tensor< double, Rest... >&         T,
-                                           [[maybe_unused]] bool                            isSymmetric = false )
+  Fastor::Tensor< double, Rest... > df_dT( const std::type_identity_t< tensor_to_scalar_function_type< Rest... > >& f,
+                                           const Fastor::Tensor< double, Rest... >&                                 T,
+                                           [[maybe_unused]] bool isSymmetric = false )
   {
     using scalar = JacobianDual< ( Rest * ... ) >;
 
@@ -186,15 +190,18 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @param isSymmetric has no effect: all partial derivatives are computed in one evaluation of F; kept for source
    *  compatibility
    *  @return pair of function value and gradient of F with respect to T, gradient has shape (RestF..., RestT...)
+   *
+   *  The number type is a template parameter of its own, scalar, which must be JacobianDual< ( RestT * ... ) >:
+   *  MSVC 19.44 crashes (C1001) when it deduces RestT through that fold expression in the type of F.
    */
-  template < size_t... RestF, size_t... RestT >
+  template < typename scalar, size_t... RestF, size_t... RestT >
   std::pair< Fastor::Tensor< double, RestF... >, Fastor::Tensor< double, RestF..., RestT... > > dF_dT(
-    std::function< Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestF... >(
-      const Fastor::Tensor< JacobianDual< ( RestT * ... ) >, RestT... >& ) >& F,
-    const Fastor::Tensor< double, RestT... >&                                 T,
-    [[maybe_unused]] bool                                                     isSymmetric = false )
+    std::function< Fastor::Tensor< scalar, RestF... >( const Fastor::Tensor< scalar, RestT... >& ) >& F,
+    const Fastor::Tensor< double, RestT... >&                                                         T,
+    [[maybe_unused]] bool isSymmetric = false )
   {
-    using scalar = JacobianDual< ( RestT * ... ) >;
+    static_assert( std::is_same_v< scalar, JacobianDual< ( RestT * ... ) > >,
+                   "F must map tensors of JacobianDual< number of components of T >" );
 
     Fastor::Tensor< double, RestF... >           F_( 0.0 );
     Fastor::Tensor< double, RestF..., RestT... > dF_dT_( 0.0 );
@@ -244,12 +251,14 @@ namespace Marmot::Math::Differentiation::Automatic {
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
      *  @param isSymmetric has no effect: the gradient and the Hessian are computed in one evaluation of F; kept for
      *  source compatibility
+     *
+     *  dim is deduced from T only: F is a non-deduced parameter, like in df_dT.
      */
     template < size_t dim >
     std::tuple< double, Fastor::Tensor< double, dim, dim >, Fastor::Tensor< double, dim, dim, dim, dim > > d2f_dT2(
-      const tensor_to_scalar_function_type< dim >& F,
-      const Fastor::Tensor< double, dim, dim >&    T,
-      [[maybe_unused]] bool                        isSymmetric = false )
+      const std::type_identity_t< tensor_to_scalar_function_type< dim > >& F,
+      const Fastor::Tensor< double, dim, dim >&                            T,
+      [[maybe_unused]] bool                                                isSymmetric = false )
     {
       using scalar = HessianDual< dim * dim >;
 
