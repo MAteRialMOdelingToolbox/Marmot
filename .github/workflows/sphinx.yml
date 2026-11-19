@@ -20,30 +20,13 @@ jobs:
           miniforge-version: latest
           activate-environment: anaconda-client-env
 
+      # The documentation tools, and Eigen and Fastor from the channel of the stack, whose recipes carry the
+      # patches of the dependencies (see .github/actions/setup-stack); listed first, so that its packages win.
       - name: Install conda packages
         shell: bash -l {0}
         run: |
-          mamba install --file doc/requirements.txt
-
-      - name: Install Eigen
-        shell: bash -l {0}
-        run: |
-          git clone --branch 5.0.1 https://gitlab.com/libeigen/eigen.git
-          cd eigen
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF -DEIGEN_BUILD_BLAS=OFF -DEIGEN_BUILD_LAPACK=OFF -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
-          make install
-          cd ../..
-
-      - name: Install Fastor
-        shell: bash -l {0}
-        run: |
-          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
-          cd Fastor
-          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
-          make install
-          cd ..
+          mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge --file doc/requirements.txt
+          mamba list "^(eigen|fastor)$"
 
       - name: Building Marmot documentation
         shell: bash -l {0}

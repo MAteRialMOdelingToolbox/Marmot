@@ -196,7 +196,17 @@ namespace Marmot::Materials {
     }
 
     /**
-     * Plane stress implementation of @ref computeStress.
+     * Plane stress implementation of computeStress(): \f$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\f$ for the
+     * prescribed in-plane strain increment \f$[\Delta\varepsilon_{11}, \Delta\varepsilon_{22}, \Delta\gamma_{12}]\f$,
+     * by Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() around @ref computeStress, with the
+     * isochoric initial guess \f$\Delta\varepsilon_{33} = -\Delta\varepsilon_{11} - \Delta\varepsilon_{22}\f$.
+     * The tangent is the condensed tangent of the converged 3D state.
+     * @param[in,out] stress2D in-plane stress, energies and state variables
+     * @param[out] dStress_dStrain2D the condensed in-plane tangent
+     * @param[in] dStrain2D the in-plane strain increment
+     * @param[in] timeInfo Structure carrying time information
+     * @throws Marmot::Utilities::StressUpdateFailed if the plane stress iteration fails; the state variables are
+     * then those of the start of the increment
      */
     virtual void computePlaneStress( state2D&                      stress2D,
                                      Marmot::Math::Matrix3d&       dStress_dStrain2D,
@@ -204,7 +214,16 @@ namespace Marmot::Materials {
                                      const timeInfo&               timeInfo ) const;
 
     /**
-     * Uniaxial stress implementation of @ref computeStress.
+     * Uniaxial stress implementation of computeStress(): all stress components but \f$\sigma_{11}\f$ vanish for
+     * the prescribed strain increment \f$\Delta\varepsilon_{11}\f$, by
+     * Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() around @ref computeStress, with the initial
+     * guess of zero lateral and shear strains. The tangent is the condensed tangent of the converged 3D state.
+     * @param[in,out] stress1D stress, energies and state variables
+     * @param[out] dStress_dStrain1D the condensed tangent \f$\mathrm{d}\sigma_{11} / \mathrm{d}\varepsilon_{11}\f$
+     * @param[in] dStrain the strain increment \f$\Delta\varepsilon_{11}\f$
+     * @param[in] timeInfo Structure carrying time information
+     * @throws Marmot::Utilities::StressUpdateFailed if the uniaxial stress iteration fails; the state variables are
+     * then those of the start of the increment
      */
     virtual void computeUniaxialStress( state1D&        stress1D,
                                         double&         dStress_dStrain1D,

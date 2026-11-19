@@ -37,30 +37,21 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 
 `Marmot` requires the
 [Eigen](https://gitlab.com/libeigen/eigen) (≥5.0)
-and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
+and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4, with the arm64 patch on Apple Silicon) libraries.
+The conda channel `https://repo.prefix.dev/matthiasneuner/edelweiss` provides both, Fastor with this patch;
+get them from there.
 Automatic differentiation uses Marmot's own number types.
-Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
+Detailed instructions can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
 
-For a quick start we recommend to use conda.
 A conda environment including all needed dependencies can be created by running
 
 ```bash
-conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers eigen fastor
+conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers "eigen>=5" fastor
 ```
 To activate the environment use
 
 ```bash
 conda activate marmot-env
-```
-
-Alternatively, Fastor can be installed manually by executing
-```bash
-git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
-cd Fastor
-mkdir build
-cd build
-cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
-make install
 ```
 
 To finally build and install `Marmot` execute
