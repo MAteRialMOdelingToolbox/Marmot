@@ -75,9 +75,10 @@ report "namespace deeper than 6 levels" \
 
 # 8. The automatic differentiation implementations (ScalarMode, VectorMode) are named only in their own headers and
 #    tests and in MarmotAutomaticDifferentiationTypes.h: everything else uses the types and functions of
-#    Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). Comment lines are skipped.
-report "AD implementation named outside the AD headers" \
-  "$(grep -nE "(ScalarMode|VectorMode)::" $ALL 2>/dev/null \
+#    Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). autodiff is not used at all. Comment lines are
+#    skipped.
+report "AD implementation named outside the AD headers, or autodiff used" \
+  "$(grep -nE "(ScalarMode|VectorMode|autodiff)::|#include *[<\"]autodiff/" $ALL 2>/dev/null \
     | grep -vE "MarmotAutomaticDifferentiation(Types|ScalarMode|VectorMode|VectorModeSecondOrder)\.h:" \
     | grep -vE "TestMarmotAutomaticDifferentiation(ScalarMode|VectorMode)\.cpp:" \
     | grep -vE "^[^:]+:[0-9]+: *(//|/?\*)")"
