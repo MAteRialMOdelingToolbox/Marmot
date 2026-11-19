@@ -528,10 +528,11 @@ void testTooFewMaterialProperties()
 }
 
 // Drives a fresh material point through a sequence of constant-increment strain segments and returns the
-// stress and tangent after every increment.
+// stress and tangent after every increment. The strain increments are plain arrays: a list of Eigen vectors
+// makes GCC emit cleanup code for the list elements, which never runs and shows up as uncovered lines.
 std::vector< std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > > runStrainSegments(
-  const std::vector< double >&                                   materialProperties,
-  const std::vector< std::pair< Marmot::Math::Vector6d, int > >& segments )
+  const std::vector< double >&                                    materialProperties,
+  const std::vector< std::pair< std::array< double, 6 >, int > >& segments )
 {
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7",
                                               materialProperties.data(),
@@ -545,7 +546,8 @@ std::vector< std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > > runSt
   const double dT      = 0.1;
 
   std::vector< std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > > history;
-  for ( const auto& [dStrain, nIncrements] : segments ) {
+  for ( const auto& [strainIncrement, nIncrements] : segments ) {
+    const Marmot::Math::Vector6d dStrain = Eigen::Map< const Marmot::Math::Vector6d >( strainIncrement.data() );
     for ( int i = 0; i < nIncrements; i++ ) {
       Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
       mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
@@ -576,7 +578,7 @@ void testStressUnitInvariance()
   std::vector< double > propertiesPaWithoutStressUnit = propertiesPa;
   propertiesPaWithoutStressUnit[11]                   = 1.0;
 
-  const std::vector< std::pair< Marmot::Math::Vector6d, int > > segments =
+  const std::vector< std::pair< std::array< double, 6 >, int > > segments =
     { { { 2e-5, 0., 0., 0., 0., 0. }, 15 },        // oedometric extension into tensile softening
       { { -2e-5, 0., 0., 0., 0., 0. }, 15 },       // unloading through the unloading transition
       { { -1e-3, -6e-4, -2e-4, 0., 0., 0. }, 20 }, // confined compression, -sig_v > c21
@@ -621,7 +623,7 @@ void testInvalidStressUnit()
 }
 
 // Property layout: stressUnit (index 11) precedes the density (index 12), which is only required for explicit
-// simulations.
+// simulations. Without index 12, getDensity has to throw.
 void testDensityFollowsStressUnit()
 {
   const std::array< double, 13 > materialProperties =
@@ -634,6 +636,20 @@ void testDensityFollowsStressUnit()
   std::vector< double > stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
   throwExceptionOnFailure( checkIfEqual( mat->getDensity( stateVars.data() ), 2.4e-9 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
+
+  // stressUnit given, but no density
+  auto matWithoutDensity = createMarmotMaterialHypoElastic( "MICROPLANEM7",
+                                                            materialProperties.data(),
+                                                            static_cast< int >( materialProperties.size() ) - 1 );
+  bool rejected          = false;
+  try {
+    matWithoutDensity->getDensity( stateVars.data() );
+  }
+  catch ( const std::runtime_error& e ) {
+    rejected = std::string( e.what() ).find( "No density given" ) != std::string::npos;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " missing density not rejected" );
 }
 
 int main()
