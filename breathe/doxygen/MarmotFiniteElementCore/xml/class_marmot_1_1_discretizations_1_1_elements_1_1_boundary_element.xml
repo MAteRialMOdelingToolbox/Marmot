@@ -210,7 +210,7 @@
 <parametername direction="in">axisymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are integrated over the ring, <formula id="71">$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s$</formula>. </para>
+<para>Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are integrated over the ring, <formula id="65">$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

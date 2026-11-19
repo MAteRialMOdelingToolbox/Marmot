@@ -47,7 +47,7 @@
           <declname>r</declname>
         </param>
         <briefdescription>
-<para>Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows (11, 22, 12), the hoop row is <formula id="70">$N_i / r$</formula>. </para>
+<para>Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows (11, 22, 12), the hoop row is <formula id="64">$N_i / r$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>

@@ -34,11 +34,11 @@
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Candidate band normal <formula id="158">$\mathbf{n}$</formula>. </para>
+<para>Candidate band normal <formula id="14">$\mathbf{n}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Acoustic tensor <formula id="159">$\mathbf{Q} = \mathbf{n} \cdot \mathbb{C} \cdot \mathbf{n}$</formula>. </para>
+<simplesect kind="return"><para>Acoustic tensor <formula id="15">$\mathbf{Q} = \mathbf{n} \cdot \mathbb{C} \cdot \mathbf{n}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -69,7 +69,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><computeroutput>true</computeroutput> if <formula id="160">$\det(\mathbf{Q}) \le 0$</formula> (localization detected). </para>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if <formula id="16">$\det(\mathbf{Q}) \le 0$</formula> (localization detected). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -112,7 +112,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Unit normal vector <formula id="158">$\mathbf{n}$</formula>. </para>
+<simplesect kind="return"><para>Unit normal vector <formula id="14">$\mathbf{n}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
