@@ -48,13 +48,13 @@
 <para>Newmark-beta time integration at one point: the acceleration and the velocity at the end of an increment from the displacement increment. </para>
         </briefdescription>
         <detaileddescription>
-<para>Solves the Newmark relations     <formula id="141">\[  \Delta u = \Delta t\, v_n + \tfrac{\Delta t^2}{2} \left[ (1 - 2\beta)\, a_n + 2\beta\, a_{n+1} \right],
+<para>Solves the Newmark relations     <formula id="135">\[  \Delta u = \Delta t\, v_n + \tfrac{\Delta t^2}{2} \left[ (1 - 2\beta)\, a_n + 2\beta\, a_{n+1} \right],
   \qquad
   v_{n+1} = v_n + \Delta t \left[ (1 - \gamma)\, a_n + \gamma\, a_{n+1} \right]
-\]</formula> for <formula id="142">$ a_{n+1} $</formula> and <formula id="143">$ v_{n+1} $</formula>, component by component, and returns the derivative <formula id="144">$ \partial a_{n+1} / \partial \Delta u = 1 / (\beta \Delta t^2) $</formula>, which the host&apos;s tangent needs for the inertia term.</para>
+\]</formula> for <formula id="136">$ a_{n+1} $</formula> and <formula id="137">$ v_{n+1} $</formula>, component by component, and returns the derivative <formula id="138">$ \partial a_{n+1} / \partial \Delta u = 1 / (\beta \Delta t^2) $</formula>, which the host&apos;s tangent needs for the inertia term.</para>
 <para>Two cases add no inertia:<itemizedlist>
-<listitem><para><formula id="145">$ \beta = 0 $</formula>: no time integration (a quasi-static analysis), which is at rest: the velocity and the acceleration are zero, whatever they were before (e.g. after a dynamic step), and so is the derivative.</para>
-</listitem><listitem><para>A zero-length increment, <formula id="146">$ \Delta t = 0 $</formula>: nothing moves in zero time, so the velocity and the acceleration are left as they are ( <formula id="147">$ v_{n+1} = v_n $</formula>, <formula id="148">$ a_{n+1} = a_n $</formula>), whatever <formula id="149">$ \Delta u $</formula> is, and the derivative is zero. The inertial force of the unchanged acceleration remains in the host&apos;s residual. A host that integrates in time skips such an increment, or evaluates at it only to compute a state at rest in time (e.g. the acceleration of its own nodes from equilibrium).</para>
+<listitem><para><formula id="139">$ \beta = 0 $</formula>: no time integration (a quasi-static analysis), which is at rest: the velocity and the acceleration are zero, whatever they were before (e.g. after a dynamic step), and so is the derivative.</para>
+</listitem><listitem><para>A zero-length increment, <formula id="140">$ \Delta t = 0 $</formula>: nothing moves in zero time, so the velocity and the acceleration are left as they are ( <formula id="141">$ v_{n+1} = v_n $</formula>, <formula id="142">$ a_{n+1} = a_n $</formula>), whatever <formula id="143">$ \Delta u $</formula> is, and the derivative is zero. The inertial force of the unchanged acceleration remains in the host&apos;s residual. A host that integrates in time skips such an increment, or evaluates at it only to compute a state at rest in time (e.g. the acceleration of its own nodes from equilibrium).</para>
 </listitem></itemizedlist>
 </para>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -71,7 +71,7 @@
 <parametername direction="in">du</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Displacement increment <formula id="149">$ \Delta u $</formula>, nDim components. </para>
+<para>Displacement increment <formula id="143">$ \Delta u $</formula>, nDim components. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -79,7 +79,7 @@
 <parametername direction="inout">v</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Velocity: <formula id="150">$ v_n $</formula> on entry, <formula id="143">$ v_{n+1} $</formula> on return. </para>
+<para>Velocity: <formula id="144">$ v_n $</formula> on entry, <formula id="137">$ v_{n+1} $</formula> on return. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -87,7 +87,7 @@
 <parametername direction="inout">a</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Acceleration: <formula id="151">$ a_n $</formula> on entry, <formula id="142">$ a_{n+1} $</formula> on return. </para>
+<para>Acceleration: <formula id="145">$ a_n $</formula> on entry, <formula id="136">$ a_{n+1} $</formula> on return. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -95,7 +95,7 @@
 <parametername direction="in">dT</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Time increment <formula id="152">$ \Delta t \geq 0 $</formula>. </para>
+<para>Time increment <formula id="146">$ \Delta t \geq 0 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -103,7 +103,7 @@
 <parametername direction="in">newmarkBeta</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Newmark parameter <formula id="153">$ \beta $</formula> (1/4 with <formula id="154">$ \gamma = 1/2 $</formula>: the average acceleration rule; 0: no time integration). </para>
+<para>Newmark parameter <formula id="147">$ \beta $</formula> (1/4 with <formula id="148">$ \gamma = 1/2 $</formula>: the average acceleration rule; 0: no time integration). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -111,7 +111,7 @@
 <parametername direction="in">newmarkGamma</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Newmark parameter <formula id="155">$ \gamma $</formula>. </para>
+<para>Newmark parameter <formula id="149">$ \gamma $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -119,7 +119,7 @@
 <parametername direction="out">da_ddu</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative <formula id="156">$ \partial a_{n+1} / \partial \Delta u $</formula>, an nDim x nDim matrix (column major); only its diagonal is written. </para>
+<para>Derivative <formula id="150">$ \partial a_{n+1} / \partial \Delta u $</formula>, an nDim x nDim matrix (column major); only its diagonal is written. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

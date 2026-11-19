@@ -351,12 +351,8 @@
 <codeline lineno="395"><highlight class="normal"></highlight></codeline>
 <codeline lineno="407"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
 <codeline lineno="408"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
-<codeline lineno="409"><highlight class="normal"></highlight></codeline>
-<codeline lineno="427"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
-<codeline lineno="428"><highlight class="normal"></highlight></codeline>
-<codeline lineno="438"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
-<codeline lineno="439"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="440"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="409"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="410"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h"/>
   </compounddef>

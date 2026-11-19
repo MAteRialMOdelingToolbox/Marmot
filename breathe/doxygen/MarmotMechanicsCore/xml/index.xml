@@ -598,8 +598,6 @@
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress" kind="namespace"><name>Marmot::ContinuumMechanics::PlaneStress</name>
     <member refid="_marmot_lower_dimensional_stress_8h_1a5e42733c08010df0e4de83622473149e" kind="function"><name>compute_dStress_dDeformationGradient</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1afce5599c6c018d4a85e20a1f2b30db70" kind="function"><name>planeStressCompensationStrain</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1ae84a6130763caa4169084a99d510a657" kind="function"><name>planeStressTangentTransformationMatrix</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity</name>
   </compound>

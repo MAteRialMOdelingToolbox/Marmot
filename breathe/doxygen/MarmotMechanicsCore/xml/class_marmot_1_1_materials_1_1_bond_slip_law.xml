@@ -181,7 +181,7 @@
 <parametername direction="out">dBondStress_dSlip</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>algorithmic tangent  <formula id="140">$\frac{\partial \boldsymbol{\tau}}{\partial
+<para>algorithmic tangent  <formula id="134">$\frac{\partial \boldsymbol{\tau}}{\partial
 \boldsymbol{s}}$</formula> </para>
 </parameterdescription>
 </parameteritem>
