@@ -13,8 +13,9 @@ namespace {
   // constants, independent of strain, with correspondingly zero tangent entries for those
   // components. No real, registered hypoelastic material behaves like this (dStress/dStrain is
   // always non-singular for a physically sound law), so this is the only practical way to
-  // deterministically exercise computePlaneStress()'s and computeUniaxialStress()'s robustness
-  // branches: the near-singular-tangent compliance cap, and the cutback/failure throw.
+  // deterministically exercise computePlaneStress()'s and computeUniaxialStress()'s failure branch:
+  // the tangent of the stress-free components is singular and the residual is outside its range,
+  // which throws StressUpdateFailed (cutback).
   class NeverConvergingHypoElasticMaterial : public Marmot::Materials::MaterialHypoElastic {
   public:
     NeverConvergingHypoElasticMaterial() : Marmot::Materials::MaterialHypoElastic( nullptr, 0, 1 )
@@ -53,8 +54,8 @@ namespace {
 
 // ---------------------------------------------------------------------------------------------
 // computePlaneStress(): must throw Marmot::Utilities::StressUpdateFailed after exhausting its cutback attempts when
-// the out-of-plane stress can never be driven to zero, hitting the near-singular tangent
-// (dStress_dStrain(2,2) == 0) "cap the compliance instead of dividing by zero" branch first.
+// the out-of-plane stress can never be driven to zero: its tangent is singular
+// (dStress_dStrain(2,2) == 0) and the stress is outside its range.
 // ---------------------------------------------------------------------------------------------
 void testComputePlaneStressThrowsWhenItCannotConverge()
 {
@@ -81,8 +82,8 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
 }
 
 // ---------------------------------------------------------------------------------------------
-// computeUniaxialStress(): same robustness requirement as computePlaneStress(), but condensing
-// both lateral stress components (indices 1 and 2) simultaneously via a 2x2 solve.
+// computeUniaxialStress(): same robustness requirement as computePlaneStress(), condensing all
+// stress components but sigma_11.
 // ---------------------------------------------------------------------------------------------
 void testComputeUniaxialStressThrowsWhenItCannotConverge()
 {

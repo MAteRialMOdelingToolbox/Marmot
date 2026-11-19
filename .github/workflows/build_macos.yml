@@ -1,7 +1,5 @@
-# This is a workflow to build the repo on macOS / arm64 (Apple Silicon).
-# GitHub's macos-14 and newer runners are Apple Silicon, so this exercises the
-# clang/libc++ toolchain, which is stricter than the GCC/libstdc++ combination
-# used by build_ubuntu.
+# This is a workflow to build the repo on macOS / arm64 (Apple Silicon), with the clang/libc++ toolchain of the
+# stack, which is stricter than the GCC/libstdc++ combination used by build_ubuntu.
 name: build_macos
 
 on:
@@ -11,86 +9,24 @@ on:
 
 jobs:
   build:
-    # macos-latest is arm64 (Apple Silicon); use macos-13 for an Intel runner.
+    # macos-latest is arm64 (Apple Silicon).
     runs-on: macos-latest
-    # Set explicitly rather than relying on CMake's default: the macOS runners also
-    # ship Homebrew GCC, and picking that up would silently build against libstdc++,
-    # defeating the purpose of this job. No version is pinned - tracking whatever
-    # Apple clang the runner provides is what users actually have.
-    env:
-      CC:   clang
-      CXX:  clang++
     steps:
-      - name: Show toolchain
-        shell: bash -leo pipefail {0}
-        run: |
-          ${CXX} --version
-          cmake --version
-
-      - name: Install Python dependencies
-        shell: bash -leo pipefail {0}
-        run: |
-          pip3 install --break-system-packages numpy
-
-      - name: Install Eigen
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch 5.0.1 https://gitlab.com/libeigen/eigen.git
-          cd eigen
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF -DEIGEN_BUILD_BLAS=OFF -DEIGEN_BUILD_LAPACK=OFF ..
-          sudo make install
-          cd ../..
-
-      # NOTE: the build directory is deliberately NOT called `build` here. autodiff
-      # ships a Bazel `BUILD` file in its repository root, and the macOS filesystem
-      # is case-insensitive, so `mkdir build` fails with "File exists" and `cd build`
-      # with "Not a directory". On Linux the two names are distinct, which is why
-      # build_ubuntu is unaffected.
-      # autodiff 1.1.2 does not compile against Eigen 5; autodiff#397 (one header, not merged upstream yet) is applied
-      # from its pinned commit.
-      - name: Install Autodiff
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch v1.1.2 https://github.com/autodiff/autodiff.git
-          curl -sfL -o autodiff-eigen5.diff https://github.com/autodiff/autodiff/commit/a4401bdd338784952f6084b69960cf914ba4e6af.diff
-          git -C autodiff apply ../autodiff-eigen5.diff
-          cd autodiff
-          mkdir build-cmake
-          cd build-cmake
-          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
-          sudo make install
-          cd ../..
-
-      # NOTE: upstream Fastor does not compile on arm64 - it reaches x86 `cpuid`
-      # and `rdtsc` inline assembly on every non-Windows platform, and its scalar
-      # fallback backend has several defects that only surface off x86. The fork
-      # below is upstream `master` plus the minimal patch fixing exactly that.
-      # The fixes are offered upstream in romeric/Fastor#182 and #183; once either
-      # is merged, switch this step back to the upstream repository.
-      - name: Install Fastor (arm64-compatible fork)
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch arm64/apple-silicon-master https://github.com/BOKU-CMP-MEC-MAT/Fastor.git
-          cd Fastor
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5  ..
-          sudo make install
-          cd ../..
-
       - name: Check out Marmot
         uses: actions/checkout@v7
 
-      - name: Install Marmot
+      # The compilers, CMake, Eigen, autodiff, Fastor and Python of the stack: see .github/actions/setup-stack.
+      - uses: ./.github/actions/setup-stack
+
+      # Without the Python bindings until they build with the free-threaded Python of the stack (#154).
+      - name: Build, install and test Marmot
         shell: bash -leo pipefail {0}
         run: |
-          mkdir build
-          cd build
           # Fail on compiler warnings (-Werror, /WX); local builds keep warnings non-fatal.
-          cmake -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..
-          sudo make install
+          cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+            -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+          cmake --build build --parallel 4
+          cmake --install build
           # --no-tests=error: ctest exits 0 on an empty test set, which would
           # report success for a build that produced no tests at all.
-          ctest --output-on-failure --no-tests=error
+          ctest --test-dir build --output-on-failure --no-tests=error
