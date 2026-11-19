@@ -23,10 +23,10 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
-#include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
 /* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
@@ -62,13 +62,15 @@ namespace Marmot::Testing {
   bool checkIfEqual( const double a, const double b, const double tol = 1e-15 );
 
   /**
-   * @brief Check whether two `autodiff::dual` values are equal within a tolerance.
+   * @brief Check whether two `Marmot::Math::Differentiation::Automatic::dual` values are equal within a tolerance.
    * @param a    First dual number.
    * @param b    Second dual number.
    * @param tol  Absolute tolerance applied to the real part (default: 1e-15).
    * @return `true` if the values compare equal within @p tol, `false` otherwise.
    */
-  bool checkIfEqual( const autodiff::dual a, const autodiff::dual b, const double tol = 1e-15 );
+  bool checkIfEqual( const Marmot::Math::Differentiation::Automatic::dual a,
+                     const Marmot::Math::Differentiation::Automatic::dual b,
+                     const double                                         tol = 1e-15 );
 
   /**
    * @brief Check whether two `std::complex<double>` values are equal within a tolerance.
@@ -87,11 +89,11 @@ namespace Marmot::Testing {
   std::string getString( const double a );
 
   /**
-   * @brief Convert an `autodiff::dual` to its string representation.
+   * @brief Convert a `Marmot::Math::Differentiation::Automatic::dual` to its string representation.
    * @param a  Dual number to convert.
    * @return   String representation of @p a.
    */
-  std::string getString( const autodiff::dual a );
+  std::string getString( const Marmot::Math::Differentiation::Automatic::dual a );
 
   /**
    * @brief Check whether two dynamic Eigen matrices are element-wise equal within a tolerance.

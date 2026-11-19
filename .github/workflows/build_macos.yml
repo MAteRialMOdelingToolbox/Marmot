@@ -15,7 +15,7 @@ jobs:
       - name: Check out Marmot
         uses: actions/checkout@v7
 
-      # The compilers, CMake, Eigen, autodiff, Fastor and Python of the stack: see .github/actions/setup-stack.
+      # The compilers, CMake, Eigen, Fastor and Python of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
 
       # Without the Python bindings until they build with the free-threaded Python of the stack (#154).

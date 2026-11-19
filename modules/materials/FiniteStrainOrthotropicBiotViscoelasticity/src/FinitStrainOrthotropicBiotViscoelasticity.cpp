@@ -1,5 +1,6 @@
 #include "Marmot/FiniteStrainOrthotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotElasticity.h"
@@ -11,7 +12,6 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Materials {
 
@@ -45,9 +45,10 @@ namespace Marmot::Materials {
       maxwellProperties(
         ContinuumMechanics::Viscoelasticity::createMaxwellProperties( static_cast< int >( materialProperties[9] ),
                                                                       &materialProperties[10] ) ),
-      dBiotStress_dU( Marmot::Math::Tensors::makeDual( ContinuumMechanics::Voigt::voigtToStiffness(
-        ContinuumMechanics::Elasticity::Orthotropic::
-          stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
+      dBiotStress_dU(
+        Marmot::Math::Tensors::makeOtherScalarType< ADScalar< 3 > >( ContinuumMechanics::Voigt::voigtToStiffness(
+          ContinuumMechanics::Elasticity::Orthotropic::
+            stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
   {
 
     initializeStateLayout();
@@ -58,7 +59,7 @@ namespace Marmot::Materials {
                                                                     const TimeIncrement&         timeIncrement ) const
   {
 
-    using scalar  = autodiff::dual;
+    using scalar  = ADScalar< 3 >;
     const auto& F = deformation.F;
 
     using namespace ContinuumMechanics;
@@ -75,7 +76,7 @@ namespace Marmot::Materials {
     // compute right stretch tensor in the original configuration
     const Tensor33t< scalar > U = Q % principalStretch % transpose( Q );
 
-    const Tensor33t< scalar > I = Marmot::Math::Tensors::makeDual( Spatial3D::I );
+    const Tensor33t< scalar > I = Marmot::Math::Tensors::makeOtherScalarType< scalar >( Spatial3D::I );
 
     // compute Biot stress
     Tensor33t< scalar > S_biot = einsum< ijkl, kl >( dBiotStress_dU, evaluate( U - I ) );
@@ -84,7 +85,7 @@ namespace Marmot::Materials {
     Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute change in Biot stress
-    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::Tensors::makeDual( S_biot_old );
+    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::Tensors::makeOtherScalarType< scalar >( S_biot_old );
 
     // store current Biot stress in state variables
     memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ),

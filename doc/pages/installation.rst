@@ -4,22 +4,20 @@ Installation
 Requirements
 ************
 
-Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library,
-`autodiff <https://github.com/autodiff/autodiff>`_,
+Marmot itself requires the `Eigen <https://eigen.tuxfamily.org/>`_ library
 and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
+Automatic differentiation uses Marmot's own number types and needs no further library.
 
-Marmot requires Eigen 5. Two of the dependencies need patches that are not released upstream:
-autodiff 1.1.2 does not compile against Eigen 5 without
-`autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, and Fastor needs a patch on arm64 (Apple Silicon).
+Marmot requires Eigen 5. Fastor needs a patch on arm64 (Apple Silicon) that is not released upstream.
 The conda channel ``https://repo.prefix.dev/matthiasneuner/edelweiss``
 (recipes: `edelweiss-conda-channel <https://github.com/matthiasneuner/edelweiss-conda-channel>`_)
-provides all three with these patches; install them from there, together with conda-forge:
+provides both, Fastor with this patch; install them from there, together with conda-forge:
 
 .. code-block:: console
 
-    mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen>=5" autodiff=1.1.2 fastor
+    mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen>=5" fastor
 
 Since they are headers only, they can also serve a build with another compiler, e.g., the system compiler of an
 Abaqus installation: point ``CMAKE_PREFIX_PATH`` to the environment.
@@ -88,7 +86,7 @@ Restart shell and activate conda, then install the compilers and the dependencie
     export MARMOTROOT=$PWD
     conda activate
     mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge \
-        cmake make compilers "eigen>=5" autodiff=1.1.2 fastor
+        cmake make compilers "eigen>=5" fastor
 
 Get Marmot:
 
@@ -150,8 +148,8 @@ Other CMake projects use the installed library through ``find_package``:
     find_package(Marmot REQUIRED)
     target_link_libraries(<target> PRIVATE Marmot::Marmot)
 
-``Marmot::Marmot`` brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
-CMake packages or, if they were installed as plain headers, through a header search.
+``Marmot::Marmot`` brings along Eigen and Fastor; Fastor is found either through its CMake package or, if it was
+installed as plain headers, through a header search.
 
 Building on Windows
 *******************
@@ -180,7 +178,7 @@ marked at the smallest granularity that links (a single member rather than its c
 reached through virtual functions only).
 Everything else is used through the virtual functions of the objects the factories create.
 Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
-since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+since that would include every Eigen, Fastor and automatic differentiation template instantiated in Marmot.
 Code that needs more of Marmot must mark it ``MARMOT_API``, following the rule above.
 To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
 which exports only the ``MARMOT_API`` symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.

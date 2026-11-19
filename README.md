@@ -36,17 +36,17 @@ now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
 [changelog](CHANGELOG.md) lists every renamed class and namespace.
 
 `Marmot` requires the
-[Eigen](https://gitlab.com/libeigen/eigen) (≥5.0),
-[autodiff](https://github.com/autodiff/autodiff) (1.1.2 with the Eigen 5 patch of autodiff#397)
+[Eigen](https://gitlab.com/libeigen/eigen) (≥5.0)
 and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4, with the arm64 patch on Apple Silicon) libraries.
-The conda channel `https://repo.prefix.dev/matthiasneuner/edelweiss` provides all three with these patches;
+The conda channel `https://repo.prefix.dev/matthiasneuner/edelweiss` provides both, Fastor with this patch;
 get them from there.
+Automatic differentiation uses Marmot's own number types.
 Detailed instructions can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
 
 A conda environment including all needed dependencies can be created by running
 
 ```bash
-conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers "eigen>=5" autodiff=1.1.2 fastor
+conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers "eigen>=5" fastor
 ```
 To activate the environment use
 

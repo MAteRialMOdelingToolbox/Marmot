@@ -53,6 +53,18 @@ namespace Marmot::Materials {
     {
     }
     /**
+     * @brief Number type of computeStressAD(), carrying the derivatives with respect to the nDim x nDim components of
+     * the deformation gradient.
+     *
+     * Derived classes must use this type, not Marmot::Math::Differentiation::Automatic::dual, for all quantities that
+     * depend on the deformation gradient, so that they work with every AD backend (see
+     * MarmotAutomaticDifferentiationTypes.h).
+     * @tparam nDim Number of spatial dimensions (2 or 3).
+     */
+    template < int nDim >
+    using ADScalar = Marmot::Math::Differentiation::Automatic::JacobianDual< nDim * nDim >;
+
+    /**
      * @struct ConstitutiveResponseAD
      * @brief Constitutive response of a material at given state.
      * @tparam nDim Number of spatial dimensions (2 or 3).
@@ -61,8 +73,8 @@ namespace Marmot::Materials {
      */
     template < int nDim >
     struct ConstitutiveResponseAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > tau;                  ///< Kirchhoff stress
-      double                                       elasticEnergyDensity; ///< elastic energy per unit volume
+      Fastor::Tensor< ADScalar< nDim >, nDim, nDim > tau;                  ///< Kirchhoff stress
+      double                                         elasticEnergyDensity; ///< elastic energy per unit volume
       double  dissipation; ///< dissipation per unit volume (for inelastic materials)
       double* stateVars;   ///< pointer to state variables
 
@@ -71,7 +83,7 @@ namespace Marmot::Materials {
        * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
        */
       ConstitutiveResponseAD()
-        : tau( Fastor::Tensor< autodiff::dual, nDim, nDim >( 0.0 ) ),
+        : tau( Fastor::Tensor< ADScalar< nDim >, nDim, nDim >( 0.0 ) ),
           elasticEnergyDensity( 0.0 ),
           dissipation( 0.0 ),
           stateVars( nullptr )
@@ -83,7 +95,7 @@ namespace Marmot::Materials {
        * @param response ConstitutiveResponse instance to initialize from.
        */
       ConstitutiveResponseAD( const ConstitutiveResponse< nDim >& response )
-        : tau( Marmot::Math::Tensors::makeDual( response.tau ) ),
+        : tau( Marmot::Math::Tensors::makeOtherScalarType< ADScalar< nDim > >( response.tau ) ),
           elasticEnergyDensity( response.elasticEnergyDensity ),
           dissipation( response.dissipation ),
           stateVars( response.stateVars )
@@ -100,7 +112,7 @@ namespace Marmot::Materials {
      */
     template < int nDim >
     struct DeformationAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > F; ///< deformation gradient
+      Fastor::Tensor< ADScalar< nDim >, nDim, nDim > F; ///< deformation gradient
     };
 
     /**
@@ -132,7 +144,7 @@ namespace Marmot::Materials {
     {
       using namespace Marmot;
       using namespace Marmot::Math::Tensors::FastorTensors;
-      using scalar = autodiff::dual;
+      using scalar = ADScalar< 3 >;
 
       Eigen::Map< Eigen::VectorXd > stateVars( response.stateVars, this->getNumberOfRequiredStateVars() );
 
@@ -151,7 +163,8 @@ namespace Marmot::Materials {
           DeformationAD< 3 > deformationAD;
           deformationAD.F = F_;
 
-          responseAD.tau = Marmot::Math::Tensors::makeDual( tauOld ); // Initialize tau with old value for consistency
+          responseAD.tau = Marmot::Math::Tensors::makeOtherScalarType< scalar >(
+            tauOld ); // Initialize tau with old value for consistency
           responseAD.elasticEnergyDensity = response.elasticEnergyDensity; // Initialize energy density
           responseAD.dissipation          = response.dissipation;          // Initialize dissipation
 
