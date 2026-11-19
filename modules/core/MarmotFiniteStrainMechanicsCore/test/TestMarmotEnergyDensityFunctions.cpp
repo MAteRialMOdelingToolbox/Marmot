@@ -1,6 +1,8 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
+#include <complex>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Tensors::FastorTensors;
@@ -170,6 +172,194 @@ auto testSecondOrderDerivedB()
     }
 }
 
+// Cross-check that the plain (energy-only) and FirstOrder (energy + analytic
+// dPsi/dC) overloads of ArrudaBoyce8ChainPotential cannot drift out of sync: both
+// funnel through the same internal `Detail::arrudaBoyce8ChainEnergyAndDerivative`
+// helper, but this test verifies that end-to-end rather than assuming it. The
+// gradient is cross-checked against a complex-step derivative of the plain overload
+// itself (not against a hand-derived formula), so this specifically guards against
+// the two overloads' shared helper silently diverging from what the plain overload
+// actually computes.
+auto testArrudaBoycePlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+
+  Tensor33d    C       = get< 0 >( computationParameters() );
+  const double mu      = 500.0;
+  const double lambdaL = 2.5;
+
+  const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+  double    psiFOD;
+  Tensor33d dPsiFOD_dC;
+  std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " plain and FirstOrder energy densities disagree." );
+
+  // complex-step derivative of the plain overload, entry by entry (C treated as a
+  // general, not-necessarily-symmetric matrix argument, matching how dPsi/dC is
+  // defined and used everywhere else in this codebase)
+  const double h = 1e-20;
+  Tensor33d    dPsiCSDA( 0.0 );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33t< std::complex< double > >
+        Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Cc( i, j ) += std::complex< double >( 0.0, h );
+      std::complex< double > psiC = ArrudaBoyce8ChainPotential< std::complex< double > >( Cc, mu, lambdaL );
+      dPsiCSDA( i, j )            = psiC.imag() / h;
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " FirstOrder gradient disagrees with a complex-step derivative "
+                                "of the plain overload." );
+}
+
+// Cross-check that Arruda-Boyce returns exactly zero energy and zero derivative at
+// C=I even when the locking stretch lambdaL is arbitrarily close to 1.0 (where
+// w0 = 1 - 1/lambdaL^2 is very small and an unscaled floor would clamp the reference state).
+auto testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C  = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  const double    mu = 500.0;
+
+  for ( double lambdaL : { 1.00001, 1.0001, 1.001, 1.005, 1.01, 2.5 } ) {
+    const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+    double       psiFOD;
+    Tensor33d    dPsiFOD_dC;
+    std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+    throwExceptionOnFailure( std::abs( psiPlain ) < 1e-12,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( std::abs( psiFOD ) < 1e-12,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrder Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, Tensor33d( 0.0 ), 1e-10 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrder Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
+  }
+}
+
+// Generic plain-vs-FirstOrder cross-check, same methodology as
+// testArrudaBoycePlainMatchesFirstOrder: the FirstOrder gradient
+// is checked against a complex-step derivative of the plain overload itself,
+// guarding against the two overloads' formulas silently drifting apart.
+template < typename PlainFn, typename FirstOrderFn, typename... Args >
+void checkPlainMatchesFirstOrder( const char*      testName,
+                                  PlainFn          plainFn,
+                                  FirstOrderFn     firstOrderFn,
+                                  const Tensor33d& C,
+                                  Args... args )
+{
+  const double psiPlain = plainFn( C, args... );
+
+  double    psiFOD;
+  Tensor33d dPsiFOD_dC;
+  std::tie( psiFOD, dPsiFOD_dC ) = firstOrderFn( C, args... );
+
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
+                           Marmot::Utilities::MakeString()
+                             << testName << " plain and FirstOrder energy densities disagree." );
+
+  const double h = 1e-20;
+  Tensor33d    dPsiCSDA( 0.0 );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33t< std::complex< double > >
+        Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Cc( i, j ) += std::complex< double >( 0.0, h );
+      std::complex< double > psiC = plainFn( Cc, args... );
+      dPsiCSDA( i, j )            = psiC.imag() / h;
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
+                           Marmot::Utilities::MakeString()
+                             << testName
+                             << " FirstOrder gradient disagrees with a complex-step derivative "
+                                "of the plain overload." );
+}
+
+auto testNeoHookePlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double mu ) { return NeoHookePotential( C, mu ); },
+    []( const auto& C, double mu ) { return FirstOrder::NeoHookePotential( C, mu ); },
+    C,
+    750.0 );
+}
+
+auto testYeohPlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double c10, double c20, double c30 ) { return YeohPotential( C, c10, c20, c30 ); },
+    []( const auto& C, double c10, double c20, double c30 ) { return FirstOrder::YeohPotential( C, c10, c20, c30 ); },
+    C,
+    500.0,
+    50.0,
+    5.0 );
+}
+
+auto testMooneyRivlinPlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double c10, double c01 ) { return MooneyRivlinPotential( C, c10, c01 ); },
+    []( const auto& C, double c10, double c01 ) { return FirstOrder::MooneyRivlinPotential( C, c10, c01 ); },
+    C,
+    400.0,
+    100.0 );
+}
+
+auto testVolumetricPenaltyPlainMatchesFirstOrder()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrder(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::VolumetricPenaltyPotential( C, kappa ); },
+    C,
+    10000.0 );
+}
+
+// Yeoh and Mooney-Rivlin must reduce exactly to NeoHooke's isochoric part when
+// the extra shape parameters vanish and C10=mu/2, since all three now share
+// the same isochoric invariant Ibar1 (no linear-shift terms to cause drift).
+auto testYeohMooneyRivlinReduceToNeoHooke()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  Tensor33d    C  = get< 0 >( computationParameters() );
+  const double mu = 750.0;
+
+  const double psiNeoHooke = NeoHookePotential( C, mu );
+  const double psiYeoh     = YeohPotential( C, mu / 2., 0.0, 0.0 );
+  const double psiMR       = MooneyRivlinPotential( C, mu / 2., 0.0 );
+
+  throwExceptionOnFailure( checkIfEqual( psiYeoh, psiNeoHooke, 1e-13 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Yeoh does not reduce to NeoHooke." );
+  throwExceptionOnFailure( checkIfEqual( psiMR, psiNeoHooke, 1e-13 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not reduce to NeoHooke." );
+}
+
 auto testStandardNeoHookeEnergyMatchesClosedForm()
 {
   using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
@@ -328,6 +518,13 @@ int main()
                                testPenceGouPotentialC,
                                testFirstOrderDerivedB,
                                testSecondOrderDerivedB,
+                               testArrudaBoycePlainMatchesFirstOrder,
+                               testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
+                               testNeoHookePlainMatchesFirstOrder,
+                               testYeohPlainMatchesFirstOrder,
+                               testMooneyRivlinPlainMatchesFirstOrder,
+                               testVolumetricPenaltyPlainMatchesFirstOrder,
+                               testYeohMooneyRivlinReduceToNeoHooke,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
                                testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,
