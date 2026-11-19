@@ -136,6 +136,11 @@ All notable changes to Marmot are documented in this file. The format follows
   derivatives the same way (`freeStrainSensitivity( condensation, dStressF_dX )`, which checks that a singular `Cff`
   can compensate them); `condense( C, p, f )` is its algebra for a given tangent. The index sets of plane stress (`planeStressPrescribed`, `planeStressFree`) and uniaxial stress
   (`uniaxialStressPrescribed`, `uniaxialStressFree`) are defined there.
+- `materials/MicroplaneM7`, `materials/GM7`: optional property `stressUnit`, the value of 1 MPa in the user's stress
+  unit (default 1.0, e.g. 1e6 for Pa). It converts the dimensional fixed parameters of Caner and Bažant (2013)
+  (`c18`, `c21`, the reference strength and modulus), the default values of `fc` and `transitionWidth` and the
+  stiffness tolerance of the unloading transition, so that the models can be used in any consistent unit system.
+  Results with the default are unchanged.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -197,6 +202,11 @@ All notable changes to Marmot are documented in this file. The format follows
   instance (none is registered), for which no section is implemented, throws instead of integrating nothing.
 - `MarmotGradientMechanicsCore` requires `MarmotMechanicsCore` (for `ReducedStress`); a build with a `CORE_MODULES`
   filter that selects the former must select the latter, too.
+- **Breaking:** `materials/MicroplaneM7`, `materials/GM7`: the new property `stressUnit` is inserted after
+  `transitionExponent` (index 11 for `MICROPLANEM7`, 13 for `GM7`), in front of the properties only needed for explicit
+  simulations. The density of `MICROPLANEM7` moves from index 11 to 12; the density of `GM7` from 13 to 14 and its
+  nonlocal viscosity from 14 to 15. In an old input file giving these properties, the density would be read as
+  `stressUnit`.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element

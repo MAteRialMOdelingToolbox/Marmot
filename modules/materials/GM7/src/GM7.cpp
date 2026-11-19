@@ -23,21 +23,21 @@ namespace Marmot::Materials {
 
   double GM7::getDensity( const double* stateVars ) const
   {
-    if ( this->nMaterialProperties < 14 ) {
+    if ( this->nMaterialProperties < 15 ) {
       throw std::runtime_error( std::string(
-        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 14." ) );
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 15." ) );
     }
-    return this->materialProperties[13];
+    return this->materialProperties[14];
   }
 
   std::vector< double > GM7::getNonlocalViscosity( const double* stateVars ) const
   {
-    if ( this->nMaterialProperties < 15 ) {
+    if ( this->nMaterialProperties < 16 ) {
       throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
                                              << __PRETTY_FUNCTION__
-                                             << ": No nonlocal viscosity given! nMaterialProperties < 15." ) );
+                                             << ": No nonlocal viscosity given! nMaterialProperties < 16." ) );
     }
-    return std::vector< double >( 6, this->materialProperties[14] );
+    return std::vector< double >( 6, this->materialProperties[15] );
   }
 
   void GM7::computeStress( response& res, tangents& tan, const increment& inc ) const
