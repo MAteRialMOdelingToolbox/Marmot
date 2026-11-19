@@ -73,11 +73,11 @@ report "old-style 'namespace Marmot {' opener (use C++17 'namespace Marmot::X {'
 report "namespace deeper than 6 levels" \
   "$(grep -nE "namespace +(\w+::){6,}\w+ *\{" $ALL 2>/dev/null)"
 
-# 8. The automatic differentiation backends (autodiff, Sacado) are named in one header only: everything else uses the
+# 8. The optional automatic differentiation backend autodiff is named in one header only: everything else uses the
 #    backend-neutral types and functions of Marmot::Math::Differentiation::Automatic (AGENTS.md rule 10). Comment
 #    lines are skipped.
 report "AD backend used outside MarmotAutomaticDifferentiationTypes.h" \
-  "$(grep -nE "autodiff::|Sacado::|#include *[<\"](autodiff/|Sacado)" $ALL 2>/dev/null \
+  "$(grep -nE "autodiff::|#include *[<\"]autodiff/" $ALL 2>/dev/null \
     | grep -v "MarmotAutomaticDifferentiationTypes.h:" \
     | grep -vE "^[^:]+:[0-9]+: *(//|/?\*)")"
 

@@ -31,9 +31,8 @@ All notable changes to Marmot are documented in this file. The format follows
   Results are unchanged.
 - Optional AD backends, selected at configure time; the choice is part of the API and ABI and exported to consumers:
   - `-DMARMOT_USE_AUTODIFF=ON` (`MARMOT_AD_AUTODIFF`): autodiff for the hyper-dual and Taylor numbers.
-  - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`/`_SACADO`): the `JacobianDual`
-    of the first-derivative drivers; `Sacado` uses Sacado (Trilinos) in vector mode, about as fast as `Marmot`, and
-    `None` the first-order dual numbers, one direction per evaluation.
+  - `-DMARMOT_AD_VECTOR_BACKEND=Marmot|None` (`MARMOT_AD_VECTOR_BACKEND_MARMOT`): the `JacobianDual` and
+    `HessianDual` of the AD drivers; `None` uses the first-order dual numbers, one direction per evaluation.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
@@ -140,7 +139,7 @@ All notable changes to Marmot are documented in this file. The format follows
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
 - **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers (`dual2nd` with
-  `MARMOT_AD_VECTOR_BACKEND=Sacado|None`); functions passed to it must use the new name. With the default backend
+  `MARMOT_AD_VECTOR_BACKEND=None`); functions passed to it must use the new name. With the default backend
   `isSymmetric` has no effect.
 - **Breaking:** autodiff is no longer required: by default, all automatic differentiation uses Marmot's own types
   (see Added), and the conda package no longer depends on autodiff. `-DMARMOT_USE_AUTODIFF=ON

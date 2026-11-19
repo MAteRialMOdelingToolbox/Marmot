@@ -11,9 +11,8 @@ These are header-only libraries, so no compilation is required.
 
 Marmot requires Eigen 5.
 
-Automatic differentiation uses Marmot's own number types. The libraries
-`autodiff <https://github.com/autodiff/autodiff>`_ and `Sacado <https://trilinos.github.io/sacado.html>`_ can be
-used instead (see `Build options`_), but are not required.
+Automatic differentiation uses Marmot's own number types. The library
+`autodiff <https://github.com/autodiff/autodiff>`_ can be used instead (see `Build options`_), but is not required.
 autodiff 1.1.2 does not compile against Eigen 5 without the patch of
 `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, which is not merged upstream yet;
 Step 5 applies it.
@@ -160,43 +159,21 @@ The following CMake options adjust the build:
   vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
-* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot|Sacado|None`` selects the number type of the automatic differentiation
+* ``-DMARMOT_AD_VECTOR_BACKEND=Marmot|None`` selects the number type of the automatic differentiation
   drivers that compute Jacobians (first derivatives), e.g., the tangents of the AD material base classes
   ``MaterialFiniteStrainAD`` and ``MaterialHypoElasticAD``, and of the Hessian driver ``SecondOrder::d2f_dT2``. The
   default, ``Marmot``, is Marmot's own vector mode (``MarmotAutomaticDifferentiationVectorMode.h``, expression
   templates, and ``MarmotAutomaticDifferentiationVectorModeSecondOrder.h`` for Hessians): it computes all derivatives
-  in one evaluation of the differentiated function. ``Sacado`` does the same with
-  `Sacado <https://trilinos.github.io/sacado.html>`_ (Trilinos), see below. ``None`` uses the first-order dual numbers
+  in one evaluation of the differentiated function. ``None`` uses the first-order dual numbers
   and evaluates the function once per direction, which makes these tangents about 1.9 to 3.1 times slower.
 * ``-DMARMOT_USE_AUTODIFF=ON`` uses `autodiff <https://github.com/autodiff/autodiff>`_ instead of Marmot's own
   hyper-dual and Taylor numbers (``MarmotAutomaticDifferentiationScalarMode.h``), which compute the second and third
   derivatives and the Taylor expansions, e.g., of the energy functions and the creep compliances. Marmot's own types
   are as fast as or faster than autodiff. The default is ``OFF``, so autodiff is not needed.
 
-Sacado backend
-______________
-
-Only Sacado's headers are used. They are found through the CMake package of an installed Trilinos
-(``-DSacado_DIR=<prefix>/lib/cmake/Sacado`` if it is not in a default location) or, for a copy of the installed headers
-without CMake files, through ``-DMARMOT_Sacado_INCLUDE_DIR=<directory containing Sacado_No_Kokkos.hpp and
-Sacado_config.h>``. A Trilinos with Sacado as its only package is enough:
-
-.. code-block:: console
-
-    git clone --depth 1 --branch trilinos-release-17-3-0 https://github.com/trilinos/Trilinos.git
-    cmake -S Trilinos -B Trilinos-build \
-        -DTrilinos_ENABLE_Sacado=ON \
-        -DTrilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF \
-        -DTrilinos_ENABLE_TESTS=OFF \
-        -DTrilinos_ENABLE_Fortran=OFF \
-        -DTPL_ENABLE_MPI=OFF \
-        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
-    cmake --build Trilinos-build --parallel
-    cmake --install Trilinos-build
-
 The AD backends change number types in Marmot's interfaces (e.g. ``computeStressAD``), i.e., Marmot's API and ABI.
-``Marmot::Marmot`` therefore passes the definitions ``MARMOT_AD_VECTOR_BACKEND_MARMOT``,
-``MARMOT_AD_VECTOR_BACKEND_SACADO`` and ``MARMOT_AD_AUTODIFF`` on to its consumers, as selected, and code compiled
+``Marmot::Marmot`` therefore passes the definitions ``MARMOT_AD_VECTOR_BACKEND_MARMOT`` and ``MARMOT_AD_AUTODIFF``
+on to its consumers, as selected, and code compiled
 against Marmot's headers without CMake must define them alike.
 Code differentiated by these drivers must use the number type ``JacobianDual< nDirections >`` (or the ``ADScalar`` of
 the material base classes) instead of ``dual`` to build with all backends.
@@ -233,8 +210,8 @@ Other CMake projects use the installed library through ``find_package``:
     find_package(Marmot REQUIRED)
     target_link_libraries(<target> PRIVATE Marmot::Marmot)
 
-``Marmot::Marmot`` brings along Eigen and Fastor (and autodiff and Sacado, if Marmot was built with them); Fastor,
-autodiff and Sacado are found either through their CMake packages or, if they were installed as plain headers, through
+``Marmot::Marmot`` brings along Eigen and Fastor (and autodiff, if Marmot was built with it); Fastor and
+autodiff are found either through their CMake packages or, if they were installed as plain headers, through
 a header search.
 
 Building on Windows

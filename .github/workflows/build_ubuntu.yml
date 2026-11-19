@@ -26,10 +26,6 @@ jobs:
           - name: autodiff
             cmake_options: -DMARMOT_USE_AUTODIFF=ON -DMARMOT_AD_VECTOR_BACKEND=None
             autodiff: true
-          # The optional Sacado backend of the vector-mode AD drivers (found through Trilinos' CMake package).
-          - name: sacado
-            cmake_options: -DMARMOT_AD_VECTOR_BACKEND=Sacado
-            sacado: true
     name: build (${{ matrix.name }})
     env:
       CC:   gcc-14
@@ -78,18 +74,6 @@ jobs:
           cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5  ..
           sudo make install
           cd ../..
-
-      # Trilinos with Sacado as its only package; Marmot uses only Sacado's headers.
-      - name: Install Sacado
-        if: ${{ matrix.sacado }}
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --depth 1 --branch trilinos-release-17-3-0 https://github.com/trilinos/Trilinos.git
-          cmake -S Trilinos -B Trilinos/build -DCMAKE_BUILD_TYPE=Release -DTrilinos_ENABLE_Sacado=ON \
-            -DTrilinos_ENABLE_ALL_OPTIONAL_PACKAGES=OFF -DTrilinos_ENABLE_TESTS=OFF -DTrilinos_ENABLE_Fortran=OFF \
-            -DTPL_ENABLE_MPI=OFF
-          cmake --build Trilinos/build --parallel
-          sudo cmake --install Trilinos/build
 
       - name: Check out Marmot
         uses: actions/checkout@v7

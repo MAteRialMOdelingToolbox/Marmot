@@ -207,7 +207,7 @@ namespace Marmot::Math::Differentiation::Automatic {
    *  @param X The point at which to evaluate the Jacobian
    *  @return A pair containing the function value and the Jacobian matrix at the given point
    *
-   *  With the Sacado backend, F is evaluated once; otherwise once per component of X.
+   *  With the Marmot vector-mode backend, F is evaluated once; otherwise once per component of X.
    */
   template < int n >
   std::pair< Eigen::Vector< double, n >, Eigen::Matrix< double, n, n > > dF_dX(
