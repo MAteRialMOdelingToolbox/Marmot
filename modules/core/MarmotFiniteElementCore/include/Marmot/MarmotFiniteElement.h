@@ -386,6 +386,43 @@ namespace Marmot::Discretizations::Elements {
       {
         return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
+
+      /**
+       * @brief Tolerance for nodes on the axis, relative to the element size: accepts the round-off of a mesher,
+       * rejects a mesh drawn in \f$r < 0\f$.
+       */
+      constexpr double axisTolerance = 1e-12;
+
+      /**
+       * @brief Rejects an element with a node at \f$r < -\epsilon\, h\f$, with the tolerance \f$\epsilon\f$
+       * (axisTolerance) and the diagonal \f$h\f$ of the element's bounding box.
+       * @details A mesh drawn in \f$r < 0\f$, or straddling the axis, gives a negative volume and an infinite hoop
+       * strain \f$N_i / r\f$.
+       * @param[in] nodes        Nodal coordinates, one column \f$(r, z)\f$ per node.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if a node lies at \f$r < -\epsilon\, h\f$.
+       */
+      void checkNodesAreInTheMeridianHalfPlane(
+        const Eigen::Ref< const Eigen::Matrix< double, nDim, Eigen::Dynamic > >& nodes,
+        int                                                                      elementLabel );
+
+      /**
+       * @brief Rejects a quadrature point at \f$r \leq 0\f$, where the hoop strain \f$N_i / r\f$ is undefined.
+       * @details Gauss points are interior, so this happens only for an element collapsed onto the axis.
+       * @param[in] r            Radius of the quadrature point.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if \f$r \leq 0\f$.
+       */
+      void checkRadiusOfQuadraturePoint( double r, int elementLabel );
+
+      /**
+       * @brief The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz,
+       * \f$\theta\theta\f$, rz).
+       * @details The block is exact for any 3D material: \f$\gamma_{r\theta} = \gamma_{z\theta} = 0\f$ is kinematic.
+       * @param[in] C Tangent in 3D Voigt notation.
+       * @return The 4 × 4 block.
+       */
+      Eigen::Matrix4d sectionTangent( const Marmot::Math::Matrix6d& C );
     } // namespace Axisymmetric
 
     /**
@@ -815,13 +852,13 @@ namespace Marmot::Discretizations::Elements {
      * so the first rule that reaches a requested degree is the cheapest. A new rule is added here, at its place in
      * that order; the lookup getQuadraturePoints() needs no change.
      *
-     * | Domain        | Gauss: points -> degree      | Newton-Cotes | Gauss-Lobatto                  |
-     * |---------------|------------------------------|--------------|--------------------------------|
-     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5       | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
-     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5 | 2x2 -> 1     | -                              |
-     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5      | -            | -                              |
-     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5       | 3 -> 1       | -                              |
-     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5      | -            | -                              |
+     * | Domain        | Gauss: points -> degree        | Newton-Cotes | Gauss-Lobatto                  |
+     * |---------------|--------------------------------|--------------|--------------------------------|
+     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7 | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
+     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5   | 2x2 -> 1     | -                              |
+     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5        | -            | -                              |
+     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5         | 3 -> 1       | -                              |
+     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5        | -            | -                              |
      *
      * The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its
      * tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in

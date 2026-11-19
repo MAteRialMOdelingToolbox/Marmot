@@ -818,19 +818,12 @@ namespace Marmot::Discretizations::Elements {
   {
     const bool axisymmetric = sectionType == SectionType::Axisymmetric;
 
-    // a mesh drawn in r < 0, or straddling the axis, would give J0xW <= 0 and an infinite hoop strain N / r; the
-    // tolerance relative to the element size h (diagonal of its bounding box) accepts round-off of nodes on the axis
-    if ( axisymmetric ) {
-      const Eigen::Map< const Eigen::Matrix< double, nDim, nNodes > > nodes( this->coordinates.data() );
-      const double h = ( nodes.rowwise().maxCoeff() - nodes.rowwise().minCoeff() ).norm();
-      int          i = 0;
-      const double r = nodes.row( 0 ).minCoeff( &i );
-      if ( r < -1e-12 * h )
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << __PRETTY_FUNCTION__ << ": axisymmetric element " << elLabel << ": node "
-                                     << i + 1 << " (local) lies at r = x_1 = " << r
-                                     << " < 0; axisymmetric elements are meshed in r >= 0." );
-    }
+    if constexpr ( nDim == 2 )
+      if ( axisymmetric )
+        Spatial2D::Axisymmetric::checkNodesAreInTheMeridianHalfPlane( Eigen::Map<
+                                                                        const Eigen::Matrix< double, nDim, nNodes > >(
+                                                                        this->coordinates.data() ),
+                                                                      elLabel );
 
     for ( QuadraturePoint& qp : qps ) {
       const dNdXiSized    dNdXi = this->dNdXi( qp.xi );
@@ -844,11 +837,8 @@ namespace Marmot::Discretizations::Elements {
       qp.referenceWaveSpeed.reset();
 
       const double sectionFactor = sectionFactorAt( qp.xi );
-      if ( axisymmetric && sectionFactor <= 0.0 )
-        throw std::invalid_argument(
-          Marmot::Utilities::MakeString()
-          << __PRETTY_FUNCTION__ << ": axisymmetric element " << elLabel << ": a quadrature point lies at r = "
-          << sectionFactor / ( 2.0 * Math::Constants::Pi ) << " <= 0; axisymmetric elements are meshed in r >= 0." );
+      if ( axisymmetric )
+        Spatial2D::Axisymmetric::checkRadiusOfQuadraturePoint( sectionFactor / ( 2.0 * Math::Constants::Pi ), elLabel );
 
       qp.J0xW = qp.weight * qp.detJ * sectionFactor;
     }
@@ -1110,10 +1100,7 @@ namespace Marmot::Discretizations::Elements {
   Eigen::Matrix< double, nComponents, 1 > DisplacementFiniteElement< nDim, nNodes >::sectionComponents(
     const Marmot::Math::Vector6d& voigt )
   {
-    if constexpr ( nComponents == ContinuumMechanics::Voigt::Axial )
-      return ContinuumMechanics::Voigt::voigtToAxisymmetricVoigt( voigt );
-    else
-      return ContinuumMechanics::Voigt::reduce3DVoigt< nComponents >( voigt );
+    return ContinuumMechanics::Voigt::reduce3DVoigt< nComponents >( voigt );
   }
 
   template < int nDim, int nNodes >
@@ -1121,11 +1108,11 @@ namespace Marmot::Discretizations::Elements {
   Eigen::Matrix< double, nComponents, nComponents > DisplacementFiniteElement< nDim, nNodes >::sectionTangent(
     const Marmot::Math::Matrix6d& C )
   {
-    // gamma_rt = gamma_zt = 0 (axisymmetric) and eps_33 = 0 (plane strain) are kinematic, so the block is exact
+    // eps_33 = 0 (plane strain) and gamma_rt = gamma_zt = 0 (axisymmetric) are kinematic, so the block is exact
     if constexpr ( nComponents == ContinuumMechanics::Voigt::TwoD )
       return ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C );
     else if constexpr ( nComponents == ContinuumMechanics::Voigt::Axial )
-      return C.template topLeftCorner< 4, 4 >();
+      return Spatial2D::Axisymmetric::sectionTangent( C );
     else
       return C;
   }
