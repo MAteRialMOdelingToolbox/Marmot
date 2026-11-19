@@ -124,6 +124,11 @@ All notable changes to Marmot are documented in this file. The format follows
   properties), the elements `DC*H` (field `relative humidity`) of `elements/TransportFiniteElement`, and the load
   types `MoistureFlux` and `MoistureFilm`. `TransportMaterial::hasStorage( field )` tells the elements per field
   whether a zero increment may change it.
+- Coupled heat and moisture transport in concrete: the material `materials/ThermoHygro` (`THERMOHYGRO`: Arrhenius
+  diffusivity, hygrothermic coefficient, vapour pressure driven moisture flux, heat capacity of the water, moisture
+  dependent conductivity, latent heat carried by the vapour, heat of hydration and self-desiccation over the
+  equivalent age; with 21 properties it reproduces `HEATCONDUCTION` and `MOISTUREDIFFUSION`, with 32 all couplings),
+  the two-field elements `DC*TH` of `elements/TransportFiniteElement`, and the load type `LatentHeatFilm`.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
