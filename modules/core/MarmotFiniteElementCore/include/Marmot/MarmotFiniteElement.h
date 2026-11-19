@@ -386,6 +386,43 @@ namespace Marmot::Discretizations::Elements {
       {
         return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
+
+      /**
+       * @brief Tolerance for nodes on the axis, relative to the element size: accepts the round-off of a mesher,
+       * rejects a mesh drawn in \f$r < 0\f$.
+       */
+      constexpr double axisTolerance = 1e-12;
+
+      /**
+       * @brief Rejects an element with a node at \f$r < -\epsilon\, h\f$, with the tolerance \f$\epsilon\f$
+       * (axisTolerance) and the diagonal \f$h\f$ of the element's bounding box.
+       * @details A mesh drawn in \f$r < 0\f$, or straddling the axis, gives a negative volume and an infinite hoop
+       * strain \f$N_i / r\f$.
+       * @param[in] nodes        Nodal coordinates, one column \f$(r, z)\f$ per node.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if a node lies at \f$r < -\epsilon\, h\f$.
+       */
+      void checkNodesAreInTheMeridianHalfPlane(
+        const Eigen::Ref< const Eigen::Matrix< double, nDim, Eigen::Dynamic > >& nodes,
+        int                                                                      elementLabel );
+
+      /**
+       * @brief Rejects a quadrature point at \f$r \leq 0\f$, where the hoop strain \f$N_i / r\f$ is undefined.
+       * @details Gauss points are interior, so this happens only for an element collapsed onto the axis.
+       * @param[in] r            Radius of the quadrature point.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if \f$r \leq 0\f$.
+       */
+      void checkRadiusOfQuadraturePoint( double r, int elementLabel );
+
+      /**
+       * @brief The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz,
+       * \f$\theta\theta\f$, rz).
+       * @details The block is exact for any 3D material: \f$\gamma_{r\theta} = \gamma_{z\theta} = 0\f$ is kinematic.
+       * @param[in] C Tangent in 3D Voigt notation.
+       * @return The 4 × 4 block.
+       */
+      Eigen::Matrix4d sectionTangent( const Marmot::Math::Matrix6d& C );
     } // namespace Axisymmetric
 
     /**

@@ -114,6 +114,19 @@ All notable changes to Marmot are documented in this file. The format follows
   axisymmetric section of `DisplacementFiniteElement` use it.
 - `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
   and the reference measure, used for the quadrature weights and the consistent mass.
+- Small-strain axisymmetric gradient-enhanced elements in `elements/GeneralGradientEnhancedDisplacementFiniteElement`:
+  `GCAX4` (4 nodes, full integration), `GCAX8` (8 nodes, full integration) and `GCAX8R` (8 nodes, reduced
+  integration), the gradient-enhanced counterparts of `CAX4`, `CAX8` and `CAX8R`. They are
+  `GeneralGradientEnhancedDisplacementFiniteElement< 2, nNodes >` with the new section `SectionType::Axisymmetric`:
+  the hoop strain u_r / r, and the full ring (2 pi r) for the internal forces, the Helmholtz equation of the
+  non-local fields, energies, masses, body forces and pressure. Implicit and explicit, with the artificial bulk
+  viscosity and the energy gradients; mixed-order variants (e.g. `< 2, 8, 1, 4 >`) work as well. Nodes and quadrature
+  points are checked as for the CAX elements. Based on the axisymmetric section by Thomas Mader.
+- `GeneralGradientEnhancedDisplacementFiniteElement::sectionFactorAt( xi )`, as for `DisplacementFiniteElement`.
+- `Spatial2D::Axisymmetric::checkNodesAreInTheMeridianHalfPlane()`, `checkRadiusOfQuadraturePoint()` and
+  `sectionTangent()`: the checks of the meridian section and the 4 × 4 block of a 3D tangent, shared by the
+  axisymmetric sections of both elements.
+- `ContinuumMechanics::Voigt::reduce3DVoigt< Axial >`, the counterpart of `make3DVoigt< Axial >`.
 - `Marmot::ContinuumMechanics::ReducedStress` (`MarmotLowerDimensionalStress.h`, header only): one static
   condensation for reduced stress states with prescribed strain components `p` and stress-free components `f`.
   `computeReducedStress( computeStress3D, dStrain, p, f )` iterates a 3D stress update (a callable) on the strains at
@@ -176,6 +189,12 @@ All notable changes to Marmot are documented in this file. The format follows
   solid, plane strain and axisymmetric sections one material update through the 3D interface. Results are unchanged.
   The consistent mass takes the thickness or cross section from the element property instead of recovering it from
   the nearest quadrature point (identical up to rounding).
+- `GeneralGradientEnhancedDisplacementFiniteElement`: likewise, `computeKernels()` and `computeKernelsExplicit()`
+  share one material update and integration per quadrature point for the plane stress, plane strain, axisymmetric
+  and solid sections, which removes the copies of the non-local coupling per section. Results are unchanged. The
+  consistent mass takes the thickness from the element property (identical up to rounding), so the element
+  properties must stay valid after `initializeYourself()`, as for `DisplacementFiniteElement`. A one-dimensional
+  instance (none is registered), for which no section is implemented, throws instead of integrating nothing.
 - `MarmotGradientMechanicsCore` requires `MarmotMechanicsCore` (for `ReducedStress`); a build with a `CORE_MODULES`
   filter that selects the former must select the latter, too.
 
