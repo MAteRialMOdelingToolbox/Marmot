@@ -198,7 +198,6 @@ void test_compute_dStress_dDeformationGradient()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
-
 int main()
 {
 
