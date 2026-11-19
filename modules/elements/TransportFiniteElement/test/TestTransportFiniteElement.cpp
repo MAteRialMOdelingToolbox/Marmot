@@ -27,8 +27,11 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotTesting.h"
+#include "Marmot/MarmotTransportMaterial.h"
+#include "Marmot/MarmotTransportMaterialFactory.h"
 #include "Marmot/TransportFiniteElement.h"
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -426,6 +429,147 @@ namespace {
                              type.name + ": steady state must not depend on the time increment" );
   }
 
+  /// whether a call throws (any std::exception)
+  bool throws( const std::function< void() >& f )
+  {
+    try {
+      f();
+    }
+    catch ( const std::exception& ) {
+      return true;
+    }
+    return false;
+  }
+
+  /// the interface the solver uses besides the kernels: dof layout, shape, coordinates, initialization, states
+  void testInterface( const ElementType& type )
+  {
+    auto e = makeElement( type, linearIsotropicMaterial, 3, false );
+
+    const auto pattern = e.element->getDofIndicesPermutationPattern();
+    throwExceptionOnFailure( static_cast< int >( pattern.size() ) == e.nDof, type.name + ": permutation size" );
+    for ( int i = 0; i < e.nDof; i++ )
+      throwExceptionOnFailure( pattern[i] == i, type.name + ": the dofs are ordered node by node already" );
+    throwExceptionOnFailure( e.element->getNNodes() == type.nNodes && e.element->getNSpatialDimensions() == type.nDim,
+                             type.name + ": number of nodes or dimensions" );
+    throwExceptionOnFailure( !e.element->getElementShape().empty(), type.name + ": element shape" );
+
+    // on the undistorted element the center is the mean of the nodes
+    const auto center = e.element->getCoordinatesAtCenter();
+    for ( int d = 0; d < type.nDim; d++ ) {
+      double mean = 0.0;
+      for ( int i = 0; i < type.nNodes; i++ )
+        mean += e.coordinates( i * type.nDim + d ) / type.nNodes;
+      throwExceptionOnFailure( checkIfEqual( center[d], mean, 1e-12 ), type.name + ": element center" );
+    }
+
+    // the quadrature points lie inside the element's bounding box
+    const auto qpCoords = e.element->getCoordinatesAtQuadraturePoints();
+    throwExceptionOnFailure( static_cast< int >( qpCoords.size() ) == e.element->getNumberOfQuadraturePoints(),
+                             type.name + ": one coordinate per quadrature point" );
+    for ( const auto& x : qpCoords )
+      for ( int d = 0; d < type.nDim; d++ ) {
+        double lo = 1e300, hi = -1e300;
+        for ( int i = 0; i < type.nNodes; i++ ) {
+          lo = std::min( lo, e.coordinates( i * type.nDim + d ) );
+          hi = std::max( hi, e.coordinates( i * type.nDim + d ) );
+        }
+        throwExceptionOnFailure( x[d] > lo && x[d] < hi, type.name + ": quadrature point outside the element" );
+      }
+
+    // material initialization is the only initial condition; the element's own states and the material's are viewable
+    e.element->setInitialConditions( Element::MarmotMaterialInitialization, nullptr );
+    throwExceptionOnFailure( throws( [&] { e.element->setInitialConditions( Element::Sigma11, nullptr ); } ),
+                             type.name + ": a stress initial condition must be rejected" );
+    throwExceptionOnFailure( e.element->getStateView( "flux", 0 ).stateSize == 3, type.name + ": flux state" );
+    throwExceptionOnFailure( throws( [&] { e.element->getStateView( "no such state", 0 ); } ),
+                             type.name + ": an unknown state must be rejected" );
+  }
+
+  /// a transport material that only states its number of fields: the defaults of the base class
+  class MinimalTransportMaterial : public Marmot::Materials::TransportMaterial {
+  public:
+    using TransportMaterial::TransportMaterial;
+    int  getNumberOfFields() const override { return 1; }
+    void computeTransport( Response&, AlgorithmicTangent&, const FieldState&, const TimeIncrement& ) const override {}
+  };
+
+  /// invalid input is rejected with an exception
+  void testInvalidInput()
+  {
+    using Marmot::Discretizations::Elements::TransportFiniteElement;
+    namespace Quadrature = Marmot::Discretizations::Elements::Quadrature;
+
+    throwExceptionOnFailure( throws( [] {
+                               Marmot::Registry::TransportMaterialFactory::createMaterial( "NOSUCHMATERIAL",
+                                                                                           linearIsotropicMaterial,
+                                                                                           3,
+                                                                                           1 );
+                             } ),
+                             "an unknown transport material must be rejected" );
+
+    // a solid section on a plane element
+    throwExceptionOnFailure( throws( [] {
+                               TransportFiniteElement< 2, 4, 1 >( 1,
+                                                                  Quadrature::gaussExactToDegree( 2 ),
+                                                                  TransportFiniteElement< 2, 4, 1 >::Solid,
+                                                                  { "temperature" } );
+                             } ),
+                             "a solid section on a two-dimensional element must be rejected" );
+
+    // a plane element without thickness
+    {
+      std::unique_ptr< Element > el( Marmot::Registry::ElementFactory::createElement( "DC2D4T", 1 ) );
+      const VectorXd             coords = distortedCoordinates( elementTypes[1], false );
+      el->assignNodeCoordinates( coords.data() );
+      throwExceptionOnFailure( throws( [&] { el->initializeYourself(); } ),
+                               "a plane element without thickness must be rejected" );
+    }
+
+    // an axisymmetric element reaching into r < 0
+    {
+      std::unique_ptr< Element > el( Marmot::Registry::ElementFactory::createElement( "DCAX4T", 1 ) );
+      const VectorXd             coords = distortedCoordinates( elementTypes[1], false ); // x in [-1, 1]
+      el->assignNodeCoordinates( coords.data() );
+      throwExceptionOnFailure( throws( [&] { el->initializeYourself(); } ),
+                               "an axisymmetric element at r < 0 must be rejected" );
+    }
+
+    // an inverted element (clockwise node order)
+    {
+      std::unique_ptr< Element > el( Marmot::Registry::ElementFactory::createElement( "DC2D4T", 1 ) );
+      const double               coords[] = { 0, 0, 0, 1, 1, 1, 1, 0 };
+      std::vector< double >      props{ thickness };
+      el->assignNodeCoordinates( coords );
+      el->assignProperty( Marmot::Discretizations::ElementProperties( props.data(), 1 ) );
+      throwExceptionOnFailure( throws( [&] { el->initializeYourself(); } ), "an inverted element must be rejected" );
+    }
+
+    // a field dependent boundary load with the wrong number of nodal values
+    {
+      const VectorXd coords = distortedCoordinates( elementTypes[1], false );
+      const auto     shape  = Marmot::Discretizations::Elements::getElementShapeByMetric( 2, 4 );
+      Marmot::Discretizations::Elements::BoundaryElement be( shape, 1, 2, coords, false );
+      VectorXd                                           P;
+      MatrixXd                                           dP;
+      const auto density = []( double, double& value, double& derivative ) { value = derivative = 0.0; };
+      throwExceptionOnFailure( throws( [&] {
+                                 be.computeFieldDependentScalarLoadVector( VectorXd::Zero( 5 ), density, P, dP );
+                               } ),
+                               "a boundary field of the wrong size must be rejected" );
+    }
+
+    // the defaults of the material base class: storage, and zero initial state variables
+    const MinimalTransportMaterial material( linearIsotropicMaterial, 3, 1 );
+    throwExceptionOnFailure( material.hasStorage( 0 ), "a transport material has storage by default" );
+    MinimalTransportMaterial initialized( linearIsotropicMaterial, 3, 1 );
+    double                   stateVars[] = { 1.0, 2.0, 3.0 };
+    initialized.initializeYourself( stateVars, 3 );
+    throwExceptionOnFailure( stateVars[0] == 0.0 && stateVars[1] == 0.0 && stateVars[2] == 0.0,
+                             "the default initialization zeroes the state variables" );
+    std::cout << "invalid input is rejected, the material defaults hold" << std::endl;
+  }
+
 } // namespace
 
 int main()
@@ -442,6 +586,8 @@ int main()
     testResultants( type );
     testLinearFieldConsistency( type );
     testStorage( type );
+    testInterface( type );
   }
+  testInvalidInput();
   return 0;
 }
