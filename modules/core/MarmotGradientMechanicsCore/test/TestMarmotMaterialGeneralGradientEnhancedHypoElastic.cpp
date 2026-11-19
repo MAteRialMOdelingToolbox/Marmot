@@ -24,8 +24,8 @@ namespace {
   // constant, independent of strain, with a correspondingly zero tangent for that component. No
   // real, registered material behaves like this (dStress/dStrain is always non-singular for a
   // physically sound hypoelastic law), so this stand-in is the only practical way to deterministically
-  // exercise computePlaneStress()'s robustness branches: the near-singular-tangent compliance cap,
-  // and the cutback/failure throw when the iteration cannot drive sigma_zz to zero.
+  // exercise computePlaneStress()'s failure branch: the cutback/failure throw when the iteration
+  // cannot drive sigma_zz to zero (here: its tangent is singular and sigma_zz is outside its range).
   // ---------------------------------------------------------------------------------------------
   class NeverConvergingPlaneStressMaterial : public Mat1 {
   public:
@@ -44,7 +44,7 @@ namespace {
       res.KLocal( 0 ) = 0.0;
       res.c( 0 )      = 1.0;
 
-      tan.dStressddStrain.setZero(); // dSigma_zz/dEps_zz == 0 -> forces the near-singular branch
+      tan.dStressddStrain.setZero(); // dSigma_zz/dEps_zz == 0 -> singular tangent
       tan.dStressddK.setZero();
       tan.dKLocalddStrain.setZero();
       tan.dKLocalddK.setZero();
@@ -285,9 +285,8 @@ namespace {
 
 // ---------------------------------------------------------------------------------------------
 // computePlaneStress(): must throw Marmot::Utilities::StressUpdateFailed after exhausting its cutback attempts when
-// the out-of-plane stress can never be driven to zero. Along the way, the near-singular tangent
-// (dStressddStrain(2,2) == 0) must hit the "cap the compliance instead of dividing by zero" branch
-// rather than propagating a NaN/inf strain correction.
+// the out-of-plane stress can never be driven to zero: its tangent (dStressddStrain(2,2) == 0) is
+// singular and sigma_zz is outside its range, which must throw rather than propagate a NaN/inf strain correction.
 // ---------------------------------------------------------------------------------------------
 void testComputePlaneStressThrowsWhenItCannotConverge()
 {
