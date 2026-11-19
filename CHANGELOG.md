@@ -119,6 +119,11 @@ All notable changes to Marmot are documented in this file. The format follows
   (`HEATCONDUCTION`: anisotropic, temperature dependent conductivity and capacity; 3, 6 or 11 properties); the
   distributed load types `HeatFlux`, `HeatFilm` (convection) and `HeatRadiation`. A zero time increment lets
   nothing flow.
+- Moisture transport in concrete: the material `materials/MoistureDiffusion` (`MOISTUREDIFFUSION`: Bažant-Najjar
+  diffusivity, linear or BSB sorption isotherm, self-desiccation integrated exactly over the increment; 4 to 10
+  properties), the elements `DC*H` (field `relative humidity`) of `elements/TransportFiniteElement`, and the load
+  types `MoistureFlux` and `MoistureFilm`. `TransportMaterial::hasStorage( field )` tells the elements per field
+  whether a zero increment may change it.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
