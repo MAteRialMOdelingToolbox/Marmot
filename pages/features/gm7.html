@@ -145,9 +145,16 @@ requires the <code class="docutils literal notranslate"><span class="pre">Microp
 </section>
 <section id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
-<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
-<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in N/mm² (MPa); the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>, <span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>,
-<span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless.</p>
+<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm, and most of them are dimensionless. The
+dimensional ones (<span class="math notranslate nohighlight">\(c_{18} = 62.5\)</span> MPa, <span class="math notranslate nohighlight">\(c_{21} = 250\)</span> MPa and the reference values
+<span class="math notranslate nohighlight">\(f_{c0} = 15.08\)</span> MPa, <span class="math notranslate nohighlight">\(E_0 = 20000\)</span> MPa), the default values of <span class="math notranslate nohighlight">\(f_c\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> and
+an internal stiffness tolerance are converted to the user’s stress unit with the optional property <code class="docutils literal notranslate"><span class="pre">stressUnit</span></code>,
+the value of 1 MPa in that unit (1 for MPa, the default; 1e6 for Pa; 1e-3 for GPa). <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
+<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in the same stress unit; the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>,
+<span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>, <span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless. As <code class="docutils literal notranslate"><span class="pre">stressUnit</span></code> follows
+<span class="math notranslate nohighlight">\(f_c\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code>, these have to be given explicitly for any unit other than MPa. Note that
+<code class="docutils literal notranslate"><span class="pre">stressUnit</span></code> was inserted at index 13, in front of the properties only required for explicit simulations, so
+these moved up by one.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 10.0%" />
@@ -163,7 +170,7 @@ requires the <code class="docutils literal notranslate"><span class="pre">Microp
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">E</span></code></p></td>
-<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> in N/mm²</p></td>
+<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
@@ -203,22 +210,27 @@ requires the <code class="docutils literal notranslate"><span class="pre">Microp
 </tr>
 <tr class="row-even"><td><p>10</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">fc</span></code></p></td>
-<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span> in N/mm², used by the deviatoric boundary (default 36.0)</p></td>
+<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span>, used by the deviatoric boundary (default 36 MPa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>11</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code></p></td>
-<td><p>Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
-starts (default 4.0)</p></td>
+<td><p>Optional, stress offset from the virtual elastic loading path at which the unloading transition starts
+(default 4 MPa)</p></td>
 </tr>
 <tr class="row-even"><td><p>12</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code></p></td>
 <td><p>Optional, exponent of the unloading transition function (default 0.4)</p></td>
 </tr>
 <tr class="row-odd"><td><p>13</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stressUnit</span></code></p></td>
+<td><p>Optional, value of 1 MPa in the user’s stress unit, e.g. 1e6 for Pa (default 1.0, requires all preceding
+properties)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
 <td><p>Optional mass density (requires all preceding properties)</p></td>
 </tr>
-<tr class="row-even"><td><p>14</p></td>
+<tr class="row-odd"><td><p>15</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">nonlocalViscosity</span></code></p></td>
 <td><p>Optional viscosity of the nonlocal fields, applied to all six components (requires all preceding
 properties)</p></td>

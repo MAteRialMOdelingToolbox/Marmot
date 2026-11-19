@@ -147,9 +147,16 @@ the microplanes is used, which improves the convergence behavior in implicit sim
 </section>
 <section id="properties">
 <h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
-<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
-<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in N/mm² (MPa); the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>, <span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>,
-<span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless.</p>
+<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm, and most of them are dimensionless. The
+dimensional ones (<span class="math notranslate nohighlight">\(c_{18} = 62.5\)</span> MPa, <span class="math notranslate nohighlight">\(c_{21} = 250\)</span> MPa and the reference values
+<span class="math notranslate nohighlight">\(f_{c0} = 15.08\)</span> MPa, <span class="math notranslate nohighlight">\(E_0 = 20000\)</span> MPa), the default values of <span class="math notranslate nohighlight">\(f_c\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> and
+an internal stiffness tolerance are converted to the user’s stress unit with the optional property <code class="docutils literal notranslate"><span class="pre">stressUnit</span></code>,
+the value of 1 MPa in that unit (1 for MPa, the default; 1e6 for Pa; 1e-3 for GPa). <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
+<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in the same stress unit; the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>,
+<span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>, <span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless. As <code class="docutils literal notranslate"><span class="pre">stressUnit</span></code> follows
+<span class="math notranslate nohighlight">\(f_c\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code>, these have to be given explicitly for any unit other than MPa. Note that
+<code class="docutils literal notranslate"><span class="pre">stressUnit</span></code> was inserted at index 11, in front of the properties only required for explicit simulations, so
+these moved up by one.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 10.0%" />
@@ -165,7 +172,7 @@ the microplanes is used, which improves the convergence behavior in implicit sim
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">E</span></code></p></td>
-<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> in N/mm²</p></td>
+<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
@@ -197,18 +204,23 @@ the microplanes is used, which improves the convergence behavior in implicit sim
 </tr>
 <tr class="row-even"><td><p>8</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">fc</span></code></p></td>
-<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span> in N/mm², used by the deviatoric boundary (default 36.0)</p></td>
+<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span>, used by the deviatoric boundary (default 36 MPa)</p></td>
 </tr>
 <tr class="row-odd"><td><p>9</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code></p></td>
-<td><p>Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
-starts (default 4.0)</p></td>
+<td><p>Optional, stress offset from the virtual elastic loading path at which the unloading transition starts
+(default 4 MPa)</p></td>
 </tr>
 <tr class="row-even"><td><p>10</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code></p></td>
 <td><p>Optional, exponent of the unloading transition function (default 0.4)</p></td>
 </tr>
 <tr class="row-odd"><td><p>11</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stressUnit</span></code></p></td>
+<td><p>Optional, value of 1 MPa in the user’s stress unit, e.g. 1e6 for Pa (default 1.0, requires all preceding
+properties)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
 <td><p>Optional mass density (requires all preceding properties)</p></td>
 </tr>
@@ -524,14 +536,14 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE">
-<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::fc0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a13d70b0a1fe70131b34103b1e9f45ab3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fc0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15.08</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE" title="Link to this definition"></a><br /></dt>
-<dd><p>Reference compressive strength in MPa. </p>
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::fc0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a13d70b0a1fe70131b34103b1e9f45ab3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fc0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15.08</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE" title="Marmot::Materials::MicroplaneM7Formulation::p"><span class="n"><span class="pre">p</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">stressUnit</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference compressive strength (15.08 MPa). </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE">
-<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::E0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5cf897cd82fd27c22bef8da05a39b2f4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20.0e3</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE" title="Link to this definition"></a><br /></dt>
-<dd><p>Reference Young’s modulus in MPa. </p>
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::E0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5cf897cd82fd27c22bef8da05a39b2f4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20.0e3</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE" title="Marmot::Materials::MicroplaneM7Formulation::p"><span class="n"><span class="pre">p</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">stressUnit</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference Young’s modulus (20000 MPa). </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -632,8 +644,8 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c18E">
-<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c18__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1acd7900e1410fb872d6536ecff4330ee9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c18</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">62.5</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c18E" title="Link to this definition"></a><br /></dt>
-<dd><p>[MPa] Controls the tensile cracking under compression; value per the correction in Caner and Bazant (2013). </p>
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c18__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1acd7900e1410fb872d6536ecff4330ee9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c18</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">62.5</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE" title="Marmot::Materials::MicroplaneM7Formulation::p"><span class="n"><span class="pre">p</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">stressUnit</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c18E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the tensile cracking under compression (62.5 MPa); value per the correction in Caner and Bazant (2013). </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -650,8 +662,8 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c21E">
-<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c21__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5ebe217f634d0e28dbce072feed13657"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c21</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">250.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c21E" title="Link to this definition"></a><br /></dt>
-<dd><p>[MPa] </p>
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c21__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5ebe217f634d0e28dbce072feed13657"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c21</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">250.0</span></span><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE" title="Marmot::Materials::MicroplaneM7Formulation::p"><span class="n"><span class="pre">p</span></span></a><span class="p"><span class="pre">.</span></span><span class="n"><span class="pre">stressUnit</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c21E" title="Link to this definition"></a><br /></dt>
+<dd><p>Cap of the compressive volumetric stress in the volumetric-deviatoric coupling of the volumetric boundary (250 MPa). </p>
 </dd></dl>
 
 </div>
@@ -660,10 +672,10 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii">
 <span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii"></span><span id="Marmot::Materials::MicroplaneM7Formulation::readParameters__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3384f4600c842981468f3b3ae1693aa2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Marmot::Materials::MicroplaneM7Formulation::Parameters"><span class="n"><span class="pre">Parameters</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">readParameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">firstOptional</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii" title="Link to this definition"></a><br /></dt>
-<dd><p>Reads E, nu, k1 … k5 from the material properties 0 to 6, and the optional c3, fc, transitionWidth and transitionExponent from the properties <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> to <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> + 3, using their default values for the ones not given. All properties in front of <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> are required. </p>
+<dd><p>Reads E, nu, k1 … k5 from the material properties 0 to 6, and the optional c3, fc, transitionWidth, transitionExponent and stressUnit from the properties <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> to <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> + 4, using their default values for the ones not given. All properties in front of <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> are required. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if fewer than <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> material properties are given. </p>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if fewer than <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> material properties are given, or if stressUnit is not positive. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -709,6 +721,7 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE">
 <span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10ParametersE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10ParametersE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Link to this definition"></a><br /></dt>
 <dd><p>The free (calibratable) material parameters. </p>
+<p>All stress-like parameters (E, fc, transitionWidth) are given in the user’s stress unit, which <a class="reference internal" href="#structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a07c8e4a34ab850fc4b85c65553668172"><span class="std std-ref">stressUnit</span></a> relates to MPa. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
@@ -762,19 +775,25 @@ microplanes on the tensile, compressive and shear boundary in the last increment
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE">
 <span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::fc__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1aa9e129f113a5960cb2e09cee74ae03ef"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fc</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE" title="Link to this definition"></a><br /></dt>
-<dd><p>Compressive strength in MPa, for the deviatoric boundary (default 36.0). </p>
+<dd><p>Compressive strength, for the deviatoric boundary (default 36 MPa). </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE">
 <span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::transitionWidth__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a472a2e21f63dd2d6f9449bec148ba059"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transitionWidth</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE" title="Link to this definition"></a><br /></dt>
-<dd><p>Stress offset from the virtual elastic loading path where the unloading transition starts (default 4.0). </p>
+<dd><p>Stress offset from the virtual elastic loading path where the unloading transition starts (default 4 MPa). </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE">
 <span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::transitionExponent__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1add97b40bef220b0c9cf8f38a3b9b36ee"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transitionExponent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE" title="Link to this definition"></a><br /></dt>
 <dd><p>Exponent of the unloading transition function (default 0.4). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters10stressUnitE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters10stressUnitE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters10stressUnitE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::stressUnit__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a07c8e4a34ab850fc4b85c65553668172"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressUnit</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters10stressUnitE" title="Link to this definition"></a><br /></dt>
+<dd><p>Value of 1 MPa in the user’s stress unit (default 1.0, i.e. stresses in MPa; e.g. 1e6 for Pa, 1e-3 for GPa). Scales the dimensional fixed parameters and the default values of fc and transitionWidth. </p>
 </dd></dl>
 
 </div>
