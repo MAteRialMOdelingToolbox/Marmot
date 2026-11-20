@@ -10,4 +10,5 @@ Code documentation
   codedocumentation/mathcore
   codedocumentation/mechanicscore
   codedocumentation/meshfreecore
+  codedocumentation/transportcore
   codedocumentation/utilitiescore
