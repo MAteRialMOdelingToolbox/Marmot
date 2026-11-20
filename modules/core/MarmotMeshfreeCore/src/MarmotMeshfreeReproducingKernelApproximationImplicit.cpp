@@ -47,7 +47,7 @@ namespace Marmot::Discretizations::Meshfree {
     const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, nullptr );
 
     const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
-    const int sizeH             = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
+    const int sizeH             = _basisOfOrder[completenessOrder].size();
 
     MomentMatrix M;
     assembleMomentMatrix( coord, kernelFunctions, phi, nullptr, completenessOrder, M, nullptr );
@@ -62,7 +62,7 @@ namespace Marmot::Discretizations::Meshfree {
     if ( completenessOrder > 0 ) {
       const Coordinates origin = Coordinates::Zero( _dim );
       BasisGradient     dHOrigin( sizeH, _dim );
-      Math::computeMonomialBasisGradient( completenessOrder, origin, dHOrigin );
+      _basisOfOrder[completenessOrder].evaluateGradient( origin, dHOrigin );
       for ( int k = 0; k < sizeH; k++ )
         for ( int i = 0; i < _dim; i++ )
           if ( dHOrigin( k, i ) != 0.0 )

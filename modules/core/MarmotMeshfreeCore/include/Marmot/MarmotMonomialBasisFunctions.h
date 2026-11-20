@@ -26,7 +26,7 @@
 #pragma once
 
 #include <Eigen/Core>
-#include <cmath>
+#include <vector>
 
 namespace Marmot::Math {
 
@@ -57,91 +57,8 @@ namespace Marmot::Math {
   }
 
   /**
-   * @brief Recursive kernel of computeMonomialBasis().
-   *
-   * Multiplies the entries starting at @p idxEnd by the powers @f$ x_k^i @f$ of the coordinates
-   * @f$ k \le @f$ @p dim, for all exponent combinations of total degree @f$ \le @f$ @p order. The loop over the
-   * exponent of coordinate @p dim is the outermost one, the recursion handles the lower coordinates.
-   *
-   * @param[in]     order  Remaining total degree.
-   * @param[in]     x      Coordinates.
-   * @param[in,out] res    Basis vector, initialized with ones by the caller.
-   * @param[in]     idxEnd First entry of @p res treated by this call.
-   * @param[in]     dim    Number of (leading) coordinates treated by this call.
-   * @return One past the last entry of @p res treated by this call.
-   */
-  inline int _computeMonomialBasisRecursion( int                                        order,
-                                             const Eigen::Ref< const Eigen::VectorXd >& x,
-                                             Eigen::Ref< Eigen::VectorXd >              res,
-                                             int                                        idxEnd,
-                                             int                                        dim )
-  {
-    double power = 1.0; // x_dim^i
-    for ( int i = 0; i <= order; i++ ) {
-
-      const int idxStart = idxEnd;
-      if ( dim > 1 )
-        idxEnd = _computeMonomialBasisRecursion( order - i, x, res, idxEnd, dim - 1 );
-      else {
-        idxEnd++;
-      }
-
-      for ( int idx = idxStart; idx < idxEnd; idx++ )
-        res( idx ) *= power;
-      power *= x[dim - 1];
-    }
-    return idxEnd;
-  }
-
-  /**
-   * @brief Recursive kernel of computeMonomialBasisGradient().
-   *
-   * Same traversal as _computeMonomialBasisRecursion(). By the product rule, column @f$ k @f$ of an entry is
-   * multiplied by @f$ \partial x_k^i / \partial x_k = i\, x_k^{i-1} @f$ for its own coordinate and by
-   * @f$ x_j^i @f$ for all other coordinates @f$ j \neq k @f$.
-   *
-   * @param[in]     order  Remaining total degree.
-   * @param[in]     x      Coordinates.
-   * @param[in,out] res    Gradient matrix (basis size @f$ \times d @f$), initialized with ones by the caller.
-   * @param[in]     idxEnd First row of @p res treated by this call.
-   * @param[in]     dim    Number of (leading) coordinates treated by this call.
-   * @return One past the last row of @p res treated by this call.
-   */
-  inline int _computeMonomialBasisGradientRecursion( int                                        order,
-                                                     const Eigen::Ref< const Eigen::VectorXd >& x,
-                                                     Eigen::Ref< Eigen::MatrixXd >              res,
-                                                     int                                        idxEnd,
-                                                     int                                        dim )
-  {
-    // the basis has the same layout as in _computeMonomialBasisRecursion; by the product rule, column k of the
-    // gradient is the product of the factors x_d^i of all dimensions d, with x_k^i replaced by its derivative
-    double power      = 1.0; // x_dim^i
-    double lowerPower = 0.0; // x_dim^(i-1)
-    for ( int i = 0; i <= order; i++ ) {
-
-      const int idxStart = idxEnd;
-
-      if ( dim > 1 )
-        idxEnd = _computeMonomialBasisGradientRecursion( order - i, x, res, idxEnd, dim - 1 );
-      else {
-        idxEnd++;
-      }
-
-      const double factor           = power;
-      const double factorDerivative = i * lowerPower;
-
-      for ( int idx = idxStart; idx < idxEnd; idx++ )
-        for ( int k = 0; k < res.cols(); k++ )
-          res( idx, k ) *= k == dim - 1 ? factorDerivative : factor;
-
-      lowerPower = power;
-      power *= x[dim - 1];
-    }
-    return idxEnd;
-  }
-
-  /**
-   * @brief Evaluate the complete monomial basis @f$ \boldsymbol{H}(\boldsymbol{x}) @f$ of order @f$ n @f$.
+   * @brief The complete monomial basis @f$ \boldsymbol{H}(\boldsymbol{x}) @f$ of order @f$ n @f$ in @f$ d @f$
+   * dimensions, as a table of exponents.
    *
    * The entries are all monomials @f$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} @f$ with
    * @f$ \alpha_1 + \dots + \alpha_d \le n @f$, ordered with the exponent of the last coordinate varying slowest
@@ -149,21 +66,117 @@ namespace Marmot::Math {
    * @f$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T @f$; in 3D with @f$ n = 1 @f$:
    * @f$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T @f$. The first entry is always @f$ 1 @f$.
    *
+   * The exponents @f$ \boldsymbol{\alpha} @f$ of every entry are listed once, at construction; an evaluation is then
+   * the product of the powers, @f$ H_k = \prod_j x_j^{\alpha_{kj}} @f$, and its gradient that product with the factor
+   * of coordinate @f$ i @f$ replaced by its derivative, @f$ \partial H_k / \partial x_i = \alpha_{ki}\,
+   * x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} @f$. The powers are formed by multiplication, and the
+   * factors are multiplied in the order of the coordinates.
+   */
+  class MonomialBasis {
+  public:
+    /**
+     * @brief List the exponents of the basis.
+     * @param[in] order Completeness order @f$ n \ge 0 @f$.
+     * @param[in] dim   Spatial dimension @f$ d \ge 1 @f$.
+     */
+    MonomialBasis( int order, int dim )
+      : _dim( dim ), _size( computeSizeOfMonomialBasisVector( order, dim ) ), _exponents( _size * dim, 0 )
+    {
+      int entry = 0;
+      listExponents( order, dim, entry );
+    }
+
+    /// @brief The number of monomials, @f$ \binom{d + n}{d} @f$.
+    int size() const { return _size; }
+
+    /// @brief The exponent of coordinate @p j in monomial @p k.
+    int exponent( int k, int j ) const { return _exponents[k * _dim + j]; }
+
+    /**
+     * @brief Evaluate the basis.
+     * @param[in]  x Coordinates @f$ \boldsymbol{x} @f$, @f$ d @f$ of them.
+     * @param[out] H The basis; of size size(). Any contiguous vector, e.g. one of a fixed largest size, which needs no
+     *               allocation.
+     */
+    void evaluate( const Eigen::Ref< const Eigen::VectorXd >& x, Eigen::Ref< Eigen::VectorXd > H ) const
+    {
+      for ( int k = 0; k < _size; k++ ) {
+        H( k ) = 1.0;
+        for ( int j = 0; j < _dim; j++ )
+          H( k ) *= power( x( j ), exponent( k, j ) );
+      }
+    }
+
+    /**
+     * @brief Evaluate the gradient @f$ \partial \boldsymbol{H} / \partial \boldsymbol{x} @f$ of the basis.
+     * @param[in]  x     Coordinates @f$ \boldsymbol{x} @f$, @f$ d @f$ of them.
+     * @param[out] dH_dx The gradient, size() @f$ \times d @f$: row @f$ k @f$ is entry @f$ k @f$ of the basis, column
+     *                   @f$ i @f$ the derivative with respect to @f$ x_i @f$.
+     */
+    void evaluateGradient( const Eigen::Ref< const Eigen::VectorXd >& x, Eigen::Ref< Eigen::MatrixXd > dH_dx ) const
+    {
+      for ( int k = 0; k < _size; k++ )
+        for ( int i = 0; i < _dim; i++ ) {
+          dH_dx( k, i ) = 1.0;
+          for ( int j = 0; j < _dim; j++ ) {
+            const int alpha = exponent( k, j );
+            dH_dx( k, i ) *= j == i ? alpha * power( x( j ), alpha - 1 ) : power( x( j ), alpha );
+          }
+        }
+    }
+
+  private:
+    /// @brief @f$ x^\alpha @f$ by multiplication; zero for @f$ \alpha < 0 @f$ (the derivative of a constant).
+    static double power( double x, int alpha )
+    {
+      double result = alpha < 0 ? 0.0 : 1.0;
+      for ( int p = 0; p < alpha; p++ )
+        result *= x;
+      return result;
+    }
+
+    /**
+     * @brief List the exponents of the coordinates @f$ 1, \dots, @f$ @p dim of all monomials of total degree
+     * @f$ \le @f$ @p order, from entry @p entry on: the exponent of coordinate @p dim varies slowest, the lower
+     * coordinates are listed recursively.
+     */
+    void listExponents( int order, int dim, int& entry )
+    {
+      for ( int i = 0; i <= order; i++ ) {
+        const int first = entry;
+        if ( dim > 1 )
+          listExponents( order - i, dim - 1, entry );
+        else
+          entry++;
+        for ( int k = first; k < entry; k++ )
+          _exponents[k * _dim + dim - 1] = i;
+      }
+    }
+
+    int _dim;     ///< the spatial dimension
+    int _size;    ///< the number of monomials
+    std::vector< int >
+      _exponents; ///< entry @f$ k\, d + j @f$: the exponent of coordinate @f$ j @f$ in monomial @f$ k @f$
+  };
+
+  /**
+   * @brief Evaluate the complete monomial basis @f$ \boldsymbol{H}(\boldsymbol{x}) @f$ of order @f$ n @f$ (see
+   * MonomialBasis, which lists its exponents once for many evaluations).
+   *
    * @param[in]  order Completeness order @f$ n @f$.
    * @param[in]  x     Coordinates @f$ \boldsymbol{x} @f$ (the dimension @f$ d @f$ is taken from its size).
-   * @param[out] res   Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ). Any
-   *                   contiguous vector, e.g. one of a fixed largest size, which needs no allocation.
+   * @param[out] res   Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ).
    */
   inline void computeMonomialBasis( int                                        order,
                                     const Eigen::Ref< const Eigen::VectorXd >& x,
                                     Eigen::Ref< Eigen::VectorXd >              res )
   {
-    res.setOnes();
-    _computeMonomialBasisRecursion( order, x, res, 0, static_cast< int >( x.size() ) );
+    MonomialBasis( order, static_cast< int >( x.size() ) ).evaluate( x, res );
   }
 
   /**
-   * @brief Evaluate the gradient @f$ \partial \boldsymbol{H} / \partial \boldsymbol{x} @f$ of the monomial basis.
+   * @brief Evaluate the gradient @f$ \partial \boldsymbol{H} / \partial \boldsymbol{x} @f$ of the monomial basis (see
+   * MonomialBasis).
    *
    * Row @f$ k @f$ corresponds to entry @f$ k @f$ of computeMonomialBasis() (same ordering), column @f$ i @f$ to
    * @f$ \partial / \partial x_i @f$.
@@ -177,8 +190,7 @@ namespace Marmot::Math {
                                             const Eigen::Ref< const Eigen::VectorXd >& x,
                                             Eigen::Ref< Eigen::MatrixXd >              res )
   {
-    res.setOnes();
-    _computeMonomialBasisGradientRecursion( order, x, res, 0, static_cast< int >( x.size() ) );
+    MonomialBasis( order, static_cast< int >( x.size() ) ).evaluateGradient( x, res );
   }
 
 } // namespace Marmot::Math

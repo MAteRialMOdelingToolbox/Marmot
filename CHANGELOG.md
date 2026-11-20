@@ -247,8 +247,10 @@ All notable changes to Marmot are documented in this file. The format follows
   pass over the kernels (each evaluated once, its gradient only if needed), one assembly of the moment matrix (and its
   gradients) for both classes, and types of a fixed largest size (up to the cubic basis in 3D): no allocation per
   evaluation. A larger basis, a dimension beyond 3 or a negative order is refused at construction
-  (`std::invalid_argument`). `Math::computeMonomialBasis` and `computeMonomialBasisGradient` take any contiguous
-  Eigen vector or matrix (`Eigen::Ref`) and form the powers by multiplication. Shape functions change by round-off.
+  (`std::invalid_argument`). The monomial basis is `Math::MonomialBasis`, a table of the exponents of its entries made
+  once and evaluated by products (`Math::computeMonomialBasis` and `computeMonomialBasisGradient` use it, take any
+  contiguous Eigen vector or matrix, `Eigen::Ref`, and give the same values); the moment matrix is assembled entry by
+  entry. Shape functions change by round-off.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element

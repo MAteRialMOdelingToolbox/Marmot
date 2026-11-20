@@ -44,6 +44,8 @@ namespace Marmot::Discretizations::Meshfree {
                                    << completenessOrder << " are not supported: the dimension is at most " << maxDim
                                    << ", the order at least 0, and the monomial basis at most " << maxSizeOfBasis
                                    << " entries (cubic in 3D)" );
+    for ( int order = 0; order <= completenessOrder; order++ )
+      _basisOfOrder.emplace_back( order, dim );
   }
 
   int ReproducingKernelApproximation::evaluateKernelFunctions(
@@ -79,16 +81,16 @@ namespace Marmot::Discretizations::Meshfree {
                                                       BasisVector&          H,
                                                       BasisGradient*        dH_dx ) const
   {
-    const int   sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
-    Coordinates x_minus_xA( _dim );
+    const Math::MonomialBasis& basis = _basisOfOrder[completenessOrder];
+    Coordinates                x_minus_xA( _dim );
     for ( int i = 0; i < _dim; i++ )
       x_minus_xA( i ) = coord[i] - kernelFunction.getCenterCoordinates()[i];
 
-    H.resize( sizeH );
-    Math::computeMonomialBasis( completenessOrder, x_minus_xA, H );
+    H.resize( basis.size() );
+    basis.evaluate( x_minus_xA, H );
     if ( dH_dx ) {
-      dH_dx->resize( sizeH, _dim );
-      Math::computeMonomialBasisGradient( completenessOrder, x_minus_xA, *dH_dx );
+      dH_dx->resize( basis.size(), _dim );
+      basis.evaluateGradient( x_minus_xA, *dH_dx );
     }
   }
 
@@ -101,7 +103,7 @@ namespace Marmot::Discretizations::Meshfree {
     MomentMatrix&                               M,
     MomentMatrixGradient*                       dM_dx ) const
   {
-    const int sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
+    const int sizeH = _basisOfOrder[completenessOrder].size();
     M.setZero( sizeH, sizeH );
     if ( dM_dx )
       for ( int i = 0; i < _dim; i++ )
@@ -114,12 +116,20 @@ namespace Marmot::Discretizations::Meshfree {
         continue;
       evaluateBasis( coord, *kernelFunctions[B], completenessOrder, H, dM_dx ? &dH_dx : nullptr );
 
-      const MomentMatrix HHT = H * H.transpose();
-      M += HHT * phi[B];
+      // M += H H^T phi_B, and M_,i += ( H_,i H^T + H H_,i^T ) phi_B + H H^T phi_B,i, entry by entry: for the small
+      // matrices of a basis, plain loops are faster than products of matrices of a runtime size
+      const double phi_B = phi[B];
+      for ( int b = 0; b < sizeH; b++ )
+        for ( int a = 0; a < sizeH; a++ )
+          M( a, b ) += H( a ) * H( b ) * phi_B;
       if ( dM_dx )
         for ( int i = 0; i < _dim; i++ ) {
-          const MomentMatrix dH_dxi_HT = dH_dx.col( i ) * H.transpose();
-          ( *dM_dx )[i] += ( dH_dxi_HT + dH_dxi_HT.transpose() ) * phi[B] + HHT * dPhi_dx[_dim * B + i];
+          const double  dPhi_B_dxi = dPhi_dx[_dim * B + i];
+          MomentMatrix& dM_dxi     = ( *dM_dx )[i];
+          for ( int b = 0; b < sizeH; b++ )
+            for ( int a = 0; a < sizeH; a++ )
+              dM_dxi( a, b ) += ( dH_dx( a, i ) * H( b ) + H( a ) * dH_dx( b, i ) ) * phi_B +
+                                H( a ) * H( b ) * dPhi_B_dxi;
         }
     }
   }
@@ -170,7 +180,7 @@ namespace Marmot::Discretizations::Meshfree {
     const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, dPhi_dx );
 
     const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
-    const int sizeH             = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
+    const int sizeH             = _basisOfOrder[completenessOrder].size();
 
     MomentMatrix         M;
     MomentMatrixGradient dM_dx;

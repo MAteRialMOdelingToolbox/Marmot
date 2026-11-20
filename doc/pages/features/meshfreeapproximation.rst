@@ -147,7 +147,8 @@ An approximation offers the values alone (``computeShapeFunctions``) or the valu
 3. the shape functions (and gradients) follow kernel by kernel, overwriting the kernel values.
 
 The basis, the moment matrix and the right-hand sides are of a fixed largest size, up to the complete cubic basis in
-3D (20 monomials): an evaluation allocates no memory. A larger basis, a dimension beyond 3 or a negative completeness
+3D (20 monomials): an evaluation allocates no memory. The monomial basis of every order up to the requested one is
+listed once, as the exponents of its entries (``Marmot::Math::MonomialBasis``), and evaluated by products. A larger basis, a dimension beyond 3 or a negative completeness
 order is refused when the approximation is constructed.
 
 Kernel functions

@@ -27,6 +27,7 @@
 
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
+#include "Marmot/MarmotMonomialBasisFunctions.h"
 #include <Eigen/Core>
 #include <Eigen/QR>
 #include <array>
@@ -47,7 +48,7 @@ namespace Marmot::Discretizations::Meshfree {
    *   \phi_A(\boldsymbol{x}),
    * @f]
    * where @f$ \boldsymbol{H} @f$ is the vector of all monomials up to the completeness order @f$ n @f$
-   * (Math::computeMonomialBasis(), first entry @f$ 1 @f$) evaluated at the shifted coordinates
+   * (Math::MonomialBasis, first entry @f$ 1 @f$) evaluated at the shifted coordinates
    * @f$ \boldsymbol{x} - \boldsymbol{x}_A @f$. The coefficient vector @f$ \boldsymbol{b} @f$ solves
    * @f[
    *   \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
@@ -112,6 +113,8 @@ namespace Marmot::Discretizations::Meshfree {
   protected:
     int _dim;                      ///< spatial dimension @f$ d @f$
     int _desiredCompletenessOrder; ///< requested completeness order @f$ n @f$ (may be reduced per point)
+    /// The monomial basis of every order up to the desired one, entry @f$ n @f$ (an order may be reduced per point).
+    std::vector< Math::MonomialBasis > _basisOfOrder;
 
     /**
      * @brief Evaluate every candidate kernel at a point, once: its value @f$ \phi_A(\boldsymbol{x}) @f$ and, if
@@ -131,7 +134,7 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief The monomial basis @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$ at the shifted
-     * coordinates of a kernel, and, if asked for, its gradient; Math::computeMonomialBasis(). Since
+     * coordinates of a kernel, and, if asked for, its gradient (Math::MonomialBasis). Since
      * @f$ \boldsymbol{x}_A @f$ is fixed, the gradient with respect to the shifted coordinates is the one with respect
      * to @f$ \boldsymbol{x} @f$.
      * @param[in]  coord             Evaluation point @f$ \boldsymbol{x} @f$.
