@@ -79,6 +79,45 @@ With the tangents of the material point with respect to :math:`\Delta\boldsymbol
 
 as in :doc:`gradientenhancedfinitestraincell` and :doc:`gradientenhancedfinitestraindisplacementelement`.
 
+Explicit dynamics
+^^^^^^^^^^^^^^^^^
+All three particle classes provide the explicit scheme (``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``
+and the lumped operators); the NSNI particle adds its stabilization to the force and to the momentum, as
+:doc:`displacementparticle` does. ``updatePhysicsExplicit`` advances the material point by the increment and stores the
+rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t` and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
+After the host has accepted the state and assigned the kernel functions of the new position,
+``computePhysicsKernelsExplicit`` returns the internal force, with the nonlocal balance in **total** form,
+
+.. math::
+
+   r^U_{Aj} = \frac{\partial T_A}{\partial x_i}\,\tau_{ij}\,V_0 ,\qquad
+   r^N_{AK} = \Bigl( T_A\,\bar N_K + c_K\,\frac{\partial T_A}{\partial X_i}\,\frac{\partial\bar N_K}{\partial X_i}
+   - T_A\,L_K \Bigr) V_0 ,
+
+with the totals of the material point (the gradient :math:`\nabla_X\bar N_K` is its running sum): an explicit
+increment does not start from a balanced state, so the increment form of the implicit residual would drop the residual
+of the last one. The time derivatives are the solver's,
+:math:`m_K\,\ddot{\bar N}_K + \eta_K\,\dot{\bar N}_K + r^N_{AK}/(T_A V_0) = 0` per node, from the lumped operators
+
+.. math::
+
+   M^U_{A} = \rho_0\,T_A\,V_0, \qquad M^N_{AK} = m_K\,T_A\,V_0, \qquad C^N_{AK} = \eta_K\,T_A\,V_0, \qquad
+   p^U_{Aj} = M^U_A\,v_j, \qquad p^N_{AK} = M^N_{AK}\,\dot{\bar N}_K,
+
+with the micro-inertia :math:`m_K` and the viscosity :math:`\eta_K` of the material: a nonlocal field without
+micro-inertia is first order in time and has no inertia (the convention of the explicit solver of EdelweissFE, which
+reads the order of a field off its inertia), and the momentum of a second-order one keeps its rate when the solver
+projects the velocity from it.
+
+The critical time step of the particle is the minimum of :math:`l/c`, with
+:math:`l = \sigma_\mathrm{min}(\boldsymbol F)\,V_0^{1/n_\mathrm{dim}}` and the largest wave speed :math:`c` of the
+material at the current state (``getMaximumWaveSpeed``), and of the limit of each nonlocal field, from the stencil
+estimate :math:`\lambda_K = 1 + 4\,n_\mathrm{dim}\,c_K/l^2` of the largest eigenvalue of
+:math:`\bar N - c_K\nabla^2\bar N` per unit volume: :math:`2\,\eta_K/\lambda_K` for a first-order field (forward
+Euler), :math:`2/\omega\,(\sqrt{1+\zeta^2}-\zeta)` with :math:`\omega^2 = \lambda_K/m_K`,
+:math:`\zeta = \eta_K/(2\,m_K\,\omega)` for a second-order one (central differences). A nonlocal field with neither
+a micro-inertia nor a viscosity cannot be integrated explicitly and is rejected there.
+
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
 

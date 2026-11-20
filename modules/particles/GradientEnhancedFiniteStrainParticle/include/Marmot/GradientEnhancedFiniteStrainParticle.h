@@ -32,7 +32,10 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
+#include <Eigen/SVD>
+#include <algorithm>
 #include <array>
+#include <cmath>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -473,6 +476,82 @@ namespace Marmot::Discretizations::Meshfree {
                                  double        dT ) const override;
 
     /**
+     * @brief Explicit scheme: advance the material point by the increment @p dQ.
+     *
+     * Interpolates @f$ \Delta\boldsymbol{u} @f$, @f$ \Delta\boldsymbol{F} @f$, @f$ \Delta\bar{N}_K @f$ and their
+     * gradients as computePhysicsKernels() does, evaluates the material point and stores the rates of the increment,
+     * @f$ \boldsymbol{v} = \Delta\boldsymbol{u}/\Delta t @f$, @f$ \boldsymbol{a} = (\boldsymbol{v} -
+     * \boldsymbol{v}_n)/\Delta t @f$ and @f$ \dot{\bar{N}}_K = \Delta\bar{N}_K/\Delta t @f$ (not for a zero-length
+     * increment). The forces follow from computePhysicsKernelsExplicit(), after the host has accepted the state and
+     * assigned the kernel functions of the new position.
+     *
+     * @param[in] dQ      Increment of the nodal dofs, node by node.
+     * @param[in] timeNew Time at the end of the increment.
+     * @param[in] dT      Time increment.
+     */
+    void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ) override;
+
+    /**
+     * @brief Explicit scheme: the internal force of the state of the last updatePhysicsExplicit().
+     *
+     * The displacement rows are @f$ r^U_{Aj} = \partial T_A/\partial x_i\,\tau_{ij}\,V_0 @f$, without inertia (the
+     * solver divides by the lumped inertia). The nonlocal rows are the balance in TOTAL form,
+     * @f[
+     *   r^N_{AK} = \Bigl( T_A\,\bar{N}_K + c_K\,\frac{\partial T_A}{\partial X_i}\frac{\partial\bar{N}_K}{\partial X_i}
+     *     - T_A\,L_K \Bigr) V_0 ,
+     * @f]
+     * with the totals the material point keeps: an explicit increment does not start from a balanced state, so the
+     * increment form of computePhysicsKernels() would drop the residual of the last one. Its time derivatives,
+     * @f$ m_K\ddot{\bar{N}}_K + \eta_K\dot{\bar{N}}_K @f$, are the solver's, from computeLumpedInertia() and
+     * computeLumpedDamping().
+     *
+     * @param[in,out] fInt Internal force vector, node by node; the contribution is added.
+     */
+    void computePhysicsKernelsExplicit( double* fInt ) override;
+
+    /**
+     * @brief Lumped inertia, the coefficients of the second time derivatives: @f$ \rho_0\,T_A\,V_0 @f$ on the
+     * displacement rows and @f$ m_K\,T_A\,V_0 @f$ on the nonlocal rows, with the micro-inertia @f$ m_K @f$ of the
+     * material (zero for a nonlocal field that is first order in time).
+     * @param[in,out] mLumped Lumped inertia vector, node by node; the contribution is added.
+     */
+    void computeLumpedInertia( double* mLumped ) const override;
+
+    /**
+     * @brief Lumped damping, the coefficients of the first time derivatives: @f$ \eta_K\,T_A\,V_0 @f$ on the nonlocal
+     * rows, with the nonlocal viscosity @f$ \eta_K @f$ of the material; the displacement rows are left untouched.
+     * @param[in,out] cLumped Lumped damping vector, node by node; the contribution is added.
+     */
+    void computeLumpedDamping( double* cLumped ) const override;
+
+    /**
+     * @brief Lumped momentum: @f$ \rho_0\,T_A\,V_0\,v_i @f$ on the displacement rows and
+     * @f$ m_K\,T_A\,V_0\,\dot{\bar{N}}_K @f$ on the nonlocal rows, i.e. the lumped inertia times the rates of the last
+     * explicit increment, so that a velocity projected from it keeps the rate of a second-order nonlocal field.
+     * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
+     */
+    void computeLumpedMomentum( double* mLumped ) const override;
+
+    /**
+     * @brief The stable time increment of the particle.
+     *
+     * The minimum of the mechanical limit @f$ l / c @f$, with the characteristic length
+     * @f$ l = \sigma_\mathrm{min}(\boldsymbol{F})\,V_0^{1/n_\mathrm{dim}} @f$ (the side of the volume-equivalent
+     * cube, shortened by the smallest principal stretch) and the largest wave speed @f$ c @f$ of the material at the
+     * current state, and of the limit of each nonlocal field. For that, the discrete operator
+     * @f$ \bar{N} - c_K\,\nabla^2\bar{N} @f$ is bounded by the stencil estimate
+     * @f$ \lambda_K = 1 + 4\,n_\mathrm{dim}\,c_K / l^2 @f$ per unit volume. A first-order field (@f$ m_K = 0 @f$),
+     * integrated by forward Euler, is stable for @f$ \Delta t \le 2\,\eta_K/\lambda_K @f$; a second-order one, by
+     * central differences with damping, for @f$ \Delta t \le 2/\omega\,(\sqrt{1+\zeta^2} - \zeta) @f$,
+     * @f$ \omega^2 = \lambda_K/m_K @f$, @f$ \zeta = \eta_K/(2\,m_K\,\omega) @f$.
+     *
+     * @param[out] criticalTimeStep The stable time increment.
+     * @throws std::invalid_argument for a nonlocal field without micro-inertia and without viscosity, which an explicit
+     *         scheme cannot integrate.
+     */
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep ) const override;
+
+    /**
      * @brief Access a state variable.
      *
      * `vertex displacements` is the displacement of the material point (the single vertex); every other name is
@@ -620,6 +699,21 @@ namespace Marmot::Discretizations::Meshfree {
       }
     };
 
+  protected:
+    /**
+     * @brief Interpolate the increment of the current step from the nodal increments.
+     * @param[in]  dQ    Increment of the nodal dofs, node by node.
+     * @param[out] du    @f$ \Delta\boldsymbol{u} = N_B\,\Delta\boldsymbol{q}^U_B @f$.
+     * @param[out] du_dY @f$ \partial\Delta u_i/\partial Y_j = \Delta q^U_{Bi}\,\partial N_B/\partial Y_j @f$.
+     * @param[out] dn    @f$ \Delta\bar{N}_K = N_B\,\Delta q^N_{BK} @f$.
+     * @param[out] dn_dY @f$ \partial\Delta\bar{N}_K/\partial Y_j = \Delta q^N_{BK}\,\partial N_B/\partial Y_j @f$.
+     */
+    void interpolateIncrement( const double*                                            dQ,
+                               Fastor::Tensor< double, nDim >&                          du,
+                               Fastor::Tensor< double, nDim, nDim >&                    du_dY,
+                               NonlocalVector&                                          dn,
+                               std::array< Fastor::Tensor< double, nDim >, nNonlocal >& dn_dY ) const;
+
   private:
     /// @brief Set the center in the intermediate reference configuration to the accepted material point position.
     virtual void updateParticlePositionToReferenceIntermediate()
@@ -726,32 +820,11 @@ namespace Marmot::Discretizations::Meshfree {
 
     constexpr int nodeBlockSize = nDim + nNonlocal;
 
-    Tensor< double, nDim >       du( 0.0 );
-    Tensor< double, nDim, nDim > du_dY( 0.0 );
-
-    NonlocalVector                                  dn = NonlocalVector::Zero();
+    Tensor< double, nDim >                          du;
+    Tensor< double, nDim, nDim >                    du_dY;
+    NonlocalVector                                  dn;
     std::array< Tensor< double, nDim >, nNonlocal > dn_dY;
-    dn_dY.fill( Tensor< double, nDim >( 0.0 ) );
-
-    for ( int B = 0; B < _nNodes; B++ ) {
-
-      const int idxB_u = nodeBlockSize * B;
-      const int idxB_n = nodeBlockSize * B + nDim;
-
-      const double N_B     = _N( B );
-      const auto   dN_B_dY = Tensor< double, nDim >( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
-
-      const auto dQU = Tensor< double, nDim >( dQ + idxB_u );
-
-      du += N_B * dQU;
-      du_dY += einsum< i, j >( dQU, dN_B_dY );
-
-      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
-        const double dQN = dQ[idxB_n + kNl];
-        dn( kNl ) += N_B * dQN;
-        dn_dY[kNl] += ( dQN * dN_B_dY );
-      }
-    }
+    interpolateIncrement( dQ, du, du_dY, dn, dn_dY );
 
     _mp.prepareYourself( timeNew, dT );
     _mp.incrementDeformation( du, du_dY, dn, dn_dY );
@@ -874,6 +947,210 @@ namespace Marmot::Discretizations::Meshfree {
       }
     }
     // clang-format on
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::interpolateIncrement(
+    const double*                                            dQ,
+    Fastor::Tensor< double, nDim >&                          du,
+    Fastor::Tensor< double, nDim, nDim >&                    du_dY,
+    NonlocalVector&                                          dn,
+    std::array< Fastor::Tensor< double, nDim >, nNonlocal >& dn_dY ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    du.zeros();
+    du_dY.zeros();
+    dn.setZero();
+    dn_dY.fill( Tensor< double, nDim >( 0.0 ) );
+
+    for ( int B = 0; B < _nNodes; B++ ) {
+
+      const int idxB_u = nodeBlockSize * B;
+      const int idxB_n = nodeBlockSize * B + nDim;
+
+      const double N_B     = _N( B );
+      const auto   dN_B_dY = Tensor< double, nDim >( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
+
+      const auto dQU = Tensor< double, nDim >( dQ + idxB_u );
+
+      du += N_B * dQU;
+      du_dY += einsum< i, j >( dQU, dN_B_dY );
+
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+        const double dQN = dQ[idxB_n + kNl];
+        dn( kNl ) += N_B * dQN;
+        dn_dY[kNl] += ( dQN * dN_B_dY );
+      }
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::updatePhysicsExplicit( const double* dQ,
+                                                                                       double        timeNew,
+                                                                                       double        dT )
+  {
+    Fastor::Tensor< double, nDim >                          du;
+    Fastor::Tensor< double, nDim, nDim >                    du_dY;
+    NonlocalVector                                          dn;
+    std::array< Fastor::Tensor< double, nDim >, nNonlocal > dn_dY;
+    interpolateIncrement( dQ, du, du_dY, dn, dn_dY );
+
+    _mp.prepareYourself( timeNew, dT );
+    _mp.incrementDeformation( du, du_dY, dn, dn_dY );
+    _mp.computeYourself( timeNew, dT );
+
+    // a zero-length increment (the start of a step) leaves the rates as they are
+    if ( dT <= 0.0 )
+      return;
+
+    const Fastor::Tensor< double, nDim > v_n  = _mp.getVelocity();
+    const Fastor::Tensor< double, nDim > v_np = du / dT;
+    _mp.setVelocity( v_np );
+    _mp.setAcceleration( Fastor::Tensor< double, nDim >( ( v_np - v_n ) / dT ) );
+    _mp.setNonlocalFieldRate( dn / dT );
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computePhysicsKernelsExplicit( double* fInt )
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const auto&                                           S     = _mp.response.S;
+    const auto&                                           R     = _mp.response.nonLocalRadius;
+    const NonlocalVector                                  N     = _mp.getNonlocalField();
+    const NonlocalVector                                  L     = _mp.getLocalField();
+    const std::array< Tensor< double, nDim >, nNonlocal > dN_dX = _mp.getNonlocalFieldGradient();
+    const Tensor< double, nDim, nDim >                    dY_dx = inv( _mp.dx_dY() );
+    const Tensor< double, nDim, nDim >                    dY_dX = _mp.dY_dX();
+    const double                                          V0    = getVolumeUndeformed();
+
+    Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+
+      const double                 T_A     = _T( A );
+      const auto                   dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
+      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
+      const Tensor< double, nDim > dT_A_dX = einsum< ji, j >( dY_dX, dT_A_dY );
+
+      const int idxA_u = nodeBlockSize * A;
+      const int idxA_n = nodeBlockSize * A + nDim;
+
+      const Tensor< double, nDim > r_U = einsum< i, ij >( dT_A_dx, S ) * V0;
+      P.template segment< nDim >( idxA_u ) += Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
+
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+        const double c = R( kNl ) * R( kNl );
+        P( idxA_n + kNl ) += ( T_A * N( kNl ) + c * inner( dT_A_dX, dN_dX[kNl] ) - T_A * L( kNl ) ) * V0;
+      }
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeLumpedInertia( double* mLumped ) const
+  {
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const double         density0 = _mp.getDensityUndeformed();
+    const NonlocalVector m        = _mp.getNonlocalMicroInertia();
+    const double         V0       = getVolumeUndeformed();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A = _T( A );
+      for ( int i = 0; i < nDim; i++ )
+        mLumped[nodeBlockSize * A + i] += density0 * T_A * V0;
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+        mLumped[nodeBlockSize * A + nDim + kNl] += m( kNl ) * T_A * V0;
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeLumpedDamping( double* cLumped ) const
+  {
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const NonlocalVector eta = _mp.getNonlocalViscosity();
+    const double         V0  = getVolumeUndeformed();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A = _T( A );
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+        cLumped[nodeBlockSize * A + nDim + kNl] += eta( kNl ) * T_A * V0;
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeLumpedMomentum( double* mLumped ) const
+  {
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const double                         density0 = _mp.getDensityUndeformed();
+    const NonlocalVector                 m        = _mp.getNonlocalMicroInertia();
+    const Fastor::Tensor< double, nDim > v        = _mp.getVelocity();
+    const NonlocalVector                 dN_dt    = _mp.getNonlocalFieldRate();
+    const double                         V0       = getVolumeUndeformed();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A = _T( A );
+      for ( int i = 0; i < nDim; i++ )
+        mLumped[nodeBlockSize * A + i] += density0 * T_A * V0 * v( i );
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+        mLumped[nodeBlockSize * A + nDim + kNl] += m( kNl ) * T_A * V0 * dN_dt( kNl );
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeCriticalTimeStepForExplicitDynamics(
+    double& criticalTimeStep ) const
+  {
+    using namespace Fastor;
+
+    // the characteristic length: the volume-equivalent side, shortened by the smallest principal stretch
+    const Tensor< double, nDim, nDim > F = evaluate( _mp.dx_dY() % _mp.dY_dX() );
+    const Eigen::Matrix< double, nDim, nDim >
+      FEigen = Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F.data() );
+    const double
+      smallestStretch = Eigen::JacobiSVD< Eigen::Matrix< double, nDim, nDim > >( FEigen ).singularValues().minCoeff();
+    const double l    = smallestStretch * std::pow( getVolumeUndeformed(), 1.0 / nDim );
+
+    const double waveSpeed = _mp.getMaximumWaveSpeed();
+    if ( !( waveSpeed > 0.0 ) )
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": the material reports no positive wave speed" );
+
+    criticalTimeStep = l / waveSpeed;
+
+    const NonlocalVector R   = _mp.getNonlocalRadius();
+    const NonlocalVector eta = _mp.getNonlocalViscosity();
+    const NonlocalVector m   = _mp.getNonlocalMicroInertia();
+
+    for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+      // the largest eigenvalue of the discrete reaction-diffusion operator per unit volume, stencil estimate
+      const double lambda = 1.0 + 4.0 * nDim * R( kNl ) * R( kNl ) / ( l * l );
+
+      double dt_N;
+      if ( m( kNl ) > 0.0 ) {
+        const double omega = std::sqrt( lambda / m( kNl ) );
+        const double zeta  = eta( kNl ) / ( 2.0 * m( kNl ) * omega );
+        dt_N               = 2.0 / omega * ( std::sqrt( 1.0 + zeta * zeta ) - zeta );
+      }
+      else if ( eta( kNl ) > 0.0 )
+        dt_N = 2.0 * eta( kNl ) / lambda;
+      else
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": nonlocal variable " << kNl
+                                     << " has neither a micro-inertia nor a viscosity, so an explicit scheme cannot "
+                                        "integrate it; give the material a nonlocal viscosity" );
+
+      criticalTimeStep = std::min( criticalTimeStep, dt_N );
+    }
   }
 
   template < int nDim, int nNonlocal >
