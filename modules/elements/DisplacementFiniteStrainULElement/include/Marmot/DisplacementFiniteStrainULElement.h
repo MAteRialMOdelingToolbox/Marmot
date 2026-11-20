@@ -1120,9 +1120,10 @@ namespace Marmot::Discretizations::Elements {
 
     using DisplacementFiniteStrainULElement< 2, nNodes >::DisplacementFiniteStrainULElement;
 
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
     /**
      * @brief Compute the critical time step for explicit dynamics: as the plane element, with the hoop row
