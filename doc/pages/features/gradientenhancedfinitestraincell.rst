@@ -7,7 +7,7 @@ The gradient-enhanced finite-strain cell is the MPM background cell of the impli
 It carries the displacement field :math:`\boldsymbol u` (``nDim`` dofs per node) and a scalar nonlocal field
 :math:`\bar N` (1 dof per node) and assembles the contributions of the
 :doc:`gradientenhancedfinitestrainmaterialpoint` instances it currently hosts, which in turn drive a material of the
-interface ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` (e.g. :doc:`gradientenhancedcompressibleneohookedamage`,
+interface ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain<1>``, the materials with one nonlocal variable (e.g. :doc:`gradientenhancedcompressibleneohookedamage`,
 :doc:`gradientenhancedfinitestraindruckerprager`). It is the MPM counterpart of
 :doc:`gradientenhancedfinitestraindisplacementelement`; the cell geometries and the MPM workflow are described in
 :doc:`meshfreecells`.

@@ -64,15 +64,15 @@ namespace {
                         const TimeIncrement&       timeIncrement ) const override
     {
       GradientEnhancedCompressibleNeoHookeDamage::computeStress( response, tangents, deformation, timeIncrement );
-      response.L += beta * deformation.N;
-      tangents.dL_dN += beta;
+      response.L( 0 ) += beta * deformation.N( 0 );
+      tangents.dL_dN( 0, 0 ) += beta;
     }
   };
 
   const std::string testMaterialName = "TESTLOCALFIELDDEPENDINGONTHENONLOCALFIELD";
 
-  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::registerMaterial<
-    LocalFieldDependingOnTheNonlocalField >( testMaterialName );
+  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+    1 >::registerMaterial< LocalFieldDependingOnTheNonlocalField >( testMaterialName );
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >

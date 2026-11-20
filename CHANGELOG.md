@@ -209,6 +209,21 @@ All notable changes to Marmot are documented in this file. The format follows
   simulations. The density of `MICROPLANEM7` moves from index 11 to 12; the density of `GM7` from 13 to 14 and its
   nonlocal viscosity from 14 to 15. In an old input file giving these properties, the density would be read as
   `stressUnit`.
+- **Breaking:** the gradient-enhanced finite-strain stack carries `nNonlocal` nonlocal variables:
+  `Materials::MaterialGradientEnhancedFiniteStrain<nNonlocal>` and `Registry::MaterialGradientEnhancedFiniteStrainFactory
+  <nNonlocal>` (instantiated for 1 and 6), the material point `GradientEnhancedFiniteStrainMaterialPoint<nDim,
+  nNonlocal>` (one class; `GradientEnhancedFiniteStrainMaterialPoint2D`/`3D` are removed) and the particles
+  `GradientEnhancedFiniteStrainParticle<nDim, nNonlocal>`, `...SQCNI<nDim, nVertices, nNonlocal>`,
+  `...SQCNIxNSNI<nDim, nVertices, nNonlocal>`. Nonlocal quantities are Eigen vectors (`L`, `nonLocalRadius`, `N`,
+  `getNonlocalViscosity`, `getNonlocalMicroInertia`), the mixed tangents one tensor per nonlocal variable
+  (`dTau_dN[K]`, `dL_dF[K]`). New interface method `getMaximumWaveSpeed`, whose default is the one of
+  `MaterialFiniteStrain` (shared helper `maximumWaveSpeedByCentralDifferences`). The material point keeps the total
+  gradient and the rate of the nonlocal fields (new states `nonlocal damage gradient`, `nonlocal damage rate`).
+  Registered with six nonlocal variables (`strain symmetric`, 3D): `GradientEnhanced6FiniteStrain/3D`,
+  `GradientEnhanced6FiniteStrain/3D/Point`, `GradientEnhanced6FiniteStrainSQCNI/3D/Hexa`,
+  `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
+  Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
+  one nonlocal variable are unchanged (bitwise).
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element

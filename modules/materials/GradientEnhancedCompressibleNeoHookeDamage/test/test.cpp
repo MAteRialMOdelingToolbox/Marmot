@@ -37,10 +37,15 @@ namespace {
   Result evaluate( const Tensor33d& F, double N, double kappaIn )
   {
     double                         kappa = kappaIn;
-    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., 0., &kappa );
+    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ),
+                                             Mat::NonlocalVector::Zero(),
+                                             Mat::NonlocalVector::Zero(),
+                                             0.,
+                                             0.,
+                                             &kappa );
     Mat::AlgorithmicModuli< 3 >    t;
-    material().computeStress( response, t, { F, N }, { 0.0, 1.0 } );
-    return { response.tau, response.L, kappa, t };
+    material().computeStress( response, t, { F, Mat::NonlocalVector::Constant( N ) }, { 0.0, 1.0 } );
+    return { response.tau, response.L( 0 ), kappa, t };
   }
 
   Tensor33d testF()
@@ -66,7 +71,7 @@ void testNoDamageBelowThresholdIsNeoHooke()
                            "tau below threshold != CompressibleNeoHooke" + where );
   throwExceptionOnFailure( checkIfEqual( res.t.dTau_dF, t.dTau_dF, 1e-8 ),
                            "dTau_dF below threshold != CompressibleNeoHooke" + where );
-  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN, Tensor33d( 0.0 ), 1e-14 ), "dTau_dN must vanish" + where );
+  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN[0], Tensor33d( 0.0 ), 1e-14 ), "dTau_dN must vanish" + where );
 }
 
 void testUndeformedState()
@@ -126,9 +131,9 @@ void testConsistentTangentsLoading()
   const double    dL_dN_num   = ( rpN.L - rmN.L ) / ( 2 * hN );
 
   throwExceptionOnFailure( checkIfEqual( res.t.dTau_dF, dTau_dF_num, 1e-4 ), "dTau_dF inconsistent" + where );
-  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN, dTau_dN_num, 1e-2 ), "dTau_dN inconsistent" + where );
-  throwExceptionOnFailure( checkIfEqual( res.t.dL_dF, dL_dF_num, 1e-7 ), "dL_dF inconsistent" + where );
-  throwExceptionOnFailure( checkIfEqual( res.t.dL_dN, dL_dN_num, 1e-10 ), "dL_dN inconsistent" + where );
+  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN[0], dTau_dN_num, 1e-2 ), "dTau_dN inconsistent" + where );
+  throwExceptionOnFailure( checkIfEqual( res.t.dL_dF[0], dL_dF_num, 1e-7 ), "dL_dF inconsistent" + where );
+  throwExceptionOnFailure( checkIfEqual( res.t.dL_dN( 0, 0 ), dL_dN_num, 1e-10 ), "dL_dN inconsistent" + where );
 }
 
 void testUnloadingKeepsDamage()
@@ -138,7 +143,7 @@ void testUnloadingKeepsDamage()
   const auto [D, _]  = material().damage( kappa );
 
   throwExceptionOnFailure( res.kappa == kappa, "history must not decrease" + where );
-  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN, Tensor33d( 0.0 ), 1e-14 ),
+  throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN[0], Tensor33d( 0.0 ), 1e-14 ),
                            "dTau_dN must vanish when unloading" + where );
 
   const auto undamaged = evaluate( testF(), 0.0, 0.0 );
@@ -169,12 +174,12 @@ void testObjectivity()
 
 void testFactoryAndProperties()
 {
-  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
-    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
-      createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                      props.data(),
-                      static_cast< int >( props.size() ),
-                      7 ) );
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > > mat(
+    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+      1 >::createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                           props.data(),
+                           static_cast< int >( props.size() ),
+                           7 ) );
   throwExceptionOnFailure( mat != nullptr, "factory did not create the material" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 1, "expected one state variable (kappa)" + where );
   throwExceptionOnFailure( checkIfEqual( mat->getDensity( nullptr ), props[5] ), "density" + where );
@@ -195,13 +200,21 @@ void testCumulativeDissipation()
   // carried over, incremented by a damaging step, unchanged by an undamaged one
   const double                   carried = 2.0;
   double                         kappa   = 2e-3;
-  Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., carried, &kappa );
+  Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ),
+                                           Mat::NonlocalVector::Zero(),
+                                           Mat::NonlocalVector::Zero(),
+                                           0.,
+                                           carried,
+                                           &kappa );
   Mat::AlgorithmicModuli< 3 >    t;
-  material().computeStress( response, t, { testF(), 3e-3 }, { 0.0, 1.0 } );
+  material().computeStress( response, t, { testF(), Mat::NonlocalVector::Constant( 3e-3 ) }, { 0.0, 1.0 } );
   throwExceptionOnFailure( response.dissipation > carried, "damage growth must dissipate" + where );
 
   const double afterDamage = response.dissipation;
-  material().computeStress( response, t, { testF(), 1e-3 }, { 0.0, 1.0 } ); // below the history: no new damage
+  material().computeStress( response,
+                            t,
+                            { testF(), Mat::NonlocalVector::Constant( 1e-3 ) },
+                            { 0.0, 1.0 } ); // below the history: no new damage
   throwExceptionOnFailure( std::abs( response.dissipation - afterDamage ) < 1e-14,
                            "a step without damage growth must not dissipate" + where );
 }

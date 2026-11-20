@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotFiniteStrainWaveSpeed.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include <Fastor/tensor/Tensor.h>
 #include <algorithm>
@@ -368,45 +369,21 @@ namespace Marmot::Materials {
     virtual double getMaximumWaveSpeed( const double*                         stateVars,
                                         const Fastor::Tensor< double, 3, 3 >& deformationGradient ) const
     {
-      constexpr double dEps = 1e-6;
-
       const int nStateVars = getNumberOfRequiredStateVars();
 
-      double     maxStiffnessDiagonal = 0.0;
-      const auto timeIncrement        = TimeIncrement{ 0.0, 1.0 };
+      auto kirchhoffStressAt = [&]( const Fastor::Tensor< double, 3, 3 >& F ) {
+        std::vector< double > stateVarsCopy( nStateVars, 0.0 );
+        if ( stateVars != nullptr && nStateVars > 0 )
+          std::copy_n( stateVars, nStateVars, stateVarsCopy.begin() );
 
-      for ( int i = 0; i < 3; ++i ) {
-        std::vector< double > stateVarsPlus( nStateVars, 0.0 );
-        std::vector< double > stateVarsMinus( nStateVars, 0.0 );
-        if ( stateVars != nullptr && nStateVars > 0 ) {
-          std::copy_n( stateVars, nStateVars, stateVarsPlus.begin() );
-          std::copy_n( stateVars, nStateVars, stateVarsMinus.begin() );
-        }
+        ConstitutiveResponse< 3 > response{ Fastor::Tensor< double, 3, 3 >( 0.0 ), 0.0, 0.0, stateVarsCopy.data() };
+        computeStressExplicit( response, Deformation< 3 >{ F }, TimeIncrement{ 0.0, 1.0 } );
+        return response.tau;
+      };
 
-        auto FPlus  = deformationGradient;
-        auto FMinus = deformationGradient;
-        FPlus( i, i ) *= ( 1.0 + dEps );
-        FMinus( i, i ) *= ( 1.0 - dEps );
-
-        Deformation< 3 > deformationPlus{ FPlus };
-        Deformation< 3 > deformationMinus{ FMinus };
-
-        ConstitutiveResponse< 3 > responsePlus{ Fastor::Tensor< double, 3, 3 >( 0.0 ), 0.0, 0.0, stateVarsPlus.data() };
-        ConstitutiveResponse< 3 > responseMinus{ Fastor::Tensor< double, 3, 3 >( 0.0 ),
-                                                 0.0,
-                                                 0.0,
-                                                 stateVarsMinus.data() };
-
-        computeStressExplicit( responsePlus, deformationPlus, timeIncrement );
-        computeStressExplicit( responseMinus, deformationMinus, timeIncrement );
-
-        const double dLogStrain = std::log( 1.0 + dEps ) - std::log( 1.0 - dEps );
-        const double Cii        = ( responsePlus.tau( i, i ) - responseMinus.tau( i, i ) ) / dLogStrain;
-        maxStiffnessDiagonal    = std::max( maxStiffnessDiagonal, Cii );
-      }
-
-      const double density = getDensity( stateVars );
-      return density > 0.0 ? std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / density ) : 0.0;
+      return Marmot::ContinuumMechanics::FiniteStrain::maximumWaveSpeedByCentralDifferences( deformationGradient,
+                                                                                             getDensity( stateVars ),
+                                                                                             kirchhoffStressAt );
     }
 
     /**

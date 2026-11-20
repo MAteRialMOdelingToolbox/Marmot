@@ -25,9 +25,9 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
-    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties,
-                                                               nMaterialProperties,
-                                                               materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >( materialProperties,
+                                                                    nMaterialProperties,
+                                                                    materialNumber ),
       K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       kappa0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
@@ -102,31 +102,31 @@ namespace Marmot::Materials {
     double&      kappa    = stateLayout.getAs< double& >( response.stateVars, "kappa" );
     const double kappaOld = std::max( kappa, kappa0 );
     const double DOld     = damage( kappaOld ).first;
-    const bool   loading  = deformation.N > kappaOld;
-    const double kappaNew = loading ? deformation.N : kappaOld;
+    const bool   loading  = deformation.N( 0 ) > kappaOld;
+    const double kappaNew = loading ? deformation.N( 0 ) : kappaOld;
 
     const auto [D, dD_dKappa] = damage( kappaNew );
 
     response.tau                  = ( 1. - D ) * tau0;
-    response.L                    = L;
-    response.nonLocalRadius       = nonLocalRadius;
+    response.L( 0 )               = L;
+    response.nonLocalRadius( 0 )  = nonLocalRadius;
     response.elasticEnergyDensity = ( 1. - D ) * psi0;
     // cumulative: the host carries the dissipation of the previous increments in (as for the other finite-strain
     // materials, e.g. DisplacementFiniteStrainULElement); the damage increment releases psi0 dD
     response.dissipation += psi0 * ( D - DOld );
 
-    tangents.dTau_dF = ( 1. - D ) * dTau0_dF;
-    tangents.dTau_dN = loading ? Tensor33d( -dD_dKappa * tau0 ) : Tensor33d( 0.0 );
+    tangents.dTau_dF    = ( 1. - D ) * dTau0_dF;
+    tangents.dTau_dN[0] = loading ? Tensor33d( -dD_dKappa * tau0 ) : Tensor33d( 0.0 );
 
     // dL/dF = (dpsi0/dF) / (E L), with dpsi0/dF = P0 = F S0; zero in the undeformed state, where L has a kink
     if ( L > 1e-14 ) {
       const Tensor33d P0 = einsum< iK, KJ >( F, PK2 );
-      tangents.dL_dF     = ( 1. / ( E * L ) ) * P0;
+      tangents.dL_dF[0]  = ( 1. / ( E * L ) ) * P0;
     }
     else
-      tangents.dL_dF = 0.0;
+      tangents.dL_dF[0] = 0.0;
 
-    tangents.dL_dN = 0.0;
+    tangents.dL_dN( 0, 0 ) = 0.0;
 
     kappa = kappaNew;
   }
