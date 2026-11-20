@@ -423,6 +423,32 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] cLumped Lumped damping vector (node-wise); entries left untouched mean no damping.
      */
     virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
+
+    /**
+     * @brief Explicit dynamics: add an upper bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, the absolute value of
+     * the particle's stiffness at its current state times nonnegative weights, without assembling the stiffness.
+     * @details @f$ \boldsymbol{K} @f$ is the tangent of computePhysicsKernels() at a zero increment, without the
+     * inertia: what a host bounds the stable time increment of its explicit scheme with (e.g. by the Collatz-Wielandt
+     * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only). The bound costs
+     * O(nodes) instead of the O(nodes^2) of the stiffness; see AbsoluteTangentBound. The material point is evaluated
+     * at a zero increment on the working copy of the state, which the host resets afterwards, as after a trial
+     * computePhysicsKernels(). The default throws: a particle with an own inertia must provide it. Appended at the end
+     * of the class, so that the vtable slots of the methods above do not move.
+     * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, nDof x nColumns, in the
+     * dof order of the particle.
+     * @param[in] nColumns The number of columns of @p columnWeights.
+     * @param[in,out] bound Column-major, nDof x nColumns: the bound is added.
+     * @param[in] timeNew The time of the evaluation.
+     * @param[in] dT The time increment of the evaluation.
+     */
+    virtual void computeBoundOfAbsoluteStiffnessTimes( [[maybe_unused]] const double* columnWeights,
+                                                       [[maybe_unused]] int           nColumns,
+                                                       [[maybe_unused]] double*       bound,
+                                                       [[maybe_unused]] double        timeNew,
+                                                       [[maybe_unused]] double        dT )
+    {
+      throw std::runtime_error( "Not implemented yet!" );
+    };
   };
 
 } // namespace Marmot::Discretizations::Meshfree

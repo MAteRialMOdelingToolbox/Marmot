@@ -153,6 +153,12 @@ All notable changes to Marmot are documented in this file. The format follows
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
   viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
   damping), appended at the end of the class.
+- `Particle::computeBoundOfAbsoluteStiffnessTimes` (appended at the end of the class): an upper bound of |K| W, the
+  absolute value of the particle's stiffness times nonnegative weights, for the stable time increment of an explicit
+  host. `AbsoluteTangentBound` forms it in O(nodes) from the chain-rule factors of each node's rows
+  (`addStiffnessRowsOfNode`) and weighted moments of the shape functions, without assembling the stiffness; implemented
+  in `DisplacementParticle` and `GradientEnhancedFiniteStrainParticle` for all derived particles. Their tangent is
+  assembled from the same factors (`addTangentRowsOfNode`): equal to the former one to round-off, residuals bitwise.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
