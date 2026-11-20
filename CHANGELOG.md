@@ -143,6 +143,11 @@ All notable changes to Marmot are documented in this file. The format follows
   Results with the default are unchanged.
 - `materials/GM7`: optional property 16, `nonlocalMicroInertia` (after the nonlocal viscosity): makes the six nonlocal
   fields second order in time, admissible up to eta^2/4; absent, they stay first order.
+- `GM7/COROTATIONAL` (`Materials::GradientEnhancedCorotationalWrapper`): GM7 at finite strains, for the particles
+  with six nonlocal variables. The wrapped material is driven by the increment of the logarithmic strain in the frame
+  of the polar rotation and returns the rotated Kirchhoff stress, so a rigid rotation rotates the stress exactly also
+  for a material that recomputes its stress from total strains (which the Hughes-Winget wrapper cannot); consistent
+  analytic tangent through the spectral derivatives of ln C and C^(1/2).
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
