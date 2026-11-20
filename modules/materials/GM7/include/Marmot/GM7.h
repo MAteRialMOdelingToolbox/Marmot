@@ -118,6 +118,16 @@ namespace Marmot::Materials {
 
     void computeStress( response& res, tangents& tan, const increment& inc ) const override;
 
+    /// @brief The stress alone, for explicit dynamics: the same update as computeStress(), without homogenizing the
+    /// tangents (see #stress_update); stress and state variables equal those of computeStress().
+    void computeStressExplicit( response& res, const increment& inc ) const override;
+
+    /// @brief The macroscopic tangents of #stress_update.
+    struct StressUpdateTangents {
+      Marmot::Math::Matrix6d dStressddStrainLocal;        ///< with respect to the local strain increment
+      Marmot::Math::Matrix6d dStressddStrainOverNonLocal; ///< with respect to the over-nonlocal strain increment
+    };
+
     /// @brief Performs the full microplane stress update (kinematic projection, per-microplane
     /// normal/shear boundary evaluation, and homogenization back to macroscopic stress and
     /// tangents) for one strain increment, always committing the resulting per-microplane state
@@ -128,11 +138,20 @@ namespace Marmot::Materials {
     /// shear boundaries.
     /// @param stateVars State variables at the start of the increment; overwritten with the updated
     /// per-microplane state.
-    /// @return {macroscopic stress, tangent w.r.t. local strain, tangent w.r.t. over-nonlocal strain}.
-    std::tuple< Marmot::Math::Vector6d, Marmot::Math::Matrix6d, Marmot::Math::Matrix6d > stress_update(
-      const Marmot::Math::Vector6d& dE_macroLocal,
-      const Marmot::Math::Vector6d& dE_macroOverNonLocal,
-      double*                       stateVars ) const;
+    /// @param tangents The macroscopic tangents, homogenized from the microplanes'; nullptr if only the stress is
+    /// needed, which skips the homogenization (the microplane laws still form their tangent columns).
+    /// @return The macroscopic stress.
+    Marmot::Math::Vector6d stress_update( const Marmot::Math::Vector6d& dE_macroLocal,
+                                          const Marmot::Math::Vector6d& dE_macroOverNonLocal,
+                                          double*                       stateVars,
+                                          StressUpdateTangents*         tangents ) const;
+
+    /// @brief The update behind computeStress() and computeStressExplicit(): stress, local strain, state variables,
+    /// and the tangents if @p tan is given.
+    /// @param[in,out] res Response, as for computeStress().
+    /// @param[out] tan The tangents; nullptr for the stress alone.
+    /// @param[in] inc Increment, as for computeStress().
+    void updateStress( response& res, tangents* tan, const increment& inc ) const;
 
     /// @brief Evaluates the normal-direction response of a single microplane: compares the
     /// (local-strain) elastic prediction (MicroplaneM7Formulation::normal_elasticLaw) against the

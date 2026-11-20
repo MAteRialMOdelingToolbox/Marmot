@@ -586,6 +586,46 @@ void testNonlocalMicroInertia()
                              << __PRETTY_FUNCTION__ << " failed: micro-inertia above eta^2/4 not rejected" );
 }
 
+// the explicit path (stress alone) is the same update as computeStress(): stress, local strain and state variables
+// equal bitwise, along paths into cracking, crushing and shear
+void testComputeStressExplicitEqualsComputeStress()
+{
+  const std::vector< Marmot::Math::Vector6d > paths = { { 2e-5, -4e-6, -4e-6, 0., 0., 0. },
+                                                        { -3e-4, 6e-5, 6e-5, 0., 0., 0. },
+                                                        { 1e-5, 0., 0., 2e-5, -1e-5, 0. } };
+  for ( const auto& dStrain : paths ) {
+    auto withTangents = createGM7( defaultMaterialProperties.data(),
+                                   static_cast< int >( defaultMaterialProperties.size() ) );
+    auto explicitOnly = createGM7( defaultMaterialProperties.data(),
+                                   static_cast< int >( defaultMaterialProperties.size() ) );
+
+    const int             nStateVars = withTangents->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVars, 0.0 ), stateVarsExplicit( nStateVars, 0.0 );
+
+    response  res, resExplicit;
+    tangents  tan;
+    increment inc;
+    res.stress            = Marmot::Math::Vector6d::Zero();
+    resExplicit.stress    = Marmot::Math::Vector6d::Zero();
+    res.stateVars         = stateVars.data();
+    resExplicit.stateVars = stateVarsExplicit.data();
+    inc.dStrain           = dStrain;
+    inc.K                 = Eigen::Vector< double, 6 >::Zero();
+    inc.dK                = 1.1 * dStrain; // the nonlocal strain runs ahead of the local one
+
+    for ( int i = 0; i < 40; i++ ) {
+      withTangents->computeStress( res, tan, inc );
+      explicitOnly->computeStressExplicit( resExplicit, inc );
+      throwExceptionOnFailure( res.stress == resExplicit.stress && res.KLocal == resExplicit.KLocal &&
+                                 stateVars == stateVarsExplicit,
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": the explicit path differs in increment " << i
+                                 << " of the path " << dStrain.transpose() );
+      inc.K = res.KLocal;
+    }
+  }
+}
+
 int main()
 {
   testOedometricCompression();
@@ -604,5 +644,6 @@ int main()
   testTooFewMaterialProperties();
   testPropertyLayout();
   testNonlocalMicroInertia();
+  testComputeStressExplicitEqualsComputeStress();
   return 0;
 }
