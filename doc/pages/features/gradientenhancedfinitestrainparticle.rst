@@ -4,12 +4,16 @@ Gradient-Enhanced Finite-Strain Particles
 Theory
 ------
 The gradient-enhanced finite-strain particles are the RKPM particles of the implicit-gradient finite-strain
-formulation. Each particle couples the displacement field :math:`\boldsymbol u` to a single scalar nonlocal field
-:math:`\bar N` (nodal fields ``displacement`` and ``nonlocal damage``, dofs ordered node by node as
-:math:`\{u_1,\dots,u_{n_\mathrm{dim}},\bar N\}`), owns one :doc:`gradientenhancedfinitestrainmaterialpoint` and is
-integrated at that single point (nodal integration). The material is any material of the interface
-``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``, e.g. :doc:`gradientenhancedcompressibleneohookedamage` or
-:doc:`gradientenhancedfinitestraindruckerprager`. The shape functions come from the reproducing kernel approximation
+formulation. Each particle couples the displacement field :math:`\boldsymbol u` to :math:`n_\mathrm{nonlocal}` nonlocal
+fields :math:`\bar N_K` (the template parameter ``nNonlocal``; nodal fields ``displacement`` and, as for the
+gradient-enhanced finite elements, ``nonlocal damage`` for one nonlocal variable and ``strain symmetric`` for six; dofs
+ordered node by node as :math:`\{u_1,\dots,u_{n_\mathrm{dim}},\bar N_1,\dots,\bar N_{n_\mathrm{nonlocal}}\}`), owns
+one :doc:`gradientenhancedfinitestrainmaterialpoint` and is integrated at that single point (nodal integration). The
+material is any material of the interface ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain<nNonlocal>``, e.g.
+:doc:`gradientenhancedcompressibleneohookedamage` or :doc:`gradientenhancedfinitestraindruckerprager` with one nonlocal
+variable, ``GM7/COROTATIONAL`` (:doc:`gradientenhancedcorotational`) with six. The weak forms below are written for one
+nonlocal variable; with several, each :math:`\bar N_K` has its own balance with its own :math:`c_K`, and they couple
+only through the material (:math:`\partial L_K/\partial\bar N_M`). The shape functions come from the reproducing kernel approximation
 (:doc:`meshfreeapproximation`); the particle interface, the integration schemes and the corrections are introduced in
 :doc:`meshfreeparticles`. The weak forms are those of :doc:`gradientenhancedfinitestraindisplacementelement`, in
 increment form.
@@ -209,77 +213,93 @@ The particles are registered in the ``Marmot::Registry::ParticleFactory``:
      - Dimension / shape
      - Integration
    * - ``GradientEnhancedFiniteStrain/PlaneStrain/Point``
-     - ``GradientEnhancedFiniteStrainParticle<2>``
+     - ``GradientEnhancedFiniteStrainParticle<2,1>``
      - plane strain, point
      - direct nodal integration
    * - ``GradientEnhancedFiniteStrain/3D/Point``
-     - ``GradientEnhancedFiniteStrainParticle<3>``
+     - ``GradientEnhancedFiniteStrainParticle<3,1>``
      - 3D, point
      - direct nodal integration
    * - ``GradientEnhancedFiniteStrainSQCNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4,1>``
      - plane strain, Quad
      - SQCNI (``DeformationGradient``)
    * - ``GradientEnhancedFiniteStrainSNNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4,1>``
      - plane strain, Quad
      - SNNI (``None``)
    * - ``GradientEnhancedFiniteStrainSQCNI_R/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4,1>``
      - plane strain, Quad
      - SQCNI (``RotationOnly``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RU/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<2,4,1>``
      - plane strain, Quad
      - SQCNI (``RotationAndPrincipalStretch``)
    * - ``GradientEnhancedFiniteStrainSQCNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8,1>``
      - 3D, Hexa
      - SQCNI (``DeformationGradient``)
    * - ``GradientEnhancedFiniteStrainSNNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8,1>``
      - 3D, Hexa
      - SNNI (``None``)
    * - ``GradientEnhancedFiniteStrainSQCNI_R/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8,1>``
      - 3D, Hexa
      - SQCNI (``RotationOnly``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RU/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8,1>``
      - 3D, Hexa
      - SQCNI (``RotationAndPrincipalStretch``)
    * - ``GradientEnhancedFiniteStrainSQCNIxNSNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad
      - SQCNI + NSNI (``DeformationGradient``)
    * - ``GradientEnhancedFiniteStrainSNNIxNSNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad
      - SNNI + NSNI (``None``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RxNSNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad
      - SQCNI + NSNI (``RotationOnly``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RUxNSNI/PlaneStrain/Quad``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad
      - SQCNI + NSNI (``RotationAndPrincipalStretch``)
    * - ``GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8,1>``
      - 3D, Hexa
      - SQCNI + NSNI (``DeformationGradient``)
    * - ``GradientEnhancedFiniteStrainSNNIxNSNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8,1>``
      - 3D, Hexa
      - SNNI + NSNI (``None``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RxNSNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8,1>``
      - 3D, Hexa
      - SQCNI + NSNI (``RotationOnly``)
    * - ``GradientEnhancedFiniteStrainSQCNI_RUxNSNI/3D/Hexa``
-     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8>``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8,1>``
      - 3D, Hexa
      - SQCNI + NSNI (``RotationAndPrincipalStretch``)
+   * - ``GradientEnhanced6FiniteStrain/3D/Point``
+     - ``GradientEnhancedFiniteStrainParticle<3,6>``
+     - 3D, point
+     - direct nodal integration
+   * - ``GradientEnhanced6FiniteStrainSQCNI/3D/Hexa``
+     - ``GradientEnhancedFiniteStrainParticleSQCNI<3,8,6>``
+     - 3D, Hexa
+     - SQCNI (``DeformationGradient``)
+   * - ``GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<3,8,6>``
+     - 3D, Hexa
+     - SQCNI + NSNI (``DeformationGradient``)
+
+The names with ``GradientEnhanced6`` (after the ``G6`` prefix of the finite elements) carry six nonlocal variables, a
+nonlocal strain tensor, for a material such as ``GM7/COROTATIONAL``; they are registered in 3D only, since GM7 is a
+model of 3D stress states.
 
 The point particles are constructed from the center coordinates and the volume; the Quad / Hexa particles from their
 vertex coordinates, from which the centroid and the volume are computed (the volume argument is not used).

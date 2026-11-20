@@ -32,6 +32,7 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
+#include <array>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -41,9 +42,13 @@ namespace Marmot::Discretizations::Meshfree {
    * @brief Nodally integrated point particle for gradient-enhanced (implicit-gradient) finite-strain materials
    *        without a micropolar continuum.
    *
-   * The particle couples the displacement field @f$ \boldsymbol{u} @f$ to a single scalar nonlocal field
-   * @f$ \bar{N} @f$ (nodal fields `displacement` and `nonlocal damage`, node block
-   * @f$ n_\mathrm{dim}+1 @f$, dofs ordered node by node as @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}\} @f$). It owns
+   * The particle couples the displacement field @f$ \boldsymbol{u} @f$ to @p nNonlocal nonlocal fields
+   * @f$ \bar{N}_K @f$ (nodal fields `displacement` and, for one nonlocal variable, `nonlocal damage`, for six,
+   * `strain symmetric`; see Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainNames), node block
+   * @f$ n_\mathrm{dim}+n_\mathrm{nonlocal} @f$, dofs ordered node by node as
+   * @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}_1,\dots,\bar{N}_{n_\mathrm{nonlocal}}\} @f$. The weak forms below
+   * are written for one nonlocal variable; with several, each @f$ \bar{N}_K @f$ has its own balance with its own
+   * @f$ c_K @f$, and they couple only through the material (@f$ \partial L_K/\partial\bar{N}_M @f$). It owns
    * a single Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
    * Marmot::Materials::MaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal
    * integration).
@@ -103,9 +108,10 @@ namespace Marmot::Discretizations::Meshfree {
    * for boundary loads. computeBodyLoad() applies a body force per unit undeformed volume, also for the derived
    * particles.
    *
-   * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
+   * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
+   * @tparam nNonlocal Number of nonlocal variables (1: a scalar nonlocal damage driver, 6: a nonlocal strain).
    */
-  template < int nDim >
+  template < int nDim, int nNonlocal >
   class GradientEnhancedFiniteStrainParticle : public Marmot::Discretizations::Meshfree::Particle {
 
   protected:
@@ -114,10 +120,13 @@ namespace Marmot::Discretizations::Meshfree {
                                                                    ///< configuration @f$ \boldsymbol{Y} @f$
     double _volReferenceIntermediate; ///< volume @f$ V_Y = V_0 \det\boldsymbol{F}_n @f$ (updated at each accept)
 
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* __mp; ///< the owned material point
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >& _mp;  ///< reference to the material point
-    const Approximation&                 _meshfreeApproximation;             ///< the meshfree approximation
-    std::vector< const KernelFunction* > _assignedKernelFunctions;           ///< kernel functions of the nodes
+    /// the material point type
+    using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >;
+
+    MaterialPoint*                       __mp;                     ///< the owned material point
+    MaterialPoint&                       _mp;                      ///< reference to the material point
+    const Approximation&                 _meshfreeApproximation;   ///< the meshfree approximation
+    std::vector< const KernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
 
     double _newmark_beta;  ///< Newmark-beta parameter @f$ \beta @f$ (property `newmark-beta beta`)
     double _newmark_gamma; ///< Newmark-beta parameter @f$ \gamma @f$ (property `newmark-beta gamma`)
@@ -180,12 +189,13 @@ namespace Marmot::Discretizations::Meshfree {
       return _supportedDistributedLoadTypes;
     };
 
-    static constexpr int nDofPerNodeU = nDim; ///< dofs per node of the displacement field U
-    static constexpr int nDofPerNodeN = 1;    ///< dofs per node of the nonlocal field N
+    static constexpr int nDofPerNodeU = nDim;      ///< dofs per node of the displacement field U
+    static constexpr int nDofPerNodeN = nNonlocal; ///< dofs per node of the nonlocal fields N
 
-    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >; ///< the consumed material
+    using NonlocalVector = typename Material::NonlocalVector; ///< a value per nonlocal variable
 
-    using ForceSized = Eigen::Matrix< double, nDim, 1 >;                      ///< force vector of size nDim
+    using ForceSized = Eigen::Matrix< double, nDim, 1 >;      ///< force vector of size nDim
 
     /**
      * @brief Set all properties, in the order of getPropertyNames().
@@ -293,17 +303,23 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Number of dofs per node.
-     * @return @f$ n_\mathrm{dim} + 1 @f$.
+     * @return @f$ n_\mathrm{dim} + n_\mathrm{nonlocal} @f$.
      */
     int getNBaseDof() const override { return nDofPerNodeU + nDofPerNodeN; }
 
     /**
      * @brief Fields per node.
-     * @return `displacement`, `nonlocal damage`.
+     * @return `displacement`, then the nonlocal fields: `nonlocal damage` for one nonlocal variable, `strain
+     * symmetric` for six (Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainNames).
      */
     const std::vector< std::string >& getFields() const override
     {
-      static const std::vector< std::string > nodeFields = { "displacement", "nonlocal damage" };
+      static const std::vector< std::string > nodeFields = [] {
+        std::vector< std::string > fields = { "displacement" };
+        for ( const auto& field : MaterialPoints::GradientEnhancedFiniteStrainNames< nNonlocal >::nonlocalNodeFields() )
+          fields.push_back( field );
+        return fields;
+      }();
       return nodeFields;
     };
 
@@ -363,7 +379,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] nodeCoordinates     Undeformed center coordinates (nDim values).
      * @param[in] nNodeCoordiantes    Number of coordinates; must equal nDim.
      * @param[in] volume              Undeformed volume @f$ V_0 @f$.
-     * @param[in] materialName        Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName        Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material with
+     *                                @p nNonlocal nonlocal variables.
      * @param[in] materialProperties  Material properties.
      * @param[in] nMaterialProperties Number of material properties.
      * @param[in] approximation       Meshfree approximation used for the shape functions.
@@ -409,7 +426,7 @@ namespace Marmot::Discretizations::Meshfree {
      * Interpolates @f$ \Delta\boldsymbol{u} @f$, @f$ \Delta\boldsymbol{F} @f$ and @f$ \Delta\bar{N} @f$ from @p dQ,
      * resets and increments the material point, evaluates it, updates velocity and acceleration by Newmark-beta, and
      * adds the residuals @f$ r^U, r^N @f$ and the tangent blocks given in the class description. The results are ADDED
-     * to @p fInt and @p dFInt_ddQ (dofs node by node, @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}\} @f$).
+     * to @p fInt and @p dFInt_ddQ (dofs node by node, @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}_1,\dots\} @f$).
      *
      * @param[in]     dQ        Increment of the nodal dofs since the last accepted state.
      * @param[in,out] fInt      Internal force vector.
@@ -649,9 +666,10 @@ namespace Marmot::Discretizations::Meshfree {
     };
   };
 
-  template < int nDim >
-  Marmot::Utilities::StateView GradientEnhancedFiniteStrainParticle< nDim >::getStateView( const std::string& stateName,
-                                                                                           int                qp ) const
+  template < int nDim, int nNonlocal >
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::getStateView(
+    const std::string& stateName,
+    int                qp ) const
   {
     if ( stateName == "vertex displacements" )
       // the point particle's single vertex is the material point itself
@@ -659,8 +677,8 @@ namespace Marmot::Discretizations::Meshfree {
     return _mp.getStateView( stateName );
   }
 
-  template < int nDim >
-  GradientEnhancedFiniteStrainParticle< nDim >::GradientEnhancedFiniteStrainParticle(
+  template < int nDim, int nNonlocal >
+  GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::GradientEnhancedFiniteStrainParticle(
     int                                                     elementID,
     const double*                                           centerCoordinates0,
     int                                                     sizeCenterCoordinates0,
@@ -672,22 +690,10 @@ namespace Marmot::Discretizations::Meshfree {
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
       _volReferenceIntermediate( volume ), // the reference is the undeformed configuration until the first accept
-      __mp( []( int elementID_, const double* coordinates_, int nCoordinates_, double volume_ )
-              -> MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* {
-        if constexpr ( nDim == 2 )
-          return new MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D( elementID_,
-                                                                                  coordinates_,
-                                                                                  nCoordinates_,
-                                                                                  volume_ );
-        else
-          return new MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D( elementID_,
-                                                                                  coordinates_,
-                                                                                  nCoordinates_,
-                                                                                  volume_ );
-      }( elementID,
-              _centerCoordinatesUndeformed.data(),
-              static_cast< int >( _centerCoordinatesUndeformed.size() ),
-              volume ) ),
+      __mp( new MaterialPoint( elementID,
+                               _centerCoordinatesUndeformed.data(),
+                               static_cast< int >( _centerCoordinatesUndeformed.size() ),
+                               volume ) ),
       _mp( *__mp ),
       _meshfreeApproximation( approximation ),
       _newmark_beta( 0. ),
@@ -707,24 +713,25 @@ namespace Marmot::Discretizations::Meshfree {
     this->setVCIOrder( _vciOrder );
   }
 
-  template < int nDim >
-  void GradientEnhancedFiniteStrainParticle< nDim >::computePhysicsKernels( const double* dQ,
-                                                                            double*       fInt,
-                                                                            double*       dFInt_ddQ,
-                                                                            double        timeNew,
-                                                                            double        dT )
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computePhysicsKernels( const double* dQ,
+                                                                                       double*       fInt,
+                                                                                       double*       dFInt_ddQ,
+                                                                                       double        timeNew,
+                                                                                       double        dT )
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
 
-    constexpr int nodeBlockSize = nDim + 1;
+    constexpr int nodeBlockSize = nDim + nNonlocal;
 
     Tensor< double, nDim >       du( 0.0 );
     Tensor< double, nDim, nDim > du_dY( 0.0 );
 
-    double                 dn = 0.0;
-    Tensor< double, nDim > dn_dY( 0.0 );
+    NonlocalVector                                  dn = NonlocalVector::Zero();
+    std::array< Tensor< double, nDim >, nNonlocal > dn_dY;
+    dn_dY.fill( Tensor< double, nDim >( 0.0 ) );
 
     for ( int B = 0; B < _nNodes; B++ ) {
 
@@ -735,17 +742,19 @@ namespace Marmot::Discretizations::Meshfree {
       const auto   dN_B_dY = Tensor< double, nDim >( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
 
       const auto dQU = Tensor< double, nDim >( dQ + idxB_u );
-      const auto dQN = dQ[idxB_n];
 
       du += N_B * dQU;
-      dn += N_B * dQN;
-
       du_dY += einsum< i, j >( dQU, dN_B_dY );
-      dn_dY += ( dQN * dN_B_dY );
+
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+        const double dQN = dQ[idxB_n + kNl];
+        dn( kNl ) += N_B * dQN;
+        dn_dY[kNl] += ( dQN * dN_B_dY );
+      }
     }
 
     _mp.prepareYourself( timeNew, dT );
-    _mp.incrementDeformation( du, du_dY, dn );
+    _mp.incrementDeformation( du, du_dY, dn, dn_dY );
     _mp.computeYourself( timeNew, dT );
 
     const double density0 = _mp.getDensityUndeformed();
@@ -772,9 +781,13 @@ namespace Marmot::Discretizations::Meshfree {
     Tensor< double, nDim >       k_NU( 0.0 );
     double                       k_NN( 0.0 );
 
-    const auto&  S           = _mp.response.S;
-    const auto&  dLocalField = _mp.response.dL;
-    const double c           = _mp.response.nonLocalRadius * _mp.response.nonLocalRadius;
+    const auto& S           = _mp.response.S;
+    const auto& dLocalField = _mp.response.dL;
+    const auto& R           = _mp.response.nonLocalRadius;
+
+    NonlocalVector c;
+    for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+      c( kNl ) = R( kNl ) * R( kNl );
 
     const double V0 = getVolumeUndeformed();
 
@@ -791,13 +804,10 @@ namespace Marmot::Discretizations::Meshfree {
       const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp.dx_dY() ), dT_A_dY );
       const Tensor< double, nDim > dT_A_dX = einsum< ji, j >( _mp.dY_dX(), dT_A_dY );
 
-      const Tensor< double, nDim > dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY );
-
         const int idxA_u = nodeBlockSize * A;
         const int idxA_n = nodeBlockSize * A + nDim;
 
         r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
-        r_N = evaluate( ( T_A * dn + c * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField ) * V0 ).toscalar();
 
         // add inertia
         r_U += density0 * a * T_A * V0;
@@ -805,7 +815,14 @@ namespace Marmot::Discretizations::Meshfree {
         {
           using namespace Eigen;
           P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
-          P( idxA_n ) += r_N;
+        }
+
+        for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+          const Tensor< double, nDim > dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY[kNl] );
+
+          r_N = evaluate( ( T_A * dn( kNl ) + c( kNl ) * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField( kNl ) ) * V0 ).toscalar();
+
+          P( idxA_n + kNl ) += r_N;
         }
 
         for ( int B = 0; B < _nNodes; B++ ) {
@@ -818,16 +835,10 @@ namespace Marmot::Discretizations::Meshfree {
           const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp.dx_dY() ), dN_B_dY ) );
           const auto dN_B_dX = evaluate( einsum< ji, j >( _mp.dY_dX(), dN_B_dY ) ); // no dependence on current deformations!
 
-          // aux stiffness tensors
+          // aux stiffness tensor
           const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY ) );
-          const auto dS_dqN_B = evaluate (                      ( t.dS_dN *      N_B    ) );
-          const auto dL_dqU_B = evaluate ( + einsum <   kl, l > ( t.dL_dDeltaF, dN_B_dY ) );
 
           k_UU  = ( + einsum< i, ijk > ( dT_A_dx, dS_dqU_B )                              ) * V0;
-          k_UN  = ( + einsum< i,  ij > ( dT_A_dx, dS_dqN_B )                              ) * V0;
-
-          k_NU  = (                     - ( T_A * dL_dqU_B )                              ) * V0;
-          k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) * c - T_A * N_B * t.dL_dN     ) * V0;
 
           k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
 
@@ -836,35 +847,55 @@ namespace Marmot::Discretizations::Meshfree {
           {
               using namespace Eigen;
               K.template block< nDim, nDim >( idxA_u, idxB_u ) += Map< Matrix< double, nDim, nDim > >( torowmajor( k_UU ).data() );
-              K.template block< nDim,    1 >( idxA_u, idxB_n ) += Map< Matrix< double, nDim,    1 > >( torowmajor( k_UN ).data() );
-              K.template block<    1, nDim >( idxA_n, idxB_u ) += Map< Matrix< double,    1, nDim > >( torowmajor( k_NU ).data() );
-              K                             ( idxA_n, idxB_n ) +=                                                  k_NN           ;
+          }
+
+          for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+            const auto dS_dqN_B = evaluate (                      ( t.dS_dN[kNl] *      N_B    ) );
+            const auto dL_dqU_B = evaluate ( + einsum <   kl, l > ( t.dL_dDeltaF[kNl], dN_B_dY ) );
+
+            k_UN  = ( + einsum< i,  ij > ( dT_A_dx, dS_dqN_B )                              ) * V0;
+            k_NU  = (                     - ( T_A * dL_dqU_B )                              ) * V0;
+
+            {
+                using namespace Eigen;
+                K.template block< nDim,    1 >( idxA_u, idxB_n + kNl ) += Map< Matrix< double, nDim,    1 > >( torowmajor( k_UN ).data() );
+                K.template block<    1, nDim >( idxA_n + kNl, idxB_u ) += Map< Matrix< double,    1, nDim > >( torowmajor( k_NU ).data() );
+            }
+
+            for ( int mNl = 0; mNl < nNonlocal; mNl++ ) {
+              if ( kNl == mNl )
+                k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) * c( kNl ) - T_A * N_B * t.dL_dN( kNl, mNl ) ) * V0;
+              else
+                k_NN  = (                                                    - T_A * N_B * t.dL_dN( kNl, mNl ) ) * V0;
+
+              K                             ( idxA_n + kNl, idxB_n + mNl ) +=                                  k_NN           ;
+            }
           }
       }
     }
     // clang-format on
   }
 
-  template < int nDim >
-  void GradientEnhancedFiniteStrainParticle< nDim >::computeDistributedLoad( int           type,
-                                                                             int           surfaceID,
-                                                                             const double* load,
-                                                                             double*       fExt,
-                                                                             double*       dExt_dQ,
-                                                                             double        timeNew,
-                                                                             double        dT ) const
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeDistributedLoad( int           type,
+                                                                                        int           surfaceID,
+                                                                                        const double* load,
+                                                                                        double*       fExt,
+                                                                                        double*       dExt_dQ,
+                                                                                        double        timeNew,
+                                                                                        double        dT ) const
   {
     throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
-  template < int nDim >
-  void GradientEnhancedFiniteStrainParticle< nDim >::computeBodyLoad( int           type,
-                                                                      const double* load,
-                                                                      double*       fExt,
-                                                                      double*       dExt_dQ,
-                                                                      double        timeNew,
-                                                                      double        dT ) const
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeBodyLoad( int           type,
+                                                                                 const double* load,
+                                                                                 double*       fExt,
+                                                                                 double*       dExt_dQ,
+                                                                                 double        timeNew,
+                                                                                 double        dT ) const
   {
     switch ( type ) {
     case BodyForce: {

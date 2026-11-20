@@ -5,8 +5,10 @@ Theory
 ------
 This element couples the displacement field :math:`\boldsymbol{u}` (``nDim`` dofs per node) to a single scalar
 nonlocal field :math:`\bar N` (1 dof per node) at finite strains. It is the finite-element consumer of
-``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` (see :doc:`gradientenhancedhugheswinget` and the material models that
-implement that interface).
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain<1>``, the materials with one nonlocal variable (see
+:doc:`gradientenhancedhugheswinget` and the material models that implement that interface). Six nonlocal variables (GM7)
+are carried by the particles of :doc:`gradientenhancedfinitestrainparticle`, and by
+:doc:`generalgradientenhanceddisplacementfiniteelement` in small strain.
 
 The momentum balance is written with the Kirchhoff stress and the spatial gradients of the shape functions,
 integrated over the reference volume,
