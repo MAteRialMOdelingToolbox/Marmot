@@ -14,5 +14,6 @@ This section contains the ready to use available Finite elements.
   beamelement
   trusselement
   embeddedbondelement
+  transportfiniteelement
   explicitdynamicsdevices
   energygradients
