@@ -247,6 +247,9 @@ All notable changes to Marmot are documented in this file. The format follows
   second-gradient factors (a new last constructor argument, by default all; the gradient-enhanced finite-strain
   particles give the displacement), and refuses a second-gradient factor in another column; the bound is unchanged
   (bitwise).
+- `Math::MonomialBasis` multiplies only the factors of nonzero exponent of an entry, listed at construction, and sets
+  the derivative with respect to a coordinate that is not a factor to zero: the values and nonzero derivatives are
+  unchanged (bitwise; a zero derivative is +0).
 - **Results:** `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit` evaluate a point in one
   pass over the kernels (each evaluated once, its gradient only if needed), one assembly of the moment matrix (and its
   gradients) for both classes, and types of a fixed largest size (up to the cubic basis in 3D): no allocation per
