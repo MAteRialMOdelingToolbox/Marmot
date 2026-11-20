@@ -195,31 +195,6 @@ namespace Marmot::Discretizations::MaterialPoints {
     _density = material->getDensity( state->materialState.data() );
   }
 
-  template < int nDim, int nNonlocal >
-  double GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::getMaximumWaveSpeed() const
-  {
-    return material->getMaximumWaveSpeed( state->materialState.data(), deformationGradient(), state->nonlocalField );
-  }
-
-  template < int nDim, int nNonlocal >
-  typename GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::NonlocalVector GradientEnhancedFiniteStrainMaterialPoint<
-    nDim,
-    nNonlocal >::getNonlocalRadius() const
-  {
-    std::vector< double > materialStateCopy( state->materialState.data(),
-                                             state->materialState.data() + state->materialState.size() );
-
-    typename Material::template ConstitutiveResponse< 3 > response3D;
-    response3D.stateVars = materialStateCopy.data();
-
-    material->computeStressExplicit( response3D,
-                                     typename Material::template Deformation< 3 >{ deformationGradient(),
-                                                                                   state->nonlocalField },
-                                     typename Material::TimeIncrement{ 0.0, 1.0 } );
-
-    return response3D.nonLocalRadius;
-  }
-
   template class GradientEnhancedFiniteStrainMaterialPoint< 2, 1 >;
   template class GradientEnhancedFiniteStrainMaterialPoint< 3, 1 >;
   template class GradientEnhancedFiniteStrainMaterialPoint< 3, 6 >;

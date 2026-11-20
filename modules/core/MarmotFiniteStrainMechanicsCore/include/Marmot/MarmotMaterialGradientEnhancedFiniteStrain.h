@@ -23,16 +23,13 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/MarmotFiniteStrainWaveSpeed.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotUtils.h"
 #include <Eigen/Core>
 #include <Fastor/tensor/Tensor.h>
-#include <algorithm>
 #include <array>
 #include <string>
 #include <tuple>
-#include <vector>
 
 namespace Marmot::Materials {
 
@@ -385,41 +382,6 @@ namespace Marmot::Materials {
      * overriding this, mirroring Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia.
      */
     virtual NonlocalVector getNonlocalMicroInertia( const double* stateVars ) const { return NonlocalVector::Zero(); }
-
-    /**
-     * @brief Largest longitudinal wave speed at the current state, for the critical time step of an explicit
-     * analysis.
-     * @param[in] stateVars Pointer to the state variable array; left unchanged.
-     * @param[in] F         Deformation gradient the stiffness is taken at, usually the current one.
-     * @param[in] N         Nonlocal fields the stiffness is taken at, usually the current ones; held fixed.
-     * @return @f$ \sqrt{\max_i C_{ii}/\rho_0} @f$.
-     *
-     * @details The default is
-     * Marmot::ContinuumMechanics::FiniteStrain::maximumWaveSpeedByCentralDifferences, the one of
-     * Marmot::Materials::MaterialFiniteStrain as well: six stress evaluations, each on a fresh copy of the state.
-     * A material with a closed form may override it.
-     */
-    virtual double getMaximumWaveSpeed( const double*                         stateVars,
-                                        const Fastor::Tensor< double, 3, 3 >& F,
-                                        const NonlocalVector&                 N ) const
-    {
-      const int nStateVars = getNumberOfRequiredStateVars();
-
-      auto kirchhoffStressAt = [&]( const Fastor::Tensor< double, 3, 3 >& F_ ) {
-        std::vector< double > stateVarsCopy( nStateVars, 0.0 );
-        if ( stateVars != nullptr && nStateVars > 0 )
-          std::copy_n( stateVars, nStateVars, stateVarsCopy.begin() );
-
-        ConstitutiveResponse< 3 > response;
-        response.stateVars = stateVarsCopy.data();
-        computeStressExplicit( response, Deformation< 3 >{ F_, N }, TimeIncrement{ 0.0, 1.0 } );
-        return response.tau;
-      };
-
-      return Marmot::ContinuumMechanics::FiniteStrain::maximumWaveSpeedByCentralDifferences( F,
-                                                                                             getDensity( stateVars ),
-                                                                                             kirchhoffStressAt );
-    }
   };
 
   extern template class MaterialGradientEnhancedFiniteStrain< 1 >;

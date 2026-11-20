@@ -915,50 +915,6 @@ namespace {
     throwExceptionOnFailure( close( totalMass, density * V0, density * V0 ), name + ": total mass" );
   }
 
-  // The critical time step against its formula: l / c with l = V0^(1/nDim) at F = I and the elastic wave speed, and
-  // the nonlocal limit with lambda = 1 + 4 nDim c / l^2.
-  template < int nDim, int nNonlocal >
-  void checkCriticalTimeStep( const std::string&           name,
-                              const std::string&           shape,
-                              const std::string&           materialName,
-                              const std::vector< double >& properties,
-                              double                       waveSpeed,
-                              double                       radius,
-                              double                       eta,
-                              double                       microInertia )
-  {
-    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
-    s.particle->updatePhysicsExplicit( Eigen::VectorXd::Zero( s.nDof() ).eval().data(), 0.0, 0.0 );
-
-    double dt = 0.0;
-    s.particle->computeCriticalTimeStepForExplicitDynamics( dt );
-
-    const double l      = std::pow( s.particle->getVolumeUndeformed(), 1.0 / nDim );
-    const double lambda = 1.0 + 4.0 * nDim * radius * radius / ( l * l );
-    double       dtN;
-    if ( microInertia > 0.0 ) {
-      const double omega = std::sqrt( lambda / microInertia );
-      const double zeta  = eta / ( 2.0 * microInertia * omega );
-      dtN                = 2.0 / omega * ( std::sqrt( 1.0 + zeta * zeta ) - zeta );
-    }
-    else
-      dtN = 2.0 * eta / lambda;
-    const double expected = std::min( l / waveSpeed, dtN );
-
-    throwExceptionOnFailure( std::abs( dt - expected ) <= 1e-6 * expected,
-                             Marmot::Utilities::MakeString()
-                               << name << ": critical time step " << dt << ", expected " << expected );
-  }
-
-  // A nonlocal field without viscosity and micro-inertia cannot be integrated explicitly, which must be said.
-  void testCriticalTimeStepWithoutNonlocalViscosityThrows()
-  {
-    Setup< 3 > s( "GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa", vertices( "Hexa" ), volume( "Hexa" ) );
-    double     dt = 0.0;
-    throwExceptionOnFailure( throws( [&]() { s.particle->computeCriticalTimeStepForExplicitDynamics( dt ); } ),
-                             "a nonlocal field without viscosity must be rejected by the explicit scheme" );
-  }
-
 } // namespace
 
 void testUnknownParticleIsRejected()
@@ -1067,30 +1023,6 @@ int main()
     } );
   }
 
-  // the critical time step: NeoHooke, c = sqrt((K + 4G/3)/rho), a first-order nonlocal field with eta ...
-  testFunctions.push_back( []() {
-    checkCriticalTimeStep< 3, 1 >( "GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa",
-                                   "Hexa",
-                                   viscousMaterialName,
-                                   matProps,
-                                   std::sqrt( ( matProps[0] + 4. / 3. * matProps[1] ) / matProps[5] ),
-                                   matProps[4],
-                                   ViscousNonlocalField::eta,
-                                   0.0 );
-  } );
-  // ... and GM7, c = sqrt(E (1 - nu) / ((1 + nu)(1 - 2 nu)) / rho), a second-order nonlocal field
-  testFunctions.push_back( []() {
-    const double E = gm7Props[0], nu = gm7Props[1];
-    checkCriticalTimeStep< 3, 6 >( "GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa",
-                                   "Hexa",
-                                   "GM7/COROTATIONAL",
-                                   gm7Props,
-                                   std::sqrt( E * ( 1 - nu ) / ( ( 1 + nu ) * ( 1 - 2 * nu ) ) / gm7Props[14] ),
-                                   std::sqrt( gm7Props[7] ),
-                                   gm7Props[15],
-                                   gm7Props[16] );
-  } );
-  testFunctions.push_back( testCriticalTimeStepWithoutNonlocalViscosityThrows );
   testFunctions.push_back( testUnknownParticleIsRejected );
 
   executeTestsAndCollectExceptions( testFunctions );

@@ -590,19 +590,6 @@ namespace Marmot::Discretizations::MaterialPoints {
     };
 
     /**
-     * @brief Largest wave speed of the assigned material at the current deformation and nonlocal fields.
-     * @return Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getMaximumWaveSpeed at
-     *         @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$; the state is left unchanged.
-     */
-    double getMaximumWaveSpeed() const;
-
-    /**
-     * @brief Nonlocal radii of the assigned material at the current deformation and nonlocal fields.
-     * @return @f$ R_K @f$, from a stress evaluation on a copy of the state, which is left unchanged.
-     */
-    NonlocalVector getNonlocalRadius() const;
-
-    /**
      * @brief Apply an initial condition.
      *
      * Only `geostaticstress` is supported: the eigen deformation that produces the hydrostatic stress

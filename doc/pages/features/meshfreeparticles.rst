@@ -76,12 +76,11 @@ order:
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
 time derivatives), ``computeLumpedDamping`` (those of the first: the nonlocal viscosity of a gradient-enhanced field,
-which integrates a first-order field on its own and damps a second-order one), ``computeLumpedMomentum`` and
-``computeCriticalTimeStepForExplicitDynamics`` (the stable increment of the particle; the solver takes the minimum).
-The explicit methods default to doing nothing, the lumped damping to no damping, and the lumped inertia, the momentum
-and the critical time step throw, unless a particle overrides them. ``computeLumpedDamping`` and
-``computeCriticalTimeStepForExplicitDynamics`` are the last methods of the class, so that the vtable slots of the
-others did not move when they were added.
+which integrates a first-order field on its own and damps a second-order one) and ``computeLumpedMomentum``.
+The explicit methods default to doing nothing, the lumped damping to no damping, and the lumped inertia and the
+momentum throw, unless a particle overrides them. ``computeLumpedDamping`` is the last method of the class, so that the
+vtable slots of the others did not move when it was added. A particle gives no critical time step: the stable increment
+of a particle discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`).
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in

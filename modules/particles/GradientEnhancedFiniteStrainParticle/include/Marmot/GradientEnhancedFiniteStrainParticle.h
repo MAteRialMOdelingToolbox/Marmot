@@ -32,10 +32,7 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
-#include <Eigen/SVD>
-#include <algorithm>
 #include <array>
-#include <cmath>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -531,26 +528,6 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
      */
     void computeLumpedMomentum( double* mLumped ) const override;
-
-    /**
-     * @brief The stable time increment of the particle.
-     *
-     * The minimum of the mechanical limit @f$ l / c @f$, with the characteristic length
-     * @f$ l = \sigma_\mathrm{min}(\boldsymbol{F})\,V_0^{1/n_\mathrm{dim}} @f$ (the side of the volume-equivalent
-     * cube, shortened by the smallest principal stretch) and the largest wave speed @f$ c @f$ of the material at the
-     * current state, and of the limit of each nonlocal field. For that, the discrete operator
-     * @f$ \bar{N} - c_K\,\nabla^2\bar{N} @f$ is bounded by the stencil estimate
-     * @f$ \lambda_K = 1 + 4\,n_\mathrm{dim}\,c_K / l^2 @f$ per unit volume. A first-order field (@f$ m_K = 0 @f$),
-     * integrated by forward Euler, is stable for @f$ \Delta t \le 2\,\eta_K/\lambda_K @f$; a second-order one, by
-     * central differences with damping, for @f$ \Delta t \le 2/\omega\,(\sqrt{1+\zeta^2} - \zeta) @f$,
-     * @f$ \omega^2 = \lambda_K/m_K @f$, @f$ \zeta = \eta_K/(2\,m_K\,\omega) @f$.
-     *
-     * @param[out] criticalTimeStep The stable time increment.
-     * @throws std::invalid_argument for a nonlocal field without micro-inertia and without viscosity, which an explicit
-     *         scheme cannot integrate.
-     */
-    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep ) const override;
-
     /**
      * @brief Access a state variable.
      *
@@ -1103,53 +1080,6 @@ namespace Marmot::Discretizations::Meshfree {
         mLumped[nodeBlockSize * A + i] += density0 * T_A * V0 * v( i );
       for ( int kNl = 0; kNl < nNonlocal; kNl++ )
         mLumped[nodeBlockSize * A + nDim + kNl] += m( kNl ) * T_A * V0 * dN_dt( kNl );
-    }
-  }
-
-  template < int nDim, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeCriticalTimeStepForExplicitDynamics(
-    double& criticalTimeStep ) const
-  {
-    using namespace Fastor;
-
-    // the characteristic length: the volume-equivalent side, shortened by the smallest principal stretch
-    const Tensor< double, nDim, nDim > F = evaluate( _mp.dx_dY() % _mp.dY_dX() );
-    const Eigen::Matrix< double, nDim, nDim >
-      FEigen = Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F.data() );
-    const double
-      smallestStretch = Eigen::JacobiSVD< Eigen::Matrix< double, nDim, nDim > >( FEigen ).singularValues().minCoeff();
-    const double l    = smallestStretch * std::pow( getVolumeUndeformed(), 1.0 / nDim );
-
-    const double waveSpeed = _mp.getMaximumWaveSpeed();
-    if ( !( waveSpeed > 0.0 ) )
-      throw std::runtime_error( Marmot::Utilities::MakeString()
-                                << __PRETTY_FUNCTION__ << ": the material reports no positive wave speed" );
-
-    criticalTimeStep = l / waveSpeed;
-
-    const NonlocalVector R   = _mp.getNonlocalRadius();
-    const NonlocalVector eta = _mp.getNonlocalViscosity();
-    const NonlocalVector m   = _mp.getNonlocalMicroInertia();
-
-    for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
-      // the largest eigenvalue of the discrete reaction-diffusion operator per unit volume, stencil estimate
-      const double lambda = 1.0 + 4.0 * nDim * R( kNl ) * R( kNl ) / ( l * l );
-
-      double dt_N;
-      if ( m( kNl ) > 0.0 ) {
-        const double omega = std::sqrt( lambda / m( kNl ) );
-        const double zeta  = eta( kNl ) / ( 2.0 * m( kNl ) * omega );
-        dt_N               = 2.0 / omega * ( std::sqrt( 1.0 + zeta * zeta ) - zeta );
-      }
-      else if ( eta( kNl ) > 0.0 )
-        dt_N = 2.0 * eta( kNl ) / lambda;
-      else
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << __PRETTY_FUNCTION__ << ": nonlocal variable " << kNl
-                                     << " has neither a micro-inertia nor a viscosity, so an explicit scheme cannot "
-                                        "integrate it; give the material a nonlocal viscosity" );
-
-      criticalTimeStep = std::min( criticalTimeStep, dt_N );
     }
   }
 
