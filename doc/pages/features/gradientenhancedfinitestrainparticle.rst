@@ -56,7 +56,8 @@ i.e. the Helmholtz equation :math:`\bar N - c\,\nabla_X^2\bar N = L` is solved i
 increment of the nonlocal field, with the change :math:`\Delta L` of the local driving force as its source. The
 acceleration :math:`\boldsymbol a` follows from the Newmark-beta update of :math:`\Delta\boldsymbol u` with the particle
 properties ``newmark-beta beta`` and ``newmark-beta gamma``; :math:`\beta = 0` switches the inertia off
-(:math:`\boldsymbol a = \boldsymbol 0`).
+and the particle is at rest (:math:`\boldsymbol v = \boldsymbol a = \boldsymbol 0`). A zero-length increment adds no inertia: :math:`\boldsymbol v` and :math:`\boldsymbol a`
+are left as they are, and the inertia tangent is zero (see :doc:`displacementparticle`).
 
 Tangent
 ^^^^^^^
@@ -188,8 +189,9 @@ all faces cancel the displacement residual (exactly so after deformation only fo
 update, whose smoothing domain coincides with the particle).
 
 **Pressure.** ``PRESSURE`` (SQCNI particles, per face, ``load[0]`` = :math:`p`) is a follower load,
-:math:`\boldsymbol f = \Delta J\,\Delta\boldsymbol F^{-\mathsf T}\,p\,\boldsymbol N\,dA_Y`,
-:math:`f_{Ai} \mathrel{-}= T_A(\boldsymbol Y_f)\,f_i`, with its load stiffness. For ``DeformationGradient`` the face
+:math:`\boldsymbol f = -\Delta J\,\Delta\boldsymbol F^{-\mathsf T}\,p\,\boldsymbol N\,dA_Y`,
+:math:`f_{Ai} \mathrel{-}= T_A(\boldsymbol Y_f)\,f_i`, with its load stiffness. As for the finite elements, a positive
+pressure pushes on the face (against the outward normal). For ``DeformationGradient`` the face
 geometry is that of the current smoothing domain; for the other update types the undeformed surface vector is mapped by
 Nanson's formula with :math:`\boldsymbol F_n`, and the undeformed face center is translated by the particle
 displacement. Neither load acts on the nonlocal field.

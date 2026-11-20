@@ -353,8 +353,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @f$ \boldsymbol{Y}_N @f$ from getBoundaryVectorIntermediate(), both types assemble a face force
      * @f$ \boldsymbol{f} @f$ as @f$ r_{Aj} \mathrel{-}= T_A(\boldsymbol{Y}_N)\,f_j @f$, together with
      * @f$ \partial f_j/\partial \Delta F_{kL}\,\partial N_B/\partial Y_L @f$ in the tangent:
-     * - Pressure: @f$ \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y @f$
-     *   (Nanson's formula from @f$ \boldsymbol{Y} @f$ to @f$ \boldsymbol{x} @f$), with @f$ p @f$ = load[0].
+     * - Pressure: @f$ \boldsymbol{f} = -\Delta J\,\Delta\boldsymbol{F}^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y @f$
+     *   (Nanson's formula from @f$ \boldsymbol{Y} @f$ to @f$ \boldsymbol{x} @f$), with @f$ p @f$ = load[0]; as for
+     *   the elements, a positive pressure pushes on the face (against the outward normal).
      * - CWFCorrection: @f$ \boldsymbol{f} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf T}\,\boldsymbol{N}\,
      *   dA_Y / J_Y @f$, @f$ J_Y = \det\boldsymbol{F}_n @f$, i.e. the Cauchy traction
      *   @f$ \boldsymbol{\sigma}\,\boldsymbol{n}\,da @f$ of the particle's own stress on the face; its tangent
@@ -453,7 +454,8 @@ namespace Marmot::Discretizations::Meshfree {
 
       const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
 
-      TensorD fY = N_dAY * load_[0];
+      // a positive pressure pushes on the face: the traction acts against the outward normal
+      TensorD fY = -load_[0] * N_dAY;
 
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
@@ -640,7 +642,8 @@ namespace Marmot::Discretizations::Meshfree {
 
       const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
 
-      TensorD fY = N_dAY * load[0];
+      // a positive pressure pushes on the face: the traction acts against the outward normal
+      TensorD fY = -load[0] * N_dAY;
 
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
 

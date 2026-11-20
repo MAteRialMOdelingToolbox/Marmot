@@ -67,6 +67,15 @@ include(GNUInstallDirs)
 # Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # False positives of GCC (14, 15) in third-party header code inlined into Marmot; they stay warnings, never
+        # errors:
+        # - -Warray-bounds in Eigen 5's vectorized Householder code (fixed-size matrices with runtime-sized blocks, e.g.
+        #   ColPivHouseholderQR< Matrix6d >::solve): the size checks guarding the packet loads are not visible to it.
+        # - -Wmaybe-uninitialized in Fastor's tocolumnmajor (GCC 15), reached from the column-major constructor
+        #   Tensor( data, ColumnMajor ), which has copied all of data before.
+        add_compile_options(-Wno-error=array-bounds -Wno-error=maybe-uninitialized)
+    endif()
     # No FMA contraction: keeps results bitwise reproducible across -march settings (x86-64-v3 runners,
     # MARMOT_MARCH_NATIVE) and consistent with MSVC's default /fp:precise. Exact-cancellation tests
     # (e.g. dPsi_dC == 0 for F = I) rely on it.

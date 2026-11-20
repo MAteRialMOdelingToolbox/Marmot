@@ -493,24 +493,78 @@ void testTooFewMaterialProperties()
   throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
-// The nonlocal micro-inertia (property 15) is optional: absent, the nonlocal strain is first order in time and every
+// Property layout: stressUnit (index 13) precedes the density (index 14) and the nonlocal viscosity (index 15),
+// which are only required for explicit simulations. Without them, getDensity and getNonlocalViscosity have to throw.
+void testPropertyLayout()
+{
+  // {E, nu, k1, k2, k3, k4, k5, c, m, c3, fc, transitionWidth, transitionExponent, stressUnit, density, viscosity}
+  std::array< double, 16 > materialProperties =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9, 0.5 };
+
+  auto                  mat = createGM7( materialProperties.data(), static_cast< int >( materialProperties.size() ) );
+  std::vector< double > stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
+
+  throwExceptionOnFailure( checkIfEqual( mat->getDensity( stateVars.data() ), 2.4e-9 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " density failed" );
+  for ( const double viscosity : mat->getNonlocalViscosity( stateVars.data() ) )
+    throwExceptionOnFailure( checkIfEqual( viscosity, 0.5 ),
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " nonlocal viscosity failed" );
+
+  // stressUnit given, but no density
+  auto matWithoutDensity = createGM7( materialProperties.data(), 14 );
+  bool rejected          = false;
+  try {
+    matWithoutDensity->getDensity( stateVars.data() );
+  }
+  catch ( const std::runtime_error& e ) {
+    rejected = std::string( e.what() ).find( "No density given" ) != std::string::npos;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " missing density not rejected" );
+
+  // density given, but no nonlocal viscosity
+  auto matWithoutViscosity = createGM7( materialProperties.data(), 15 );
+  rejected                 = false;
+  try {
+    matWithoutViscosity->getNonlocalViscosity( stateVars.data() );
+  }
+  catch ( const std::runtime_error& e ) {
+    rejected = std::string( e.what() ).find( "No nonlocal viscosity given" ) != std::string::npos;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " missing nonlocal viscosity not rejected" );
+
+  // index 13 is read as stressUnit, which has to be positive
+  materialProperties[13] = 0.0;
+  rejected               = false;
+  try {
+    createGM7( materialProperties.data(), static_cast< int >( materialProperties.size() ) );
+  }
+  catch ( const std::invalid_argument& e ) {
+    rejected = std::string( e.what() ).find( "stressUnit must be positive" ) != std::string::npos;
+  }
+  throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " stressUnit failed" );
+}
+
+// The nonlocal micro-inertia (property 16) is optional: absent, the nonlocal strain is first order in time and every
 // component reports zero; given, it is reported for all six components, and a value above eta^2/4 -- which would leave
 // the zeroth-order reaction mode of the nonlocal field underdamped -- is rejected with std::invalid_argument.
 void testNonlocalMicroInertia()
 {
   const double                   eta = 3e-4;
-  const std::array< double, 15 > withoutMicroInertia =
-    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 2.4e-9, eta };
+  const std::array< double, 16 > withoutMicroInertia =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9, eta };
   const auto firstOrder = createGM7( withoutMicroInertia.data(), static_cast< int >( withoutMicroInertia.size() ) );
   std::vector< double > stateVars( firstOrder->getNumberOfRequiredStateVars(), 0.0 );
 
   throwExceptionOnFailure( firstOrder->getNonlocalMicroInertia( stateVars.data() ) == std::vector< double >( 6, 0.0 ),
                            Marmot::Utilities::MakeString()
-                             << __PRETTY_FUNCTION__ << " failed: nonzero micro-inertia without property 15" );
+                             << __PRETTY_FUNCTION__ << " failed: nonzero micro-inertia without property 16" );
 
-  std::array< double, 16 > withMicroInertia;
+  std::array< double, 17 > withMicroInertia;
   std::copy( withoutMicroInertia.begin(), withoutMicroInertia.end(), withMicroInertia.begin() );
-  withMicroInertia[15]   = eta * eta / 4.;
+  withMicroInertia[16]   = eta * eta / 4.;
   const auto secondOrder = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
 
   throwExceptionOnFailure( secondOrder->getNonlocalMicroInertia( stateVars.data() ) ==
@@ -518,7 +572,7 @@ void testNonlocalMicroInertia()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " failed: micro-inertia eta^2/4 not reported" );
 
-  withMicroInertia[15]   = 1.01 * eta * eta / 4.;
+  withMicroInertia[16]   = 1.01 * eta * eta / 4.;
   const auto underdamped = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
   bool       rejected    = false;
   try {
@@ -548,6 +602,7 @@ int main()
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
   testTooFewMaterialProperties();
+  testPropertyLayout();
   testNonlocalMicroInertia();
   return 0;
 }

@@ -535,6 +535,77 @@ void testSetCharacteristicElementLengthIsStored()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+void testElasticEnergyDensityOfNonProportionalStrainPath()
+{
+  // The strain energy of linear elasticity depends only on the final strain, W = 1/2 eps : C : eps
+  // = 1/2 ( lambda tr(eps)^2 + 2 mu eps : eps ), whatever the path. A non-proportional path in several increments
+  // checks the accumulation from a non-zero stress at the start of each increment.
+  using namespace Marmot;
+  auto                                             mat     = makeIsotropicMaterial();
+  Marmot::Materials::MaterialHypoElastic&          matBase = mat;
+  const double                                     E = isotropicProps_[0], nu = isotropicProps_[1];
+  const double                                     lambda = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
+  const double                                     mu     = E / ( 2. * ( 1. + nu ) );
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+
+  Marmot::Math::Vector6d legA, legB; // engineering shear strains
+  legA << 1e-3, -2e-4, 3e-4, 4e-4, 0., -1e-4;
+  legB << -5e-4, 6e-4, 0., -2e-4, 5e-4, 3e-4;
+
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Matrix6d                          tangent;
+  Marmot::Math::Vector6d                          strain = Marmot::Math::Vector6d::Zero();
+  for ( const auto& [leg, nIncrements] : { std::pair{ legA, 4 }, std::pair{ legB, 7 } } )
+    for ( int i = 0; i < nIncrements; i++ ) {
+      const Marmot::Math::Vector6d dStrain = leg / nIncrements;
+      matBase.computeStress( state, tangent, dStrain, timeInfo );
+      strain += dStrain;
+    }
+
+  const double trace           = strain.head< 3 >().sum();
+  const double strainDotStrain = strain.head< 3 >().squaredNorm() + 0.5 * strain.tail< 3 >().squaredNorm();
+  const double expected        = 0.5 * ( lambda * trace * trace + 2. * mu * strainDotStrain );
+
+  throwExceptionOnFailure( checkIfEqual( state.elasticEnergyDensity, expected, 1e-12 ),
+                           "elastic energy density must be 1/2 eps : C : eps after a non-proportional strain path in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( state.dissipation, 0.0, 1e-15 ),
+                           "linear elasticity must not dissipate in " + std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testElasticEnergyDensityOfPlaneStressStrainPath()
+{
+  // In plane stress, sigma_zz = 0, so W = 1/2 ( sigma_xx eps_xx + sigma_yy eps_yy + tau_xy gamma_xy ) with the plane
+  // stress law; the energy passes through the plane stress wrapper of MaterialHypoElastic.
+  using namespace Marmot;
+  auto                                             mat = makeIsotropicMaterial();
+  const double                                     E = isotropicProps_[0], nu = isotropicProps_[1];
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+
+  Marmot::Math::Vector3d legA, legB; // eps_xx, eps_yy, gamma_xy
+  legA << 1e-3, 2e-4, -3e-4;
+  legB << -4e-4, 5e-4, 6e-4;
+
+  Marmot::Materials::MaterialHypoElastic::state2D state;
+  Marmot::Math::Matrix3d                          tangent;
+  Marmot::Math::Vector3d                          strain = Marmot::Math::Vector3d::Zero();
+  for ( const auto& [leg, nIncrements] : { std::pair{ legA, 3 }, std::pair{ legB, 5 } } )
+    for ( int i = 0; i < nIncrements; i++ ) {
+      const Marmot::Math::Vector3d dStrain = leg / nIncrements;
+      mat.computePlaneStress( state, tangent, dStrain, timeInfo );
+      strain += dStrain;
+    }
+
+  Marmot::Math::Matrix3d C;
+  C << 1., nu, 0., nu, 1., 0., 0., 0., 0.5 * ( 1. - nu );
+  C *= E / ( 1. - nu * nu );
+  const double expected = 0.5 * strain.dot( C * strain );
+
+  throwExceptionOnFailure( checkIfEqual( state.elasticEnergyDensity, expected, 1e-12 ),
+                           "plane stress elastic energy density must be 1/2 eps : C : eps in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
 
@@ -556,6 +627,8 @@ int main()
     testGetStateViewThrowsForMaterialWithNoStateVars,
     testInitializeYourselfZeroesStateVars,
     testSetCharacteristicElementLengthIsStored,
+    testElasticEnergyDensityOfNonProportionalStrainPath,
+    testElasticEnergyDensityOfPlaneStressStrainPath,
   };
 
   executeTestsAndCollectExceptions( tests );

@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
+#include <stdexcept>
 #include <vector>
 
 /**
@@ -39,6 +40,7 @@ namespace Marmot::Discretizations::Elements {
   enum ElementShapes {
     Bar2,    ///< 1-D 2-node bar
     Bar3,    ///< 1-D 3-node bar
+    Tri3,    ///< 2-D 3-node triangle
     Quad4,   ///< 2-D 4-node quadrilateral
     Quad8,   ///< 2-D 8-node serendipity quadrilateral
     Quad9,   ///< 2-D 9-node quadrilateral
@@ -56,8 +58,171 @@ namespace Marmot::Discretizations::Elements {
    * @param[in] nDim   Number of spatial dimensions.
    * @param[in] nNodes Number of element nodes.
    * @return Matching @ref Marmot::Discretizations::Elements::ElementShapes enumerator.
+   * @throws std::invalid_argument For an unknown combination; in a constant expression that is a compile error.
    */
-  ElementShapes getElementShapeByMetric( int nDim, int nNodes );
+  constexpr ElementShapes getElementShapeByMetric( int nDim, int nNodes )
+  {
+    switch ( nDim ) {
+    case 1: {
+      switch ( nNodes ) {
+      case 2: return ElementShapes::Bar2;
+      case 3: return ElementShapes::Bar3;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=1" );
+      }
+    }
+    case 2: {
+      switch ( nNodes ) {
+      case 3: return ElementShapes::Tri3;
+      case 4: return ElementShapes::Quad4;
+      case 8: return ElementShapes::Quad8;
+      case 9: return ElementShapes::Quad9;
+      case 16: return ElementShapes::Quad16;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=2" );
+      }
+    }
+    case 3: {
+      switch ( nNodes ) {
+      case 4: return ElementShapes::Tetra4;
+      case 10: return ElementShapes::Tetra10;
+      case 8: return ElementShapes::Hexa8;
+      case 20: return ElementShapes::Hexa20;
+      case 27: return ElementShapes::Hexa27;
+      case 64: return ElementShapes::Hexa64;
+      default: throw std::invalid_argument( "Invalid number of nodes for nDim=3" );
+      }
+    }
+    default: throw std::invalid_argument( "Invalid dimension specified" );
+    }
+  }
+
+  /**
+   * @brief Reference domains on which shape functions and quadrature rules are defined.
+   *
+   * @details The corners of a domain have a fixed order, the node order of its linear element (Bar2, Tri3, Quad4,
+   * Tetra4, Hexa8). The higher-order shapes list their corners first, in the same order, followed by their other
+   * nodes; the manifold-based mass lumping and the Newton-Cotes rules rely on this.
+   */
+  enum class ReferenceDomain {
+    Line,          ///< [-1, 1]
+    Triangle,      ///< unit triangle, vertices (0, 0), (1, 0), (0, 1)
+    Quadrilateral, ///< [-1, 1]^2
+    Tetrahedron,   ///< unit tetrahedron, vertices (0, 0, 0), (1, 0, 0), (0, 1, 0), (0, 0, 1)
+    Hexahedron,    ///< [-1, 1]^3
+  };
+
+  /**
+   * @brief The reference domain of an element shape.
+   * @param[in] shape Element shape.
+   * @return Line for bars, Triangle, Quadrilateral, Tetrahedron or Hexahedron.
+   */
+  constexpr ReferenceDomain getReferenceDomain( ElementShapes shape )
+  {
+    switch ( shape ) {
+    case ElementShapes::Bar2:
+    case ElementShapes::Bar3: return ReferenceDomain::Line;
+    case ElementShapes::Tri3: return ReferenceDomain::Triangle;
+    case ElementShapes::Quad4:
+    case ElementShapes::Quad8:
+    case ElementShapes::Quad9:
+    case ElementShapes::Quad16: return ReferenceDomain::Quadrilateral;
+    case ElementShapes::Tetra4:
+    case ElementShapes::Tetra10: return ReferenceDomain::Tetrahedron;
+    case ElementShapes::Hexa8:
+    case ElementShapes::Hexa20:
+    case ElementShapes::Hexa27:
+    case ElementShapes::Hexa64: return ReferenceDomain::Hexahedron;
+    }
+    throw std::invalid_argument( "getReferenceDomain(): invalid element shape" );
+  }
+
+  /**
+   * @brief The number of corner nodes of a reference domain, i.e. the nodes of its linear element.
+   * @param[in] domain Reference domain.
+   * @return 2 for Line, 3 for Triangle, 4 for Quadrilateral and Tetrahedron, 8 for Hexahedron.
+   */
+  constexpr int getNumberOfCornerNodes( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line: return 2;
+    case ReferenceDomain::Triangle: return 3;
+    case ReferenceDomain::Quadrilateral:
+    case ReferenceDomain::Tetrahedron: return 4;
+    case ReferenceDomain::Hexahedron: return 8;
+    }
+    throw std::invalid_argument( "getNumberOfCornerNodes(): invalid reference domain" );
+  }
+
+  /**
+   * @brief The polynomial order p of the shape functions of an element shape.
+   * @param[in] shape Element shape.
+   * @return 1 for Bar2, Tri3, Quad4, Tetra4 and Hexa8; 2 for Bar3, Quad8, Quad9, Tetra10, Hexa20 and Hexa27; 3 for
+   * Quad16 and Hexa64.
+   */
+  constexpr int getInterpolationOrder( ElementShapes shape )
+  {
+    switch ( shape ) {
+    case ElementShapes::Bar2:
+    case ElementShapes::Tri3:
+    case ElementShapes::Quad4:
+    case ElementShapes::Tetra4:
+    case ElementShapes::Hexa8: return 1;
+    case ElementShapes::Bar3:
+    case ElementShapes::Quad8:
+    case ElementShapes::Quad9:
+    case ElementShapes::Tetra10:
+    case ElementShapes::Hexa20:
+    case ElementShapes::Hexa27: return 2;
+    case ElementShapes::Quad16:
+    case ElementShapes::Hexa64: return 3;
+    }
+    throw std::invalid_argument( "getInterpolationOrder(): invalid element shape" );
+  }
+
+  /**
+   * @brief Whether a reference domain is a simplex, the unit triangle or the unit tetrahedron.
+   * @param[in] domain Reference domain.
+   * @return true for Triangle and Tetrahedron; false for Line and for the cubes Quadrilateral and Hexahedron.
+   */
+  constexpr bool isSimplex( ReferenceDomain domain )
+  {
+    return domain == ReferenceDomain::Triangle || domain == ReferenceDomain::Tetrahedron;
+  }
+
+  /**
+   * @brief The length, area or volume of a reference domain.
+   * @param[in] domain Reference domain.
+   * @return 2 for Line, 4 for Quadrilateral and 8 for Hexahedron (the cube [-1, 1]^nDim); 1/2 for Triangle and 1/6 for
+   * Tetrahedron (the unit simplex, 1 / nDim!). An element's measure is this times det J, where J is constant.
+   */
+  constexpr double getReferenceMeasure( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line: return 2.0;
+    case ReferenceDomain::Triangle: return 1.0 / 2.0;
+    case ReferenceDomain::Quadrilateral: return 4.0;
+    case ReferenceDomain::Tetrahedron: return 1.0 / 6.0;
+    case ReferenceDomain::Hexahedron: return 8.0;
+    }
+    throw std::invalid_argument( "getReferenceMeasure(): invalid reference domain" );
+  }
+
+  /**
+   * @brief Each natural coordinate of the centroid of a reference domain; all of them are equal.
+   * @param[in] domain Reference domain.
+   * @return 0 for the cubes and the line, whose centroid is the origin; 1 / ( nDim + 1 ) for the unit simplex, i.e.
+   * 1/3 for Triangle and 1/4 for Tetrahedron, where all shape functions of the linear element are equal.
+   */
+  constexpr double getReferenceCentroidCoordinate( ReferenceDomain domain )
+  {
+    switch ( domain ) {
+    case ReferenceDomain::Line:
+    case ReferenceDomain::Quadrilateral:
+    case ReferenceDomain::Hexahedron: return 0.0;
+    case ReferenceDomain::Triangle: return 1.0 / 3.0;
+    case ReferenceDomain::Tetrahedron: return 1.0 / 4.0;
+    }
+    throw std::invalid_argument( "getReferenceCentroidCoordinate(): invalid reference domain" );
+  }
 
   /**
    * @brief Compute the expanded interpolation operator N_B (dynamic version).
@@ -138,6 +303,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar2 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar2 shape functions (constant, zero).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar2
 
     namespace Bar3 {
@@ -150,6 +317,8 @@ namespace Marmot::Discretizations::Elements {
       NSized N( double xi );
       /// @brief Evaluate Bar3 shape function derivatives at natural coordinate @p xi.
       dNdXiSized dNdXi( double xi );
+      /// @brief Evaluate the second derivatives of the Bar3 shape functions (constant).
+      dNdXiSized d2NdXi2( double xi );
     } // namespace Bar3
   }   // namespace Spatial1D
 
@@ -180,7 +349,30 @@ namespace Marmot::Discretizations::Elements {
       constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
       /**
-       * @brief Compute the axisymmetric B-operator from physical derivatives.
+       * @brief Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows
+       * (11, 22, 12), the hoop row is \f$N_i / r\f$.
+       * @tparam nNodes Number of element nodes.
+       * @param[in] BPlanar Planar B-operator (3 × 2 nNodes), see Spatial2D::B.
+       * @param[in] N       Shape function values (1 × nNodes).
+       * @param[in] r       Radius of the point.
+       * @return B-operator matrix of size 4 × (2 * nNodes).
+       */
+      template < int nNodes >
+      Eigen::Matrix< double, voigtSize, nNodes * nDim > BFromPlanarB(
+        const Eigen::Matrix< double, Spatial2D::voigtSize, nNodes * nDim >& BPlanar,
+        const Eigen::Matrix< double, 1, nNodes >&                           N,
+        double                                                              r )
+      {
+        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
+        B_.template topRows< 2 >()                          = BPlanar.template topRows< 2 >();
+        B_.row( 3 )                                         = BPlanar.row( 2 );
+        for ( int i = 0; i < nNodes; i++ )
+          B_( 2, 2 * i ) = N( i ) / r;
+        return B_;
+      }
+
+      /**
+       * @brief Compute the axisymmetric B-operator from physical derivatives, see BFromPlanarB().
        * @tparam nNodes Number of element nodes.
        * @param[in] dNdX    Physical shape function derivatives (2 × nNodes).
        * @param[in] N       Shape function values (1 × nNodes).
@@ -192,17 +384,45 @@ namespace Marmot::Discretizations::Elements {
                                                            const Eigen::Matrix< double, 1, nNodes >&    N,
                                                            const Eigen::Matrix< double, nDim, 1 >&      x_gauss )
       {
-
-        Eigen::Matrix< double, voigtSize, nNodes* nDim > B_ = Eigen::Matrix< double, voigtSize, nNodes * nDim >::Zero();
-        for ( int i = 0; i < nNodes; i++ ) {
-          B_( 0, 2 * i )     = dNdX( 0, i );
-          B_( 1, 2 * i + 1 ) = dNdX( 1, i );
-          B_( 2, 2 * i )     = N( i ) / x_gauss( 0 ); // ( N_I / r )
-          B_( 3, 2 * i )     = dNdX( 1, i );
-          B_( 3, 2 * i + 1 ) = dNdX( 0, i );
-        }
-        return B_;
+        return BFromPlanarB< nNodes >( Spatial2D::B< nNodes >( dNdX ), N, x_gauss( 0 ) );
       }
+
+      /**
+       * @brief Tolerance for nodes on the axis, relative to the element size: accepts the round-off of a mesher,
+       * rejects a mesh drawn in \f$r < 0\f$.
+       */
+      constexpr double axisTolerance = 1e-12;
+
+      /**
+       * @brief Rejects an element with a node at \f$r < -\epsilon\, h\f$, with the tolerance \f$\epsilon\f$
+       * (axisTolerance) and the diagonal \f$h\f$ of the element's bounding box.
+       * @details A mesh drawn in \f$r < 0\f$, or straddling the axis, gives a negative volume and an infinite hoop
+       * strain \f$N_i / r\f$.
+       * @param[in] nodes        Nodal coordinates, one column \f$(r, z)\f$ per node.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if a node lies at \f$r < -\epsilon\, h\f$.
+       */
+      void checkNodesAreInTheMeridianHalfPlane(
+        const Eigen::Ref< const Eigen::Matrix< double, nDim, Eigen::Dynamic > >& nodes,
+        int                                                                      elementLabel );
+
+      /**
+       * @brief Rejects a quadrature point at \f$r \leq 0\f$, where the hoop strain \f$N_i / r\f$ is undefined.
+       * @details Gauss points are interior, so this happens only for an element collapsed onto the axis.
+       * @param[in] r            Radius of the quadrature point.
+       * @param[in] elementLabel Label of the element, for the message.
+       * @throws std::invalid_argument if \f$r \leq 0\f$.
+       */
+      void checkRadiusOfQuadraturePoint( double r, int elementLabel );
+
+      /**
+       * @brief The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz,
+       * \f$\theta\theta\f$, rz).
+       * @details The block is exact for any 3D material: \f$\gamma_{r\theta} = \gamma_{z\theta} = 0\f$ is kinematic.
+       * @param[in] C Tangent in 3D Voigt notation.
+       * @return The 4 × 4 block.
+       */
+      Eigen::Matrix4d sectionTangent( const Marmot::Math::Matrix6d& C );
     } // namespace Axisymmetric
 
     /**
@@ -261,6 +481,22 @@ namespace Marmot::Discretizations::Elements {
       /// @brief Return the local node indices for boundary face @p faceID.
       Eigen::Vector3i getBoundaryElementIndices( int faceID );
     } // namespace Quad8
+
+    namespace Tri3 {
+      constexpr int nNodes = 3;                                          ///< Number of nodes for a Tri3 element.
+
+      using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >; ///< Flat vector of nodal coordinates.
+      using NSized          = Eigen::Matrix< double, 1, nNodes >;        ///< Row vector of shape function values.
+      using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >; ///< Matrix of shape function natural derivatives.
+
+      /// @brief Evaluate Tri3 shape functions at the area coordinates @p xi, with nodes at (0,0), (1,0), (0,1).
+      NSized N( const Eigen::Vector2d& xi );
+      /// @brief Evaluate Tri3 shape function natural derivatives at @p xi (constant over the element).
+      dNdXiSized dNdXi( const Eigen::Vector2d& xi );
+
+      /// @brief Return the local node indices for boundary face @p faceID.
+      Eigen::Vector2i getBoundaryElementIndices( int faceID );
+    } // namespace Tri3
 
   }   // end of namespace Spatial2D
 
@@ -493,7 +729,8 @@ namespace Marmot::Discretizations::Elements {
     /// @brief Internal data for a single quadrature point on the boundary face.
     struct BoundaryElementQuadraturePoint {
       double          weight;     ///< Quadrature weight.
-      double          JxW;        ///< Jacobian determinant times quadrature weight.
+      double          ringFactor; ///< 2 pi r of an axisymmetric boundary element, 1 otherwise.
+      double          JxW;        ///< Jacobian determinant times quadrature weight (times ringFactor).
       Eigen::VectorXd xi;         ///< Natural coordinates of the quadrature point.
       Eigen::VectorXd N;          ///< Shape function values at the quadrature point.
       Eigen::MatrixXd dNdXi;      ///< Shape function natural derivatives.
@@ -501,7 +738,8 @@ namespace Marmot::Discretizations::Elements {
       Eigen::VectorXd areaVector; ///< Outward-normal area vector at the quadrature point.
     };
 
-    const int nDim;                                                 ///< Number of spatial dimensions.
+    const int  nDim;                                                ///< Number of spatial dimensions.
+    const bool axisymmetric;                                        ///< Integrate over the ring (r = x_1).
 
     ElementShapes boundaryShape;                                    ///< Shape of the boundary (face/edge) element.
     int           nNodes;                                           ///< Number of nodes on the boundary element.
@@ -520,11 +758,14 @@ namespace Marmot::Discretizations::Elements {
      * @param[in] parentFaceNumber   Zero-based index of the boundary face on the parent element.
      * @param[in] nDim               Number of spatial dimensions.
      * @param[in] parentCoordinates  Flat vector of parent nodal coordinates.
+     * @param[in] axisymmetric       Face of an axisymmetric element (nDim = 2, r = x_1): the load vectors are
+     *                               integrated over the ring, \f$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\f$.
      */
     BoundaryElement( ElementShapes          parentShape,
                      int                    parentFaceNumber,
                      int                    nDim,
-                     const Eigen::VectorXd& parentCoordinates );
+                     const Eigen::VectorXd& parentCoordinates,
+                     bool                   axisymmetric = false );
 
     /// @brief Compute the scalar (pressure) load vector for a unit pressure.
     Eigen::VectorXd computeScalarLoadVector();
@@ -533,9 +774,16 @@ namespace Marmot::Discretizations::Elements {
 
     /// compute the element load vector for a unit vectorial load normal to the surface.
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVector();
-    /// @brief Compute the normal-traction load vector for axisymmetric elements.
+    /**
+     * @brief Compute the normal-traction load vector for axisymmetric elements.
+     * @deprecated Construct the boundary element with @c axisymmetric = true and use
+     * computeSurfaceNormalVectorialLoadVector().
+     */
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
-    /// @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+    /**
+     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
+     * @throws std::invalid_argument for an axisymmetric boundary element.
+     */
     Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
     /// compute the element load vector for a unit vectorial load in a given direction.
@@ -561,19 +809,9 @@ namespace Marmot::Discretizations::Elements {
   };
 
   namespace Quadrature {
-    constexpr double gp2 = 0.577350269189625764509; ///< Gauss point abscissa for 2-point rule: @f$1/\sqrt{3}@f$.
-    constexpr double gp3 = 0.774596669241483;       ///< Gauss point abscissa for 3-point rule: @f$\sqrt{3/5}@f$.
 
     /**
-     * @brief Gauss quadrature integration order options.
-     */
-    enum IntegrationTypes {
-      FullIntegration,   ///< Full (exact) Gauss integration.
-      ReducedIntegration ///< Reduced integration (one order lower).
-    };
-
-    /**
-     * @brief Natural coordinates and weight for one Gauss quadrature point.
+     * @brief Natural coordinates and weight for one quadrature point.
      */
     struct QuadraturePointInfo {
       Eigen::VectorXd xi;     ///< Natural coordinates of the quadrature point.
@@ -581,78 +819,143 @@ namespace Marmot::Discretizations::Elements {
     };
 
     /**
-     * @brief Return the predefined Gauss point list for a given element shape and integration type.
-     * @param[in] shape           Element shape enumerator.
-     * @param[in] integrationType Full or reduced integration.
-     * @return Const reference to the corresponding vector of
-     *         @ref Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo entries.
+     * @brief Family of a quadrature rule.
      */
-    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::Discretizations::Elements::ElementShapes shape,
-                                                                 IntegrationTypes integrationType );
+    enum class QuadratureFamily {
+      Gauss,        ///< Gauss-type rules with interior points and positive weights: Gauss-Legendre on Line,
+                    ///< Quadrilateral and Hexahedron, symmetric Gauss rules on Triangle and Tetrahedron.
+      NewtonCotes,  ///< Closed Newton-Cotes rules: the points form an evenly spaced lattice that includes the
+                    ///< boundary, the weights are the integrals of the Lagrange polynomials on that lattice.
+      GaussLobatto, ///< Gauss-Lobatto rules on Line: both end points and the roots of P'_{n-1} in between,
+                    ///< positive weights, degree of exactness 2n - 3 for n points.
+    };
 
     /**
-     * @brief Return the number of Gauss points for a given element shape and integration type.
-     * @param[in] shape           Element shape enumerator.
-     * @param[in] integrationType Full or reduced integration.
-     * @return Number of quadrature points.
+     * @brief One quadrature rule of the catalogue quadratureRules(): its reference domain, family and degree of
+     * exactness, and its points.
+     *
+     * @details The rule integrates every polynomial up to `degree` exactly: Q_degree (degree at most `degree` in each
+     * coordinate) on Line, Quadrilateral and Hexahedron, P_degree (total degree at most `degree`) on Triangle and
+     * Tetrahedron.
      */
-    int getNumGaussPoints( Marmot::Discretizations::Elements::ElementShapes shape, IntegrationTypes integrationType );
+    struct QuadratureRuleData {
+      ReferenceDomain                    domain;            ///< Reference domain the points are given on.
+      QuadratureFamily                   family;            ///< Gauss, Newton-Cotes or Gauss-Lobatto.
+      int                                degreeOfExactness; ///< Degree of exactness.
+      std::vector< QuadraturePointInfo > points;            ///< Points and weights, in a fixed order.
+    };
+
+    /**
+     * @brief The catalogue of all quadrature rules.
+     *
+     * @details Within each pair of domain and family the rules are sorted by increasing number of points and degree,
+     * so the first rule that reaches a requested degree is the cheapest. A new rule is added here, at its place in
+     * that order; the lookup getQuadraturePoints() needs no change.
+     *
+     * | Domain        | Gauss: points -> degree        | Newton-Cotes | Gauss-Lobatto                  |
+     * |---------------|--------------------------------|--------------|--------------------------------|
+     * | Line          | 1 -> 1, 2 -> 3, 3 -> 5, 4 -> 7 | 2 -> 1       | 2 -> 1, 3 -> 3, 4 -> 5, 5 -> 7 |
+     * | Quadrilateral | 1x1 -> 1, 2x2 -> 3, 3x3 -> 5   | 2x2 -> 1     | -                              |
+     * | Hexahedron    | 1 -> 1, 8 -> 3, 27 -> 5        | -            | -                              |
+     * | Triangle      | 1 -> 1, 3 -> 2, 7 -> 5         | 3 -> 1       | -                              |
+     * | Tetrahedron   | 1 -> 1, 4 -> 2, 14 -> 5        | -            | -                              |
+     *
+     * The Newton-Cotes rules of degree 1 are the trapezoidal rule on Line (also the 2-point Gauss-Lobatto rule), its
+     * tensor product on Quadrilateral and the vertex rule on Triangle. Their points are the corners of the domain in
+     * corner order (ReferenceDomain), i.e. the nodes of the linear element in node order. For a linear element
+     * N_i(xi_j) = delta_ij, so the rule makes the mass and the interface stiffness diagonal in the nodes (nodal
+     * integration). They are used for zero-thickness interface elements with a high penalty stiffness, where Gauss
+     * points cause spurious traction oscillations. An element that relies on its points being its nodes must check
+     * that itself: on a quadratic element the rule integrates with the corners only, and the shape functions of the
+     * other nodes vanish at all points.
+     *
+     * The Gauss-Lobatto rules include both end points of the line and are used along embedded bars, where the bond
+     * stress at the ends of a bar part is needed and a stiff bond would oscillate between Gauss points.
+     *
+     * @return The catalogue; its entries live for the whole program.
+     */
+    const std::vector< QuadratureRuleData >& quadratureRules();
+
+    /**
+     * @brief The quadrature rule an element asks for: a family and the degree of exactness it needs.
+     *
+     * @details A structural type, so that element registrations can pass it as a template argument. It is built
+     * with gaussExactToDegree() or newtonCotesExactToDegree().
+     */
+    struct QuadratureRule {
+      QuadratureFamily family;            ///< Gauss, Newton-Cotes or Gauss-Lobatto.
+      int              degreeOfExactness; ///< Degree of exactness required.
+
+      /**
+       * @brief Memberwise comparison, as required for a structural type.
+       * @return Whether family and degree are equal.
+       */
+      constexpr bool operator==( const QuadratureRule& ) const = default;
+    };
+
+    /**
+     * @brief Request the Gauss rule with the fewest points that integrates polynomials up to a degree exactly.
+     * @param[in] degree Degree of exactness, e.g. 2 for the stiffness of a bilinear quadrilateral (2x2 points) or
+     * 2p for the consistent mass of an element with shape functions of order p.
+     * @return The request.
+     */
+    constexpr QuadratureRule gaussExactToDegree( int degree )
+    {
+      return { QuadratureFamily::Gauss, degree };
+    }
+
+    /**
+     * @brief Request the closed Newton-Cotes rule with the fewest points that integrates polynomials up to a degree
+     * exactly.
+     * @param[in] degree Degree of exactness, e.g. 1 for the nodal integration of a linear element, whose nodes are the
+     * points of the rule.
+     * @return The request.
+     */
+    constexpr QuadratureRule newtonCotesExactToDegree( int degree )
+    {
+      return { QuadratureFamily::NewtonCotes, degree };
+    }
+
+    /**
+     * @brief Request the Gauss-Lobatto rule with the fewest points that integrates polynomials up to a degree exactly.
+     * @param[in] degree Degree of exactness; the n-point rule has the degree 2n - 3.
+     * @return The request.
+     */
+    constexpr QuadratureRule gaussLobattoExactToDegree( int degree )
+    {
+      return { QuadratureFamily::GaussLobatto, degree };
+    }
+
+    /**
+     * @brief The quadrature points of a requested rule on a reference domain.
+     * @param[in] domain Reference domain.
+     * @param[in] rule   Requested family and degree of exactness, e.g. gaussExactToDegree( 3 ) or
+     * newtonCotesExactToDegree( 1 ).
+     * @return The points and weights of the first rule of quadratureRules() on the domain that reaches the requested
+     * degree, i.e. the one with the fewest points.
+     * @throws std::invalid_argument If the catalogue holds no such rule.
+     */
+    const std::vector< QuadraturePointInfo >& getQuadraturePoints( ReferenceDomain domain, QuadratureRule rule );
+
+    /**
+     * @brief The quadrature points of a requested rule on the reference domain of an element shape.
+     * @param[in] shape Element shape; it selects the reference domain (getReferenceDomain()).
+     * @param[in] rule  Requested family and degree of exactness, e.g. gaussExactToDegree( 3 ) or
+     * newtonCotesExactToDegree( 1 ).
+     * @return getQuadraturePoints() on the reference domain of the shape: all shapes of a domain get the same rule.
+     * @throws std::invalid_argument If the catalogue holds no such rule.
+     */
+    inline const std::vector< QuadraturePointInfo >& getQuadraturePoints( ElementShapes shape, QuadratureRule rule )
+    {
+      return getQuadraturePoints( getReferenceDomain( shape ), rule );
+    }
 
     namespace Spatial1D {
       constexpr int nDim = 1; ///< Number of spatial dimensions for 1-D quadrature.
-
-      // clang-format off
-            /// 1-point Gauss rule for 1-D elements.
-            const std::vector< QuadraturePointInfo >  gaussPointList1 = {
-                { ( Eigen::VectorXd ( 1 ) << 0 ).finished(),               2.0 }
-            };
-
-            /// 2-point Gauss rule for 1-D elements.
-            const std::vector< QuadraturePointInfo >  gaussPointList2 = {
-                { ( Eigen::VectorXd ( 1 ) << -gp2 ).finished(),           1.0 },
-                { ( Eigen::VectorXd ( 1 ) << +gp2 ).finished(),           1.0 }
-            };
-
-            /// 3-point Gauss rule for 1-D elements.
-            const std::vector< QuadraturePointInfo >  gaussPointList3 = {
-                { ( Eigen::VectorXd ( 1 ) << -gp3 ).finished(),            5./9 },
-                { ( Eigen::VectorXd ( 1 ) << 0.   ).finished(),            8./9 },
-                { ( Eigen::VectorXd ( 1 ) << +gp3 ).finished(),            5./9 }
-            };
-      // clang-format on
-
-    } // namespace Spatial1D
+    }                         // namespace Spatial1D
 
     namespace Spatial2D {
       constexpr int nDim = 2; ///< Number of spatial dimensions for 2-D quadrature.
-
-      // clang-format off
-            /// 1×1 Gauss rule for 2-D quadrilateral elements.
-            const std::vector< QuadraturePointInfo > gaussPointList1x1 = {
-                { Eigen::Vector2d::Zero(),                             4. }
-            };
-
-            /// 2×2 Gauss rule for 2-D quadrilateral elements.
-            const std::vector< QuadraturePointInfo > gaussPointList2x2 = {
-                { ( Eigen::Vector2d () << +gp2,     +gp2 ).finished(),   1.0 },
-                { ( Eigen::Vector2d () << -gp2,     +gp2 ).finished(),   1.0 },
-                { ( Eigen::Vector2d () << -gp2,     -gp2 ).finished(),   1.0 },
-                { ( Eigen::Vector2d () << +gp2,     -gp2 ).finished(),   1.0 }
-            };
-
-            /// 3×3 Gauss rule for 2-D quadrilateral elements.
-            const std::vector< QuadraturePointInfo > gaussPointList3x3 = {
-                { ( Eigen::Vector2d () << 0,        0.   ).finished(),   64./81},
-                { ( Eigen::Vector2d () << -gp3,     -gp3 ).finished(),   25./81},
-                { ( Eigen::Vector2d () << +gp3,     -gp3 ).finished(),   25./81},
-                { ( Eigen::Vector2d () << +gp3,     +gp3 ).finished(),   25./81},
-                { ( Eigen::Vector2d () << -gp3,     +gp3 ).finished(),   25./81},
-                { ( Eigen::Vector2d () << 0,        -gp3 ).finished(),   40./81},
-                { ( Eigen::Vector2d () << gp3,      0.   ).finished(),   40./81},
-                { ( Eigen::Vector2d () << 0,        +gp3 ).finished(),   40./81},
-                { ( Eigen::Vector2d () << -gp3,     0.   ).finished(),   40./81},
-            };
-      // clang-format on
 
       /**
        * @brief Scale the characteristic element length in an ABAQUS-like manner.
@@ -664,72 +967,6 @@ namespace Marmot::Discretizations::Elements {
 
     namespace Spatial3D {
       constexpr int nDim = 3; ///< Number of spatial dimensions for 3-D quadrature.
-
-      // clang-format off
-            /// 1×1×1 Gauss rule for 3-D hexahedral elements.
-            const inline std::vector< QuadraturePointInfo > gaussPointList1x1x1 = {
-                { Eigen::Vector3d::Zero(),                                         8.0 }
-            };
-
-            /// 1-point rule for Tetra4 elements.
-            const inline std::vector< QuadraturePointInfo > gaussPointListTetra4 = {
-                { (Eigen::Vector3d() << 1./4, 1./4, 1./4).finished(),  1./6}
-            };
-
-            /// 4-point rule for Tetra10 elements.
-            const inline std::vector< QuadraturePointInfo > gaussPointListTetra10 = {
-                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20     ).finished(),  1./24},
-                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20,    (5+3*std::sqrt(5))/20   ).finished(),  1./24},
-                { (Eigen::Vector3d() << (5-std::sqrt(5))/20,    (5+3*std::sqrt(5))/20,  (5-std::sqrt(5))/20     ).finished(),  1./24},
-                { (Eigen::Vector3d() << (5+3*std::sqrt(5))/20,  (5-std::sqrt(5))/20,    (5-std::sqrt(5))/20     ).finished(),  1./24},
-            };
-
-            /// 2×2×2 Gauss rule for 3-D hexahedral elements.
-            const inline std::vector< QuadraturePointInfo > gaussPointList2x2x2 = {
-                { ( Eigen::Vector3d () << -gp2,    -gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << +gp2,    -gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << +gp2,    +gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << -gp2,    +gp2,   -gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << -gp2,    -gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << +gp2,    -gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << +gp2,    +gp2,   +gp2 ).finished(),       1.0},
-                { ( Eigen::Vector3d () << -gp2,    +gp2,   +gp2 ).finished(),       1.0},
-            };
-
-            /// 3×3×3 Gauss rule for 3-D hexahedral elements.
-            const inline std::vector< QuadraturePointInfo > gaussPointList3x3x3 = {
-                { ( Eigen::Vector3d () << -gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << 0,        -gp3,   -gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << +gp3,     -gp3,   -gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << -gp3,     0,      -gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << 0,        0,      -gp3 ).finished(),       0.438957475994513},
-                { ( Eigen::Vector3d () << gp3,      0,      -gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << -gp3,     +gp3,   -gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << 0,        +gp3,   -gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << +gp3,     +gp3,   -gp3 ).finished(),       0.171467764060357},
-
-                { ( Eigen::Vector3d () << -gp3,     -gp3,   0 ).finished(),          0.274348422496571},
-                { ( Eigen::Vector3d () << 0,        -gp3,   0 ).finished(),          0.438957475994513},
-                { ( Eigen::Vector3d () << +gp3,     -gp3,   0 ).finished(),          0.274348422496571},
-                { ( Eigen::Vector3d () << -gp3,     0,      0 ).finished(),          0.438957475994513},
-                { ( Eigen::Vector3d () << 0,        0,      0 ).finished(),          0.702331961591221},
-                { ( Eigen::Vector3d () << gp3,      0,      0 ).finished(),          0.438957475994513},
-                { ( Eigen::Vector3d () << -gp3,     +gp3,   0 ).finished(),          0.274348422496571},
-                { ( Eigen::Vector3d () << 0,        +gp3,   0 ).finished(),          0.438957475994513},
-                { ( Eigen::Vector3d () << +gp3,     +gp3,   0 ).finished(),          0.274348422496571},
-
-                { ( Eigen::Vector3d () << -gp3,     -gp3,   +gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << 0,        -gp3,   +gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << +gp3,     -gp3,   +gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << -gp3,     0,      +gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << 0,        0,      +gp3 ).finished(),       0.438957475994513},
-                { ( Eigen::Vector3d () << gp3,      0,      +gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << -gp3,     +gp3,   +gp3 ).finished(),       0.171467764060357},
-                { ( Eigen::Vector3d () << 0,        +gp3,   +gp3 ).finished(),       0.274348422496571},
-                { ( Eigen::Vector3d () << +gp3,     +gp3,   +gp3 ).finished(),       0.171467764060357}
-            };
-      // clang-format on
-
-    } // namespace Spatial3D
-  }   // namespace Quadrature
+    }                         // namespace Spatial3D
+  }                           // namespace Quadrature
 } // namespace Marmot::Discretizations::Elements

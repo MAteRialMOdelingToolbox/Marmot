@@ -122,7 +122,15 @@ namespace Marmot::ContinuumMechanics::Voigt {
    * \f]
    * @note This function extracts only the in-plane components of a 3D stress vector.
    */
-  Eigen::Vector3d        voigtToPlaneVoigt( const Marmot::Math::Vector6d& voigt );
+  Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Math::Vector6d& voigt );
+
+  /**
+   * @brief Converts a 3D vector in Voigt notation to the components of an axisymmetric section.
+   * @param voigt 6-component 3D vector in Voigt notation, with \f$x_1 = r\f$, \f$x_2 = z\f$ and \f$x_3 = \theta\f$.
+   * @return 4-component vector \f$\begin{bmatrix} \sigma_{rr} & \sigma_{zz} & \sigma_{\theta\theta} & \sigma_{rz}
+   * \end{bmatrix}^T\f$.
+   * @note The components \f$r\theta\f$ and \f$z\theta\f$ are dropped; they vanish in the axisymmetric section.
+   */
   Marmot::Math::Vector4d voigtToAxisymmetricVoigt( const Marmot::Math::Vector6d& voigt );
 
   /**
@@ -146,14 +154,15 @@ namespace Marmot::ContinuumMechanics::Voigt {
 
   /**
    * @brief Reduces a 3D Voigt vector to a lower-dimensional vector defined by `voigtSize`.
-   * @tparam voigtSize Target Voigt dimension (1, 3, or 6).
+   * @tparam voigtSize Target Voigt dimension (1, 3, 4, or 6).
    * @param Voigt3D Input 6-component 3D Voigt vector.
    * @return Reduced Voigt vector of size `voigtSize`.
    * @note Considered cases:
    * - `voigtSize = 1`: Returns the \f$\sigma_{11}\f$ component.
    * - `voigtSize = 3`: Returns the plane stress components using `voigtToPlaneVoigt()`.
+   * - `voigtSize = 4`: Returns the axisymmetric components using `voigtToAxisymmetricVoigt()`.
    * - `voigtSize = 6`: Returns the input 3D vector unchanged.
-   * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
+   * @throws std::invalid_argument if `voigtSize` is not 1, 3, 4, or 6.
    */
   template < enum VoigtSize voigtSize >
   Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Math::Vector6d& Voigt3D )
@@ -162,6 +171,8 @@ namespace Marmot::ContinuumMechanics::Voigt {
       return ( Eigen::Matrix< double, 1, 1 >() << Voigt3D( 0 ) ).finished();
     else if constexpr ( voigtSize == TwoD )
       return voigtToPlaneVoigt( Voigt3D );
+    else if constexpr ( voigtSize == Axial )
+      return voigtToAxisymmetricVoigt( Voigt3D );
     else if constexpr ( voigtSize == ThreeD )
       return Voigt3D;
     else
@@ -171,7 +182,7 @@ namespace Marmot::ContinuumMechanics::Voigt {
 
   /**
    * @brief Constructs a 3D Voigt vector from a lower-dimensional Voigt vector.
-   * @tparam voigtSize Dimension of the input Voigt vector (1, 3, or 6).
+   * @tparam voigtSize Dimension of the input Voigt vector (1, 3, 4, or 6).
    * @param Voigt Input Voigt vector of size `voigtSize`.
    * @return 6-component 3D Voigt vector.
    * @note Considered cases:
@@ -182,8 +193,9 @@ namespace Marmot::ContinuumMechanics::Voigt {
    * \end{bmatrix}^T
    * \f]
    * - `voigtSize = 3`: Returns a 3D Voigt vector by calling `planeVoigtToVoigt()`.
+   * - `voigtSize = 4`: Returns a 3D Voigt vector by calling `axisymmetricVoigtToVoigt()`.
    * - `voigtSize = 6`: Returns the input vector unchanged.
-   * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
+   * @throws std::invalid_argument if `voigtSize` is not 1, 3, 4, or 6.
    */
   template < enum VoigtSize voigtSize >
   Marmot::Math::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )

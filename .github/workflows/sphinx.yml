@@ -10,56 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Mambaforge
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           use-mamba: true
           miniforge-variant: Miniforge3
           miniforge-version: latest
           activate-environment: anaconda-client-env
 
+      # The documentation tools, and Eigen, autodiff and Fastor from the channel of the stack, whose recipes carry the
+      # patches of the dependencies (see .github/actions/setup-stack); listed first, so that its packages win.
       - name: Install conda packages
         shell: bash -l {0}
         run: |
-          mamba install --file doc/requirements.txt
-
-      - name: Install Eigen
-        shell: bash -l {0}
-        run: |
-          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
-          cd eigen
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF  -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
-          make install
-          cd ../..
-
-      - name: Install Autodiff
-        shell: bash -l {0}
-        run: |
-          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
-          cd autodiff
-          mkdir build
-          cd build
-          cmake -DAUTODIFF_BUILD_TESTS=OFF \
-            -DAUTODIFF_BUILD_PYTHON=OFF \
-            -DAUTODIFF_BUILD_EXAMPLES=OFF \
-            -DAUTODIFF_BUILD_DOCS=OFF \
-            -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-            ..
-          make install
-          cd ../..
-
-      - name: Install Fastor
-        shell: bash -l {0}
-        run: |
-          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
-          cd Fastor
-          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
-          make install
-          cd ..
+          mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge --file doc/requirements.txt
+          mamba list "^(eigen|autodiff|fastor)$"
 
       - name: Building Marmot documentation
         shell: bash -l {0}
@@ -68,7 +35,7 @@ jobs:
 
       - name: Upload documentation artifact
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: documentation
           path: ./doc/doc_out/sphinx
@@ -76,7 +43,7 @@ jobs:
 
       - name: Deploy
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./doc/doc_out/sphinx

@@ -349,10 +349,11 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Follower pressure on a face of the particle geometry.
-     * @details @f$ \boldsymbol{f} = \Delta J_c\,\Delta\boldsymbol{F}_c^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y @f$
+     * @details @f$ \boldsymbol{f} = -\Delta J_c\,\Delta\boldsymbol{F}_c^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y @f$
      * with the central incremental deformation gradient @f$ \Delta\boldsymbol{F}_c @f$ and the boundary vector of the
      * face in the intermediate configuration, assembled as @f$ r_{Aj} \mathrel{-}= T_A\,f_j @f$ with @f$ T_A @f$ at
-     * the face center of the smoothing domain; the tangent uses the smoothed gradient over the whole particle.
+     * the face center of the smoothing domain; the tangent uses the smoothed gradient over the whole particle. As for
+     * the elements, a positive pressure pushes on the face (against the outward normal).
      * @param[in] type The distributed load type (Pressure).
      * @param[in] surfaceID The face ID (1-based).
      * @param[in] load The pressure @f$ p @f$ (load[0]).
@@ -520,7 +521,8 @@ namespace Marmot::Discretizations::Meshfree {
       // const auto dT_dY = dN_dY;
       const auto [_, dN_dY] = this->evaluateShapeFunctionsAndDerivativesForParticleDomain( this->_particleDomainMain );
 
-      TensorD fY = N_dAY * load_[0];
+      // a positive pressure pushes on the face: the traction acts against the outward normal
+      TensorD fY = -load_[0] * N_dAY;
 
       Eigen::Map< Eigen::VectorXd > P( fExt, this->_nNodes * nodeBlockSize );
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, this->_nNodes * nodeBlockSize, this->_nNodes * nodeBlockSize );

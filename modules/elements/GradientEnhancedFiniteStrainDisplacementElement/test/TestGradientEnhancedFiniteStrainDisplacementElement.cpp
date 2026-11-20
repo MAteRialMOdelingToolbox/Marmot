@@ -470,7 +470,7 @@ void testUnsupportedRequestsThrow()
   for ( auto section : { Element::PlaneStress, Element::Solid } ) {
     bool sectionThrew = false;
     try {
-      Element element( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, section );
+      Element element( 1, Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 4 ), section );
     }
     catch ( const std::invalid_argument& ) {
       sectionThrew = true;
@@ -502,9 +502,32 @@ void testExplicitKernels()
   }
 }
 
+void testCenterOfLinearSimplices()
+{
+  // the center is the centroid, not node 0 at the origin of the unit simplex
+  using namespace Marmot::Discretizations::Elements;
+  GradientEnhancedFiniteStrainDisplacementElement< 2, 3 >
+    tri( 1, Quadrature::gaussExactToDegree( 2 ), GradientEnhancedFiniteStrainDisplacementElement< 2, 3 >::PlaneStrain );
+  const std::vector< double > triCoordinates = { 0, 0, 2, 0, 0.5, 1 };
+  tri.assignNodeCoordinates( triCoordinates.data() );
+  const auto triCenter = tri.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( triCenter[0] - 2.5 / 3 ) < 1e-14 && std::abs( triCenter[1] - 1. / 3 ) < 1e-14,
+                           "The center of a triangle must be its centroid." );
+
+  GradientEnhancedFiniteStrainDisplacementElement< 3, 4 >
+    tet( 1, Quadrature::gaussExactToDegree( 1 ), GradientEnhancedFiniteStrainDisplacementElement< 3, 4 >::Solid );
+  const std::vector< double > tetCoordinates = { 0, 0, 0, 2, 0, 0, 0.5, 1, 0, 0, 0.5, 3 };
+  tet.assignNodeCoordinates( tetCoordinates.data() );
+  const auto tetCenter = tet.getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( tetCenter[0] - 2.5 / 4 ) < 1e-14 && std::abs( tetCenter[1] - 1.5 / 4 ) < 1e-14 &&
+                             std::abs( tetCenter[2] - 3. / 4 ) < 1e-14,
+                           "The center of a tetrahedron must be its centroid." );
+}
+
 int main()
 {
-  auto testFunctions = std::vector< std::function< void() > >{ testBasicProperties,
+  auto testFunctions = std::vector< std::function< void() > >{ testCenterOfLinearSimplices,
+                                                               testBasicProperties,
                                                                testNodeFieldsAndPermutation,
                                                                testConsistentTangentPlaneStrainQuad8,
                                                                testConsistentTangentReducedQuad8,

@@ -159,14 +159,15 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Return the result-file geometry keyword for this interface interpolation.
      *
-     * @return `"bar2"` for 2D line interfaces and `"hexa8"` for 3D quadrilateral interfaces.
+     * @return `"quad4"` for 2D line interfaces and `"hexa8"` for 3D quadrilateral interfaces.
      *
      * @details
      * These are EnSight element names, not the computational interface shape. EnSight and ParaView do not
      * understand an `"iline2"`/`"iquad4"` keyword, so a result file names the standard cell spanning the
-     * same nodes: a 3D interface writes its eight nodes as `"hexa8"`, a 2D interface as `"bar2"`. The
-     * element itself remains an interface element; only the geometry keyword written to result files is
-     * affected.
+     * same nodes: a 3D interface writes its eight nodes as `"hexa8"`, a 2D interface its four nodes as `"quad4"`.
+     * The keyword names the cell of all nodes, not the shape of one face (`"bar2"` is a two-node cell, which made the
+     * geometry of a four-node 2D interface invalid). The element itself remains an interface element; only the
+     * geometry keyword written to result files is affected.
      *
      * A new interface interpolation is added by extending this map, next to the existing entries. The
      * lookup uses at(), so an unmapped shape throws rather than writing an empty keyword to the file.
@@ -176,7 +177,7 @@ namespace Marmot::Discretizations::Elements {
       using namespace Marmot::Discretizations::Elements;
 
       static const std::map< ElementShapes, std::string > shapes = {
-        { Bar2, "bar2" },
+        { Bar2, "quad4" },
         { Quad4, "hexa8" },
       };
 

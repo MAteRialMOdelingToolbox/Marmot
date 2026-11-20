@@ -26,11 +26,13 @@
 #pragma once
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotLowerDimensionalStress.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <stdexcept>
 #include <vector>
 
@@ -173,74 +175,85 @@ namespace Marmot::Materials {
 
     /**
      * @brief Compute the plane stress response of the material model.
-     * @param[in,out] res Reference to the response struct to be filled with the computed plane stress and other
-     * response variables.
-     * @param[in,out] tan Reference to the tangents struct to be filled with the computed algorithmic tangent matrices
-     * for plane stress.
+     * @param[in,out] res Reference to the response struct to be filled with the computed stress and other response
+     * variables.
+     * @param[in,out] tan Reference to the tangents struct to be filled with the algorithmic tangents of the converged
+     * 3D state; the condensation to plane stress is left to the caller
+     * (Marmot::ContinuumMechanics::ReducedStress::condense()).
      * @param[in] inc Reference to the increment struct containing the strain increment, nonlocal variable increments,
      * and time information.
      *
-     * This method provides a default implementation for computing the plane stress response using an iterative
-     * approach. It assumes an initial guess of isochoric deformation and iteratively corrects the out-of-plane strain
-     * until convergence is achieved. Derived classes can override this method if a different approach for plane stress
-     * computation is desired.
+     * The default implementation is iteratePlaneStress() around computeStress(): \f$\sigma_{33} = \sigma_{13} =
+     * \sigma_{23} = 0\f$ for the prescribed in-plane strain increment. Derived classes can override this method if a
+     * different approach for plane stress computation is desired.
      */
     virtual void computePlaneStress( response& res, tangents& tan, const increment& inc ) const
     {
-      using namespace Marmot;
-      using namespace Eigen;
+      using namespace std::placeholders;
+      iteratePlaneStress( stateLayout.totalSize(),
+                          res,
+                          tan,
+                          inc,
+                          std::bind( &MaterialGradientEnhancedHypoElastic::computeStress, this, _1, _2, _3 ) );
+    }
 
-      Map< VectorXd > stateVars( res.stateVars, stateLayout.totalSize() );
+    /**
+     * @brief The plane stress iteration of computePlaneStress() around a given 3D stress update.
+     * @tparam ComputeStress3D Callable with the signature of computeStress().
+     * @param nStateVars Number of state variables of the material.
+     * @param[in,out] res Response, as for computePlaneStress().
+     * @param[in,out] tan Tangents of the last call of @p computeStress3D, i.e., of the converged 3D state.
+     * @param[in] inc Increment, as for computePlaneStress(): its components \f$\Delta\varepsilon_{11},
+     * \Delta\varepsilon_{22}, \Delta\gamma_{12}\f$ are prescribed, its \f$\Delta\gamma_{13}, \Delta\gamma_{23}\f$ are
+     * the initial guess (zero from the elements), and \f$\Delta\varepsilon_{33}\f$ starts from the isochoric guess.
+     * @param computeStress3D The 3D stress update, e.g., a variant of computeStress() with additional outputs.
+     * @details Marmot::ContinuumMechanics::ReducedStress::computeReducedStress() with the free components
+     * \f$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0\f$; every call of @p computeStress3D starts from the response and
+     * the state variables of the start of the increment. The last call of @p computeStress3D is the one at the
+     * converged strain, so additional outputs of the callable refer to the converged 3D state. Throws
+     * Marmot::Utilities::StressUpdateFailed if the iteration fails; @p res and the state variables are then those of
+     * the start of the increment.
+     */
+    template < typename ComputeStress3D >
+    static void iteratePlaneStress( int               nStateVars,
+                                    response&         res,
+                                    tangents&         tan,
+                                    const increment&  inc,
+                                    ComputeStress3D&& computeStress3D )
+    {
+      using namespace Marmot::ContinuumMechanics;
 
-      VectorXd  stateVarsOld = stateVars;
-      response  resTemp = { res.stress, res.KLocal, res.c, res.stateVars, res.elasticEnergyDensity, res.dissipation };
-      increment incTemp = { inc.dStrain, inc.K, inc.dK, inc.time, inc.dT };
+      Eigen::Map< Eigen::VectorXd > stateVars( res.stateVars, nStateVars );
+      const Eigen::VectorXd         stateVarsOld = stateVars;
+      const response                resOld       = res;
+      increment                     incTemp      = inc;
 
-      double residual          = 1;
-      double tangentCompliance = 1.;
-      // assumption of isochoric deformation for initial guess
-      double strainIncrement = ( -incTemp.dStrain( 0 ) - incTemp.dStrain( 1 ) );
-      incTemp.dStrain( 2 )   = strainIncrement;
+      auto stressUpdate3D = [&]( const Marmot::Math::Vector6d& dStrain,
+                                 Marmot::Math::Vector6d&       stress,
+                                 Marmot::Math::Matrix6d&       dStress_dStrain ) {
+        res             = resOld;
+        stateVars       = stateVarsOld;
+        incTemp.dStrain = dStrain;
+        computeStress3D( res, tan, incTemp );
+        stress          = res.stress;
+        dStress_dStrain = tan.dStressddStrain;
+      };
 
-      int planeStressCount = 1;
-      while ( true ) {
+      // initial guess: isochoric
+      Marmot::Math::Vector6d dStrain = inc.dStrain;
+      dStrain( 2 )                   = -inc.dStrain( 0 ) - inc.dStrain( 1 );
 
-        // set old response
-        resTemp = { .stress               = res.stress,
-                    .KLocal               = res.KLocal,
-                    .c                    = res.c,
-                    .stateVars            = res.stateVars,
-                    .elasticEnergyDensity = res.elasticEnergyDensity,
-                    .dissipation          = res.dissipation };
-        // set old state variables
-        stateVars = stateVarsOld;
-        // compute stress
-        computeStress( resTemp, tan, incTemp );
-
-        // evauate residual
-        residual = std::abs( resTemp.stress.array().abs()[2] /
-                             std::max( resTemp.stress.array().abs().maxCoeff(), 1. ) );
-        if ( ( residual < 1e-10 && std::abs( strainIncrement ) < 1e-8 ) ||
-             ( planeStressCount > 7 && residual < 1e-5 ) ) {
-          break;
-        }
-
-        // correct strain increment
-        tangentCompliance = 1. / tan.dStressddStrain( 2, 2 );
-        if ( Math::isNaN( tangentCompliance ) || std::abs( tangentCompliance ) > 1e10 ) {
-          tangentCompliance = 1e10;
-        }
-
-        strainIncrement = -resTemp.stress( 2 ) * tangentCompliance;
-        incTemp.dStrain( 2 ) += strainIncrement;
-
-        planeStressCount += 1;
-        if ( planeStressCount > 13 ) {
-          throw Marmot::Utilities::StressUpdateFailed( "PlaneStressWrapper requires cutback" );
-        }
+      try {
+        ReducedStress::computeReducedStress( stressUpdate3D,
+                                             dStrain,
+                                             ReducedStress::planeStressPrescribed,
+                                             ReducedStress::planeStressFree );
       }
-
-      res = resTemp;
+      catch ( const Marmot::Utilities::StressUpdateFailed& ) {
+        res       = resOld;
+        stateVars = stateVarsOld;
+        throw;
+      }
     }
 
     /**

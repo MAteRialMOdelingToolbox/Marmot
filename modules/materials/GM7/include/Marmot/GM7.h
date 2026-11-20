@@ -80,7 +80,7 @@ namespace Marmot::Materials {
     /**
      * @brief Get the micro-inertia of the six nonlocal strain components.
      * @param stateVars Pointer to the array of state variables
-     * @return The optional material property 15 for all six components, or zero if it is not given
+     * @return The optional material property 16 for all six components, or zero if it is not given
      *
      * @details Optional, and absent means zero: the nonlocal strain is then first order in time and is integrated by
      * its viscosity alone, which keeps every deck written before this property existed unchanged. Given, it makes the

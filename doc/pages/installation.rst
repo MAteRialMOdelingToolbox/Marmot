@@ -10,9 +10,21 @@ and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
-Both Eigen 3.4 and Eigen 5 are supported.
-Eigen 5 requires an autodiff version with Eigen 5 support;
-autodiff 1.1.2 and older do not compile against Eigen 5 (see `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_).
+Marmot requires Eigen 5. Two of the dependencies need patches that are not released upstream:
+autodiff 1.1.2 does not compile against Eigen 5 without
+`autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_, and Fastor needs a patch on arm64 (Apple Silicon).
+The conda channel ``https://repo.prefix.dev/matthiasneuner/edelweiss``
+(recipes: `edelweiss-conda-channel <https://github.com/matthiasneuner/edelweiss-conda-channel>`_)
+provides all three with these patches; install them from there, together with conda-forge:
+
+.. code-block:: console
+
+    mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen>=5" autodiff=1.1.2 fastor
+
+Since they are headers only, they can also serve a build with another compiler, e.g., the system compiler of an
+Abaqus installation: point ``CMAKE_PREFIX_PATH`` to the environment.
+Marmot's CI builds and tests with the locked environment of EdelweissFE (``conda-lock.yml``),
+which EdelweissFE and EdelweissMeshfree use, too.
 
 Prebuilt conda package
 **********************
@@ -68,67 +80,20 @@ Add conda to your environment:
     conda init --all
     exit
 
-Restart shell and activate conda
+Restart shell and activate conda, then install the compilers and the dependencies:
 
 .. code-block:: console
    :caption: Step 3
 
     export MARMOTROOT=$PWD
     conda activate
-    mamba install cmake make compilers
-
-Get Eigen:
-
-.. code-block:: console
-   :caption: Step 4
-
-    cd $MARMOTROOT
-    git clone --branch 3.4.0  https://gitlab.com/libeigen/eigen.git
-    cd eigen
-    mkdir build
-    cd build
-    cmake \
-        -DBUILD_TESTING=OFF  \
-        -DINCLUDE_INSTALL_DIR=$CONDA_PREFIX/include \
-        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-        ..
-    make install
-
-Get autodiff:
-
-.. code-block:: console
-   :caption: Step 5
-
-    cd $MARMOTROOT
-    git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
-    cd autodiff
-    mkdir build
-    cd build
-    cmake \
-        -DAUTODIFF_BUILD_TESTS=OFF \
-        -DAUTODIFF_BUILD_PYTHON=OFF \
-        -DAUTODIFF_BUILD_EXAMPLES=OFF \
-        -DAUTODIFF_BUILD_DOCS=OFF \
-        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
-        ..
-    make install
-
-Get Fastor:
-
-.. code-block:: console
-   :caption: Step 6
-
-    cd $MARMOTROOT
-    git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
-    cd Fastor
-    cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
-    make install
-    cd ../
+    mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge \
+        cmake make compilers "eigen>=5" autodiff=1.1.2 fastor
 
 Get Marmot:
 
 .. code-block:: console
-   :caption: Step 7
+   :caption: Step 4
 
     cd $MARMOTROOT
     git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git
@@ -192,8 +157,9 @@ Building on Windows
 *******************
 
 Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
-Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
-then build Marmot from a *Developer PowerShell for VS 2022*:
+Install the dependencies from the conda channel as above (conda puts their headers under
+``%CONDA_PREFIX%\Library``), then build Marmot from a *Developer PowerShell for VS 2022*,
+with ``<prefix>`` = ``%CONDA_PREFIX%\Library``:
 
 .. code-block:: console
 
@@ -236,6 +202,8 @@ Building with Python Bindings
 *****************************
 
 Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_.
+It does not yet build with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment
+(`#154 <https://github.com/MAteRialMOdelingToolbox/Marmot/issues/154>`_).
 To enable the Python module, configure CMake with `-DMARMOT_BUILD_PYTHON_BINDINGS=ON`:
 
 .. code-block:: console

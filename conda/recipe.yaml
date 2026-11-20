@@ -37,9 +37,9 @@ requirements:
     - ninja
     - ${{ compiler('cxx') }}
   host:
-    # Eigen 3.4 or 5: the autodiff 1.1.2 of the matthiasneuner/edelweiss channel carries the Eigen 5 patch
-    # (autodiff#397). EdelweissFE environments have Eigen 5 (vtk-base requires it).
-    - eigen
+    # Eigen 5 only: the autodiff 1.1.2 of the matthiasneuner/edelweiss channel carries the Eigen 5 patch
+    # (autodiff#397).
+    - eigen >=5
     - autodiff ==1.1.2
     - fastor
   run:

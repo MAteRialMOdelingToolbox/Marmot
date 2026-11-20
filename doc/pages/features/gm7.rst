@@ -30,9 +30,16 @@ requires the ``MicroplaneM7`` module.
 Properties
 ----------
 
-The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore :math:`E`, :math:`f_c` and
-``transitionWidth`` have to be given in N/mm² (MPa); the M7 parameters :math:`\nu`, :math:`k_1, \ldots, k_5`,
-:math:`c_3` and ``transitionExponent`` are dimensionless.
+The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm, and most of them are dimensionless. The
+dimensional ones (:math:`c_{18} = 62.5` MPa, :math:`c_{21} = 250` MPa and the reference values
+:math:`f_{c0} = 15.08` MPa, :math:`E_0 = 20000` MPa), the default values of :math:`f_c` and ``transitionWidth`` and
+an internal stiffness tolerance are converted to the user's stress unit with the optional property ``stressUnit``,
+the value of 1 MPa in that unit (1 for MPa, the default; 1e6 for Pa; 1e-3 for GPa). :math:`E`, :math:`f_c` and
+``transitionWidth`` have to be given in the same stress unit; the M7 parameters :math:`\nu`,
+:math:`k_1, \ldots, k_5`, :math:`c_3` and ``transitionExponent`` are dimensionless. As ``stressUnit`` follows
+:math:`f_c` and ``transitionWidth``, these have to be given explicitly for any unit other than MPa. Note that
+``stressUnit`` was inserted at index 13, in front of the properties only required for explicit simulations, so
+these moved up by one.
 
 .. list-table::
    :header-rows: 1
@@ -43,7 +50,7 @@ The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. The
      - Description
    * - 0
      - ``E``
-     - Young's modulus :math:`E` in N/mm²
+     - Young's modulus :math:`E`
    * - 1
      - ``nu``
      - Poisson's ratio :math:`\nu`
@@ -73,22 +80,26 @@ The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. The
      - Optional, slope of the postpeak in uniaxial tension :math:`c_3` (default 4.0)
    * - 10
      - ``fc``
-     - Optional, compressive strength :math:`f_c` in N/mm², used by the deviatoric boundary (default 36.0)
+     - Optional, compressive strength :math:`f_c`, used by the deviatoric boundary (default 36 MPa)
    * - 11
      - ``transitionWidth``
-     - Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
-       starts (default 4.0)
+     - Optional, stress offset from the virtual elastic loading path at which the unloading transition starts
+       (default 4 MPa)
    * - 12
      - ``transitionExponent``
      - Optional, exponent of the unloading transition function (default 0.4)
    * - 13
+     - ``stressUnit``
+     - Optional, value of 1 MPa in the user's stress unit, e.g. 1e6 for Pa (default 1.0, requires all preceding
+       properties)
+   * - 14
      - ``density``
      - Optional mass density (requires all preceding properties)
-   * - 14
+   * - 15
      - ``nonlocalViscosity``
      - Optional viscosity of the nonlocal fields, applied to all six components (requires all preceding
        properties)
-   * - 15
+   * - 16
      - ``nonlocalMicroInertia``
      - Optional micro-inertia of the nonlocal fields in time squared, applied to all six components (requires all
        preceding properties; default 0, i.e. first-order nonlocal fields). It makes the nonlocal fields second order
