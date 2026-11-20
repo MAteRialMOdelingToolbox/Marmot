@@ -72,6 +72,9 @@ order:
        ``getFaceCoordinates``, ``getEvaluationCoordinates`` and ``getNumberOfEvaluationPoints`` (the points at which
        the shape functions are evaluated, e.g., for checking the coverage by kernel supports),
        ``getInterpolationVector``
+   * - ``getAttachedPointInterpolationVector``
+     - the vector :math:`G_B` with which the particle moves a point attached to it (its center, a vertex, a face
+       center) in its next increment, for constraints on such points (see below)
 
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
@@ -82,9 +85,10 @@ momentum throw, unless a particle overrides them. A particle gives no critical t
 particle discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`). What
 the host needs from a particle to bound it is ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of
 :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness at the current state and nonnegative weights
-:math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it. The two
-methods added last, ``computeLumpedDamping`` and ``computeBoundOfAbsoluteStiffnessTimes``, are the last methods of the
-class, so that the vtable slots of the others did not move.
+:math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it. The
+methods added last, ``computeLumpedDamping``, ``computeBoundOfAbsoluteStiffnessTimes`` and
+``getAttachedPointInterpolationVector``, are the last methods of the class, so that the vtable slots of the others did
+not move.
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in
@@ -207,6 +211,27 @@ with the total deformation gradient :math:`\boldsymbol{F}` of the particle for t
      - :math:`\boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T\boldsymbol{F})`, i.e., the rotation and the diagonal
        entries of :math:`\boldsymbol{U}` in the global basis
      - ``SQCNI_RU``, ``RS-SNNI``
+
+**Points attached to a particle.** The particle moves as a whole: its center by :math:`\sum_B N_B\,\Delta\boldsymbol{q}_B`
+and its geometry with the deformation gradient increment
+:math:`\Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \partial N_B/\partial\boldsymbol{Y}`
+about the center, with the shape functions at the center and the (smoothed) gradients that drive its kinematics. A
+point :math:`\boldsymbol{Y}` of the geometry -- a vertex, a face center -- therefore moves by
+:math:`\sum_B G_B\,\Delta\boldsymbol{q}_B` with
+
+.. math::
+
+   G_B = N_B(\boldsymbol{Y}_c) + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,
+
+which ``getAttachedPointInterpolationVector`` returns. It sums to one, and it is not the vector of the shape functions
+at the point, ``getInterpolationVector``, except at the center: for a nodal field that is not linear, the two differ by
+a large fraction. A constraint that measures a point of the particle where the particle puts it (a support, a contact
+on a vertex) must distribute its force with :math:`G_B`, the transpose of the point's motion: only then is its penalty
+stiffness :math:`k\,\boldsymbol{G}\boldsymbol{G}^\mathsf{T}` symmetric and the constraint conservative. With the shape
+functions at the point instead, the stiffness :math:`k\,\boldsymbol{N}\boldsymbol{G}^\mathsf{T}` does work over a
+closed cycle of motion and can pump energy into a softened particle body. The vertices of every cell-shaped particle
+(``getVertexCoordinates``) are those of its deformed geometry, which moves with :math:`\boldsymbol{F}`, not those of a
+smoothing domain that follows only a part of it.
 
 ``ParticleDomain::uniformSubdivided`` splits the undeformed domain once in each direction (4 quadrilaterals or 8
 hexahedra); every subdomain is again a ``ParticleDomain`` with the same update type. This is the basis of the subdomain

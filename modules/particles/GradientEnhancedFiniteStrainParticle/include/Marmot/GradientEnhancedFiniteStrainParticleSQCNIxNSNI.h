@@ -221,7 +221,7 @@ namespace Marmot::Discretizations::Meshfree {
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      this->getVertexCoordinates( vertexCoordinates.data() );
+      this->getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
 
       ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
       ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );

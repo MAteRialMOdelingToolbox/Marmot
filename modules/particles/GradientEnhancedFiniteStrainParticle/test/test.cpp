@@ -801,6 +801,76 @@ namespace {
     }
   }
 
+  // A point attached to the particle (a vertex, the center) moves with getAttachedPointInterpolationVector(): after an
+  // accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ^u_B to round-off, and G sums to one, also for
+  // the smoothing domains that do not follow F (the vertices are the geometry, not the smoothing domain). The shape
+  // functions at a vertex, getInterpolationVector(), do not move it, the reason a constraint that measures a vertex
+  // must distribute its force with G.
+  template < int nDim >
+  void checkAttachedPointMotion( const std::string& name, const std::string& shape )
+  {
+    using Points          = Eigen::Matrix< double, nDim, Eigen::Dynamic >;
+    constexpr int nBlock  = Setup< nDim >::nBlock;
+    const bool    isPoint = numberOfFaces( shape ) == 0;
+
+    // a host may ask for the vertices before it initializes the particle (EdelweissMeshfree creates its constraints
+    // before it prepares the model): on a zero state block they are the undeformed ones
+    {
+      const auto                                                        v = vertices( shape );
+      Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
+      std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >    particle(
+        Marmot::Registry::ParticleFactory::createParticle( name,
+                                                           1,
+                                                           v.data(),
+                                                           static_cast< int >( v.size() ),
+                                                           volume( shape ),
+                                                           "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                           matProps.data(),
+                                                           static_cast< int >( matProps.size() ),
+                                                           approximation ) );
+      std::vector< double > stateVars( particle->getNumberOfRequiredStateVars(), 0.0 );
+      particle->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+      Eigen::VectorXd vert( v.size() );
+      particle->getVertexCoordinates( vert.data() );
+      throwExceptionOnFailure( ( vert - Eigen::Map< const Eigen::VectorXd >( v.data(), v.size() ) ).norm() < 1e-14,
+                               name + ": the vertices before initializeYourself() are the undeformed ones" );
+    }
+
+    Setup< nDim > s( name, vertices( shape ), volume( shape ) );
+    s.accept( increment< nDim >( s.nNodes(), 0.05, 1e-3 ) ); // a deformed, accepted state
+
+    const int nV = s.particle->getNumberOfVertices();
+    const int nN = s.nNodes();
+    Points    points( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( points.data() );
+    s.particle->getCenterCoordinates( points.col( nV ).data() );
+
+    Eigen::MatrixXd G( nN, nV + 1 ), N( nN, nV + 1 );
+    for ( int k = 0; k <= nV; k++ ) {
+      s.particle->getAttachedPointInterpolationVector( G.col( k ).data(), points.col( k ).data() );
+      s.particle->getInterpolationVector( N.col( k ).data(), points.col( k ).data() );
+    }
+
+    Eigen::VectorXd dQ( s.nDof() );
+    for ( int i = 0; i < s.nDof(); i++ )
+      dQ[i] = 0.03 * std::cos( 2.3 * ( i + 1 ) );
+    const Eigen::Map< const Points, 0, Eigen::OuterStride<> > dq( dQ.data(), nDim, nN, Eigen::OuterStride<>( nBlock ) );
+    s.accept( dQ );
+
+    Points moved( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( moved.data() );
+    s.particle->getCenterCoordinates( moved.col( nV ).data() );
+    const Points motion = moved - points;
+
+    throwExceptionOnFailure( ( motion - dq * G ).norm() < 1e-12 * motion.norm(),
+                             name + ": an attached point moves with getAttachedPointInterpolationVector()" );
+    throwExceptionOnFailure( ( G.colwise().sum().array() - 1.0 ).abs().maxCoeff() < 1e-12,
+                             name + ": the attached-point interpolation is a partition of unity" );
+    if ( !isPoint )
+      throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
+                               name + ": the shape functions at the vertices do not move them" );
+  }
+
 } // namespace
 
 void testSQCNIxNSNIFirstIncrementIsDeterministic()
@@ -1020,6 +1090,10 @@ int main()
       testFunctions.push_back( [name = name, shape = shape]() { checkWeakFormCorrection< 3 >( name, shape ); } );
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 3 >( name, shape ); } );
   }
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 3 >( name, shape ); } );
   testFunctions.push_back( testSQCNIxNSNIFirstIncrementIsDeterministic );
 
   // the explicit scheme, with one nonlocal variable ...

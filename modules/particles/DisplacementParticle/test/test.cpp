@@ -777,6 +777,48 @@ namespace {
     }
   }
 
+  // A point attached to the particle (a vertex, the center) moves with getAttachedPointInterpolationVector(): after an
+  // accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ_B to round-off, and G sums to one. The shape
+  // functions at a vertex, getInterpolationVector(), do not move it (they differ by a large fraction of the motion),
+  // the reason a constraint that measures a vertex must distribute its force with G.
+  template < int nDim >
+  void checkAttachedPointMotion( const std::string& name, const std::string& shape )
+  {
+    using Points = Eigen::Matrix< double, nDim, Eigen::Dynamic >;
+    Setup< nDim > s( name, vertices( shape ), volumeArgument( shape ) );
+    s.accept( increment( s.nDof(), 0.05 ) ); // a deformed, accepted state
+
+    const int nV = s.particle->getNumberOfVertices();
+    const int nN = s.nNodes();
+    Points    points( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( points.data() );
+    s.particle->getCenterCoordinates( points.col( nV ).data() );
+
+    Eigen::MatrixXd G( nN, nV + 1 ), N( nN, nV + 1 );
+    for ( int k = 0; k <= nV; k++ ) {
+      s.particle->getAttachedPointInterpolationVector( G.col( k ).data(), points.col( k ).data() );
+      s.particle->getInterpolationVector( N.col( k ).data(), points.col( k ).data() );
+    }
+
+    Eigen::VectorXd dQ( s.nDof() );
+    for ( int i = 0; i < s.nDof(); i++ )
+      dQ[i] = 0.03 * std::cos( 2.3 * ( i + 1 ) );
+    const Eigen::Map< const Points > dq( dQ.data(), nDim, nN );
+    s.accept( dQ );
+
+    Points moved( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( moved.data() );
+    s.particle->getCenterCoordinates( moved.col( nV ).data() );
+    const Points motion = moved - points;
+
+    throwExceptionOnFailure( ( motion - dq * G ).norm() < 1e-12 * motion.norm(),
+                             name + ": an attached point moves with getAttachedPointInterpolationVector()" );
+    throwExceptionOnFailure( ( G.colwise().sum().array() - 1.0 ).abs().maxCoeff() < 1e-12,
+                             name + ": the attached-point interpolation is a partition of unity" );
+    if ( shape != "Point" )
+      throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
+                               name + ": the shape functions at the vertices do not move them" );
+  }
 } // namespace
 
 // the NSNI particles keep their former names ("Displacement/SQCNIxNSNI/..." etc.) as aliases of the names of the naming
@@ -841,6 +883,10 @@ int main()
     if ( name.find( "SDI" ) == std::string::npos )
       testFunctions.push_back(
         [name = name, shape = shape]() { checkBoundOfAbsoluteStiffness< 3 >( name, shape, 1.5 ); } );
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 3 >( name, shape ); } );
   for ( const auto& [name, formerName] :
         std::vector< std::pair< std::string, std::string > >{ { "DisplacementSQCNIxNSNI", "Displacement/SQCNIxNSNI" },
                                                               { "DisplacementSNNIxNSNI", "Displacement/SNNIxNSNI" },

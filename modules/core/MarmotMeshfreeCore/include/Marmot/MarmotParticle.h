@@ -449,6 +449,59 @@ namespace Marmot::Discretizations::Meshfree {
     {
       throw std::runtime_error( "Not implemented yet!" );
     };
+
+    /**
+     * @brief The interpolation vector of a point attached to the particle: the coefficients @f$ G_B @f$ with which
+     * the particle moves that point in its next increment,
+     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{q}_B @f$.
+     * @details A particle moves as a whole: its center by @f$ \sum_B N_B\,\Delta\boldsymbol{q}_B @f$ and its domain
+     * with the homogeneous deformation gradient increment
+     * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \partial N_B / \partial
+     * \boldsymbol{Y} @f$ about the center @f$ \boldsymbol{Y}_c @f$, with the shape functions and the (possibly
+     * smoothed) gradients that drive its kinematics. A point @f$ \boldsymbol{Y} @f$ attached to the particle (its
+     * center, a vertex, a face center) therefore moves with
+     * @f[
+     *   G_B = N_B + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,
+     * @f]
+     * which is not getInterpolationVector() at that point, @f$ N_B(\boldsymbol{Y}) @f$, except at the center. A
+     * constraint that measures a point of the particle where the particle puts it must distribute its force
+     * @f$ \boldsymbol{f} @f$ with the same vector, @f$ \boldsymbol{f}_B = G_B\,\boldsymbol{f} @f$: only then is the
+     * force the transpose of the kinematics (the work of the force on the nodes is the work on the point), so that a
+     * penalty constraint has a symmetric stiffness and is conservative. The vector sums to one (a rigid translation
+     * moves the point as the nodes), so the force is distributed without a net residue. Appended at the end of the
+     * class, so that the vtable slots of the methods above do not move.
+     * @param[out] vec Array of @f$ n_{\text{nodes}} @f$ values.
+     * @param[in] coordinates The point in the reference intermediate configuration (getDimension() values).
+     */
+    virtual void getAttachedPointInterpolationVector( double* vec, const double* coordinates ) const = 0;
+
+  protected:
+    /**
+     * @brief The interpolation vector of a point attached to a particle (see getAttachedPointInterpolationVector()),
+     * @f$ G_B = N_B + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) @f$, from the
+     * shape functions and gradients that drive the particle's kinematics.
+     * @param[out] vec Array of @p nNodes values.
+     * @param[in] N Shape functions at the center, @p nNodes values.
+     * @param[in] dN_dY Their gradients, column-major @p nDim x @p nNodes.
+     * @param[in] centerCoordinates The center @f$ \boldsymbol{Y}_c @f$ (@p nDim values).
+     * @param[in] coordinates The attached point @f$ \boldsymbol{Y} @f$ (@p nDim values).
+     * @param[in] nDim The number of dimensions.
+     * @param[in] nNodes The number of nodes.
+     */
+    static void interpolateAttachedPoint( double*       vec,
+                                          const double* N,
+                                          const double* dN_dY,
+                                          const double* centerCoordinates,
+                                          const double* coordinates,
+                                          int           nDim,
+                                          int           nNodes )
+    {
+      for ( int B = 0; B < nNodes; B++ ) {
+        vec[B] = N[B];
+        for ( int i = 0; i < nDim; i++ )
+          vec[B] += dN_dY[B * nDim + i] * ( coordinates[i] - centerCoordinates[i] );
+      }
+    }
   };
 
 } // namespace Marmot::Discretizations::Meshfree

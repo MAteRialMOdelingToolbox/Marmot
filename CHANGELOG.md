@@ -159,6 +159,10 @@ All notable changes to Marmot are documented in this file. The format follows
   (`addStiffnessRowsOfNode`) and weighted moments of the shape functions, without assembling the stiffness; implemented
   in `DisplacementParticle` and `GradientEnhancedFiniteStrainParticle` for all derived particles. Their tangent is
   assembled from the same factors (`addTangentRowsOfNode`): equal to the former one to round-off, residuals bitwise.
+- `Particle::getAttachedPointInterpolationVector` (appended at the end of the class): the coefficients
+  `G_B = N_B(Y_c) + dN_B/dY . (Y - Y_c)` with which a particle moves a point attached to it (a vertex, a face center,
+  its center) in its next increment. A constraint that measures such a point where the particle puts it must
+  distribute its force with it, so that a penalty is conservative.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -257,6 +261,12 @@ All notable changes to Marmot are documented in this file. The format follows
   only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
+- **Breaking:** the gradient-enhanced SQCNI/SNNI particles (`GradientEnhanced[6]FiniteStrainSQCNI...`,
+  `...SNNI...`, `..._R...`, `..._RU...`) report the vertices and face centers of their geometry, mapped with the
+  deformation gradient, as the displacement particles do, not those of the smoothing domain (which differ for SNNI,
+  `_R` and `_RU`): the vertices then move with `getAttachedPointInterpolationVector`. The geometry is stored in the
+  state (one more block of `nDim x nVertices` values); the state views are `vertex displacements` (geometry) and
+  `smoothing vertex displacements` (smoothing domain, formerly `vertex displacements`). The physics is unchanged.
 - **Results** The critical time step of the continuum elements (`DisplacementFiniteElement`,
   `DisplacementFiniteStrainULElement` incl. its axisymmetric variant, and the displacement field of
   `GeneralGradientEnhancedDisplacementFiniteElement`) is the element's own eigenvalue bound

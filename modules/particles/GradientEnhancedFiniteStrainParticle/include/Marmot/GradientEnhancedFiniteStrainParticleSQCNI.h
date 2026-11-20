@@ -63,8 +63,10 @@ namespace Marmot::Discretizations::Meshfree {
    * - **Faces.** The particle has vertices and faces and therefore supports the distributed loads `PRESSURE` and
    *   `CWFCORRECTION` (computeDistributedLoad()); the point particle has none.
    *
-   * The smoothing domain is stored by the displacements of its vertices (appended to the state variables as
-   * `vertex displacements`) and is updated at each accepted increment from the deformation gradient
+   * The particle geometry and the smoothing domain are stored by the displacements of their vertices (appended to the
+   * state variables as `vertex displacements` and `smoothing vertex displacements`). The geometry follows
+   * @f$ \boldsymbol{F}_n @f$; its vertices are getVertexCoordinates(). The smoothing domain is updated at each accepted
+   * increment from the deformation gradient
    * @f$ \boldsymbol{F}_n @f$ of the material point, according to SmoothingDomainUpdateType:
    * `DeformationGradient` (SQCNI: the domain follows @f$ \boldsymbol{F}_n @f$), `None` (SNNI: the domain is only
    * translated with the particle), `RotationOnly` (the rotation @f$ \boldsymbol{R} @f$ of the polar decomposition)
@@ -102,6 +104,8 @@ namespace Marmot::Discretizations::Meshfree {
     double*
       _vertexDisplacements_SmoothingDomain; ///< vertex displacements of the smoothing domain (in the state vector)
 
+    double* _vertexDisplacements_Geometry;  ///< vertex displacements of the particle geometry (in the state vector)
+
     using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >; ///< the point particle base
 
     /// \brief Build a Lagrange cell from the current (deformed) smoothing domain vertex coordinates
@@ -109,7 +113,7 @@ namespace Marmot::Discretizations::Meshfree {
     LagrangeCellType _makeSmoothingDomainCell() const
     {
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      getVertexCoordinates( vertexCoordinates.data() );
+      getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
       return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices );
     }
 
@@ -120,20 +124,42 @@ namespace Marmot::Discretizations::Meshfree {
       return LagrangeCellType( _vertexCoordinates_Undeformed.data(), nDim * nVertices );
     }
 
-  public:
     /**
      * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `vertex displacements`.
+     * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
+     */
+    void getSmoothingDomainVertexCoordinates( double* coordinates ) const;
+
+    /**
+     * @brief The undeformed vertices mapped with a deformation tensor about the undeformed centroid and moved with the
+     * displacement of the center: @f$ \boldsymbol{X}_c + \boldsymbol{A}\,(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+     * \boldsymbol{u}_c @f$.
+     * @param[in] A The deformation tensor (@f$ \boldsymbol{F}_n @f$ for the geometry, see SmoothingDomainUpdateType
+     * for the smoothing domain).
+     * @return The vertex coordinates (nDim x nVertices).
+     */
+    Eigen::Matrix< double, nDim, nVertices > _vertexCoordinatesDeformedWith(
+      const Eigen::Matrix< double, nDim, nDim >& A ) const;
+
+  public:
+    /**
+     * @brief Vertex coordinates of the particle geometry: the undeformed vertices mapped with the deformation gradient
+     * @f$ \boldsymbol{F}_n @f$ of the last accepted state about the undeformed centroid, plus the center displacement,
+     * @f$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}_n(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+     * \boldsymbol{u}_c @f$ (the undeformed vertices plus the state `vertex displacements`, updated at each accepted
+     * increment). These are the points the particle moves with getAttachedPointInterpolationVector(), the vertices
+     * supports and contacts act on. They coincide with the smoothing domain only for `DeformationGradient`.
      * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
      */
     void getVertexCoordinates( double* coordinates ) const override;
 
     /**
-     * @brief Vertex coordinates for visualization, identical to getVertexCoordinates().
+     * @brief Vertex coordinates for visualization: the smoothing domain (getSmoothingDomainVertexCoordinates()).
      * @param[out] coordinates Coordinates, vertex by vertex.
      */
     void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
-      getVertexCoordinates( coordinates );
+      getSmoothingDomainVertexCoordinates( coordinates );
     };
 
     /**
@@ -242,37 +268,44 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Number of state variables: those of the point particle plus the vertex displacements.
+     * @brief Number of state variables: those of the point particle plus the vertex displacements of the geometry
+     * and of the smoothing domain.
      * @return Required size of the state variable vector.
      */
     int getNumberOfRequiredStateVars() const override
     {
-      return GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::getNumberOfRequiredStateVars() + nDim * nVertices;
+      return GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::getNumberOfRequiredStateVars() +
+             2 * nDim * nVertices;
     };
 
     /**
-     * @brief Assign the state variable vector; the last nDim x nVertices entries hold the vertex displacements.
+     * @brief Assign the state variable vector; the last 2 x nDim x nVertices entries hold the vertex displacements of
+     * the geometry, then those of the smoothing domain. Both are zero (the undeformed vertices) until the first
+     * accepted increment, also before initializeYourself().
      * @param[in,out] stateVars  State variable vector.
      * @param[in]     nStateVars Its size.
      */
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
       GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::assignStateVars( stateVars,
-                                                                                nStateVars - nDim * nVertices );
+                                                                                nStateVars - 2 * nDim * nVertices );
+      _vertexDisplacements_Geometry        = stateVars + nStateVars - 2 * nDim * nVertices;
       _vertexDisplacements_SmoothingDomain = stateVars + nStateVars - nDim * nVertices;
     }
 
     /**
-     * @brief Access a state variable; `vertex displacements` are those of the smoothing domain.
+     * @brief Access a state variable; `vertex displacements` are those of the particle geometry,
+     * `smoothing vertex displacements` those of the smoothing domain (as for the displacement particles).
      * @param[in] stateName Name of the state variable.
      * @param[in] qp        Evaluation point (unused).
      * @return View on the state variable.
      */
     Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      if ( stateName == "vertex displacements" ) {
+      if ( stateName == "vertex displacements" )
+        return { _vertexDisplacements_Geometry, nDim * nVertices };
+      if ( stateName == "smoothing vertex displacements" )
         return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
-      }
       return GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::getStateView( stateName, qp );
     }
 
@@ -381,14 +414,16 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Center of a face of the current smoothing domain.
+     * @brief Center of a face of the particle geometry (the cell of getVertexCoordinates()).
      * @param[in]  faceID      Face id (1-based).
      * @param[out] coordinates Face center (nDim values).
      */
     void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
+      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
+      getVertexCoordinates( vertexCoordinates.data() );
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
-      faceCenter = _makeSmoothingDomainCell().getFaceCenterCoordinates( faceID );
+      faceCenter = LagrangeCellType( vertexCoordinates.data(), nDim * nVertices ).getFaceCenterCoordinates( faceID );
     }
 
     /**
@@ -399,7 +434,8 @@ namespace Marmot::Discretizations::Meshfree {
 
   private:
     /// @brief Update the vertex displacements of the smoothing domain from @f$ \boldsymbol{F}_n @f$ and the particle
-    /// displacement, according to the SmoothingDomainUpdateType.
+    /// displacement, according to the SmoothingDomainUpdateType, and those of the geometry with @f$ \boldsymbol{F}_n
+    /// @f$.
     void _updateVertexDisplacementsFromMaterialPointDeformation();
 
     /// @brief Update the smoothing domain, then set the center to the accepted material point position.
@@ -676,7 +712,7 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim, int nVertices, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >::getVertexCoordinates(
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >::getSmoothingDomainVertexCoordinates(
     double* coordinates ) const
   {
 
@@ -735,12 +771,28 @@ namespace Marmot::Discretizations::Meshfree {
     }
     }
 
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_SmoothingDomain );
+    vertexDisplacements = _vertexCoordinatesDeformedWith( F ) - _vertexCoordinates_Undeformed;
+
+    const Fastor::Tensor< double, nDim, nDim > F_n = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_mp
+                                                       .dY_dX();
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacementsGeometry( _vertexDisplacements_Geometry );
+    vertexDisplacementsGeometry = _vertexCoordinatesDeformedWith(
+                                    Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                      F_n.data() ) ) -
+                                  _vertexCoordinates_Undeformed;
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  Eigen::Matrix< double, nDim, nVertices > GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >::
+    _vertexCoordinatesDeformedWith( const Eigen::Matrix< double, nDim, nDim >& A ) const
+  {
     Eigen::Matrix< double, nDim, nVertices > coordinatesRelToCenter0 = _vertexCoordinates_Undeformed;
     for ( int i = 0; i < nDim; i++ ) {
       coordinatesRelToCenter0.row( i ).array() -= this->_centerCoordinatesUndeformed( i );
     }
 
-    Eigen::Matrix< double, nDim, nVertices > vertexCoordinatesDeformed = F * coordinatesRelToCenter0;
+    Eigen::Matrix< double, nDim, nVertices > vertexCoordinatesDeformed = A * coordinatesRelToCenter0;
 
     Eigen::Matrix< double, nDim, 1 > _mp_displacement;
     GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_mp.getCenterDisplacement( _mp_displacement.data() );
@@ -749,8 +801,16 @@ namespace Marmot::Discretizations::Meshfree {
       vertexCoordinatesDeformed.row( i ).array() += this->_centerCoordinatesUndeformed( i ) + _mp_displacement( i );
     }
 
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_SmoothingDomain );
-    vertexDisplacements = vertexCoordinatesDeformed - _vertexCoordinates_Undeformed;
+    return vertexCoordinatesDeformed;
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >::getVertexCoordinates(
+    double* coordinates ) const
+  {
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > >       coordinatesDeformed( coordinates );
+    Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_Geometry );
+    coordinatesDeformed = _vertexCoordinates_Undeformed + vertexDisplacements;
   }
 
   template < int nDim, int nVertices, int nNonlocal >
