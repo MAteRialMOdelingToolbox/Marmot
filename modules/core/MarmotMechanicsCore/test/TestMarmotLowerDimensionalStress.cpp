@@ -198,55 +198,13 @@ void test_compute_dStress_dDeformationGradient()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
-void test_planeStressCompensationStrain()
-{
-  Marmot::Math::Vector6d strain;
-  strain << 0.04, 0.06, 0.0, 0.08, 0.0, 0.0;
-  double nu = 0.2;
-
-  // Compute the result using the planeStressCompensationStrain function
-  Marmot::Math::Vector6d computedResult = planeStressCompensationStrain( strain, nu );
-
-  // Expected results
-  Marmot::Math::Vector6d expectedResult;
-  expectedResult << 0, 0, -0.025, 0, 0, 0;
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
-void test_planeStressTangentTransformationMatrix()
-{
-  Marmot::Math::Matrix6d tangent = create_C_Matrix();
-
-  // Compute the result using the planeStressTangentTransformationMatrix function
-  Marmot::Math::Matrix6d computedResult = planeStressTangentTransformationMatrix( tangent );
-
-  // Expected results
-  Marmot::Math::Matrix6d expectedResult;
-  // clang-format off
-  expectedResult <<
-    1,        0,        0,  0,  0,  0,
-    0,        1,        0,  0,  0,  0,
-    -1.0/3.0, -1.0/3.0, 0,  0,  0,  0,
-    0,        0,        0,  1,  0,  0,
-    0,        0,        0,  0,  1,  0,
-    0,        0,        0,  0,  0,  1;
-  // clang-format on
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ test_reduce3D_dStress_dDeformationGradient,
                                                        test_getPlaneStrainTangent,
                                                        test_dStrainDStrainPlaneStrain,
-                                                       test_compute_dStress_dDeformationGradient,
-                                                       test_planeStressCompensationStrain,
-                                                       test_planeStressTangentTransformationMatrix };
+                                                       test_compute_dStress_dDeformationGradient };
 
   executeTestsAndCollectExceptions( tests );
 

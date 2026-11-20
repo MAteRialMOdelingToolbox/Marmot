@@ -14,19 +14,22 @@ namespace Marmot::Materials {
 
   namespace {
     // Fallback values for the optional material properties (c3, fc, transitionWidth,
-    // transitionExponent), used when they are not supplied by the caller.
-    constexpr double defaultPostpeakTensionSlope = 4.0;  // c3, per Caner and Bazant (2013)
-    constexpr double defaultCompressiveStrength  = 36.0; // fc [MPa], per Caner and Bazant (2013)
-    constexpr double defaultTransitionWidth      = 4.0;
-    constexpr double defaultTransitionExponent   = 0.4;
+    // transitionExponent, stressUnit), used when they are not supplied by the caller. The stress-like
+    // ones are given in MPa and converted to the user's stress unit with stressUnit.
+    constexpr double defaultPostpeakTensionSlope   = 4.0;  // c3, per Caner and Bazant (2013)
+    constexpr double defaultCompressiveStrengthMPa = 36.0; // fc [MPa], per Caner and Bazant (2013)
+    constexpr double defaultTransitionWidthMPa     = 4.0;  // [MPa]
+    constexpr double defaultTransitionExponent     = 0.4;
+    constexpr double defaultStressUnit             = 1.0;  // stresses in MPa
 
     // Safety floor on the normal-direction tangent, as a fraction of the undamaged stiffness
     // E_N0, to avoid a vanishing (or sign-flipping) tangent in normal_elasticLaw.
     constexpr double minStiffnessFraction = 0.02;
 
-    // Tolerance used in normal_elasticLaw to detect that the tangent has already dropped
+    // Tolerance [MPa] used in normal_elasticLaw to detect that the tangent has already dropped
     // below the undamaged stiffness when deciding whether to (re-)enter the unloading-transition branch.
-    constexpr double tangentTransitionTol = 1e-6;
+    // It is compared with a stiffness, so it is converted to the user's stress unit with stressUnit.
+    constexpr double tangentTransitionTolMPa = 1e-6;
   } // namespace
 
   MicroplaneM7Formulation::Parameters MicroplaneM7Formulation::readParameters( const double* materialProperties,
@@ -42,6 +45,12 @@ namespace Marmot::Materials {
       return nMaterialProperties > index ? materialProperties[index] : defaultValue;
     };
 
+    const double stressUnit = optional( firstOptional + 4, defaultStressUnit );
+    if ( !( stressUnit > 0.0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": stressUnit must be positive, " << stressUnit
+                                   << " given." );
+
     return { materialProperties[0],
              materialProperties[1],
              materialProperties[2],
@@ -50,9 +59,10 @@ namespace Marmot::Materials {
              materialProperties[5],
              materialProperties[6],
              optional( firstOptional, defaultPostpeakTensionSlope ),
-             optional( firstOptional + 1, defaultCompressiveStrength ),
-             optional( firstOptional + 2, defaultTransitionWidth ),
-             optional( firstOptional + 3, defaultTransitionExponent ) };
+             optional( firstOptional + 1, defaultCompressiveStrengthMPa * stressUnit ),
+             optional( firstOptional + 2, defaultTransitionWidthMPa * stressUnit ),
+             optional( firstOptional + 3, defaultTransitionExponent ),
+             stressUnit };
   }
 
   MicroplaneM7Formulation::MicroplaneM7Formulation( const Parameters& parameters ) : p( parameters ) {}
@@ -95,7 +105,7 @@ namespace Marmot::Materials {
       double eps_N0      = eps_N - deps_N;
       double s_gap_trial = E_N0 * eps_N - sig_N;
       if ( s_gap_trial < p.transitionWidth && ( sig_N0 * deps_N ) < 0.0 &&
-           std::abs( E_N0 - tangent ) > tangentTransitionTol ) {
+           std::abs( E_N0 - tangent ) > tangentTransitionTolMPa * p.stressUnit ) {
         std::tie( stress, tangent ) = transitionFunctionClosedForm( eps_N0, deps_N, sig_N0, tangent, E_N0 );
         return { stress, tangent * ntSplit().pTensors.N.col( qp_i ) };
       }

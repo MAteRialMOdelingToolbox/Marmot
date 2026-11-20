@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="250" viewBox="0 0 560 250" font-family="sans-serif" font-size="15">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <!-- beam axis from node 1 to node 2 -->
+  <line x1="70" y1="170" x2="420" y2="110" stroke="#333" stroke-width="6" stroke-linecap="round" opacity="0.25"/>
+  <line x1="70" y1="170" x2="420" y2="110" stroke="#333" stroke-width="1.5"/>
+  <circle cx="70" cy="170" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="420" cy="110" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <circle cx="245" cy="140" r="4" fill="#333"/>
+  <text x="48" y="198">node 1</text>
+  <text x="404" y="96">node 2</text>
+  <text x="222" y="166">mid node (3 nodes)</text>
+  <!-- local frame at node 1 -->
+  <line x1="70" y1="170" x2="160" y2="154.6" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <text x="150" y="182">e₁ (node 1 → node 2)</text>
+  <line x1="70" y1="170" x2="85" y2="83" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <text x="90" y="78">e₂ (y)</text>
+  <line x1="70" y1="170" x2="22" y2="214" stroke="#333" stroke-width="2" marker-end="url(#a)"/>
+  <text x="6" y="236">e₃ = e₁ × e₂ (z)</text>
+  <!-- orientation vector -->
+  <line x1="70" y1="170" x2="120" y2="90" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#b)"/>
+  <text x="124" y="104" fill="#c0392b">v (3D property)</text>
+  <!-- section -->
+  <g transform="translate(470,150)">
+    <rect x="-22" y="-40" width="44" height="80" fill="none" stroke="#333" stroke-width="1.5"/>
+    <circle cx="-11" cy="-20" r="3" fill="#333"/><circle cx="11" cy="-20" r="3" fill="#333"/>
+    <circle cx="-11" cy="20" r="3" fill="#333"/><circle cx="11" cy="20" r="3" fill="#333"/>
+    <line x1="0" y1="0" x2="0" y2="-62" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+    <text x="5" y="-56">y</text>
+    <line x1="0" y1="0" x2="-48" y2="0" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+    <text x="-60" y="-6">z</text>
+    <text x="-46" y="66">section points (y_f, z_f, A_f)</text>
+  </g>
+</svg>
