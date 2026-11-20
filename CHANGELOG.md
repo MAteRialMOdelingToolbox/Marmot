@@ -46,6 +46,18 @@ All notable changes to Marmot are documented in this file. The format follows
     `RankineGradientSofteningPlasticity` and `RankineGradientDamagePlasticity`.
   - `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()`: the plane stress iteration of `computePlaneStress()`
     around a given 3D stress update.
+- `elements/BeamElement`: Euler-Bernoulli beams `B2D2`, `B2D3`, `B3D2`, `B3D3` (2 or 3 nodes, geometrically
+  linear; cubic / quintic Hermite transverse interpolation), node fields displacement and rotation, sections given
+  as section points (any shape, `[n, y_i, A_i ...]` in 2D, `[v, J, n, y_i, z_i, A_i ...]` in 3D) with one material
+  instance per point (any hypoelastic material), Saint-Venant torsion scaled to G J. `BeamFiberSection` integrates
+  the section independently of the kinematics; its 2D fibers are in uniaxial stress (`computeUniaxialStress`), its 3D
+  fibers in the beam stress state σ22 = σ33 = σ23 = 0 (`ReducedStress::computeReducedStress` with its index sets
+  `BeamFiberSection::beamStressPrescribed = {0, 3, 4}`, `beamStressFree = {1, 2, 5}`). A body force acts at the
+  section points: line load and, for a section whose centroid is off the axis, its line moment.
+- `B2D2CR` and `B3D2CR`: co-rotational (finite rotation) variants of `B2D2` / `B3D2` with the same properties
+  and section (2D: Crisfield; 3D: Battini and Pacoste, exact geometric stiffness by forward automatic
+  differentiation); arbitrary rigid rotations, small local strains.
+- Quadrature catalogue: the 4-point Gauss-Legendre rule on `Line` (degree 7).
 - Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
   strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
   point integrates the stiffness and the internal force exactly. Their center, characteristic element length and
@@ -102,6 +114,19 @@ All notable changes to Marmot are documented in this file. The format follows
   axisymmetric section of `DisplacementFiniteElement` use it.
 - `DisplacementFiniteElement::sectionFactorAt( xi )`: the thickness, cross section, 2 pi r or 1 between the volume
   and the reference measure, used for the quadrature weights and the consistent mass.
+- Small-strain axisymmetric gradient-enhanced elements in `elements/GeneralGradientEnhancedDisplacementFiniteElement`:
+  `GCAX4` (4 nodes, full integration), `GCAX8` (8 nodes, full integration) and `GCAX8R` (8 nodes, reduced
+  integration), the gradient-enhanced counterparts of `CAX4`, `CAX8` and `CAX8R`. They are
+  `GeneralGradientEnhancedDisplacementFiniteElement< 2, nNodes >` with the new section `SectionType::Axisymmetric`:
+  the hoop strain u_r / r, and the full ring (2 pi r) for the internal forces, the Helmholtz equation of the
+  non-local fields, energies, masses, body forces and pressure. Implicit and explicit, with the artificial bulk
+  viscosity and the energy gradients; mixed-order variants (e.g. `< 2, 8, 1, 4 >`) work as well. Nodes and quadrature
+  points are checked as for the CAX elements. Based on the axisymmetric section by Thomas Mader.
+- `GeneralGradientEnhancedDisplacementFiniteElement::sectionFactorAt( xi )`, as for `DisplacementFiniteElement`.
+- `Spatial2D::Axisymmetric::checkNodesAreInTheMeridianHalfPlane()`, `checkRadiusOfQuadraturePoint()` and
+  `sectionTangent()`: the checks of the meridian section and the 4 × 4 block of a 3D tangent, shared by the
+  axisymmetric sections of both elements.
+- `ContinuumMechanics::Voigt::reduce3DVoigt< Axial >`, the counterpart of `make3DVoigt< Axial >`.
 - `Marmot::ContinuumMechanics::ReducedStress` (`MarmotLowerDimensionalStress.h`, header only): one static
   condensation for reduced stress states with prescribed strain components `p` and stress-free components `f`.
   `computeReducedStress( computeStress3D, dStrain, p, f )` iterates a 3D stress update (a callable) on the strains at
@@ -129,6 +154,11 @@ All notable changes to Marmot are documented in this file. The format follows
   dependent conductivity, latent heat carried by the vapour, heat of hydration and self-desiccation over the
   equivalent age; with 21 properties it reproduces `HEATCONDUCTION` and `MOISTUREDIFFUSION`, with 32 all couplings),
   the two-field elements `DC*TH` of `elements/TransportFiniteElement`, and the load type `LatentHeatFilm`.
+- `materials/MicroplaneM7`, `materials/GM7`: optional property `stressUnit`, the value of 1 MPa in the user's stress
+  unit (default 1.0, e.g. 1e6 for Pa). It converts the dimensional fixed parameters of Caner and Bažant (2013)
+  (`c18`, `c21`, the reference strength and modulus), the default values of `fc` and `transitionWidth` and the
+  stiffness tolerance of the unloading transition, so that the models can be used in any consistent unit system.
+  Results with the default are unchanged.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -182,8 +212,19 @@ All notable changes to Marmot are documented in this file. The format follows
   solid, plane strain and axisymmetric sections one material update through the 3D interface. Results are unchanged.
   The consistent mass takes the thickness or cross section from the element property instead of recovering it from
   the nearest quadrature point (identical up to rounding).
+- `GeneralGradientEnhancedDisplacementFiniteElement`: likewise, `computeKernels()` and `computeKernelsExplicit()`
+  share one material update and integration per quadrature point for the plane stress, plane strain, axisymmetric
+  and solid sections, which removes the copies of the non-local coupling per section. Results are unchanged. The
+  consistent mass takes the thickness from the element property (identical up to rounding), so the element
+  properties must stay valid after `initializeYourself()`, as for `DisplacementFiniteElement`. A one-dimensional
+  instance (none is registered), for which no section is implemented, throws instead of integrating nothing.
 - `MarmotGradientMechanicsCore` requires `MarmotMechanicsCore` (for `ReducedStress`); a build with a `CORE_MODULES`
   filter that selects the former must select the latter, too.
+- **Breaking:** `materials/MicroplaneM7`, `materials/GM7`: the new property `stressUnit` is inserted after
+  `transitionExponent` (index 11 for `MICROPLANEM7`, 13 for `GM7`), in front of the properties only needed for explicit
+  simulations. The density of `MICROPLANEM7` moves from index 11 to 12; the density of `GM7` from 13 to 14 and its
+  nonlocal viscosity from 14 to 15. In an old input file giving these properties, the density would be read as
+  `stressUnit`.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
@@ -197,6 +238,9 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** `ContinuumMechanics::PlaneStress::dStrainDStrainPlaneStress( C )` and `dStressPlaneStressDStress()`,
   without a caller since `getPlaneStressTangent()` is gone; they defined plane stress by σ33 = 0 only. Plane stress is
   `ReducedStress::planeStressPrescribed` / `planeStressFree` with `ReducedStress::condense()`.
+- **Breaking:** `ContinuumMechanics::PlaneStress::planeStressCompensationStrain( strain, nu )` and
+  `planeStressTangentTransformationMatrix( C )`, without a caller; they were a third definition of plane stress (σ33 = 0
+  only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
 - **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`

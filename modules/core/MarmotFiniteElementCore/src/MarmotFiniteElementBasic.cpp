@@ -73,6 +73,9 @@ namespace Marmot::Discretizations::Elements {
       // abscissas of the 2- and 3-point Gauss-Legendre rules, 1/sqrt(3) and sqrt(3/5), correctly rounded
       constexpr double gp2 = 0.577350269189625764509;
       constexpr double gp3 = 0.774596669241483377036;
+      // the 4-point Gauss-Legendre rule: abscissas sqrt(3/7 -+ 2/7 sqrt(6/5)), weights (18 +- sqrt(30)) / 36
+      const double gp4a = std::sqrt( 3. / 7 - 2. / 7 * std::sqrt( 6. / 5 ) ), gw4a = ( 18 + std::sqrt( 30. ) ) / 36;
+      const double gp4b = std::sqrt( 3. / 7 + 2. / 7 * std::sqrt( 6. / 5 ) ), gw4b = ( 18 - std::sqrt( 30. ) ) / 36;
       // interior abscissas of the 4- and 5-point Gauss-Lobatto rules, sqrt(1/5) and sqrt(3/7), correctly rounded
       constexpr double gl4 = 0.447213595499957939282;
       constexpr double gl5 = 0.654653670707977143798;
@@ -112,6 +115,11 @@ namespace Marmot::Discretizations::Elements {
             { ( VectorXd( 1 ) << -gp3 ).finished(),                 5./9 },
             { ( VectorXd( 1 ) << 0. ).finished(),                   8./9 },
             { ( VectorXd( 1 ) << +gp3 ).finished(),                 5./9 } } },
+        { Domain::Line, Family::Gauss, 7, {
+            { ( VectorXd( 1 ) << -gp4b ).finished(),                gw4b },
+            { ( VectorXd( 1 ) << -gp4a ).finished(),                gw4a },
+            { ( VectorXd( 1 ) << +gp4a ).finished(),                gw4a },
+            { ( VectorXd( 1 ) << +gp4b ).finished(),                gw4b } } },
         // trapezoidal rule = 2-point Gauss-Lobatto rule
         { Domain::Line, Family::NewtonCotes, 1, {
             { ( VectorXd( 1 ) << -1. ).finished(),                  1.0 },

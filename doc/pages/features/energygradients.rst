@@ -102,7 +102,7 @@ Supported elements and materials
      - solid, plane strain, axisymmetric
      - ``HypoElasticEnergyTangentProvider``
    * - ``GeneralGradientEnhancedDisplacementFiniteElement``
-     - solid, plane strain, plane stress
+     - solid, plane strain, plane stress, axisymmetric
      - ``GradientEnhancedHypoElasticEnergyTangentProvider``
 
 Materials with energy tangents: :ref:`vonMisesModel`, Rankine softening plasticity and Rankine damage-plasticity
