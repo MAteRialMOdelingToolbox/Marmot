@@ -351,13 +351,13 @@ namespace Marmot::Materials {
         return 1.0 / ( std::sqrt( a ) + std::sqrt( b ) );
       } );
 
-      // dC_IJ/dF_kL = delta_IL F_kJ + F_kI delta_JL
+      // dC_MN/dF_kL = delta_ML F_kN + F_kM delta_NL (M, N rather than I, J: I is the Voigt identity in this scope)
       Tensor3333d dC_dF( 0.0 );
-      for ( int I = 0; I < 3; I++ )
-        for ( int J = 0; J < 3; J++ )
+      for ( int M = 0; M < 3; M++ )
+        for ( int N = 0; N < 3; N++ )
           for ( int k = 0; k < 3; k++ ) {
-            dC_dF( I, J, k, I ) += F( k, J );
-            dC_dF( I, J, k, J ) += F( k, I );
+            dC_dF( M, N, k, M ) += F( k, N );
+            dC_dF( M, N, k, N ) += F( k, M );
           }
 
       Tensor3333d dLogU_dF( 0.0 );
@@ -366,10 +366,10 @@ namespace Marmot::Materials {
         for ( int d = 0; d < 3; d++ )
           for ( int k = 0; k < 3; k++ )
             for ( int L = 0; L < 3; L++ )
-              for ( int I = 0; I < 3; I++ )
-                for ( int J = 0; J < 3; J++ ) {
-                  dLogU_dF( c, d, k, L ) += dLogU_dC( c, d, I, J ) * dC_dF( I, J, k, L );
-                  dU_dF( c, d, k, L ) += dU_dC( c, d, I, J ) * dC_dF( I, J, k, L );
+              for ( int M = 0; M < 3; M++ )
+                for ( int N = 0; N < 3; N++ ) {
+                  dLogU_dF( c, d, k, L ) += dLogU_dC( c, d, M, N ) * dC_dF( M, N, k, L );
+                  dU_dF( c, d, k, L ) += dU_dC( c, d, M, N ) * dC_dF( M, N, k, L );
                 }
 
       // dR_ia/dF_kL = ( delta_ik delta_pL - R_ip' dU_p'p/dF_kL ) UInv_pa
