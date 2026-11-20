@@ -116,12 +116,16 @@ namespace Marmot::Materials {
 
   public:
     using typename Wrapper::NonlocalVector;
+    /// @brief Constitutive response, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse.
     template < int nDim >
     using ConstitutiveResponse = typename Wrapper::Interface::template ConstitutiveResponse< nDim >;
+    /// @brief Algorithmic moduli, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli.
     template < int nDim >
     using AlgorithmicModuli = typename Wrapper::Interface::template AlgorithmicModuli< nDim >;
+    /// @brief Deformation, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation.
     template < int nDim >
-    using Deformation   = typename Wrapper::Interface::template Deformation< nDim >;
+    using Deformation = typename Wrapper::Interface::template Deformation< nDim >;
+    /// @brief Time increment, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement.
     using TimeIncrement = typename Wrapper::Interface::TimeIncrement;
 
   protected:
