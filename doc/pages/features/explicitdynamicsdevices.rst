@@ -12,6 +12,37 @@ amounts of it. The micro-inertia is a **material** property, because it is insep
 non-local viscosity -- itself always a material property -- by the bound :math:`m_k \le \eta^2/4`,
 and because that bound can only be checked where both of its sides are visible.
 
+The stable time increment
+-------------------------
+
+The central difference method with a lumped mass is stable for :math:`\Delta t \le 2/\omega_\mathrm{max}`, and the
+largest eigenfrequency of the assembled system is bounded by the largest of its elements,
+:math:`\omega_\mathrm{max}^2 \le \max_e \lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_e)`. The continuum
+elements (``DisplacementFiniteElement``, ``DisplacementFiniteStrainULElement`` and
+``GeneralGradientEnhancedDisplacementFiniteElement``) return this element bound, computed from the strain operator
+they integrate with and the lumped mass they assemble, so it holds for every element order, quadrature rule and
+distortion. A characteristic length over a wave speed does not: it is the exact limit of a linear bar, and it
+overestimates the stable increment of a quadratic element by a factor of about 2.5 (8-node quadrilateral) to 3.4
+(20-node hexahedron), and that of a compact linear element in 3D by up to 1.7.
+
+A material tells only its largest wave speed :math:`c`, i.e. the P-wave modulus :math:`\rho c^2 = \lambda + 2\mu`.
+The element stiffness :math:`\lambda\mathbf{K}_\mathrm{vol} + \mu\mathbf{K}_\mathrm{dev}` of an isotropic
+material is affine in :math:`\mu` at a fixed P-wave modulus, and its largest eigenvalue is largest at one of the
+two ends :math:`\nu = 1/2` or :math:`\nu = 0`:
+
+.. math::
+
+   \Delta t = \frac{2}{\sqrt{\rho c^2\,\Lambda}}, \qquad
+   \Lambda = \max\Big(\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\mathrm{vol}),\;
+                       \tfrac{1}{2}\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\mathrm{dev})\Big).
+
+It is exact at both ends and conservative in between. For quadratic elements it is within about 15 % of the stable
+increment of the element; for a compact linear element, whose volumetric end governs, it can be as low as 0.6 of
+it at :math:`\nu = 0`. A courant number below one is still needed for the nonlinearities the bound does not see.
+
+.. doxygennamespace:: Marmot::Discretizations::Elements::CriticalTimeStep
+   :members:
+
 Artificial bulk viscosity
 -------------------------
 

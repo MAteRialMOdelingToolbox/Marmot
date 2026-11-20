@@ -225,6 +225,17 @@ All notable changes to Marmot are documented in this file. The format follows
   only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
+- **Results** The critical time step of the continuum elements (`DisplacementFiniteElement`,
+  `DisplacementFiniteStrainULElement` incl. its axisymmetric variant, and the displacement field of
+  `GeneralGradientEnhancedDisplacementFiniteElement`) is the element's own eigenvalue bound
+  (`Discretizations::Elements::CriticalTimeStep`), from the strain operator the element integrates with and the lumped
+  mass it assembles. The former characteristic length over wave speed overestimated the stable increment of quadratic
+  elements by a factor of 2.3 to 3.4 (explicit runs with them diverged at courant numbers of 0.5 and the default 0.8)
+  and of compact linear elements by up to 1.7. Explicit runs take smaller increments; quadratic elements now run at
+  the default courant number.
+- **Breaking** `GeometryElement::characteristicLengthForCriticalTimeStepAt` is now `smallestElementExtentAt` (the
+  artificial bulk viscosity is its only user); `MassLumping::manifoldMassFractions` and
+  `MassLumping::timeStepFactorFromMassDistribution` are removed.
 - **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`
   and `computeUniaxialStress()` (still virtual) and `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()` (the
   default `computePlaneStress()` and `computePlaneStressWithEnergyTangents()`) are thin wrappers around
