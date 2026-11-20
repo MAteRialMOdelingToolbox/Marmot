@@ -85,8 +85,7 @@ assembled before the first computation. The density is updated after each ``comp
 
 The total gradient :math:`\nabla_X\bar N_K` and the rate :math:`\dot{\bar N}_K` are kept for the explicit scheme of
 the particles, whose nonlocal residual is written in total form: the gradient is accumulated by ``incrementDeformation``
-in every scheme, so that an explicit step may follow an implicit one. ``getMaximumWaveSpeed`` and
-``getNonlocalRadius`` evaluate the material on a copy of the state, for the critical time step.
+in every scheme, so that an explicit step may follow an implicit one.
 
 The initial condition ``geostaticstress`` finds, through the material, the eigen deformation that produces a
 hydrostatic stress :math:`\tau_{XX} = \tau_{YY} = \tau_{ZZ} =` ``value[0]`` and applies it in all subsequent material

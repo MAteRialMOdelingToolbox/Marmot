@@ -109,14 +109,12 @@ micro-inertia is first order in time and has no inertia (the convention of the e
 reads the order of a field off its inertia), and the momentum of a second-order one keeps its rate when the solver
 projects the velocity from it.
 
-The critical time step of the particle is the minimum of :math:`l/c`, with
-:math:`l = \sigma_\mathrm{min}(\boldsymbol F)\,V_0^{1/n_\mathrm{dim}}` and the largest wave speed :math:`c` of the
-material at the current state (``getMaximumWaveSpeed``), and of the limit of each nonlocal field, from the stencil
-estimate :math:`\lambda_K = 1 + 4\,n_\mathrm{dim}\,c_K/l^2` of the largest eigenvalue of
-:math:`\bar N - c_K\nabla^2\bar N` per unit volume: :math:`2\,\eta_K/\lambda_K` for a first-order field (forward
-Euler), :math:`2/\omega\,(\sqrt{1+\zeta^2}-\zeta)` with :math:`\omega^2 = \lambda_K/m_K`,
-:math:`\zeta = \eta_K/(2\,m_K\,\omega)` for a second-order one (central differences). A nonlocal field with neither
-a micro-inertia nor a viscosity cannot be integrated explicitly and is rejected there.
+The particles give no critical time step of their own. Measured on blocks of particles, the stable increment of the
+explicit particle scheme depends on the support factor, the kernel order and the boundary in no regular way, and a
+particle's own bound, :math:`\lambda_\mathrm{max}(\boldsymbol M_p^{-1}\boldsymbol K_p)` as for a finite element, is
+unbounded: a particle's stiffness couples nodes at which its own lumped mass vanishes (the mass is taken at the
+centre, the smoothed gradients at the faces). The stable increment is therefore a property of the assembled system,
+which the explicit solver bounds from the particles' tangents and the assembled lumped mass (EdelweissMeshfree).
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^

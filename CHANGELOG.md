@@ -151,9 +151,8 @@ All notable changes to Marmot are documented in this file. The format follows
 - Explicit dynamics of the gradient-enhanced finite-strain particles (point, SQCNI, SQCNIxNSNI; any number of
   nonlocal variables): `updatePhysicsExplicit`, `computePhysicsKernelsExplicit` (nonlocal balance in total form),
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
-  viscosity), lumped momentum (including the nonlocal rate) and the critical time step (l/c, and the limit of each
-  nonlocal field, first or second order in time). `Particle::computeLumpedDamping` (default: no damping) and
-  `Particle::computeCriticalTimeStepForExplicitDynamics` (default: throws), appended at the end of the class.
+  viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
+  damping), appended at the end of the class.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -227,8 +226,7 @@ All notable changes to Marmot are documented in this file. The format follows
   `GradientEnhancedFiniteStrainParticle<nDim, nNonlocal>`, `...SQCNI<nDim, nVertices, nNonlocal>`,
   `...SQCNIxNSNI<nDim, nVertices, nNonlocal>`. Nonlocal quantities are Eigen vectors (`L`, `nonLocalRadius`, `N`,
   `getNonlocalViscosity`, `getNonlocalMicroInertia`), the mixed tangents one tensor per nonlocal variable
-  (`dTau_dN[K]`, `dL_dF[K]`). New interface method `getMaximumWaveSpeed`, whose default is the one of
-  `MaterialFiniteStrain` (shared helper `maximumWaveSpeedByCentralDifferences`). The material point keeps the total
+  (`dTau_dN[K]`, `dL_dF[K]`). The material point keeps the total
   gradient and the rate of the nonlocal fields (new states `nonlocal damage gradient`, `nonlocal damage rate`).
   Registered with six nonlocal variables (`strain symmetric`, 3D): `GradientEnhanced6FiniteStrain/3D`,
   `GradientEnhanced6FiniteStrain/3D/Point`, `GradientEnhanced6FiniteStrainSQCNI/3D/Hexa`,
