@@ -224,13 +224,22 @@ namespace Marmot::Discretizations::Meshfree {
                 h( s ) = rows.df_dIncrementSecondGradient[l * nDim + m]( i, k ) +
                          ( m != l ? rows.df_dIncrementSecondGradient[m * nDim + l]( i, k ) : 0.0 );
 
+          // Most factors of a node's rows are structurally zero (e.g. a displacement row has no gradient factor for a
+          // nonlocal column, and only the stabilization has second-gradient factors): a zero factor adds nothing.
+          const bool withValueTerm          = a != 0.0;
+          const bool withGradientTerm       = ( b.array() != 0.0 ).any();
+          const bool withSecondGradientTerm = ( h.array() != 0.0 ).any();
+          if ( !withValueTerm && !withGradientTerm && !withSecondGradientTerm )
+            continue;
+
           for ( int c = 0; c < _nColumns; c++ ) {
             const Moments& m = _moments[c * nDofPerNode + k];
             if ( !m.active )
               continue;
             double sum = std::abs( a ) * m.sumOfValues;
-            sum += std::sqrt( std::max( 0.0, m.sumOfGradientNorms * b.dot( m.gradientMoments * b ) ) );
-            if ( _withSecondGradients )
+            if ( withGradientTerm )
+              sum += std::sqrt( std::max( 0.0, m.sumOfGradientNorms * b.dot( m.gradientMoments * b ) ) );
+            if ( withSecondGradientTerm )
               sum += std::sqrt( std::max( 0.0, m.sumOfSecondGradientNorms * h.dot( m.secondGradientMoments * h ) ) );
             bound[c * _nDof + nDofPerNode * A + i] += sum;
           }

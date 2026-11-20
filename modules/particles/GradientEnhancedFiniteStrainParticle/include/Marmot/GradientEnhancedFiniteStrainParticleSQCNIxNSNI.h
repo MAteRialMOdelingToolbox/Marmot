@@ -147,9 +147,13 @@ namespace Marmot::Discretizations::Meshfree {
      * the shape functions through the stress gradient of the increment vanishes at a zero increment; it is added in
      * computePhysicsKernels().
      * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
      * @param[in,out] rows The derivatives; the stiffness of the node is added.
      */
-    void addStiffnessRowsOfNode( int A, typename ParentPointParticle::TangentRows& rows ) const override;
+    void addStiffnessRowsOfNode( int                                         A,
+                                 const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                 typename ParentPointParticle::TangentRows&  rows ) const override;
 
     /**
      * @brief The smoothed second gradients of the trial shape functions (symmetrized as in
@@ -516,7 +520,7 @@ namespace Marmot::Discretizations::Meshfree {
       }
 
       rows.setZero();
-      addStiffnessRowsOfNode( A, rows );
+      addStiffnessRowsOfNode( A, dY_dx, rows );
       rows.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
@@ -540,10 +544,11 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices, int nNonlocal >
   void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::addStiffnessRowsOfNode(
-    int                                        A,
-    typename ParentPointParticle::TangentRows& rows ) const
+    int                                         A,
+    const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+    typename ParentPointParticle::TangentRows&  rows ) const
   {
-    ParentPointParticle::addStiffnessRowsOfNode( A, rows );
+    ParentPointParticle::addStiffnessRowsOfNode( A, dY_dx, rows );
 
     const auto&    dS_dDeltaF = this->_mp.tangents.dS_dDeltaF;
     const TensorDD D          = momentWeightedSecondGradientOfTestFunction( A );

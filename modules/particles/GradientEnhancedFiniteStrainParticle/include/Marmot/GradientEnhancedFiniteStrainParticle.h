@@ -723,9 +723,13 @@ namespace Marmot::Discretizations::Meshfree {
      * @f]
      * Derived particles add their own terms (e.g. a stabilization).
      * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
      * @param[in,out] rows The derivatives; the stiffness of the node is added.
      */
-    virtual void addStiffnessRowsOfNode( int A, TangentRows& rows ) const;
+    virtual void addStiffnessRowsOfNode( int                                         A,
+                                         const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                         TangentRows&                                rows ) const;
 
     /**
      * @brief The second gradients of the trial shape functions, in the layout of addTangentRowsOfNode().
@@ -925,7 +929,7 @@ namespace Marmot::Discretizations::Meshfree {
       }
 
       rows.setZero();
-      addStiffnessRowsOfNode( A, rows );
+      addStiffnessRowsOfNode( A, dY_dx, rows );
       rows.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
@@ -936,7 +940,10 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::addStiffnessRowsOfNode( int A, TangentRows& rows ) const
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::addStiffnessRowsOfNode(
+    int                                         A,
+    const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+    TangentRows&                                rows ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
@@ -946,7 +953,6 @@ namespace Marmot::Discretizations::Meshfree {
     const auto&                        t       = _mp.tangents;
     const double                       V0      = getVolumeUndeformed();
     const double                       T_A     = _T( A );
-    const Tensor< double, nDim, nDim > dY_dx   = inv( _mp.dx_dY() );
     const Tensor< double, nDim, nDim > dY_dX   = _mp.dY_dX();
     const auto                         dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
     const Tensor< double, nDim >       dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
@@ -1008,6 +1014,7 @@ namespace Marmot::Discretizations::Meshfree {
                               dn_dY );
     _mp.computeYourself( timeNew, dT );
 
+    const Fastor::Tensor< double, nDim, nDim >           dY_dx    = inv( _mp.dx_dY() );
     const Eigen::MatrixXd                                d2N_dYdY = secondGradientsOfTrialFunctions();
     const AbsoluteTangentBound< nDim, nDim + nNonlocal > absoluteStiffness( columnWeights,
                                                                             nColumns,
@@ -1017,7 +1024,7 @@ namespace Marmot::Discretizations::Meshfree {
     TangentRows                                          rows;
     for ( int A = 0; A < _nNodes; A++ ) {
       rows.setZero();
-      addStiffnessRowsOfNode( A, rows );
+      addStiffnessRowsOfNode( A, dY_dx, rows );
       absoluteStiffness.addRowsOfNode( rows, A, bound );
     }
   }

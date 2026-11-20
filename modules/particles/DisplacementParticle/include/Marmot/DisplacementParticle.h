@@ -139,9 +139,13 @@ namespace Marmot::Discretizations::Meshfree {
      * the material part and the geometric part (the spatial gradient of the test function changes with the
      * deformation). Derived particles add their own terms (e.g. a stabilization).
      * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
      * @param[in,out] rows The derivatives; the stiffness of the node is added.
      */
-    virtual void addStiffnessRowsOfNode( int A, TangentRows& rows ) const;
+    virtual void addStiffnessRowsOfNode( int                                         A,
+                                         const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                         TangentRows&                                rows ) const;
 
     /**
      * @brief The second gradients of the trial shape functions, in the layout of addTangentRowsOfNode().
@@ -588,7 +592,7 @@ namespace Marmot::Discretizations::Meshfree {
       P.template segment< nDim >( nodeBlockSize * A ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
 
       rows.setZero();
-      addStiffnessRowsOfNode( A, rows );
+      addStiffnessRowsOfNode( A, dY_dx, rows );
       rows.df_dIncrement += density0 * T_A * V0 *
                             Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( da_ddu.data() );
       addTangentRowsOfNode( rows, A, this->_N, this->_dN_dY, nullptr, K );
@@ -596,17 +600,18 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim >
-  void DisplacementParticle< nDim >::addStiffnessRowsOfNode( int A, TangentRows& rows ) const
+  void DisplacementParticle< nDim >::addStiffnessRowsOfNode( int                                         A,
+                                                             const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                                             TangentRows&                                rows ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
-    const auto&    S       = _mp->response.S;
-    const auto&    t       = _mp->tangents;
-    const double   V0      = getVolumeUndeformed();
-    const TensorDD dY_dx   = inv( _mp->dx_dY() );
-    const auto     dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
-    const TensorD  dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
+    const auto&   S       = _mp->response.S;
+    const auto&   t       = _mp->tangents;
+    const double  V0      = getVolumeUndeformed();
+    const auto    dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
+    const TensorD dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
 
     for ( int l = 0; l < nDim; l++ )
       for ( int j = 0; j < nDim; j++ )
@@ -632,6 +637,7 @@ namespace Marmot::Discretizations::Meshfree {
     _mp->incrementDeformation( TensorD( 0.0 ), TensorDD( 0.0 ) );
     _mp->computeYourself( timeNew, dT );
 
+    const TensorDD                           dY_dx    = inv( _mp->dx_dY() );
     const Eigen::MatrixXd                    d2N_dYdY = secondGradientsOfTrialFunctions();
     const AbsoluteTangentBound< nDim, nDim > absoluteStiffness( columnWeights,
                                                                 nColumns,
@@ -641,7 +647,7 @@ namespace Marmot::Discretizations::Meshfree {
     TangentRows                              rows;
     for ( int A = 0; A < this->_nNodes; A++ ) {
       rows.setZero();
-      addStiffnessRowsOfNode( A, rows );
+      addStiffnessRowsOfNode( A, dY_dx, rows );
       absoluteStiffness.addRowsOfNode( rows, A, bound );
     }
   }
