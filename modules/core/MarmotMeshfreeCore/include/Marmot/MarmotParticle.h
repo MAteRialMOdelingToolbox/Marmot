@@ -412,6 +412,32 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] value Values of the initial condition.
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
+
+    /**
+     * @brief Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle.
+     * @details The coefficient of each field's FIRST time derivative, node-wise and in the layout of
+     * computeLumpedInertia(), which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced
+     * field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing,
+     * i.e. no damping, which is the case of a displacement field. Appended at the end of the class, so that the
+     * vtable slots of the methods above do not move.
+     * @param[in,out] cLumped Lumped damping vector (node-wise); entries left untouched mean no damping.
+     */
+    virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
+
+    /**
+     * @brief Explicit dynamics: the largest stable time increment of the particle.
+     * @details An estimate per particle, from its characteristic length and the wave speed of its material (and,
+     * for a gradient-enhanced particle, from the nonlocal fields' own limit); the solver takes the minimum over all
+     * particles and elements. A particle that cannot give one throws, so that no explicit analysis runs with an
+     * unchecked increment. Appended at the end of the class, see computeLumpedDamping().
+     * @param[out] criticalTimeStep The stable time increment.
+     * @throws std::runtime_error in the default implementation.
+     */
+    virtual void computeCriticalTimeStepForExplicitDynamics( [[maybe_unused]] double& criticalTimeStep ) const
+    {
+      throw std::runtime_error( "computeCriticalTimeStepForExplicitDynamics: this particle type gives no critical time "
+                                "step" );
+    };
   };
 
 } // namespace Marmot::Discretizations::Meshfree
