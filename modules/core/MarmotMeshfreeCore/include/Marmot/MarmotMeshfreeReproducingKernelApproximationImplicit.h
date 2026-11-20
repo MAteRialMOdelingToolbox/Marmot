@@ -74,17 +74,6 @@ namespace Marmot::Discretizations::Meshfree {
     virtual ~ReproducingKernelApproximationImplicit() = default;
 
     /**
-     * @brief Not implemented; use computeShapeFunctionsAndGradients().
-     * @param[in]  coord                       Evaluation point.
-     * @param[in]  kernelFunctions             Candidate kernel functions.
-     * @param[out] shapeFunctionValueGradients Not written.
-     * @throws std::runtime_error always.
-     */
-    virtual void computeShapeFunctionGradients( const double*                               coord,
-                                                const std::vector< const KernelFunction* >& kernelFunctions,
-                                                double* shapeFunctionValueGradients ) const override;
-
-    /**
      * @brief Compute the RK shape function values @f$ \Psi_A @f$ and the implicit gradients @f$ \Psi^{(i)}_A @f$.
      * @param[in]  coord               Evaluation point @f$ \boldsymbol{x} @f$ (length @f$ d @f$).
      * @param[in]  kernelFunctions     The @f$ n_\mathrm{c} @f$ candidate kernel functions.

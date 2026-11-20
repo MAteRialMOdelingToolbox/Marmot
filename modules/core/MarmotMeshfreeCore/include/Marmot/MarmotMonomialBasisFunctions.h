@@ -70,12 +70,13 @@ namespace Marmot::Math {
    * @param[in]     dim    Number of (leading) coordinates treated by this call.
    * @return One past the last entry of @p res treated by this call.
    */
-  inline int _computeMonomialBasisRecursion( int                    order,
-                                             const Eigen::VectorXd& x,
-                                             Eigen::VectorXd&       res,
-                                             int                    idxEnd,
-                                             int                    dim )
+  inline int _computeMonomialBasisRecursion( int                                        order,
+                                             const Eigen::Ref< const Eigen::VectorXd >& x,
+                                             Eigen::Ref< Eigen::VectorXd >              res,
+                                             int                                        idxEnd,
+                                             int                                        dim )
   {
+    double power = 1.0; // x_dim^i
     for ( int i = 0; i <= order; i++ ) {
 
       const int idxStart = idxEnd;
@@ -86,7 +87,8 @@ namespace Marmot::Math {
       }
 
       for ( int idx = idxStart; idx < idxEnd; idx++ )
-        res( idx ) *= std::pow( x[dim - 1], i );
+        res( idx ) *= power;
+      power *= x[dim - 1];
     }
     return idxEnd;
   }
@@ -105,14 +107,16 @@ namespace Marmot::Math {
    * @param[in]     dim    Number of (leading) coordinates treated by this call.
    * @return One past the last row of @p res treated by this call.
    */
-  inline int _computeMonomialBasisGradientRecursion( int                    order,
-                                                     const Eigen::VectorXd& x,
-                                                     Eigen::MatrixXd&       res,
-                                                     int                    idxEnd,
-                                                     int                    dim )
+  inline int _computeMonomialBasisGradientRecursion( int                                        order,
+                                                     const Eigen::Ref< const Eigen::VectorXd >& x,
+                                                     Eigen::Ref< Eigen::MatrixXd >              res,
+                                                     int                                        idxEnd,
+                                                     int                                        dim )
   {
     // the basis has the same layout as in _computeMonomialBasisRecursion; by the product rule, column k of the
     // gradient is the product of the factors x_d^i of all dimensions d, with x_k^i replaced by its derivative
+    double power      = 1.0; // x_dim^i
+    double lowerPower = 0.0; // x_dim^(i-1)
     for ( int i = 0; i <= order; i++ ) {
 
       const int idxStart = idxEnd;
@@ -123,12 +127,15 @@ namespace Marmot::Math {
         idxEnd++;
       }
 
-      const double factor           = std::pow( x[dim - 1], i );
-      const double factorDerivative = i > 0 ? i * std::pow( x[dim - 1], i - 1 ) : 0.0;
+      const double factor           = power;
+      const double factorDerivative = i * lowerPower;
 
       for ( int idx = idxStart; idx < idxEnd; idx++ )
         for ( int k = 0; k < res.cols(); k++ )
           res( idx, k ) *= k == dim - 1 ? factorDerivative : factor;
+
+      lowerPower = power;
+      power *= x[dim - 1];
     }
     return idxEnd;
   }
@@ -144,9 +151,12 @@ namespace Marmot::Math {
    *
    * @param[in]  order Completeness order @f$ n @f$.
    * @param[in]  x     Coordinates @f$ \boldsymbol{x} @f$ (the dimension @f$ d @f$ is taken from its size).
-   * @param[out] res   Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ).
+   * @param[out] res   Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ). Any
+   *                   contiguous vector, e.g. one of a fixed largest size, which needs no allocation.
    */
-  inline void computeMonomialBasis( int order, const Eigen::VectorXd& x, Eigen::VectorXd& res )
+  inline void computeMonomialBasis( int                                        order,
+                                    const Eigen::Ref< const Eigen::VectorXd >& x,
+                                    Eigen::Ref< Eigen::VectorXd >              res )
   {
     res.setOnes();
     _computeMonomialBasisRecursion( order, x, res, 0, static_cast< int >( x.size() ) );
@@ -163,7 +173,9 @@ namespace Marmot::Math {
    * @param[out] res   Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d )
    *                   @f$ \times d @f$.
    */
-  inline void computeMonomialBasisGradient( int order, const Eigen::VectorXd& x, Eigen::MatrixXd& res )
+  inline void computeMonomialBasisGradient( int                                        order,
+                                            const Eigen::Ref< const Eigen::VectorXd >& x,
+                                            Eigen::Ref< Eigen::MatrixXd >              res )
   {
     res.setOnes();
     _computeMonomialBasisGradientRecursion( order, x, res, 0, static_cast< int >( x.size() ) );

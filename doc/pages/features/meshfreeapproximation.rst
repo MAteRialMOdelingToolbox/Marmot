@@ -133,8 +133,22 @@ they are **not** the derivatives of :math:`\Psi_A`. They need neither kernel gra
 :math:`\boldsymbol{M}_{,i}`: the :math:`1 + d` right-hand sides :math:`[\boldsymbol{H}_0, \boldsymbol{H}^{(1)}_0,
 \dots, \boldsymbol{H}^{(d)}_0]` are solved with a single decomposition of :math:`\boldsymbol{M}`.
 
-In both classes, only ``computeShapeFunctions`` and ``computeShapeFunctionsAndGradients`` are implemented;
-``computeShapeFunctionGradients`` throws ``std::runtime_error``.
+Evaluation
+^^^^^^^^^^
+
+An approximation offers the values alone (``computeShapeFunctions``) or the values with the gradients
+(``computeShapeFunctionsAndGradients``). Both classes evaluate a point in three passes over the candidate kernels:
+
+1. every kernel is evaluated once, with its gradient if the gradients are asked for (and the explicit gradients need
+   it); a kernel with :math:`|\phi_A| \le 10^{-14}` does not cover the point and takes no further part. The values and
+   gradients are kept in the output arrays, one entry per candidate;
+2. the moment matrix, and for the explicit gradients :math:`\boldsymbol{M}_{,i}`, is assembled from them, by one
+   routine for both classes, and factorized once;
+3. the shape functions (and gradients) follow kernel by kernel, overwriting the kernel values.
+
+The basis, the moment matrix and the right-hand sides are of a fixed largest size, up to the complete cubic basis in
+3D (20 monomials): an evaluation allocates no memory. A larger basis, a dimension beyond 3 or a negative completeness
+order is refused when the approximation is constructed.
 
 Kernel functions
 ^^^^^^^^^^^^^^^^

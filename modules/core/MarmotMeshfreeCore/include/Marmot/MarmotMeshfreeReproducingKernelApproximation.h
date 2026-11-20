@@ -29,7 +29,9 @@
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include <Eigen/Core>
 #include <Eigen/QR>
+#include <array>
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -74,6 +76,13 @@ namespace Marmot::Discretizations::Meshfree {
    * systems are solved with a column-pivoting Householder QR decomposition of @f$ \boldsymbol{M} @f$, which is
    * computed once per evaluation point.
    *
+   * **One evaluation, three passes over the kernels.** First, every candidate kernel is evaluated once, with its
+   * gradient if the gradients of the shape functions are asked for (evaluateKernelFunctions()); the values and
+   * gradients are kept in the output arrays, which have one entry per candidate. Second, @f$ \boldsymbol{M} @f$ (and
+   * @f$ \boldsymbol{M}_{,i} @f$) is assembled from them (assembleMomentMatrix()); third, the shape functions follow,
+   * overwriting the kernel values. Everything in between is of a fixed largest size (BasisVector, MomentMatrix):
+   * an evaluation allocates no memory.
+   *
    * If fewer kernels cover @f$ \boldsymbol{x} @f$ than the basis has entries, @f$ \boldsymbol{M} @f$ is singular;
    * the completeness order is then reduced for this evaluation point (getCorrectedCompletenessOrder()).
    *
@@ -81,95 +90,84 @@ namespace Marmot::Discretizations::Meshfree {
    */
   class ReproducingKernelApproximation : public Approximation {
 
+  public:
+    /// The largest spatial dimension.
+    static constexpr int maxDim = 3;
+    /// The largest monomial basis: the complete cubic basis in 3D, @f$ \binom{3 + 3}{3} @f$.
+    static constexpr int maxSizeOfBasis = 20;
+
+    /// The monomial basis @f$ \boldsymbol{H} @f$ (and vectors of its size), of a size up to maxSizeOfBasis.
+    using BasisVector = Eigen::Matrix< double, Eigen::Dynamic, 1, Eigen::ColMajor, maxSizeOfBasis, 1 >;
+    /// The gradient @f$ \partial \boldsymbol{H} / \partial \boldsymbol{x} @f$, one column per dimension.
+    using BasisGradient = Eigen::
+      Matrix< double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, maxSizeOfBasis, maxDim >;
+    /// The moment matrix @f$ \boldsymbol{M} @f$ (and matrices of its size).
+    using MomentMatrix = Eigen::
+      Matrix< double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, maxSizeOfBasis, maxSizeOfBasis >;
+    /// The gradients @f$ \boldsymbol{M}_{,i} @f$ of the moment matrix, entry @f$ i @f$.
+    using MomentMatrixGradient = std::array< MomentMatrix, maxDim >;
+    /// A point, or a difference of points, of up to maxDim coordinates.
+    using Coordinates = Eigen::Matrix< double, Eigen::Dynamic, 1, Eigen::ColMajor, maxDim, 1 >;
+
   protected:
     int _dim;                      ///< spatial dimension @f$ d @f$
     int _desiredCompletenessOrder; ///< requested completeness order @f$ n @f$ (may be reduced per point)
 
-    // int static computeHRecursively( int                    completenessOrder,
-    //                                 const Eigen::VectorXd& x_minus_center,
-    //                                 Eigen::VectorXd&       res,
-    //                                 int                    idx,
-    //                                 int                    dim );
-
-    // int static computeHGradientRecursively( int                    completenessOrder,
-    //                                         const Eigen::VectorXd& x_minus_center,
-    //                                         Eigen::MatrixXd&       res,
-    //                                         int                    idx,
-    //                                         int                    dim );
-
-    // static int computeSizeHVector( int completenessOrder, int dim );
+    /**
+     * @brief Evaluate every candidate kernel at a point, once: its value @f$ \phi_A(\boldsymbol{x}) @f$ and, if
+     * asked for, its gradient. A kernel with @f$ |\phi_A(\boldsymbol{x})| \le 10^{-14} @f$ does not cover the
+     * point: its value (and gradient) is set to zero, and it takes no further part.
+     * @param[in]  coord           Evaluation point @f$ \boldsymbol{x} @f$ (length @f$ d @f$).
+     * @param[in]  kernelFunctions The @f$ n_\mathrm{c} @f$ candidate kernel functions.
+     * @param[out] phi             The kernel values, length @f$ n_\mathrm{c} @f$.
+     * @param[out] dPhi_dx         The kernel gradients, column-major @f$ d \times n_\mathrm{c} @f$; nullptr if not
+     *                             needed.
+     * @return The number of kernels that cover the point.
+     */
+    int evaluateKernelFunctions( const double*                               coord,
+                                 const std::vector< const KernelFunction* >& kernelFunctions,
+                                 double*                                     phi,
+                                 double*                                     dPhi_dx ) const;
 
     /**
-     * @brief Compute the monomial basis vector @f$ \boldsymbol{H} @f$ at shifted coordinates.
-     *
-     * Wraps Math::computeMonomialBasis(); callers pass @f$ \boldsymbol{x} - \boldsymbol{x}_A @f$.
-     *
-     * @param[in] globalCoord            Shifted coordinates @f$ \boldsymbol{x} - \boldsymbol{x}_A @f$ at which the
-     *                                   basis is evaluated (despite the name, not the global coordinates).
-     * @param[in] coveringShapeFunctions Covering kernel functions (unused).
-     * @param[in] completenessOrder      Completeness order @f$ n @f$.
-     * @return @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$, of size
-     *         @f$ \binom{d + n}{d} @f$.
+     * @brief The monomial basis @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$ at the shifted
+     * coordinates of a kernel, and, if asked for, its gradient; Math::computeMonomialBasis(). Since
+     * @f$ \boldsymbol{x}_A @f$ is fixed, the gradient with respect to the shifted coordinates is the one with respect
+     * to @f$ \boldsymbol{x} @f$.
+     * @param[in]  coord             Evaluation point @f$ \boldsymbol{x} @f$.
+     * @param[in]  kernelFunction    The kernel @f$ \phi_A @f$, whose center is @f$ \boldsymbol{x}_A @f$.
+     * @param[in]  completenessOrder Completeness order @f$ n @f$.
+     * @param[out] H                 The basis, of size @f$ \binom{d + n}{d} @f$.
+     * @param[out] dH_dx             Its gradient, one column per dimension; nullptr if not needed.
      */
-    static Eigen::VectorXd computeHVector( const Eigen::VectorXd&                      globalCoord,
-                                           const std::vector< const KernelFunction* >& coveringShapeFunctions,
-                                           int                                         completenessOrder );
+    void evaluateBasis( const double*         coord,
+                        const KernelFunction& kernelFunction,
+                        int                   completenessOrder,
+                        BasisVector&          H,
+                        BasisGradient*        dH_dx ) const;
 
     /**
-     * @brief Compute the gradient @f$ \partial \boldsymbol{H} / \partial x_i @f$ of the monomial basis vector.
-     *
-     * Wraps Math::computeMonomialBasisGradient(); callers pass @f$ \boldsymbol{x} - \boldsymbol{x}_A @f$. Since
-     * @f$ \boldsymbol{x}_A @f$ is fixed, the derivative with respect to the shifted coordinates equals that with
-     * respect to @f$ \boldsymbol{x} @f$.
-     *
-     * @param[in] globalCoord            Shifted coordinates @f$ \boldsymbol{x} - \boldsymbol{x}_A @f$ (despite the
-     *                                   name, not the global coordinates).
-     * @param[in] coveringShapeFunctions Covering kernel functions (unused).
-     * @param[in] completenessOrder      Completeness order @f$ n @f$.
-     * @return Matrix of size @f$ \binom{d + n}{d} \times d @f$; column @f$ i @f$ holds
-     *         @f$ \partial \boldsymbol{H} / \partial x_i @f$.
+     * @brief Assemble the moment matrix @f$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} -
+     * \boldsymbol{x}_B) \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) @f$ over the
+     * covering kernels and, if asked for, its gradients @f$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i}
+     * \boldsymbol{H}^T + \boldsymbol{H} \boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T
+     * \phi_{B,i} @f$: the one assembly of the moment matrix.
+     * @param[in]  coord             Evaluation point @f$ \boldsymbol{x} @f$.
+     * @param[in]  kernelFunctions   The candidate kernel functions.
+     * @param[in]  phi               Their values, from evaluateKernelFunctions(); zero for a kernel that does not
+     *                               cover the point, which is skipped.
+     * @param[in]  dPhi_dx           Their gradients, from evaluateKernelFunctions(); nullptr if @p dM_dx is.
+     * @param[in]  completenessOrder Completeness order @f$ n @f$.
+     * @param[out] M                 The symmetric moment matrix, of size @f$ \binom{d + n}{d} @f$ squared.
+     * @param[out] dM_dx             Its @f$ d @f$ gradients; nullptr if not needed.
      */
-    static Eigen::MatrixXd computeHVectorGradient( const Eigen::VectorXd&                      globalCoord,
-                                                   const std::vector< const KernelFunction* >& coveringShapeFunctions,
-                                                   int                                         completenessOrder );
-
-    /**
-     * @brief Compute the moment matrix
-     * @f$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)
-     * \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) @f$.
-     * @param[in] globalCoord            Evaluation point @f$ \boldsymbol{x} @f$.
-     * @param[in] coveringShapeFunctions Kernel functions @f$ \phi_B @f$ summed over (kernels that do not cover
-     *                                   @f$ \boldsymbol{x} @f$ contribute zero).
-     * @param[in] completenessOrder      Completeness order @f$ n @f$.
-     * @return The symmetric moment matrix, of size @f$ \binom{d + n}{d} \times \binom{d + n}{d} @f$.
-     */
-    static Eigen::MatrixXd computeMMatrix( const Eigen::VectorXd&                      globalCoord,
-                                           const std::vector< const KernelFunction* >& coveringShapeFunctions,
-                                           int                                         completenessOrder );
-
-    /**
-     * @brief Compute the moment matrix @f$ \boldsymbol{M} @f$ and its gradients @f$ \boldsymbol{M}_{,i} @f$.
-     *
-     * @f$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
-     * \boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i} @f$, with
-     * @f$ \boldsymbol{H} @f$ evaluated at @f$ \boldsymbol{x} - \boldsymbol{x}_B @f$.
-     *
-     * @param[in] globalCoord            Evaluation point @f$ \boldsymbol{x} @f$.
-     * @param[in] coveringShapeFunctions Kernel functions @f$ \phi_B @f$ summed over.
-     * @param[in] completenessOrder      Completeness order @f$ n @f$.
-     * @return Pair of @f$ \boldsymbol{M} @f$ and the @f$ d @f$ matrices @f$ \boldsymbol{M}_{,i} @f$.
-     */
-    static std::pair< Eigen::MatrixXd, std::vector< Eigen::MatrixXd > > computeMMatrixAndGradient(
-      const Eigen::VectorXd&                      globalCoord,
-      const std::vector< const KernelFunction* >& coveringShapeFunctions,
-      int                                         completenessOrder );
-
-    /**
-     * @brief Get @f$ \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T @f$.
-     * @param[in] sizeHVector Size of the monomial basis vector.
-     * @return The first unit vector of the given size.
-     */
-    static Eigen::VectorXd H0Vector( int sizeHVector );
+    void assembleMomentMatrix( const double*                               coord,
+                               const std::vector< const KernelFunction* >& kernelFunctions,
+                               const double*                               phi,
+                               const double*                               dPhi_dx,
+                               int                                         completenessOrder,
+                               MomentMatrix&                               M,
+                               MomentMatrixGradient*                       dM_dx ) const;
 
     /**
      * @brief Factorize the moment matrix @f$ \boldsymbol{M}(\boldsymbol{x}) @f$ and check that it is regular.
@@ -185,9 +183,9 @@ namespace Marmot::Discretizations::Meshfree {
      *         through the thickness: all kernel centres are coplanar, so a linear basis cannot be reproduced; use at
      *         least two layers of kernels, larger supports, or a lower completeness order.
      */
-    Eigen::ColPivHouseholderQR< Eigen::MatrixXd > factorizeMomentMatrix( const Eigen::MatrixXd& M,
-                                                                         const double*          coord,
-                                                                         int nCoveringKernels ) const;
+    Eigen::ColPivHouseholderQR< MomentMatrix > factorizeMomentMatrix( const MomentMatrix& M,
+                                                                      const double*       coord,
+                                                                      int                 nCoveringKernels ) const;
 
     /**
      * @brief Compute the factorial @f$ n! @f$ recursively.
@@ -239,21 +237,13 @@ namespace Marmot::Discretizations::Meshfree {
       return correctedCompletenessOrder;
     }
 
-    /**
-     * @brief Find the kernels covering a point.
-     * @param[in] coord           Evaluation point @f$ \boldsymbol{x} @f$.
-     * @param[in] kernelFunctions Candidate kernel functions.
-     * @return Indices (into @p kernelFunctions) of the kernels with @f$ |\phi_A(\boldsymbol{x})| > 10^{-14} @f$.
-     */
-    const std::vector< int > findCoveringKernelFunctionIndices(
-      const double*                               coord,
-      const std::vector< const KernelFunction* >& kernelFunctions ) const;
-
   public:
     /**
      * @brief Construct the approximation.
-     * @param[in] dim               Spatial dimension @f$ d @f$.
-     * @param[in] completenessOrder Desired completeness order @f$ n @f$ (order of the reproduced polynomials).
+     * @param[in] dim               Spatial dimension @f$ d \le @f$ maxDim.
+     * @param[in] completenessOrder Desired completeness order @f$ n \ge 0 @f$ (order of the reproduced polynomials).
+     * @throws std::invalid_argument if the order is negative, or the dimension or the basis exceeds maxDim or
+     * maxSizeOfBasis.
      */
     ReproducingKernelApproximation( int dim, int completenessOrder );
 
@@ -267,21 +257,11 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in]  kernelFunctions     The @f$ n_\mathrm{c} @f$ candidate kernel functions.
      * @param[out] shapeFunctionValues Shape function values (length @f$ n_\mathrm{c} @f$); zero for candidates that
      *                                 do not cover @f$ \boldsymbol{x} @f$.
+     * @throws std::runtime_error if the moment matrix is singular (see factorizeMomentMatrix()).
      */
     virtual void computeShapeFunctions( const double*                               coord,
                                         const std::vector< const KernelFunction* >& kernelFunctions,
                                         double* shapeFunctionValues ) const override;
-
-    /**
-     * @brief Not implemented; use computeShapeFunctionsAndGradients().
-     * @param[in]  coord                       Evaluation point.
-     * @param[in]  kernelFunctions             Candidate kernel functions.
-     * @param[out] shapeFunctionValueGradients Not written.
-     * @throws std::runtime_error always.
-     */
-    virtual void computeShapeFunctionGradients( const double*                               coord,
-                                                const std::vector< const KernelFunction* >& kernelFunctions,
-                                                double* shapeFunctionValueGradients ) const override;
 
     /**
      * @brief Compute the RK shape function values and their explicit (exact) gradients @f$ \Psi_{A,i} @f$.
@@ -291,12 +271,27 @@ namespace Marmot::Discretizations::Meshfree {
      *                                 do not cover @f$ \boldsymbol{x} @f$.
      * @param[out] shapeFunctionValueGradients_ColMajor Gradients, column-major @f$ d \times n_\mathrm{c} @f$
      *                                 (entry @f$ i + d A @f$ is @f$ \Psi_{A,i} @f$); zero for non-covering candidates.
-     * @throws std::runtime_error if the basis is empty (negative completeness order).
+     * @throws std::runtime_error if the moment matrix is singular (see factorizeMomentMatrix()).
      */
     virtual void computeShapeFunctionsAndGradients( const double*                               coord,
                                                     const std::vector< const KernelFunction* >& kernelFunctions,
                                                     double*                                     shapeFunctionValues,
                                                     double* shapeFunctionValueGradients_ColMajor ) const override;
+
+  private:
+    /**
+     * @brief The evaluation behind computeShapeFunctions() and computeShapeFunctionsAndGradients(): the values,
+     * and the gradients if @p dPsi_dx is given.
+     * @param[in]  coord           Evaluation point @f$ \boldsymbol{x} @f$.
+     * @param[in]  kernelFunctions The candidate kernel functions.
+     * @param[out] Psi             Shape function values.
+     * @param[out] dPsi_dx         Their gradients, column-major @f$ d \times n_\mathrm{c} @f$; nullptr for the values
+     *                             alone.
+     */
+    void evaluateShapeFunctions( const double*                               coord,
+                                 const std::vector< const KernelFunction* >& kernelFunctions,
+                                 double*                                     Psi,
+                                 double*                                     dPsi_dx ) const;
   };
 
 } // namespace Marmot::Discretizations::Meshfree
