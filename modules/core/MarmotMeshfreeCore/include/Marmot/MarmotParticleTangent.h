@@ -29,6 +29,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -170,15 +171,21 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] dN_dY Their gradients, nDim x nNodes.
      * @param[in] d2N_dYdY Their second gradients, nDim^2 x nNodes (see addTangentRowsOfNode()); nullptr for a
      * particle without second gradients.
+     * @param[in] nComponentsWithSecondGradients The components of a node whose columns have second-gradient factors
+     * are its first nComponentsWithSecondGradients (e.g. the displacement, on which a stabilization acts, but not a
+     * nonlocal field): the moments of the second gradients are formed for these columns only. addRowsOfNode() refuses
+     * a second-gradient factor in another column.
      */
     AbsoluteTangentBound( const double*          columnWeights,
                           int                    nColumns,
                           const Eigen::MatrixXd& N,
                           const Eigen::MatrixXd& dN_dY,
-                          const Eigen::MatrixXd* d2N_dYdY )
+                          const Eigen::MatrixXd* d2N_dYdY,
+                          int                    nComponentsWithSecondGradients = nDofPerNode )
       : _nDof( nDofPerNode * static_cast< int >( N.size() ) ),
         _nColumns( nColumns ),
         _withSecondGradients( d2N_dYdY != nullptr ),
+        _nComponentsWithSecondGradients( nComponentsWithSecondGradients ),
         _moments( nColumns * nDofPerNode )
     {
       const int nNodes = static_cast< int >( N.size() );
@@ -193,7 +200,7 @@ namespace Marmot::Discretizations::Meshfree {
             m.sumOfValues += w_B * std::abs( N( B ) );
             const Eigen::Matrix< double, nDim, 1 > g_B = dN_dY.col( B );
             addMoments( g_B, w_B, m.sumOfGradientNorms, m.gradientMoments );
-            if ( _withSecondGradients )
+            if ( _withSecondGradients && k < _nComponentsWithSecondGradients )
               addMoments( symmetricComponents( d2N_dYdY->col( B ) ),
                           w_B,
                           m.sumOfSecondGradientNorms,
@@ -231,6 +238,9 @@ namespace Marmot::Discretizations::Meshfree {
           const bool withSecondGradientTerm = ( h.array() != 0.0 ).any();
           if ( !withValueTerm && !withGradientTerm && !withSecondGradientTerm )
             continue;
+          if ( withSecondGradientTerm && k >= _nComponentsWithSecondGradients )
+            throw std::logic_error( "AbsoluteTangentBound: a second-gradient factor in the column of a component "
+                                    "without second gradients, whose moments are not formed" );
 
           for ( int c = 0; c < _nColumns; c++ ) {
             const Moments& m = _moments[c * nDofPerNode + k];
@@ -295,10 +305,11 @@ namespace Marmot::Discretizations::Meshfree {
       return components;
     }
 
-    const int              _nDof;                ///< the number of dofs of the particle
-    const int              _nColumns;            ///< the number of columns of the weights
-    const bool             _withSecondGradients; ///< the particle has second gradients
-    std::vector< Moments > _moments;             ///< entry @f$ c\, n_{\text{dof/node}} + k @f$
+    const int              _nDof;                           ///< the number of dofs of the particle
+    const int              _nColumns;                       ///< the number of columns of the weights
+    const bool             _withSecondGradients;            ///< the particle has second gradients
+    const int              _nComponentsWithSecondGradients; ///< the leading components with second-gradient factors
+    std::vector< Moments > _moments;                        ///< entry @f$ c\, n_{\text{dof/node}} + k @f$
   };
 
 } // namespace Marmot::Discretizations::Meshfree

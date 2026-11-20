@@ -1033,7 +1033,8 @@ namespace Marmot::Discretizations::Meshfree {
                                                                             nColumns,
                                                                             _N,
                                                                             _dN_dY,
-                                                                            d2N_dYdY.size() ? &d2N_dYdY : nullptr );
+                                                                            d2N_dYdY.size() ? &d2N_dYdY : nullptr,
+                                                                            nDim ); // the stabilized displacement
     TangentRows                                          rows;
     for ( int A = 0; A < _nNodes; A++ ) {
       rows.setZero();

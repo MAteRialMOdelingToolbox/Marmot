@@ -243,6 +243,10 @@ All notable changes to Marmot are documented in this file. The format follows
   `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
   Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
   one nonlocal variable are unchanged (bitwise).
+- `AbsoluteTangentBound` forms the moments of the second gradients only for the columns of the components that have
+  second-gradient factors (a new last constructor argument, by default all; the gradient-enhanced finite-strain
+  particles give the displacement), and refuses a second-gradient factor in another column; the bound is unchanged
+  (bitwise).
 - **Results:** `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit` evaluate a point in one
   pass over the kernels (each evaluated once, its gradient only if needed), one assembly of the moment matrix (and its
   gradients) for both classes, and types of a fixed largest size (up to the cubic basis in 3D): no allocation per

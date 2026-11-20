@@ -32,6 +32,7 @@
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticleDomain.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleTangent.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <cmath>
@@ -397,6 +398,48 @@ void testSingularMomentMatrixThrows()
   }
 }
 
+// the moments of the second gradients are formed only for the leading components that have second-gradient factors:
+// with such factors in the displacement columns alone, the bound is the one of all components (bitwise); a factor in
+// another column is refused, since its moments are missing
+void testAbsoluteTangentBoundOfColumnsWithoutSecondGradients()
+{
+  using namespace Marmot::Discretizations::Meshfree;
+  constexpr int   nDim = 3, nDofPerNode = 4, nNodes = 2, nDof = nDofPerNode * nNodes;
+  Eigen::MatrixXd N( 1, nNodes ), dN_dY( nDim, nNodes ), d2N_dYdY( nDim * nDim, nNodes );
+  N << 0.4, 0.6;
+  dN_dY << 0.3, -0.3, -0.2, 0.2, 0.1, -0.1;
+  for ( int B = 0; B < nNodes; B++ )
+    for ( int l = 0; l < nDim; l++ )
+      for ( int m = 0; m < nDim; m++ )
+        d2N_dYdY( l * nDim + m, B ) = 0.1 * ( B + 1 ) * ( l + 1 ) * ( m + 1 ) - 0.05 * ( l == m );
+  const std::vector< double > weights( nDof, 1.0 );
+
+  TangentRowsOfNode< nDim, nDofPerNode > rows;
+  rows.setZero();
+  rows.df_dIncrement( 3, 3 ) = 2.0;
+  for ( int l = 0; l < nDim; l++ ) {
+    rows.df_dIncrementGradient[l]( 0, 1 ) = 1.0 + l;
+    rows.df_dIncrementGradient[l]( 3, 0 ) = -0.5 * l;
+    for ( int m = 0; m < nDim; m++ )
+      rows.df_dIncrementSecondGradient[l * nDim + m]( 1, 2 ) = 0.3 * ( l + m + 1 );
+  }
+
+  std::vector< double >                           ofAllComponents( nDof, 0.0 ), ofTheDisplacement( nDof, 0.0 );
+  const AbsoluteTangentBound< nDim, nDofPerNode > allComponents( weights.data(), 1, N, dN_dY, &d2N_dYdY );
+  const AbsoluteTangentBound< nDim, nDofPerNode > displacement( weights.data(), 1, N, dN_dY, &d2N_dYdY, nDim );
+  for ( int A = 0; A < nNodes; A++ ) {
+    allComponents.addRowsOfNode( rows, A, ofAllComponents.data() );
+    displacement.addRowsOfNode( rows, A, ofTheDisplacement.data() );
+  }
+  throwExceptionOnFailure( ofAllComponents == ofTheDisplacement && ofAllComponents[1] > 0.0,
+                           "the bound with the second gradients of the displacement columns alone must be the bound of "
+                           "all columns" );
+
+  rows.df_dIncrementSecondGradient[0]( 1, 3 ) = 1.0;
+  throwExceptionOnFailure( throws( [&] { displacement.addRowsOfNode( rows, 0, ofTheDisplacement.data() ); } ),
+                           "a second-gradient factor in a column without second gradients must be refused" );
+}
+
 // the inverse isoparametric map and the point location test of a distorted cell (Newton's method), and of a box cell
 template < int nDim, int nNodes >
 void checkLagrangianCellInverseMap( const std::vector< double >& nodes, bool box )
@@ -528,6 +571,7 @@ int main()
                                                                testCompletenessOrderIsReducedForFewNodes,
                                                                testUnsupportedBasisIsRefused,
                                                                testSingularMomentMatrixThrows,
+                                                               testAbsoluteTangentBoundOfColumnsWithoutSecondGradients,
                                                                testLagrangianCellInverseMap,
                                                                testSubdomainsTileTheDeformedDomain,
                                                                testFactories };
