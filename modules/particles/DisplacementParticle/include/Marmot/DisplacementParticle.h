@@ -575,7 +575,8 @@ namespace Marmot::Discretizations::Meshfree {
     Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, this->_nNodes * nodeBlockSize, this->_nNodes * nodeBlockSize );
 
-    const Tensor< double, nDim, nDim > dY_dx = inv( _mp->dx_dY() );
+    const Tensor< double, nDim, nDim > dY_dx    = inv( _mp->dx_dY() );
+    const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
     TangentRows rows;
     for ( int A = 0; A < this->_nNodes; A++ ) {
@@ -595,7 +596,7 @@ namespace Marmot::Discretizations::Meshfree {
       addStiffnessRowsOfNode( A, dY_dx, rows );
       rows.df_dIncrement += density0 * T_A * V0 *
                             Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( da_ddu.data() );
-      addTangentRowsOfNode( rows, A, this->_N, this->_dN_dY, nullptr, K );
+      addTangentRowsOfNode( rows, A, this->_N, this->_dN_dY, d2N_dYdY, K );
     }
   }
 
@@ -637,19 +638,15 @@ namespace Marmot::Discretizations::Meshfree {
     _mp->incrementDeformation( TensorD( 0.0 ), TensorDD( 0.0 ) );
     _mp->computeYourself( timeNew, dT );
 
-    const TensorDD                           dY_dx    = inv( _mp->dx_dY() );
-    const Eigen::MatrixXd                    d2N_dYdY = secondGradientsOfTrialFunctions();
-    const AbsoluteTangentBound< nDim, nDim > absoluteStiffness( columnWeights,
-                                                                nColumns,
-                                                                this->_N,
-                                                                this->_dN_dY,
-                                                                d2N_dYdY.size() ? &d2N_dYdY : nullptr );
-    TangentRows                              rows;
-    for ( int A = 0; A < this->_nNodes; A++ ) {
-      rows.setZero();
-      addStiffnessRowsOfNode( A, dY_dx, rows );
-      absoluteStiffness.addRowsOfNode( rows, A, bound );
-    }
+    const TensorDD dY_dx = inv( _mp->dx_dY() );
+    addBoundOfAbsoluteTangentTimesWeights< nDim, nDim >(
+      columnWeights,
+      nColumns,
+      this->_N,
+      this->_dN_dY,
+      secondGradientsOfTrialFunctions(),
+      [&]( int A, TangentRows& rows ) { addStiffnessRowsOfNode( A, dY_dx, rows ); },
+      bound );
   }
 
   template < int nDim >

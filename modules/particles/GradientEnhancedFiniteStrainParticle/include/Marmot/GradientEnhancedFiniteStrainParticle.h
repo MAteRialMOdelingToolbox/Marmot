@@ -897,7 +897,8 @@ namespace Marmot::Discretizations::Meshfree {
     Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
-    const Tensor< double, nDim, nDim > dY_dx = inv( _mp.dx_dY() );
+    const Tensor< double, nDim, nDim > dY_dx    = inv( _mp.dx_dY() );
+    const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
     TangentRows rows;
     for ( int A = 0; A < _nNodes; A++ ) {
@@ -934,7 +935,7 @@ namespace Marmot::Discretizations::Meshfree {
                                  nDim >() += density0 * T_A * V0 *
                                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
                                                da_ddu.data() );
-      addTangentRowsOfNode( rows, A, _N, _dN_dY, nullptr, K );
+      addTangentRowsOfNode( rows, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 
@@ -1013,19 +1014,15 @@ namespace Marmot::Discretizations::Meshfree {
                               dn_dY );
     _mp.computeYourself( timeNew, dT );
 
-    const Fastor::Tensor< double, nDim, nDim >           dY_dx    = inv( _mp.dx_dY() );
-    const Eigen::MatrixXd                                d2N_dYdY = secondGradientsOfTrialFunctions();
-    const AbsoluteTangentBound< nDim, nDim + nNonlocal > absoluteStiffness( columnWeights,
-                                                                            nColumns,
-                                                                            _N,
-                                                                            _dN_dY,
-                                                                            d2N_dYdY.size() ? &d2N_dYdY : nullptr );
-    TangentRows                                          rows;
-    for ( int A = 0; A < _nNodes; A++ ) {
-      rows.setZero();
-      addStiffnessRowsOfNode( A, dY_dx, rows );
-      absoluteStiffness.addRowsOfNode( rows, A, bound );
-    }
+    const Fastor::Tensor< double, nDim, nDim > dY_dx = inv( _mp.dx_dY() );
+    addBoundOfAbsoluteTangentTimesWeights< nDim, nDim + nNonlocal >(
+      columnWeights,
+      nColumns,
+      _N,
+      _dN_dY,
+      secondGradientsOfTrialFunctions(),
+      [&]( int A, TangentRows& rows ) { addStiffnessRowsOfNode( A, dY_dx, rows ); },
+      bound );
   }
 
   template < int nDim, int nNonlocal >
