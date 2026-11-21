@@ -413,7 +413,8 @@ namespace Marmot::Discretizations::Elements {
      * configuration and the lumped mass computeLumpedInertia() assembles, for an isotropic material with the largest
      * P-wave modulus \f$\rho c^2\f$ of the quadrature points, its wave speed evaluated at the deformation of
      * @p QTotal; see Marmot::Discretizations::Elements::CriticalTimeStep. It holds for every element order and
-     * quadrature rule.
+     * quadrature rule of the undeformed element; since the strain operator is that of the reference configuration,
+     * a strongly deformed element gets the bound of its undeformed shape with the current wave speed, an estimate.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
 
@@ -1128,6 +1129,9 @@ namespace Marmot::Discretizations::Elements {
      * @brief Compute the critical time step for explicit dynamics: as the plane element, with the hoop row
      * \f$N_i / r\f$ in the strain operator and the ring \f$2\pi r\f$ in the integration weight, as computeKernels()
      * integrates the internal force.
+     * @note The lumped mass is the plane one the element inherits, without the ring weight that its internal force
+     * carries. The bound takes the same mass, so it is the bound of what the element assembles; a lumped mass with
+     * the ring weight would change both.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
      */
