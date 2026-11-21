@@ -32,6 +32,7 @@
 #include "Marmot/MarmotLagrangianCellGeometry.h"
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotUtils.h"
+#include <array>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -144,8 +145,9 @@ namespace Marmot::Discretizations::Cells {
     static constexpr int idxU = 0;                    ///< first index of the displacement block
     static constexpr int idxN = idxU + bsU;           ///< first index of the nonlocal block
 
-    using MaterialPoint = Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint<
-      nDim >;                                                         ///< consumed point type
+    /// the hosted material point type: the cell carries one nonlocal variable
+    using MaterialPoint = Marmot::Discretizations::MaterialPoints::
+      GradientEnhancedFiniteStrainMaterialPoint< nDim, 1 >;           ///< consumed point type
 
     using NSized    = typename GeometryCell::NSized;                  ///< shape function vector of the geometry
     using dNdXSized = typename GeometryCell::dNdXSized;               ///< shape function gradients of the geometry
@@ -426,7 +428,11 @@ namespace Marmot::Discretizations::Cells {
       const auto du    = evaluate( einsum< A, Ai >( mpl.N, dQU ) );
       const auto du_dY = evaluate( einsum< Ai, jA >( dQU, mpl.dN_dY ) );
 
-      mpl.materialPoint->incrementDeformation( du, du_dY, inner( mpl.N, dQN ) );
+      const std::array< Tensor< double, nDim >, 1 > dn_dY = { evaluate( einsum< iA, A >( mpl.dN_dY, dQN ) ) };
+
+      using NonlocalVector = typename MaterialPoint::NonlocalVector;
+
+      mpl.materialPoint->incrementDeformation( du, du_dY, NonlocalVector::Constant( inner( mpl.N, dQN ) ), dn_dY );
     }
   }
 
@@ -465,22 +471,22 @@ namespace Marmot::Discretizations::Cells {
       const double V0 = mp->getVolumeUndeformed();
 
       const auto&  S           = mp->response.S;
-      const double dLocalField = mp->response.dL;
-      const double c           = mp->response.nonLocalRadius * mp->response.nonLocalRadius;
+      const double dLocalField = mp->response.dL( 0 );
+      const double c           = mp->response.nonLocalRadius( 0 ) * mp->response.nonLocalRadius( 0 );
 
       const auto& t = mp->tangents;
 
       // clang-format off
       const auto dS_dqU = evaluate( + einsum< ijkl, lB >( t.dS_dDeltaF, dN_dY ) );
-      const auto dL_dqU = evaluate( + einsum< kl,   lB >( t.dL_dDeltaF, dN_dY ) );
+      const auto dL_dqU = evaluate( + einsum< kl,   lB >( t.dL_dDeltaF[0], dN_dY ) );
 
       r_U  += ( + einsum< iA, ij >( dN_dx, S )                                                          ) * V0;
       r_N  += ( N * dNonLocalField + c * einsum< iA, iB, B >( dN_dX, dN_dX, dQN ) - N * dLocalField    ) * V0;
       // clang-format on
 
-      const auto SdN_dx  = evaluate( einsum< ij, iB >( S, dN_dx ) );       // S_ij dN_B/dx_i
-      const auto dSdN_dx = evaluate( einsum< ij, iA >( t.dS_dN, dN_dx ) ); // dS_ij/dN dN_A/dx_i
-      const auto dNdN_dX = evaluate( einsum< iA, iB >( dN_dX, dN_dX ) );   // dN_A/dX_i dN_B/dX_i
+      const auto SdN_dx  = evaluate( einsum< ij, iB >( S, dN_dx ) );          // S_ij dN_B/dx_i
+      const auto dSdN_dx = evaluate( einsum< ij, iA >( t.dS_dN[0], dN_dx ) ); // dS_ij/dN dN_A/dx_i
+      const auto dNdN_dX = evaluate( einsum< iA, iB >( dN_dX, dN_dX ) );      // dN_A/dX_i dN_B/dX_i
 
       for ( int A = 0; A < nNodes; A++ ) {
         for ( int j = 0; j < nDim; j++ ) {
@@ -503,7 +509,7 @@ namespace Marmot::Discretizations::Cells {
           for ( int k = 0; k < nDim; k++ )
             K( rowN, idxU + B * nDim + k ) -= N( A ) * dL_dqU( k, B ) * V0;
           // K_NN: ( N_A N_B ( 1 - dL/dN ) + c dN_A/dX_i dN_B/dX_i ) V0
-          K( rowN, idxN + B ) += ( N( A ) * N( B ) * ( 1. - t.dL_dN ) + c * dNdN_dX( A, B ) ) * V0;
+          K( rowN, idxN + B ) += ( N( A ) * N( B ) * ( 1. - t.dL_dN( 0, 0 ) ) + c * dNdN_dX( A, B ) ) * V0;
         }
       }
     }

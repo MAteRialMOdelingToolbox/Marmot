@@ -141,6 +141,27 @@ All notable changes to Marmot are documented in this file. The format follows
   (`c18`, `c21`, the reference strength and modulus), the default values of `fc` and `transitionWidth` and the
   stiffness tolerance of the unloading transition, so that the models can be used in any consistent unit system.
   Results with the default are unchanged.
+- `materials/GM7`: optional property 16, `nonlocalMicroInertia` (after the nonlocal viscosity): makes the six nonlocal
+  fields second order in time, admissible up to eta^2/4; absent, they stay first order.
+- `GM7/COROTATIONAL` (`Materials::GradientEnhancedCorotationalWrapper`): GM7 at finite strains, for the particles
+  with six nonlocal variables. The wrapped material is driven by the increment of the logarithmic strain in the frame
+  of the polar rotation and returns the rotated Kirchhoff stress, so a rigid rotation rotates the stress exactly also
+  for a material that recomputes its stress from total strains (which the Hughes-Winget wrapper cannot); consistent
+  analytic tangent through the spectral derivatives of ln C and C^(1/2).
+- `Registry::ParticleFactory::isRegistered`: whether a particle name is registered, i.e. whether its module is built
+  (replaces the declared but undefined private `checkIfParticleIsRegistered`).
+- Explicit dynamics of the gradient-enhanced finite-strain particles (point, SQCNI, SQCNIxNSNI; any number of
+  nonlocal variables): `updatePhysicsExplicit`, `computePhysicsKernelsExplicit` (nonlocal balance in total form),
+  lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
+  viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
+  damping).
+- `Particle::computeBoundOfAbsoluteStiffnessTimes`: an upper bound of |K| W, the absolute value of the particle's
+  stiffness times nonnegative weights, for the stable time increment of an explicit host. `AbsoluteTangentBound` forms
+  it in O(nodes) from the chain-rule factors of each node's rows (`addStiffnessRowsOfNode`) and weighted moments of the
+  shape functions, without assembling the stiffness; implemented in `DisplacementParticle` and
+  `GradientEnhancedFiniteStrainParticle` for all derived particles (`addBoundOfAbsoluteTangentTimesWeights`). Their
+  tangent is assembled from the same factors (`addTangentRowsOfNode`): equal to the former one to round-off, residuals
+  bitwise. The NSNI stabilization rows are shared by both particle families (`Meshfree::NSNI`).
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -207,6 +228,26 @@ All notable changes to Marmot are documented in this file. The format follows
   simulations. The density of `MICROPLANEM7` moves from index 11 to 12; the density of `GM7` from 13 to 14 and its
   nonlocal viscosity from 14 to 15. In an old input file giving these properties, the density would be read as
   `stressUnit`.
+- **Breaking:** the gradient-enhanced finite-strain stack carries `nNonlocal` nonlocal variables:
+  `Materials::MaterialGradientEnhancedFiniteStrain<nNonlocal>` and `Registry::MaterialGradientEnhancedFiniteStrainFactory
+  <nNonlocal>` (instantiated for 1 and 6), the material point `GradientEnhancedFiniteStrainMaterialPoint<nDim,
+  nNonlocal>` (one class; `GradientEnhancedFiniteStrainMaterialPoint2D`/`3D` are removed) and the particles
+  `GradientEnhancedFiniteStrainParticle<nDim, nNonlocal>`, `...SQCNI<nDim, nVertices, nNonlocal>`,
+  `...SQCNIxNSNI<nDim, nVertices, nNonlocal>`. Nonlocal quantities are Eigen vectors (`L`, `nonLocalRadius`, `N`,
+  `getNonlocalViscosity`, `getNonlocalMicroInertia`), the mixed tangents one tensor per nonlocal variable
+  (`dTau_dN[K]`, `dL_dF[K]`). The material point keeps the total
+  gradient and the rate of the nonlocal fields (new states `nonlocal damage gradient`, `nonlocal damage rate`).
+  Registered with six nonlocal variables (`strain symmetric`, 3D): `GradientEnhanced6FiniteStrain/3D`,
+  `GradientEnhanced6FiniteStrain/3D/Point`, `GradientEnhanced6FiniteStrainSQCNI/3D/Hexa`,
+  `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
+  Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
+  one nonlocal variable are unchanged (bitwise).
+- **Breaking:** `Particle::updatePhysicsExplicit`, `Particle::computePhysicsKernelsExplicit`,
+  `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default instead of doing
+  nothing, so that a particle without the explicit path is refused by an explicit host instead of being integrated with
+  its mass and without its force, and never leaves a load out silently. The explicit path is in the NSNI particles of
+  the displacement family and in all gradient-enhanced particles; `DisplacementParticleSQCNI` implements the explicit
+  distributed load only. The defaults of the lumped inertia and momentum name the method in their message.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
@@ -225,6 +266,17 @@ All notable changes to Marmot are documented in this file. The format follows
   only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
+- **Results** The critical time step of the continuum elements (`DisplacementFiniteElement`,
+  `DisplacementFiniteStrainULElement` incl. its axisymmetric variant, and the displacement field of
+  `GeneralGradientEnhancedDisplacementFiniteElement`) is the element's own eigenvalue bound
+  (`Discretizations::Elements::CriticalTimeStep`), from the strain operator the element integrates with and the lumped
+  mass it assembles. The former characteristic length over wave speed overestimated the stable increment of quadratic
+  elements by a factor of 2.3 to 3.4 (explicit runs with them diverged at courant numbers of 0.5 and the default 0.8)
+  and of compact linear elements by up to 1.7. Explicit runs take smaller increments; quadratic elements now run at
+  the default courant number.
+- **Breaking** `GeometryElement::characteristicLengthForCriticalTimeStepAt` is now `smallestElementExtentAt` (the
+  artificial bulk viscosity is its only user); `MassLumping::manifoldMassFractions` and
+  `MassLumping::timeStepFactorFromMassDistribution` are removed.
 - **Results, Breaking:** reduced stress states of the small strain materials. `MaterialHypoElastic::computePlaneStress()`
   and `computeUniaxialStress()` (still virtual) and `MaterialGradientEnhancedHypoElastic::iteratePlaneStress()` (the
   default `computePlaneStress()` and `computePlaneStressWithEnergyTangents()`) are thin wrappers around

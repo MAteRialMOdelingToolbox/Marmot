@@ -29,26 +29,84 @@
 
 namespace Marmot::Discretizations::MaterialPoints {
 
-  // =========================================================================================
-  //  plane strain
-  // =========================================================================================
-
-  void GradientEnhancedFiniteStrainMaterialPoint2D::incrementDeformation( const TensorD&  du,
-                                                                          const TensorDD& du_dY,
-                                                                          double          dn )
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::assignStateVars( double* stateVars,
+                                                                                      int     nStateVars )
   {
-    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor(
-      Marmot::Math::Tensors::expandTo3D( du ) );
-    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor(
-      Marmot::Math::Tensors::expandTo3D( du_dY ) );
-    state->nonLocalDamage += dn;
-  };
+    state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+  }
 
-  void GradientEnhancedFiniteStrainMaterialPoint2D::computeYourself( double timeNew, double dT )
+  template < int nDim, int nNonlocal >
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::getStateView(
+    const std::string& stateName ) const
   {
-    const Material::TimeIncrement timeIncrement{ timeNew, dT };
+    if ( state->contains( stateName ) )
+      return state->getStateView( stateName );
+    else
+      return material->getStateView( stateName, state->materialState.data() );
+  }
 
-    // total deformation gradient: the increment since the last accepted state, composed onto it
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::assignMaterial(
+    const Marmot::Discretizations::MaterialSection& section )
+  {
+    material.reset( Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+                    nNonlocal >::createMaterial( section.materialName,
+                                                 section.materialProperties,
+                                                 section.nMaterialProperties,
+                                                 _mpNumber ) );
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::initializeYourself()
+  {
+    state->dY_dX.eye();
+    state->F0_XX = 1.0;
+    state->F0_YY = 1.0;
+    state->F0_ZZ = 1.0;
+    this->prepareYourself( 0, 0 );
+    material->initializeYourself( state->materialState.data(), static_cast< int >( state->materialState.size() ) );
+    // known from the start, so that inertia can be assembled before the first computation
+    _density = material->getDensity( state->materialState.data() );
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::prepareYourself( double timeNew, double dT )
+  {
+    state->du.zeros();
+    state->dx_dY.eye();
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::incrementDeformation(
+    const TensorD&                          du,
+    const TensorDD&                         du_dY,
+    const NonlocalVector&                   dn,
+    const std::array< TensorD, nNonlocal >& dn_dY )
+  {
+    if constexpr ( nDim == 2 ) {
+      Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor(
+        Marmot::Math::Tensors::expandTo3D( du ) );
+      Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor(
+        Marmot::Math::Tensors::expandTo3D( du_dY ) );
+    }
+    else {
+      Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor( du );
+      Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor( du_dY );
+    }
+    state->nonlocalField += dn;
+
+    // grad_X dn = F_n^T grad_Y dn, with the deformation gradient of the last accepted state
+    for ( int K = 0; K < nNonlocal; K++ )
+      for ( int i = 0; i < nDim; i++ )
+        for ( int j = 0; j < nDim; j++ )
+          state->nonlocalFieldGradient( i, K ) += state->dY_dX( j, i ) * dn_dY[K]( j );
+  }
+
+  template < int nDim, int nNonlocal >
+  Marmot::Math::Tensors::FastorTensors::Tensor33d GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::
+    deformationGradient() const
+  {
 #if defined( __GNUC__ ) && !defined( __clang__ )
 // GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
 // mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
@@ -59,137 +117,86 @@ namespace Marmot::Discretizations::MaterialPoints {
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #  pragma GCC diagnostic pop
 #endif
+    return dx_dX;
+  }
 
-    Material::ConstitutiveResponse< 3 > response3D{ Marmot::Math::Tensors::FastorTensors::Tensor33d( 0.0 ),
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    state->materialState.data() };
-    Material::AlgorithmicModuli< 3 >    algorithmicModuli3D;
-    Material::Deformation< 3 >          deformation3D{ dx_dX, state->nonLocalDamage };
-
-    if ( hasEigenDeformation )
-      material->computePlaneStrain( response3D,
-                                    algorithmicModuli3D,
-                                    deformation3D,
-                                    timeIncrement,
-                                    { state->F0_XX, state->F0_YY, state->F0_ZZ } );
-    else
-      material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
-
-    // clang-format off
-    this->response = { .S              = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >( response3D.tau ),
-                       .dL             = response3D.L - state->localDamage,
-                       .nonLocalRadius = response3D.nonLocalRadius };
-    // clang-format on
-
-    state->localDamage = response3D.L;
-    state->stress      = response3D.tau;
-
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::computeYourself( double timeNew, double dT )
+  {
     using namespace Marmot::Math::Tensors::FastorTensors;
     using namespace Marmot::Math::Tensors::FastorIndices;
+    using Marmot::Math::Tensors::reduceTo2D;
+    using Marmot::Math::Tensors::U;
 
-    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
+    const typename Material::TimeIncrement timeIncrement{ timeNew, dT };
+
+    // total deformation gradient: the increment since the last accepted state, composed onto it
+    const Tensor33d dx_dX = deformationGradient();
+
+    typename Material::template ConstitutiveResponse< 3 > response3D{ Tensor33d( 0.0 ),
+                                                                      NonlocalVector::Zero(),
+                                                                      NonlocalVector::Zero(),
+                                                                      0.0,
+                                                                      0.0,
+                                                                      state->materialState.data() };
+    typename Material::template AlgorithmicModuli< 3 >    algorithmicModuli3D;
+    typename Material::template Deformation< 3 >          deformation3D{ dx_dX, state->nonlocalField };
+
+    const std::tuple< double, double, double > eigenDeformation = { state->F0_XX, state->F0_YY, state->F0_ZZ };
+
+    if constexpr ( nDim == 2 ) {
+      if ( hasEigenDeformation )
+        material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement, eigenDeformation );
+      else
+        material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
+    }
+    else {
+      if ( hasEigenDeformation )
+        material->computeStress( response3D, algorithmicModuli3D, deformation3D, timeIncrement, eigenDeformation );
+      else
+        material->computeStress( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
+    }
+
+    // the in-plane part of a 3D tensor in plane strain, the tensor itself in 3D
+    auto inPlane = []( const auto& tensor3D ) {
+      if constexpr ( nDim == 2 ) {
+        if constexpr ( std::decay_t< decltype( tensor3D ) >::rank() == 2 )
+          return reduceTo2D< U, U >( tensor3D );
+        else
+          return reduceTo2D< U, U, U, U >( tensor3D );
+      }
+      else
+        return tensor3D;
+    };
+
+    this->response.S              = inPlane( response3D.tau );
+    this->response.dL             = response3D.L - state->localField;
+    this->response.nonLocalRadius = response3D.nonLocalRadius;
+
+    state->localField = response3D.L;
+    state->stress     = response3D.tau;
+
+    const auto& I = Spatial3D::I;
 
     // chain rule from d/dF to d/d(DeltaF), since the unknown of the increment is DeltaF = dx_dY
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >( I, state->dY_dX );
-    const TensorDDDD  dF_dDeltaF    = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
-                                                                     Marmot::Math::Tensors::U,
-                                                                     Marmot::Math::Tensors::U,
-                                                                     Marmot::Math::Tensors::U >( dF_dDeltaF_3D );
+    const TensorDDDD  dF_dDeltaF    = inPlane( dF_dDeltaF_3D );
 
-    this->tangents = {
-      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
-                                         Marmot::Math::Tensors::U,
-                                         Marmot::Math::Tensors::U,
-                                         Marmot::Math::Tensors::U >( algorithmicModuli3D.dTau_dF ),
-      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
-        algorithmicModuli3D.dTau_dN ),
-      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
-        algorithmicModuli3D.dL_dF ),
-      algorithmicModuli3D.dL_dN,
-    };
-
+    tangents.dS_dDeltaF = inPlane( algorithmicModuli3D.dTau_dF );
     tangents.dS_dDeltaF = einsum< ijmn, mnKL >( tangents.dS_dDeltaF, dF_dDeltaF );
-    tangents.dL_dDeltaF = einsum< mn, mnKL >( tangents.dL_dDeltaF, dF_dDeltaF );
+
+    for ( int K = 0; K < nNonlocal; K++ ) {
+      tangents.dS_dN[K]      = inPlane( algorithmicModuli3D.dTau_dN[K] );
+      tangents.dL_dDeltaF[K] = inPlane( algorithmicModuli3D.dL_dF[K] );
+      tangents.dL_dDeltaF[K] = einsum< mn, mnKL >( tangents.dL_dDeltaF[K], dF_dDeltaF );
+    }
+    tangents.dL_dN = algorithmicModuli3D.dL_dN;
 
     _density = material->getDensity( state->materialState.data() );
   }
 
-  // =========================================================================================
-  //  3D
-  // =========================================================================================
-
-  void GradientEnhancedFiniteStrainMaterialPoint3D::incrementDeformation( const TensorD&  du,
-                                                                          const TensorDD& du_dY,
-                                                                          double          dn )
-  {
-    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor( du );
-    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor( du_dY );
-    state->nonLocalDamage += dn;
-  };
-
-  void GradientEnhancedFiniteStrainMaterialPoint3D::computeYourself( double timeNew, double dT )
-  {
-    const Material::TimeIncrement timeIncrement{ timeNew, dT };
-
-#if defined( __GNUC__ ) && !defined( __clang__ )
-// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
-// mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#endif
-    const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
-#if defined( __GNUC__ ) && !defined( __clang__ )
-#  pragma GCC diagnostic pop
-#endif
-
-    Material::ConstitutiveResponse< 3 > response3D{ Marmot::Math::Tensors::FastorTensors::Tensor33d( 0.0 ),
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    state->materialState.data() };
-    Material::AlgorithmicModuli< 3 >    algorithmicModuli3D;
-    Material::Deformation< 3 >          deformation3D{ dx_dX, state->nonLocalDamage };
-
-    if ( hasEigenDeformation )
-      material->computeStress( response3D,
-                               algorithmicModuli3D,
-                               deformation3D,
-                               timeIncrement,
-                               { state->F0_XX, state->F0_YY, state->F0_ZZ } );
-    else
-      material->computeStress( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
-
-    // clang-format off
-    this->response = { .S              = ( response3D.tau ),
-                       .dL             = response3D.L - state->localDamage,
-                       .nonLocalRadius = response3D.nonLocalRadius };
-    // clang-format on
-
-    state->localDamage = response3D.L;
-    state->stress      = response3D.tau;
-
-    using namespace Marmot::Math::Tensors::FastorTensors;
-    using namespace Marmot::Math::Tensors::FastorIndices;
-
-    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
-
-    const Tensor3333d dF_dDeltaF = einsum< ij, JI, to_iIjJ >( I, state->dY_dX );
-
-    this->tangents = {
-      ( algorithmicModuli3D.dTau_dF ),
-      ( algorithmicModuli3D.dTau_dN ),
-      ( algorithmicModuli3D.dL_dF ),
-      algorithmicModuli3D.dL_dN,
-    };
-
-    tangents.dS_dDeltaF = einsum< ijmn, mnKL >( tangents.dS_dDeltaF, dF_dDeltaF );
-    tangents.dL_dDeltaF = einsum< mn, mnKL >( tangents.dL_dDeltaF, dF_dDeltaF );
-
-    _density = material->getDensity( state->materialState.data() );
-  }
+  template class GradientEnhancedFiniteStrainMaterialPoint< 2, 1 >;
+  template class GradientEnhancedFiniteStrainMaterialPoint< 3, 1 >;
+  template class GradientEnhancedFiniteStrainMaterialPoint< 3, 6 >;
 
 } // namespace Marmot::Discretizations::MaterialPoints

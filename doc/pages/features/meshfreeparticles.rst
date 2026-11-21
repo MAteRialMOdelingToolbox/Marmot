@@ -74,8 +74,23 @@ order:
        ``getInterpolationVector``
 
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
-``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` and ``computeLumpedMomentum``.
-The explicit methods default to doing nothing and the lumped methods throw, unless a particle overrides them.
+``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
+time derivatives), ``computeLumpedDamping`` (those of the first: the nonlocal viscosity of a gradient-enhanced field,
+which integrates a first-order field on its own and damps a second-order one) and ``computeLumpedMomentum``.
+The lumped damping defaults to no damping; ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, the explicit
+loads, the lumped inertia and the momentum throw unless a particle overrides them, so that a force, a load or a mass is
+never left out silently: a particle without the explicit path is refused by an explicit host, instead of being
+integrated with its mass and without its force. The registered particles with the explicit path are the NSNI
+particles of the displacement family (``Displacement*xNSNI/...``) and all particles of the gradient-enhanced family
+(``GradientEnhanced*FiniteStrain*/...``); the point, SQCNI, SNNI and SDI particles of the displacement family have
+none. EdelweissMeshfree loads the particles of an explicit analysis through ``computeBodyLoad`` and
+``computeDistributedLoad`` and discards their tangent; it does not call the explicit loads. A particle gives no
+critical time step: the stable increment of a particle discretization is a property of the assembled system (see
+:doc:`gradientenhancedfinitestrainparticle`). What the host needs from a particle to bound it is
+``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness
+at the current state and nonnegative weights :math:`\boldsymbol{W}`, computed without the stiffness (see below). It
+throws unless a particle overrides it. The order in which a host calls these methods, and what each may change, is in
+:ref:`explicit-life-cycle-of-a-particle`.
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in
@@ -93,6 +108,111 @@ additionally provide ``vertex displacements`` and ``smoothing vertex displacemen
 each, the displacements of the vertices of the deformed geometry and of the smoothing domain with respect to the
 undeformed geometry), and the subdomain-integration particles forward all other names to the material point of
 subdomain ``qp``.
+
+.. _explicit-life-cycle-of-a-particle:
+
+The explicit life cycle of a particle
+-------------------------------------
+
+An explicit host (in EdelweissMeshfree, the explicit dynamic solver ``NED`` of EdelweissFE with the particles'
+discrete system) advances the particles by one increment :math:`[t_n, t_{n+1}]` with the following calls, particle
+by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`, with the kernel functions of
+:math:`t_n`; calls 4 to 8 evaluate it there, on the kernel functions it reaches.
+
+#. ``updatePhysicsExplicit(dQ, timeNew, dT)``, with :math:`\Delta\boldsymbol{Q} = \boldsymbol{V}_{n+1/2}\,\Delta t`
+   of the nodes. The host has restored the working copy of the state to the accepted one before (the state contract
+   of :cpp:class:`Marmot::Discretizations::Meshfree::Particle`). It changes the state: the kinematics, the material
+   state, the response the material point keeps, and the rates (velocity, acceleration, the rate of a nonlocal field).
+   **A zero-length increment** (``dT == 0``, the zero increment at the start of a step) **leaves the rates alone**:
+   they cannot be formed from it, and the motion of the step starts from them.
+#. ``acceptStateAndPosition()``: the state becomes the accepted one, and the particle moves to the new configuration
+   :math:`\boldsymbol{Y}` (position, volume, geometry), which is the reference of the next increment: there, the
+   increment is the identity, :math:`\partial\boldsymbol{x}/\partial\boldsymbol{Y} = \boldsymbol{I}`.
+#. ``acceptStateAndPosition()`` again, before the host searches the new kernel functions, and once more when a run
+   is resumed. **An accept must be idempotent**: a second accept without an increment in between changes nothing.
+   A particle whose material point does not reset its increment when it accepts resets it itself, as
+   ``GradientEnhancedFiniteStrainParticle::acceptStateAndPosition`` does with ``prepareYourself``.
+#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed: the shape functions and
+   gradients of the new configuration.
+#. ``computePhysicsKernelsExplicit(fInt)`` and ``computeLumpedMomentum(p)``: the internal force of the state of call
+   1, in total form, and the momentum, both on the new kernel functions. They read the state and the response the
+   material point keeps, and change neither.
+#. ``computeLumpedInertia(m)``: the coefficients of the second time derivatives, a mass on the displacement field.
+#. ``computeLumpedDamping(c)``: the coefficients of the first time derivatives.
+#. ``computeBoundOfAbsoluteStiffnessTimes(W, nColumns, bound, 0, 1)``, when the host bounds the stable increment anew
+   (not every increment). It evaluates the material point at a zero increment, on the working copy of the state,
+   which the host resets afterwards; that evaluation **overwrites the response and the tangents the material point
+   keeps**, which are not state variables: **it comes after the force** (call 5), which reads them.
+
+**The tangent is required in an explicit analysis.** The particles call the material with its tangent
+(``computeStress``), never ``computeStressExplicit``: the bound of call 8 and the NSNI stabilization are formed from
+the tangent. A material whose tangent is inconsistent gives a bound of the stable increment that is too large, with no
+message.
+
+A particle without the explicit path refuses calls 1 and 5 (the defaults throw), so the host stops at the first
+increment instead of integrating a mass without a force.
+
+The tangent through the interpolated increment
+----------------------------------------------
+
+A particle with one material point sees the increments :math:`\Delta\boldsymbol{Q}_B` of its nodes only through the
+increment it interpolates at its evaluation point: its value, its gradient and, for an NSNI particle, its second
+gradient,
+
+.. math::
+
+   \Delta\boldsymbol{q} = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+   \frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,\Delta\boldsymbol{Q}_B,
+   \qquad
+   \frac{\partial^2 \Delta\boldsymbol{q}}{\partial Y_l \partial Y_m} = \sum_B \frac{\partial^2 N_B}{\partial Y_l
+   \partial Y_m}\,\Delta\boldsymbol{Q}_B .
+
+By the chain rule, the block of the tangent that couples the force :math:`\boldsymbol{f}_A` of node :math:`A` with node
+:math:`B` is
+
+.. math::
+
+   \boldsymbol{K}_{AB} = \frac{\partial \boldsymbol{f}_A}{\partial \Delta\boldsymbol{q}}\,N_B
+   + \sum_l \frac{\partial \boldsymbol{f}_A}{\partial (\partial \Delta\boldsymbol{q}/\partial Y_l)}\,
+   \frac{\partial N_B}{\partial Y_l}
+   + \sum_{l,m} \frac{\partial \boldsymbol{f}_A}{\partial (\partial^2 \Delta\boldsymbol{q}/\partial Y_l\partial Y_m)}\,
+   \frac{\partial^2 N_B}{\partial Y_l\partial Y_m} .
+
+The three derivatives belong to node :math:`A` alone (its test function and the state of the material point). The
+particles compute them once per node (:cpp:struct:`Marmot::Discretizations::Meshfree::TangentRowsOfNode`, in
+``addStiffnessRowsOfNode`` of :cpp:class:`Marmot::Discretizations::Meshfree::DisplacementParticle` and
+:cpp:class:`Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle`, which the NSNI particles extend by
+their stabilization), and every block of the node's rows follows from the shape functions of the other node
+(``addTangentRowsOfNode``). The tangent of ``computePhysicsKernels`` is assembled this way.
+
+**The bound of the absolute stiffness.** An explicit host bounds the stable time increment of the particles by the
+Collatz-Wielandt bound of the mass-scaled stiffness, which needs the row sums :math:`|\boldsymbol{K}|\,\boldsymbol{w}`
+only. The stiffness of a particle with :math:`n` nodes has :math:`n^2` blocks; its rows are linear in the shape
+functions of the other node, so the sum over that node is taken from a few weighted moments of the shape functions,
+computed once per particle, at a cost of :math:`O(n)`
+(:cpp:class:`Marmot::Discretizations::Meshfree::AbsoluteTangentBound`). For row :math:`i` of node :math:`A` and
+column component :math:`k`, with the weights :math:`w_B` of component :math:`k` of the nodes, the value factor
+:math:`a`, the gradient factors :math:`\boldsymbol{b}` and :math:`\boldsymbol{g}_B = \partial N_B/\partial\boldsymbol{Y}`:
+
+.. math::
+
+   \sum_B |K_{Ai,Bk}|\,w_B \le |a| \sum_B w_B |N_B|
+   + \sqrt{\sum_B w_B \|\boldsymbol{g}_B\| \;\; \boldsymbol{b}^T \Big( \sum_B \frac{w_B}{\|\boldsymbol{g}_B\|}
+   \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b}}
+   + \ldots ,
+
+and the same for the second gradients. The value term is exact; the gradient term is the Cauchy-Schwarz inequality
+over the nodes, which keeps the directions of the gradients: it is exact for parallel gradients and
+:math:`2/\sqrt{3}` of the exact sum for gradients spread evenly in 3D (:math:`\pi/(2\sqrt{2})` in 2D). The terms are
+added by the triangle inequality, so the bound never lies below :math:`|\boldsymbol{K}|\,\boldsymbol{w}`, for symmetric
+and unsymmetric tangents alike. ``computeBoundOfAbsoluteStiffnessTimes`` evaluates the material point at a zero
+increment on the working copy of the state (which the host resets, as after a trial ``computePhysicsKernels``) and
+applies the bound to the stiffness rows of every node, without the inertia
+(``addBoundOfAbsoluteTangentTimesWeights``). That evaluation overwrites the response and the tangents of the material
+point, so an explicit host asks for the bound after the internal force of the increment. For an NSNI particle, the
+part of the stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the
+stabilization itself is shared by the displacement and the gradient-enhanced particles
+(``Marmot::Discretizations::Meshfree::NSNI``).
 
 The particle domain
 -------------------
@@ -321,16 +441,18 @@ stores on the tensor maps into it (without the padding, a block starting at an o
 with GCC 14.2 at ``-O3``). The offsets are relative to the start of the particle block, so the host framework must pass
 a suitably aligned block for the absolute alignment to hold. ``getNumberOfRequiredStateVars`` includes the padding.
 
-``GenericSDIParticle`` does not override the explicit-dynamics methods, so the SDI particles inherit their empty
-defaults from ``Marmot::Discretizations::Meshfree::Particle``.
+``GenericSDIParticle`` does not override the explicit-dynamics methods, so the SDI particles refuse an explicit
+analysis with the defaults of ``Marmot::Discretizations::Meshfree::Particle``.
 
 The particle factory
 --------------------
 
 :cpp:class:`Marmot::Registry::ParticleFactory` maps names to factory functions. Particle modules register their
 types in ``*Registration.cpp`` files at static initialization (``registerParticle``); the host creates them with
-``createParticle``, which throws ``std::invalid_argument`` for an unknown name. Names are converted to upper case at
-registration and at creation, so they are case-insensitive. The factory function receives the particle number, the
+``createParticle``, which throws ``std::invalid_argument`` for an unknown name. ``isRegistered`` says whether a name
+is known, i.e. whether the module of the particle is part of the build: a host asks it first, to tell a particle that is
+not built from one that fails to be created. Names are converted to upper case at registration, at creation and in
+``isRegistered``, so they are case-insensitive. The factory function receives the particle number, the
 vertex coordinates (the center coordinates for point particles), their number, the volume (zero for cell-shaped
 particles, which compute it from the vertices), the material name and properties, and the meshfree approximation,
 which must outlive the particle.
@@ -351,4 +473,10 @@ Implementation
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Registry::ParticleFactory
+   :allow-dot-graphs:
+
+.. doxygenstruct:: Marmot::Discretizations::Meshfree::TangentRowsOfNode
+   :allow-dot-graphs:
+
+.. doxygenclass:: Marmot::Discretizations::Meshfree::AbsoluteTangentBound
    :allow-dot-graphs:
