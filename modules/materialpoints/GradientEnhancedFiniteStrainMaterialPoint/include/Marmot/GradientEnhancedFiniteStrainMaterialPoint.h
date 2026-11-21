@@ -426,7 +426,9 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Accept the current increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$,
      * @f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$.
      *
-     * The increment itself is not reset here; the next prepareYourself() does that.
+     * The increment itself is not reset here; the next prepareYourself() does that. A second accept before it would
+     * apply the increment twice: a particle, whose accept must be idempotent, calls prepareYourself() right after
+     * (GradientEnhancedFiniteStrainParticle::acceptStateAndPosition()).
      */
     void acceptStateAndPosition() override
     {
