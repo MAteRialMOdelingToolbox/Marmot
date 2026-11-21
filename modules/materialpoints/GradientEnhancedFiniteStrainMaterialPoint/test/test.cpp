@@ -160,6 +160,29 @@ namespace {
       throwExceptionOnFailure( std::abs( *s.mp->getStateView( "nonlocal damage" ).stateLocation - 3e-3 ) < 1e-15,
                                "the nonlocal field must accumulate" );
 
+      // the total gradient of the nonlocal field: grad_X dn = F_n^T grad_Y dn, with the non-symmetric F_n = I + H1
+      {
+        const auto                                      backup = s.stateVars;
+        std::array< Fastor::Tensor< double, nDim >, 1 > dn_dY;
+        for ( int j = 0; j < nDim; j++ )
+          dn_dY[0]( j ) = 0.7 - 0.4 * j;
+        s.mp->prepareYourself( 1.0, 1.0 );
+        s.point().incrementDeformation( Fastor::Tensor< double, nDim >( 0.0 ),
+                                        gradient< nDim >( 0.01 ),
+                                        Setup< nDim >::NonlocalVector::Constant( 1e-3 ),
+                                        dn_dY );
+        const double* dN_dX = s.mp->getStateView( "nonlocal damage gradient" ).stateLocation;
+        for ( int i = 0; i < nDim; i++ ) {
+          double expected = 0.0;
+          for ( int j = 0; j < nDim; j++ )
+            expected += ( ( i == j ) + H1( j, i ) ) * dn_dY[0]( j );
+          throwExceptionOnFailure( std::abs( dN_dX[i] - expected ) < 1e-14,
+                                   Marmot::Utilities::MakeString()
+                                     << nDim << "D: the gradient of the nonlocal field is not pulled back with F_n^T" );
+        }
+        s.stateVars = backup;
+      }
+
       checkTangents< nDim >( s, gradient< nDim >( 0.01 ), 1e-3 );
     }
   }
