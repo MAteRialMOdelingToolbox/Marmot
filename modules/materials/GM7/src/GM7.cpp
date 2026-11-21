@@ -50,15 +50,15 @@ namespace Marmot::Materials {
 
   void GM7::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
-    updateStress( res, &tan, inc );
+    computeStressWithOptionalTangents( res, &tan, inc );
   }
 
   void GM7::computeStressExplicit( response& res, const increment& inc ) const
   {
-    updateStress( res, nullptr, inc );
+    computeStressWithOptionalTangents( res, nullptr, inc );
   }
 
-  void GM7::updateStress( response& res, tangents* tan, const increment& inc ) const
+  void GM7::computeStressWithOptionalTangents( response& res, tangents* tan, const increment& inc ) const
   {
     const Marmot::Math::Vector6d&       dE_macroLocal = inc.dStrain;
     Map< const Marmot::Math::Vector6d > dE_macroNonLocal( inc.dK.data() );

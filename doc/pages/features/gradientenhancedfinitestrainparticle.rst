@@ -83,9 +83,11 @@ Explicit dynamics
 ^^^^^^^^^^^^^^^^^
 All three particle classes provide the explicit scheme (``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``
 and the lumped operators); the NSNI particle adds its stabilization to the force and to the momentum, as
-:doc:`displacementparticle` does. Its stabilization charges the stress gradient of the increment through the tangent
-:math:`\partial\tau/\partial\Delta\boldsymbol F`, so the explicit advance evaluates the material with its tangents,
-not with the stress alone. ``updatePhysicsExplicit`` advances the material point by the increment and stores the
+:doc:`displacementparticle` does. The explicit advance of every particle evaluates the material with its tangents,
+not with the stress alone: the NSNI stabilization charges the stress gradient of the increment through the tangent
+:math:`\partial\tau/\partial\Delta\boldsymbol F`, and the bound of the stable increment needs the tangents for every
+particle. The stress-only path of the materials (``computeStressExplicit``) serves the gradient-enhanced finite element.
+``updatePhysicsExplicit`` advances the material point by the increment and stores the
 rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t` and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
 After the host has accepted the state and assigned the kernel functions of the new position,
 ``computePhysicsKernelsExplicit`` returns the internal force, with the nonlocal balance in **total** form,
