@@ -152,7 +152,7 @@ All notable changes to Marmot are documented in this file. The format follows
   nonlocal variables): `updatePhysicsExplicit`, `computePhysicsKernelsExplicit` (nonlocal balance in total form),
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
   viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
-  damping), appended at the end of the class.
+  damping).
 - `Particle::computeBoundOfAbsoluteStiffnessTimes` (appended at the end of the class): an upper bound of |K| W, the
   absolute value of the particle's stiffness times nonnegative weights, for the stable time increment of an explicit
   host. `AbsoluteTangentBound` forms it in O(nodes) from the chain-rule factors of each node's rows
@@ -243,6 +243,9 @@ All notable changes to Marmot are documented in this file. The format follows
   `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
   Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
   one nonlocal variable are unchanged (bitwise).
+- **Breaking:** `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default
+  instead of doing nothing, so that a particle without them never leaves a load out silently (`DisplacementParticleSQCNI`
+  implements the distributed one).
 - **Results:** `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit` evaluate a point in one
   pass over the kernels (each evaluated once, its gradient only if needed), one assembly of the moment matrix (and its
   gradients) for both classes, and types of a fixed largest size (up to the cubic basis in 3D): no allocation per
