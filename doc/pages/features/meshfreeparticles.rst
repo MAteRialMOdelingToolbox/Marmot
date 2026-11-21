@@ -92,7 +92,8 @@ critical time step: the stable increment of a particle discretization is a prope
 :doc:`gradientenhancedfinitestrainparticle`). What the host needs from a particle to bound it is
 ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness
 at the current state and nonnegative weights :math:`\boldsymbol{W}`, computed without the stiffness (see below). It
-throws unless a particle overrides it.
+throws unless a particle overrides it. The order in which a host calls these methods, and what each may change, is in
+:ref:`explicit-life-cycle-of-a-particle`.
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in
@@ -110,6 +111,49 @@ additionally provide ``vertex displacements`` and ``smoothing vertex displacemen
 each, the displacements of the vertices of the deformed geometry and of the smoothing domain with respect to the
 undeformed geometry), and the subdomain-integration particles forward all other names to the material point of
 subdomain ``qp``.
+
+.. _explicit-life-cycle-of-a-particle:
+
+The explicit life cycle of a particle
+-------------------------------------
+
+An explicit host (in EdelweissMeshfree, the explicit dynamic solver ``NED`` of EdelweissFE with the particles'
+discrete system) advances the particles by one increment :math:`[t_n, t_{n+1}]` with the following calls, particle
+by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`, with the kernel functions of
+:math:`t_n`; calls 4 to 8 evaluate it there, on the kernel functions it reaches.
+
+#. ``updatePhysicsExplicit(dQ, timeNew, dT)``, with :math:`\Delta\boldsymbol{Q} = \boldsymbol{V}_{n+1/2}\,\Delta t`
+   of the nodes. The host has restored the working copy of the state to the accepted one before (the state contract
+   of :cpp:class:`Marmot::Discretizations::Meshfree::Particle`). It changes the state: the kinematics, the material
+   state, the response the material point keeps, and the rates (velocity, acceleration, the rate of a nonlocal field).
+   **A zero-length increment** (``dT == 0``, the zero increment at the start of a step) **leaves the rates alone**:
+   they cannot be formed from it, and the motion of the step starts from them.
+#. ``acceptStateAndPosition()``: the state becomes the accepted one, and the particle moves to the new configuration
+   :math:`\boldsymbol{Y}` (position, volume, geometry), which is the reference of the next increment: there, the
+   increment is the identity, :math:`\partial\boldsymbol{x}/\partial\boldsymbol{Y} = \boldsymbol{I}`.
+#. ``acceptStateAndPosition()`` again, before the host searches the new kernel functions, and once more when a run
+   is resumed. **An accept must be idempotent**: a second accept without an increment in between changes nothing.
+   A particle whose material point does not reset its increment when it accepts resets it itself, as
+   ``GradientEnhancedFiniteStrainParticle::acceptStateAndPosition`` does with ``prepareYourself``.
+#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed: the shape functions and
+   gradients of the new configuration.
+#. ``computePhysicsKernelsExplicit(fInt)`` and ``computeLumpedMomentum(p)``: the internal force of the state of call
+   1, in total form, and the momentum, both on the new kernel functions. They read the state and the response the
+   material point keeps, and change neither.
+#. ``computeLumpedInertia(m)``: the coefficients of the second time derivatives, a mass on the displacement field.
+#. ``computeLumpedDamping(c)``: the coefficients of the first time derivatives.
+#. ``computeBoundOfAbsoluteStiffnessTimes(W, nColumns, bound, 0, 1)``, when the host bounds the stable increment anew
+   (not every increment). It evaluates the material point at a zero increment, on the working copy of the state,
+   which the host resets afterwards; that evaluation **overwrites the response and the tangents the material point
+   keeps**, which are not state variables: **it comes after the force** (call 5), which reads them.
+
+**The tangent is required in an explicit analysis.** The particles call the material with its tangent
+(``computeStress``), never ``computeStressExplicit``: the bound of call 8 and the NSNI stabilization are formed from
+the tangent. A material whose tangent is inconsistent gives a bound of the stable increment that is too large, with no
+message.
+
+A particle without the explicit path refuses calls 1 and 5 (the defaults throw), so the host stops at the first
+increment instead of integrating a mass without a force.
 
 The tangent through the interpolated increment
 ----------------------------------------------
