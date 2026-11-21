@@ -125,8 +125,7 @@ State variables
 The state variables of the material point come first, followed by those of the material (``getStateView`` looks up a
 name in the material point first, then in the material). Vectors and tensors always have 3 and 9 entries. The names of
 the nonlocal states depend on the number of nonlocal variables: ``nonlocal damage`` and ``local damage`` for one,
-``nonlocal strain`` and ``local strain`` for six. Every entry starts at an even offset, so that the mapped tensors stay
-16-byte aligned.
+``nonlocal strain`` and ``local strain`` for six.
 
 .. list-table::
    :header-rows: 1

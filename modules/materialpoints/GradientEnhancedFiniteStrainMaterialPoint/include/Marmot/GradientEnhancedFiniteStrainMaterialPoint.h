@@ -166,10 +166,8 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
      * @brief State variable layout of the material point, followed by the state of the material.
      *
-     * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain. Every entry
-     * starts at an even offset (2 nNonlocal, 3 nNonlocal + nNonlocal and the fixed sizes are all even), so that a
-     * 16-byte aligned state vector keeps every mapped tensor 16-byte aligned: the compiler emits aligned SSE stores
-     * into these maps.
+     * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain. The entries
+     * are packed one after the other, without padding.
      */
     class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
