@@ -443,8 +443,10 @@ namespace Marmot::Discretizations::Meshfree {
      * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only). The bound costs
      * O(nodes) instead of the O(nodes^2) of the stiffness; see AbsoluteTangentBound. The material point is evaluated
      * at a zero increment on the working copy of the state, which the host resets afterwards, as after a trial
-     * computePhysicsKernels(). The default throws: a particle with an own inertia must provide it. Appended at the end
-     * of the class, so that the vtable slots of the methods above do not move.
+     * computePhysicsKernels(). That evaluation also overwrites the response and the tangents the material point keeps
+     * (not state variables, so the reset does not restore them): in explicit dynamics, call it after
+     * computePhysicsKernelsExplicit() of the increment, which reads them. The default throws: a particle with an own
+     * inertia must provide it.
      * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, nDof x nColumns, in the
      * dof order of the particle.
      * @param[in] nColumns The number of columns of @p columnWeights.
