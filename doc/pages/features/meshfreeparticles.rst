@@ -77,10 +77,11 @@ For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplici
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
 time derivatives), ``computeLumpedDamping`` (those of the first: the nonlocal viscosity of a gradient-enhanced field,
 which integrates a first-order field on its own and damps a second-order one) and ``computeLumpedMomentum``.
-The explicit methods default to doing nothing, the lumped damping to no damping, and the lumped inertia and the
-momentum throw, unless a particle overrides them. A particle gives no critical time step: the stable increment of a
-particle discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`). What
-the host needs from a particle to bound it is ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of
+``updatePhysicsExplicit`` and ``computePhysicsKernelsExplicit`` default to doing nothing and the lumped damping to no
+damping; the explicit loads, the lumped inertia and the momentum throw unless a particle overrides them, so that a load
+or a mass is never left out silently. A particle gives no critical time step: the stable increment of a particle
+discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`). What the host
+needs from a particle to bound it is ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of
 :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness at the current state and nonnegative weights
 :math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it. The two
 methods added last, ``computeLumpedDamping`` and ``computeBoundOfAbsoluteStiffnessTimes``, are the last methods of the
