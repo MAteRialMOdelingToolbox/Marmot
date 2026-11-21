@@ -256,21 +256,29 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Explicit dynamics: update the kinematics and the material state for the dof increment.
-     * @details The default implementation does nothing.
      * @param[in] dQ Increment of the nodal dofs, node-wise.
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would be integrated with its
+     * mass and without its force, silently.
      */
     virtual void updatePhysicsExplicit( [[maybe_unused]] const double* dQ,
                                         [[maybe_unused]] double        timeNew,
-                                        [[maybe_unused]] double        dT ){};
+                                        [[maybe_unused]] double        dT )
+    {
+      throw std::runtime_error( "Particle::updatePhysicsExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute the internal force vector for the state set by updatePhysicsExplicit().
-     * @details The default implementation does nothing.
      * @param[in,out] fInt Internal force vector (node-wise).
+     * @throws std::runtime_error in the default implementation: a particle without it would be integrated with its
+     * mass and without its force, silently.
      */
-    virtual void computePhysicsKernelsExplicit( [[maybe_unused]] double* fInt ){};
+    virtual void computePhysicsKernelsExplicit( [[maybe_unused]] double* fInt )
+    {
+      throw std::runtime_error( "Particle::computePhysicsKernelsExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute a body load (no tangent).
@@ -280,7 +288,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
-     * silently.
+     * silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through
+     * computeBodyLoad() and discards the tangent.
      */
     virtual void computeBodyLoadExplicit( [[maybe_unused]] int           type,
                                           [[maybe_unused]] const double* load,
@@ -300,7 +309,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
-     * silently.
+     * silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through
+     * computeDistributedLoad() and discards the tangent.
      */
     virtual void computeDistributedLoadExplicit( [[maybe_unused]] int           type,
                                                  [[maybe_unused]] int           boundaryFaceID,
@@ -319,7 +329,7 @@ namespace Marmot::Discretizations::Meshfree {
      */
     virtual void computeLumpedInertia( [[maybe_unused]] double* mLumped ) const
     {
-      throw std::runtime_error( "Not implemented yet!" );
+      throw std::runtime_error( "Particle::computeLumpedInertia: not implemented for this particle." );
     };
 
     /**
@@ -329,7 +339,7 @@ namespace Marmot::Discretizations::Meshfree {
      */
     virtual void computeLumpedMomentum( [[maybe_unused]] double* mLumped ) const
     {
-      throw std::runtime_error( "Not implemented yet!" );
+      throw std::runtime_error( "Particle::computeLumpedMomentum: not implemented for this particle." );
     };
 
     /**
