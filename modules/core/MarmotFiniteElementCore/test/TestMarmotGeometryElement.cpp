@@ -296,7 +296,7 @@ void checkGeometryOfLinearSimplex( const std::vector< double >& coordinates, dou
           face.push_back( nodes[j] );
       sumOfInverseSquaredAltitudes += std::pow( distanceFromFace< nDim >( nodes[i], face ), -2 );
     }
-    const double length = simplex.characteristicLengthForCriticalTimeStepAt( Simplex::referenceCentroid() );
+    const double length = simplex.smallestElementExtentAt( Simplex::referenceCentroid() );
     throwExceptionOnFailure( checkIfEqual( length, 1.0 / std::sqrt( sumOfInverseSquaredAltitudes ), 1e-12 ),
                              "The characteristic element length of a linear simplex must be 1 / sqrt( sum h^-2 )." );
     if ( shift == 0 )
@@ -330,7 +330,7 @@ void testGeometryOfQuadrilateralsAndHexahedra()
   const Eigen::Vector2d origin = Eigen::Vector2d::Zero();
   throwExceptionOnFailure( ( quad.center() - Eigen::Vector2d( 2, 0.25 ) ).norm() < 1e-14,
                            "The center of a quadrilateral must be the image of the origin." );
-  throwExceptionOnFailure( checkIfEqual( quad.characteristicLengthForCriticalTimeStepAt( origin ), 0.5, 1e-14 ),
+  throwExceptionOnFailure( checkIfEqual( quad.smallestElementExtentAt( origin ), 0.5, 1e-14 ),
                            "The characteristic element length of a rectangle must be its smaller side." );
   const double quadDetJ = quad.Jacobian( quad.dNdXi( origin ) ).determinant();
   throwExceptionOnFailure( checkIfEqual( GeometryElement< 2, 4 >::volumeEquivalentLength( quadDetJ ),
@@ -346,7 +346,7 @@ void testGeometryOfQuadrilateralsAndHexahedra()
   const Eigen::Vector3d origin3D = Eigen::Vector3d::Zero();
   throwExceptionOnFailure( ( hexa.center() - Eigen::Vector3d::Constant( 0.5 ) ).norm() < 1e-14,
                            "The center of the unit cube must be ( 0.5, 0.5, 0.5 )." );
-  throwExceptionOnFailure( checkIfEqual( hexa.characteristicLengthForCriticalTimeStepAt( origin3D ), 1.0, 1e-14 ),
+  throwExceptionOnFailure( checkIfEqual( hexa.smallestElementExtentAt( origin3D ), 1.0, 1e-14 ),
                            "The characteristic element length of the unit cube must be 1." );
   const double hexaDetJ = hexa.Jacobian( hexa.dNdXi( origin3D ) ).determinant();
   throwExceptionOnFailure( checkIfEqual( GeometryElement< 3, 8 >::volumeEquivalentLength( hexaDetJ ), 1.0, 1e-14 ),

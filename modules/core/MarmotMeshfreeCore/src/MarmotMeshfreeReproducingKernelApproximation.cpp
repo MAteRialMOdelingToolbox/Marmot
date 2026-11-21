@@ -28,60 +28,116 @@
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/src/Core/Matrix.h>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
+
   ReproducingKernelApproximation::ReproducingKernelApproximation( int dim, int completenessOrder )
     : _dim( dim ), _desiredCompletenessOrder( completenessOrder )
   {
+    if ( dim < 1 || dim > maxDim || completenessOrder < 0 ||
+         Math::computeSizeOfMonomialBasisVector( completenessOrder, dim ) > maxSizeOfBasis )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": dimension " << dim << " and completeness order "
+                                   << completenessOrder << " are not supported: the dimension is at most " << maxDim
+                                   << ", the order at least 0, and the monomial basis at most " << maxSizeOfBasis
+                                   << " entries (cubic in 3D)" );
+    for ( int order = 0; order <= completenessOrder; order++ )
+      _basisOfOrder.emplace_back( order, dim );
   }
 
-  Eigen::VectorXd ReproducingKernelApproximation::computeHVector(
-    const Eigen::VectorXd&                      x_minus_xI,
-    const std::vector< const KernelFunction* >& coveringShapeFunctions,
-    const int                                   completenessOrder )
+  int ReproducingKernelApproximation::evaluateKernelFunctions(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctions,
+    double*                                     phi,
+    double*                                     dPhi_dx ) const
   {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
-                                                                static_cast< int >( x_minus_xI.size() ) );
+    int nCovering = 0;
+    for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
+      phi[A]              = kernelFunctions[A]->computeKernelFunction( coord );
+      const bool covering = std::abs( phi[A] ) > 1e-14;
+      if ( !covering )
+        phi[A] = 0.0;
+      else
+        nCovering++;
 
-    Eigen::VectorXd res = Eigen::VectorXd::Ones( _sizeH );
-
-    Math::computeMonomialBasis( completenessOrder, x_minus_xI, res );
-
-    return res;
+      if ( dPhi_dx ) {
+        double* dPhi_A_dx = dPhi_dx + _dim * A;
+        if ( covering )
+          kernelFunctions[A]->computeKernelFunctionGradient( coord, dPhi_A_dx );
+        else
+          for ( int i = 0; i < _dim; i++ )
+            dPhi_A_dx[i] = 0.0;
+      }
+    }
+    return nCovering;
   }
 
-  Eigen::MatrixXd ReproducingKernelApproximation::computeHVectorGradient(
-    const Eigen::VectorXd&                      x_minus_xI,
-    const std::vector< const KernelFunction* >& coveringShapeFunctions,
-    const int                                   completenessOrder )
+  void ReproducingKernelApproximation::evaluateBasis( const double*         coord,
+                                                      const KernelFunction& kernelFunction,
+                                                      int                   completenessOrder,
+                                                      BasisVector&          H,
+                                                      BasisGradient*        dH_dx ) const
   {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
-                                                                static_cast< int >( x_minus_xI.size() ) );
+    const Math::MonomialBasis& basis = _basisOfOrder[completenessOrder];
+    Coordinates                x_minus_xA( _dim );
+    for ( int i = 0; i < _dim; i++ )
+      x_minus_xA( i ) = coord[i] - kernelFunction.getCenterCoordinates()[i];
 
-    Eigen::MatrixXd res = Eigen::MatrixXd::Ones( _sizeH, x_minus_xI.size() );
-
-    Math::computeMonomialBasisGradient( completenessOrder, x_minus_xI, res );
-
-    return res;
+    H.resize( basis.size() );
+    basis.evaluate( x_minus_xA, H );
+    if ( dH_dx ) {
+      dH_dx->resize( basis.size(), _dim );
+      basis.evaluateGradient( x_minus_xA, *dH_dx );
+    }
   }
 
-  Eigen::VectorXd ReproducingKernelApproximation::H0Vector( int sizeHVector )
+  void ReproducingKernelApproximation::assembleMomentMatrix(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctions,
+    const double*                               phi,
+    const double*                               dPhi_dx,
+    int                                         completenessOrder,
+    MomentMatrix&                               M,
+    MomentMatrixGradient*                       dM_dx ) const
   {
-    Eigen::VectorXd H0 = Eigen::VectorXd::Zero( sizeHVector );
-    H0( 0 )            = 1;
-    return H0;
+    const int sizeH = _basisOfOrder[completenessOrder].size();
+    M.setZero( sizeH, sizeH );
+    if ( dM_dx )
+      for ( int i = 0; i < _dim; i++ )
+        ( *dM_dx )[i].setZero( sizeH, sizeH );
+
+    BasisVector   H;
+    BasisGradient dH_dx;
+    for ( size_t B = 0; B < kernelFunctions.size(); B++ ) {
+      if ( phi[B] == 0.0 )
+        continue;
+      evaluateBasis( coord, *kernelFunctions[B], completenessOrder, H, dM_dx ? &dH_dx : nullptr );
+
+      // M += H H^T phi_B, and M_,i += ( H_,i H^T + H H_,i^T ) phi_B + H H^T phi_B,i, entry by entry: for the small
+      // matrices of a basis, plain loops are faster than products of matrices of a runtime size
+      const double phi_B = phi[B];
+      for ( int b = 0; b < sizeH; b++ )
+        for ( int a = 0; a < sizeH; a++ )
+          M( a, b ) += H( a ) * H( b ) * phi_B;
+      if ( dM_dx )
+        for ( int i = 0; i < _dim; i++ ) {
+          const double  dPhi_B_dxi = dPhi_dx[_dim * B + i];
+          MomentMatrix& dM_dxi     = ( *dM_dx )[i];
+          for ( int b = 0; b < sizeH; b++ )
+            for ( int a = 0; a < sizeH; a++ )
+              dM_dxi( a, b ) += ( dH_dx( a, i ) * H( b ) + H( a ) * dH_dx( b, i ) ) * phi_B +
+                                H( a ) * H( b ) * dPhi_B_dxi;
+        }
+    }
   }
 
-  Eigen::ColPivHouseholderQR< Eigen::MatrixXd > ReproducingKernelApproximation::factorizeMomentMatrix(
-    const Eigen::MatrixXd& M,
-    const double*          coord,
-    int                    nCoveringKernels ) const
+  Eigen::ColPivHouseholderQR< ReproducingKernelApproximation::MomentMatrix > ReproducingKernelApproximation::
+    factorizeMomentMatrix( const MomentMatrix& M, const double* coord, int nCoveringKernels ) const
   {
-    Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MQr( M );
+    Eigen::ColPivHouseholderQR< MomentMatrix > MQr( M );
     if ( MQr.rank() < M.rows() )
       throw std::
         runtime_error( Marmot::Utilities::MakeString()
@@ -95,248 +151,68 @@ namespace Marmot::Discretizations::Meshfree {
     return MQr;
   }
 
-  Eigen::MatrixXd ReproducingKernelApproximation::computeMMatrix(
-    const Eigen::VectorXd&                      globalCoord,
-    const std::vector< const KernelFunction* >& coveringShapeFunctions,
-    int                                         completenessOrder )
-  {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
-                                                                static_cast< int >( globalCoord.size() ) );
-
-    Eigen::MatrixXd M = Eigen::MatrixXd::Zero( _sizeH, _sizeH );
-
-    for ( const auto& coveringShapeFunction : coveringShapeFunctions ) {
-      const Eigen::Map< const Eigen::VectorXd > center( coveringShapeFunction->getCenterCoordinates(),
-                                                        globalCoord.size() );
-
-      const Eigen::VectorXd Hx = computeHVector( globalCoord - center, coveringShapeFunctions, completenessOrder );
-
-      M += Hx * Hx.transpose() * coveringShapeFunction->computeKernelFunction( globalCoord.data() );
-    }
-
-    return M;
-  }
-
-  std::pair< Eigen::MatrixXd, std::vector< Eigen::MatrixXd > > ReproducingKernelApproximation::
-    computeMMatrixAndGradient( const Eigen::VectorXd&                      globalCoord,
-                               const std::vector< const KernelFunction* >& coveringShapeFunctions,
-                               int                                         completenessOrder )
-  {
-
-    const int  _dim   = static_cast< int >( globalCoord.size() );
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
-
-    Eigen::MatrixXd                M = Eigen::MatrixXd::Zero( _sizeH, _sizeH );
-    std::vector< Eigen::MatrixXd > MGradients( _dim );
-    for ( auto& MGradient : MGradients )
-      MGradient = Eigen::MatrixXd::Zero( _sizeH, _sizeH );
-
-    for ( const auto& coveringShapeFunction : coveringShapeFunctions ) {
-      const Eigen::Map< const Eigen::VectorXd > center( coveringShapeFunction->getCenterCoordinates(),
-                                                        globalCoord.size() );
-
-      const Eigen::VectorXd Hx = computeHVector( globalCoord - center, coveringShapeFunctions, completenessOrder );
-      const Eigen::MatrixXd HxGradient = computeHVectorGradient( globalCoord - center,
-                                                                 coveringShapeFunctions,
-                                                                 completenessOrder );
-
-      const double    phi         = coveringShapeFunction->computeKernelFunction( globalCoord.data() );
-      Eigen::VectorXd phiGradient = Eigen::VectorXd::Zero( _dim );
-      coveringShapeFunction->computeKernelFunctionGradient( globalCoord.data(), phiGradient.data() );
-
-      const Eigen::MatrixXd HxHT = Hx * Hx.transpose();
-      M += HxHT * phi;
-
-      for ( int i = 0; i < _dim; i++ ) {
-        const Eigen::MatrixXd HGrad_i_xHT = HxGradient.col( i ) * Hx.transpose();
-        MGradients[i] += ( HGrad_i_xHT + HGrad_i_xHT.transpose() ) * phi + HxHT * phiGradient( i );
-      }
-    }
-
-    return { M, MGradients };
-  }
-
   void ReproducingKernelApproximation::computeShapeFunctions(
     const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
+    const std::vector< const KernelFunction* >& kernelFunctions,
     double*                                     shapeFunctionValues ) const
   {
-    const auto coveringKernelFunctionsIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
-
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
-      static_cast< int >( coveringKernelFunctionsIndices.size() ) );
-
-    std::vector< const KernelFunction* > coveringKernelFunctions;
-    for ( const auto& idx : coveringKernelFunctionsIndices )
-      coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
-
-    /* // MAp: */
-    const Eigen::Map< const Eigen::VectorXd > coordVec( coord, _dim );
-
-    const auto M = computeMMatrix( coordVec, coveringKernelFunctions, correctedCompletenessOrder );
-
-    // solve for b(x)
-    // b = M^-1 * H0
-    const auto H0 = H0Vector( static_cast< int >( M.rows() ) );
-
-    const Eigen::VectorXd
-      b = factorizeMomentMatrix( M, coord, static_cast< int >( coveringKernelFunctionsIndices.size() ) ).solve( H0 );
-
-    // compute the shape function values
-
-    for ( int A = 0; A < static_cast< int >( kernelFunctionCandidates.size() ); A++ )
-      shapeFunctionValues[A] = 0;
-
-    for ( const auto& A : coveringKernelFunctionsIndices ) {
-
-      const auto phi_A = kernelFunctionCandidates[A]->computeKernelFunction( coord );
-
-      const auto H = computeHVector( coordVec - Eigen::Map< const Eigen::VectorXd >( kernelFunctionCandidates[A]
-                                                                                       ->getCenterCoordinates(),
-                                                                                     _dim ),
-                                     coveringKernelFunctions,
-                                     correctedCompletenessOrder );
-
-      shapeFunctionValues[A] = b.dot( H ) * phi_A;
-    }
-  }
-
-  void ReproducingKernelApproximation::computeShapeFunctionGradients(
-    const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctions,
-    double*                                     shapeFunctionValueGradients ) const
-  {
-    throw std::runtime_error( "Not implemented" );
-  }
-
-  const std::vector< int > ReproducingKernelApproximation::findCoveringKernelFunctionIndices(
-    const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctions ) const
-
-  {
-    std::vector< int > coveringFunctionsIndices;
-
-    for ( int i = 0; i < static_cast< int >( kernelFunctions.size() ); i++ )
-      if ( std::abs( kernelFunctions[i]->computeKernelFunction( coord ) ) > 1e-14 )
-        coveringFunctionsIndices.push_back( i );
-
-    return coveringFunctionsIndices;
+    evaluateShapeFunctions( coord, kernelFunctions, shapeFunctionValues, nullptr );
   }
 
   void ReproducingKernelApproximation::computeShapeFunctionsAndGradients(
     const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
+    const std::vector< const KernelFunction* >& kernelFunctions,
     double*                                     shapeFunctionValues,
-    double*                                     shapeFunctionValueGradients_ ) const
+    double*                                     shapeFunctionValueGradients_ColMajor ) const
   {
-    const auto coveringKernelFunctionIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
+    evaluateShapeFunctions( coord, kernelFunctions, shapeFunctionValues, shapeFunctionValueGradients_ColMajor );
+  }
 
-    std::vector< const KernelFunction* > coveringKernelFunctions;
-    for ( const auto& idx : coveringKernelFunctionIndices )
-      coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
+  void ReproducingKernelApproximation::evaluateShapeFunctions(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctions,
+    double*                                     Psi,
+    double*                                     dPsi_dx ) const
+  {
+    // the kernel values and gradients are kept in the output arrays until the shape functions overwrite them
+    double*   phi       = Psi;
+    double*   dPhi_dx   = dPsi_dx;
+    const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, dPhi_dx );
 
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
-      static_cast< int >( coveringKernelFunctionIndices.size() ) );
+    const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
+    const int sizeH             = _basisOfOrder[completenessOrder].size();
 
-    const Eigen::Map< const Eigen::VectorXd > coordVec( coord, _dim );
-    const auto sizeH = Math::computeSizeOfMonomialBasisVector( correctedCompletenessOrder, _dim );
+    MomentMatrix         M;
+    MomentMatrixGradient dM_dx;
+    assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, completenessOrder, M, dPsi_dx ? &dM_dx : nullptr );
 
-    if ( sizeH < 1 ) {
-      throw std::runtime_error( "Size of H vector is less than 1" );
-    }
+    // b = M^-1 H0, with H0 = H(0) = [1, 0, ..., 0]^T
+    const auto        MQr = factorizeMomentMatrix( M, coord, nCovering );
+    const BasisVector b   = MQr.solve( BasisVector::Unit( sizeH, 0 ) );
 
-    Eigen::Map< Eigen::MatrixXd > shapeFunctionValueGradients( shapeFunctionValueGradients_,
-                                                               _dim,
-                                                               kernelFunctionCandidates.size() );
+    // b_,i = -M^-1 ( M_,i b ): the same for every kernel, one solve per dimension
+    BasisGradient db_dx( sizeH, _dim );
+    if ( dPsi_dx )
+      for ( int i = 0; i < _dim; i++ )
+        db_dx.col( i ) = -MQr.solve( dM_dx[i] * b );
 
-    // Per-covering-kernel quantities are computed once here and reused for both the moment-matrix
-    // assembly and the final shape-function/gradient evaluation, instead of being recomputed twice.
-    const size_t                   nCovering = coveringKernelFunctionIndices.size();
-    std::vector< Eigen::VectorXd > H_cache( nCovering );
-    std::vector< Eigen::MatrixXd > HGradient_cache( nCovering );
-    std::vector< double >          phi_cache( nCovering );
-    std::vector< Eigen::VectorXd > phiGradient_cache( nCovering );
+    // Psi_A = b^T H phi_A, and Psi_A,i = ( b_,i^T H + b^T H_,i ) phi_A + b^T H phi_A,i
+    BasisVector   H;
+    BasisGradient dH_dx;
+    for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
+      const double phi_A = phi[A];
+      if ( phi_A == 0.0 )
+        continue; // not covering: zero value and gradient, already written
+      evaluateBasis( coord, *kernelFunctions[A], completenessOrder, H, dPsi_dx ? &dH_dx : nullptr );
 
-    Eigen::MatrixXd                M = Eigen::MatrixXd::Zero( sizeH, sizeH );
-    std::vector< Eigen::MatrixXd > MGradients( _dim, Eigen::MatrixXd::Zero( sizeH, sizeH ) );
-
-    for ( size_t k = 0; k < nCovering; k++ ) {
-      const auto* kf = coveringKernelFunctions[k];
-
-      const Eigen::VectorXd x_minus_center = coordVec -
-                                             Eigen::Map< const Eigen::VectorXd >( kf->getCenterCoordinates(), _dim );
-
-      const double    phi         = kf->computeKernelFunction( coord );
-      Eigen::VectorXd phiGradient = Eigen::VectorXd::Zero( _dim );
-      kf->computeKernelFunctionGradient( coord, phiGradient.data() );
-
-      Eigen::VectorXd H         = computeHVector( x_minus_center, coveringKernelFunctions, correctedCompletenessOrder );
-      Eigen::MatrixXd HGradient = computeHVectorGradient( x_minus_center,
-                                                          coveringKernelFunctions,
-                                                          correctedCompletenessOrder );
-
-      const Eigen::MatrixXd HxHT = H * H.transpose();
-      M += HxHT * phi;
-      for ( int i = 0; i < _dim; i++ ) {
-        const Eigen::MatrixXd HGrad_i_xHT = HGradient.col( i ) * H.transpose();
-        MGradients[i] += ( HGrad_i_xHT + HGrad_i_xHT.transpose() ) * phi + HxHT * phiGradient( i );
-      }
-
-      phi_cache[k]         = phi;
-      phiGradient_cache[k] = std::move( phiGradient );
-      H_cache[k]           = std::move( H );
-      HGradient_cache[k]   = std::move( HGradient );
-    }
-
-    // solve for b(x)
-    // b = M^-1 * H0
-    const auto H0 = H0Vector( sizeH );
-
-    const auto MHr = factorizeMomentMatrix( M, coord, static_cast< int >( coveringKernelFunctionIndices.size() ) );
-
-    const Eigen::VectorXd b = MHr.solve( H0 );
-
-    // set all shape function values to zero
-    Eigen::Map< Eigen::VectorXd > shapeFunctionValues_( shapeFunctionValues, kernelFunctionCandidates.size() );
-    shapeFunctionValues_.setZero();
-
-    shapeFunctionValueGradients.setZero();
-
-    // The gradient of b(x) is independent of the individual kernel function A, so it is
-    // computed once here instead of redundantly inside the loop over covering kernels.
-    //
-    // dPsiA_dxi = H0_J * ( InvM_JK * H_K * phi_A ),xi
-    //
-    // dPsiA_dxi = H0_J * ( InvM_JK,xi * H_K    * phi_A +
-    //                      InvM_JK    * H_K,xi * phi_A +
-    //                      InvM_JK    * H_K    * phi_A,xi )
-    //
-    // dPsiA_dxi = H0_J * ( - [InvM_JA * M_AB,xi * InvM_BK]    * H_K    * phi_A +
-    //                      InvM_JK                            * H_K,xi * phi_A +
-    //                      InvM_JK                            * H_K    * phi_A,xi )
-    Eigen::MatrixXd bGradient = Eigen::MatrixXd::Zero( sizeH, _dim );
-    for ( int i = 0; i < _dim; i++ ) {
-      // b_{,i} = -M^-1 ( M_{,i} b ). Solve once with a vector right-hand side rather than solving
-      // for the full sizeH x sizeH matrix M^-1 M_{,i} and then multiplying by b.
-      bGradient.col( i ) = -MHr.solve( MGradients[i] * b );
-    }
-    // Transpose view (no copy); bGradient outlives the loop below.
-    const auto bGradientTransposed = bGradient.transpose();
-
-    for ( size_t k = 0; k < nCovering; k++ ) {
-      const int              A             = coveringKernelFunctionIndices[k];
-      const double           phi_A         = phi_cache[k];
-      const Eigen::VectorXd& phiGradient_A = phiGradient_cache[k];
-      const Eigen::VectorXd& H             = H_cache[k];
-      const Eigen::MatrixXd& HGradient     = HGradient_cache[k];
-
-      shapeFunctionValues[A] = b.dot( H ) * phi_A;
-
-      shapeFunctionValueGradients.col( A ) += bGradientTransposed * H * phi_A;
-      shapeFunctionValueGradients.col( A ) += b.dot( H ) * phiGradient_A;
-      // Column-vector form of ( b^T H_{,} ), keeping the result a dim x 1 column.
-      shapeFunctionValueGradients.col( A ) += ( HGradient.transpose() * b ) * phi_A;
+      const double bH = b.dot( H );
+      Psi[A]          = bH * phi_A;
+      if ( dPsi_dx )
+        for ( int i = 0; i < _dim; i++ ) {
+          const double dPhi_A_dxi = dPhi_dx[_dim * A + i];
+          dPsi_dx[_dim * A + i]   = ( db_dx.col( i ).dot( H ) + b.dot( dH_dx.col( i ) ) ) * phi_A + bH * dPhi_A_dxi;
+        }
     }
   }
 
-}; // namespace Marmot::Discretizations::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

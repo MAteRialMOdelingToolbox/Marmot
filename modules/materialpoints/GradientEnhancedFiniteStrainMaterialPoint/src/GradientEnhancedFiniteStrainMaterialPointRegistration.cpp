@@ -28,24 +28,41 @@
 namespace {
   using namespace Marmot::Discretizations::MaterialPoints;
 
-  const static bool GradientEnhancedFiniteStrainMaterialPoint2D_isRegistered = Marmot::Registry::MaterialPointFactory::
-    registerMaterialPoint( "GradientEnhancedFiniteStrain/PlaneStrain",
-                           []( int mpNumber, const double* vertexCoordinates, int nVertexCoordinates, double volume )
-                             -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
-                             return new GradientEnhancedFiniteStrainMaterialPoint2D( mpNumber,
-                                                                                     vertexCoordinates,
-                                                                                     nVertexCoordinates,
-                                                                                     volume );
-                           } );
+  /**
+   * @brief Register a gradient-enhanced finite-strain material point.
+   * @tparam nDim      Spatial dimension.
+   * @tparam nNonlocal Number of nonlocal variables.
+   * @param name The registered name.
+   * @return True if the registration succeeded.
+   */
+  template < int nDim, int nNonlocal >
+  bool registerGradientEnhancedFiniteStrainMaterialPoint( const std::string& name )
+  {
+    return Marmot::Registry::MaterialPointFactory::
+      registerMaterialPoint( name,
+                             []( int mpNumber, const double* vertexCoordinates, int nVertexCoordinates, double volume )
+                               -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
+                               return new GradientEnhancedFiniteStrainMaterialPoint< nDim,
+                                                                                     nNonlocal >( mpNumber,
+                                                                                                  vertexCoordinates,
+                                                                                                  nVertexCoordinates,
+                                                                                                  volume );
+                             } );
+  }
 
-  const static bool GradientEnhancedFiniteStrainMaterialPoint3D_isRegistered = Marmot::Registry::MaterialPointFactory::
-    registerMaterialPoint( "GradientEnhancedFiniteStrain/3D",
-                           []( int mpNumber, const double* vertexCoordinates, int nVertexCoordinates, double volume )
-                             -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
-                             return new GradientEnhancedFiniteStrainMaterialPoint3D( mpNumber,
-                                                                                     vertexCoordinates,
-                                                                                     nVertexCoordinates,
-                                                                                     volume );
-                           } );
+  const static bool
+    GradientEnhancedFiniteStrainMaterialPoint2D_isRegistered = registerGradientEnhancedFiniteStrainMaterialPoint< 2,
+                                                                                                                  1 >(
+      "GradientEnhancedFiniteStrain/PlaneStrain" );
+
+  const static bool
+    GradientEnhancedFiniteStrainMaterialPoint3D_isRegistered = registerGradientEnhancedFiniteStrainMaterialPoint< 3,
+                                                                                                                  1 >(
+      "GradientEnhancedFiniteStrain/3D" );
+
+  const static bool
+    GradientEnhanced6FiniteStrainMaterialPoint3D_isRegistered = registerGradientEnhancedFiniteStrainMaterialPoint< 3,
+                                                                                                                   6 >(
+      "GradientEnhanced6FiniteStrain/3D" );
 
 } // namespace
