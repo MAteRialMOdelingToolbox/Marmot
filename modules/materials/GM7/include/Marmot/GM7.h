@@ -151,7 +151,7 @@ namespace Marmot::Materials {
     /// @param[in,out] res Response, as for computeStress().
     /// @param[out] tan The tangents; nullptr for the stress alone.
     /// @param[in] inc Increment, as for computeStress().
-    void updateStress( response& res, tangents* tan, const increment& inc ) const;
+    void computeStressWithOptionalTangents( response& res, tangents* tan, const increment& inc ) const;
 
     /// @brief Evaluates the normal-direction response of a single microplane: compares the
     /// (local-strain) elastic prediction (MicroplaneM7Formulation::normal_elasticLaw) against the
