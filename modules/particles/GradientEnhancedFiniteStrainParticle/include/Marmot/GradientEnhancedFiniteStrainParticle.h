@@ -78,13 +78,12 @@ namespace Marmot::Discretizations::Meshfree {
    * @f]
    * i.e. the Helmholtz equation @f$ \bar{N} - c\,\nabla_X^2\bar{N} = L @f$ is solved in the undeformed configuration
    * for the INCREMENT of the nonlocal field, with the change @f$ \Delta L @f$ of the local driving force
-   * (GradientEnhancedFiniteStrainMaterialPoint::response) as its source: the nodal values of the reproducing kernels
-   * carry only the increment of the step, and the kernels are rebuilt on the moved nodes every increment, so the total
-   * form @f$ T_A(\bar{N} - L) + c\,\nabla_X T_A\cdot\nabla_X\bar{N} @f$ would need @f$ \nabla_X\bar{N} @f$ as an
-   * accumulated state of the particle (tested: it changed the nonlocal field by less than the step dependence of the
-   * kinematics, without bringing it closer to the result of a single increment). The acceleration @f$ \boldsymbol{a}
-   * @f$ follows from the Newmark-beta update of @f$ \Delta\boldsymbol{u} @f$ (@f$ \beta = 0 @f$ switches the inertia
-   * off).
+   * (GradientEnhancedFiniteStrainMaterialPoint::response) as its source: an implicit increment starts from the
+   * balanced state of the last one, so the increment form leaves out only a residual that is zero. The explicit scheme
+   * writes the balance in total form instead (computePhysicsKernelsExplicit()), because an explicit increment does not
+   * start from a balanced state; the material point accumulates @f$ \nabla_X\bar{N} @f$ for it. The acceleration
+   * @f$ \boldsymbol{a} @f$ follows from the Newmark-beta update of @f$ \Delta\boldsymbol{u} @f$ (@f$ \beta = 0 @f$
+   * switches the inertia off).
    *
    * **Tangent.** With @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ etc. from the material point,
    * @f[
@@ -107,7 +106,7 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * The point particle has no faces and supports no distributed loads; use GradientEnhancedFiniteStrainParticleSQCNI
    * for boundary loads. computeBodyLoad() applies a body force per unit undeformed volume, also for the derived
-   * particles.
+   * particles. The loads exist in the implicit form only; the explicit variants are those of Particle, which throw.
    *
    * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
    * @tparam nNonlocal Number of nonlocal variables (1: a scalar nonlocal damage driver, 6: a nonlocal strain).
