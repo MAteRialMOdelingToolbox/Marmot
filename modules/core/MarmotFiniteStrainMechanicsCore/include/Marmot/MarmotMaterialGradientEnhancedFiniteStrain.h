@@ -25,7 +25,9 @@
 #pragma once
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotUtils.h"
+#include <Eigen/Core>
 #include <Fastor/tensor/Tensor.h>
+#include <array>
 #include <string>
 #include <tuple>
 
@@ -34,33 +36,36 @@ namespace Marmot::Materials {
   /**
    * @class MaterialGradientEnhancedFiniteStrain
    * @brief Abstract base class for gradient-enhanced (implicit-gradient) materials in the finite strain regime.
+   * @tparam nNonlocal Number of nonlocal variables @f$ \bar{N}_K @f$, @f$ K = 1 \dots n_\mathrm{nonlocal} @f$: one for
+   * a scalar nonlocal damage driver, six for a nonlocal strain tensor (GM7).
    *
    * The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement
-   * field is coupled to a single scalar nonlocal field @f$ \bar{N} @f$ governed by the additional balance
+   * field is coupled to @p nNonlocal nonlocal fields @f$ \bar{N}_K @f$, each governed by the additional balance
    * equation
    * @f[
-   *   \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}),
-   *   \qquad c = R^2,
+   *   \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K(\boldsymbol{F},\,\bar{\boldsymbol{N}}),
+   *   \qquad c_K = R_K^2,
    * @f]
-   * where @f$ L @f$ is the local driving force reported in ConstitutiveResponse::L and @f$ R @f$ the
+   * where @f$ L_K @f$ is the local driving force reported in ConstitutiveResponse::L and @f$ R_K @f$ the
    * nonlocal radius reported in ConstitutiveResponse::nonLocalRadius.
+   *
+   * Quantities of the nonlocal space are Eigen vectors of size @p nNonlocal, as in the small-strain interface; a
+   * tangent mixing a spatial tensor with a nonlocal variable is one Fastor tensor per nonlocal variable, so that a
+   * consumer evaluates for each nonlocal variable exactly the expression it would evaluate for a single one.
    *
    * @note **The nonlocal balance is formulated in the material (reference) configuration.** Consumers take
    * the gradients with respect to @f$ \boldsymbol{X} @f$ and integrate over the reference volume, so
-   * @f$ c @f$ is a material constant and is neither pushed forward nor weighted by @f$ J @f$. The stress,
+   * @f$ c_K @f$ is a material constant and is neither pushed forward nor weighted by @f$ J @f$. The stress,
    * in contrast, is the Kirchhoff stress @f$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} @f$, which is what
-   * integrating against the reference volume requires.
+   * integrating against the reference volume requires. A nonlocal variable that stands for a tensor (the six
+   * components of a nonlocal strain) must therefore be referred to a frame that a superposed rigid rotation does not
+   * change, e.g. the frame of the polar rotation (see GradientEnhancedCorotationalWrapper).
    *
-   * @note The interface carries a **single** scalar nonlocal field, unlike the small-strain
-   * Marmot::Materials::MaterialGradientEnhancedHypoElastic, which is templated on the number of nonlocal
-   * variables. It also has **no slot for @f$ \partial c/\partial\bar{N} @f$**: a material with
-   * damage-dependent interactions (see MarmotDecreasingInteractions) can report the current @f$ c @f$, but
-   * not its derivative, so its consistent tangent would be incomplete.
-   *
-   * @note Member names, struct shapes and call signatures are fixed by the consumers of this interface
-   * (GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement), including the
-   * six-argument ConstitutiveResponse constructor.
+   * @note There is **no slot for @f$ \partial c_K/\partial\bar{N} @f$**: a material with damage-dependent
+   * interactions (see MarmotDecreasingInteractions) can report the current @f$ c_K @f$, but not its derivative, so
+   * its consistent tangent would be incomplete.
    */
+  template < int nNonlocal >
   class MaterialGradientEnhancedFiniteStrain {
 
   protected:
@@ -69,6 +74,12 @@ namespace Marmot::Materials {
 
   public:
     const int materialNumber; ///< Unique identifier for this material instance.
+
+    /// @brief Number of nonlocal variables, for consumers templated on the material.
+    static constexpr int nNonlocalVariables = nNonlocal;
+
+    using NonlocalVector = Eigen::Vector< double, nNonlocal >;            ///< a value per nonlocal variable
+    using NonlocalMatrix = Eigen::Matrix< double, nNonlocal, nNonlocal >; ///< a value per pair of nonlocal variables
 
     /**
      * @brief Construct a MaterialGradientEnhancedFiniteStrain.
@@ -103,18 +114,18 @@ namespace Marmot::Materials {
     template < int nDim >
     struct ConstitutiveResponse {
       Fastor::Tensor< double, nDim, nDim > tau; ///< Kirchhoff stress
-      double                               L;   ///< local driving force, the source of the nonlocal
-                                                ///< balance; a total, not an increment
-      double  nonLocalRadius;                   ///< nonlocal radius @f$ R @f$; @f$ c = R^2 @f$
-      double  elasticEnergyDensity;             ///< elastic energy per unit reference volume
-      double  dissipation;                      ///< dissipation per unit reference volume
-      double* stateVars;                        ///< pointer to the state variables
+      NonlocalVector                       L;   ///< local driving forces, the sources of the nonlocal balances;
+                                                ///< totals, not increments
+      NonlocalVector nonLocalRadius;            ///< nonlocal radii @f$ R_K @f$; @f$ c_K = R_K^2 @f$
+      double         elasticEnergyDensity;      ///< elastic energy per unit reference volume
+      double         dissipation;               ///< dissipation per unit reference volume
+      double*        stateVars;                 ///< pointer to the state variables
 
       /// @brief Default constructor; zeroes everything and leaves stateVars null.
       ConstitutiveResponse()
         : tau( Fastor::Tensor< double, nDim, nDim >( 0.0 ) ),
-          L( 0.0 ),
-          nonLocalRadius( 0.0 ),
+          L( NonlocalVector::Zero() ),
+          nonLocalRadius( NonlocalVector::Zero() ),
           elasticEnergyDensity( 0.0 ),
           dissipation( 0.0 ),
           stateVars( nullptr )
@@ -124,15 +135,15 @@ namespace Marmot::Materials {
       /**
        * @brief Constructor for initializing the constitutive response.
        * @param[in] tau_                  Kirchhoff stress.
-       * @param[in] L_                    Local driving force.
-       * @param[in] nonLocalRadius_       Nonlocal radius.
+       * @param[in] L_                    Local driving forces.
+       * @param[in] nonLocalRadius_       Nonlocal radii.
        * @param[in] elasticEnergyDensity_ Elastic energy density.
        * @param[in] dissipation_          Dissipation per unit reference volume.
        * @param[in] stateVars_            Pointer to the state variables.
        */
       ConstitutiveResponse( const Fastor::Tensor< double, nDim, nDim >& tau_,
-                            double                                      L_,
-                            double                                      nonLocalRadius_,
+                            const NonlocalVector&                       L_,
+                            const NonlocalVector&                       nonLocalRadius_,
                             double                                      elasticEnergyDensity_,
                             double                                      dissipation_,
                             double*                                     stateVars_ )
@@ -151,19 +162,26 @@ namespace Marmot::Materials {
      * @brief Algorithmic tangent moduli of a gradient-enhanced material.
      * @tparam nDim Number of spatial dimensions (2 or 3).
      *
-     * The four blocks of the linearized two-field problem. They are zero-initialized, so a material that
+     * The four blocks of the linearized coupled problem. They are zero-initialized, so a material that
      * legitimately has no coupling in one block may simply leave it alone.
      */
     template < int nDim >
     struct AlgorithmicModuli {
       /// @f$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} @f$
-      Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF = 0.0;
-      /// @f$ \partial\boldsymbol{\tau}/\partial\bar{N} @f$
-      Fastor::Tensor< double, nDim, nDim > dTau_dN = 0.0;
-      /// @f$ \partial L/\partial\boldsymbol{F} @f$
-      Fastor::Tensor< double, nDim, nDim > dL_dF = 0.0;
-      /// @f$ \partial L/\partial\bar{N} @f$
-      double dL_dN = 0.0;
+      Fastor::Tensor< double, nDim, nDim, nDim, nDim > dTau_dF;
+      /// @f$ \partial\boldsymbol{\tau}/\partial\bar{N}_K @f$, one tensor per nonlocal variable K
+      std::array< Fastor::Tensor< double, nDim, nDim >, nNonlocal > dTau_dN;
+      /// @f$ \partial L_K/\partial\boldsymbol{F} @f$, one tensor per nonlocal variable K
+      std::array< Fastor::Tensor< double, nDim, nDim >, nNonlocal > dL_dF;
+      /// @f$ \partial L_K/\partial\bar{N}_M @f$, row K, column M
+      NonlocalMatrix dL_dN;
+
+      /// @brief Zero-initialize all four blocks.
+      AlgorithmicModuli() : dTau_dF( 0.0 ), dL_dN( NonlocalMatrix::Zero() )
+      {
+        dTau_dN.fill( Fastor::Tensor< double, nDim, nDim >( 0.0 ) );
+        dL_dF.fill( Fastor::Tensor< double, nDim, nDim >( 0.0 ) );
+      }
     };
 
     /**
@@ -174,7 +192,7 @@ namespace Marmot::Materials {
     template < int nDim >
     struct Deformation {
       Fastor::Tensor< double, nDim, nDim > F; ///< deformation gradient
-      double                               N; ///< nonlocal field @f$ \bar{N} @f$; a total, not an increment
+      NonlocalVector                       N; ///< nonlocal fields @f$ \bar{N}_K @f$; totals, not increments
     };
 
     /**
@@ -189,9 +207,9 @@ namespace Marmot::Materials {
     /**
      * @brief Update the material state.
      * @param[in,out] response      ConstitutiveResponse instance; carries the state variables in and the
-     *                              Kirchhoff stress, local driving force and nonlocal radius out.
+     *                              Kirchhoff stress, local driving forces and nonlocal radii out.
      * @param[out]    tangents      AlgorithmicModuli instance.
-     * @param[in]     deformation   Deformation gradient and nonlocal field.
+     * @param[in]     deformation   Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement Current time and time increment.
      */
     virtual void computeStress( ConstitutiveResponse< 3 >& response,
@@ -202,11 +220,13 @@ namespace Marmot::Materials {
     /**
      * @brief Explicit version of computeStress, for explicit time integration.
      * @param[in,out] response      ConstitutiveResponse instance.
-     * @param[in]     deformation   Deformation gradient and nonlocal field.
+     * @param[in]     deformation   Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement Current time and time increment.
      *
      * @note The default implementation calls computeStress() and discards the algorithmic tangent.
-     * Derived classes may override it for efficiency.
+     * Derived classes may override it for efficiency. The gradient-enhanced particles never call it, not even in an
+     * explicit analysis: they need the tangent (for the NSNI stabilization and the bound of the stable increment), see
+     * the page "Meshfree Particles", section "The explicit life cycle of a particle".
      */
     virtual void computeStressExplicit( ConstitutiveResponse< 3 >& response,
                                         const Deformation< 3 >&    deformation,
@@ -220,7 +240,7 @@ namespace Marmot::Materials {
      * @brief Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state).
      * @param[in,out] response         ConstitutiveResponse instance.
      * @param[out]    tangents         AlgorithmicModuli instance; scaled to the eigen deformation.
-     * @param[in]     deformation      Deformation gradient and nonlocal field.
+     * @param[in]     deformation      Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement    Current time and time increment.
      * @param[in]     eigenDeformation Eigen deformation in each spatial direction.
      */
@@ -234,7 +254,7 @@ namespace Marmot::Materials {
      * @brief Compute the response under plane strain conditions.
      * @param[in,out] response          ConstitutiveResponse instance.
      * @param[out]    algorithmicModuli AlgorithmicModuli instance.
-     * @param[in]     deformation       Deformation gradient and nonlocal field.
+     * @param[in]     deformation       Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement     Current time and time increment.
      *
      * @note Plane strain is the 3D response of a deformation gradient whose out-of-plane entries are
@@ -250,7 +270,7 @@ namespace Marmot::Materials {
      * @brief Compute the response under plane strain conditions, accounting for an eigen deformation.
      * @param[in,out] response          ConstitutiveResponse instance.
      * @param[out]    algorithmicModuli AlgorithmicModuli instance.
-     * @param[in]     deformation       Deformation gradient and nonlocal field.
+     * @param[in]     deformation       Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement     Current time and time increment.
      * @param[in]     eigenDeformation  Eigen deformation in each spatial direction.
      */
@@ -263,7 +283,7 @@ namespace Marmot::Materials {
     /**
      * @brief Explicit version of computePlaneStrain, for explicit time integration.
      * @param[in,out] response      ConstitutiveResponse instance.
-     * @param[in]     deformation   Deformation gradient and nonlocal field.
+     * @param[in]     deformation   Deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement Current time and time increment.
      *
      * @note The default implementation calls computePlaneStrain() and discards the algorithmic tangent.
@@ -283,7 +303,7 @@ namespace Marmot::Materials {
      * @param[in,out] stateVars    State variable array used during the iteration; restored afterwards.
      * @return Eigen deformation corresponding to the given eigen stress.
      *
-     * Used for geostatic stress initialization. The nonlocal field is held at zero throughout, which is
+     * Used for geostatic stress initialization. The nonlocal fields are held at zero throughout, which is
      * what an undamaged initial state means.
      */
     std::tuple< double, double, double > findEigenDeformationForEigenStress(
@@ -340,33 +360,33 @@ namespace Marmot::Materials {
     virtual void setCharacteristicElementLength( double length ) {}
 
     /**
-     * @brief Nonlocal viscosity @f$ \eta @f$ of the nonlocal balance.
+     * @brief Nonlocal viscosities @f$ \eta_K @f$ of the nonlocal balances.
      * @param[in] stateVars Pointer to the state variable array.
-     * @return Nonlocal viscosity, the damping coefficient of the damped hyperbolic (or, with zero
-     * micro-inertia, parabolic) balance
+     * @return Nonlocal viscosity of each nonlocal variable, the damping coefficient of the damped hyperbolic (or,
+     * with zero micro-inertia, parabolic) balance
      * @f[
-     *   m_k\,\ddot{\bar{N}} + \eta\,\dot{\bar{N}} + \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}) .
+     *   m_K\,\ddot{\bar{N}}_K + \eta_K\,\dot{\bar{N}}_K + \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K .
      * @f]
      *
      * @note Zero by default, which is the quasi-static model. Unlike the small-strain
      * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this
-     * default lets existing derived classes keep compiling without answering it. Appended at the very end
-     * of the class, after every other virtual, together with getNonlocalMicroInertia() below, so that a
-     * stale-library ABI mismatch is confined to callers of these two methods.
+     * default lets a material that is only ever used implicitly leave it alone.
      */
-    virtual double getNonlocalViscosity( const double* stateVars ) const { return 0.0; }
+    virtual NonlocalVector getNonlocalViscosity( const double* stateVars ) const { return NonlocalVector::Zero(); }
 
     /**
-     * @brief Nonlocal micro-inertia @f$ m_k @f$ of the nonlocal balance.
+     * @brief Nonlocal micro-inertias @f$ m_K @f$ of the nonlocal balances.
      * @param[in] stateVars Pointer to the state variable array.
-     * @return Nonlocal micro-inertia, in units of [time]^2.
+     * @return Nonlocal micro-inertia of each nonlocal variable, in units of [time]^2.
      *
-     * @note The default is zero, the quasi-static model in which the nonlocal field is first order in
-     * time and integrated by its viscosity alone -- the behaviour of every material that predates this
-     * method. A derived class opts in to the damped hyperbolic balance by overriding this, mirroring
-     * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia.
+     * @note The default is zero, the quasi-static model in which a nonlocal field is first order in
+     * time and integrated by its viscosity alone. A derived class opts in to the damped hyperbolic balance by
+     * overriding this, mirroring Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia.
      */
-    virtual double getNonlocalMicroInertia( const double* stateVars ) const { return 0.0; }
+    virtual NonlocalVector getNonlocalMicroInertia( const double* stateVars ) const { return NonlocalVector::Zero(); }
   };
+
+  extern template class MaterialGradientEnhancedFiniteStrain< 1 >;
+  extern template class MaterialGradientEnhancedFiniteStrain< 6 >;
 
 } // namespace Marmot::Materials

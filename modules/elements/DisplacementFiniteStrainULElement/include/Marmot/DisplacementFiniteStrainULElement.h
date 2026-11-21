@@ -26,6 +26,7 @@
 
 #include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotCriticalTimeStep.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -395,9 +396,8 @@ namespace Marmot::Discretizations::Elements {
      * wherever that is safe -- every 2D serendipity element, and every linear element, where the
      * result does not depend on \f$w\f$ at all -- and \f$\tfrac{1}{3}\f$ for a hexa20. It
      * reproduces -- analytically, and to rounding in floating point -- the values a
-     * per-element-type special case would give, without needing one, and
-     * the critical time step reads its mass distribution from the same helper so the two cannot
-     * disagree.
+     * per-element-type special case would give, without needing one; the critical time step
+     * reads the lumped mass from this function, so the two cannot disagree.
      *
      * @note The element total is independent of \f$w\f$: the blend only moves mass between the
      * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
@@ -409,23 +409,22 @@ namespace Marmot::Discretizations::Elements {
      * @brief Compute the critical time step for explicit dynamics.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
-     * @details The estimate is \f$l / c\f$, scaled by the factor
-     * Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the
-     * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
-     * increment for an element whose mass is spread uniformly over its nodes, which lumping does
-     * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
-     * singular value of the Jacobian, i.e. the element's smallest physical extent, so a sliver is
-     * not mistaken for its volume-equivalent cube. The minimum over all quadrature points is
-     * returned.
-     *
-     * @warning This corrects the mass-distribution and element-distortion parts of the estimate
-     * only. It does NOT correct for polynomial order, and that residue is large: \f$l/c\f$ is a
-     * linear-element formula, while a quadratic element's highest free eigenfrequency lies well
-     * above what it predicts. A convergence study on a 20-node bar settles only around a courant
-     * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
-     * properly wants an eigenvalue-based estimate rather than another factor.
+     * @details The element's own eigenvalue bound \f$2 / \omega_{\max}\f$, from the strain operator of the reference
+     * configuration and the lumped mass computeLumpedInertia() assembles, for an isotropic material with the largest
+     * P-wave modulus \f$\rho c^2\f$ of the quadrature points, its wave speed evaluated at the deformation of
+     * @p QTotal; see Marmot::Discretizations::Elements::CriticalTimeStep. It holds for every element order and
+     * quadrature rule of the undeformed element; since the strain operator is that of the reference configuration,
+     * a strongly deformed element gets the bound of its undeformed shape with the current wave speed, an estimate.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
+
+    /**
+     * @brief The largest P-wave modulus \f$\rho c^2\f$ of the quadrature points, with the material's largest wave
+     * speed at the deformation of @p QTotal.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
+     * @return The P-wave modulus.
+     */
+    double largestPWaveModulus( const double* QTotal );
 
     /**
      * @brief Compute the internal energy of the element.
@@ -1028,6 +1027,21 @@ namespace Marmot::Discretizations::Elements {
     double&       criticalTimeStep,
     const double* qTotal )
   {
+    /* The element's own eigenvalue bound, from the strain operator of the reference configuration and the lumped mass
+     * it assembles; see Marmot::Discretizations::Elements::CriticalTimeStep. */
+    Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound(
+      sizeLoadVector );
+    for ( const auto& qp : qps )
+      stiffnessBound.addQuadraturePoint( this->B( qp.dNdX ), nDim, qp.J0xW );
+
+    RhsSized lumpedMass;
+    computeLumpedInertia( lumpedMass.data() );
+    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedMass, largestPWaveModulus( qTotal ) );
+  }
+
+  template < int nDim, int nNodes >
+  double DisplacementFiniteStrainULElement< nDim, nNodes >::largestPWaveModulus( const double* qTotal )
+  {
     using namespace Fastor;
 
     const auto& qU_np = TensorMap< const double, nNodes, nDim >( qTotal );
@@ -1035,47 +1049,8 @@ namespace Marmot::Discretizations::Elements {
     const static auto I = Tensor< double, nDim, nDim >(
       ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
 
-    /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
-     * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
-     * under the manifold-based blend a hexa20 corner node carries less than the uniform share, and
-     * the lightest node sets the highest frequency (omega = sqrt( k / m )), so the stable increment
-     * scales with sqrt( m_min / m_uniform ).
-     *
-     * Ignoring it puts the default courant number of 0.8 ABOVE the true limit for every 20-node
-     * element. That does not present as a marginally noisy run but as violent exponential
-     * divergence -- and only where the material provides no damping, so a 20-node run on a
-     * viscously regularised material can sit just above the limit and look perfectly healthy. That
-     * is worse than a clean failure, because it makes the fault look model-specific.
-     *
-     * The fractions come from the same helper computeLumpedInertia uses, so the two cannot drift
-     * apart. Exactly 1 for a linear element on a regular mesh, so nothing changes there, and
-     * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
-     * tighter limit than its volume alone suggests.
-     */
-    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
-    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
-    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
-    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
+    double pWaveModulus = 0.0;
     for ( const auto& qp : qps ) {
-      rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
-      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
-    }
-    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
-                                                                                               rowSumsLinear );
-    const double
-      lumpedMassTimeStepFactor = Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
-        Marmot::Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder,
-                                                                               rowSumsLinear,
-                                                                               weight ) );
-
-    criticalTimeStep = std::numeric_limits< double >::max();
-    for ( const auto& qp : qps ) {
-      /* The characteristic element length of GeometryElement in the reference configuration: the smallest physical
-       * extent of a quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
-       */
-      const double characteristicLengthForCriticalTimeStep = this->characteristicLengthForCriticalTimeStepAt( qp.xi );
-
       using namespace Marmot::Math::Tensors::FastorIndices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
       const Tensor< double, nDim, nDim > F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
@@ -1093,10 +1068,10 @@ namespace Marmot::Discretizations::Elements {
       if ( c <= 0.0 ) {
         throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
       }
-      const double dt = lumpedMassTimeStepFactor * characteristicLengthForCriticalTimeStep / c;
-      if ( dt < criticalTimeStep )
-        criticalTimeStep = dt;
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      pWaveModulus     = std::max( pWaveModulus, rho * c * c );
     }
+    return pWaveModulus;
   }
 
   template < int nDim, int nNodes >
@@ -1146,10 +1121,45 @@ namespace Marmot::Discretizations::Elements {
 
     using DisplacementFiniteStrainULElement< 2, nNodes >::DisplacementFiniteStrainULElement;
 
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
+
+    /**
+     * @brief Compute the critical time step for explicit dynamics: as the plane element, with the hoop row
+     * \f$N_i / r\f$ in the strain operator and the ring \f$2\pi r\f$ in the integration weight, as computeKernels()
+     * integrates the internal force.
+     * @note The lumped mass is the plane one the element inherits, without the ring weight that its internal force
+     * carries. The bound takes the same mass, so it is the bound of what the element assembles; a lumped mass with
+     * the ring weight would change both.
+     * @param[out] criticalTimeStep Computed critical time step.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
+     */
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
   };
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::computeCriticalTimeStepForExplicitDynamics(
+    double&       criticalTimeStep,
+    const double* qTotal )
+  {
+    using Parent = DisplacementFiniteStrainULElement< 2, nNodes >;
+
+    Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound(
+      Parent::sizeLoadVector );
+    for ( const auto& qp : Parent::qps ) {
+      const auto   N = this->N( qp.xi );
+      const double r = ( this->NB( N ) * this->coordinates )( 0 );
+      stiffnessBound.addQuadraturePoint( Spatial2D::Axisymmetric::BFromPlanarB< nNodes >( this->B( qp.dNdX ), N, r ),
+                                         3,
+                                         qp.J0xW * 2 * Marmot::Math::Constants::Pi * r );
+    }
+
+    typename Parent::RhsSized lumpedMass;
+    this->computeLumpedInertia( lumpedMass.data() );
+    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedMass, this->largestPWaveModulus( qTotal ) );
+  }
 
   template < int nNodes >
   void AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::computeKernels( const double* qTotal,

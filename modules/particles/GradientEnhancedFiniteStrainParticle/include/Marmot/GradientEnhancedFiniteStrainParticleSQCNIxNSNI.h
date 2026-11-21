@@ -87,13 +87,14 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
    * @tparam nVertices Number of vertices of the smoothing domain (4: Quad, 8: Hexa).
+   * @tparam nNonlocal Number of nonlocal variables (1: a scalar nonlocal damage driver, 6: a nonlocal strain).
    */
-  template < int nDim, int nVertices >
+  template < int nDim, int nVertices, int nNonlocal >
   class GradientEnhancedFiniteStrainParticleSQCNIxNSNI
-    : public GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices > {
+    : public GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal > {
 
-    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >;                 ///< point particle base
-    using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >; ///< SQCNI base
+    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >; ///< point particle base
+    using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >; ///< SQCNI base
     using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;   ///< geometry of the smoothing domain
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
@@ -106,6 +107,69 @@ namespace Marmot::Discretizations::Meshfree {
                                                       ///< intermediate reference configuration
     std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;    ///< smoothed second derivatives; `_d2N_dYdY[J](I, B)` is the
                                                       ///< face sum of @f$ \partial N_B/\partial Y_I\,n_J\,dA/V @f$
+
+    /// second gradient of the displacement increment of the last explicit increment, @f$ \partial^2\Delta u_i/
+    /// \partial Y_j\partial Y_k @f$; computePhysicsKernelsExplicit() charges its stress gradient to the stabilization
+    TensorDDD _d2x_dYdY = TensorDDD( 0.0 );
+
+    /// velocity gradient of the last explicit increment, @f$ \partial\boldsymbol{v}/\partial\boldsymbol{Y} =
+    /// \partial\Delta\boldsymbol{u}/\partial\boldsymbol{Y} / \Delta t @f$, for the stabilization of the momentum
+    TensorDD _dv_dY = TensorDD( 0.0 );
+
+    /**
+     * @brief The moment-weighted second gradient @f$ \boldsymbol{D} @f$ of the test function of node @p A
+     * (NSNI::momentWeightedSecondGradient()): the stabilization force of the node is @f$ D_{iK}\, \partial \tau_{ij}
+     * / \partial Y_K @f$.
+     * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$.
+     * @return @f$ \boldsymbol{D} @f$.
+     */
+    TensorDD momentWeightedSecondGradientOfTestFunction( int A, const TensorDD& dY_dx ) const
+    {
+      return NSNI::momentWeightedSecondGradient< nDim >( dY_dx,
+                                                         NSNI::secondGradientOfNode< nDim >( _d2N_dYdY, A ),
+                                                         _momentsOfInertia_IntermediateReference,
+                                                         Fastor::determinant( this->_mp.dY_dX() ) );
+    }
+
+    /**
+     * @brief The stiffness rows of node @p A: those of GradientEnhancedFiniteStrainParticle plus the stabilization of
+     * the displacement rows at the current state, which depends on the second gradient of the displacement increment,
+     * @f[
+     *   \frac{\partial f^U_{Aj}}{\partial (\partial^2 \Delta u_k / \partial Y_l \partial Y_m)} = D_{im}
+     *   \frac{\partial \tau_{ij}}{\partial \Delta F_{kl}}
+     * @f]
+     * (see momentWeightedSecondGradientOfTestFunction()). The stabilization's dependence on the spatial gradient of
+     * the shape functions through the stress gradient of the increment vanishes at a zero increment; it is added in
+     * computePhysicsKernels().
+     * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
+     * @param[in,out] rows The derivatives; the stiffness of the node is added.
+     */
+    void addStiffnessRowsOfNode( int                                         A,
+                                 const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                 typename ParentPointParticle::TangentRows&  rows ) const override;
+
+    /**
+     * @brief The smoothed second gradients of the trial shape functions, symmetrized, in the layout of
+     * addTangentRowsOfNode() (NSNI::secondGradientsOfNodes()).
+     * @return The nDim^2 x nNodes matrix.
+     */
+    Eigen::MatrixXd secondGradientsOfTrialFunctions() const override
+    {
+      return NSNI::secondGradientsOfNodes< nDim >( _d2N_dYdY, this->_nNodes );
+    }
+
+    /**
+     * @brief The second gradient of the displacement increment, @f$ \partial^2\Delta u_i/\partial Y_j\partial Y_k =
+     * \Delta q^U_{Bi}\,\partial^2 N_B/\partial Y_j\partial Y_k @f$, with the smoothed second gradients of the shape
+     * functions; the part of the interpolation that GradientEnhancedFiniteStrainParticle::interpolateIncrement() does
+     * not form.
+     * @param[in] dQ Increment of the nodal dofs, node by node.
+     * @return @f$ \partial^2\Delta\boldsymbol{u}/\partial\boldsymbol{Y}\partial\boldsymbol{Y} @f$.
+     */
+    TensorDDD interpolateSecondGradientOfIncrement( const double* dQ ) const;
 
   public:
     /**
@@ -150,13 +214,13 @@ namespace Marmot::Discretizations::Meshfree {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
       ParentPointParticle::_nNodes = static_cast< int >(
-        GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size() );
+        GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      this->getVertexCoordinates( vertexCoordinates.data() );
+      this->getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
 
       ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
       ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
@@ -213,21 +277,31 @@ namespace Marmot::Discretizations::Meshfree {
      */
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
 
-    /// \brief Extract the second derivative of the shape function for a given node
-    /// \param[in] d2N_dYdY The second derivative of the shape function
-    /// \param[in] node The node for which the second derivative is extracted
-    /// \return The second derivative of the shape function for the given node
-    /// \details The second derivative is averaged over the two indices to ensure symmetry.
-    inline TensorDD extract_d2N_dYdY_for_node( const std::array< Eigen::MatrixXd, nDim >& d2N_dYdY, int node ) const
-    {
-      TensorDD d2Nnode_dYdY( 0.0 );
-      for ( int J = 0; J < nDim; J++ ) {
-        for ( int I = 0; I < nDim; I++ ) {
-          d2Nnode_dYdY( I, J ) += 0.5 * ( d2N_dYdY[J]( I, node ) + d2N_dYdY[I]( J, node ) );
-        }
-      }
-      return d2Nnode_dYdY;
-    }
+    /**
+     * @brief Explicit scheme: as GradientEnhancedFiniteStrainParticle::updatePhysicsExplicit, and keep the second
+     * gradient and the velocity gradient of the increment for the stabilization (as
+     * DisplacementParticleSQCNIxNSNI does).
+     * @param[in] dQ      Increment of the nodal dofs, node by node.
+     * @param[in] timeNew Time at the end of the increment.
+     * @param[in] dT      Time increment.
+     */
+    void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ) override;
+
+    /**
+     * @brief Explicit scheme: the internal force of GradientEnhancedFiniteStrainParticle::computePhysicsKernelsExplicit
+     * plus the NSNI stabilization of the displacement rows, @f$ \partial^2 T_A/\partial x_i\partial Y_J\,
+     * M^Y_{JK}/J_Y\;\partial\tau_{ij}/\partial Y_K @f$, with the stress gradient of the last increment.
+     * @param[in,out] fInt Internal force vector, node by node; the contribution is added.
+     */
+    void computePhysicsKernelsExplicit( double* fInt ) override;
+
+    /**
+     * @brief Lumped momentum of GradientEnhancedFiniteStrainParticle::computeLumpedMomentum plus the NSNI
+     * stabilization of the displacement rows, @f$ \rho_0\,\partial\boldsymbol{v}/\partial\boldsymbol{Y}\,
+     * \boldsymbol{M}^Y\,\partial T_A/\partial\boldsymbol{Y} / J_Y @f$.
+     * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
+     */
+    void computeLumpedMomentum( double* mLumped ) const override;
 
     /**
      * @brief Accept the increment (see GradientEnhancedFiniteStrainParticle::acceptStateAndPosition) and push the
@@ -247,26 +321,27 @@ namespace Marmot::Discretizations::Meshfree {
     };
   };
 
-  template < int nDim, int nVertices >
-  GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
-    int                                                     elementID,
-    const double*                                           vertexCoordinates,
-    int                                                     nVertexCoordinates,
-    double                                                  volume,
-    const std::string&                                      materialName,
-    const double*                                           materialProperties,
-    int                                                     sizeMaterialProperties,
-    const Marmot::Discretizations::Meshfree::Approximation& approximation,
-    ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType )
-    : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >( elementID,
-                                                                    vertexCoordinates,
-                                                                    nVertexCoordinates,
-                                                                    volume,
-                                                                    materialName,
-                                                                    materialProperties,
-                                                                    sizeMaterialProperties,
-                                                                    approximation,
-                                                                    smoothingVolumeUpdateType )
+  template < int nDim, int nVertices, int nNonlocal >
+  GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::
+    GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
+      int                                                     elementID,
+      const double*                                           vertexCoordinates,
+      int                                                     nVertexCoordinates,
+      double                                                  volume,
+      const std::string&                                      materialName,
+      const double*                                           materialProperties,
+      int                                                     sizeMaterialProperties,
+      const Marmot::Discretizations::Meshfree::Approximation& approximation,
+      ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType )
+    : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >( elementID,
+                                                                               vertexCoordinates,
+                                                                               nVertexCoordinates,
+                                                                               volume,
+                                                                               materialName,
+                                                                               materialProperties,
+                                                                               sizeMaterialProperties,
+                                                                               approximation,
+                                                                               smoothingVolumeUpdateType )
   {
     // second moments of the undeformed particle domain about its centroid
     // (for an affinely mapped cell this is identical to the former
@@ -282,21 +357,19 @@ namespace Marmot::Discretizations::Meshfree {
     _momentsOfInertia_IntermediateReference = _momentsOfInertia_Undeformed;
   }
 
-  template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernels( const double* dQ,
-                                                                                                 double*       fInt,
-                                                                                                 double* dFInt_ddQ,
-                                                                                                 double  timeNew,
-                                                                                                 double  dT )
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::computePhysicsKernels(
+    const double* dQ,
+    double*       fInt,
+    double*       dFInt_ddQ,
+    double        timeNew,
+    double        dT )
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
-    using to_jk = Fastor::OIndex< j_, k_ >;
-    using ijmM  = Index< i_, j_, m_, M_ >;
-    using mMK   = Index< m_, M_, K_ >;
-    using ijK   = Fastor::Index< i_, j_, K_ >;
-    using ijkM  = Fastor::Index< i_, j_, k_, M_ >;
-    using jK    = Fastor::Index< j_, K_ >;
+    using ijmM = Index< i_, j_, m_, M_ >;
+    using mMK  = Index< m_, M_, K_ >;
+    using ijK  = Fastor::Index< i_, j_, K_ >;
 
     const auto& _nNodes = this->_nNodes;
     const auto& _N      = this->_N;
@@ -308,38 +381,19 @@ namespace Marmot::Discretizations::Meshfree {
     const static TensorDD I(
       ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
 
-    constexpr int nodeBlockSize = nDim + 1;
+    constexpr int nodeBlockSize = nDim + nNonlocal;
 
-    TensorD  du( 0.0 );
-    TensorDD du_dY( 0.0 );
+    using NonlocalVector = typename ParentPointParticle::NonlocalVector;
 
-    double    dn = 0.0;
-    TensorD   dn_dY( 0.0 );
-    TensorDDD d2x_dYdY( 0.0 );
-
-    for ( int B = 0; B < _nNodes; B++ ) {
-
-      const int idxB_u = nodeBlockSize * B;
-      const int idxB_n = nodeBlockSize * B + nDim;
-
-      const double N_B        = _N( B );
-      const auto   dN_B_dY    = TensorD( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
-      const auto   d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
-
-      const auto dQU_B = TensorD( dQ + idxB_u );
-      const auto dQN_B = dQ[idxB_n];
-
-      du += N_B * dQU_B;
-      dn += N_B * dQN_B;
-
-      du_dY += einsum< i, j >( dQU_B, dN_B_dY );
-      dn_dY += ( dQN_B * dN_B_dY );
-
-      d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY );
-    }
+    TensorD                          du;
+    TensorDD                         du_dY;
+    NonlocalVector                   dn;
+    std::array< TensorD, nNonlocal > dn_dY;
+    this->interpolateIncrement( dQ, du, du_dY, dn, dn_dY );
+    const TensorDDD d2x_dYdY = interpolateSecondGradientOfIncrement( dQ );
 
     _mp.prepareYourself( timeNew, dT );
-    _mp.incrementDeformation( du, du_dY, dn );
+    _mp.incrementDeformation( du, du_dY, dn, dn_dY );
     _mp.computeYourself( timeNew, dT );
 
     const double density0 = _mp.getDensityUndeformed();
@@ -361,14 +415,13 @@ namespace Marmot::Discretizations::Meshfree {
     TensorD r_U( 0.0 );
     double  r_N( 0.0 );
 
-    TensorDD k_UU( 0.0 );
-    TensorD  k_UN( 0.0 );
-    TensorD  k_NU( 0.0 );
-    double   k_NN( 0.0 );
+    const auto& S           = _mp.response.S;
+    const auto& dLocalField = _mp.response.dL;
+    const auto& R           = _mp.response.nonLocalRadius;
 
-    const auto&  S           = _mp.response.S;
-    const auto&  dLocalField = _mp.response.dL;
-    const double c           = _mp.response.nonLocalRadius * _mp.response.nonLocalRadius;
+    NonlocalVector c;
+    for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+      c( kNl ) = R( kNl ) * R( kNl );
 
     const double V0 = this->getVolumeUndeformed();
 
@@ -377,8 +430,7 @@ namespace Marmot::Discretizations::Meshfree {
     Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
-    const auto   dY_dx            = evaluate( inv( _mp.dx_dY() ) );
-    const double detJIntermediate = determinant( _mp.dY_dX() );
+    const auto dY_dx = evaluate( inv( _mp.dx_dY() ) );
 
     // Gradient of the Kirchhoff stress along Y, which is what the NSNI stabilization charges.
     // Only the deformation-gradient term survives here: the micropolar reference also carried
@@ -389,88 +441,154 @@ namespace Marmot::Discretizations::Meshfree {
     // rows are exact; see the module test for the measured size of the omitted terms.
     const auto dS_dY = evaluate( einsum< ijmM, mMK >( t.dS_dDeltaF, d2x_dYdY ) );
 
-    // clang-format off
+    const Eigen::MatrixXd d2N_dYdY = secondGradientsOfTrialFunctions();
+
+    typename ParentPointParticle::TangentRows rows;
     for ( int A = 0; A < _nNodes; A++ ) {
 
-      const double T_A = _T( A );
-      const auto  dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
-      const TensorD dT_A_dx = einsum< ji, j >( dY_dx , dT_A_dY );
+      const double  T_A     = _T( A );
+      const auto    dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
+      const TensorD dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
       const TensorD dT_A_dX = einsum< ji, j >( _mp.dY_dX(), dT_A_dY );
-
-      const TensorD dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY );
 
       const int idxA_u = nodeBlockSize * A;
       const int idxA_n = nodeBlockSize * A + nDim;
 
       r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
-      r_N = evaluate( ( T_A * dn + c * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField ) * V0 ) .toscalar();
 
       // add inertia
       r_U += density0 * a * T_A * V0;
 
-      const auto d2NA_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, A );
-
-      const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
-      const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
+      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A, dY_dx );
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 
       r_U += rU_Stab;
 
-      {
-        using namespace Eigen;
-        P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
-        P( idxA_n ) += r_N;
+      P.template segment< nDim >( idxA_u ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
+
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+        const TensorD dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY[kNl] );
+
+        r_N = evaluate( ( T_A * dn( kNl ) + c( kNl ) * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField( kNl ) ) *
+                        V0 )
+                .toscalar();
+
+        P( idxA_n + kNl ) += r_N;
       }
 
-      for ( int B = 0; B < _nNodes; B++ ) {
+      rows.setZero();
+      addStiffnessRowsOfNode( A, dY_dx, rows );
+      rows.df_dIncrement
+        .template topLeftCorner< nDim,
+                                 nDim >() += density0 * T_A * V0 *
+                                             Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                               da_ddu.data() );
 
-        const int idxB_u = nodeBlockSize * B;
-        const int idxB_n = nodeBlockSize * B + nDim;
+      // the stabilization through the stress gradient of the increment: D_kK dTau_ij/dY_K dN_B/dx_i
+      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, rows );
 
-        const double                 N_B     = _N( B );
-        const auto dN_B_dY = TensorMap< const double, nDim >( _dN_dY.col(B).data() );
-        const auto dN_B_dx = evaluate( einsum< ji, j >( dY_dx, dN_B_dY ) ); //
-        const auto dN_B_dX = evaluate( einsum< ji, j >( _mp.dY_dX(), dN_B_dY ) ); // no dependence on current deformations!
-        const auto d2NB_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
-
-        // aux stiffness tensors
-        const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY )                                            );
-        const auto dS_dqN_B = evaluate (                      ( t.dS_dN*       N_B    )                                            );
-        const auto dL_dqU_B = evaluate ( + einsum <   kl, l > ( t.dL_dDeltaF, dN_B_dY )                                             );
-
-        k_UU  = ( + einsum< i, ijk        > ( dT_A_dx, dS_dqU_B )                                                       ) * V0;
-        k_UN  = ( + einsum< i,  ij        > ( dT_A_dx, dS_dqN_B )                                                       ) * V0;
-
-        k_NU  = (                                                 - ( T_A * dL_dqU_B )                                  ) * V0;
-        k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) *  c - T_A * N_B * t.dL_dN                                    ) * V0;
-
-        k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
-
-        k_UU += density0 * da_ddu * T_A * N_B * V0;
-
-        // clang-format on
-        const TensorDDDD d2S_dqu_dY = einsum< ijkM, MK >( t.dS_dDeltaF, d2NB_dYdY );
-
-        const TensorDD dNB_dx_times_dS_dY = einsum< ijK, i >( dS_dY, dN_B_dx );
-
-        const TensorDD dRU_Stab_dU_1   = einsum< iK, ijkK, to_jk >( d2NA_dxdY_x_MOIScaled, d2S_dqu_dY );
-        const TensorDD dRU_Stab_x_dU_2 = -einsum< kK, jK, to_jk >( d2NA_dxdY_x_MOIScaled, dNB_dx_times_dS_dY );
-
-        k_UU += dRU_Stab_dU_1 + dRU_Stab_x_dU_2;
-
-        // clang-format off
-        {
-            using namespace Eigen;
-            // TODO: check if we can use transpose instead of torowmajor:
-            K.template block< nDim, nDim >( idxA_u, idxB_u ) += Map< Matrix< double, nDim, nDim > >( torowmajor( k_UU ).data() );
-            K.template block< nDim,    1 >( idxA_u, idxB_n ) += Map< Matrix< double, nDim,    1 > >( torowmajor( k_UN ).data() );
-            K.template block<    1, nDim >( idxA_n, idxB_u ) += Map< Matrix< double,    1, nDim > >( torowmajor( k_NU ).data() );
-            K                             ( idxA_n, idxB_n ) +=                                                  k_NN           ;
-        }
-      }
+      addTangentRowsOfNode( rows, A, _N, _dN_dY, d2N_dYdY, K );
     }
-    // clang-format on
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::addStiffnessRowsOfNode(
+    int                                         A,
+    const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+    typename ParentPointParticle::TangentRows&  rows ) const
+  {
+    ParentPointParticle::addStiffnessRowsOfNode( A, dY_dx, rows );
+    NSNI::addSecondGradientRows< nDim >( momentWeightedSecondGradientOfTestFunction( A, dY_dx ),
+                                         this->_mp.tangents.dS_dDeltaF,
+                                         rows );
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  typename GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::TensorDDD GradientEnhancedFiniteStrainParticleSQCNIxNSNI<
+    nDim,
+    nVertices,
+    nNonlocal >::interpolateSecondGradientOfIncrement( const double* dQ ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    TensorDDD d2x_dYdY( 0.0 );
+    for ( int B = 0; B < this->_nNodes; B++ )
+      d2x_dYdY += einsum< i, jk >( TensorD( dQ + nodeBlockSize * B ),
+                                   NSNI::secondGradientOfNode< nDim >( _d2N_dYdY, B ) );
+    return d2x_dYdY;
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::updatePhysicsExplicit(
+    const double* dQ,
+    double        timeNew,
+    double        dT )
+  {
+    _d2x_dYdY = interpolateSecondGradientOfIncrement( dQ );
+
+    ParentPointParticle::updatePhysicsExplicit( dQ, timeNew, dT );
+
+    if ( dT <= 0.0 )
+      return;
+
+    TensorDD I;
+    I.eye();
+    _dv_dY = ( this->_mp.dx_dY() - I ) / dT;
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::computePhysicsKernelsExplicit(
+    double* fInt )
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+    using ijmM = Index< i_, j_, m_, M_ >;
+    using mMK  = Index< m_, M_, K_ >;
+    using ijK  = Fastor::Index< i_, j_, K_ >;
+
+    ParentPointParticle::computePhysicsKernelsExplicit( fInt );
+
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const auto     dS_dY = evaluate( einsum< ijmM, mMK >( this->_mp.tangents.dS_dDeltaF, _d2x_dYdY ) );
+    const TensorDD dY_dx = inv( this->_mp.dx_dY() );
+
+    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize );
+
+    for ( int A = 0; A < this->_nNodes; A++ ) {
+      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A, dY_dx );
+      const TensorD  rU_Stab               = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
+
+      P.template segment< nDim >( nodeBlockSize *
+                                  A ) += Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( rU_Stab.data() );
+    }
+  }
+
+  template < int nDim, int nVertices, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::computeLumpedMomentum(
+    double* mLumped ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    ParentPointParticle::computeLumpedMomentum( mLumped );
+
+    constexpr int nodeBlockSize = nDim + nNonlocal;
+
+    const double   density0         = this->_mp.getDensityUndeformed();
+    const double   detJIntermediate = determinant( this->_mp.dY_dX() );
+    const TensorDD dv_dY_x_Y2       = einsum< ij, jk >( _dv_dY, _momentsOfInertia_IntermediateReference );
+
+    for ( int A = 0; A < this->_nNodes; A++ ) {
+      const TensorD dT_A_dY = TensorD( this->_dT_dY.col( A ).data() );
+      const TensorD aux     = einsum< ij, j >( dv_dY_x_Y2, dT_A_dY );
+      for ( int i = 0; i < nDim; i++ )
+        mLumped[nodeBlockSize * A + i] += density0 * aux( i ) / detJIntermediate;
+    }
   }
 
 } // namespace Marmot::Discretizations::Meshfree

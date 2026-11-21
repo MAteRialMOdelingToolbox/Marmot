@@ -105,14 +105,16 @@ namespace Marmot::Registry {
      */
     static bool registerParticle( const std::string& particleName, particleFactoryFunction factoryFunction );
 
-  private:
     /**
-     * @brief Check whether a particle name is registered (declared only, not defined).
-     * @param[in] particleName Name of the particle type.
+     * @brief Whether a particle type is registered under a name, i.e. whether its module is part of this build.
+     * @details A host asks before createParticle(), to tell a particle that is not built (which it may skip) from a
+     * particle that fails to be created (an error of the input).
+     * @param[in] particleName Name of the particle type (case-insensitive).
      * @return true if registered.
      */
-    bool checkIfParticleIsRegistered( const std::string& particleName );
+    static bool isRegistered( const std::string& particleName );
 
+  private:
     /// @brief Registered factory functions by upper-case particle name (a function-local static: registrations run
     /// during static initialization, possibly before a static data member of this translation unit would be
     /// constructed).

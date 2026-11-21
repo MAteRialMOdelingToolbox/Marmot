@@ -36,7 +36,7 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * Given an evaluation point @f$ \boldsymbol{x} @f$ and a list of @f$ n @f$ candidate kernel functions
    * @f$ \phi_A @f$, @f$ A = 0, \dots, n-1 @f$ (KernelFunction), an approximation computes the
-   * shape functions @f$ \Psi_A(\boldsymbol{x}) @f$ and/or their gradients. The output arrays are indexed by the
+   * shape functions @f$ \Psi_A(\boldsymbol{x}) @f$, alone or with their gradients. The output arrays are indexed by the
    * position of the kernel in the candidate list; candidates that do not cover @f$ \boldsymbol{x} @f$ get zero
    * entries.
    *
@@ -61,16 +61,6 @@ namespace Marmot::Discretizations::Meshfree {
     virtual void computeShapeFunctions( const double*                               coord,
                                         const std::vector< const KernelFunction* >& kernelFunctions,
                                         double*                                     shapeFunctionValues ) const = 0;
-
-    /**
-     * @brief Compute the shape function gradients @f$ \partial \Psi_A / \partial x_i @f$.
-     * @param[in]  coord                       Coordinates @f$ \boldsymbol{x} @f$ of the evaluation point.
-     * @param[in]  kernelFunctions             The @f$ n @f$ candidate kernel functions.
-     * @param[out] shapeFunctionValueGradients Shape function gradients, column-major @f$ d \times n @f$.
-     */
-    virtual void computeShapeFunctionGradients( const double*                               coord,
-                                                const std::vector< const KernelFunction* >& kernelFunctions,
-                                                double* shapeFunctionValueGradients ) const = 0;
 
     /**
      * @brief Compute the shape function values and gradients in one pass.

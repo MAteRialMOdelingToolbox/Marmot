@@ -49,8 +49,8 @@ namespace Marmot::Discretizations::Meshfree {
    * -\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} @f$ (the sign
    * stems from the shifted argument @f$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A @f$) is @f$ -1 @f$ at
    * the position of the linear monomial @f$ z_i @f$ in @f$ \boldsymbol{H} @f$
-   * and zero elsewhere (the position is found from Math::computeMonomialBasisGradient() at the origin, so it is
-   * correct for any order). This enforces the gradient reproducing conditions
+   * and zero elsewhere (the position is found from the gradient of the basis at the origin, Math::MonomialBasis, so it
+   * is correct for any order). This enforces the gradient reproducing conditions
    * @f[
    *   \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
    *   \frac{\partial \boldsymbol{x}^{\boldsymbol{\alpha}}}{\partial x_i}, \qquad |\boldsymbol{\alpha}| \le n,
@@ -72,17 +72,6 @@ namespace Marmot::Discretizations::Meshfree {
 
     /// @brief Default destructor.
     virtual ~ReproducingKernelApproximationImplicit() = default;
-
-    /**
-     * @brief Not implemented; use computeShapeFunctionsAndGradients().
-     * @param[in]  coord                       Evaluation point.
-     * @param[in]  kernelFunctions             Candidate kernel functions.
-     * @param[out] shapeFunctionValueGradients Not written.
-     * @throws std::runtime_error always.
-     */
-    virtual void computeShapeFunctionGradients( const double*                               coord,
-                                                const std::vector< const KernelFunction* >& kernelFunctions,
-                                                double* shapeFunctionValueGradients ) const override;
 
     /**
      * @brief Compute the RK shape function values @f$ \Psi_A @f$ and the implicit gradients @f$ \Psi^{(i)}_A @f$.
