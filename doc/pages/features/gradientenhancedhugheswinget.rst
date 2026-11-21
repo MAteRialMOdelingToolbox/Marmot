@@ -5,9 +5,12 @@ Gradient-enhanced Hughes-Winget wrapper
 
 The gradient-enhanced sibling of the :ref:`Hughes-Winget wrapper <hughesWingetWrapper>`. It makes a
 small-strain **gradient-enhanced** (implicit-gradient / nonlocal damage) material --
-``Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>`` -- usable wherever a
-``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` is expected: the gradient-enhanced updated-Lagrangian
-element and the gradient-enhanced meshfree particle and material point.
+``Marmot::Materials::MaterialGradientEnhancedHypoElastic<n>`` -- usable wherever a
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain<n>`` (the same number :math:`n` of nonlocal variables) is
+expected: the gradient-enhanced updated-Lagrangian element and the gradient-enhanced meshfree particle and material
+point. It shares its base, ``GradientEnhancedHypoElasticWrapper`` (the wrapped material, the nonlocal fields of the
+last call, the forwarded density, viscosity and micro-inertia), with the :ref:`corotational wrapper
+<gradientEnhancedCorotationalWrapper>`, which is the one for a material that recomputes its stress from total strains.
 
 It works the same way as its local sibling -- the wrapped material is driven by the objective strain
 increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration, with the carried-over
@@ -16,17 +19,6 @@ stress -- so the kinematics are not repeated here; see the local wrapper's Theor
 page documents is what is specific to the gradient-enhanced case: how the nonlocal field crosses the
 two interfaces, and the three limitations that follow from wrapping a small-strain rate law rather than
 a total-strain law.
-
-.. note::
-
-   ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``, the interface this wrapper implements, is itself a
-   **reconstruction**: the original header was written by the author of the gradient-enhanced
-   finite-strain material point / particle / displacement element, but was never published to any
-   repository. Everything those consumers observe (member names, struct shapes, call signatures) is
-   fixed by them; everything else -- in particular the *order* of the four scalars carried by
-   ``ConstitutiveResponse`` -- is inferred from the sibling interfaces, since the consumers only ever
-   pass zeros there and read the members back by name. Should the original resurface, it takes
-   precedence over this reconstruction.
 
 Usage
 -----
@@ -58,17 +50,17 @@ Add one line to that material's own ``<Name>Registration.cpp``:
 
   #include "Marmot/MarmotMaterialGradientEnhancedHughesWinget.h"
   ...
-  const static bool GCDPHughesWingetIsRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
+  const static bool GCDPHughesWingetIsRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory< 1 >::
     registerMaterial< GradientEnhancedHughesWingetWrapper< GCDPModel > >( "GCDP/HUGHES-WINGET" );
 
 Before doing so for a new material, read the three limitations below -- they are the reason not every
-``Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>`` model should be registered this way.
+``Marmot::Materials::MaterialGradientEnhancedHypoElastic<n>`` model should be registered this way.
 
 The nonlocal field across the two interfaces
 ---------------------------------------------
 
-On top of the Hughes-Winget stress update, the wrapper carries the nonlocal field across the two
-interfaces:
+On top of the Hughes-Winget stress update, the wrapper carries the nonlocal fields across the two
+interfaces, per nonlocal variable :math:`K`:
 
 .. list-table::
    :header-rows: 1
@@ -77,21 +69,20 @@ interfaces:
    * - this interface reports
      - from the wrapped material
    * - ``response.L``
-     - ``KLocal(0)``, a total, which is what both sides mean
+     - ``KLocal``, totals, which is what both sides mean
    * - ``response.nonLocalRadius``
-     - :math:`\sqrt{c(0)}`
-   * - ``tangents.dTau_dN``
-     - :math:`J\,\partial\boldsymbol{\sigma}/\partial\bar{N}`
-   * - ``tangents.dL_dF``
-     - :math:`\partial K^{\mathrm{local}}/\partial\Delta\boldsymbol{\varepsilon}`, chained through the
+     - :math:`\sqrt{c_K}`
+   * - ``tangents.dTau_dN[K]``
+     - :math:`J\,\partial\boldsymbol{\sigma}/\partial\bar{N}_K`
+   * - ``tangents.dL_dF[K]``
+     - :math:`\partial K^{\mathrm{local}}_K/\partial\Delta\boldsymbol{\varepsilon}`, chained through the
        Hughes-Winget kinematics
    * - ``tangents.dL_dN``
-     - ``dKLocalddK(0,0)``
+     - ``dKLocalddK``
 
-The wrapped material wants the nonlocal field **and its increment**, while the finite-strain interface
-hands over only the total. The increment is therefore formed inside the wrapper, against a value of the
-last accepted increment carried in the wrapper's own state (``HughesWinget_N_n``) -- one slot more than
-the local sibling needs.
+The wrapped material wants the nonlocal fields **and their increment**, while the finite-strain interface
+hands over only the totals. The increment is therefore formed inside the wrapper, against the values of the
+last call carried in the wrapper's own state (``HughesWinget_N_n``) -- one slot more than the local sibling needs.
 
 .. note::
 
@@ -117,7 +108,8 @@ Limitations
    :math:`g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon}` from it, ignoring the incoming stress
    entirely. Wrapped, its Kirchhoff stress does not rotate at all under a rigid rotation -- measured.
    It is therefore deliberately **not** registered with this wrapper, and a total-strain-based model
-   must not be either.
+   must not be either: such a model (GM7 is one) is wrapped by the :ref:`corotational wrapper
+   <gradientEnhancedCorotationalWrapper>`.
 
 .. warning::
 

@@ -40,7 +40,8 @@ namespace {
 
 } // namespace
 
-void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress(
+template < int nNonlocal >
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >::computeStress(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     tangents,
   const Deformation< 3 >&                     deformation,
@@ -54,12 +55,14 @@ void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress(
   computeStress( response, tangents, deformationWithEigenDeformation, timeIncrement );
 
   // Both tangents differentiate with respect to F and therefore pick up the eigen deformation by the
-  // chain rule; dTau_dN does not, since the nonlocal field is not deformed.
+  // chain rule; dTau_dN does not, since the nonlocal fields are not deformed.
   applyEigenDeformationToTangent( tangents.dTau_dF, F0_XX, F0_YY, F0_ZZ );
-  applyEigenDeformationToTangent( tangents.dL_dF, F0_XX, F0_YY, F0_ZZ );
+  for ( auto& dL_K_dF : tangents.dL_dF )
+    applyEigenDeformationToTangent( dL_K_dF, F0_XX, F0_YY, F0_ZZ );
 }
 
-void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain(
+template < int nNonlocal >
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >::computePlaneStrain(
   ConstitutiveResponse< 3 >& response,
   AlgorithmicModuli< 3 >&    algorithmicModuli,
   const Deformation< 3 >&    deformation,
@@ -68,7 +71,8 @@ void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
 
-void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain(
+template < int nNonlocal >
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >::computePlaneStrain(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     algorithmicModuli,
   const Deformation< 3 >&                     deformation,
@@ -79,16 +83,17 @@ void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain
 }
 
 /** The basic implementation here assumes non-chiral, isotropic elastic behavior, and an undamaged
- * initial state: the nonlocal field is held at zero throughout the iteration.
+ * initial state: the nonlocal fields are held at zero throughout the iteration.
  */
-std::tuple< double, double, double > Marmot::Materials::MaterialGradientEnhancedFiniteStrain::
-  findEigenDeformationForEigenStress( const std::tuple< double, double, double >& initialGuess,
-                                      const std::tuple< double, double, double >& eigenStress,
-                                      double*                                     stateVars ) const
+template < int nNonlocal >
+std::tuple< double, double, double > Marmot::Materials::MaterialGradientEnhancedFiniteStrain<
+  nNonlocal >::findEigenDeformationForEigenStress( const std::tuple< double, double, double >& initialGuess,
+                                                   const std::tuple< double, double, double >& eigenStress,
+                                                   double*                                     stateVars ) const
 {
   using namespace Marmot;
 
-  Deformation< 3 >          deformation = { Fastor::Tensor< double, 3, 3 >( 0.0 ), 0.0 };
+  Deformation< 3 >          deformation = { Fastor::Tensor< double, 3, 3 >( 0.0 ), NonlocalVector::Zero() };
   ConstitutiveResponse< 3 > response;
   response.stateVars = stateVars;
   AlgorithmicModuli< 3 > tangents;
@@ -162,3 +167,6 @@ std::tuple< double, double, double > Marmot::Materials::MaterialGradientEnhanced
 
   return { def( 0 ), def( 1 ), def( 2 ) };
 }
+
+template class Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >;
+template class Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 6 >;
