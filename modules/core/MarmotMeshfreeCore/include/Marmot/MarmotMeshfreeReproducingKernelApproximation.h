@@ -191,24 +191,11 @@ namespace Marmot::Discretizations::Meshfree {
                                                                       int                 nCoveringKernels ) const;
 
     /**
-     * @brief Compute the factorial @f$ n! @f$ recursively.
-     * @param[in] n Non-negative integer.
-     * @return @f$ n! @f$.
-     */
-    int factorial( int n ) const
-    {
-      if ( n == 0 )
-        return 1;
-      else
-        return n * factorial( n - 1 );
-    }
-
-    /**
      * @brief Check if the completeness order leads to a non-singular equation system.
      *
      * Checks the necessary condition that at least as many kernels cover the point as the basis has entries,
-     * @f$ n_\mathrm{nodes} \ge \binom{d + n}{d} @f$. It is not sufficient, e.g., for nodes in a degenerate
-     * (collinear, coplanar) arrangement. Always true for @f$ n \le 0 @f$.
+     * @f$ n_\mathrm{nodes} \ge \binom{d + n}{d} @f$, the size of the basis. It is not sufficient, e.g., for nodes in a
+     * degenerate (collinear, coplanar) arrangement. Always true for @f$ n \le 0 @f$.
      *
      * @param[in] nNodes            Number of kernels covering the evaluation point.
      * @param[in] completenessOrder Completeness order @f$ n @f$.
@@ -216,11 +203,7 @@ namespace Marmot::Discretizations::Meshfree {
      */
     bool checkNonSingularity( int nNodes, int completenessOrder ) const
     {
-      if ( completenessOrder > 0 ) {
-        return nNodes >= factorial( _dim + completenessOrder ) / ( factorial( _dim ) * factorial( completenessOrder ) );
-      }
-      else
-        return true;
+      return completenessOrder <= 0 || nNodes >= _basisOfOrder[completenessOrder].size();
     }
 
     /**
