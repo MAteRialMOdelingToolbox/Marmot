@@ -466,10 +466,10 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief The interpolation vector of a point attached to the particle: the coefficients @f$ G_B @f$ with which
      * the particle moves that point in its next increment,
-     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{q}_B @f$.
-     * @details A particle moves as a whole: its center by @f$ \sum_B N_B\,\Delta\boldsymbol{q}_B @f$ and its domain
+     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{Q}_B @f$.
+     * @details A particle moves as a whole: its center by @f$ \sum_B N_B\,\Delta\boldsymbol{Q}_B @f$ and its domain
      * with the homogeneous deformation gradient increment
-     * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \partial N_B / \partial
+     * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B / \partial
      * \boldsymbol{Y} @f$ about the center @f$ \boldsymbol{Y}_c @f$, with the shape functions and the (possibly
      * smoothed) gradients that drive its kinematics. A point @f$ \boldsymbol{Y} @f$ attached to the particle (its
      * center, a vertex, a face center) therefore moves with
@@ -481,8 +481,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @f$ \boldsymbol{f} @f$ with the same vector, @f$ \boldsymbol{f}_B = G_B\,\boldsymbol{f} @f$: only then is the
      * force the transpose of the kinematics (the work of the force on the nodes is the work on the point), so that a
      * penalty constraint has a symmetric stiffness and is conservative. The vector sums to one (a rigid translation
-     * moves the point as the nodes), so the force is distributed without a net residue. Appended at the end of the
-     * class, so that the vtable slots of the methods above do not move.
+     * moves the point as the nodes), so the force is distributed without a net residue. It has no default, unlike the
+     * methods next to it: the only candidate, the shape functions at the point, is precisely the wrong answer.
      * @param[out] vec Array of @f$ n_{\text{nodes}} @f$ values.
      * @param[in] coordinates The point in the reference intermediate configuration (getDimension() values).
      */
