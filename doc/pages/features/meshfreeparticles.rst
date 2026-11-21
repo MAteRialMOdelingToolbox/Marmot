@@ -86,10 +86,7 @@ or a mass is never left out silently. A particle gives no critical time step: th
 discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`). What the host
 needs from a particle to bound it is ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of
 :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness at the current state and nonnegative weights
-:math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it. The
-methods added last, ``computeLumpedDamping``, ``computeBoundOfAbsoluteStiffnessTimes`` and
-``getAttachedPointInterpolationVector``, are the last methods of the class, so that the vtable slots of the others did
-not move.
+:math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it.
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in
@@ -217,12 +214,12 @@ with the total deformation gradient :math:`\boldsymbol{F}` of the particle for t
        entries of :math:`\boldsymbol{U}` in the global basis
      - ``SQCNI_RU``, ``RS-SNNI``
 
-**Points attached to a particle.** The particle moves as a whole: its center by :math:`\sum_B N_B\,\Delta\boldsymbol{q}_B`
+**Points attached to a particle.** The particle moves as a whole: its center by :math:`\sum_B N_B\,\Delta\boldsymbol{Q}_B`
 and its geometry with the deformation gradient increment
-:math:`\Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \partial N_B/\partial\boldsymbol{Y}`
+:math:`\Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B/\partial\boldsymbol{Y}`
 about the center, with the shape functions at the center and the (smoothed) gradients that drive its kinematics. A
 point :math:`\boldsymbol{Y}` of the geometry -- a vertex, a face center -- therefore moves by
-:math:`\sum_B G_B\,\Delta\boldsymbol{q}_B` with
+:math:`\sum_B G_B\,\Delta\boldsymbol{Q}_B` with
 
 .. math::
 
@@ -372,8 +369,8 @@ main domain and updates the center kinematics,
 
 .. math::
 
-   \Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{q}_B, \qquad
-   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \frac{\partial N_B}{\partial
+   \Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \frac{\partial N_B}{\partial
    \boldsymbol{Y}} ,
 
 (:math:`\boldsymbol{u}_c \mathrel{+}= \Delta\boldsymbol{u}_c`, which relies on the host restoring the state block of
