@@ -157,9 +157,7 @@ column component :math:`k`, with the weights :math:`w_B` of component :math:`k` 
    \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b}}
    + \ldots ,
 
-and the same for the second gradients, which only the columns of the displacement have (the stabilization of an NSNI
-particle acts on the displacement, not on a nonlocal field): their moments are formed for these columns only. The
-value term is exact; the gradient term is the Cauchy-Schwarz inequality
+and the same for the second gradients. The value term is exact; the gradient term is the Cauchy-Schwarz inequality
 over the nodes, which keeps the directions of the gradients: it is exact for parallel gradients and
 :math:`2/\sqrt{3}` of the exact sum for gradients spread evenly in 3D (:math:`\pi/(2\sqrt{2})` in 2D). The terms are
 added by the triangle inequality, so the bound never lies below :math:`|\boldsymbol{K}|\,\boldsymbol{w}`, for symmetric

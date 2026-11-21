@@ -246,10 +246,6 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default
   instead of doing nothing, so that a particle without them never leaves a load out silently (`DisplacementParticleSQCNI`
   implements the distributed one).
-- `AbsoluteTangentBound` forms the moments of the second gradients only for the columns of the components that have
-  second-gradient factors (a new last constructor argument, by default all; the gradient-enhanced finite-strain
-  particles give the displacement), and refuses a second-gradient factor in another column; the bound is unchanged
-  (bitwise).
 - `Math::MonomialBasis` multiplies only the factors of nonzero exponent of an entry, listed at construction, and sets
   the derivative with respect to a coordinate that is not a factor to zero: the values and nonzero derivatives are
   unchanged (bitwise; a zero derivative is +0).
