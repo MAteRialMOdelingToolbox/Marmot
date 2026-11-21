@@ -860,6 +860,14 @@ int main()
   };
 
   std::vector< std::function< void() > > testFunctions;
+  testFunctions.push_back( [&]() {
+    for ( const auto& [name, shape] : planeStrain )
+      throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( name ), name + " is registered" );
+    throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( "displacement/planestrain/point" ),
+                             "the registry is case-insensitive" );
+    throwExceptionOnFailure( !Marmot::Registry::ParticleFactory::isRegistered( "NoSuchParticle/3D/Hexa" ),
+                             "an unknown name is not registered" );
+  } );
   // the NSNI stabilization's tangent omits d2tau/dF2 (not exposed by the material interface), so it is
   // approximate by construction: measured 1.1e-3 (2D) and 1.3e-3 (3D) relative error; all others are exact
   auto tolerance = []( const std::string& name ) { return name.find( "NSNI" ) != std::string::npos ? 5e-3 : 1e-7; };
