@@ -13,7 +13,12 @@ material is any material of the interface ``Marmot::Materials::MaterialGradientE
 :doc:`gradientenhancedcompressibleneohookedamage` or :doc:`gradientenhancedfinitestraindruckerprager` with one nonlocal
 variable, ``GM7/COROTATIONAL`` (:doc:`gradientenhancedcorotational`) with six. The weak forms below are written for one
 nonlocal variable; with several, each :math:`\bar N_K` has its own balance with its own :math:`c_K`, and they couple
-only through the material (:math:`\partial L_K/\partial\bar N_M`). The shape functions come from the reproducing kernel approximation
+only through the material (:math:`\partial L_K/\partial\bar N_M`). The names of the nonlocal fields follow from
+their *number*, not from the material (``GradientEnhancedFiniteStrainMaterialPoint::nonlocalNodeFields``): six are the
+one field ``strain symmetric`` (state ``nonlocal strain``), any other number the scalar fields ``nonlocal damage``,
+``nonlocal damage 2``, ... (state ``nonlocal damage``). A host must know each name: in EdelweissFE, a field is
+registered in the dictionaries of ``edelweissfe/config/phenomena.py``, where ``nonlocal damage 2`` is the last of the
+scalar ones. The shape functions come from the reproducing kernel approximation
 (:doc:`meshfreeapproximation`); the particle interface, the integration schemes and the corrections are introduced in
 :doc:`meshfreeparticles`. The weak forms are those of :doc:`gradientenhancedfinitestraindisplacementelement`, in
 increment form.
