@@ -11,6 +11,7 @@
 #include <array>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using namespace Marmot::Testing;
 using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 >::response;
@@ -546,6 +547,85 @@ void testPropertyLayout()
   throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " stressUnit failed" );
 }
 
+// The nonlocal micro-inertia (property 16) is optional: absent, the nonlocal strain is first order in time and every
+// component reports zero; given, it is reported for all six components, and a value above eta^2/4 -- which would leave
+// the zeroth-order reaction mode of the nonlocal field underdamped -- is rejected with std::invalid_argument.
+void testNonlocalMicroInertia()
+{
+  const double                   eta = 3e-4;
+  const std::array< double, 16 > withoutMicroInertia =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9, eta };
+  const auto firstOrder = createGM7( withoutMicroInertia.data(), static_cast< int >( withoutMicroInertia.size() ) );
+  std::vector< double > stateVars( firstOrder->getNumberOfRequiredStateVars(), 0.0 );
+
+  throwExceptionOnFailure( firstOrder->getNonlocalMicroInertia( stateVars.data() ) == std::vector< double >( 6, 0.0 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: nonzero micro-inertia without property 16" );
+
+  std::array< double, 17 > withMicroInertia;
+  std::copy( withoutMicroInertia.begin(), withoutMicroInertia.end(), withMicroInertia.begin() );
+  withMicroInertia[16]   = eta * eta / 4.;
+  const auto secondOrder = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
+
+  throwExceptionOnFailure( secondOrder->getNonlocalMicroInertia( stateVars.data() ) ==
+                             std::vector< double >( 6, eta * eta / 4. ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: micro-inertia eta^2/4 not reported" );
+
+  withMicroInertia[16]   = 1.01 * eta * eta / 4.;
+  const auto underdamped = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
+  bool       rejected    = false;
+  try {
+    underdamped->getNonlocalMicroInertia( stateVars.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: micro-inertia above eta^2/4 not rejected" );
+}
+
+// the explicit path (stress alone) is the same update as computeStress(): stress, local strain and state variables
+// equal bitwise, along paths into cracking, crushing and shear
+void testComputeStressExplicitEqualsComputeStress()
+{
+  const std::vector< Marmot::Math::Vector6d > paths = { { 2e-5, -4e-6, -4e-6, 0., 0., 0. },
+                                                        { -3e-4, 6e-5, 6e-5, 0., 0., 0. },
+                                                        { 1e-5, 0., 0., 2e-5, -1e-5, 0. } };
+  for ( const auto& dStrain : paths ) {
+    auto withTangents = createGM7( defaultMaterialProperties.data(),
+                                   static_cast< int >( defaultMaterialProperties.size() ) );
+    auto explicitOnly = createGM7( defaultMaterialProperties.data(),
+                                   static_cast< int >( defaultMaterialProperties.size() ) );
+
+    const int             nStateVars = withTangents->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVars, 0.0 ), stateVarsExplicit( nStateVars, 0.0 );
+
+    response  res, resExplicit;
+    tangents  tan;
+    increment inc;
+    res.stress            = Marmot::Math::Vector6d::Zero();
+    resExplicit.stress    = Marmot::Math::Vector6d::Zero();
+    res.stateVars         = stateVars.data();
+    resExplicit.stateVars = stateVarsExplicit.data();
+    inc.dStrain           = dStrain;
+    inc.K                 = Eigen::Vector< double, 6 >::Zero();
+    inc.dK                = 1.1 * dStrain; // the nonlocal strain runs ahead of the local one
+
+    for ( int i = 0; i < 40; i++ ) {
+      withTangents->computeStress( res, tan, inc );
+      explicitOnly->computeStressExplicit( resExplicit, inc );
+      throwExceptionOnFailure( res.stress == resExplicit.stress && res.KLocal == resExplicit.KLocal &&
+                                 stateVars == stateVarsExplicit,
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": the explicit path differs in increment " << i
+                                 << " of the path " << dStrain.transpose() );
+      inc.K = res.KLocal;
+    }
+  }
+}
+
 int main()
 {
   testOedometricCompression();
@@ -563,5 +643,7 @@ int main()
   testCubicSymmetryInvarianceTensionShear();
   testTooFewMaterialProperties();
   testPropertyLayout();
+  testNonlocalMicroInertia();
+  testComputeStressExplicitEqualsComputeStress();
   return 0;
 }

@@ -275,6 +275,18 @@ namespace Marmot::Discretizations::Meshfree {
       _meshfreeApproximation.computeShapeFunctions( coordinates, _assignedKernelFunctions, vec );
     };
 
+    /// @brief The interpolation vector of a point attached to the particle, from the trial functions @f$ N_A @f$ and
+    /// gradients @f$ \partial N_A / \partial Y_i @f$ at the center (see
+    /// Particle::getAttachedPointInterpolationVector()).
+    /// @param[out] vec Array of @f$ n_{\text{nodes}} @f$ values.
+    /// @param[in] coordinates The attached point (nDim values).
+    virtual void getAttachedPointInterpolationVector( double* vec, const double* coordinates ) const override
+    {
+      Eigen::Matrix< double, nDim, 1 > center;
+      getCenterCoordinates( center.data() );
+      interpolateAttachedPoint( vec, _N.data(), _dN_dY.data(), center.data(), coordinates, nDim, _nNodes );
+    };
+
     /// @brief Get the only evaluation point, the particle center.
     /// @param[out] coordinates Array of nDim values.
     virtual void getEvaluationCoordinates( double* coordinates ) const override { getVertexCoordinates( coordinates ); }

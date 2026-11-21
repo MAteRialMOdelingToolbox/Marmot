@@ -3,11 +3,12 @@
 
 namespace Marmot::Registry {
 
-  Marmot::Materials::MaterialGradientEnhancedFiniteStrain* MaterialGradientEnhancedFiniteStrainFactory::createMaterial(
-    const std::string& materialName,
-    const double*      materialProperties,
-    int                nMaterialProperties,
-    int                materialNumber )
+  template < int nNonlocal >
+  typename MaterialGradientEnhancedFiniteStrainFactory< nNonlocal >::Material* MaterialGradientEnhancedFiniteStrainFactory<
+    nNonlocal >::createMaterial( const std::string& materialName,
+                                 const double*      materialProperties,
+                                 int                nMaterialProperties,
+                                 int                materialNumber )
   {
     auto& map = materialFactoryFunctionByName();
     auto  it  = map.find( materialName );
@@ -23,11 +24,15 @@ namespace Marmot::Registry {
     return it->second( materialProperties, nMaterialProperties, materialNumber );
   }
 
-  MaterialGradientEnhancedFiniteStrainFactory::MaterialFactoryMap& MaterialGradientEnhancedFiniteStrainFactory::
-    materialFactoryFunctionByName()
+  template < int nNonlocal >
+  typename MaterialGradientEnhancedFiniteStrainFactory< nNonlocal >::MaterialFactoryMap& MaterialGradientEnhancedFiniteStrainFactory<
+    nNonlocal >::materialFactoryFunctionByName()
   {
     static MaterialFactoryMap map;
     return map;
   }
+
+  template class MaterialGradientEnhancedFiniteStrainFactory< 1 >;
+  template class MaterialGradientEnhancedFiniteStrainFactory< 6 >;
 
 } // namespace Marmot::Registry

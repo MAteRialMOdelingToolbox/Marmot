@@ -26,8 +26,7 @@
 #pragma once
 
 #include "Marmot/MarmotFastorTensorBasics.h"
-#include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
-#include "Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h"
+#include "Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h"
 #include "Marmot/MarmotMaterialHughesWinget.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -45,7 +44,8 @@ namespace Marmot::Materials {
    * @class GradientEnhancedHughesWingetWrapper
    * @brief Decorator presenting a small-strain gradient-enhanced material as a finite-strain one.
    *
-   * @tparam BaseMaterialType A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>.
+   * @tparam BaseMaterialType A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic<n>;
+   *                          the wrapper has the same n nonlocal variables.
    * @tparam tangentMode      How the algorithmic tangent is evaluated, see Marmot::Materials::HughesWingetTangent.
    *
    * The gradient-enhanced sibling of HughesWingetWrapper, and it works the same way: the wrapped material
@@ -60,24 +60,23 @@ namespace Marmot::Materials {
    * of the previous increment rotated forward by the Cayley transform of @f$ \Delta\boldsymbol{\Omega} @f$
    * and the resulting Cauchy stress pushed to the Kirchhoff stress @f$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} @f$.
    *
-   * On top of that it carries the nonlocal field across the two interfaces:
+   * On top of that it carries the nonlocal fields across the two interfaces, per nonlocal variable K:
    *
    * | this interface reports | from the wrapped material |
    * |---|---|
-   * | @c response.L | @c KLocal(0), a total, which is what both sides mean |
-   * | @c response.nonLocalRadius | @f$ \sqrt{c(0)} @f$ |
-   * | @c tangents.dTau_dN | @f$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N} @f$ |
-   * | @c tangents.dL_dF | @f$ \partial K^{\text{local}}/\partial\Delta\boldsymbol{\varepsilon} @f$ |
-   * | @c tangents.dL_dN | @c dKLocalddK(0,0) |
+   * | @c response.L | @c KLocal, totals, which is what both sides mean |
+   * | @c response.nonLocalRadius | @f$ \sqrt{c_K} @f$ |
+   * | @c tangents.dTau_dN[K] | @f$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N}_K @f$ |
+   * | @c tangents.dL_dF[K] | @f$ \partial K^{\text{local}}_K/\partial\Delta\boldsymbol{\varepsilon} @f$ |
+   * | @c tangents.dL_dN | @c dKLocalddK |
    *
    * @c dL_dF is chained through the Hughes-Winget kinematics. Each row is kept inside the 120-column
    * limit deliberately: `ReflowComments` would otherwise wrap a longer one onto the next line and
    * split the table in two.
    *
-   * @note The wrapped material wants the nonlocal field **and its increment**, while this interface hands
-   * over only the total. The increment is therefore formed here, against a value of the last accepted
-   * increment carried in this wrapper's own state (@c HughesWinget_N_n) -- one slot more than the local
-   * sibling needs.
+   * @note The wrapped material wants the nonlocal fields **and their increment**, while this interface hands
+   * over only the totals. The increment is therefore formed against the value of the last call carried in this
+   * wrapper's own state (@c HughesWinget_N_n), see GradientEnhancedHypoElasticWrapper.
    *
    * @note **The wrapped material must be incremental in stress.** It has to update the Cauchy stress it
    * is handed, not recompute one from a stored strain: the wrapper's whole mechanism is to hand over the
@@ -105,26 +104,37 @@ namespace Marmot::Materials {
    * pushed forward nor weighted by @f$ J @f$.
    */
   template < typename BaseMaterialType, HughesWingetTangent tangentMode = HughesWingetTangent::Analytic >
-  class GradientEnhancedHughesWingetWrapper : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedHughesWingetWrapper : public GradientEnhancedHypoElasticWrapper< BaseMaterialType > {
 
-    static_assert( std::is_base_of_v< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >, BaseMaterialType >,
-                   "GradientEnhancedHughesWingetWrapper can only wrap materials derived from "
-                   "Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>." );
+    using Wrapper = GradientEnhancedHypoElasticWrapper< BaseMaterialType >;
+    using typename Wrapper::BaseMaterial;
+    using Wrapper::baseMaterial;
+    using Wrapper::baseMaterialSlot;
+    using Wrapper::fromEigen;
+    using Wrapper::nNonlocal;
+    using Wrapper::toEigen;
 
-    using BaseMaterial = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
+  public:
+    using typename Wrapper::NonlocalVector;
+    /// @brief Constitutive response, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse.
+    template < int nDim >
+    using ConstitutiveResponse = typename Wrapper::Interface::template ConstitutiveResponse< nDim >;
+    /// @brief Algorithmic moduli, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli.
+    template < int nDim >
+    using AlgorithmicModuli = typename Wrapper::Interface::template AlgorithmicModuli< nDim >;
+    /// @brief Deformation, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation.
+    template < int nDim >
+    using Deformation = typename Wrapper::Interface::template Deformation< nDim >;
+    /// @brief Time increment, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement.
+    using TimeIncrement = typename Wrapper::Interface::TimeIncrement;
 
   protected:
-    /// The wrapped small-strain material, held as the base interface.
-    std::unique_ptr< BaseMaterial > baseMaterial;
-
     /// Name of the state layout slot holding the deformation gradient of the last accepted increment.
     static constexpr const char* deformationGradientSlot = "HughesWinget_F_n";
     /// Name of the state layout slot holding the Cauchy stress of the last accepted increment.
     static constexpr const char* stressSlot = "HughesWinget_sigma_n";
-    /// Name of the state layout slot holding the nonlocal field of the last accepted increment.
+    /// Name of the state layout slot holding the nonlocal fields of the last accepted increment.
     static constexpr const char* nonlocalFieldSlot = "HughesWinget_N_n";
-    /// Name of the state layout slot holding the state variables of the wrapped material.
-    static constexpr const char* baseMaterialSlot = "materialstate";
 
   public:
     /**
@@ -134,10 +144,7 @@ namespace Marmot::Materials {
      * @param[in] materialNumber_      Unique identifier for this material instance.
      */
     GradientEnhancedHughesWingetWrapper( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-      : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( matProperties_,
-                                                                 nMaterialProperties_,
-                                                                 materialNumber_ ),
-        baseMaterial( std::make_unique< BaseMaterialType >( matProperties_, nMaterialProperties_, materialNumber_ ) )
+      : Wrapper( matProperties_, nMaterialProperties_, materialNumber_ )
     {
       initializeStateLayout();
     }
@@ -147,7 +154,7 @@ namespace Marmot::Materials {
     // The four-argument override below would otherwise hide the base class' five-argument
     // eigen-deformation overload for a caller holding a GradientEnhancedHughesWingetWrapper<...>
     // rather than a Marmot::Materials::MaterialGradientEnhancedFiniteStrain*.
-    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
+    using Wrapper::Interface::computeStress;
 
     /**
      * @brief Register the state layout: the carried-over deformation gradient, Cauchy stress and nonlocal
@@ -157,66 +164,15 @@ namespace Marmot::Materials {
     {
       this->stateLayout.add( deformationGradientSlot, 9 );
       this->stateLayout.add( stressSlot, 6 );
-      this->stateLayout.add( nonlocalFieldSlot, 1 );
+      this->stateLayout.add( nonlocalFieldSlot, nNonlocal );
       this->stateLayout.add( baseMaterialSlot, baseMaterial->getNumberOfRequiredStateVars() );
       this->stateLayout.finalize();
     }
 
     /**
-     * @brief Resolve a state variable by name, falling back to the wrapped material.
-     * @param[in] stateName Name of the state variable.
-     * @param[in] stateVars Pointer to the state variable array of this wrapper.
-     * @return A view of the requested state variable.
-     */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, double* stateVars ) const override
-    {
-      if ( stateName == deformationGradientSlot || stateName == stressSlot || stateName == nonlocalFieldSlot ||
-           stateName == baseMaterialSlot )
-        return this->stateLayout.getStateView( stateVars, stateName );
-
-      return baseMaterial->getStateView( stateName, this->stateLayout.getPtr( stateVars, baseMaterialSlot ) );
-    }
-
-    /**
-     * @brief Mass density of the wrapped material.
-     * @param[in] stateVars Pointer to the state variable array of this wrapper.
-     * @return Mass density.
-     */
-    double getDensity( const double* stateVars ) const override
-    {
-      return baseMaterial->getDensity(
-        this->stateLayout.getPtr( const_cast< double* >( stateVars ), baseMaterialSlot ) );
-    }
-
-    /**
-     * @brief Nonlocal viscosity of the wrapped small-strain material.
-     * @param[in] stateVars Pointer to the state variable array of this wrapper.
-     * @return Nonlocal viscosity @f$ \eta @f$, the first entry (and only, since @c BaseMaterialType is
-     *         templated on a single nonlocal variable) of the wrapped material's own
-     *         @c getNonlocalViscosity().
-     */
-    double getNonlocalViscosity( const double* stateVars ) const override
-    {
-      return baseMaterial->getNonlocalViscosity(
-        this->stateLayout.getPtr( const_cast< double* >( stateVars ), baseMaterialSlot ) )[0];
-    }
-
-    /**
-     * @brief Nonlocal micro-inertia of the wrapped small-strain material.
-     * @param[in] stateVars Pointer to the state variable array of this wrapper.
-     * @return Nonlocal micro-inertia @f$ m_k @f$, the first entry of the wrapped material's own
-     *         @c getNonlocalMicroInertia().
-     */
-    double getNonlocalMicroInertia( const double* stateVars ) const override
-    {
-      return baseMaterial->getNonlocalMicroInertia(
-        this->stateLayout.getPtr( const_cast< double* >( stateVars ), baseMaterialSlot ) )[0];
-    }
-
-    /**
      * @brief Initialise the state: @f$ \boldsymbol{F}^{(n)} = \boldsymbol{I} @f$,
-     *        @f$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} @f$, @f$ \bar{N}^{(n)} = 0 @f$, plus the
-     *        wrapped material's own state.
+     *        @f$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} @f$, @f$ \bar{\boldsymbol{N}}^{(n)} = \boldsymbol{0} @f$,
+     *        plus the wrapped material's own state.
      * @param[in,out] stateVars  Pointer to the state variable array.
      * @param[in]     nStateVars Number of state variables.
      */
@@ -230,10 +186,10 @@ namespace Marmot::Materials {
       double* sigmaN = this->stateLayout.getPtr( stateVars, stressSlot );
       std::fill( sigmaN, sigmaN + 6, 0.0 );
 
-      *this->stateLayout.getPtr( stateVars, nonlocalFieldSlot ) = 0.0;
+      double* Nn = this->stateLayout.getPtr( stateVars, nonlocalFieldSlot );
+      std::fill( Nn, Nn + nNonlocal, 0.0 );
 
-      baseMaterial->initializeYourself( this->stateLayout.getPtr( stateVars, baseMaterialSlot ),
-                                        baseMaterial->getNumberOfRequiredStateVars() );
+      this->initializeBaseMaterial( stateVars );
     }
 
     /**
@@ -274,20 +230,6 @@ namespace Marmot::Materials {
     }
 
   protected:
-    /// @brief Convert an Eigen 3x3 matrix into a Fastor tensor.
-    static Marmot::Math::Tensors::FastorTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
-    {
-      Marmot::Math::Tensors::FastorTensors::Tensor33d t;
-      Marmot::Math::Tensors::mapEigenToFastor( t ) = m;
-      return t;
-    }
-
-    /// @brief Convert a Fastor 3x3 tensor into an Eigen matrix.
-    static Eigen::Matrix3d toEigen( const Marmot::Math::Tensors::FastorTensors::Tensor33d& t )
-    {
-      return Eigen::Matrix3d( Marmot::Math::Tensors::mapEigenToFastor( t ) );
-    }
-
     /**
      * @brief Recover @f$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
      *        \partial\boldsymbol{\sigma}_{\text{rot}} @f$ by forward differences.
@@ -299,11 +241,11 @@ namespace Marmot::Materials {
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */
-    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&  sigmaRotVoigt,
-                                                     const std::vector< double >&   baseStateOld,
-                                                     const BaseMaterial::increment& inc,
-                                                     double                         elasticEnergyDensity,
-                                                     double                         dissipation ) const
+    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&           sigmaRotVoigt,
+                                                     const std::vector< double >&            baseStateOld,
+                                                     const typename BaseMaterial::increment& inc,
+                                                     double                                  elasticEnergyDensity,
+                                                     double                                  dissipation ) const
     {
       const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
       std::vector< double > scratch( nBase );
@@ -315,7 +257,7 @@ namespace Marmot::Materials {
         if ( nBase > 0 )
           std::memcpy( scratch.data(), baseStateOld.data(), nBase * sizeof( double ) );
 
-        BaseMaterial::response perturbed;
+        typename BaseMaterial::response perturbed;
         perturbed.stress = sigmaRot;
         // BaseMaterial::response has no default member initialisers; a material that reads or
         // accumulates into KLocal/c would otherwise see garbage.
@@ -364,10 +306,11 @@ namespace Marmot::Materials {
       TensorMap33d Fn_ref = this->stateLayout.template getAs< TensorMap33d >( response.stateVars,
                                                                               deformationGradientSlot );
       Eigen::Map< Marmot::Math::Vector6d >
-              sigmaN_n  = this->stateLayout.template getAs< Eigen::Map< Marmot::Math::Vector6d > >( response.stateVars,
+        sigmaN_n = this->stateLayout.template getAs< Eigen::Map< Marmot::Math::Vector6d > >( response.stateVars,
                                                                                              stressSlot );
-      double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
-      double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
+      Eigen::Map< NonlocalVector >
+        Nn = this->stateLayout.template getAs< Eigen::Map< NonlocalVector > >( response.stateVars, nonlocalFieldSlot );
+      double* baseState = this->baseMaterialState( response.stateVars );
 
       // A zeroed state vector means pristine, so an all-zero F_n is the identity here -- without this,
       // F_mid would be singular on the very first increment for a host that never calls initializeYourself().
@@ -401,16 +344,11 @@ namespace Marmot::Materials {
       const Marmot::Math::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
       const Marmot::Math::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
 
-      // The interface hands over the total nonlocal field; the wrapped material wants the increment too.
-      const double nNew = deformation.N;
-      const double dN   = nNew - *nPtr;
-
-      BaseMaterial::increment inc;
-      inc.dStrain = dEpsVoigt;
-      inc.K( 0 )  = nNew;
-      inc.dK( 0 ) = dN;
-      inc.time    = timeIncrement.time;
-      inc.dT      = timeIncrement.dT;
+      // The interface hands over the total nonlocal fields; the wrapped material wants the increment too.
+      const typename BaseMaterial::increment inc = this->baseMaterialIncrement( deformation.N,
+                                                                                Nn,
+                                                                                dEpsVoigt,
+                                                                                timeIncrement );
 
       /* Converted back out of the REFERENCE-volume convention, because the round trip has to close.
        * This interface documents both quantities as densities per unit reference volume and the
@@ -429,7 +367,7 @@ namespace Marmot::Materials {
       const double seedEnergyDensity = Jn > 0.0 ? response.elasticEnergyDensity / Jn : response.elasticEnergyDensity;
       const double seedDissipation   = Jn > 0.0 ? response.dissipation / Jn : response.dissipation;
 
-      BaseMaterial::response res;
+      typename BaseMaterial::response res;
       res.stress = sigmaRotVoigt;
       // BaseMaterial::response has no default member initialisers, so KLocal and c are otherwise
       // indeterminate on entry -- harmless for a material that only writes them, but a material that
@@ -445,7 +383,7 @@ namespace Marmot::Materials {
        * consistent tangent per quadrature point per increment, on the very path this wrapper exists
        * to serve.
        */
-      BaseMaterial::tangents tan;
+      typename BaseMaterial::tangents tan;
       if ( computeTangent )
         baseMaterial->computeStress( res, tan, inc );
       else
@@ -459,9 +397,10 @@ namespace Marmot::Materials {
       const Tensor33d Finv = inverse( Fn1 );
 
       response.tau = J * sigmaNp1;
-      response.L   = res.KLocal( 0 );
+      response.L   = res.KLocal;
       // The interface reports the radius, the wrapped material the interaction c = R^2.
-      response.nonLocalRadius = std::sqrt( std::max( 0.0, res.c( 0 ) ) );
+      for ( int K = 0; K < nNonlocal; K++ )
+        response.nonLocalRadius( K ) = std::sqrt( std::max( 0.0, res.c( K ) ) );
       // The wrapped material reports densities per unit current volume; the finite-strain consumers
       // integrate against the reference volume.
       response.elasticEnergyDensity = J * res.elasticEnergyDensity;
@@ -504,24 +443,26 @@ namespace Marmot::Materials {
 
         tangents.dTau_dF = einsum< ij, kl, to_ijkl >( sigmaNp1, dJ_dF ) + J * dSig_dF;
 
-        // The nonlocal field does not deform, so it reaches the Kirchhoff stress through sigma alone.
-        const Tensor33d dSig_dN = fromEigen(
-          stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dStressddK.col( 0 ) ) ) );
-        tangents.dTau_dN = J * dSig_dN;
+        for ( int K = 0; K < nNonlocal; K++ ) {
+          // The nonlocal fields do not deform, so they reach the Kirchhoff stress through sigma alone.
+          const Tensor33d dSig_dN = fromEigen(
+            stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dStressddK.col( K ) ) ) );
+          tangents.dTau_dN[K] = J * dSig_dN;
 
-        // dKLocal/d(dEps) is reported against the engineering-shear Voigt strain, so scattering it as a
-        // stress -- shear entries placed unhalved on both off-diagonals -- is what makes the contraction
-        // over all nine (i,j) reproduce the engineering shear exactly once.
-        const Tensor33d dL_dEps = fromEigen(
-          stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dKLocalddStrain.row( 0 ).transpose() ) ) );
-        tangents.dL_dF = einsum< ij, ijKL, Fastor::OIndex< K_, L_ > >( dL_dEps, dEps_dF );
-        tangents.dL_dN = tan.dKLocalddK( 0, 0 );
+          // dKLocal/d(dEps) is reported against the engineering-shear Voigt strain, so scattering it as a
+          // stress -- shear entries placed unhalved on both off-diagonals -- is what makes the contraction
+          // over all nine (i,j) reproduce the engineering shear exactly once.
+          const Tensor33d dL_dEps = fromEigen(
+            stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dKLocalddStrain.row( K ).transpose() ) ) );
+          tangents.dL_dF[K] = einsum< ij, ijKL, Fastor::OIndex< K_, L_ > >( dL_dEps, dEps_dF );
+        }
+        tangents.dL_dN = tan.dKLocalddK;
       }
 
       // --- commit ---
       sigmaN_n = sigmaNp1Voigt;
       Fn_ref   = Fn1;
-      *nPtr    = nNew;
+      Nn       = deformation.N;
     }
 
     /**
@@ -550,7 +491,7 @@ namespace Marmot::Materials {
       std::vector< double >  scratch( nTotal );
       AlgorithmicModuli< 3 > unused;
 
-      auto evaluate = [&]( const Tensor33d& F, double N ) -> std::pair< Tensor33d, double > {
+      auto evaluate = [&]( const Tensor33d& F, const NonlocalVector& N ) -> std::pair< Tensor33d, NonlocalVector > {
         std::memcpy( scratch.data(), stateOld.data(), nTotal * sizeof( double ) );
         ConstitutiveResponse< 3 > perturbed;
         perturbed.elasticEnergyDensity = response.elasticEnergyDensity;
@@ -575,20 +516,25 @@ namespace Marmot::Materials {
             for ( int j = 0; j < 3; ++j )
               tangents.dTau_dF( i, j, k, l ) = ( tauPerturbed( i, j ) - tau0( i, j ) ) / h;
 
-          tangents.dL_dF( k, l ) = ( LPerturbed - L0 ) / h;
+          for ( int K = 0; K < nNonlocal; ++K )
+            tangents.dL_dF[K]( k, l ) = ( LPerturbed( K ) - L0( K ) ) / h;
         }
 
-      {
+      for ( int M = 0; M < nNonlocal; ++M ) {
         const double hN = std::sqrt( std::numeric_limits< double >::epsilon() ) *
-                          std::max( 1.0, std::abs( deformation.N ) );
+                          std::max( 1.0, std::abs( deformation.N( M ) ) );
 
-        const auto [tauPerturbed, LPerturbed] = evaluate( deformation.F, deformation.N + hN );
+        NonlocalVector N = deformation.N;
+        N( M ) += hN;
+
+        const auto [tauPerturbed, LPerturbed] = evaluate( deformation.F, N );
 
         for ( int i = 0; i < 3; ++i )
           for ( int j = 0; j < 3; ++j )
-            tangents.dTau_dN( i, j ) = ( tauPerturbed( i, j ) - tau0( i, j ) ) / hN;
+            tangents.dTau_dN[M]( i, j ) = ( tauPerturbed( i, j ) - tau0( i, j ) ) / hN;
 
-        tangents.dL_dN = ( LPerturbed - L0 ) / hN;
+        for ( int K = 0; K < nNonlocal; ++K )
+          tangents.dL_dN( K, M ) = ( LPerturbed( K ) - L0( K ) ) / hN;
       }
     }
   };

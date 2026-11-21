@@ -61,6 +61,11 @@ namespace Marmot::Discretizations::Meshfree {
    * -# per increment: assignMeshfreeKernelFunctions(), optionally the VCI methods (vci_...), then repeatedly
    *    computePhysicsKernels() and the load methods, and after convergence acceptStateAndPosition().
    *
+   * That is an implicit increment. The calls of an explicit increment, in their order, and the four contracts that
+   * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the bound comes after the
+   * force, the material's tangent is required) are written down once, on the page "Meshfree Particles" of the
+   * documentation, section "The explicit life cycle of a particle".
+   *
    * **State contract:** the state variable block is a *trial* copy. Before every call of computePhysicsKernels(),
    * the host restores it to the values committed by the last acceptStateAndPosition(), and @c dQ is the total
    * increment since that state (not the Newton correction). Implementations may therefore update their state in
@@ -83,6 +88,10 @@ namespace Marmot::Discretizations::Meshfree {
    * The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen,
    * Hillman and Rüter (2013), see the vci_... methods. The global assembly and solution of the VCI correction is
    * done by the host framework.
+   *
+   * Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing
+   * ones do not move: a library and a host built against different versions then fail on the one new call instead of
+   * silently calling the wrong method. This is why methods that belong together by subject may stand apart.
    */
 
   class Particle {
@@ -139,7 +148,9 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Accept the current state after a converged increment and move the particle to the new configuration.
      * @details The configuration reached becomes the reference intermediate configuration @f$ Y @f$ of the next
-     * increment (updated position, volume, geometry and, for VCI, the monomial basis).
+     * increment (updated position, volume, geometry and, for VCI, the monomial basis). It must be idempotent: a host
+     * may accept twice without an increment in between (calls 2 and 3 of an explicit increment, see the page
+     * "Meshfree Particles", section "The explicit life cycle of a particle").
      */
     virtual void acceptStateAndPosition() = 0;
 
@@ -252,72 +263,100 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Explicit dynamics: update the kinematics and the material state for the dof increment.
-     * @details The default implementation does nothing.
+     * @details Call 1 of an explicit increment; a zero-length increment leaves the rates alone. The call order of an
+     * explicit increment and its contracts: the page "Meshfree Particles", section "The explicit life cycle of a
+     * particle".
      * @param[in] dQ Increment of the nodal dofs, node-wise.
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would be integrated with its
+     * mass and without its force, silently.
      */
     virtual void updatePhysicsExplicit( [[maybe_unused]] const double* dQ,
                                         [[maybe_unused]] double        timeNew,
-                                        [[maybe_unused]] double        dT ){};
+                                        [[maybe_unused]] double        dT )
+    {
+      throw std::runtime_error( "Particle::updatePhysicsExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute the internal force vector for the state set by updatePhysicsExplicit().
-     * @details The default implementation does nothing.
+     * @details Call 5 of an explicit increment, on the kernel functions of the new configuration. The call order of an
+     * explicit increment and its contracts: the page "Meshfree Particles", section "The explicit life cycle of a
+     * particle".
      * @param[in,out] fInt Internal force vector (node-wise).
+     * @throws std::runtime_error in the default implementation: a particle without it would be integrated with its
+     * mass and without its force, silently.
      */
-    virtual void computePhysicsKernelsExplicit( [[maybe_unused]] double* fInt ){};
+    virtual void computePhysicsKernelsExplicit( [[maybe_unused]] double* fInt )
+    {
+      throw std::runtime_error( "Particle::computePhysicsKernelsExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute a body load (no tangent).
-     * @details The default implementation does nothing.
      * @param[in] type Load type, a value of getSupportedBodyLoadTypes().
      * @param[in] load Load values.
      * @param[in,out] fExt External force vector (node-wise).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
+     * silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through
+     * computeBodyLoad() and discards the tangent.
      */
     virtual void computeBodyLoadExplicit( [[maybe_unused]] int           type,
                                           [[maybe_unused]] const double* load,
                                           [[maybe_unused]] double*       fExt,
                                           [[maybe_unused]] double        timeNew,
-                                          [[maybe_unused]] double        dT ) const {};
+                                          [[maybe_unused]] double        dT ) const
+    {
+      throw std::runtime_error( "Particle::computeBodyLoadExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute a distributed load (no tangent).
-     * @details The default implementation does nothing.
      * @param[in] type Load type, a value of getSupportedDistributedLoadTypes().
      * @param[in] boundaryFaceID ID of the loaded face (1-based).
      * @param[in] load Load values.
      * @param[in,out] fExt External force vector (node-wise).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
+     * silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through
+     * computeDistributedLoad() and discards the tangent.
      */
     virtual void computeDistributedLoadExplicit( [[maybe_unused]] int           type,
                                                  [[maybe_unused]] int           boundaryFaceID,
                                                  [[maybe_unused]] const double* load,
                                                  [[maybe_unused]] double*       fExt,
                                                  [[maybe_unused]] double        timeNew,
-                                                 [[maybe_unused]] double        dT ) const {};
+                                                 [[maybe_unused]] double        dT ) const
+    {
+      throw std::runtime_error( "Particle::computeDistributedLoadExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Compute the lumped (row-sum) inertia contribution of the particle.
+     * @details Call 6 of an explicit increment. The call order of an explicit increment and its contracts: the page
+     * "Meshfree Particles", section "The explicit life cycle of a particle".
      * @param[in,out] mLumped Lumped mass vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
     virtual void computeLumpedInertia( [[maybe_unused]] double* mLumped ) const
     {
-      throw std::runtime_error( "Not implemented yet!" );
+      throw std::runtime_error( "Particle::computeLumpedInertia: not implemented for this particle." );
     };
 
     /**
      * @brief Compute the lumped momentum contribution of the particle.
+     * @details Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and
+     * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
      * @param[in,out] mLumped Lumped momentum vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
     virtual void computeLumpedMomentum( [[maybe_unused]] double* mLumped ) const
     {
-      throw std::runtime_error( "Not implemented yet!" );
+      throw std::runtime_error( "Particle::computeLumpedMomentum: not implemented for this particle." );
     };
 
     /**
@@ -412,6 +451,99 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] value Values of the initial condition.
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
+
+    /**
+     * @brief Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle.
+     * @details The coefficient of each field's FIRST time derivative, node-wise and in the layout of
+     * computeLumpedInertia(), which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced
+     * field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing,
+     * i.e. no damping, which is the case of a displacement field. Call 7 of an explicit increment; the call order and
+     * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
+     * @param[in,out] cLumped Lumped damping vector (node-wise); entries left untouched mean no damping.
+     */
+    virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
+
+    /**
+     * @brief Explicit dynamics: add an upper bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, the absolute value of
+     * the particle's stiffness at its current state times nonnegative weights, without assembling the stiffness.
+     * @details @f$ \boldsymbol{K} @f$ is the tangent of computePhysicsKernels() at a zero increment, without the
+     * inertia: what a host bounds the stable time increment of its explicit scheme with (e.g. by the Collatz-Wielandt
+     * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only). The bound costs
+     * O(nodes) instead of the O(nodes^2) of the stiffness; see AbsoluteTangentBound. The material point is evaluated
+     * at a zero increment on the working copy of the state, which the host resets afterwards, as after a trial
+     * computePhysicsKernels(). That evaluation also overwrites the response and the tangents the material point keeps
+     * (not state variables, so the reset does not restore them): in explicit dynamics, call it after
+     * computePhysicsKernelsExplicit() of the increment, which reads them: it is call 8 of an explicit increment (the
+     * page "Meshfree Particles", section "The explicit life cycle of a particle"). The default throws: a particle with
+     * an own inertia must provide it.
+     * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, nDof x nColumns, in the
+     * dof order of the particle.
+     * @param[in] nColumns The number of columns of @p columnWeights.
+     * @param[in,out] bound Column-major, nDof x nColumns: the bound is added.
+     * @param[in] timeNew The time of the evaluation.
+     * @param[in] dT The time increment of the evaluation.
+     */
+    virtual void computeBoundOfAbsoluteStiffnessTimes( [[maybe_unused]] const double* columnWeights,
+                                                       [[maybe_unused]] int           nColumns,
+                                                       [[maybe_unused]] double*       bound,
+                                                       [[maybe_unused]] double        timeNew,
+                                                       [[maybe_unused]] double        dT )
+    {
+      throw std::runtime_error( "Particle::computeBoundOfAbsoluteStiffnessTimes: not implemented for this particle." );
+    };
+
+    /**
+     * @brief The interpolation vector of a point attached to the particle: the coefficients @f$ G_B @f$ with which
+     * the particle moves that point in its next increment,
+     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{Q}_B @f$.
+     * @details A particle moves as a whole: its center by @f$ \sum_B N_B\,\Delta\boldsymbol{Q}_B @f$ and its domain
+     * with the homogeneous deformation gradient increment
+     * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B / \partial
+     * \boldsymbol{Y} @f$ about the center @f$ \boldsymbol{Y}_c @f$, with the shape functions and the (possibly
+     * smoothed) gradients that drive its kinematics. A point @f$ \boldsymbol{Y} @f$ attached to the particle (its
+     * center, a vertex, a face center) therefore moves with
+     * @f[
+     *   G_B = N_B + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,
+     * @f]
+     * which is not getInterpolationVector() at that point, @f$ N_B(\boldsymbol{Y}) @f$, except at the center. A
+     * constraint that measures a point of the particle where the particle puts it must distribute its force
+     * @f$ \boldsymbol{f} @f$ with the same vector, @f$ \boldsymbol{f}_B = G_B\,\boldsymbol{f} @f$: only then is the
+     * force the transpose of the kinematics (the work of the force on the nodes is the work on the point), so that a
+     * penalty constraint has a symmetric stiffness and is conservative. The vector sums to one (a rigid translation
+     * moves the point as the nodes), so the force is distributed without a net residue. It has no default, unlike the
+     * methods next to it: the only candidate, the shape functions at the point, is precisely the wrong answer.
+     * @param[out] vec Array of @f$ n_{\text{nodes}} @f$ values.
+     * @param[in] coordinates The point in the reference intermediate configuration (getDimension() values).
+     */
+    virtual void getAttachedPointInterpolationVector( double* vec, const double* coordinates ) const = 0;
+
+  protected:
+    /**
+     * @brief The interpolation vector of a point attached to a particle (see getAttachedPointInterpolationVector()),
+     * @f$ G_B = N_B + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) @f$, from the
+     * shape functions and gradients that drive the particle's kinematics.
+     * @param[out] vec Array of @p nNodes values.
+     * @param[in] N Shape functions at the center, @p nNodes values.
+     * @param[in] dN_dY Their gradients, column-major @p nDim x @p nNodes.
+     * @param[in] centerCoordinates The center @f$ \boldsymbol{Y}_c @f$ (@p nDim values).
+     * @param[in] coordinates The attached point @f$ \boldsymbol{Y} @f$ (@p nDim values).
+     * @param[in] nDim The number of dimensions.
+     * @param[in] nNodes The number of nodes.
+     */
+    static void interpolateAttachedPoint( double*       vec,
+                                          const double* N,
+                                          const double* dN_dY,
+                                          const double* centerCoordinates,
+                                          const double* coordinates,
+                                          int           nDim,
+                                          int           nNodes )
+    {
+      for ( int B = 0; B < nNodes; B++ ) {
+        vec[B] = N[B];
+        for ( int i = 0; i < nDim; i++ )
+          vec[B] += dN_dY[B * nDim + i] * ( coordinates[i] - centerCoordinates[i] );
+      }
+    }
   };
 
 } // namespace Marmot::Discretizations::Meshfree

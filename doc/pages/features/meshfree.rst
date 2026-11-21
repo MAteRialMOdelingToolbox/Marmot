@@ -43,9 +43,10 @@ Two formulations are available, each for MPM (material point and cell) and RKPM 
 
 - **Displacement**: finite-strain displacement formulation, for materials of the ``Marmot::Materials::MaterialFiniteStrain``
   interface;
-- **GradientEnhancedFiniteStrain**: finite-strain displacement formulation coupled to a scalar nonlocal field
-  (implicit-gradient regularization), for materials of the ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` interface,
-  e.g. :doc:`gradientenhancedcompressibleneohookedamage` and :doc:`gradientenhancedfinitestraindruckerprager`. It is
+- **GradientEnhancedFiniteStrain**: finite-strain displacement formulation coupled to nonlocal fields
+  (implicit-gradient regularization), for materials of the ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain<n>``
+  interface, e.g. :doc:`gradientenhancedcompressibleneohookedamage` and :doc:`gradientenhancedfinitestraindruckerprager`
+  (one nonlocal variable) or ``GM7/COROTATIONAL`` (six, the particles ``GradientEnhanced6FiniteStrain...``). It is
   the meshfree counterpart of :doc:`gradientenhancedfinitestraindisplacementelement`.
 
 Registration and naming
