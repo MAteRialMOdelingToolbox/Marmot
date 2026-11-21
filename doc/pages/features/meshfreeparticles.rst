@@ -80,13 +80,19 @@ For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplici
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
 time derivatives), ``computeLumpedDamping`` (those of the first: the nonlocal viscosity of a gradient-enhanced field,
 which integrates a first-order field on its own and damps a second-order one) and ``computeLumpedMomentum``.
-``updatePhysicsExplicit`` and ``computePhysicsKernelsExplicit`` default to doing nothing and the lumped damping to no
-damping; the explicit loads, the lumped inertia and the momentum throw unless a particle overrides them, so that a load
-or a mass is never left out silently. A particle gives no critical time step: the stable increment of a particle
-discretization is a property of the assembled system (see :doc:`gradientenhancedfinitestrainparticle`). What the host
-needs from a particle to bound it is ``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of
-:math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness at the current state and nonnegative weights
-:math:`\boldsymbol{W}`, computed without the stiffness (see below). It throws unless a particle overrides it.
+The lumped damping defaults to no damping; ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, the explicit
+loads, the lumped inertia and the momentum throw unless a particle overrides them, so that a force, a load or a mass is
+never left out silently: a particle without the explicit path is refused by an explicit host, instead of being
+integrated with its mass and without its force. The registered particles with the explicit path are the NSNI
+particles of the displacement family (``Displacement*xNSNI/...``) and all particles of the gradient-enhanced family
+(``GradientEnhanced*FiniteStrain*/...``); the point, SQCNI, SNNI and SDI particles of the displacement family have
+none. EdelweissMeshfree loads the particles of an explicit analysis through ``computeBodyLoad`` and
+``computeDistributedLoad`` and discards their tangent; it does not call the explicit loads. A particle gives no
+critical time step: the stable increment of a particle discretization is a property of the assembled system (see
+:doc:`gradientenhancedfinitestrainparticle`). What the host needs from a particle to bound it is
+``computeBoundOfAbsoluteStiffnessTimes``, an upper bound of :math:`|\boldsymbol{K}|\,\boldsymbol{W}` for its stiffness
+at the current state and nonnegative weights :math:`\boldsymbol{W}`, computed without the stiffness (see below). It
+throws unless a particle overrides it.
 
 **Dof layout.** Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 ``dofIndicesPermutationPattern``) is used: the residual and the stiffness matrix are stored node-wise, in the order in
@@ -415,8 +421,8 @@ stores on the tensor maps into it (without the padding, a block starting at an o
 with GCC 14.2 at ``-O3``). The offsets are relative to the start of the particle block, so the host framework must pass
 a suitably aligned block for the absolute alignment to hold. ``getNumberOfRequiredStateVars`` includes the padding.
 
-``GenericSDIParticle`` does not override the explicit-dynamics methods, so the SDI particles inherit their empty
-defaults from ``Marmot::Discretizations::Meshfree::Particle``.
+``GenericSDIParticle`` does not override the explicit-dynamics methods, so the SDI particles refuse an explicit
+analysis with the defaults of ``Marmot::Discretizations::Meshfree::Particle``.
 
 The particle factory
 --------------------
