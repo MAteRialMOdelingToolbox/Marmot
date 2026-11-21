@@ -3166,31 +3166,35 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
                                       { "C3D20", 3, 20, {} },
                                       { "C3D20R", 3, 20, {} } };
 
+  // the bound is safe for every nu in [0, 1/2), the two ends included; it is close to the stable increment at nu = 0.3
   for ( const auto& c : cases )
-    for ( const double lengthOfLastAxis : { 1.0, 0.25 } ) {
-      Marmot::Testing::ElementUnderTest underTest( c.type,
-                                                   Marmot::Testing::unitElementCoordinates( c.nDim,
-                                                                                            c.nNodes,
-                                                                                            lengthOfLastAxis ),
-                                                   c.properties,
-                                                   "LINEARELASTIC",
-                                                   { 1000.0, 0.3, 1.0 } );
-      const std::vector< double >       QTotal( underTest.element->getNDofPerElement(), 0.0 );
-      double                            criticalTimeStep = 0.0;
-      underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
+    for ( const double lengthOfLastAxis : { 1.0, 0.25 } )
+      for ( const double nu : { 0.0, 0.3, 0.49 } ) {
+        Marmot::Testing::ElementUnderTest underTest( c.type,
+                                                     Marmot::Testing::unitElementCoordinates( c.nDim,
+                                                                                              c.nNodes,
+                                                                                              lengthOfLastAxis ),
+                                                     c.properties,
+                                                     "LINEARELASTIC",
+                                                     { 1000.0, nu, 1.0 } );
+        const std::vector< double >       QTotal( underTest.element->getNDofPerElement(), 0.0 );
+        double                            criticalTimeStep = 0.0;
+        underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
-                                                                                           c.nDim * c.nNodes );
+        const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
+                                                                                             c.nDim * c.nNodes );
 
-      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
-                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " exceeds the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
-      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
-                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " is more than 30 % below the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
-    }
+        const std::string at = c.type + " at nu = " + std::to_string( nu );
+        throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+                                 at + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                   " exceeds the stable increment of the element " +
+                                   std::to_string( stableTimeIncrement ) + "." );
+        if ( nu == 0.3 )
+          throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                                   at + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                     " is more than 30 % below the stable increment of the element " +
+                                     std::to_string( stableTimeIncrement ) + "." );
+      }
 }
 
 int main()
