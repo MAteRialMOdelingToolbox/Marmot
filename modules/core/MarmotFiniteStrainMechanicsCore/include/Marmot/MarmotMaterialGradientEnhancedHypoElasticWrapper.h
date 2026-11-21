@@ -59,10 +59,10 @@ namespace Marmot::Materials {
    * know themselves in the wrapped material, and hand it the nonlocal fields together with their increment. The
    * finite-strain interface passes the TOTAL nonlocal fields, while the wrapped material wants the fields **and
    * their increment**; the increment is formed against the value of the last call, which each decorator keeps in a
-   * slot of its own layout (nonlocalFields() below). The kinematics -- which strain increment the wrapped material is
-   * driven by, and which stress it returns -- is the derived class' own: GradientEnhancedHughesWingetWrapper (an
-   * objective rate, for a material incremental in stress) and GradientEnhancedCorotationalWrapper (the logarithmic
-   * strain in the frame of the polar rotation, for any material).
+   * slot of its own layout (baseMaterialIncrement() below). The kinematics -- which strain increment the wrapped
+   * material is driven by, and which stress it returns -- is the derived class' own:
+   * GradientEnhancedHughesWingetWrapper (an objective rate, for a material incremental in stress) and
+   * GradientEnhancedCorotationalWrapper (the logarithmic strain in the frame of the polar rotation, for any material).
    *
    * Each derived class builds its layout in its constructor: its own slots, a slot for the nonlocal fields of
    * the last call, and baseMaterialSlot, of size baseMaterial->getNumberOfRequiredStateVars().
