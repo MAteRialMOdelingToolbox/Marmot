@@ -315,6 +315,13 @@ namespace Marmot::Utilities {
     }
 
     /**
+     * @brief Check whether a variable of that name is registered.
+     * @param name Name of the variable.
+     * @return `true` if add() was called with @p name.
+     */
+    bool contains( const std::string& name ) const { return name_to_index.contains( name ); }
+
+    /**
      * @brief Return the total size (in units of `double`) of the state layout.
      * This is the size of the state vector required to hold all registered variables.
      */

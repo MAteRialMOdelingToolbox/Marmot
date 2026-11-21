@@ -659,6 +659,15 @@ namespace {
                                  << name << ": explicit internal force differs from the implicit one, "
                                  << ( P - PExplicit ).norm() / P.norm() );
     }
+    // every other particle refuses the explicit path, instead of being integrated with its mass and without its force
+    else {
+      Setup< nDim >         s( name, v, V );
+      const Eigen::VectorXd dQ        = increment( s.nDof(), 0.03 );
+      Eigen::VectorXd       PExplicit = Eigen::VectorXd::Zero( s.nDof() );
+      throwExceptionOnFailure( throws( [&]() { s.particle->updatePhysicsExplicit( dQ.data(), 1.0, 1.0 ); } ) &&
+                                 throws( [&]() { s.particle->computePhysicsKernelsExplicit( PExplicit.data() ); } ),
+                               name + ": a particle without the explicit path must refuse it" );
+    }
 
     // the weak-form correction on all faces balances the internal force of a homogeneous deformation (divergence
     // theorem of the smoothed gradient), before and after an accepted finite increment
@@ -727,7 +736,7 @@ namespace {
         Eigen::MatrixXd       K = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
         s.trial( dQ );
         s.particle->computeDistributedLoad( type, 2, &p, P.data(), K.data(), 1.0, 1.0 );
-        // only the pressure is available explicitly, and the SDI particles inherit the empty explicit interface
+        // only the pressure is available explicitly, and the SDI particles refuse the explicit loads
         if ( throws(
                [&]() { s.particle->computeDistributedLoadExplicit( type, 2, &p, PExplicit.data(), 1.0, 1.0 ); } ) ||
              PExplicit.norm() == 0 )
@@ -780,6 +789,14 @@ int main()
   };
 
   std::vector< std::function< void() > > testFunctions;
+  testFunctions.push_back( [&]() {
+    for ( const auto& [name, shape] : planeStrain )
+      throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( name ), name + " is registered" );
+    throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( "displacement/planestrain/point" ),
+                             "the registry is case-insensitive" );
+    throwExceptionOnFailure( !Marmot::Registry::ParticleFactory::isRegistered( "NoSuchParticle/3D/Hexa" ),
+                             "an unknown name is not registered" );
+  } );
   // the NSNI stabilization's tangent omits d2tau/dF2 (not exposed by the material interface), so it is
   // approximate by construction: measured 1.1e-3 (2D) and 1.3e-3 (3D) relative error; all others are exact
   auto tolerance = []( const std::string& name ) { return name.find( "NSNI" ) != std::string::npos ? 5e-3 : 1e-7; };

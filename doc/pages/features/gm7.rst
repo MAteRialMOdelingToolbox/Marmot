@@ -99,10 +99,22 @@ these moved up by one.
      - ``nonlocalViscosity``
      - Optional viscosity of the nonlocal fields, applied to all six components (requires all preceding
        properties)
+   * - 16
+     - ``nonlocalMicroInertia``
+     - Optional micro-inertia of the nonlocal fields in time squared, applied to all six components (requires all
+       preceding properties; default 0, i.e. first-order nonlocal fields). It makes the nonlocal fields second order
+       in time, so that the stable increment of an explicit analysis falls off with the element size rather than
+       with its square. Admissible up to :math:`\eta^2/4` (with :math:`\eta` the ``nonlocalViscosity``), where the
+       reaction mode of the nonlocal fields is critically damped; a larger (underdamped), negative or non-finite value
+       is rejected.
 
 The material is registered as ``GM7`` in the general gradient-enhanced hypoelastic material factory (six nonlocal
 fields), and is used with the six-field ``GeneralGradientEnhancedDisplacementFiniteElement`` elements (``G6GCPS8``,
-``G6GC3D8``, ``G6GC3D20``, ...).
+``G6GC3D8``, ``G6GC3D20``, ...). At finite strains it is registered as ``GM7/COROTATIONAL`` (same properties) in the
+gradient-enhanced finite-strain material factory with six nonlocal fields, for the particles
+``GradientEnhanced6FiniteStrain...`` (:doc:`gradientenhancedfinitestrainparticle`): GM7 is then driven by the
+logarithmic strain in the frame of the polar rotation, see :doc:`gradientenhancedcorotational`. It is not registered
+with the Hughes-Winget wrapper, since it recomputes its stress from its stored strains.
 
 The state variables are the volumetric stress ``sig_v0``, ``zeta``, the microplane stresses ``sig_N0``, ``sig_M0``,
 ``sig_L0``, the extremal over-nonlocal normal strains ``eps_N0pos``, ``eps_N0neg``, the macroscopic over-nonlocal

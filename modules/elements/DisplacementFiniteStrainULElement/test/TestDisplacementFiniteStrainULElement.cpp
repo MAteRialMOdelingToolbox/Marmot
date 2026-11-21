@@ -1,5 +1,6 @@
 #include "Marmot/DisplacementFiniteStrainULElement.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotElementTesting.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
@@ -933,54 +934,48 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 }
 
 // ---------------------------------------------------------------------------------------------
-// computeCriticalTimeStepForExplicitDynamics()
+// computeCriticalTimeStepForExplicitDynamics(): the element's own eigenvalue bound, safe and close
 // ---------------------------------------------------------------------------------------------
 
-void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
+void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
 {
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
-  const auto secType = DisplacementFiniteStrainULElement< 3, 8 >::SectionType::Solid;
+  struct Case {
+    std::string           type;
+    int                   nDim;
+    int                   nNodes;
+    std::vector< double > properties;
+  };
+  const std::vector< Case > cases = { { "CPE8UL", 2, 8, { 1.0 } },
+                                      { "CPE8RUL", 2, 8, { 1.0 } },
+                                      { "CX8UL", 2, 8, { 1.0 } },
+                                      { "C3D8UL", 3, 8, {} },
+                                      { "C3D20UL", 3, 20, {} },
+                                      { "C3D20RUL", 3, 20, {} } };
 
-  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  for ( const auto& c : cases )
+    for ( const double lengthOfLastAxis : { 1.0, 0.25 } ) {
+      Marmot::Testing::ElementUnderTest
+                                  underTest( c.type,
+                   Marmot::Testing::unitElementCoordinates( c.nDim, c.nNodes, lengthOfLastAxis ),
+                   c.properties,
+                   "COMPRESSIBLENEOHOOKE",
+                                             { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1.0 } );
+      const std::vector< double > QTotal( underTest.element->getNDofPerElement(), 0.0 );
+      double                      criticalTimeStep = 0.0;
+      underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-  auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
-  element->assignNodeCoordinates( nodeCoordsVec.data() );
+      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
+                                                                                           c.nDim * c.nNodes );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
-                                                            matProps.data(),
-                                                            static_cast< int >( matProps.size() ) );
-  element->assignProperty( materialSection );
-
-  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
-  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
-  element->assignStateVars( stateVars.data(), nStateVarsTotal );
-  element->initializeYourself();
-
-  const int                   nDof = element->getNDofPerElement();
-  const std::vector< double > QTotal( nDof, 0.0 );
-
-  double criticalTimeStep = 0.0;
-  element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
-
-  const auto& qp0 = element->qps[0];
-
-  Fastor::Tensor< double, 3, 3 > F( 0.0 );
-  F( 0, 0 ) = 1.0;
-  F( 1, 1 ) = 1.0;
-  F( 2, 2 ) = 1.0;
-
-  const double c = qp0.material->getMaximumWaveSpeed( qp0.managedStateVars->materialStateVars.data(), F );
-
-  // Hexa8 is a regular, linear (non-serendipity) element, so the mass-distribution factor (see
-  // MarmotMassLumping.h) is exactly 1 for every node, and the characteristic length of the unit
-  // cube is 2 * 0.5 = 1 (twice the smallest Jacobian singular value).
-  const double expected = 1.0 / c;
-
-  throwExceptionOnFailure( checkIfEqual( criticalTimeStep, expected, 1e-8 ),
-                           "Hexa8 critical time step does not match the material wave speed for a unit mass "
-                           "distribution factor." );
+      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " exceeds the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " is more than 30 % below the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1372,7 +1367,7 @@ int main()
     testComputeConsistentInertiaConservesTotalMassPerDirection,
     testConsistentInertiaHexa20IsIndependentOfTheElementRule,
     testComputeBodyForceConservesTotalForcePerDirection,
-    testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8,
+    testCriticalTimeStepBoundsTheStableIncrementOfTheElement,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
     testGetStateViewReturnsQuadraturePointManagedState,
     testComputeDistributedLoadThrowsForUnhandledLoadType,

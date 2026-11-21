@@ -124,7 +124,7 @@ namespace {
   using WrapperNumerical = GradientEnhancedHughesWingetWrapper< IncrementalGradientStub,
                                                                 HughesWingetTangent::Numerical >;
 
-  using GEFiniteStrain  = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
+  using GEFiniteStrain  = Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >;
   using GEResponse      = GEFiniteStrain::ConstitutiveResponse< 3 >;
   using GETangents      = GEFiniteStrain::AlgorithmicModuli< 3 >;
   using GEDeformation   = GEFiniteStrain::Deformation< 3 >;
@@ -157,8 +157,11 @@ namespace {
     GEResponse r;
     r.stateVars = state.data();
     GETangents t;
-    w.computeStress( r, t, GEDeformation{ F, N }, GETimeIncrement{ time, dT } );
-    return { r.tau, r.L, r.nonLocalRadius, t };
+    w.computeStress( r,
+                     t,
+                     GEDeformation{ F, GEFiniteStrain::NonlocalVector::Constant( N ) },
+                     GETimeIncrement{ time, dT } );
+    return { r.tau, r.L( 0 ), r.nonLocalRadius( 0 ), t };
   }
 
   /// Rotation tensor from an axis-angle pair.
@@ -411,18 +414,18 @@ void testAnalyticTangentVsNumericalElastic()
                            "dTau_dF deviates from the numerical tangent in the elastic regime in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleTauN = std::max( 1.0, Fastor::norm( sN.tangents.dTau_dN ) );
-  throwExceptionOnFailure( checkIfEqual( sA.tangents.dTau_dN, sN.tangents.dTau_dN, 1e-5 * scaleTauN ),
+  const double scaleTauN = std::max( 1.0, Fastor::norm( sN.tangents.dTau_dN[0] ) );
+  throwExceptionOnFailure( checkIfEqual( sA.tangents.dTau_dN[0], sN.tangents.dTau_dN[0], 1e-5 * scaleTauN ),
                            "dTau_dN deviates from the numerical tangent in the elastic regime in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleLF = std::max( 1.0, Fastor::norm( sN.tangents.dL_dF ) );
-  throwExceptionOnFailure( checkIfEqual( sA.tangents.dL_dF, sN.tangents.dL_dF, 1e-5 * scaleLF ),
+  const double scaleLF = std::max( 1.0, Fastor::norm( sN.tangents.dL_dF[0] ) );
+  throwExceptionOnFailure( checkIfEqual( sA.tangents.dL_dF[0], sN.tangents.dL_dF[0], 1e-5 * scaleLF ),
                            "dL_dF deviates from the numerical tangent in the elastic regime in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleLN = std::max( 1.0, std::abs( sN.tangents.dL_dN ) );
-  throwExceptionOnFailure( checkIfEqual( sA.tangents.dL_dN, sN.tangents.dL_dN, 1e-5 * scaleLN ),
+  const double scaleLN = std::max( 1.0, std::abs( sN.tangents.dL_dN( 0, 0 ) ) );
+  throwExceptionOnFailure( checkIfEqual( sA.tangents.dL_dN( 0, 0 ), sN.tangents.dL_dN( 0, 0 ), 1e-5 * scaleLN ),
                            "dL_dN deviates from the numerical tangent in the elastic regime in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -479,16 +482,16 @@ void testExactTangentVsNumericalDamaged()
   throwExceptionOnFailure( checkIfEqual( sE.tangents.dTau_dF, sN.tangents.dTau_dF, 1e-5 * scaleTauF ),
                            "dTau_dF deviates from the numerical tangent in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleTauN = std::max( 1.0, Fastor::norm( sN.tangents.dTau_dN ) );
-  throwExceptionOnFailure( checkIfEqual( sE.tangents.dTau_dN, sN.tangents.dTau_dN, 1e-5 * scaleTauN ),
+  const double scaleTauN = std::max( 1.0, Fastor::norm( sN.tangents.dTau_dN[0] ) );
+  throwExceptionOnFailure( checkIfEqual( sE.tangents.dTau_dN[0], sN.tangents.dTau_dN[0], 1e-5 * scaleTauN ),
                            "dTau_dN deviates from the numerical tangent in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleLF = std::max( 1.0, Fastor::norm( sN.tangents.dL_dF ) );
-  throwExceptionOnFailure( checkIfEqual( sE.tangents.dL_dF, sN.tangents.dL_dF, 1e-5 * scaleLF ),
+  const double scaleLF = std::max( 1.0, Fastor::norm( sN.tangents.dL_dF[0] ) );
+  throwExceptionOnFailure( checkIfEqual( sE.tangents.dL_dF[0], sN.tangents.dL_dF[0], 1e-5 * scaleLF ),
                            "dL_dF deviates from the numerical tangent in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  const double scaleLN = std::max( 1.0, std::abs( sN.tangents.dL_dN ) );
-  throwExceptionOnFailure( checkIfEqual( sE.tangents.dL_dN, sN.tangents.dL_dN, 1e-5 * scaleLN ),
+  const double scaleLN = std::max( 1.0, std::abs( sN.tangents.dL_dN( 0, 0 ) ) );
+  throwExceptionOnFailure( checkIfEqual( sE.tangents.dL_dN( 0, 0 ), sN.tangents.dL_dN( 0, 0 ), 1e-5 * scaleLN ),
                            "dL_dN deviates from the numerical tangent in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -583,7 +586,7 @@ void testNonlocalMicroInertiaIsForwarded()
   GradientEnhancedHughesWingetWrapper< MicroInertiaStub > w( stubProps.data(), int( stubProps.size() ), 1 );
   auto                                                    state = freshState( w );
 
-  throwExceptionOnFailure( checkIfEqual( w.getNonlocalMicroInertia( state.data() ), microInertia, 1e-20 ),
+  throwExceptionOnFailure( checkIfEqual( w.getNonlocalMicroInertia( state.data() )( 0 ), microInertia, 1e-20 ),
                            "the wrapper did not forward the wrapped material's micro-inertia in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
@@ -591,7 +594,7 @@ void testNonlocalMicroInertiaIsForwarded()
   Wrapper plain( stubProps.data(), int( stubProps.size() ), 1 );
   auto    plainState = freshState( plain );
 
-  throwExceptionOnFailure( plain.getNonlocalMicroInertia( plainState.data() ) == 0.0,
+  throwExceptionOnFailure( plain.getNonlocalMicroInertia( plainState.data() )( 0 ) == 0.0,
                            "a wrapped material providing no micro-inertia did not report zero in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -637,7 +640,10 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
   GETangents t;
 
   for ( int i = 1; i <= 3; ++i ) {
-    w.computeStress( r, t, GEDeformation{ F, 0.0 }, GETimeIncrement{ double( i ), 1.0 } );
+    w.computeStress( r,
+                     t,
+                     GEDeformation{ F, GEFiniteStrain::NonlocalVector::Constant( 0.0 ) },
+                     GETimeIncrement{ double( i ), 1.0 } );
 
     // i increments of `perIncrement` in the wrapped material's own density, reported per reference
     // volume. Without the inverse conversion this grows by a further factor of J each time.
@@ -684,19 +690,19 @@ void testEigenDeformationAndPlaneStrainOverloads()
   GEFiniteStrain& baseEig = wEig;
   baseEig.computeStress( rEig,
                          tEig,
-                         GEDeformation{ Spatial3D::I, 0.1 },
+                         GEDeformation{ Spatial3D::I, GEFiniteStrain::NonlocalVector::Constant( 0.1 ) },
                          GETimeIncrement{ 0.0, 1.0 },
                          std::make_tuple( F0, F0, F0 ) );
 
   throwExceptionOnFailure( checkIfEqual( rEig.tau, ref.tau, 1e-12 ),
                            "an eigen deformation did not reproduce the directly stretched response in " +
                              std::string( __PRETTY_FUNCTION__ ) );
-  throwExceptionOnFailure( checkIfEqual( rEig.L, ref.L, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual( rEig.L( 0 ), ref.L, 1e-12 ),
                            "the local driving force differs under an eigen deformation in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // dTau_dN is NOT chain-ruled: the nonlocal field is not deformed. dTau_dF is.
-  throwExceptionOnFailure( checkIfEqual( tEig.dTau_dN, ref.tangents.dTau_dN, 1e-12 ),
+  throwExceptionOnFailure( checkIfEqual( tEig.dTau_dN[0], ref.tangents.dTau_dN[0], 1e-12 ),
                            "dTau_dN was scaled by the eigen deformation, which does not deform the "
                            "nonlocal field, in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -707,7 +713,10 @@ void testEigenDeformationAndPlaneStrainOverloads()
   GEResponse rPs;
   rPs.stateVars = psState.data();
   GETangents tPs;
-  wPs.computePlaneStrain( rPs, tPs, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+  wPs.computePlaneStrain( rPs,
+                          tPs,
+                          GEDeformation{ stretched, GEFiniteStrain::NonlocalVector::Constant( 0.1 ) },
+                          GETimeIncrement{ 0.0, 1.0 } );
 
   throwExceptionOnFailure( checkIfEqual( rPs.tau, ref.tau, 1e-12 ),
                            "computePlaneStrain did not delegate to computeStress in " +
@@ -720,7 +729,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
   GETangents tPsE;
   wPsE.computePlaneStrain( rPsE,
                            tPsE,
-                           GEDeformation{ Spatial3D::I, 0.1 },
+                           GEDeformation{ Spatial3D::I, GEFiniteStrain::NonlocalVector::Constant( 0.1 ) },
                            GETimeIncrement{ 0.0, 1.0 },
                            std::make_tuple( F0, F0, F0 ) );
 
@@ -733,7 +742,9 @@ void testEigenDeformationAndPlaneStrainOverloads()
   auto       exState = freshState( wEx );
   GEResponse rEx;
   rEx.stateVars = exState.data();
-  wEx.computeStressExplicit( rEx, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+  wEx.computeStressExplicit( rEx,
+                             GEDeformation{ stretched, GEFiniteStrain::NonlocalVector::Constant( 0.1 ) },
+                             GETimeIncrement{ 0.0, 1.0 } );
 
   throwExceptionOnFailure( checkIfEqual( rEx.tau, ref.tau, 1e-12 ),
                            "computeStressExplicit disagrees with computeStress in " +
@@ -743,7 +754,9 @@ void testEigenDeformationAndPlaneStrainOverloads()
   auto       psExState = freshState( wPsEx );
   GEResponse rPsEx;
   rPsEx.stateVars = psExState.data();
-  wPsEx.computePlaneStrainExplicit( rPsEx, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+  wPsEx.computePlaneStrainExplicit( rPsEx,
+                                    GEDeformation{ stretched, GEFiniteStrain::NonlocalVector::Constant( 0.1 ) },
+                                    GETimeIncrement{ 0.0, 1.0 } );
 
   throwExceptionOnFailure( checkIfEqual( rPsEx.tau, ref.tau, 1e-12 ),
                            "computePlaneStrainExplicit disagrees with computeStress in " +
@@ -751,8 +764,14 @@ void testEigenDeformationAndPlaneStrainOverloads()
 
   // The value constructor, which nothing else builds.
   double           dummyState = 0.0;
-  const GEResponse built( ref.tau, 1.5, 2.5, 3.5, 4.5, &dummyState );
-  throwExceptionOnFailure( checkIfEqual( built.L, 1.5, 1e-15 ) && checkIfEqual( built.nonLocalRadius, 2.5, 1e-15 ) &&
+  const GEResponse built( ref.tau,
+                          GEFiniteStrain::NonlocalVector::Constant( 1.5 ),
+                          GEFiniteStrain::NonlocalVector::Constant( 2.5 ),
+                          3.5,
+                          4.5,
+                          &dummyState );
+  throwExceptionOnFailure( checkIfEqual( built.L( 0 ), 1.5, 1e-15 ) &&
+                             checkIfEqual( built.nonLocalRadius( 0 ), 2.5, 1e-15 ) &&
                              checkIfEqual( built.elasticEnergyDensity, 3.5, 1e-15 ) &&
                              checkIfEqual( built.dissipation, 4.5, 1e-15 ) && built.stateVars == &dummyState,
                            "the ConstitutiveResponse value constructor did not store its arguments in " +
@@ -769,7 +788,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
  */
 void testFactoryRoundTripAndUnknownName()
 {
-  using Factory = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory;
+  using Factory = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory< 1 >;
 
   const std::string name = "TESTONLY/GRADIENT-ENHANCED-HUGHES-WINGET";
 
@@ -777,7 +796,7 @@ void testFactoryRoundTripAndUnknownName()
   throwExceptionOnFailure( registered,
                            "registerMaterial did not report success in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > created(
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > > created(
     Factory::createMaterial( name, stubProps.data(), int( stubProps.size() ), 1 ) );
 
   throwExceptionOnFailure( created != nullptr,

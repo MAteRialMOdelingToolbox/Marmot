@@ -148,9 +148,9 @@ namespace Marmot::Discretizations::Elements::BulkViscosity {
    * or void opening. The linear term is not: damping one sign of the volumetric rate only would
    * rectify the ringing it exists to remove into a net volumetric drift.
    *
-   * @note \f$L_e\f$ must be the same characteristic length the stable time increment is computed
-   * from. Both scale the term to the highest frequency the mesh can carry, and if they disagree the
-   * damping is no longer tied to the mode it is meant to damp.
+   * @note \f$L_e\f$ is the element's smallest extent (GeometryElement::smallestElementExtentAt), so that
+   * the term scales with the shortest wave the element can carry. The stable time increment does not
+   * use it: it is the element's eigenvalue bound (CriticalTimeStep).
    */
   inline double viscousStress( double              volumetricStrainRate,
                                double              density,
