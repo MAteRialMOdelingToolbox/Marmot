@@ -25,6 +25,7 @@
 #pragma once
 #include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotConsistentMass.h"
+#include "Marmot/MarmotCriticalTimeStep.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotEnergyGradientProvider.h"
@@ -206,14 +207,12 @@ namespace Marmot::Discretizations::Elements {
       }
 
       /**
-       * @brief The characteristic length for the critical time step at this quadrature point,
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt: the smallest physical extent of a quadrilateral or
-       * hexahedron, 1 / |grad N|_F of a linear simplex.
-       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
-       * whereas the stable time increment that shares the definition is asked for rarely. The
-       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       * @brief The smallest extent of the element at this quadrature point, GeometryElement::smallestElementExtentAt:
+       * the smallest physical extent of a quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment. The element's nodal
+       * coordinates do not change, so the cached value cannot go stale.
        */
-      double characteristicLengthForCriticalTimeStep = 0.0;
+      double smallestElementExtent = 0.0;
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
@@ -572,9 +571,8 @@ namespace Marmot::Discretizations::Elements {
      * wherever that is safe -- every 2D serendipity element, and every linear element, where the
      * result does not depend on \f$w\f$ at all -- and \f$\tfrac{1}{3}\f$ for a hexa20. It
      * reproduces -- analytically, and to rounding in floating point -- the values a
-     * per-element-type special case would give, without needing one, and
-     * the critical time step reads its mass distribution from the same helper so the two cannot
-     * disagree.
+     * per-element-type special case would give, without needing one; the critical time step
+     * reads the lumped mass from this function, so the two cannot disagree.
      *
      * @note The element total is independent of \f$w\f$: the blend only moves mass between the
      * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
@@ -601,25 +599,14 @@ namespace Marmot::Discretizations::Elements {
     void computeLumpedDamping( double* C ) override;
 
     /**
-     * @brief Compute the critical time step for explicit dynamics based on
-     * the dilatational wave speed and the element size.
+     * @brief Compute the critical time step for explicit dynamics.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
-     * @details The estimate is \f$l / c\f$, scaled by the factor
-     * Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the
-     * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
-     * increment for an element whose mass is spread uniformly over its nodes, which lumping does
-     * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
-     * singular value of the Jacobian, i.e. the element's smallest physical extent, so a sliver is
-     * not mistaken for its volume-equivalent cube. The minimum over all quadrature points is
-     * returned.
-     *
-     * @warning This corrects the mass-distribution and element-distortion parts of the estimate
-     * only. It does NOT correct for polynomial order, and that residue is large: \f$l/c\f$ is a
-     * linear-element formula, while a quadratic element's highest free eigenfrequency lies well
-     * above what it predicts. A convergence study on a 20-node bar settles only around a courant
-     * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
-     * properly wants an eigenvalue-based estimate rather than another factor.
+     * @details The displacement field's limit is the element's own eigenvalue bound \f$2 / \omega_{\max}\f$, from
+     * the strain operator the element integrates with (the axisymmetric one with its hoop row) and the displacement
+     * block of the lumped mass computeLumpedInertia() assembles, for an isotropic material with the largest P-wave
+     * modulus \f$\rho c^2\f$ of the quadrature points; see Marmot::Discretizations::Elements::CriticalTimeStep. It
+     * holds for every element order and quadrature rule.
      *
      * @details Where the non-local field carries a micro-inertia the returned increment is the
      * minimum of the mechanical estimate above and the non-local field's own limit. That one is
@@ -1067,8 +1054,7 @@ namespace Marmot::Discretizations::Elements {
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
 
-      qp.characteristicLengthForCriticalTimeStep = localGeometryElement.characteristicLengthForCriticalTimeStepAt(
-        qp.xi );
+      qp.smallestElementExtent = localGeometryElement.smallestElementExtentAt( qp.xi );
       qp.referenceWaveSpeed.reset();
 
       if constexpr ( !nonLocalSharesShapeFunctions ) {
@@ -1464,13 +1450,14 @@ namespace Marmot::Discretizations::Elements {
                                  : 1.0;
 
     return degradation *
-           Discretizations::Elements::BulkViscosity::
-             viscousStressFromIncrement( volumetricStrainIncrement,
-                                         dT,
-                                         qp.material->getDensity( qp.managedStateVars->materialStateVars.data() ),
-                                         referenceWaveSpeed,
-                                         qp.characteristicLengthForCriticalTimeStep,
-                                         bulkViscosityCoefficients );
+           Discretizations::Elements::BulkViscosity::viscousStressFromIncrement( volumetricStrainIncrement,
+                                                                                 dT,
+                                                                                 qp.material->getDensity(
+                                                                                   qp.managedStateVars
+                                                                                     ->materialStateVars.data() ),
+                                                                                 referenceWaveSpeed,
+                                                                                 qp.smallestElementExtent,
+                                                                                 bulkViscosityCoefficients );
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -1653,55 +1640,25 @@ namespace Marmot::Discretizations::Elements {
     using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
     using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
-    /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
-     * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
-     * under the manifold-based blend a hexa20 corner node carries less than the uniform share, and
-     * the lightest node sets the highest frequency (omega = sqrt( k / m )), so the stable increment
-     * scales with sqrt( m_min / m_uniform ).
-     *
-     * Ignoring it puts the default courant number of 0.8 ABOVE the true limit for every 20-node
-     * element. That does not present as a marginally noisy run but as violent exponential
-     * divergence -- and only where the material provides no damping, so a 20-node run on a
-     * viscously regularised material can sit just above the limit and look perfectly healthy. That
-     * is worse than a clean failure, because it makes the fault look model-specific.
-     *
-     * The fractions come from the same helper computeLumpedInertia uses, so the two cannot drift
-     * apart. Exactly 1 for a linear element on a regular mesh, so nothing changes there, and
-     * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
-     * tighter limit than its volume alone suggests.
-     *
-     * Note this covers the DISPLACEMENT field only. The non-local field is handled separately
-     * below, and only where it has been made second order in time: a first-order non-local field
-     * has a forward-Euler limit set by its viscosity against the Helmholtz operator, which is a
-     * different formula, is not a wave speed, and is still not checked anywhere.
-     */
-    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
-    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
-    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
-    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
+    /* The displacement field's limit: the element's own eigenvalue bound, from the strain operator it integrates its
+     * internal force with and the displacement block of the lumped mass it assembles; see
+     * Marmot::Discretizations::Elements::CriticalTimeStep. The non-local field is handled separately below, and only
+     * where it has been made second order in time: a first-order non-local field has a forward-Euler limit set by its
+     * viscosity against the Helmholtz operator, which is a different formula, is not a wave speed, and is still not
+     * checked anywhere. */
+    Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound( sizeDoFU );
+    double                                                                      pWaveModulus = 0.0;
     for ( const auto& qp : qps ) {
-      rowSumsHighOrder += Eigen::VectorXd( localGeometryElement.N( qp.xi ) ) * qp.J0xW;
-      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
-    }
-    const double weight = Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
-                                                                                       rowSumsLinear );
-    const double lumpedMassTimeStepFactor = Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
-      Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
+      if constexpr ( nDim == 2 ) {
+        if ( sectionType == SectionType::Axisymmetric )
+          stiffnessBound.addQuadraturePoint( axisymmetricB( qp ), 3, qp.J0xW );
+        else
+          stiffnessBound.addQuadraturePoint( localGeometryElement.B( qp.dNdX ), nDim, qp.J0xW );
+      }
+      else
+        stiffnessBound.addQuadraturePoint( localGeometryElement.B( qp.dNdX ), nDim, qp.J0xW );
 
-    criticalTimeStep = std::numeric_limits< double >::max();
-    for ( const auto& qp : qps ) {
-      /* The characteristic element length of GeometryElement: the smallest physical extent of a
-       * quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
-       *
-       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
-       * bulk viscosity already needs this value on every explicit increment and caches it for that
-       * reason, and the nodal coordinates it depends on do not change, so a second computation here
-       * would only disagree with the cached one under floating-point noise, never under a real
-       * update.
-       */
-      const double characteristicLengthForCriticalTimeStep = qp.characteristicLengthForCriticalTimeStep;
-      response     waveSpeedResponse;
+      response waveSpeedResponse;
       waveSpeedResponse.stress = qp.managedStateVars->stress;
       waveSpeedResponse.KLocal.setZero();
       waveSpeedResponse.c.setZero();
@@ -1712,20 +1669,23 @@ namespace Marmot::Discretizations::Elements {
       const double c = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
       if ( c <= 0.0 )
         throw std::runtime_error( "Material returned non-positive wave speed, cannot compute critical time step" );
-      const double& l  = characteristicLengthForCriticalTimeStep;
-      double        dt = lumpedMassTimeStepFactor * l / c;
-      if ( dt < criticalTimeStep )
-        criticalTimeStep = dt;
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      pWaveModulus     = std::max( pWaveModulus, rho * c * c );
     }
+
+    /* The inertia that is actually ASSEMBLED, read by calling the very function that assembles it rather than
+     * re-deriving the lumping here; the non-local part below reads its block as well. */
+    RhsSized lumpedInertia = RhsSized::Zero();
+    computeLumpedInertia( lumpedInertia.data() );
+    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedInertia.head( sizeDoFU ), pWaveModulus );
 
     /* The non-local field's own limit, where it has one. Without a micro-inertia that field is
      * first order in time and is not integrated by the central-difference update this function's
      * estimate belongs to, so there is nothing here to bound.
      *
      * Asked of the material, quadrature point by quadrature point, since that is where the
-     * micro-inertia lives -- and asked FIRST, before the two lumping assemblies below, so that the
-     * parabolic case, which is every deck that has not opted in, still leaves this function at the
-     * cost it had.
+     * micro-inertia lives -- and asked before the lumped damping is assembled below, so that the
+     * parabolic case, which is every deck that has not opted in, does not pay for it.
      */
     bool anyMicroInertia = false;
     for ( const auto& qp : qps ) {
@@ -1743,14 +1703,11 @@ namespace Marmot::Discretizations::Elements {
      */
     const double mechanicalTimeStep = criticalTimeStep;
 
-    /* Read off the inertia and the damping that are actually ASSEMBLED, by calling the very
-     * functions that assemble them rather than re-deriving the lumping here. Their non-local
-     * blocks are m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the
+    /* The damping that is actually ASSEMBLED, read like the inertia above. The non-local blocks of
+     * the two are m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the
      * field's damping rate whatever the lumping does.
      */
-    RhsSized lumpedInertia = RhsSized::Zero();
     RhsSized lumpedDamping = RhsSized::Zero();
-    computeLumpedInertia( lumpedInertia.data() );
     computeLumpedDamping( lumpedDamping.data() );
 
     Eigen::Map< const RhsSized >           Q( QTotal );
