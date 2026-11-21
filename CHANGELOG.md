@@ -148,6 +148,8 @@ All notable changes to Marmot are documented in this file. The format follows
   of the polar rotation and returns the rotated Kirchhoff stress, so a rigid rotation rotates the stress exactly also
   for a material that recomputes its stress from total strains (which the Hughes-Winget wrapper cannot); consistent
   analytic tangent through the spectral derivatives of ln C and C^(1/2).
+- `Registry::ParticleFactory::isRegistered`: whether a particle name is registered, i.e. whether its module is built
+  (replaces the declared but undefined private `checkIfParticleIsRegistered`).
 - Explicit dynamics of the gradient-enhanced finite-strain particles (point, SQCNI, SQCNIxNSNI; any number of
   nonlocal variables): `updatePhysicsExplicit`, `computePhysicsKernelsExplicit` (nonlocal balance in total form),
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
