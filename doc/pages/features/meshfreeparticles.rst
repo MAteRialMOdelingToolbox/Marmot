@@ -473,8 +473,10 @@ The particle factory
 
 :cpp:class:`Marmot::Registry::ParticleFactory` maps names to factory functions. Particle modules register their
 types in ``*Registration.cpp`` files at static initialization (``registerParticle``); the host creates them with
-``createParticle``, which throws ``std::invalid_argument`` for an unknown name. Names are converted to upper case at
-registration and at creation, so they are case-insensitive. The factory function receives the particle number, the
+``createParticle``, which throws ``std::invalid_argument`` for an unknown name. ``isRegistered`` says whether a name
+is known, i.e. whether the module of the particle is part of the build: a host asks it first, to tell a particle that is
+not built from one that fails to be created. Names are converted to upper case at registration, at creation and in
+``isRegistered``, so they are case-insensitive. The factory function receives the particle number, the
 vertex coordinates (the center coordinates for point particles), their number, the volume (zero for cell-shaped
 particles, which compute it from the vertices), the material name and properties, and the meshfree approximation,
 which must outlive the particle.
