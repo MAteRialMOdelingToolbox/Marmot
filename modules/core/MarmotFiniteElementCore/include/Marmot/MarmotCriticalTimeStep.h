@@ -43,27 +43,28 @@
  * strain operator and its own lumped mass -- where a characteristic length over a wave speed is the exact limit of a
  * linear bar only.
  *
- * The stiffness of an isotropic elastic element is
- * \f[ \mathbf{K}_e = \lambda\, \mathbf{K}_\mathrm{vol} + \mu\, \mathbf{K}_\mathrm{dev}, \qquad
- *     \mathbf{K}_\mathrm{vol} = \int \mathbf{b}\, \mathbf{b}^T \,\mathrm{d}V, \qquad
- *     \mathbf{K}_\mathrm{dev} = \int \mathbf{B}^T \mathbf{D}\, \mathbf{B} \,\mathrm{d}V, \f]
+ * The stiffness of an isotropic elastic element splits along the two Lame constants,
+ * \f[ \mathbf{K}_e = \lambda\, \mathbf{K}_\lambda + \mu\, \mathbf{K}_\mu, \qquad
+ *     \mathbf{K}_\lambda = \int \mathbf{b}\, \mathbf{b}^T \,\mathrm{d}V, \qquad
+ *     \mathbf{K}_\mu = \int \mathbf{B}^T \mathbf{D}\, \mathbf{B} \,\mathrm{d}V, \f]
  * with the strain operator \f$\mathbf{B}\f$ in Voigt notation, the divergence \f$\mathbf{b}^T\f$ (the sum of its
  * rows of the normal strains) and \f$\mathbf{D}\f$ = 2 on the normal and 1 on the engineering shear strains, so
  * that \f$\mathbf{u}^T \mathbf{K}_e \mathbf{u} = \int \lambda (\nabla \cdot \mathbf{u})^2 + 2 \mu\,
- * \boldsymbol{\varepsilon} : \boldsymbol{\varepsilon} \,\mathrm{d}V\f$. A material tells its largest wave speed
- * \f$c\f$, i.e. the P-wave modulus \f$\rho c^2 = \lambda + 2\mu\f$, but not how it divides into \f$\lambda\f$ and
- * \f$\mu\f$. With \f$\lambda = \rho c^2 - 2\mu\f$, the stiffness is affine in \f$\mu \in [0, \rho c^2 / 2]\f$ (\f$\nu
- * \in [0, 1/2]\f$), and the largest eigenvalue of a matrix is convex in it, so it is largest at one of the two ends:
- * the incompressible end \f$\rho c^2\, \mathbf{K}_\mathrm{vol}\f$ or the end without lateral contraction \f$\rho c^2
- * \mathbf{K}_\mathrm{dev} / 2\f$. Hence
+ * \boldsymbol{\varepsilon} : \boldsymbol{\varepsilon} \,\mathrm{d}V\f$. (\f$\mathbf{K}_\mu\f$ is not the deviatoric
+ * operator: \f$2\,\boldsymbol{\varepsilon} : \boldsymbol{\varepsilon}\f$ contains the volumetric strain too.) A
+ * material tells its largest wave speed \f$c\f$, i.e. the P-wave modulus \f$\rho c^2 = \lambda + 2\mu\f$, but not how
+ * it divides into \f$\lambda\f$ and \f$\mu\f$. With \f$\lambda = \rho c^2 - 2\mu\f$, the stiffness is affine in
+ * \f$\mu \in [0, \rho c^2 / 2]\f$ (\f$\nu \in [0, 1/2]\f$), and the largest eigenvalue of a matrix is convex in it,
+ * so it is largest at one of the two ends: the incompressible end \f$\rho c^2\, \mathbf{K}_\lambda\f$ or the end
+ * without lateral contraction \f$\rho c^2 \mathbf{K}_\mu / 2\f$. Hence
  * \f[ \omega_{\max}^2 \leq \rho c^2\, \Lambda, \qquad
- *     \Lambda = \max\Big( \lambda_{\max}(\mathbf{M}_e^{-1} \mathbf{K}_\mathrm{vol}),\;
- *                         \tfrac{1}{2} \lambda_{\max}(\mathbf{M}_e^{-1} \mathbf{K}_\mathrm{dev}) \Big), \qquad
+ *     \Lambda = \max\Big( \lambda_{\max}(\mathbf{M}_e^{-1} \mathbf{K}_\lambda),\;
+ *                         \tfrac{1}{2} \lambda_{\max}(\mathbf{M}_e^{-1} \mathbf{K}_\mu) \Big), \qquad
  *     \Delta t = \frac{2}{\sqrt{\rho c^2\, \Lambda}} . \f]
- * The bound is exact at both ends and conservative in between, by as much as a compact linear element at
- * \f$\nu = 0\f$, whose volumetric end governs (its time increment is then about 0.6 of the element's true one). It
- * assumes an isotropic material with the same \f$\nu\f$ at all quadrature points of the element, \f$\nu \geq 0\f$,
- * and takes the largest P-wave modulus of its quadrature points.
+ * The bound is exact for a material at the end whose term is the larger one and conservative everywhere else, by as
+ * much as a compact linear element at \f$\nu = 0\f$, where the incompressible end governs (its time increment is then
+ * about 0.6 of the element's true one). It assumes an isotropic material with the same \f$\nu\f$ at all quadrature
+ * points of the element, \f$\nu \geq 0\f$, and takes the largest P-wave modulus of its quadrature points.
  *
  * A plane stress section is covered by the plane operators: its in-plane modulus \f$2\lambda\mu / (\lambda +
  * 2\mu)\f$ is smaller than \f$\lambda\f$.
@@ -71,7 +72,7 @@
 namespace Marmot::Discretizations::Elements::CriticalTimeStep {
 
   /**
-   * @brief The operators \f$\mathbf{K}_\mathrm{vol}\f$ and \f$\mathbf{K}_\mathrm{dev}\f$ of an element, accumulated
+   * @brief The operators \f$\mathbf{K}_\lambda\f$ and \f$\mathbf{K}_\mu\f$ of an element, accumulated
    * quadrature point by quadrature point, and the stable time increment they give with the element's lumped mass;
    * see the namespace documentation.
    */
@@ -83,7 +84,7 @@ namespace Marmot::Discretizations::Elements::CriticalTimeStep {
      * @param nDof The number of displacement degrees of freedom of the element, the columns of its strain operator.
      */
     explicit IsotropicElasticStiffnessBound( int nDof )
-      : volumetric( Eigen::MatrixXd::Zero( nDof, nDof ) ), deviatoric( Eigen::MatrixXd::Zero( nDof, nDof ) )
+      : lambdaOperator( Eigen::MatrixXd::Zero( nDof, nDof ) ), muOperator( Eigen::MatrixXd::Zero( nDof, nDof ) )
     {
     }
 
@@ -100,10 +101,10 @@ namespace Marmot::Discretizations::Elements::CriticalTimeStep {
     void addQuadraturePoint( const Eigen::MatrixBase< Derived >& B, int nNormalStrains, double dV )
     {
       const Eigen::RowVectorXd divergence = B.topRows( nNormalStrains ).colwise().sum();
-      volumetric += divergence.transpose() * divergence * dV;
-      deviatoric += 2.0 * B.topRows( nNormalStrains ).transpose() * B.topRows( nNormalStrains ) * dV;
+      lambdaOperator += divergence.transpose() * divergence * dV;
+      muOperator += 2.0 * B.topRows( nNormalStrains ).transpose() * B.topRows( nNormalStrains ) * dV;
       const int nShearStrains = static_cast< int >( B.rows() ) - nNormalStrains;
-      deviatoric += B.bottomRows( nShearStrains ).transpose() * B.bottomRows( nShearStrains ) * dV;
+      muOperator += B.bottomRows( nShearStrains ).transpose() * B.bottomRows( nShearStrains ) * dV;
     }
 
     /**
@@ -124,17 +125,17 @@ namespace Marmot::Discretizations::Elements::CriticalTimeStep {
       const Eigen::VectorXd scaling = lumpedMass.cwiseInverse().cwiseSqrt();
 
       // Lambda, the bound of omega_max^2 per unit P-wave modulus: the larger of the two ends
-      const double largestFrequencySquaredPerPWaveModulus = std::max( largestEigenvalue( scaling, volumetric ),
-                                                                      0.5 * largestEigenvalue( scaling, deviatoric ) );
+      const double largestFrequencySquaredPerPWaveModulus = std::max( largestEigenvalue( scaling, lambdaOperator ),
+                                                                      0.5 * largestEigenvalue( scaling, muOperator ) );
 
       return 2.0 / std::sqrt( pWaveModulus * largestFrequencySquaredPerPWaveModulus );
     }
 
   private:
-    /// The volumetric operator \f$\mathbf{K}_\mathrm{vol}\f$.
-    Eigen::MatrixXd volumetric;
-    /// The deviatoric operator \f$\mathbf{K}_\mathrm{dev}\f$.
-    Eigen::MatrixXd deviatoric;
+    /// The operator \f$\mathbf{K}_\lambda\f$ of the Lame constant \f$\lambda\f$, \f$\int \mathbf{b}\,\mathbf{b}^T\f$.
+    Eigen::MatrixXd lambdaOperator;
+    /// The operator \f$\mathbf{K}_\mu\f$ of the shear modulus, \f$\int \mathbf{B}^T \mathbf{D}\,\mathbf{B}\f$.
+    Eigen::MatrixXd muOperator;
 
     /**
      * @brief The largest eigenvalue of \f$\mathbf{M}^{-1}\mathbf{K}\f$, as that of the symmetric
