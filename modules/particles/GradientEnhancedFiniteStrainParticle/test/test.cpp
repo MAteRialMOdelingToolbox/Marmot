@@ -28,6 +28,7 @@
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleTesting.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -1008,23 +1009,12 @@ namespace {
     for ( int a = 0; a < n; a++ )
       W( a, a % nBlock < nDim ? 0 : 1 ) = 1.0 + 0.5 * std::sin( 0.7 * a );
 
-    const auto      backup = s.stateVars;
-    Eigen::MatrixXd bound  = Eigen::MatrixXd::Zero( n, 2 );
-    s.particle->computeBoundOfAbsoluteStiffnessTimes( W.data(), 2, bound.data(), 1.0, 1.0 );
-    s.stateVars = backup;
-
-    const Eigen::MatrixXd exact = K.cwiseAbs() * W;
-    for ( int c = 0; c < 2; c++ ) {
-      const double largest = exact.col( c ).maxCoeff();
-      throwExceptionOnFailure( ( bound.col( c ) - exact.col( c ) ).minCoeff() >= -1e-12 * largest,
-                               Marmot::Utilities::MakeString()
-                                 << name << ": the bound of |K| W lies below it in column " << c );
-      const double overestimate = bound.col( c ).maxCoeff() / largest;
-      throwExceptionOnFailure( overestimate <= maxOverestimate,
-                               Marmot::Utilities::MakeString()
-                                 << name << ": the bound of |K| W overestimates its largest entry of column " << c
-                                 << " by " << overestimate );
-    }
+    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name,
+                                                                  *s.particle,
+                                                                  s.stateVars,
+                                                                  K,
+                                                                  W,
+                                                                  maxOverestimate );
   }
 
   // The explicit force after an accepted increment, where F_n != I and the nonlocal field is no longer zero: the
