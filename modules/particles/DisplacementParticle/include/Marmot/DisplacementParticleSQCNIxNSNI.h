@@ -112,25 +112,19 @@ namespace Marmot::Discretizations::Meshfree {
     std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;
 
     /**
-     * @brief The second gradient of the test function of node @p A as the stabilization weighs it,
-     * @f$ D_{iK} = \partial Y_j / \partial x_i\, \partial^2 T_A / \partial Y_j \partial Y_L\, M_{LK} / J_Y @f$, with
-     * the second moments @f$ M @f$ of the particle domain and @f$ J_Y = \det \partial\boldsymbol{Y} /
-     * \partial\boldsymbol{X} @f$: the stabilization force of the node is @f$ D_{iK}\, \partial \tau_{ij} / \partial
-     * Y_K @f$.
+     * @brief The moment-weighted second gradient @f$ \boldsymbol{D} @f$ of the test function of node @p A
+     * (NSNI::momentWeightedSecondGradient()): the stabilization force of the node is @f$ D_{iK}\, \partial \tau_{ij}
+     * / \partial Y_K @f$.
      * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$.
      * @return @f$ \boldsymbol{D} @f$.
      */
-    TensorDD momentWeightedSecondGradientOfTestFunction( int A ) const
+    TensorDD momentWeightedSecondGradientOfTestFunction( int A, const TensorDD& dY_dx ) const
     {
-      using namespace Marmot::Math::Tensors::FastorIndices;
-      const auto&    _mp                   = this->_mp;
-      const TensorDD dY_dx                 = Fastor::inv( _mp->dx_dY() );
-      const double   detJIntermediate      = Fastor::determinant( _mp->dY_dX() );
-      const TensorDD d2NA_dYdY             = extract_d2N_dYdY_for_node( _d2N_dYdY, A );
-      const TensorDD d2NA_dYdY_x_MOIScaled = Fastor::einsum< ij, jk >( d2NA_dYdY,
-                                                                       _momentsOfInertia_IntermediateReference ) /
-                                             detJIntermediate;
-      return Fastor::einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled );
+      return NSNI::momentWeightedSecondGradient< nDim >( dY_dx,
+                                                         NSNI::secondGradientOfNode< nDim >( _d2N_dYdY, A ),
+                                                         _momentsOfInertia_IntermediateReference,
+                                                         Fastor::determinant( this->_mp->dY_dX() ) );
     }
 
     /**
@@ -153,20 +147,13 @@ namespace Marmot::Discretizations::Meshfree {
                                  typename ParentPointParticle::TangentRows&  rows ) const override;
 
     /**
-     * @brief The smoothed second gradients of the trial shape functions (symmetrized as in
-     * extract_d2N_dYdY_for_node()), in the layout of addTangentRowsOfNode().
+     * @brief The smoothed second gradients of the trial shape functions, symmetrized, in the layout of
+     * addTangentRowsOfNode() (NSNI::secondGradientsOfNodes()).
      * @return The nDim^2 x nNodes matrix.
      */
     Eigen::MatrixXd secondGradientsOfTrialFunctions() const override
     {
-      Eigen::MatrixXd d2N_dYdY( nDim * nDim, this->_nNodes );
-      for ( int B = 0; B < this->_nNodes; B++ ) {
-        const TensorDD d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
-        for ( int l = 0; l < nDim; l++ )
-          for ( int m = 0; m < nDim; m++ )
-            d2N_dYdY( l * nDim + m, B ) = d2N_B_dYdY( l, m );
-      }
-      return d2N_dYdY;
+      return NSNI::secondGradientsOfNodes< nDim >( _d2N_dYdY, this->_nNodes );
     }
 
   public:
@@ -297,22 +284,6 @@ namespace Marmot::Discretizations::Meshfree {
      */
     void computeLumpedMomentum( double* mLumped ) const override;
 
-    /// \brief Extract the second derivative of the shape function for a given node
-    /// \param[in] d2N_dYdY The second derivative of the shape function
-    /// \param[in] node The node for which the second derivative is extracted
-    /// \return The second derivative of the shape function for the given node
-    /// \details The second derivative is averaged over the two indices to ensure symmetry.
-    inline TensorDD extract_d2N_dYdY_for_node( const std::array< Eigen::MatrixXd, nDim >& d2N_dYdY, int node ) const
-    {
-      TensorDD d2Nnode_dYdY( 0.0 );
-      for ( int J = 0; J < nDim; J++ ) {
-        for ( int I = 0; I < nDim; I++ ) {
-          d2Nnode_dYdY( I, J ) += 0.5 * ( d2N_dYdY[J]( I, node ) + d2N_dYdY[I]( J, node ) );
-        }
-      }
-      return d2Nnode_dYdY;
-    }
-
     /**
      * @brief Accepts the current state and position, updating internal variables.
      *
@@ -388,7 +359,7 @@ namespace Marmot::Discretizations::Meshfree {
 
       const double N_B        = _N( B );
       const auto   dN_B_dY    = TensorD( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
-      const auto   d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
+      const auto   d2N_B_dYdY = NSNI::secondGradientOfNode< nDim >( _d2N_dYdY, B );
 
       const auto dQU_B = TensorD( dQ + idxB_u );
 
@@ -448,7 +419,7 @@ namespace Marmot::Discretizations::Meshfree {
       // add inertia
       r_U += density0 * a * T_A * V0;
 
-      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A );
+      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A, dY_dx );
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 
@@ -462,17 +433,9 @@ namespace Marmot::Discretizations::Meshfree {
                             Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( da_ddu.data() );
 
       // the stabilization through the stress gradient of the increment: D_kK dTau_ij/dY_K dN_B/dx_i
-      for ( int l = 0; l < nDim; l++ )
-        for ( int j = 0; j < nDim; j++ )
-          for ( int k = 0; k < nDim; k++ ) {
-            double dRU_Stab = 0.0;
-            for ( int i = 0; i < nDim; i++ )
-              for ( int m = 0; m < nDim; m++ )
-                dRU_Stab += d2NA_dxdY_x_MOIScaled( k, m ) * dS_dY( i, j, m ) * dY_dx( l, i );
-            rows.df_dIncrementGradient[l]( j, k ) -= dRU_Stab;
-          }
+      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, rows );
 
-      addTangentRowsOfNode( rows, A, _N, _dN_dY, &d2N_dYdY, K );
+      addTangentRowsOfNode( rows, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 
@@ -483,19 +446,9 @@ namespace Marmot::Discretizations::Meshfree {
     typename ParentPointParticle::TangentRows&  rows ) const
   {
     ParentPointParticle::addStiffnessRowsOfNode( A, dY_dx, rows );
-
-    const auto&    dS_dDeltaF = this->_mp->tangents.dS_dDeltaF;
-    const TensorDD D          = momentWeightedSecondGradientOfTestFunction( A );
-
-    for ( int l = 0; l < nDim; l++ )
-      for ( int m = 0; m < nDim; m++ )
-        for ( int j = 0; j < nDim; j++ )
-          for ( int k = 0; k < nDim; k++ ) {
-            double dRU_Stab = 0.0;
-            for ( int i = 0; i < nDim; i++ )
-              dRU_Stab += D( i, m ) * dS_dDeltaF( i, j, k, l );
-            rows.df_dIncrementSecondGradient[l * nDim + m]( j, k ) += dRU_Stab;
-          }
+    NSNI::addSecondGradientRows< nDim >( momentWeightedSecondGradientOfTestFunction( A, dY_dx ),
+                                         this->_mp->tangents.dS_dDeltaF,
+                                         rows );
   }
 
   template < int nDim, int nVertices >
@@ -541,7 +494,7 @@ namespace Marmot::Discretizations::Meshfree {
 
       r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
 
-      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A );
+      const TensorDD d2NA_dxdY_x_MOIScaled = momentWeightedSecondGradientOfTestFunction( A, dY_dx );
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 
@@ -583,7 +536,7 @@ namespace Marmot::Discretizations::Meshfree {
 
       const double N_B        = _N( B );
       const auto   dN_B_dY    = TensorD( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
-      const auto   d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
+      const auto   d2N_B_dYdY = NSNI::secondGradientOfNode< nDim >( _d2N_dYdY, B );
 
       const auto dQU_B = TensorD( dQ + idxB_u );
 
