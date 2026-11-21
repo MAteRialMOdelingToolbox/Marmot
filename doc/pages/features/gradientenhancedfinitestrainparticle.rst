@@ -87,9 +87,10 @@ as in :doc:`gradientenhancedfinitestraincell` and :doc:`gradientenhancedfinitest
 Explicit dynamics
 ^^^^^^^^^^^^^^^^^
 All three particle classes provide the explicit scheme (``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``
-and the lumped operators); the NSNI particle adds its stabilization to the force and to the momentum, as
-:doc:`displacementparticle` does. ``updatePhysicsExplicit`` advances the material point by the increment and stores the
-rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t` and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
+and the lumped operators), in the order of :ref:`explicit-life-cycle-of-a-particle`; the NSNI particle adds its
+stabilization to the force and to the momentum, as :doc:`displacementparticle` does. ``updatePhysicsExplicit``
+advances the material point by the increment and stores the rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t`
+and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
 After the host has accepted the state and assigned the kernel functions of the new position,
 ``computePhysicsKernelsExplicit`` returns the internal force, with the nonlocal balance in **total** form,
 
