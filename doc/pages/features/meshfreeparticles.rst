@@ -111,17 +111,17 @@ subdomain ``qp``.
 The tangent through the interpolated increment
 ----------------------------------------------
 
-A particle with one material point sees the increments :math:`\Delta\boldsymbol{q}_B` of its nodes only through the
+A particle with one material point sees the increments :math:`\Delta\boldsymbol{Q}_B` of its nodes only through the
 increment it interpolates at its evaluation point: its value, its gradient and, for an NSNI particle, its second
 gradient,
 
 .. math::
 
-   \Delta\boldsymbol{q} = \sum_B N_B\,\Delta\boldsymbol{q}_B, \qquad
-   \frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,\Delta\boldsymbol{q}_B,
+   \Delta\boldsymbol{q} = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+   \frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,\Delta\boldsymbol{Q}_B,
    \qquad
    \frac{\partial^2 \Delta\boldsymbol{q}}{\partial Y_l \partial Y_m} = \sum_B \frac{\partial^2 N_B}{\partial Y_l
-   \partial Y_m}\,\Delta\boldsymbol{q}_B .
+   \partial Y_m}\,\Delta\boldsymbol{Q}_B .
 
 By the chain rule, the block of the tangent that couples the force :math:`\boldsymbol{f}_A` of node :math:`A` with node
 :math:`B` is
@@ -163,8 +163,12 @@ over the nodes, which keeps the directions of the gradients: it is exact for par
 added by the triangle inequality, so the bound never lies below :math:`|\boldsymbol{K}|\,\boldsymbol{w}`, for symmetric
 and unsymmetric tangents alike. ``computeBoundOfAbsoluteStiffnessTimes`` evaluates the material point at a zero
 increment on the working copy of the state (which the host resets, as after a trial ``computePhysicsKernels``) and
-applies the bound to the stiffness rows of every node, without the inertia. For an NSNI particle, the part of the
-stabilization that acts through the stress gradient of the increment vanishes at a zero increment.
+applies the bound to the stiffness rows of every node, without the inertia
+(``addBoundOfAbsoluteTangentTimesWeights``). That evaluation overwrites the response and the tangents of the material
+point, so an explicit host asks for the bound after the internal force of the increment. For an NSNI particle, the
+part of the stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the
+stabilization itself is shared by the displacement and the gradient-enhanced particles
+(``Marmot::Discretizations::Meshfree::NSNI``).
 
 The particle domain
 -------------------
