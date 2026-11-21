@@ -160,7 +160,7 @@ All notable changes to Marmot are documented in this file. The format follows
   `GradientEnhancedFiniteStrainParticle` for all derived particles (`addBoundOfAbsoluteTangentTimesWeights`). Their
   tangent is assembled from the same factors (`addTangentRowsOfNode`): equal to the former one to round-off, residuals
   bitwise. The NSNI stabilization rows are shared by both particle families (`Meshfree::NSNI`).
-- `Particle::getAttachedPointInterpolationVector` (appended at the end of the class): the coefficients
+- `Particle::getAttachedPointInterpolationVector`: the coefficients
   `G_B = N_B(Y_c) + dN_B/dY . (Y - Y_c)` with which a particle moves a point attached to it (a vertex, a face center,
   its center) in its next increment. A constraint that measures such a point where the particle puts it must
   distribute its force with it, so that a penalty is conservative.
@@ -247,6 +247,9 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default
   instead of doing nothing, so that a particle without them never leaves a load out silently (`DisplacementParticleSQCNI`
   implements the distributed one).
+- **Breaking** for implementers of `Particle` outside Marmot: `Particle::getAttachedPointInterpolationVector` is pure
+  virtual, so a particle must implement it to compile (there is no safe default: the shape functions at the point are
+  the wrong answer).
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
