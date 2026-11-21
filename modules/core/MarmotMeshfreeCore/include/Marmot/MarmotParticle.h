@@ -83,6 +83,10 @@ namespace Marmot::Discretizations::Meshfree {
    * The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen,
    * Hillman and Rüter (2013), see the vci_... methods. The global assembly and solution of the VCI correction is
    * done by the host framework.
+   *
+   * Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing
+   * ones do not move: a library and a host built against different versions then fail on the one new call instead of
+   * silently calling the wrong method. This is why methods that belong together by subject may stand apart.
    */
 
   class Particle {
@@ -270,35 +274,43 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Explicit dynamics: compute a body load (no tangent).
-     * @details The default implementation does nothing.
      * @param[in] type Load type, a value of getSupportedBodyLoadTypes().
      * @param[in] load Load values.
      * @param[in,out] fExt External force vector (node-wise).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
+     * silently.
      */
     virtual void computeBodyLoadExplicit( [[maybe_unused]] int           type,
                                           [[maybe_unused]] const double* load,
                                           [[maybe_unused]] double*       fExt,
                                           [[maybe_unused]] double        timeNew,
-                                          [[maybe_unused]] double        dT ) const {};
+                                          [[maybe_unused]] double        dT ) const
+    {
+      throw std::runtime_error( "Particle::computeBodyLoadExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Explicit dynamics: compute a distributed load (no tangent).
-     * @details The default implementation does nothing.
      * @param[in] type Load type, a value of getSupportedDistributedLoadTypes().
      * @param[in] boundaryFaceID ID of the loaded face (1-based).
      * @param[in] load Load values.
      * @param[in,out] fExt External force vector (node-wise).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::runtime_error in the default implementation: a particle without it would leave the load out
+     * silently.
      */
     virtual void computeDistributedLoadExplicit( [[maybe_unused]] int           type,
                                                  [[maybe_unused]] int           boundaryFaceID,
                                                  [[maybe_unused]] const double* load,
                                                  [[maybe_unused]] double*       fExt,
                                                  [[maybe_unused]] double        timeNew,
-                                                 [[maybe_unused]] double        dT ) const {};
+                                                 [[maybe_unused]] double        dT ) const
+    {
+      throw std::runtime_error( "Particle::computeDistributedLoadExplicit: not implemented for this particle." );
+    };
 
     /**
      * @brief Compute the lumped (row-sum) inertia contribution of the particle.
@@ -418,8 +430,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @details The coefficient of each field's FIRST time derivative, node-wise and in the layout of
      * computeLumpedInertia(), which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced
      * field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing,
-     * i.e. no damping, which is the case of a displacement field. Appended at the end of the class, so that the
-     * vtable slots of the methods above do not move.
+     * i.e. no damping, which is the case of a displacement field.
      * @param[in,out] cLumped Lumped damping vector (node-wise); entries left untouched mean no damping.
      */
     virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
