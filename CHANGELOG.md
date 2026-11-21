@@ -233,9 +233,12 @@ All notable changes to Marmot are documented in this file. The format follows
   `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
   Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
   one nonlocal variable are unchanged (bitwise).
-- **Breaking:** `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default
-  instead of doing nothing, so that a particle without them never leaves a load out silently (`DisplacementParticleSQCNI`
-  implements the distributed one).
+- **Breaking:** `Particle::updatePhysicsExplicit`, `Particle::computePhysicsKernelsExplicit`,
+  `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default instead of doing
+  nothing, so that a particle without the explicit path is refused by an explicit host instead of being integrated with
+  its mass and without its force, and never leaves a load out silently. The explicit path is in the NSNI particles of
+  the displacement family and in all gradient-enhanced particles; `DisplacementParticleSQCNI` implements the explicit
+  distributed load only. The defaults of the lumped inertia and momentum name the method in their message.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
