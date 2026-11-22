@@ -27,9 +27,10 @@
 
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotParticle.h"
-#include "Marmot/MarmotParticleStiffness.h"
+#include "Marmot/MarmotParticleStiffnessVisitors.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Core>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -43,7 +44,8 @@ namespace Marmot::Testing {
    * @brief Check the bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$ of a particle
    * (Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()) against its stiffness @f$ \boldsymbol{K}
    * @f$: the bound never lies below @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, and the largest entry of each column
-   * (what the Collatz-Wielandt bound takes) is at most @p maxOverestimate times the exact one.
+   * (what the Collatz-Wielandt bound takes) is at most @p maxOverestimate times the exact one. The stiffness the
+   * particle describes, assembled (Marmot::Discretizations::Meshfree::assembleStiffness()), is @p K.
    * @param name The name of the particle, for the messages.
    * @param particle The particle, at the state of @p K.
    * @param K The stiffness of the particle at a zero increment, column-major, nDof x nDof.
@@ -66,6 +68,11 @@ namespace Marmot::Testing {
                                                                          1.0,
                                                                          1.0 );
 
+    Eigen::MatrixXd assembled = Eigen::MatrixXd::Zero( K.rows(), K.cols() );
+    Marmot::Discretizations::Meshfree::assembleStiffness( particle, assembled.data(), 1.0, 1.0 );
+    throwExceptionOnFailure( ( assembled - K ).cwiseAbs().maxCoeff() <= 1e-13 * K.cwiseAbs().maxCoeff(),
+                             name + ": the assembled stiffness is not the tangent of a zero increment" );
+
     const Eigen::MatrixXd exact = K.cwiseAbs() * W;
     for ( int c = 0; c < nColumns; c++ ) {
       const double largest = exact.col( c ).maxCoeff();
@@ -86,7 +93,7 @@ namespace Marmot::Testing {
    * its material point keeps the response of it, both of which the zero increment of the description would overwrite.
    * The state variables, the bound of two descriptions in a row (addBoundOfAbsoluteStiffnessTimes()) and, for a
    * particle with the explicit path, the internal force before and after a description, which reads the response the
-   * material point keeps, must be equal to the last bit.
+   * material point keeps, must be equal to the last bit; also after a description whose visitor throws.
    * @param name The name of the particle, for the messages.
    * @param particle The particle, with kernel functions assigned.
    * @param stateVars Its state variables.
@@ -138,6 +145,27 @@ namespace Marmot::Testing {
                              name + ": describing the stiffness changes the internal force that follows it" );
     throwExceptionOnFailure( boundAfterOne == boundBefore,
                              name + ": a second description of the stiffness differs from the first" );
+
+    // a visitor that throws at the first node, after the evaluation of the material point: put back all the same
+    struct ThrowingVisitor : Marmot::Discretizations::Meshfree::StiffnessVisitor {
+      void visitShapeFunctions( int, int, int, const double*, const double*, const double* ) override {}
+      void visitStiffnessOfNode( int, const double*, const double*, const double* ) override
+      {
+        throw std::runtime_error( "the visitor refuses the node" );
+      }
+    } throwing;
+    bool thrown = false;
+    try {
+      particle.describeStiffness( throwing, 1.0, 1.0 );
+    }
+    catch ( const std::runtime_error& ) {
+      thrown = true;
+    }
+    Eigen::VectorXd forceAfterThrow = Eigen::VectorXd::Zero( nDof );
+    if ( explicitPath )
+      particle.computePhysicsKernelsExplicit( forceAfterThrow.data() );
+    throwExceptionOnFailure( thrown && stateVars == stateBefore && forceAfterThrow == forceBefore,
+                             name + ": a description that throws does not leave the particle as it was" );
   }
 
 } // namespace Marmot::Testing
