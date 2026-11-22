@@ -65,8 +65,10 @@ namespace Marmot::Discretizations::Meshfree {
   public:
     /**
      * @brief Construct the approximation.
-     * @param[in] dim               Spatial dimension @f$ d @f$.
-     * @param[in] completenessOrder Desired completeness order @f$ n @f$.
+     * @param[in] dim               Spatial dimension @f$ d \le @f$ maxDim.
+     * @param[in] completenessOrder Desired completeness order @f$ n \ge 0 @f$.
+     * @throws std::invalid_argument if the order is negative, or the dimension or the basis exceeds maxDim or
+     * maxSizeOfBasis (see ReproducingKernelApproximation).
      */
     ReproducingKernelApproximationImplicit( int dim, int completenessOrder );
 
@@ -82,7 +84,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[out] shapeFunctionValueGradients_ColMajor Implicit gradients, column-major
      *                                 @f$ d \times n_\mathrm{c} @f$ (entry @f$ i + d A @f$ is
      *                                 @f$ \Psi^{(i)}_A @f$); zero for non-covering candidates.
-     * @throws std::runtime_error if the basis is empty (negative completeness order).
+     * @throws std::runtime_error if the moment matrix is singular (see factorizeMomentMatrix()).
      */
     virtual void computeShapeFunctionsAndGradients( const double*                               coord,
                                                     const std::vector< const KernelFunction* >& kernelFunctions,
