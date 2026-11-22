@@ -37,6 +37,11 @@ logarithmic (Hencky) strain and returns the rotated Kirchhoff stress, which is r
 - :math:`\hat{\boldsymbol\tau}` is work-conjugate to :math:`\ln\boldsymbol U` for an isotropic response, so the energy
   densities of the wrapped material are per unit reference volume and are passed through unchanged.
 
+:math:`\boldsymbol C` is the same for :math:`\boldsymbol F` and for its mirror image, so the strain does not show that
+a material point is turned inside out: :math:`\boldsymbol F = -\boldsymbol 1` would be a point without strain or stress,
+with a reflection for :math:`\boldsymbol R`. The wrapper therefore refuses a deformation gradient whose determinant is
+not positive (``std::invalid_argument``).
+
 The nonlocal fields are handed over as they are, together with their increment since the last call. They are referred
 to the rotating frame too (the nonlocal strain of GM7 is the nonlocal counterpart of :math:`\hat{\boldsymbol\varepsilon}`),
 and their balance is written in the reference configuration by the consumers, so they are invariant under a rigid

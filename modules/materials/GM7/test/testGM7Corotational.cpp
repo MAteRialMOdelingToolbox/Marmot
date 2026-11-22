@@ -10,7 +10,9 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot::Testing;
@@ -320,13 +322,62 @@ void testForwardedProperties()
                            "the wrapped material's states must be reachable" + where );
 }
 
+// A material point turned inside out has the same C = F^T F as a sound one (F = -1: C = 1, no strain, no stress, and
+// a reflection for the rotation), and a deformation gradient that is not a number passes every comparison: the
+// wrapper refuses both, with and without the tangent, and a sound point next to them is computed.
+void testAnInvertedMaterialPointIsRefused()
+{
+  const Eigen::Matrix3d mirror     = Eigen::Vector3d( 1.0, 1.0, -1.0 ).asDiagonal();
+  Eigen::Matrix3d       notANumber = Eigen::Matrix3d::Identity();
+  notANumber( 0, 1 )               = std::nan( "" );
+  Eigen::Matrix3d flattened        = Eigen::Matrix3d::Identity();
+  flattened( 2, 2 )                = 0.0;
+
+  const std::vector< std::pair< std::string, Eigen::Matrix3d > > refused = {
+    { "F = -1", -Eigen::Matrix3d::Identity() },
+    { "a mirrored stretch", mirror * stretch( 5, 20 ) },
+    { "a mirrored rotation", rotation( 0.3 ) * mirror },
+    { "a flattened point", flattened },
+    { "a deformation gradient that is not a number", notANumber },
+  };
+
+  const auto isRefused = []( const std::function< void() >& update ) {
+    try {
+      update();
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  for ( const auto& [what, F] : refused ) {
+    Point p;
+    throwExceptionOnFailure( isRefused( [&]() { p.step( F, 1.0 ); } ),
+                             what + " was not refused by computeStress" + where );
+
+    Point q;
+    throwExceptionOnFailure( isRefused( [&]() {
+                               q.material->computeStressExplicit( q.response,
+                                                                  Deformation{ toFastor( F ), NonlocalVector::Zero() },
+                                                                  TimeIncrement{ 1.0, 1.0 } );
+                             } ),
+                             what + " was not refused by computeStressExplicit" + where );
+  }
+
+  Point sound;
+  sound.step( rotation( 0.3 ) * stretch( 5, 20 ), 1.0 );
+  throwExceptionOnFailure( toEigen( sound.response.tau ).norm() > 0.0, "a sound point has a stress" + where );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testSpectralDerivative,
                                                        testRigidRotationRotatesTheStressExactly,
                                                        testPureStretchIsSmallStrainGM7,
                                                        testConsistentTangent,
-                                                       testForwardedProperties };
+                                                       testForwardedProperties,
+                                                       testAnInvertedMaterialPointIsRefused };
   executeTestsAndCollectExceptions( tests );
   return 0;
 }
