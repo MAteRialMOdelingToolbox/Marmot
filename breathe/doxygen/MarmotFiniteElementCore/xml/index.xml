@@ -136,6 +136,14 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" kind="function"><name>getCoordinatesAtQuadraturePoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" kind="function"><name>getNumberOfQuadraturePoints</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_testing_1_1_element_under_test" kind="struct"><name>Marmot::Testing::ElementUnderTest</name>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1ae0c00cb05d7d5cf414cff6d12de57155" kind="variable"><name>element</name></member>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a09e3476aab5e67afed5cb3607e6c09e8" kind="variable"><name>coordinates</name></member>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a4eca9cdd43bf166bf1691ed88d823d50" kind="variable"><name>properties</name></member>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a1edee00e5cdcdb06269f589a67c5ff22" kind="variable"><name>materialProperties</name></member>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a120106ac98cf75987473fe47b83b9579" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a899b78c755c6288e2de6074a4850de9d" kind="function"><name>ElementUnderTest</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider" kind="class"><name>Marmot::Discretizations::Elements::EnergyGradientProvider</name>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1ab06d58c70eae5221c4b2c0bcc16d784c" kind="function"><name>~EnergyGradientProvider</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_energy_gradient_provider_1a3cc110104d988ee3cf71dc75652c573f" kind="function"><name>assignEnergyGradientOutput</name></member>
@@ -169,7 +177,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aa36b52874889427e3a51e6a152bf49af" kind="function"><name>F</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a5d464c61a5d066a9d40705a646f66c28" kind="function"><name>parentCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1acfc5da245990bb15ac1a366f68728965" kind="function"><name>center</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ad8d7fdbe6e2323469363110e80b9727b" kind="function"><name>characteristicLengthForCriticalTimeStepAt</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aa903b0c3cc49ad5b6abebd49ffaaf6eb" kind="function"><name>smallestElementExtentAt</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a366b8fbfd584e375f036904751a919ab" kind="function"><name>referenceCentroid</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a58d8d62d7325ef4556ea2c684da59243" kind="function"><name>isInsideParentDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a9997aa16d56191f734a9b35a99c20378" kind="function"><name>volumeEquivalentLength</name></member>
@@ -215,6 +223,14 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a345afad207a8f546d2327161adc724f5" kind="function"><name>BAverageSurfaceMatrix</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1a0e53c1b0352134163374b409092328ad" kind="function"><name>evaluateAt</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element_1ac86940cdf774ccd2f72381f9881bdc24" kind="function"><name>getInterfaceElementShape</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound" kind="class"><name>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a0650622679f19fe27e37b9290ab25c1b" kind="variable"><name>lambdaOperator</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a95020610239325d64b6193a1cccc9834" kind="variable"><name>muOperator</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kind="function"><name>IsotropicElasticStiffnessBound</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" kind="function"><name>addQuadraturePoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" kind="function"><name>stableTimeIncrement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a6b9fffc346c79f5baad3551dc921daac" kind="function"><name>largestEigenvalue</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_material_section" kind="struct"><name>Marmot::Discretizations::MaterialSection</name>
     <member refid="class_marmot_1_1_discretizations_1_1_material_section_1ad76fce105997b5f27e784e5b9df435c4" kind="variable"><name>materialName</name></member>
@@ -301,6 +317,8 @@
     <member refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_consistent_mass_1a7f625f017805e50a3f5fd8134d19232d" kind="function"><name>integrationRule</name></member>
     <member refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_consistent_mass_1a9d0e05a22c0a0c31e2344ba29d28cc07" kind="function"><name>nearestQuadraturePoint</name></member>
   </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kind="namespace"><name>Marmot::Discretizations::Elements::CriticalTimeStep</name>
+  </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_e_a_s" kind="namespace"><name>Marmot::Discretizations::Elements::EAS</name>
     <member refid="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899" kind="enum"><name>EASType</name></member>
     <member refid="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a5c93f8759b6b03fe95f21fa9533e7b68" kind="enumvalue"><name>DeBorstEAS2</name></member>
@@ -316,8 +334,6 @@
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_mass_lumping" kind="namespace"><name>Marmot::Discretizations::Elements::MassLumping</name>
     <member refid="_marmot_mass_lumping_8h_1a9c4f1ff6593e33bb081458f1ed1fc197" kind="function"><name>nLinearNodes</name></member>
     <member refid="_marmot_mass_lumping_8h_1a61aea4a3753f3cd38f9851545af41547" kind="function"><name>manifoldBlendWeight</name></member>
-    <member refid="_marmot_mass_lumping_8h_1a8bfa3c0532ac554105d008afa0d36964" kind="function"><name>manifoldMassFractions</name></member>
-    <member refid="_marmot_mass_lumping_8h_1a1d4a1407f4b89eae150b4180321204c0" kind="function"><name>timeStepFactorFromMassDistribution</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature" kind="namespace"><name>Marmot::Discretizations::Elements::Quadrature</name>
     <member refid="_marmot_finite_element_8h_1a4c73d9802409b4c1689dcf1943c8694b" kind="enum"><name>QuadratureFamily</name></member>
@@ -451,9 +467,15 @@
   </compound>
   <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>
+  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
+    <member refid="namespace_marmot_1_1_testing_1ac5430213505583456a1421f6e56be398" kind="function"><name>unitElementCoordinates</name></member>
+    <member refid="namespace_marmot_1_1_testing_1a4a14a3a83f4c170f457e56d740c68741" kind="function"><name>stableTimeIncrementOfTheElement</name></member>
+  </compound>
   <compound refid="_marmot_bulk_viscosity_8h" kind="file"><name>MarmotBulkViscosity.h</name>
   </compound>
   <compound refid="_marmot_consistent_mass_8h" kind="file"><name>MarmotConsistentMass.h</name>
+  </compound>
+  <compound refid="_marmot_critical_time_step_8h" kind="file"><name>MarmotCriticalTimeStep.h</name>
   </compound>
   <compound refid="_marmot_dof_layout_tools_8h" kind="file"><name>MarmotDofLayoutTools.h</name>
   </compound>
@@ -462,6 +484,8 @@
   <compound refid="_marmot_element_factory_8h" kind="file"><name>MarmotElementFactory.h</name>
   </compound>
   <compound refid="_marmot_element_property_8h" kind="file"><name>MarmotElementProperty.h</name>
+  </compound>
+  <compound refid="_marmot_element_testing_8h" kind="file"><name>MarmotElementTesting.h</name>
   </compound>
   <compound refid="_marmot_energy_gradient_provider_8h" kind="file"><name>MarmotEnergyGradientProvider.h</name>
   </compound>

@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_testing" kind="namespace" language="C++">
+    <compoundname>Marmot::Testing</compoundname>
+    <innerclass refid="struct_marmot_1_1_testing_1_1_element_under_test" prot="public">Marmot::Testing::ElementUnderTest</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1ac5430213505583456a1421f6e56be398" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Testing::unitElementCoordinates</definition>
+        <argsstring>(int nDim, int nNodes, double lengthOfLastAxis)</argsstring>
+        <name>unitElementCoordinates</name>
+        <qualifiedname>Marmot::Testing::unitElementCoordinates</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>lengthOfLastAxis</declname>
+        </param>
+        <briefdescription>
+<para>The node coordinates of a unit square or cube element, in the Abaqus node order: the corner nodes, then the midside nodes, each at <formula id="39">$(\xi + 1) / 2$</formula> of its natural coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The spatial dimension, 2 or 3. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of nodes: 4 or 8 in 2D, 8 or 20 in 3D. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>lengthOfLastAxis</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The extent along the last axis, 1 for the square or cube, less for a slab. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The coordinates, node after node. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="51" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="51" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1a4a14a3a83f4c170f457e56d740c68741" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Testing::stableTimeIncrementOfTheElement</definition>
+        <argsstring>(Marmot::Discretizations::Elements::Element &amp;element, int nDisplacementDof)</argsstring>
+        <name>stableTimeIncrementOfTheElement</name>
+        <qualifiedname>Marmot::Testing::stableTimeIncrementOfTheElement</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> &amp;</type>
+          <declname>element</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nDisplacementDof</declname>
+        </param>
+        <briefdescription>
+<para>The stable time increment <formula id="40">$2 / \omega_{\max}$</formula> of an element on its own, at rest: the largest eigenvalue of <formula id="31">$\mathbf{M}^{-1}\mathbf{K}$</formula> of its displacement block, with the tangent computeKernels() returns and the lumped mass computeLumpedInertia() assembles. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>element</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The element; its state is evaluated at rest (its state variables change). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nDisplacementDof</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The size of the displacement block, the leading degrees of freedom of the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The stable time increment. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="151" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="151" bodyend="168"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Helpers for the tests of finite elements. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="41" column="1"/>
+  </compounddef>
+</doxygen>

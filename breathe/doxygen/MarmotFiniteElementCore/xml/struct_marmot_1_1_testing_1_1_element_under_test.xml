@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_testing_1_1_element_under_test" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Testing::ElementUnderTest</compoundname>
+    <includes refid="_marmot_element_testing_8h" local="no">MarmotElementTesting.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_testing_1_1_element_under_test_1ae0c00cb05d7d5cf414cff6d12de57155" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Marmot::Discretizations::Elements::Element &gt; Marmot::Testing::ElementUnderTest::element</definition>
+        <argsstring></argsstring>
+        <name>element</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::element</qualifiedname>
+        <briefdescription>
+<para>The element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="99" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="99" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_testing_1_1_element_under_test_1a09e3476aab5e67afed5cb3607e6c09e8" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Testing::ElementUnderTest::coordinates</definition>
+        <argsstring></argsstring>
+        <name>coordinates</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::coordinates</qualifiedname>
+        <briefdescription>
+<para>Its node coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="101" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_testing_1_1_element_under_test_1a4eca9cdd43bf166bf1691ed88d823d50" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Testing::ElementUnderTest::properties</definition>
+        <argsstring></argsstring>
+        <name>properties</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::properties</qualifiedname>
+        <briefdescription>
+<para>Its element properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="103" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_testing_1_1_element_under_test_1a1edee00e5cdcdb06269f589a67c5ff22" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Testing::ElementUnderTest::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Its material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="105" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="105" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_testing_1_1_element_under_test_1a120106ac98cf75987473fe47b83b9579" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Testing::ElementUnderTest::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::stateVars</qualifiedname>
+        <briefdescription>
+<para>Its state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="107" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_testing_1_1_element_under_test_1a899b78c755c6288e2de6074a4850de9d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Testing::ElementUnderTest::ElementUnderTest</definition>
+        <argsstring>(const std::string &amp;type, std::vector&lt; double &gt; coordinates_, std::vector&lt; double &gt; properties_, const std::string &amp;material, std::vector&lt; double &gt; materialProperties_)</argsstring>
+        <name>ElementUnderTest</name>
+        <qualifiedname>Marmot::Testing::ElementUnderTest::ElementUnderTest</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>coordinates_</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>properties_</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>material</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>materialProperties_</declname>
+        </param>
+        <briefdescription>
+<para>Create the element, assign everything and initialize the element and its material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the element in the registry. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coordinates_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The node coordinates. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>properties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The element properties, e.g. the thickness of a plane element; may be empty. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>material</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>materialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material properties. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="117" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="117" bodyend="140"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>An element of the registry, with its coordinates, properties and state, initialized and ready to compute. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="96" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="96" bodyend="141"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a09e3476aab5e67afed5cb3607e6c09e8" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>coordinates</name></member>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1ae0c00cb05d7d5cf414cff6d12de57155" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>element</name></member>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a899b78c755c6288e2de6074a4850de9d" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>ElementUnderTest</name></member>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a1edee00e5cdcdb06269f589a67c5ff22" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>materialProperties</name></member>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a4eca9cdd43bf166bf1691ed88d823d50" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>properties</name></member>
+      <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1a120106ac98cf75987473fe47b83b9579" prot="public" virt="non-virtual"><scope>Marmot::Testing::ElementUnderTest</scope><name>stateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

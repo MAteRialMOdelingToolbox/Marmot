@@ -4,10 +4,12 @@
     <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot</compoundname>
     <innerfile refid="_marmot_bulk_viscosity_8h">MarmotBulkViscosity.h</innerfile>
     <innerfile refid="_marmot_consistent_mass_8h">MarmotConsistentMass.h</innerfile>
+    <innerfile refid="_marmot_critical_time_step_8h">MarmotCriticalTimeStep.h</innerfile>
     <innerfile refid="_marmot_dof_layout_tools_8h">MarmotDofLayoutTools.h</innerfile>
     <innerfile refid="_marmot_element_8h">MarmotElement.h</innerfile>
     <innerfile refid="_marmot_element_factory_8h">MarmotElementFactory.h</innerfile>
     <innerfile refid="_marmot_element_property_8h">MarmotElementProperty.h</innerfile>
+    <innerfile refid="_marmot_element_testing_8h">MarmotElementTesting.h</innerfile>
     <innerfile refid="_marmot_energy_gradient_provider_8h">MarmotEnergyGradientProvider.h</innerfile>
     <innerfile refid="_marmot_enhanced_assumed_strain_8h">MarmotEnhancedAssumedStrain.h</innerfile>
     <innerfile refid="_marmot_finite_element_8h">MarmotFiniteElement.h</innerfile>

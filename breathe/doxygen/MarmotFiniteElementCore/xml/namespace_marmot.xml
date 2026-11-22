@@ -4,6 +4,7 @@
     <compoundname>Marmot</compoundname>
     <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_registry">Marmot::Registry</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_testing">Marmot::Testing</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
