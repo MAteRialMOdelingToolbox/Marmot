@@ -155,13 +155,18 @@ All notable changes to Marmot are documented in this file. The format follows
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
   viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
   damping).
-- `Particle::computeBoundOfAbsoluteStiffnessTimes`: an upper bound of |K| W, the absolute value of the particle's
-  stiffness times nonnegative weights, for the stable time increment of an explicit host. `AbsoluteTangentBound` forms
-  it in O(nodes) from the chain-rule factors of each node's rows (`addStiffnessRowsOfNode`) and weighted moments of the
-  shape functions, without assembling the stiffness; implemented in `DisplacementParticle` and
-  `GradientEnhancedFiniteStrainParticle` for all derived particles (`addBoundOfAbsoluteTangentTimesWeights`). Their
-  tangent is assembled from the same factors (`addTangentRowsOfNode`): equal to the former one to round-off, residuals
-  bitwise. The NSNI stabilization rows are shared by both particle families (`Meshfree::NSNI`).
+- `Particle::describeStiffness`: the particle describes its stiffness at its current state (the tangent of a zero
+  increment, without the inertia) node by node to a `StiffnessVisitor`, in the factored form of the chain rule: the
+  shape functions at its evaluation point, then per node the derivatives of its force with respect to the interpolated
+  increment, its gradient and its second gradient (`StiffnessOfNode`). It leaves the particle as it was found (state
+  variables, and the response and tangents of the material point, `SavedMaterialPoint`), so a host may call it at any
+  point of an increment; the default throws. Implemented in `DisplacementParticle` and
+  `GradientEnhancedFiniteStrainParticle` for all derived particles (`addStiffnessOfNode`). The bound of |K| W, the
+  absolute value of the stiffness times nonnegative weights, for the stable time increment of an explicit host, is a
+  visitor outside the particle: `addBoundOfAbsoluteStiffnessTimes(particle, ...)` with `AbsoluteStiffnessBound`, in
+  O(nodes) from weighted moments of the shape functions. The particles' tangent is assembled from the same factors
+  (`addRowsOfNode`): equal to the former one to round-off, residuals bitwise. The NSNI stabilization rows are shared by
+  both particle families (`Meshfree::NSNI`).
 - `Particle::getAttachedPointInterpolationVector`: the coefficients
   `G_B = N_B(Y_c) + dN_B/dY . (Y - Y_c)` with which a particle moves a point attached to it (a vertex, a face center,
   its center) in its next increment. A constraint that measures such a point where the particle puts it must
