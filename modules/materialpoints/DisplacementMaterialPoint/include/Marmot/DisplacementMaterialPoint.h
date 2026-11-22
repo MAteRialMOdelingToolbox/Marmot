@@ -84,12 +84,13 @@ namespace Marmot::Discretizations::MaterialPoints {
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor of size nDim
     using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >; ///< fourth-order tensor of size nDim
 
-    int _mpNumber;   ///< label of the material point, also passed to the material
+    int _mpNumber; ///< label of the material point, also passed to the material
 
-    TensorD _x0;     ///< coordinates in the undeformed configuration @f$ \boldsymbol{X} @f$
+    TensorD _x0;   ///< coordinates in the undeformed configuration @f$ \boldsymbol{X} @f$
 
-    double _vol0;    ///< volume in the undeformed configuration @f$ V_0 @f$
-    double _density; ///< mass density in the undeformed configuration, as provided by the material
+    double _vol0;  ///< volume in the undeformed configuration @f$ V_0 @f$
+    double
+      _density; ///< mass density in the undeformed configuration, as provided by the material at initializeYourself()
 
     using Material = Marmot::Materials::MaterialFiniteStrain; ///< material interface consumed by the material point
 
@@ -286,7 +287,8 @@ namespace Marmot::Discretizations::MaterialPoints {
     };
 
     /**
-     * @brief Mass density in the undeformed configuration, as provided by the material.
+     * @brief Mass density in the undeformed configuration, as provided by the material at initializeYourself(): an
+     * evaluation does not change it.
      * @return The density.
      */
     double getDensityUndeformed() const override { return _density; };
@@ -426,7 +428,8 @@ namespace Marmot::Discretizations::MaterialPoints {
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
   {
-    state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    state                    = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    this->_assignedStateVars = { stateVars, nStateVars };
   }
 
   template < int nDim >

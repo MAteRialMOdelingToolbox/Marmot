@@ -443,7 +443,7 @@ namespace Marmot::Discretizations::Meshfree {
 
     const Eigen::MatrixXd d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    StiffnessOfNode< nDim, nDim + nNonlocal > ofNode;
+    StiffnessOfNode< nDim, nDim + nNonlocal > rowsOfNode;
     for ( int A = 0; A < _nNodes; A++ ) {
 
       const double  T_A     = _T( A );
@@ -477,19 +477,19 @@ namespace Marmot::Discretizations::Meshfree {
         P( idxA_n + kNl ) += r_N;
       }
 
-      // the rows of the tangent: the stiffness of the node, its inertia and the stabilization of the increment
-      ofNode.setZero();
-      addStiffnessOfNode( A, dY_dx, ofNode );
-      ofNode.df_dIncrement
+      // the rows of the tangent: the stiffness of the node plus its inertia and the stabilization of the increment
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
                                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
                                                da_ddu.data() );
 
       // the stabilization through the stress gradient of the increment: D_kK dTau_ij/dY_K dN_B/dx_i
-      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, ofNode );
+      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, rowsOfNode );
 
-      addRowsOfNode( ofNode, A, _N, _dN_dY, d2N_dYdY, K );
+      addRowsOfNode( rowsOfNode, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 

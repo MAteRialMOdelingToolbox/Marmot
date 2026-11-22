@@ -158,7 +158,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     TensorD _x0;                          ///< coordinates @f$ \boldsymbol{X} @f$ in the undeformed configuration
 
     double _vol0;                         ///< volume @f$ V_0 @f$ in the undeformed configuration
-    double _density;                      ///< mass density in the reference configuration, as reported by the material
+    double _density;                      ///< mass density in the reference configuration, from initializeYourself()
 
     std::unique_ptr< Material > material; ///< the assigned material
 
@@ -387,7 +387,8 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     /**
      * @brief Mass density in the reference configuration.
-     * @return Density reported by the material at initializeYourself() and after each computeYourself().
+     * @return Density reported by the material at initializeYourself(), the mass of the material point over its
+     * reference volume: an evaluation does not change it.
      */
     double getDensityUndeformed() const override { return _density; };
 
