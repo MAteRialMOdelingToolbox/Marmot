@@ -12,6 +12,42 @@ amounts of it. The micro-inertia is a **material** property, because it is insep
 non-local viscosity -- itself always a material property -- by the bound :math:`m_k \le \eta^2/4`,
 and because that bound can only be checked where both of its sides are visible.
 
+The stable time increment
+-------------------------
+
+The central difference method with a lumped mass is stable for :math:`\Delta t \le 2/\omega_\mathrm{max}`, and the
+largest eigenfrequency of the assembled system is bounded by the largest of its elements,
+:math:`\omega_\mathrm{max}^2 \le \max_e \lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_e)`. The continuum
+elements (``DisplacementFiniteElement``, ``DisplacementFiniteStrainULElement`` and
+``GeneralGradientEnhancedDisplacementFiniteElement``) return this element bound, computed from the strain operator
+they integrate with and the lumped mass they assemble, so it holds for every element order, quadrature rule and
+distortion. A characteristic length over a wave speed does not: it is the exact limit of a linear bar, and it
+overestimates the stable increment of a quadratic element by a factor of 2.3 (8-node quadrilateral) to 3.4
+(20-node hexahedron), and that of a compact linear element in 3D by up to 1.7.
+
+A material tells only its largest wave speed :math:`c`, i.e. the P-wave modulus :math:`\rho c^2 = \lambda + 2\mu`.
+The element stiffness of an isotropic material splits along the two Lame constants,
+:math:`\lambda\mathbf{K}_\lambda + \mu\mathbf{K}_\mu`, with
+:math:`\mathbf{u}^T\mathbf{K}_\lambda\mathbf{u} = \int (\nabla\cdot\mathbf{u})^2\,\mathrm{d}V` and
+:math:`\mathbf{u}^T\mathbf{K}_\mu\mathbf{u} = \int 2\,\boldsymbol{\varepsilon}:\boldsymbol{\varepsilon}\,\mathrm{d}V`
+(not the deviatoric operator: it contains the volumetric strain too). At a fixed P-wave modulus the stiffness is
+affine in :math:`\mu`, and its largest eigenvalue is largest at one of the two ends :math:`\nu = 1/2` or
+:math:`\nu = 0`:
+
+.. math::
+
+   \Delta t = \frac{2}{\sqrt{\rho c^2\,\Lambda}}, \qquad
+   \Lambda = \max\Big(\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\lambda),\;
+                       \tfrac{1}{2}\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\mu)\Big).
+
+It is exact for a material at the end whose term is the larger one and conservative everywhere else. For quadratic
+elements it is about 0.8 to 1 of the stable increment of the element; for a compact linear element, whose
+incompressible end governs, it can be as low as 0.6 of it at :math:`\nu = 0`. A courant number below one is still
+needed for the nonlinearities the bound does not see.
+
+.. doxygennamespace:: Marmot::Discretizations::Elements::CriticalTimeStep
+   :members:
+
 Artificial bulk viscosity
 -------------------------
 
@@ -171,8 +207,9 @@ Notes and limitations
   against. Only the degradation asks for the current wave speed, once per quadrature point per
   increment, and what that costs is the material's business (see the note above).
 - **The characteristic length is the element's smallest physical extent**, twice the smallest
-  singular value of the Jacobian -- the same length the stable time increment is computed from,
-  shared through one function so the two cannot drift apart.
+  singular value of the Jacobian (``GeometryElement::smallestElementExtentAt``). It scales the
+  viscosity to the shortest wave the element can carry; the stable time increment does not use it
+  (it is the element's eigenvalue bound, see above).
 - **Plane stress is approximate.** The out-of-plane strain is not carried by the element's
   kinematics there, so the trace is taken over the in-plane components only.
 - **Explicit only.** Evaluated in ``computeKernelsExplicit``, not part of the implicit kernels,
