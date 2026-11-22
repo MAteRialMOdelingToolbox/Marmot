@@ -499,7 +499,6 @@ namespace Marmot::Discretizations::Meshfree {
       for ( int A = 0; A < _nNodes; A++ ) {
         const int idxA_u = nodeBlockSize * A;
 
-        /* const double T_A = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_T( A ); */
         r_U = testBoundary( A ) * f;
 
         {

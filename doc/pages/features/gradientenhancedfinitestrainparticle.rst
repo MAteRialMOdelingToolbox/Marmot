@@ -14,7 +14,7 @@ material is any material of the interface ``Marmot::Materials::MaterialGradientE
 variable, ``GM7/COROTATIONAL`` (:doc:`gradientenhancedcorotational`) with six. The weak forms below are written for one
 nonlocal variable; with several, each :math:`\bar N_K` has its own balance with its own :math:`c_K`, and they couple
 only through the material (:math:`\partial L_K/\partial\bar N_M`). The names of the nonlocal fields follow from
-their *number*, not from the material (``GradientEnhancedFiniteStrainMaterialPoint::nonlocalNodeFields``): six are the
+their *number*, not from the material (``GradientEnhancedFiniteStrainNames<nNonlocal>::nonlocalNodeFields``): six are the
 one field ``strain symmetric`` (state ``nonlocal strain``), any other number the scalar fields ``nonlocal damage``,
 ``nonlocal damage 2``, ... (state ``nonlocal damage``). A host must know each name: in EdelweissFE, a field is
 registered in the dictionaries of ``edelweissfe/config/phenomena.py``, where ``nonlocal damage 2`` is the last of the
