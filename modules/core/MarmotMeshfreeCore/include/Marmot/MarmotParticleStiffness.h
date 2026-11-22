@@ -32,9 +32,6 @@
 #include <Fastor/Fastor.h>
 #include <algorithm>
 #include <array>
-#include <cmath>
-#include <stdexcept>
-#include <string>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -308,7 +305,9 @@ namespace Marmot::Discretizations::Meshfree {
    * StiffnessVisitor, symmetric or not; the second gradients of the shape functions must be symmetric (their
    * symmetric components are used).
    *
-   * A host uses it through addBoundOfAbsoluteStiffnessTimes().
+   * A host uses it through addBoundOfAbsoluteStiffnessTimes(). Both are compiled in Marmot, for nDim 2 and 3, not in
+   * the host: a host that compiled them with its own flags (e.g. with FMA contraction) would change the last bits of
+   * the bound.
    *
    * @tparam nDim Spatial dimension.
    */
@@ -345,37 +344,7 @@ namespace Marmot::Discretizations::Meshfree {
                               int           nNodes,
                               const double* N,
                               const double* dN_dY,
-                              const double* d2N_dYdY ) override
-    {
-      if ( nDimOfParticle != nDim )
-        throw std::invalid_argument( "AbsoluteStiffnessBound: a particle of dimension " +
-                                     std::to_string( nDimOfParticle ) + " for a bound of dimension " +
-                                     std::to_string( nDim ) );
-      _nDofPerNode         = nDofPerNode;
-      _nDof                = nDofPerNode * nNodes;
-      _withSecondGradients = d2N_dYdY != nullptr;
-      _moments.assign( _nColumns * nDofPerNode, Moments() );
-
-      for ( int c = 0; c < _nColumns; c++ )
-        for ( int k = 0; k < nDofPerNode; k++ ) {
-          Moments& m = _moments[c * nDofPerNode + k];
-          for ( int B = 0; B < nNodes; B++ ) {
-            const double w_B = _columnWeights[c * _nDof + nDofPerNode * B + k];
-            if ( w_B == 0.0 )
-              continue;
-            m.active = true;
-            m.sumOfValues += w_B * std::abs( N[B] );
-            const Eigen::Matrix< double, nDim, 1 > g_B = Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >(
-              dN_dY + nDim * B );
-            addMoments( g_B, w_B, m.sumOfGradientNorms, m.gradientMoments );
-            if ( _withSecondGradients )
-              addMoments( symmetricComponents( d2N_dYdY + nDim * nDim * B ),
-                          w_B,
-                          m.sumOfSecondGradientNorms,
-                          m.secondGradientMoments );
-          }
-        }
-    }
+                              const double* d2N_dYdY ) override;
 
     /**
      * @brief Add the bound of the rows of node @p A: @f$ (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} @f$ for all
@@ -388,47 +357,24 @@ namespace Marmot::Discretizations::Meshfree {
     void visitStiffnessOfNode( int           A,
                                const double* df_dIncrement,
                                const double* df_dIncrementGradient,
-                               const double* df_dIncrementSecondGradient ) override
-    {
-      const int n  = _nDofPerNode;
-      const int nn = n * n;
-      for ( int i = 0; i < n; i++ )
-        for ( int k = 0; k < n; k++ ) {
-          const int                        ik = i + n * k;
-          const double                     a  = df_dIncrement[ik];
-          Eigen::Matrix< double, nDim, 1 > b;
-          for ( int l = 0; l < nDim; l++ )
-            b( l ) = df_dIncrementGradient[nn * l + ik];
-          Eigen::Matrix< double, nSym, 1 > h = Eigen::Matrix< double, nSym, 1 >::Zero();
-          if ( _withSecondGradients )
-            for ( int l = 0, s = 0; l < nDim; l++ )
-              for ( int m = l; m < nDim; m++, s++ )
-                h( s ) = df_dIncrementSecondGradient[nn * ( l * nDim + m ) + ik] +
-                         ( m != l ? df_dIncrementSecondGradient[nn * ( m * nDim + l ) + ik] : 0.0 );
-
-          // Most factors of a node's rows are structurally zero (e.g. a displacement row has no gradient factor for a
-          // nonlocal column, and only the stabilization has second-gradient factors): a zero factor adds nothing.
-          const bool withValueTerm          = a != 0.0;
-          const bool withGradientTerm       = ( b.array() != 0.0 ).any();
-          const bool withSecondGradientTerm = ( h.array() != 0.0 ).any();
-          if ( !withValueTerm && !withGradientTerm && !withSecondGradientTerm )
-            continue;
-
-          for ( int c = 0; c < _nColumns; c++ ) {
-            const Moments& m = _moments[c * n + k];
-            if ( !m.active )
-              continue;
-            double sum = std::abs( a ) * m.sumOfValues;
-            if ( withGradientTerm )
-              sum += std::sqrt( std::max( 0.0, m.sumOfGradientNorms * b.dot( m.gradientMoments * b ) ) );
-            if ( withSecondGradientTerm )
-              sum += std::sqrt( std::max( 0.0, m.sumOfSecondGradientNorms * h.dot( m.secondGradientMoments * h ) ) );
-            _bound[c * _nDof + n * A + i] += sum;
-          }
-        }
-    }
+                               const double* df_dIncrementSecondGradient ) override;
 
   private:
+    /**
+     * @brief Add the bound of the rows of node @p A (see visitStiffnessOfNode()), with the number of dofs per node
+     * known at compile time for the particles of Marmot, so that the loops over the components are unrolled.
+     * @tparam nDofPerNodeAtCompileTime The number of dofs per node; 0: the one given by visitShapeFunctions().
+     * @param[in] A The node.
+     * @param[in] df_dIncrement The derivative of its force with respect to the interpolated increment.
+     * @param[in] df_dIncrementGradient The derivatives with respect to its gradient.
+     * @param[in] df_dIncrementSecondGradient The derivatives with respect to its second gradient.
+     */
+    template < int nDofPerNodeAtCompileTime >
+    void addBoundOfRowsOfNode( int           A,
+                               const double* df_dIncrement,
+                               const double* df_dIncrementGradient,
+                               const double* df_dIncrementSecondGradient );
+
     /// @brief The weighted moments of the shape functions for one column and one component of the nodes.
     struct Moments {
       bool   active             = false; ///< some weight of the column and component is positive
@@ -454,28 +400,14 @@ namespace Marmot::Discretizations::Meshfree {
     static void addMoments( const Eigen::Matrix< double, n, 1 >& g,
                             double                               w,
                             double&                              sumOfNorms,
-                            Eigen::Matrix< double, n, n >&       moments )
-    {
-      const double norm = g.norm();
-      if ( norm == 0.0 )
-        return;
-      sumOfNorms += w * norm;
-      moments += ( w / norm ) * g * g.transpose();
-    }
+                            Eigen::Matrix< double, n, n >&       moments );
 
     /**
      * @brief The independent components @f$ (l, m), l \le m @f$ of a symmetric second gradient.
      * @param[in] d2N_dYdY The second gradient of one node, entry @f$ l\, n_{\text{dim}} + m @f$.
      * @return The nSym components, in the order @f$ (0,0), (0,1), \ldots, (1,1), \ldots @f$.
      */
-    static Eigen::Matrix< double, nSym, 1 > symmetricComponents( const double* d2N_dYdY )
-    {
-      Eigen::Matrix< double, nSym, 1 > components;
-      for ( int l = 0, s = 0; l < nDim; l++ )
-        for ( int m = l; m < nDim; m++, s++ )
-          components( s ) = d2N_dYdY[l * nDim + m];
-      return components;
-    }
+    static Eigen::Matrix< double, nSym, 1 > symmetricComponents( const double* d2N_dYdY );
 
     const double*          _columnWeights;               ///< the weights, column-major
     const int              _nColumns;                    ///< the number of columns of the weights
@@ -485,6 +417,11 @@ namespace Marmot::Discretizations::Meshfree {
     bool                   _withSecondGradients = false; ///< the particle has second gradients
     std::vector< Moments > _moments;                     ///< entry @f$ c\, n_{\text{dof/node}} + k @f$
   };
+
+  /// @cond INTERNAL (compiled once, in Marmot: src/MarmotParticleStiffness.cpp)
+  extern template class AbsoluteStiffnessBound< 2 >;
+  extern template class AbsoluteStiffnessBound< 3 >;
+  /// @endcond
 
   /**
    * @brief Add an upper bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, the absolute value of a particle's
@@ -504,29 +441,12 @@ namespace Marmot::Discretizations::Meshfree {
    * @throws std::invalid_argument for a particle of a dimension other than 2 or 3; std::runtime_error from a particle
    * that does not describe its stiffness.
    */
-  inline void addBoundOfAbsoluteStiffnessTimes( Particle&     particle,
-                                                const double* columnWeights,
-                                                int           nColumns,
-                                                double*       bound,
-                                                double        timeNew,
-                                                double        dT )
-  {
-    switch ( particle.getDimension() ) {
-    case 2: {
-      AbsoluteStiffnessBound< 2 > absoluteStiffness( columnWeights, nColumns, bound );
-      particle.describeStiffness( absoluteStiffness, timeNew, dT );
-      break;
-    }
-    case 3: {
-      AbsoluteStiffnessBound< 3 > absoluteStiffness( columnWeights, nColumns, bound );
-      particle.describeStiffness( absoluteStiffness, timeNew, dT );
-      break;
-    }
-    default:
-      throw std::invalid_argument( "addBoundOfAbsoluteStiffnessTimes: a particle of dimension " +
-                                   std::to_string( particle.getDimension() ) );
-    }
-  }
+  void addBoundOfAbsoluteStiffnessTimes( Particle&     particle,
+                                         const double* columnWeights,
+                                         int           nColumns,
+                                         double*       bound,
+                                         double        timeNew,
+                                         double        dT );
   /**
    * @brief The NSNI stabilization of the displacement rows of a particle, shared by the displacement and the
    * gradient-enhanced particles (whose dofs of a node start with the displacement).
