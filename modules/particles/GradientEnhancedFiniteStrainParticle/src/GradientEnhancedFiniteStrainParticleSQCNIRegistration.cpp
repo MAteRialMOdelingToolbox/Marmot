@@ -22,210 +22,64 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
+#include "Marmot/GradientEnhancedFiniteStrainParticleRegistration.h"
 #include "Marmot/GradientEnhancedFiniteStrainParticleSQCNI.h"
-#include "Marmot/MarmotMaterialPoint.h"
-#include "Marmot/MarmotParticleLibrary.h"
 
 namespace {
   using namespace Marmot::Discretizations::Meshfree;
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_PlaneStrain_Quad_isRegistered = Marmot::Registry::
-    ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI/PlaneStrain/Quad",
-                                       []( int                cellID,
-                                           const double*      nodeCoordinates,
-                                           int                sizeNodeCoordinates,
-                                           double             volume,
-                                           const std::string& materialName,
-                                           const double*      materialProperties,
-                                           int                sizeMaterialProperties,
-                                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                                         -> Marmot::Discretizations::Meshfree::Particle* {
-                                         return new GradientEnhancedFiniteStrainParticleSQCNI<
-                                           2,
-                                           4 >( cellID,
-                                                nodeCoordinates,
-                                                sizeNodeCoordinates,
-                                                volume,
-                                                materialName,
-                                                materialProperties,
-                                                sizeMaterialProperties,
-                                                approximation,
-                                                GradientEnhancedFiniteStrainParticleSQCNI< 2, 4 >::
-                                                  SmoothingDomainUpdateType::DeformationGradient );
-                                       } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_PlaneStrain_Quad_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >::SmoothingDomainUpdateType::DeformationGradient >(
+      "GradientEnhancedFiniteStrainSQCNI/PlaneStrain/Quad" );
 
   const static bool
-    GradientEnhancedFiniteStrainParticleSNNI_PlaneStrain_Quad_isRegistered = Marmot::Registry::ParticleFactory::
-      registerParticle( "GradientEnhancedFiniteStrainSNNI/PlaneStrain/Quad",
-                        []( int                                                     cellID,
-                            const double*                                           nodeCoordinates,
-                            int                                                     sizeNodeCoordinates,
-                            double                                                  volume,
-                            const std::string&                                      materialName,
-                            const double*                                           materialProperties,
-                            int                                                     sizeMaterialProperties,
-                            const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                          -> Marmot::Discretizations::Meshfree::Particle* {
-                          return new GradientEnhancedFiniteStrainParticleSQCNI<
-                            2,
-                            4 >( cellID,
-                                 nodeCoordinates,
-                                 sizeNodeCoordinates,
-                                 volume,
-                                 materialName,
-                                 materialProperties,
-                                 sizeMaterialProperties,
-                                 approximation,
-                                 GradientEnhancedFiniteStrainParticleSQCNI< 2, 4 >::SmoothingDomainUpdateType::None );
-                        } );
+    GradientEnhancedFiniteStrainSNNI_PlaneStrain_Quad_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >::SmoothingDomainUpdateType::None >(
+      "GradientEnhancedFiniteStrainSNNI/PlaneStrain/Quad" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_R_PlaneStrain_Quad_isRegistered = Marmot::Registry::
-    ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI_R/PlaneStrain/Quad",
-                                       []( int                cellID,
-                                           const double*      nodeCoordinates,
-                                           int                sizeNodeCoordinates,
-                                           double             volume,
-                                           const std::string& materialName,
-                                           const double*      materialProperties,
-                                           int                sizeMaterialProperties,
-                                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                                         -> Marmot::Discretizations::Meshfree::Particle* {
-                                         return new GradientEnhancedFiniteStrainParticleSQCNI<
-                                           2,
-                                           4 >( cellID,
-                                                nodeCoordinates,
-                                                sizeNodeCoordinates,
-                                                volume,
-                                                materialName,
-                                                materialProperties,
-                                                sizeMaterialProperties,
-                                                approximation,
-                                                GradientEnhancedFiniteStrainParticleSQCNI< 2, 4 >::
-                                                  SmoothingDomainUpdateType::RotationOnly );
-                                       } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_R_PlaneStrain_Quad_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >::SmoothingDomainUpdateType::RotationOnly >(
+      "GradientEnhancedFiniteStrainSQCNI_R/PlaneStrain/Quad" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_RU_PlaneStrain_Quad_isRegistered = Marmot::Registry::
-    ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI_RU/PlaneStrain/Quad",
-                                       []( int                cellID,
-                                           const double*      nodeCoordinates,
-                                           int                sizeNodeCoordinates,
-                                           double             volume,
-                                           const std::string& materialName,
-                                           const double*      materialProperties,
-                                           int                sizeMaterialProperties,
-                                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                                         -> Marmot::Discretizations::Meshfree::Particle* {
-                                         return new GradientEnhancedFiniteStrainParticleSQCNI<
-                                           2,
-                                           4 >( cellID,
-                                                nodeCoordinates,
-                                                sizeNodeCoordinates,
-                                                volume,
-                                                materialName,
-                                                materialProperties,
-                                                sizeMaterialProperties,
-                                                approximation,
-                                                GradientEnhancedFiniteStrainParticleSQCNI< 2, 4 >::
-                                                  SmoothingDomainUpdateType::RotationAndPrincipalStretch );
-                                       } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_RU_PlaneStrain_Quad_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 2, 4, 1 >::SmoothingDomainUpdateType::RotationAndPrincipalStretch >(
+      "GradientEnhancedFiniteStrainSQCNI_RU/PlaneStrain/Quad" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
-    registerParticle( "GradientEnhancedFiniteStrainSQCNI/3D/Hexa",
-                      []( int                                                     cellID,
-                          const double*                                           nodeCoordinates,
-                          int                                                     sizeNodeCoordinates,
-                          double                                                  volume,
-                          const std::string&                                      materialName,
-                          const double*                                           materialProperties,
-                          int                                                     sizeMaterialProperties,
-                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                        -> Marmot::Discretizations::Meshfree::Particle* {
-                        return new GradientEnhancedFiniteStrainParticleSQCNI<
-                          3,
-                          8 >( cellID,
-                               nodeCoordinates,
-                               sizeNodeCoordinates,
-                               volume,
-                               materialName,
-                               materialProperties,
-                               sizeMaterialProperties,
-                               approximation,
-                               GradientEnhancedFiniteStrainParticleSQCNI< 3, 8 >::SmoothingDomainUpdateType::
-                                 DeformationGradient );
-                      } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >::SmoothingDomainUpdateType::DeformationGradient >(
+      "GradientEnhancedFiniteStrainSQCNI/3D/Hexa" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSNNI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
-    registerParticle( "GradientEnhancedFiniteStrainSNNI/3D/Hexa",
-                      []( int                                                     cellID,
-                          const double*                                           nodeCoordinates,
-                          int                                                     sizeNodeCoordinates,
-                          double                                                  volume,
-                          const std::string&                                      materialName,
-                          const double*                                           materialProperties,
-                          int                                                     sizeMaterialProperties,
-                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                        -> Marmot::Discretizations::Meshfree::Particle* {
-                        return new GradientEnhancedFiniteStrainParticleSQCNI<
-                          3,
-                          8 >( cellID,
-                               nodeCoordinates,
-                               sizeNodeCoordinates,
-                               volume,
-                               materialName,
-                               materialProperties,
-                               sizeMaterialProperties,
-                               approximation,
-                               GradientEnhancedFiniteStrainParticleSQCNI< 3, 8 >::SmoothingDomainUpdateType::None );
-                      } );
+  const static bool
+    GradientEnhancedFiniteStrainSNNI_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >::SmoothingDomainUpdateType::None >(
+      "GradientEnhancedFiniteStrainSNNI/3D/Hexa" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_R_3D_Hexa_isRegistered = Marmot::Registry::
-    ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI_R/3D/Hexa",
-                                       []( int                cellID,
-                                           const double*      nodeCoordinates,
-                                           int                sizeNodeCoordinates,
-                                           double             volume,
-                                           const std::string& materialName,
-                                           const double*      materialProperties,
-                                           int                sizeMaterialProperties,
-                                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                                         -> Marmot::Discretizations::Meshfree::Particle* {
-                                         return new GradientEnhancedFiniteStrainParticleSQCNI<
-                                           3,
-                                           8 >( cellID,
-                                                nodeCoordinates,
-                                                sizeNodeCoordinates,
-                                                volume,
-                                                materialName,
-                                                materialProperties,
-                                                sizeMaterialProperties,
-                                                approximation,
-                                                GradientEnhancedFiniteStrainParticleSQCNI< 3, 8 >::
-                                                  SmoothingDomainUpdateType::RotationOnly );
-                                       } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_R_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >::SmoothingDomainUpdateType::RotationOnly >(
+      "GradientEnhancedFiniteStrainSQCNI_R/3D/Hexa" );
 
-  const static bool GradientEnhancedFiniteStrainParticleSQCNI_RU_3D_Hexa_isRegistered = Marmot::Registry::
-    ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI_RU/3D/Hexa",
-                                       []( int                cellID,
-                                           const double*      nodeCoordinates,
-                                           int                sizeNodeCoordinates,
-                                           double             volume,
-                                           const std::string& materialName,
-                                           const double*      materialProperties,
-                                           int                sizeMaterialProperties,
-                                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                                         -> Marmot::Discretizations::Meshfree::Particle* {
-                                         return new GradientEnhancedFiniteStrainParticleSQCNI<
-                                           3,
-                                           8 >( cellID,
-                                                nodeCoordinates,
-                                                sizeNodeCoordinates,
-                                                volume,
-                                                materialName,
-                                                materialProperties,
-                                                sizeMaterialProperties,
-                                                approximation,
-                                                GradientEnhancedFiniteStrainParticleSQCNI< 3, 8 >::
-                                                  SmoothingDomainUpdateType::RotationAndPrincipalStretch );
-                                       } );
+  const static bool
+    GradientEnhancedFiniteStrainSQCNI_RU_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 1 >::SmoothingDomainUpdateType::RotationAndPrincipalStretch >(
+      "GradientEnhancedFiniteStrainSQCNI_RU/3D/Hexa" );
+
+  const static bool
+    GradientEnhanced6FiniteStrainSQCNI_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 6 >,
+      GradientEnhancedFiniteStrainParticleSQCNI< 3, 8, 6 >::SmoothingDomainUpdateType::DeformationGradient >(
+      "GradientEnhanced6FiniteStrainSQCNI/3D/Hexa" );
 
 } // namespace

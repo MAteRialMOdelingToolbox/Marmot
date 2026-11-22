@@ -143,6 +143,18 @@ All notable changes to Marmot are documented in this file. The format follows
   Results with the default are unchanged.
 - `materials/GM7`: optional property 16, `nonlocalMicroInertia` (after the nonlocal viscosity): makes the six nonlocal
   fields second order in time, admissible up to eta^2/4; absent, they stay first order.
+- `GM7/COROTATIONAL` (`Materials::GradientEnhancedCorotationalWrapper`): GM7 at finite strains, for the particles
+  with six nonlocal variables. The wrapped material is driven by the increment of the logarithmic strain in the frame
+  of the polar rotation and returns the rotated Kirchhoff stress, so a rigid rotation rotates the stress exactly also
+  for a material that recomputes its stress from total strains (which the Hughes-Winget wrapper cannot); consistent
+  analytic tangent through the spectral derivatives of ln C and C^(1/2).
+- `Registry::ParticleFactory::isRegistered`: whether a particle name is registered, i.e. whether its module is built
+  (replaces the declared but undefined private `checkIfParticleIsRegistered`).
+- Explicit dynamics of the gradient-enhanced finite-strain particles (point, SQCNI, SQCNIxNSNI; any number of
+  nonlocal variables): `updatePhysicsExplicit`, `computePhysicsKernelsExplicit` (nonlocal balance in total form),
+  lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
+  viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
+  damping).
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -209,6 +221,26 @@ All notable changes to Marmot are documented in this file. The format follows
   simulations. The density of `MICROPLANEM7` moves from index 11 to 12; the density of `GM7` from 13 to 14 and its
   nonlocal viscosity from 14 to 15. In an old input file giving these properties, the density would be read as
   `stressUnit`.
+- **Breaking:** the gradient-enhanced finite-strain stack carries `nNonlocal` nonlocal variables:
+  `Materials::MaterialGradientEnhancedFiniteStrain<nNonlocal>` and `Registry::MaterialGradientEnhancedFiniteStrainFactory
+  <nNonlocal>` (instantiated for 1 and 6), the material point `GradientEnhancedFiniteStrainMaterialPoint<nDim,
+  nNonlocal>` (one class; `GradientEnhancedFiniteStrainMaterialPoint2D`/`3D` are removed) and the particles
+  `GradientEnhancedFiniteStrainParticle<nDim, nNonlocal>`, `...SQCNI<nDim, nVertices, nNonlocal>`,
+  `...SQCNIxNSNI<nDim, nVertices, nNonlocal>`. Nonlocal quantities are Eigen vectors (`L`, `nonLocalRadius`, `N`,
+  `getNonlocalViscosity`, `getNonlocalMicroInertia`), the mixed tangents one tensor per nonlocal variable
+  (`dTau_dN[K]`, `dL_dF[K]`). The material point keeps the total
+  gradient and the rate of the nonlocal fields (new states `nonlocal damage gradient`, `nonlocal damage rate`).
+  Registered with six nonlocal variables (`strain symmetric`, 3D): `GradientEnhanced6FiniteStrain/3D`,
+  `GradientEnhanced6FiniteStrain/3D/Point`, `GradientEnhanced6FiniteStrainSQCNI/3D/Hexa`,
+  `GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa`. The cell and the finite element carry one nonlocal variable. The
+  Hughes-Winget wrapper shares its base `GradientEnhancedHypoElasticWrapper` with the corotational one. Results with
+  one nonlocal variable are unchanged (bitwise).
+- **Breaking:** `Particle::updatePhysicsExplicit`, `Particle::computePhysicsKernelsExplicit`,
+  `Particle::computeBodyLoadExplicit` and `Particle::computeDistributedLoadExplicit` throw by default instead of doing
+  nothing, so that a particle without the explicit path is refused by an explicit host instead of being integrated with
+  its mass and without its force, and never leaves a load out silently. The explicit path is in the NSNI particles of
+  the displacement family and in all gradient-enhanced particles; `DisplacementParticleSQCNI` implements the explicit
+  distributed load only. The defaults of the lumped inertia and momentum name the method in their message.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element

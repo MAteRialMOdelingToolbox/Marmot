@@ -26,6 +26,7 @@
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotMPMLibrary.h"
 #include "Marmot/MarmotTesting.h"
+#include <array>
 #include <cmath>
 #include <functional>
 #include <memory>
@@ -60,16 +61,18 @@ namespace {
       mp->initializeYourself();
     }
 
-    GradientEnhancedFiniteStrainMaterialPoint< nDim >& point()
-    {
-      return *dynamic_cast< GradientEnhancedFiniteStrainMaterialPoint< nDim >* >( mp.get() );
-    }
+    using Point          = GradientEnhancedFiniteStrainMaterialPoint< nDim, 1 >;
+    using NonlocalVector = typename Point::NonlocalVector;
+
+    Point& point() { return *dynamic_cast< Point* >( mp.get() ); }
 
     // one increment with displacement gradient increment H and nonlocal increment dn, not committed
     void compute( const Fastor::Tensor< double, nDim, nDim >& H, double dn )
     {
       mp->prepareYourself( 1.0, 1.0 );
-      point().incrementDeformation( Fastor::Tensor< double, nDim >( 0.0 ), H, dn );
+      std::array< Fastor::Tensor< double, nDim >, 1 > dn_dY;
+      dn_dY.fill( Fastor::Tensor< double, nDim >( 0.0 ) );
+      point().incrementDeformation( Fastor::Tensor< double, nDim >( 0.0 ), H, NonlocalVector::Constant( dn ), dn_dY );
       mp->computeYourself( 1.0, 1.0 );
     }
 
@@ -114,8 +117,8 @@ namespace {
             throwExceptionOnFailure( std::abs( t0.dS_dDeltaF( i, j, k, l ) - num ) < 1e-5 * ( 1. + std::abs( num ) ),
                                      Marmot::Utilities::MakeString() << nDim << "D: dS_dDeltaF inconsistent" );
           }
-        const double numL = ( rp.dL - rm.dL ) / ( 2 * h );
-        throwExceptionOnFailure( std::abs( t0.dL_dDeltaF( k, l ) - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
+        const double numL = ( rp.dL( 0 ) - rm.dL( 0 ) ) / ( 2 * h );
+        throwExceptionOnFailure( std::abs( t0.dL_dDeltaF[0]( k, l ) - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
                                  Marmot::Utilities::MakeString() << nDim << "D: dL_dDeltaF inconsistent" );
       }
 
@@ -125,7 +128,7 @@ namespace {
     for ( int i = 0; i < nDim; i++ )
       for ( int j = 0; j < nDim; j++ ) {
         const double num = ( rp.S( i, j ) - rm.S( i, j ) ) / ( 2 * hN );
-        throwExceptionOnFailure( std::abs( t0.dS_dN( i, j ) - num ) < 1e-4 * ( 1. + std::abs( num ) ),
+        throwExceptionOnFailure( std::abs( t0.dS_dN[0]( i, j ) - num ) < 1e-4 * ( 1. + std::abs( num ) ),
                                  Marmot::Utilities::MakeString() << nDim << "D: dS_dN inconsistent" );
       }
   }
@@ -156,6 +159,29 @@ namespace {
 
       throwExceptionOnFailure( std::abs( *s.mp->getStateView( "nonlocal damage" ).stateLocation - 3e-3 ) < 1e-15,
                                "the nonlocal field must accumulate" );
+
+      // the total gradient of the nonlocal field: grad_X dn = F_n^T grad_Y dn, with the non-symmetric F_n = I + H1
+      {
+        const auto                                      backup = s.stateVars;
+        std::array< Fastor::Tensor< double, nDim >, 1 > dn_dY;
+        for ( int j = 0; j < nDim; j++ )
+          dn_dY[0]( j ) = 0.7 - 0.4 * j;
+        s.mp->prepareYourself( 1.0, 1.0 );
+        s.point().incrementDeformation( Fastor::Tensor< double, nDim >( 0.0 ),
+                                        gradient< nDim >( 0.01 ),
+                                        Setup< nDim >::NonlocalVector::Constant( 1e-3 ),
+                                        dn_dY );
+        const double* dN_dX = s.mp->getStateView( "nonlocal damage gradient" ).stateLocation;
+        for ( int i = 0; i < nDim; i++ ) {
+          double expected = 0.0;
+          for ( int j = 0; j < nDim; j++ )
+            expected += ( ( i == j ) + H1( j, i ) ) * dn_dY[0]( j );
+          throwExceptionOnFailure( std::abs( dN_dX[i] - expected ) < 1e-14,
+                                   Marmot::Utilities::MakeString()
+                                     << nDim << "D: the gradient of the nonlocal field is not pulled back with F_n^T" );
+        }
+        s.stateVars = backup;
+      }
 
       checkTangents< nDim >( s, gradient< nDim >( 0.01 ), 1e-3 );
     }

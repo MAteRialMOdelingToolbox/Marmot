@@ -546,13 +546,15 @@ namespace Marmot::Discretizations::Meshfree {
 
       du_dY += einsum< i, j >( dQU_B, dN_B_dY );
 
-      _d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY ); // TODO!!!
+      // the second gradient of x = Y + du is that of du: Y is the coordinate itself
+      _d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY );
     }
 
     _mp->prepareYourself( timeNew, dT );
     _mp->incrementDeformation( du, du_dY );
     _mp->computeYourself( timeNew, dT );
-    if ( dT <= 1e-16 )
+    // a zero-length increment (the start of a step) leaves the rates as they are
+    if ( dT <= 0.0 )
       return;
     const auto    v_n  = _mp->getVelocity();
     const TensorD v_np = du / dT;
