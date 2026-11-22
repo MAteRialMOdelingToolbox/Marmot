@@ -90,9 +90,6 @@ namespace Marmot::Discretizations::Meshfree {
   protected:
     std::unique_ptr< MaterialPointType< nDim > > _mp; ///< the material point at the particle center
 
-    /// the state variables of the material point (assignStateVars()), which describeStiffness() puts back
-    Marmot::Utilities::StateView _stateVarsOfMaterialPoint{ nullptr, 0 };
-
     double _newmark_beta;  ///< Newmark parameter @f$ \beta @f$ (property "newmark-beta beta", default 0)
     double _newmark_gamma; ///< Newmark parameter @f$ \gamma @f$ (property "newmark-beta gamma", default 0)
 
@@ -266,7 +263,6 @@ namespace Marmot::Discretizations::Meshfree {
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
       _mp->assignStateVars( stateVars, nStateVars );
-      _stateVarsOfMaterialPoint = { stateVars, nStateVars };
     }
 
     /**
@@ -572,7 +568,7 @@ namespace Marmot::Discretizations::Meshfree {
     const Tensor< double, nDim, nDim > dY_dx    = inv( _mp->dx_dY() );
     const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    StiffnessOfNode< nDim, nDim > ofNode;
+    StiffnessOfNode< nDim, nDim > rowsOfNode;
     for ( int A = 0; A < this->_nNodes; A++ ) {
 
       const double                 T_A     = this->_T( A );
@@ -586,12 +582,13 @@ namespace Marmot::Discretizations::Meshfree {
 
       P.template segment< nDim >( nodeBlockSize * A ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
 
-      // the rows of the tangent: the stiffness of the node and its inertia
-      ofNode.setZero();
-      addStiffnessOfNode( A, dY_dx, ofNode );
-      ofNode.df_dIncrement += density0 * T_A * V0 *
-                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( da_ddu.data() );
-      addRowsOfNode( ofNode, A, this->_N, this->_dN_dY, d2N_dYdY, K );
+      // the rows of the tangent: the stiffness of the node plus its inertia
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement += density0 * T_A * V0 *
+                                  Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                    da_ddu.data() );
+      addRowsOfNode( rowsOfNode, A, this->_N, this->_dN_dY, d2N_dYdY, K );
     }
   }
 
@@ -617,7 +614,7 @@ namespace Marmot::Discretizations::Meshfree {
             material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
             geometric += S( i, j ) * dY_dx( l, i );
           }
-          ofNode.df_dIncrementGradient[l]( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+          ofNode.gradientBlock( l )( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
         }
   }
 
@@ -625,7 +622,7 @@ namespace Marmot::Discretizations::Meshfree {
   void DisplacementParticle< nDim >::describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT )
   {
     // what the evaluation changes is put back on return
-    const SavedMaterialPoint saved( *_mp, _stateVarsOfMaterialPoint );
+    const SavedMaterialPoint saved( *_mp );
 
     // the material point at the current state: a zero increment
     _mp->prepareYourself( timeNew, dT );

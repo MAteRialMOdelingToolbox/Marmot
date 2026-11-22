@@ -123,10 +123,8 @@ namespace Marmot::Discretizations::Meshfree {
     /// the material point type
     using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >;
 
-    MaterialPoint* __mp; ///< the owned material point
-    MaterialPoint& _mp;  ///< reference to the material point
-    /// the state variables of the material point (assignStateVars()), which describeStiffness() puts back
-    Marmot::Utilities::StateView         _stateVarsOfMaterialPoint{ nullptr, 0 };
+    MaterialPoint*                       __mp;                     ///< the owned material point
+    MaterialPoint&                       _mp;                      ///< reference to the material point
     const Approximation&                 _meshfreeApproximation;   ///< the meshfree approximation
     std::vector< const KernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
 
@@ -271,11 +269,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] stateVars  State variable vector.
      * @param[in]     nStateVars Its size.
      */
-    void assignStateVars( double* stateVars, int nStateVars ) override
-    {
-      _mp.assignStateVars( stateVars, nStateVars );
-      _stateVarsOfMaterialPoint = { stateVars, nStateVars };
-    }
+    void assignStateVars( double* stateVars, int nStateVars ) override { _mp.assignStateVars( stateVars, nStateVars ); }
 
     /**
      * @brief Assign the kernel functions of the nodes and evaluate the shape functions.
@@ -897,7 +891,7 @@ namespace Marmot::Discretizations::Meshfree {
     const Tensor< double, nDim, nDim > dY_dx    = inv( _mp.dx_dY() );
     const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    StiffnessOfNode< nDim, nDim + nNonlocal > ofNode;
+    StiffnessOfNode< nDim, nDim + nNonlocal > rowsOfNode;
     for ( int A = 0; A < _nNodes; A++ ) {
 
       const double                 T_A     = _T( A );
@@ -925,15 +919,15 @@ namespace Marmot::Discretizations::Meshfree {
         P( idxA_n + kNl ) += r_N;
       }
 
-      // the rows of the tangent: the stiffness of the node and its inertia
-      ofNode.setZero();
-      addStiffnessOfNode( A, dY_dx, ofNode );
-      ofNode.df_dIncrement
+      // the rows of the tangent: the stiffness of the node plus its inertia
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
                                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
                                                da_ddu.data() );
-      addRowsOfNode( ofNode, A, _N, _dN_dY, d2N_dYdY, K );
+      addRowsOfNode( rowsOfNode, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 
@@ -966,7 +960,7 @@ namespace Marmot::Discretizations::Meshfree {
           double material = 0.0;
           for ( int i = 0; i < nDim; i++ )
             material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
-          ofNode.df_dIncrementGradient[l]( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+          ofNode.gradientBlock( l )( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
         }
       }
 
@@ -982,11 +976,11 @@ namespace Marmot::Discretizations::Meshfree {
       // nonlocal row K: displacement columns, and the gradient term of its own nonlocal column
       for ( int l = 0; l < nDim; l++ ) {
         for ( int k = 0; k < nDim; k++ )
-          ofNode.df_dIncrementGradient[l]( nK, k ) -= V0 * T_A * t.dL_dDeltaF[K]( k, l );
+          ofNode.gradientBlock( l )( nK, k ) -= V0 * T_A * t.dL_dDeltaF[K]( k, l );
         double dT_A_dX_dot_dYl_dX = 0.0;
         for ( int i = 0; i < nDim; i++ )
           dT_A_dX_dot_dYl_dX += dT_A_dX( i ) * dY_dX( l, i );
-        ofNode.df_dIncrementGradient[l]( nK, nK ) += V0 * R( K ) * R( K ) * dT_A_dX_dot_dYl_dX;
+        ofNode.gradientBlock( l )( nK, nK ) += V0 * R( K ) * R( K ) * dT_A_dX_dot_dYl_dX;
       }
       // nonlocal row K, nonlocal columns M
       for ( int M = 0; M < nNonlocal; M++ )
@@ -1000,7 +994,7 @@ namespace Marmot::Discretizations::Meshfree {
                                                                                    double            dT )
   {
     // what the evaluation changes is put back on return
-    const SavedMaterialPoint saved( _mp, _stateVarsOfMaterialPoint );
+    const SavedMaterialPoint saved( _mp );
 
     // the material point at the current state: a zero increment
     std::array< Fastor::Tensor< double, nDim >, nNonlocal > dn_dY;

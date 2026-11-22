@@ -66,7 +66,8 @@ namespace Marmot::Discretizations::Meshfree {
    * That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that
    * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material's tangent is
    * required) are written down once, on the page "Meshfree Particles" of the documentation, section "The explicit life
-   * cycle of a particle". describeStiffness() is not one of them: it leaves the particle as it was found.
+   * cycle of a particle". describeStiffness() is not one of them: it leaves the particle as it was found (and is of an
+   * accepted state after acceptStateAndPosition()).
    *
    * **State contract:** the state variable block is a *trial* copy. Before every call of computePhysicsKernels(),
    * the host restores it to the values committed by the last acceptStateAndPosition(), and @c dQ is the total
@@ -466,15 +467,17 @@ namespace Marmot::Discretizations::Meshfree {
     virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
 
     /**
-     * @brief Describe the stiffness of the particle at its current state to a visitor, node by node: the shape
-     * functions at its evaluation point, then for every node the derivatives of its force with respect to the
-     * increment the particle interpolates (see StiffnessVisitor).
-     * @details The stiffness is the tangent of computePhysicsKernels() at a zero increment, without the inertia. The
-     * material point is evaluated at a zero increment of the current state; the particle is left as it was found
-     * (state variables, and the response and the tangents the material point keeps), so a host may ask for it at any
-     * point of an increment. The default throws: a particle that does not describe its stiffness refuses a host that
-     * needs it, e.g. for the bound of the stable time increment of an explicit scheme
-     * (addBoundOfAbsoluteStiffnessTimes()).
+     * @brief Describe the stiffness of the particle to a visitor, node by node: the shape functions at its evaluation
+     * point, then for every node the derivatives of its force with respect to the increment the particle interpolates
+     * (see StiffnessVisitor).
+     * @details The stiffness is the tangent of computePhysicsKernels() at a zero increment, without the inertia: the
+     * material point is evaluated with the configuration of the last acceptStateAndPosition() and the working copy of
+     * the state. It is the stiffness of an accepted state after acceptStateAndPosition(), where an explicit host asks
+     * for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes
+     * neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the
+     * tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses
+     * a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme
+     * (addBoundOfAbsoluteStiffnessTimes() in MarmotParticleStiffnessVisitors.h).
      * @param[in,out] visitor The visitor.
      * @param[in] timeNew The time of the zero increment the material point is evaluated with.
      * @param[in] dT The time increment of the zero increment.

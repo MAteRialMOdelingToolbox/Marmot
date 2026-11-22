@@ -33,7 +33,8 @@ namespace Marmot::Discretizations::MaterialPoints {
   void GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >::assignStateVars( double* stateVars,
                                                                                       int     nStateVars )
   {
-    state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    state                    = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    this->_assignedStateVars = { stateVars, nStateVars };
   }
 
   template < int nDim, int nNonlocal >
@@ -191,8 +192,6 @@ namespace Marmot::Discretizations::MaterialPoints {
       tangents.dL_dDeltaF[K] = einsum< mn, mnKL >( tangents.dL_dDeltaF[K], dF_dDeltaF );
     }
     tangents.dL_dN = algorithmicModuli3D.dL_dN;
-
-    _density = material->getDensity( state->materialState.data() );
   }
 
   template class GradientEnhancedFiniteStrainMaterialPoint< 2, 1 >;

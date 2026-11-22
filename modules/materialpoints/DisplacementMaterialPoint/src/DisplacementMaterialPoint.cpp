@@ -85,8 +85,6 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
-
-    _density = material->getDensity( state->materialState.data() );
   }
 
   void DisplacementMaterialPoint3D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
@@ -140,8 +138,6 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
-
-    _density = material->getDensity( state->materialState.data() );
   }
 
 } // namespace Marmot::Discretizations::MaterialPoints
