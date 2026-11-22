@@ -103,6 +103,12 @@ namespace Marmot::Materials {
    * incremental one too, since the stress it is handed is the rotated stress of the last call, which does not depend
    * on @f$ \boldsymbol{F} @f$. The explicit path, computeStressExplicit(), skips it.
    *
+   * **What it refuses.** @f$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} @f$ is the same for
+   * @f$ \boldsymbol{F} @f$ and for its mirror image, so the strain does not show that a material point is turned
+   * inside out (@f$ \det\boldsymbol{F} < 0 @f$; @f$ \boldsymbol{F} = -\boldsymbol{1} @f$ would be a point without
+   * strain or stress, with a reflection for @f$ \boldsymbol{R} @f$). A deformation gradient without a positive
+   * determinant is refused (std::invalid_argument).
+   *
    * The state of the wrapper: @f$ \ln\boldsymbol{U} @f$ and @f$ \hat{\boldsymbol{\tau}} @f$ of the last call (both in
    * Voigt notation, the strain with engineering shear), the nonlocal fields of the last call, and the state of the
    * wrapped material. A zero state is the undeformed, stress-free one, so no initialization beyond the wrapped
@@ -243,6 +249,9 @@ namespace Marmot::Materials {
      * @param[out]    tangents      Algorithmic moduli, or nullptr for none.
      * @param[in]     deformation   Current deformation gradient and nonlocal fields.
      * @param[in]     timeIncrement Current time and time increment.
+     * @throws std::invalid_argument if the determinant of the deformation gradient is not positive: the polar
+     *                               decomposition would then give a reflection for the rotation, and
+     *                               @f$ \boldsymbol{C} @f$ a strain as if nothing were wrong.
      */
     void computeStressWithOptionalTangents( ConstitutiveResponse< 3 >& response,
                                             AlgorithmicModuli< 3 >*    tangents,
@@ -262,12 +271,23 @@ namespace Marmot::Materials {
         N_n = this->stateLayout.template getAs< Eigen::Map< NonlocalVector > >( response.stateVars, nonlocalFieldSlot );
 
       // --- polar decomposition F = R U from the spectral decomposition of C = F^T F ---
-      const Eigen::Matrix3d                                  F = toEigen( deformation.F );
+      const Eigen::Matrix3d F = toEigen( deformation.F );
+
+      // C = F^T F does not tell an inverted material point from a sound one (F = -1 gives C = 1, no strain and no
+      // stress, with a reflection for R), and a comparison with a number that is not one is false: both are refused
+      // by asking for a positive determinant.
+      if ( !( F.determinant() > 0.0 ) )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": the determinant of the deformation gradient is "
+                                     << F.determinant() << ", not positive: the material point is inverted or "
+                                     << "flattened, or its deformation is not a number" );
+
       const Eigen::SelfAdjointEigenSolver< Eigen::Matrix3d > eigenC( F.transpose() * F );
       const Eigen::Vector3d&                                 lambda = eigenC.eigenvalues();
       const Eigen::Matrix3d&                                 Q      = eigenC.eigenvectors();
 
-      if ( lambda.minCoeff() <= 0.0 )
+      // a positive determinant that round-off turns into a stretch of zero
+      if ( !( lambda.minCoeff() > 0.0 ) )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": the deformation gradient is singular" );
 
