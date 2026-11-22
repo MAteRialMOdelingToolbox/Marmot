@@ -143,7 +143,9 @@ by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`
 #. ``computeLumpedDamping(c)``: the coefficients of the first time derivatives.
 
 ``describeStiffness``, through which the host bounds the stable increment (not every increment), is not part of this
-order: it leaves the particle as it was found, so the host may ask for it at any point of an increment.
+order: wherever it is called, it leaves the particle as it was found. What it describes is the stiffness of the
+configuration of the last accept with the working copy of the state, which is the stiffness of an accepted state after
+call 2 or 3, where ``NED`` asks for it; between calls 1 and 2 the working copy holds the advanced state.
 
 **The tangent is required in an explicit analysis.** The particles call the material with its tangent
 (``computeStress``), never ``computeStressExplicit``: the stiffness a particle describes, and with it the bound of the
@@ -188,11 +190,12 @@ their stabilization), and every block of the node's rows follows from the shape 
 its inertia.
 
 **The stiffness, described to a visitor.** In this factored form a particle describes its stiffness, the tangent of a
-zero increment without the inertia, at its current state: ``describeStiffness`` hands a
+zero increment without the inertia (see above for the state it is of): ``describeStiffness`` hands a
 :cpp:class:`Marmot::Discretizations::Meshfree::StiffnessVisitor` first the shape functions at the evaluation point,
 then the three derivatives of every node. It evaluates the material point at a zero increment and puts back what that
-evaluation changes, the state variables and the response and the tangents the material point keeps
-(:cpp:class:`Marmot::Discretizations::Meshfree::SavedMaterialPoint`): the particle is left as it was found. The
+evaluation changes, the state variables it was assigned and the response and the tangents the material point keeps
+(:cpp:class:`Marmot::Discretizations::Meshfree::SavedMaterialPoint`), also if the evaluation or the visitor throws: the
+particle is left as it was found. The density the material point keeps is taken once, when it is initialized. The
 particle knows nothing of what the visitor does with its stiffness. For an NSNI particle, the part of the
 stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the stabilization
 itself is shared by the displacement and the gradient-enhanced particles (``Marmot::Discretizations::Meshfree::NSNI``).
@@ -203,7 +206,10 @@ only. The stiffness of a particle with :math:`n` nodes has :math:`n^2` blocks; i
 functions of the other node, so the sum over that node is taken from a few weighted moments of the shape functions,
 computed once per particle, at a cost of :math:`O(n)`: a visitor of the stiffness,
 :cpp:class:`Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound`, which the host applies to a particle with
-``addBoundOfAbsoluteStiffnessTimes``. For row :math:`i` of node :math:`A` and column component :math:`k`, with the
+``addBoundOfAbsoluteStiffnessTimes``. It lives with the host's other visitor,
+:cpp:class:`Marmot::Discretizations::Meshfree::StiffnessAssembler` (``assembleStiffness``, the stiffness itself, e.g. to
+check the bound against), in ``MarmotParticleStiffnessVisitors.h``, which the particles do not include; both are compiled
+in Marmot. For row :math:`i` of node :math:`A` and column component :math:`k`, with the
 weights :math:`w_B` of component :math:`k` of the nodes, the value factor :math:`a`, the gradient factors
 :math:`\boldsymbol{b}` and :math:`\boldsymbol{g}_B = \partial N_B/\partial\boldsymbol{Y}`:
 
@@ -512,6 +518,11 @@ Implementation
    :allow-dot-graphs:
 
 .. doxygenfunction:: Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes
+
+.. doxygenclass:: Marmot::Discretizations::Meshfree::StiffnessAssembler
+   :allow-dot-graphs:
+
+.. doxygenfunction:: Marmot::Discretizations::Meshfree::assembleStiffness
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::SavedMaterialPoint
    :allow-dot-graphs:

@@ -32,11 +32,14 @@
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticleDomain.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleStiffnessVisitors.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <random>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -119,6 +122,73 @@ namespace {
       }
     }
   };
+
+  // The visitors of a particle's stiffness, fed by hand with a node description of 5 dofs per node in 3D (no particle
+  // of Marmot has that many, so it is not a family the visitors know): the assembled stiffness is the chain rule of
+  // StiffnessVisitor, block by block, and the bound of |K| W is never below it. A particle with more dofs per node than
+  // the visitors are compiled for is refused.
+  void testStiffnessVisitorsOnAnyDofsPerNode()
+  {
+    using namespace Marmot::Discretizations::Meshfree;
+    constexpr int                    nDim = 3, n = 5, nNodes = 4, nDof = n * nNodes;
+    std::mt19937                     gen( 7 );
+    std::uniform_real_distribution<> u( -1.0, 1.0 );
+    const auto                       random = [&]( int rows, int cols ) {
+      Eigen::MatrixXd m( rows, cols );
+      for ( int i = 0; i < m.size(); i++ )
+        m( i ) = u( gen );
+      return m;
+    };
+    const Eigen::MatrixXd N = random( 1, nNodes ), dN_dY = random( nDim, nNodes );
+    Eigen::MatrixXd       d2N_dYdY( nDim * nDim, nNodes );
+    for ( int B = 0; B < nNodes; B++ )
+      for ( int l = 0; l < nDim; l++ )
+        for ( int m = l; m < nDim; m++ )
+          d2N_dYdY( l * nDim + m, B ) = d2N_dYdY( m * nDim + l, B ) = u( gen );
+    std::vector< Eigen::MatrixXd > a, b, h;
+    for ( int A = 0; A < nNodes; A++ ) {
+      a.push_back( random( n, n ) );
+      b.push_back( random( n, nDim * n ) );
+      h.push_back( random( n, nDim * nDim * n ) );
+    }
+
+    Eigen::MatrixXd                K = Eigen::MatrixXd::Zero( nDof, nDof ), bound = Eigen::MatrixXd::Zero( nDof, 1 );
+    const Eigen::MatrixXd          W = Eigen::MatrixXd::Ones( nDof, 1 );
+    StiffnessAssembler< nDim >     assembler( K.data() );
+    AbsoluteStiffnessBound< nDim > absoluteStiffness( W.data(), 1, bound.data() );
+    for ( StiffnessVisitor* visitor : std::vector< StiffnessVisitor* >{ &assembler, &absoluteStiffness } ) {
+      visitor->visitShapeFunctions( nDim, n, nNodes, N.data(), dN_dY.data(), d2N_dYdY.data() );
+      for ( int A = 0; A < nNodes; A++ )
+        visitor->visitStiffnessOfNode( A, a[A].data(), b[A].data(), h[A].data() );
+    }
+
+    Eigen::MatrixXd byHand = Eigen::MatrixXd::Zero( nDof, nDof );
+    for ( int A = 0; A < nNodes; A++ )
+      for ( int B = 0; B < nNodes; B++ ) {
+        Eigen::MatrixXd K_AB = a[A] * N( 0, B );
+        for ( int l = 0; l < nDim; l++ )
+          K_AB += b[A].middleCols( n * l, n ) * dN_dY( l, B );
+        for ( int lm = 0; lm < nDim * nDim; lm++ )
+          K_AB += h[A].middleCols( n * lm, n ) * d2N_dYdY( lm, B );
+        byHand.block( n * A, n * B, n, n ) = K_AB;
+      }
+    throwExceptionOnFailure( ( K - byHand ).cwiseAbs().maxCoeff() <= 1e-14 * byHand.cwiseAbs().maxCoeff(),
+                             "StiffnessAssembler: the stiffness of 5 dofs per node is not the chain rule" );
+    const Eigen::MatrixXd exact = byHand.cwiseAbs() * W;
+    throwExceptionOnFailure( ( bound - exact ).minCoeff() >= -1e-12 * exact.maxCoeff(),
+                             "AbsoluteStiffnessBound: the bound of 5 dofs per node lies below |K| W" );
+
+    for ( StiffnessVisitor* visitor : std::vector< StiffnessVisitor* >{ &assembler, &absoluteStiffness } ) {
+      bool refused = false;
+      try {
+        visitor->visitShapeFunctions( nDim, maxDofsPerNode + 1, nNodes, N.data(), dN_dY.data(), nullptr );
+      }
+      catch ( const std::invalid_argument& ) {
+        refused = true;
+      }
+      throwExceptionOnFailure( refused, "a stiffness visitor reads a node with more dofs than it is compiled for" );
+    }
+  }
 
 } // namespace
 
@@ -511,7 +581,8 @@ int main()
                                                                testSingularMomentMatrixThrows,
                                                                testLagrangianCellInverseMap,
                                                                testSubdomainsTileTheDeformedDomain,
-                                                               testFactories };
+                                                               testFactories,
+                                                               testStiffnessVisitorsOnAnyDofsPerNode };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }
