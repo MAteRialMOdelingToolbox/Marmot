@@ -125,7 +125,8 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `vertex displacements`.
+     * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `smoothing vertex
+     * displacements`.
      * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
      */
     void getSmoothingDomainVertexCoordinates( double* coordinates ) const;
@@ -438,7 +439,8 @@ namespace Marmot::Discretizations::Meshfree {
     /// @f$.
     void _updateVertexDisplacementsFromMaterialPointDeformation();
 
-    /// @brief Update the smoothing domain, then set the center to the accepted material point position.
+    /// @brief Update the smoothing domain and the geometry, then set the center to the accepted material point
+    /// position.
     void updateParticlePositionToReferenceIntermediate() override
     {
       _updateVertexDisplacementsFromMaterialPointDeformation();
