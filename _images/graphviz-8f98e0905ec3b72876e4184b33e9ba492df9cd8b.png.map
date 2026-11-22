@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;" alt="" coords="5,5,813,53"/>
+<area shape="rect" id="node3" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;" alt="" coords="463,101,1267,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="523,51,739,97,734,98,523,57"/>
+<area shape="rect" id="node2" title="Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;" alt="" coords="836,5,1806,53"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="1205,55,994,100,993,95,1210,53"/>
+<area shape="rect" id="node5" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;" alt="" coords="234,197,1496,245"/>
+<area shape="poly" id="edge3" title="public&#45;inheritance" alt="" coords="867,148,867,184,863,180,863,152"/>
+<area shape="rect" id="node4" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;" alt="" coords="502,293,1228,341"/>
+<area shape="poly" id="edge4" title="template&#45;instance" alt="" coords="867,244,867,280,863,276,863,248"/>
+</map>

@@ -79,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rankinegradientsofteningplasticity.html">Gradient-enhanced Rankine softening plasticity model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcorotational.html">Gradient-enhanced corotational wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-enhanced finite-strain Drucker-Prager</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
@@ -254,30 +255,34 @@ deformation gradient must be initialized to the identity by <code class="docutil
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE">
-<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDruckerPrager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials36MaterialGradientEnhancedFiniteStrainE" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain"><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDruckerPrager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7ab4881f2822f95314d8111a3e84e83252d44102.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-95579ac0a8165610829213f3203bdd79886bc8ad.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; 1 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; 1 &gt;&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
 <p>Collaboration diagram for Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a83e8a54f4d23b5bb47ce075ed731dcdc3e47305.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-0b364709aeabe4ddcaf6fa82570b50fb63d164a8.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
-    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; 1 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; 1 &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -575,23 +580,6 @@ g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2} \)</span> is 
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The residual (4): the two deviatoric components and the volumetric part of the flow rule, and the yield function (with the hardening law substituted) scaled by <span class="math notranslate nohighlight">\( c_0 \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
-<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a3ea1bc05a699f503f90bd7e35bb2ba74"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
-<dd><p>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>response</strong> – <strong>[inout]</strong> ConstitutiveResponse instance. </p></li>
-<li><p><strong>tangents</strong> – <strong>[out]</strong> AlgorithmicModuli instance; scaled to the eigen deformation. </p></li>
-<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation gradient and nonlocal field. </p></li>
-<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
-<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Eigen deformation in each spatial direction. </p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>

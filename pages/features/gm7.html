@@ -84,6 +84,7 @@
 <li class="toctree-l3"><a class="reference internal" href="rankinegradientsofteningplasticity.html">Gradient-enhanced Rankine softening plasticity model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcorotational.html">Gradient-enhanced corotational wrapper</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bondsliplaws.html">Bond-Slip Laws</a></li>
@@ -248,7 +249,11 @@ is rejected.</p></td>
 </table>
 <p>The material is registered as <code class="docutils literal notranslate"><span class="pre">GM7</span></code> in the general gradient-enhanced hypoelastic material factory (six nonlocal
 fields), and is used with the six-field <code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></code> elements (<code class="docutils literal notranslate"><span class="pre">G6GCPS8</span></code>,
-<code class="docutils literal notranslate"><span class="pre">G6GC3D8</span></code>, <code class="docutils literal notranslate"><span class="pre">G6GC3D20</span></code>, …).</p>
+<code class="docutils literal notranslate"><span class="pre">G6GC3D8</span></code>, <code class="docutils literal notranslate"><span class="pre">G6GC3D20</span></code>, …). At finite strains it is registered as <code class="docutils literal notranslate"><span class="pre">GM7/COROTATIONAL</span></code> (same properties) in the
+gradient-enhanced finite-strain material factory with six nonlocal fields, for the particles
+<code class="docutils literal notranslate"><span class="pre">GradientEnhanced6FiniteStrain...</span></code> (<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>): GM7 is then driven by the
+logarithmic strain in the frame of the polar rotation, see <a class="reference internal" href="gradientenhancedcorotational.html"><span class="doc">Gradient-enhanced corotational wrapper</span></a>. It is not registered
+with the Hughes-Winget wrapper, since it recomputes its stress from its stored strains.</p>
 <p>The state variables are the volumetric stress <code class="docutils literal notranslate"><span class="pre">sig_v0</span></code>, <code class="docutils literal notranslate"><span class="pre">zeta</span></code>, the microplane stresses <code class="docutils literal notranslate"><span class="pre">sig_N0</span></code>, <code class="docutils literal notranslate"><span class="pre">sig_M0</span></code>,
 <code class="docutils literal notranslate"><span class="pre">sig_L0</span></code>, the extremal over-nonlocal normal strains <code class="docutils literal notranslate"><span class="pre">eps_N0pos</span></code>, <code class="docutils literal notranslate"><span class="pre">eps_N0neg</span></code>, the macroscopic over-nonlocal
 strain <code class="docutils literal notranslate"><span class="pre">strain_macro0OverNonLocal</span></code> and the macroscopic local strain <code class="docutils literal notranslate"><span class="pre">strain_macro0Local</span></code>, which is returned as

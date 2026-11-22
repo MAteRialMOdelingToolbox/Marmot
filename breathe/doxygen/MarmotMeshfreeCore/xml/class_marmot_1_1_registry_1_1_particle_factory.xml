@@ -230,28 +230,26 @@ Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="106" column="17"/>
       </memberdef>
-    </sectiondef>
-    <sectiondef kind="private-func">
-      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1a13e6d59d8eadc36d4fbdc83894fc6940" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
-        <definition>bool Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered</definition>
+        <definition>static bool Marmot::Registry::ParticleFactory::isRegistered</definition>
         <argsstring>(const std::string &amp;particleName)</argsstring>
-        <name>checkIfParticleIsRegistered</name>
-        <qualifiedname>Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered</qualifiedname>
+        <name>isRegistered</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::isRegistered</qualifiedname>
         <param>
           <type>const std::string &amp;</type>
           <declname>particleName</declname>
         </param>
         <briefdescription>
-<para>Check whether a particle name is registered (declared only, not defined). </para>
+<para>Whether a particle type is registered under a name, i.e. whether its module is part of this build. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>A host asks before <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kindref="member">createParticle()</ref>, to tell a particle that is not built (which it may skip) from a particle that fails to be created (an error of the input). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">particleName</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Name of the particle type. </para>
+<para>Name of the particle type (case-insensitive). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -261,7 +259,7 @@ Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="114" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="115" column="17"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-func">
@@ -278,7 +276,7 @@ Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="119" column="31"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="121" column="31"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -292,10 +290,10 @@ Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
 </para>
 <para>Particle names are case-insensitive: they are converted to upper case both at registration and at creation. They follow the pattern <computeroutput>&lt;Physics&gt;&lt;IntegrationScheme&gt;/&lt;Dimension&gt;/&lt;Shape&gt;</computeroutput>, e.g., <computeroutput>DisplacementSQCNI/PlaneStrain/Quad</computeroutput> or <computeroutput>GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa</computeroutput>. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" bodystart="46" bodyend="120"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" bodystart="46" bodyend="122"/>
     <listofallmembers>
-      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" prot="private" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>checkIfParticleIsRegistered</name></member>
       <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>createParticle</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a13e6d59d8eadc36d4fbdc83894fc6940" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>isRegistered</name></member>
       <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a07ab2a45302836ad1f8b2b3adbc6e167" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>ParticleFactory</name></member>
       <member refid="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>particleFactoryFunction</name></member>
       <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" prot="private" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>particleFactoryFunctionByName</name></member>

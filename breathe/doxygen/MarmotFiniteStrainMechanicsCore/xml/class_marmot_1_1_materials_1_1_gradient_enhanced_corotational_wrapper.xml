@@ -1,0 +1,1057 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::GradientEnhancedCorotationalWrapper</compoundname>
+    <basecompoundref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" prot="public" virt="non-virtual">Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</basecompoundref>
+    <includes refid="_marmot_material_gradient_enhanced_corotational_8h" local="no">MarmotMaterialGradientEnhancedCorotational.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename BaseMaterialType</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adda9967146486fc0f42da35be2295343" prot="private" static="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1acc34dc784fc607c4d5ca9923e35959ad" kindref="member">GradientEnhancedHypoElasticWrapper</ref>&lt; BaseMaterialType &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::Wrapper = GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</definition>
+        <argsstring></argsstring>
+        <name>Wrapper</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::Wrapper</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="120" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="private" static="no">
+        <type>MaterialGradientEnhancedHypoElastic&lt; nNonlocal &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::BaseMaterial = MaterialGradientEnhancedHypoElastic&lt; nNonlocal &gt;</definition>
+        <argsstring></argsstring>
+        <name>BaseMaterial</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::BaseMaterial</qualifiedname>
+        <briefdescription>
+<para>The small-strain interface of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="121" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>typename Wrapper::Interface::template <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; nDim &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::ConstitutiveResponse = typename Wrapper::Interface::template ConstitutiveResponse&lt; nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>ConstitutiveResponse</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse</qualifiedname>
+        <briefdescription>
+<para>Constitutive response, see <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="132" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>typename Wrapper::Interface::template <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; nDim &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::AlgorithmicModuli = typename Wrapper::Interface::template AlgorithmicModuli&lt; nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>AlgorithmicModuli</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli</qualifiedname>
+        <briefdescription>
+<para>Algorithmic moduli, see <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="135" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>typename Wrapper::Interface::template <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; nDim &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::Deformation = typename Wrapper::Interface::template Deformation&lt; nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>Deformation</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>, see <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="138" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" prot="public" static="no">
+        <type>typename Wrapper::Interface::TimeIncrement</type>
+        <definition>using Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::TimeIncrement = typename Wrapper::Interface::TimeIncrement</definition>
+        <argsstring></argsstring>
+        <name>TimeIncrement</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement</qualifiedname>
+        <briefdescription>
+<para>Time increment, see <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="140" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aef8719fab9320791ffb17dad62428f8d" prot="public" static="no">
+        <type>Eigen::Vector&lt; double, nNonlocal &gt;</type>
+        <definition>using Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::NonlocalVector = Eigen::Vector&lt; double, nNonlocal &gt;</definition>
+        <argsstring></argsstring>
+        <name>NonlocalVector</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::NonlocalVector</qualifiedname>
+        <briefdescription>
+<para>a value per nonlocal variable </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="129" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af71f45a566e816395fcaa7682a9c7d8f" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::logarithmicStrainSlot</definition>
+        <argsstring></argsstring>
+        <name>logarithmicStrainSlot</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::logarithmicStrainSlot</qualifiedname>
+        <initializer>= &quot;Corotational_logU_n&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding <formula id="128">$ \ln\boldsymbol{U} $</formula> of the last call (Voigt, engineering shear). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="144" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab8d0e886742a3b11eee55d9f144fa7d8" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::rotatedStressSlot</definition>
+        <argsstring></argsstring>
+        <name>rotatedStressSlot</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::rotatedStressSlot</qualifiedname>
+        <initializer>= &quot;Corotational_tau_n&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the rotated Kirchhoff stress of the last call (Voigt). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="146" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a12b14c9db1ca86760d34d0bf6a1ed557" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::nonlocalFieldSlot</definition>
+        <argsstring></argsstring>
+        <name>nonlocalFieldSlot</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::nonlocalFieldSlot</qualifiedname>
+        <initializer>= &quot;Corotational_N_n&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the nonlocal fields of the last call. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="148" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3db5270910a58b1f9f37f2dbbc14e097" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::GradientEnhancedCorotationalWrapper</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>GradientEnhancedCorotationalWrapper</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::GradientEnhancedCorotationalWrapper</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct the wrapper and the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material property values; forwarded <bold>unchanged</bold> to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="157" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="157" bodyend="165"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a4966e93a8be8a2b16721aecb49114332" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars) override</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::initializeYourself</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2ad3efdfc590446972cad3bb7049a09b">initializeYourself</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialise the state: zero logarithmic strain, stress and nonlocal fields of the last call, plus the wrapped material&apos;s own state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="176" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="176" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3c8fb260be1db91df41f32a07f8f818f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kindref="member">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Corotational stress update of the wrapped material, with the consistent tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response; carries the state variables and the energies in, the Kirchhoff stress, the local driving forces and the nonlocal radii out. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient and nonlocal fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="190" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="190" bodyend="196"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeStressExplicit</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStressExplicit</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressExplicit</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kindref="member">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Corotational stress update without the tangent, for explicit time integration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient and nonlocal fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="204" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="204" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const=0</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kindref="member">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Update the material state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref> instance; carries the state variables in and the Kirchhoff stress, local driving forces and nonlocal radii out. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref> gradient and nonlocal fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="168" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement, const std::tuple&lt; double, double, double &gt; &amp;eigenDeformation) const</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kindref="member">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; double, double, double &gt; &amp;</type>
+          <declname>eigenDeformation</declname>
+        </param>
+        <briefdescription>
+<para>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref> instance; scaled to the eigen deformation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref> gradient and nonlocal fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenDeformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen deformation in each spatial direction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="168" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor3333d</type>
+        <definition>static Marmot::Math::Tensors::FastorTensors::Tensor3333d Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::spectralDerivative</definition>
+        <argsstring>(const Eigen::Vector3d &amp;eigenvalues, const Eigen::Matrix3d &amp;eigenvectors, const std::function&lt; double(double, double) &gt; &amp;dividedDifference)</argsstring>
+        <name>spectralDerivative</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::spectralDerivative</qualifiedname>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>eigenvalues</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>eigenvectors</declname>
+        </param>
+        <param>
+          <type>const std::function&lt; double(double, double) &gt; &amp;</type>
+          <declname>dividedDifference</declname>
+        </param>
+        <briefdescription>
+<para>Derivative of an isotropic function of a symmetric tensor (Daleckii-Krein formula). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenvalues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigenvalues <formula id="141">$ \lambda_a $</formula> of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenvectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its eigenvectors, by column. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dividedDifference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="142">$ \theta(\lambda_a, \lambda_b) $</formula>:  <formula id="143">$ (f(\lambda_a) - f(\lambda_b)) /
+                           (\lambda_a - \lambda_b) $</formula>, and <formula id="144">$ f&apos;(\lambda_a) $</formula> for equal arguments. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="145">$ \partial f(\boldsymbol{C})_{ij}/\partial C_{IJ} = \sum_{a,b} \theta(\lambda_a, \lambda_b)\,
+        Q_{ia} Q_{jb} Q_{Ia} Q_{Jb} $</formula>, for a symmetric increment of <formula id="137">$ \boldsymbol{C} $</formula>.</para>
+</simplesect>
+The divided difference is continuous where eigenvalues coincide, so the formula holds for repeated eigenvalues as well, whatever eigenvectors the decomposition picks within the eigenspace. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="223" column="62" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="223" bodyend="243"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeStressCore</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; *tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computeStressCore</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressCore</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; 3 &gt; *</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kindref="member">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>The corotational update proper. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli, or nullptr for none. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient and nonlocal fields. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the determinant of the deformation gradient is not positive: the polar decomposition would then give a reflection for the rotation, and <formula id="137">$ \boldsymbol{C} $</formula> a strain as if nothing were wrong. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="256" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="256" bodyend="339"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adbdfc5e144e3dd1b77548dd0c4956902" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeTangent</definition>
+        <argsstring>(AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Eigen::Matrix3d &amp;F, const Eigen::Vector3d &amp;lambda, const Eigen::Matrix3d &amp;Q, const Eigen::Matrix3d &amp;UInv, const Eigen::Matrix3d &amp;R, const Eigen::Matrix3d &amp;tauHat, const typename BaseMaterial::tangents &amp;tan)</argsstring>
+        <name>computeTangent</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeTangent</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kindref="member">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>lambda</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>Q</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>UInv</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>R</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>tauHat</declname>
+        </param>
+        <param>
+          <type>const typename BaseMaterial::tangents &amp;</type>
+          <declname>tan</declname>
+        </param>
+        <briefdescription>
+<para>The consistent tangent of <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" kindref="member">computeStressCore()</ref>, see the class description. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kindref="member">Deformation</ref> gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">lambda</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigenvalues of <formula id="137">$ \boldsymbol{C} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">Q</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigenvectors of <formula id="137">$ \boldsymbol{C} $</formula>, by column. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">UInv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the right stretch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">R</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polar rotation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tauHat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Rotated Kirchhoff stress. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic tangents of the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="352" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="352" bodyend="454"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" prot="private" static="no" mutable="no">
+        <type>std::unique_ptr&lt; BaseMaterial &gt;</type>
+        <definition>std::unique_ptr&lt; BaseMaterial &gt; Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterial</definition>
+        <argsstring></argsstring>
+        <name>baseMaterial</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::baseMaterial</qualifiedname>
+        <briefdescription>
+<para>The wrapped small-strain material, held as the base interface. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="122" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a360933b087af3d21ba95163e736c544b" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterialSlot</definition>
+        <argsstring></argsstring>
+        <name>baseMaterialSlot</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::baseMaterialSlot</qualifiedname>
+        <briefdescription>
+<para>Name of the state layout slot holding the state variables of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="123" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::nNonlocal</definition>
+        <argsstring></argsstring>
+        <name>nNonlocal</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::nNonlocal</qualifiedname>
+        <briefdescription>
+<para>The number of nonlocal variables, that of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="125" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor33d</type>
+        <definition>static Marmot::Math::Tensors::FastorTensors::Tensor33d Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::fromEigen</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;m)</argsstring>
+        <name>fromEigen</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::fromEigen</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Convert an Eigen 3x3 matrix into a Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The same values as a Fastor tensor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="124" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="158" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a7a658b4b36411385e65f50bce91c018b" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>static Eigen::Matrix3d Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::toEigen</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;t)</argsstring>
+        <name>toEigen</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::toEigen</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Convert a Fastor 3x3 tensor into an Eigen matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The same values as an Eigen matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="126" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="170" bodyend="173"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Decorator presenting a small-strain gradient-enhanced material as a finite-strain one, in the frame of the polar rotation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BaseMaterialType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt;n&gt;; the wrapper has the same n nonlocal variables.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The deformation gradient is decomposed into the polar rotation and the right stretch, <formula id="118">$ \boldsymbol{F} = \boldsymbol{R}\,\boldsymbol{U} $</formula>, <formula id="119">$ \boldsymbol{U} = \boldsymbol{C}^{1/2} $</formula>, <formula id="120">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula>. The wrapped material lives in the frame that rotates with <formula id="121">$ \boldsymbol{R} $</formula> (the frame of the material fibres; Green-Naghdi): it is driven by the increment of the logarithmic (Hencky) strain    <formula id="122">\[  \Delta\hat{\boldsymbol{\varepsilon}} = \ln\boldsymbol{U}^{(n+1)} - \ln\boldsymbol{U}^{(n)},
+  \qquad \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C},
+\]</formula> and its stress is read as the rotated Kirchhoff stress, which is rotated out,   <formula id="123">\[  \boldsymbol{\tau} = \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T .
+\]</formula></para>
+<para><bold>Why this frame.</bold> A superposed rigid rotation changes <formula id="121">$ \boldsymbol{R} $</formula> and leaves <formula id="124">$ \boldsymbol{U} $</formula> <ndash/> and hence everything the wrapped material sees <ndash/> unchanged, so the Kirchhoff stress rotates exactly, whatever the wrapped material does with its own state. That is what <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kindref="compound">Marmot::Materials::GradientEnhancedHughesWingetWrapper</ref> cannot offer a material that recomputes its stress from total strains (GM7 does: its stress is the homogenized microplane stress of its stored strains, and the stress it is handed is overwritten); it rotates the stress it hands over, which such a material discards. Tensor-valued internal variables of the wrapped material (GM7&apos;s microplane state, its stored strains) live in the rotating frame too, so they are objective as well.</para>
+<para><bold>Why the logarithmic strain.</bold> It sums to a total strain,  <formula id="125">$ \sum\Delta\hat{\boldsymbol{\varepsilon}} =
+\ln\boldsymbol{U} $</formula>, independent of the path, so a material that accumulates its strain stores the Hencky strain; and under a pure stretch <formula id="126">$ \lambda $</formula> it hands the material  <formula id="127">$ \ln\lambda = (\lambda-1) + O((\lambda-
+1)^2) $</formula>, i.e. the wrapped model is recovered up to second order in the strain. The rotated Kirchhoff stress is the stress work-conjugate to <formula id="128">$ \ln\boldsymbol{U} $</formula> for an isotropic response, so the elastic and dissipated energies the wrapped material reports are densities per unit reference volume and are passed through unchanged.</para>
+<para>The nonlocal fields are handed over as they are (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kindref="compound">GradientEnhancedHypoElasticWrapper</ref>): they are referred to the rotating frame as well <ndash/> for GM7, the nonlocal strain is the nonlocal counterpart of <formula id="129">$ \hat{\boldsymbol{\varepsilon}} $</formula> <ndash/> and their balance is written in the reference configuration, so they are invariant under a superposed rigid rotation.</para>
+<para><table rows="5" cols="2"><row>
+<entry thead="yes"><para>this interface reports  </para>
+</entry><entry thead="yes"><para>from the wrapped material  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>response.tau</computeroutput>  </para>
+</entry><entry thead="no"><para><formula id="130">$ \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T $</formula>  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>response.L</computeroutput>  </para>
+</entry><entry thead="no"><para><computeroutput>KLocal</computeroutput>  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>response.nonLocalRadius</computeroutput>  </para>
+</entry><entry thead="no"><para><formula id="99">$ \sqrt{c_K} $</formula>  </para>
+</entry></row>
+<row>
+<entry thead="no"><para><computeroutput>tangents.dTau_dN</computeroutput>[K]  </para>
+</entry><entry thead="no"><para><formula id="131">$ \ilinebr &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;
+\boldsymbol{R}\,(\partial\hat{\boldsymbol{\tau}}/\partial\bar{N}_K)\,\boldsymbol{R}^T $</formula> | | <computeroutput>tangents.dL_dF</computeroutput>[K] |  <formula id="132">$ \partial K^{\text{local}}_K/\partial\hat{\boldsymbol{\varepsilon}} :
+\partial\ln\boldsymbol{U}/\partial\boldsymbol{F} $</formula> | | <computeroutput>tangents.dL_dN</computeroutput> | <computeroutput>dKLocalddK</computeroutput> |</para>
+<para><bold>Tangent.</bold> Consistent and analytic:        <formula id="133">\[  \frac{\partial\tau_{ij}}{\partial F_{kL}} =
+    \frac{\partial R_{ia}}{\partial F_{kL}}\,\hat\tau_{ab}\,R_{jb} + R_{ia}\,\hat\tau_{ab}\,
+    \frac{\partial R_{jb}}{\partial F_{kL}} + R_{ia}R_{jb}\,\mathbb{C}_{abcd}\,
+    \frac{\partial(\ln U)_{cd}}{\partial F_{kL}},
+  \qquad \frac{\partial\boldsymbol{R}}{\partial F_{kL}} = \Bigl(\frac{\partial\boldsymbol{F}}{\partial F_{kL}}
+    - \boldsymbol{R}\,\frac{\partial\boldsymbol{U}}{\partial F_{kL}}\Bigr)\boldsymbol{U}^{-1},
+\]</formula> with <formula id="134">$ \mathbb{C} $</formula> the algorithmic tangent of the wrapped material and the derivatives of the isotropic tensor functions <formula id="135">$ \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C} $</formula> and  <formula id="136">$ \boldsymbol{U} =
+\boldsymbol{C}^{1/2} $</formula> from the spectral decomposition of <formula id="137">$ \boldsymbol{C} $</formula> (<ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" kindref="member">spectralDerivative()</ref>). It is exact for any wrapped material whose stress does not depend on the stress it is handed (GM7), and for an incremental one too, since the stress it is handed is the rotated stress of the last call, which does not depend on <formula id="3">$ \boldsymbol{F} $</formula>. The explicit path, <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" kindref="member">computeStressExplicit()</ref>, skips it.</para>
+<para><bold>What it refuses.</bold> <formula id="120">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula> is the same for <formula id="3">$ \boldsymbol{F} $</formula> and for its mirror image, so the strain does not show that a material point is turned inside out ( <formula id="138">$ \det\boldsymbol{F} &lt; 0 $</formula>; <formula id="139">$ \boldsymbol{F} = -\boldsymbol{1} $</formula> would be a point without strain or stress, with a reflection for <formula id="121">$ \boldsymbol{R} $</formula>). A deformation gradient without a positive determinant is refused (std::invalid_argument).</para>
+<para>The state of the wrapper: <formula id="128">$ \ln\boldsymbol{U} $</formula> and <formula id="140">$ \hat{\boldsymbol{\tau}} $</formula> of the last call (both in Voigt notation, the strain with engineering shear), the nonlocal fields of the last call, and the state of the wrapped material. A zero state is the undeformed, stress-free one, so no initialization beyond the wrapped material&apos;s is needed. </para>
+</entry></row>
+</table>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" line="118" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedCorotational.h" bodystart="118" bodyend="455"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>AlgorithmicModuli</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>BaseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>baseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a68e4208d1f8eeac416433d3d1a20a6f3" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>baseMaterialIncrement</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a360933b087af3d21ba95163e736c544b" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>baseMaterialSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ac406864c175255f0f2e35e73fdbfd8dd" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>baseMaterialState</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adb1b42fce3f1a1b6d408eacb4e0c2ac9" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac8ef6820ba3d7f66a2344c68c3f5fca4" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3c8fb260be1db91df41f32a07f8f818f" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" prot="public" virt="pure-virtual" ambiguityscope="Marmot::Materials::GradientEnhancedHypoElasticWrapper::"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressCore</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2a4053b65541f2dddc02c266a0ef07ef" prot="public" virt="virtual" ambiguityscope="Marmot::Materials::GradientEnhancedHypoElasticWrapper::"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adbdfc5e144e3dd1b77548dd0c4956902" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeTangent</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>ConstitutiveResponse</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>Deformation</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac7095f8ea233575e2a845d56ac2c9bce" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>fromEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1add3a9870bc31931faee82a7daa6ee826" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1abbdd26a27b6589587b4c9de28a9bd7f4" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>getNonlocalMicroInertia</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a02dfcddb856ce04648814483e0e2d6a6" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>getNonlocalViscosity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ab3f4081e35502f156353c8af36843478" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a73b87108904d4be057de2407c8d70d7a" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3db5270910a58b1f9f37f2dbbc14e097" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>GradientEnhancedCorotationalWrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1acc34dc784fc607c4d5ca9923e35959ad" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>GradientEnhancedHypoElasticWrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ade29c1532c729452e73acb899bc25a56" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>initializeBaseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a4966e93a8be8a2b16721aecb49114332" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a195bba4e3103111469f8511e6b47de6f" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>Interface</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af71f45a566e816395fcaa7682a9c7d8f" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>logarithmicStrainSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adf48d2418423017793cba1f6cd88cc8e" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>MaterialGradientEnhancedFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a67ba693dc7710c92339f4071f41072eb" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a54dca7bdbd14c35a638214683b351451" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a60300da441e8b673e97f66d262dc9ed6" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>nNonlocal</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ad2bd241b80e99a952e1a6a117acc0ffd" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>nNonlocalVariables</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a12b14c9db1ca86760d34d0bf6a1ed557" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>nonlocalFieldSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a0e3cbf4fea7000530ab8777de32a323b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>NonlocalMatrix</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aef8719fab9320791ffb17dad62428f8d" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>NonlocalVector</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab8d0e886742a3b11eee55d9f144fa7d8" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>rotatedStressSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a95d40e8b493a8079910821a045cbaa77" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>spectralDerivative</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a13520a6d51d73f717eb3999ea1e84ce0" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>TimeIncrement</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a7a658b4b36411385e65f50bce91c018b" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>toEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7f0650b65a688125f6cb079be90b210b" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>toNonlocalVector</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adda9967146486fc0f42da35be2295343" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>Wrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a4d66453948f40dee116b054662c8bffa" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>~MaterialGradientEnhancedFiniteStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

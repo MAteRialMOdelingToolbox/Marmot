@@ -11,7 +11,7 @@
         <name>lambdaOperator</name>
         <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::lambdaOperator</qualifiedname>
         <briefdescription>
-<para>The operator <formula id="25">$\mathbf{K}_\lambda$</formula> of the Lame constant <formula id="13">$\lambda$</formula>, <formula id="29">$\int \mathbf{b}\,\mathbf{b}^T$</formula>. </para>
+<para>The operator <formula id="31">$\mathbf{K}_\lambda$</formula> of the Lame constant <formula id="19">$\lambda$</formula>, <formula id="35">$\int \mathbf{b}\,\mathbf{b}^T$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -26,7 +26,7 @@
         <name>muOperator</name>
         <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::muOperator</qualifiedname>
         <briefdescription>
-<para>The operator <formula id="9">$\mathbf{K}_\mu$</formula> of the shear modulus, <formula id="30">$\int \mathbf{B}^T \mathbf{D}\,\mathbf{B}$</formula>. </para>
+<para>The operator <formula id="15">$\mathbf{K}_\mu$</formula> of the shear modulus, <formula id="36">$\int \mathbf{B}^T \mathbf{D}\,\mathbf{B}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -114,7 +114,7 @@
 <parametername>nNormalStrains</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The number of rows of the normal strains: the spatial dimension, or 3 for an axisymmetric section (rr, zz, <formula id="26">$\theta\theta$</formula>). </para>
+<para>The number of rows of the normal strains: the spatial dimension, or 3 for an axisymmetric section (rr, zz, <formula id="32">$\theta\theta$</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -147,7 +147,7 @@
           <declname>pWaveModulus</declname>
         </param>
         <briefdescription>
-<para>The stable time increment <formula id="27">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
+<para>The stable time increment <formula id="33">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -163,7 +163,7 @@
 <parametername>pWaveModulus</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The largest P-wave modulus <formula id="28">$\rho c^2$</formula> of the quadrature points. </para>
+<para>The largest P-wave modulus <formula id="34">$\rho c^2$</formula> of the quadrature points. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -201,7 +201,7 @@
           <declname>K</declname>
         </param>
         <briefdescription>
-<para>The largest eigenvalue of <formula id="31">$\mathbf{M}^{-1}\mathbf{K}$</formula>, as that of the symmetric <formula id="32">$\mathbf{M}^{-1/2}\mathbf{K}\mathbf{M}^{-1/2}$</formula>. </para>
+<para>The largest eigenvalue of <formula id="37">$\mathbf{M}^{-1}\mathbf{K}$</formula>, as that of the symmetric <formula id="38">$\mathbf{M}^{-1/2}\mathbf{K}\mathbf{M}^{-1/2}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -209,7 +209,7 @@
 <parametername>scaling</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The diagonal <formula id="33">$\mathbf{M}^{-1/2}$</formula>. </para>
+<para>The diagonal <formula id="39">$\mathbf{M}^{-1/2}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -231,7 +231,7 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The operators <formula id="25">$\mathbf{K}_\lambda$</formula> and <formula id="9">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element&apos;s lumped mass; see the namespace documentation. </para>
+<para>The operators <formula id="31">$\mathbf{K}_\lambda$</formula> and <formula id="15">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element&apos;s lumped mass; see the namespace documentation. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>

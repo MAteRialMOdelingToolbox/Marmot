@@ -11,9 +11,9 @@
       </param>
     </templateparamlist>
     <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1aeb041511ea4cecfbec8b307093bc82ef" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a7253866a8c74e6933189ce9eb45d9b73" prot="public" static="no" mutable="no">
         <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
-        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::tau</definition>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::tau</definition>
         <argsstring></argsstring>
         <name>tau</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::tau</qualifiedname>
@@ -24,41 +24,41 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="105" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="105" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="116" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="116" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" prot="public" static="no" mutable="no">
-        <type>double</type>
-        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::L</definition>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
+        <definition>NonlocalVector Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::L</definition>
         <argsstring></argsstring>
         <name>L</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::L</qualifiedname>
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>local driving force, the source of the nonlocal balance; a total, not an increment </para>
+<para>local driving forces, the sources of the nonlocal balances; totals, not increments </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="106" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="106" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="117" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="117" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" prot="public" static="no" mutable="no">
-        <type>double</type>
-        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::nonLocalRadius</definition>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
+        <definition>NonlocalVector Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::nonLocalRadius</definition>
         <argsstring></argsstring>
         <name>nonLocalRadius</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::nonLocalRadius</qualifiedname>
         <briefdescription>
-<para>nonlocal radius <formula id="93">$ R $</formula>; <formula id="102">$ c = R^2 $</formula> </para>
+<para>nonlocal radii <formula id="82">$ R_K $</formula>; <formula id="91">$ c_K = R_K^2 $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="108" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="108" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="119" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="119" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a4c7172e9b69c725c0cdc5de402567d54" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9b14530b2942e5235f4464d0fc5edd8f" prot="public" static="no" mutable="no">
         <type>double</type>
-        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::elasticEnergyDensity</definition>
+        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::elasticEnergyDensity</definition>
         <argsstring></argsstring>
         <name>elasticEnergyDensity</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::elasticEnergyDensity</qualifiedname>
@@ -69,11 +69,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="109" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="109" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="120" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="120" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1abadfe1bce441e0303389e264cf5d4c8a" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0603c4652fe22e97353fb03b81e1d813" prot="public" static="no" mutable="no">
         <type>double</type>
-        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::dissipation</definition>
+        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::dissipation</definition>
         <argsstring></argsstring>
         <name>dissipation</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::dissipation</qualifiedname>
@@ -84,11 +84,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="110" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="110" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="121" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="121" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0f1a0e0d6145f58de90990cf53d070ac" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af41c5943e9abd481d99466bd00fd429b" prot="public" static="no" mutable="no">
         <type>double *</type>
-        <definition>double* Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::stateVars</definition>
+        <definition>double* Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::stateVars</definition>
         <argsstring></argsstring>
         <name>stateVars</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::stateVars</qualifiedname>
@@ -99,13 +99,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="111" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="111" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="122" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="122" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a3d20f429effb45b20bc89572936b95aa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a217806a5627c03797ffe00cf3e54ddf3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
-        <definition>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
+        <definition>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
         <argsstring>()</argsstring>
         <name>ConstitutiveResponse</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::ConstitutiveResponse</qualifiedname>
@@ -116,12 +116,12 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="114" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="114" bodyend="122"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="125" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="125" bodyend="133"/>
       </memberdef>
-      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1ad1fa069e5ee353ed1507d00e602b10a5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a1ae620374d541851c3b67eefbaf1137c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
-        <definition>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
-        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;tau_, double L_, double nonLocalRadius_, double elasticEnergyDensity_, double dissipation_, double *stateVars_)</argsstring>
+        <definition>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;tau_, const NonlocalVector &amp;L_, const NonlocalVector &amp;nonLocalRadius_, double elasticEnergyDensity_, double dissipation_, double *stateVars_)</argsstring>
         <name>ConstitutiveResponse</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::ConstitutiveResponse</qualifiedname>
         <param>
@@ -129,11 +129,11 @@
           <declname>tau_</declname>
         </param>
         <param>
-          <type>double</type>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref> &amp;</type>
           <declname>L_</declname>
         </param>
         <param>
-          <type>double</type>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref> &amp;</type>
           <declname>nonLocalRadius_</declname>
         </param>
         <param>
@@ -165,7 +165,7 @@
 <parametername direction="in">L_</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Local driving force. </para>
+<para>Local driving forces. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -173,7 +173,7 @@
 <parametername direction="in">nonLocalRadius_</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Nonlocal radius. </para>
+<para>Nonlocal radii. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -205,7 +205,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="133" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="133" bodyend="146"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="144" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="144" bodyend="157"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -223,16 +223,16 @@
 </parameterlist>
 </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="104" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="104" bodyend="147"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="115" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="115" bodyend="158"/>
     <listofallmembers>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a3d20f429effb45b20bc89572936b95aa" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1ad1fa069e5ee353ed1507d00e602b10a5" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1abadfe1bce441e0303389e264cf5d4c8a" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>dissipation</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a4c7172e9b69c725c0cdc5de402567d54" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>elasticEnergyDensity</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>L</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>nonLocalRadius</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0f1a0e0d6145f58de90990cf53d070ac" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>stateVars</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1aeb041511ea4cecfbec8b307093bc82ef" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>tau</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a217806a5627c03797ffe00cf3e54ddf3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a1ae620374d541851c3b67eefbaf1137c" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0603c4652fe22e97353fb03b81e1d813" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9b14530b2942e5235f4464d0fc5edd8f" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>L</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>nonLocalRadius</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af41c5943e9abd481d99466bd00fd429b" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a7253866a8c74e6933189ce9eb45d9b73" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</scope><name>tau</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

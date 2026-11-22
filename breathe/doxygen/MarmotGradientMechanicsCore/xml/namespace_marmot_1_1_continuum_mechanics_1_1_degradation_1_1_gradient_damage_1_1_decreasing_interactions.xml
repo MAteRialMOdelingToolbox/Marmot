@@ -68,7 +68,7 @@
 </parameterlist>
 <simplesect kind="return"><para>interaction function value</para>
 </simplesect>
-The function is defined as: <formula id="13">\[ g(\omega) = \frac{(1 - R) \exp(-\eta \, \omega) + R - \exp(-\eta) }{ 1 - \exp(-\eta)} \]</formula> where <formula id="14">$ \omega $</formula> is the damage variable, <formula id="15">$ \eta $</formula> controls the rate of decrease of interactions with damage, and <formula id="16">$ R $</formula> controls the residual interactions at full damage. The function is designed to decrease as damage increases, with a residual interaction value of <formula id="16">$ R $</formula> at full damage ( <formula id="17">$ \omega = 1 $</formula>). </para>
+The function is defined as: <formula id="18">\[ g(\omega) = \frac{(1 - R) \exp(-\eta \, \omega) + R - \exp(-\eta) }{ 1 - \exp(-\eta)} \]</formula> where <formula id="19">$ \omega $</formula> is the damage variable, <formula id="20">$ \eta $</formula> controls the rate of decrease of interactions with damage, and <formula id="21">$ R $</formula> controls the residual interactions at full damage. The function is designed to decrease as damage increases, with a residual interaction value of <formula id="21">$ R $</formula> at full damage ( <formula id="22">$ \omega = 1 $</formula>). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

@@ -38,6 +38,7 @@
     <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a0b96e33ff6e7ef52901779dba143f6c5" kind="function"><name>getStateView</name></member>
     <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1ada6ef3ea26b28622a666002a25e1750d" kind="function"><name>getAs</name></member>
     <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1abd2ba708a064b257b2ca811838c843cf" kind="function"><name>getAs</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1afaa78b05afd1142dc8881dde746fe3da" kind="function"><name>contains</name></member>
     <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a4eff861005d00da6b21f6f033c740d83" kind="function"><name>totalSize</name></member>
     <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a74a4cd353336cadf663ddc2370cfa1ca" kind="function"><name>isFinalized</name></member>
   </compound>

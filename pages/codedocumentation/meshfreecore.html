@@ -467,6 +467,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle24getEvaluationCoordinatesEPd"><code class="docutils literal notranslate"><span class="pre">getEvaluationCoordinates()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle27getNumberOfEvaluationPointsEv"><code class="docutils literal notranslate"><span class="pre">getNumberOfEvaluationPoints()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree8Particle19setInitialConditionERKNSt6stringEPKd"><code class="docutils literal notranslate"><span class="pre">setInitialCondition()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"><code class="docutils literal notranslate"><span class="pre">computeLumpedDamping()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree14ParticleDomainE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::ParticleDomain</span></code></a><ul>
@@ -511,7 +512,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory15ParticleFactoryEv"><code class="docutils literal notranslate"><span class="pre">ParticleFactory()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory14createParticleERKNSt6stringEiPKdidRKNSt6stringEPKdiRKN6Marmot15Discretizations8Meshfree13ApproximationE"><code class="docutils literal notranslate"><span class="pre">createParticle()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory16registerParticleERKNSt6stringE23particleFactoryFunction"><code class="docutils literal notranslate"><span class="pre">registerParticle()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">checkIfParticleIsRegistered()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">isRegistered()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot8Registry15ParticleFactory29particleFactoryFunctionByNameEv"><code class="docutils literal notranslate"><span class="pre">particleFactoryFunctionByName()</span></code></a></li>
 </ul>
 </li>
@@ -563,15 +564,15 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4MathE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi"><code class="docutils literal notranslate"><span class="pre">B()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">B&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"><code class="docutils literal notranslate"><span class="pre">computeSizeOfMonomialBasisVector()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisRecursion()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisGradientRecursion()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasis()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasisGradient()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi"><code class="docutils literal notranslate"><span class="pre">B()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">B&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot8RegistryE"><code class="docutils literal notranslate"><span class="pre">Marmot::Registry</span></code></a></li>
@@ -4999,7 +5000,8 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) \)</span>, until the residual is below <s
 <p><strong>State contract:</strong> the state variable block is a <em>trial</em> copy. Before every call of <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a>, the host restores it to the values committed by the last <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>, and <code class="docutils literal notranslate"><span class="pre">dQ</span></code> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> and back in <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>.</p>
 <p>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, …], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <span class="math notranslate nohighlight">\( n_{\text{nodes}} \cdot \)</span> <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed"><span class="std std-ref">getNBaseDof()</span></a>.</p>
 <p>For the stiffness matrix, a column-major layout is used.</p>
-<p>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_… methods. The global assembly and solution of the VCI correction is done by the host framework. </p>
+<p>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_… methods. The global assembly and solution of the VCI correction is done by the host framework.</p>
+<p>Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing ones do not move: a library and a host built against different versions then fail on the one new call instead of silently calling the wrong method. This is why methods that belong together by subject may stand apart. </p>
 <p>Subclassed by <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</span></a>, <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-variationally-consistent-integration-(vci)">Variationally consistent integration (VCI)</p>
@@ -5376,7 +5378,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::updatePhysicsExplicit__doubleCP.double.double"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updatePhysicsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd" title="Link to this definition"></a><br /></dt>
 <dd><p>Explicit dynamics: update the kinematics and the material state for the dof increment. </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -5385,6 +5386,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would be integrated with its mass and without its force, silently. </p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -5392,10 +5396,12 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computePhysicsKernelsExplicit__doubleP"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePhysicsKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fInt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd" title="Link to this definition"></a><br /></dt>
 <dd><p>Explicit dynamics: compute the internal force vector for the state set by <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf"><span class="std std-ref">updatePhysicsExplicit()</span></a>. </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fInt</strong> – <strong>[inout]</strong> Internal force vector (node-wise). </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would be integrated with its mass and without its force, silently. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -5404,7 +5410,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeBodyLoadExplicit__i.doubleCP.doubleP.double.doubleC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyLoadExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd" title="Link to this definition"></a><br /></dt>
 <dd><p>Explicit dynamics: compute a body load (no tangent). </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -5415,6 +5420,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would leave the load out silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95"><span class="std std-ref">computeBodyLoad()</span></a> and discards the tangent. </p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -5422,7 +5430,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeDistributedLoadExplicit__i.i.doubleCP.doubleP.double.doubleC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoadExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">boundaryFaceID</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd" title="Link to this definition"></a><br /></dt>
 <dd><p>Explicit dynamics: compute a distributed load (no tangent). </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -5433,6 +5440,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment. </p></li>
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would leave the load out silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5"><span class="std std-ref">computeDistributedLoad()</span></a> and discards the tangent. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -5533,6 +5543,18 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>conditionName</strong> – <strong>[in]</strong> Name of the initial condition. </p></li>
 <li><p><strong>value</strong> – <strong>[in]</strong> Values of the initial condition. </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeLumpedDamping__doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedDamping</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cLumped</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle. </p>
+<p>The coefficient of each field’s FIRST time derivative, node-wise and in the layout of <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573"><span class="std std-ref">computeLumpedInertia()</span></a>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cLumped</strong> – <strong>[inout]</strong> Lumped damping vector (node-wise); entries left untouched mean no damping. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -6052,16 +6074,14 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 </dl>
 </dd></dl>
 
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE">
-<span id="_CPPv3N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE"></span><span id="_CPPv2N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE"></span><span id="Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered__ssCR"></span><span class="target" id="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfParticleIsRegistered</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd><p>Check whether a particle name is registered (declared only, not defined). </p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE">
+<span id="_CPPv3N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE"></span><span id="_CPPv2N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE"></span><span id="Marmot::Registry::ParticleFactory::isRegistered__ssCR"></span><span class="target" id="class_marmot_1_1_registry_1_1_particle_factory_1a13e6d59d8eadc36d4fbdc83894fc6940"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isRegistered</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether a particle type is registered under a name, i.e. whether its module is part of this build. </p>
+<p>A host asks before <a class="reference internal" href="#class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30"><span class="std std-ref">createParticle()</span></a>, to tell a particle that is not built (which it may skip) from a particle that fails to be created (an error of the input). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>particleName</strong> – <strong>[in]</strong> Name of the particle type. </p>
+<dd class="field-odd"><p><strong>particleName</strong> – <strong>[in]</strong> Name of the particle type (case-insensitive). </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>true if registered. </p>
@@ -6637,6 +6657,94 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math1BEddPKdi">
+<span id="_CPPv3I_iEN6Marmot4Math1BEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math1BEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the B-spline basis function <span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span> by the Cox–de Boor recursion. </p>
+<p><div class="math notranslate nohighlight">
+\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+             + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
+\]</div>
+ where a term is omitted ( <span class="math notranslate nohighlight">\( 0/0 := 0 \)</span>) if its knot difference is below <span class="math notranslate nohighlight">\( 10^{-14} \)</span> (repeated knots). The recursion ends at B&lt; 0 &gt;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline (order <span class="math notranslate nohighlight">\( p + 1 \)</span>). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi">
+<span id="_CPPv3I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the derivative <span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span> of a B-spline basis function. </p>
+<p>Differentiates the Cox–de Boor recursion of <a class="reference internal" href="#_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"><span class="std std-ref">B()</span></a> term by term,    <div class="math notranslate nohighlight">
+\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N'_{i,p-1}}{z_{i+p} - z_i}
+  + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N'_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
+\]</div>
+ omitting terms with a knot difference below <span class="math notranslate nohighlight">\( 10^{-14} \)</span>. The recursion ends at dB_dU&lt; 0 &gt; <span class="math notranslate nohighlight">\( = 0 \)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi">
+<span id="_CPPv3IEN6Marmot4Math1BIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math1BIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Degree-0 B-spline, the indicator function of the half-open knot span <span class="math notranslate nohighlight">\( [z_i, z_{i+1}) \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>. </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( 1 \)</span> if <span class="math notranslate nohighlight">\( z_i \le u &lt; z_{i+1} \)</span>, else <span class="math notranslate nohighlight">\( 0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi">
+<span id="_CPPv3IEN6Marmot4Math5dB_dUIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math5dB_dUIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Derivative of the degree-0 B-spline, which is zero (almost everywhere). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span> (unused). </p></li>
+<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector (unused). </p></li>
+<li><p><strong>i</strong> – <strong>[in]</strong> Index of the basis function (unused). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( 0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii">
 <span id="_CPPv3N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"></span><span id="_CPPv2N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"></span><span id="Marmot::Math::computeSizeOfMonomialBasisVector__i.i"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeSizeOfMonomialBasisVector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the size of the complete monomial basis of a given order. </p>
@@ -6724,94 +6832,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>x</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> (the dimension <span class="math notranslate nohighlight">\( d \)</span> is taken from its size). </p></li>
 <li><p><strong>res</strong> – <strong>[out]</strong> Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <span class="math notranslate nohighlight">\( \times d \)</span>. </p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math1BEddPKdi">
-<span id="_CPPv3I_iEN6Marmot4Math1BEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math1BEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the B-spline basis function <span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span> by the Cox–de Boor recursion. </p>
-<p><div class="math notranslate nohighlight">
-\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
-             + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
-\]</div>
- where a term is omitted ( <span class="math notranslate nohighlight">\( 0/0 := 0 \)</span>) if its knot difference is below <span class="math notranslate nohighlight">\( 10^{-14} \)</span> (repeated knots). The recursion ends at B&lt; 0 &gt;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline (order <span class="math notranslate nohighlight">\( p + 1 \)</span>). </p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="math notranslate nohighlight">\( N_{i,p}(u) \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi">
-<span id="_CPPv3I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span id="_CPPv2I_iEN6Marmot4Math5dB_dUEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the derivative <span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span> of a B-spline basis function. </p>
-<p>Differentiates the Cox–de Boor recursion of <a class="reference internal" href="#_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11"><span class="std std-ref">B()</span></a> term by term,    <div class="math notranslate nohighlight">
-\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N'_{i,p-1}}{z_{i+p} - z_i}
-  + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N'_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
-\]</div>
- omitting terms with a knot difference below <span class="math notranslate nohighlight">\( 10^{-14} \)</span>. The recursion ends at dB_dU&lt; 0 &gt; <span class="math notranslate nohighlight">\( = 0 \)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>p</strong> – Degree <span class="math notranslate nohighlight">\( p \)</span> of the B-spline. </p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>; entries <span class="math notranslate nohighlight">\( z_i, \dots, z_{i+p+1} \)</span> are accessed. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \mathrm{d}N_{i,p}/\mathrm{d}u \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi">
-<span id="_CPPv3IEN6Marmot4Math1BIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math1BIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">B</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Degree-0 B-spline, the indicator function of the half-open knot span <span class="math notranslate nohighlight">\( [z_i, z_{i+1}) \)</span>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span>. </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector <span class="math notranslate nohighlight">\( z \)</span>. </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index <span class="math notranslate nohighlight">\( i \)</span> of the basis function. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( 1 \)</span> if <span class="math notranslate nohighlight">\( z_i \le u &lt; z_{i+1} \)</span>, else <span class="math notranslate nohighlight">\( 0 \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi">
-<span id="_CPPv3IEN6Marmot4Math5dB_dUIXL0EEEEdPKdi"></span><span id="_CPPv2IEN6Marmot4Math5dB_dUIX0EEEdPKdi"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dB_dU</span></span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVec</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN6Marmot4Math5dB_dUIXL0EEEEddPKdi" title="Link to this definition"></a><br /></dt>
-<dd><p>Derivative of the degree-0 B-spline, which is zero (almost everywhere). </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> – <strong>[in]</strong> Parameter value <span class="math notranslate nohighlight">\( u \)</span> (unused). </p></li>
-<li><p><strong>knotVec</strong> – <strong>[in]</strong> Knot vector (unused). </p></li>
-<li><p><strong>i</strong> – <strong>[in]</strong> Index of the basis function (unused). </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( 0 \)</span>. </p>
 </dd>
 </dl>
 </dd></dl>

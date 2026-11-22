@@ -23,7 +23,7 @@
         <name>dStressP_dStrainP</name>
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::dStressP_dStrainP</qualifiedname>
         <briefdescription>
-<para>The condensed tangent <formula id="81">$\mathbf{C}_{pp} - \mathbf{C}_{pf} \mathbf{C}_{ff}^{+} \mathbf{C}_{fp}$</formula> ( <formula id="82">$\mathbf{C}_{ff}^{+} = \mathbf{C}_{ff}^{-1}$</formula> if it is regular). </para>
+<para>The condensed tangent <formula id="435">$\mathbf{C}_{pp} - \mathbf{C}_{pf} \mathbf{C}_{ff}^{+} \mathbf{C}_{fp}$</formula> ( <formula id="436">$\mathbf{C}_{ff}^{+} = \mathbf{C}_{ff}^{-1}$</formula> if it is regular). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -38,7 +38,7 @@
         <name>dStrainF_dStrainP</name>
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::dStrainF_dStrainP</qualifiedname>
         <briefdescription>
-<para>The sensitivity of the free strains  <formula id="83">$\partial \boldsymbol{\varepsilon}_f / \partial
+<para>The sensitivity of the free strains  <formula id="437">$\partial \boldsymbol{\varepsilon}_f / \partial
 \boldsymbol{\varepsilon}_p = -\mathbf{C}_{ff}^{+} \mathbf{C}_{fp}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
@@ -54,7 +54,7 @@
         <name>CffCOD</name>
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::CffCOD</qualifiedname>
         <briefdescription>
-<para>The complete orthogonal decomposition of <formula id="55">$\mathbf{C}_{ff}$</formula> (threshold rankTolerance), to condense further derivatives with the same pseudo-inverse, see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" kindref="member">freeStrainSensitivity()</ref>. </para>
+<para>The complete orthogonal decomposition of <formula id="411">$\mathbf{C}_{ff}$</formula> (threshold rankTolerance), to condense further derivatives with the same pseudo-inverse, see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a5425b5353db08cf74db5e351719d9e80" kindref="member">freeStrainSensitivity()</ref>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -85,7 +85,7 @@
         <name>Cff</name>
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::Condensation::Cff</qualifiedname>
         <briefdescription>
-<para>The tangent of the stress-free components <formula id="55">$\mathbf{C}_{ff}$</formula>, decomposed in CffCOD. </para>
+<para>The tangent of the stress-free components <formula id="411">$\mathbf{C}_{ff}$</formula>, decomposed in CffCOD. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

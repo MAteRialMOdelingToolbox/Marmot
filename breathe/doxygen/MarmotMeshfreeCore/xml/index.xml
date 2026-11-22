@@ -406,6 +406,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" kind="function"><name>getEvaluationCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" kind="function"><name>getNumberOfEvaluationPoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" kind="function"><name>setInitialCondition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" kind="function"><name>computeLumpedDamping</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kind="enum"><name>SmoothingDomainUpdateType</name></member>
@@ -452,7 +453,7 @@
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a07ab2a45302836ad1f8b2b3adbc6e167" kind="function"><name>ParticleFactory</name></member>
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kind="function"><name>createParticle</name></member>
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" kind="function"><name>registerParticle</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" kind="function"><name>checkIfParticleIsRegistered</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a13e6d59d8eadc36d4fbdc83894fc6940" kind="function"><name>isRegistered</name></member>
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" kind="function"><name>particleFactoryFunctionByName</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</name>
@@ -505,15 +506,15 @@
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kind="typedef"><name>Hex8</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
+    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
+    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
+    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
+    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" kind="function"><name>computeSizeOfMonomialBasisVector</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" kind="function"><name>_computeMonomialBasisRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" kind="function"><name>_computeMonomialBasisGradientRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" kind="function"><name>computeMonomialBasis</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" kind="function"><name>computeMonomialBasisGradient</name></member>
-    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
-    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
-    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
-    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>

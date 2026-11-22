@@ -17,7 +17,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="330" column="41" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="330" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="337" column="41" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="337" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a16463715471a28e8477341df764c8772" prot="private" static="no" mutable="no">
         <type>std::unordered_map&lt; std::string, std::size_t &gt;</type>
@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="331" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="331" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="338" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="338" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1adacd7b99678988662ac782f984bd8896" prot="private" static="no" mutable="no">
         <type>bool</type>
@@ -46,7 +46,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="333" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="333" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="340" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="340" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a1727e02e09d9fcd28fa8e97d362cc9e3" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -61,7 +61,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="334" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="334" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="341" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="341" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -542,6 +542,37 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="308" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="308" bodyend="315"/>
       </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1afaa78b05afd1142dc8881dde746fe3da" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Utilities::StateLayoutDynamic::contains</definition>
+        <argsstring>(const std::string &amp;name) const</argsstring>
+        <name>contains</name>
+        <qualifiedname>Marmot::Utilities::StateLayoutDynamic::contains</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <briefdescription>
+<para>Check whether a variable of that name is registered. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if <ref refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a6e32061b7fab4dff106fc06b691b19a0" kindref="member">add()</ref> was called with <computeroutput>name</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="322" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="322" bodyend="322"/>
+      </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a4eff861005d00da6b21f6f033c740d83" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
         <definition>int Marmot::Utilities::StateLayoutDynamic::totalSize</definition>
@@ -555,7 +586,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="321" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="321" bodyend="321"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="328" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="328" bodyend="328"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a74a4cd353336cadf663ddc2370cfa1ca" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>bool</type>
@@ -573,7 +604,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="327" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="327" bodyend="327"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="334" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="334" bodyend="334"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -582,9 +613,10 @@
     <detaileddescription>
 <para>Variables are registered by name and size via <ref refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a6e32061b7fab4dff106fc06b691b19a0" kindref="member">add()</ref>, then the layout is locked with <ref refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a56fa3f8c6e2cb53496632ace4df3033f" kindref="member">finalize()</ref>, which assigns contiguous offsets. After finalization the various <computeroutput>get*</computeroutput> accessors can be used to reach individual variables inside any conforming state vector. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="151" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="151" bodyend="335"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="151" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="151" bodyend="342"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a6e32061b7fab4dff106fc06b691b19a0" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic</scope><name>add</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1afaa78b05afd1142dc8881dde746fe3da" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic</scope><name>contains</name></member>
       <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a56fa3f8c6e2cb53496632ace4df3033f" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic</scope><name>finalize</name></member>
       <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1adacd7b99678988662ac782f984bd8896" prot="private" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic</scope><name>finalized</name></member>
       <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1af13f8adc7eab186e157820f322ae07a2" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic</scope><name>get</name></member>

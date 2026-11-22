@@ -40,7 +40,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-Contains the algorithmic tangent moduli <formula id="15">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula> with respect to the deformation gradient <formula id="16">$\boldsymbol{F}$</formula>. </para>
+Contains the algorithmic tangent moduli <formula id="64">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula> with respect to the deformation gradient <formula id="7">$\boldsymbol{F}$</formula>. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="122" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="122" bodyend="124"/>
     <listofallmembers>

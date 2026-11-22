@@ -4,10 +4,11 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli_1a90974cbb6db291743996dfc0a18b2803" kind="variable"><name>dTau_dF</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a6881a2445a750559f834a4c2a4535de9" kind="variable"><name>dTau_dF</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1afac09e8668378b2c6f7ceda5f8b31efd" kind="variable"><name>dTau_dN</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a5bd9ab3b71e1b295ca19aa3413157b32" kind="variable"><name>dL_dF</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1ab76d2f2e014281d1c5063797b42c5d20" kind="variable"><name>dL_dN</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a064523a86b1efadb5be1f3f3fb1fc994" kind="variable"><name>dTau_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a23669dd3a086472d833366114b1584b6" kind="variable"><name>dTau_dN</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a033359773204777cc6698cef8d297b57" kind="variable"><name>dL_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a0219b7b8f4cf909f4817433d670962eb" kind="variable"><name>dL_dN</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a92a3dcd824263b2bb86ab794572cde7c" kind="function"><name>AlgorithmicModuli</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kind="struct"><name>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1ab828851f3d090b1a4f71be5cb7c88cd8" kind="variable"><name>tau</name></member>
@@ -18,14 +19,14 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a930461d6727c2dd0166e0a07071b9957" kind="function"><name>ConstitutiveResponse</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1aeb041511ea4cecfbec8b307093bc82ef" kind="variable"><name>tau</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" kind="variable"><name>L</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" kind="variable"><name>nonLocalRadius</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a4c7172e9b69c725c0cdc5de402567d54" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1abadfe1bce441e0303389e264cf5d4c8a" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0f1a0e0d6145f58de90990cf53d070ac" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a3d20f429effb45b20bc89572936b95aa" kind="function"><name>ConstitutiveResponse</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1ad1fa069e5ee353ed1507d00e602b10a5" kind="function"><name>ConstitutiveResponse</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a7253866a8c74e6933189ce9eb45d9b73" kind="variable"><name>tau</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" kind="variable"><name>L</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" kind="variable"><name>nonLocalRadius</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9b14530b2942e5235f4464d0fc5edd8f" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0603c4652fe22e97353fb03b81e1d813" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af41c5943e9abd481d99466bd00fd429b" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a217806a5627c03797ffe00cf3e54ddf3" kind="function"><name>ConstitutiveResponse</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a1ae620374d541851c3b67eefbaf1137c" kind="function"><name>ConstitutiveResponse</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a08d36c326bb2482fc2c78aef6d657222" kind="variable"><name>tau</name></member>
@@ -39,35 +40,84 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation_1a6fa0724e540fa02758f5e4adff520950" kind="variable"><name>F</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a067f3daac1839466539588da051a14fa" kind="variable"><name>F</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a81460edec1a63ab636a4c901c0636c74" kind="variable"><name>N</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1afb040df7aa4b3b3cdeec2d56648310ed" kind="variable"><name>F</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1aa2cc00468b8c52d33fbf067352ee1483" kind="variable"><name>N</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a5c43469893437a5400791ce555f08965" kind="variable"><name>F</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kind="class"><name>Marmot::Materials::GradientEnhancedCorotationalWrapper</name>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adda9967146486fc0f42da35be2295343" kind="typedef"><name>Wrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" kind="typedef"><name>BaseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kind="typedef"><name>ConstitutiveResponse</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0be4c193c6a09db7af1736f89fdae180" kind="typedef"><name>AlgorithmicModuli</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" kind="typedef"><name>Deformation</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab1b4d04c367f59a6cf9604d70f4a0542" kind="typedef"><name>TimeIncrement</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aef8719fab9320791ffb17dad62428f8d" kind="typedef"><name>NonlocalVector</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af71f45a566e816395fcaa7682a9c7d8f" kind="variable"><name>logarithmicStrainSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1ab8d0e886742a3b11eee55d9f144fa7d8" kind="variable"><name>rotatedStressSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a12b14c9db1ca86760d34d0bf6a1ed557" kind="variable"><name>nonlocalFieldSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3db5270910a58b1f9f37f2dbbc14e097" kind="function"><name>GradientEnhancedCorotationalWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a4966e93a8be8a2b16721aecb49114332" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3c8fb260be1db91df41f32a07f8f818f" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" kind="function"><name>spectralDerivative</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" kind="function"><name>computeStressCore</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adbdfc5e144e3dd1b77548dd0c4956902" kind="function"><name>computeTangent</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a360933b087af3d21ba95163e736c544b" kind="variable"><name>baseMaterialSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kind="variable"><name>nNonlocal</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" kind="function"><name>fromEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a7a658b4b36411385e65f50bce91c018b" kind="function"><name>toEigen</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kind="class"><name>Marmot::Materials::GradientEnhancedHughesWingetWrapper</name>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a4f71bd0bd704412372b69f8622067be1" kind="typedef"><name>BaseMaterial</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a82fb58fe003ead6442aa5e2b14ed56bb" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aecc49611311bf15583a8d94ebf9c73af" kind="typedef"><name>Wrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" kind="typedef"><name>BaseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6d60032f77d4b5a3e2d8861ae22bfe6f" kind="typedef"><name>ConstitutiveResponse</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3e64335039b592e1728522e7fee9cb1" kind="typedef"><name>AlgorithmicModuli</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a98a6f6ed7bf17d68292d40dff9add653" kind="typedef"><name>Deformation</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3a28887f75070c0751be5ad1666de841" kind="typedef"><name>TimeIncrement</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aef8719fab9320791ffb17dad62428f8d" kind="typedef"><name>NonlocalVector</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a8d7ba53ddf1d21fae887fc43dfcfa78c" kind="variable"><name>deformationGradientSlot</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a434e2d7e79ca0376c88f129319079d1e" kind="variable"><name>stressSlot</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6d5adae2fba09e31b44e426caaf63ccd" kind="variable"><name>nonlocalFieldSlot</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6f73fb83439c86b0a732416f7c9aa8b7" kind="variable"><name>baseMaterialSlot</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1abf0bfac1bf66a883f77d755dbf204710" kind="function"><name>GradientEnhancedHughesWingetWrapper</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af772b5aebe2ff7ddfa713d36e5cfa5be" kind="function"><name>~GradientEnhancedHughesWingetWrapper</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a76f885dcc4beac3f9df622632733a00d" kind="function"><name>initializeStateLayout</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1adf686e5ccfa934124bb24224f99adf53" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a408f702387d046f631ff8932da7b5b01" kind="function"><name>getDensity</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a028bfe156fae6dcb619fff52c27426d6" kind="function"><name>getNonlocalViscosity</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3c24fa75abac26b59cb33a08213df6b" kind="function"><name>getNonlocalMicroInertia</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af14aac8627c9fdfa808d2a1ddb36686d" kind="function"><name>initializeYourself</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a1f2f41007df08e89c39bdd745d2e79f0" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3af7293ee72c03d31ef81d36d3bcfb04" kind="function"><name>computeStressExplicit</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a93d05216a532a38c0651341cd155bb57" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a110b60522d434da3d3fe771241e7e2a2" kind="function"><name>fromEigen</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a02bd619f92f1c0f051803418e6b3cf63" kind="function"><name>toEigen</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ad80f697577bacd165d2aa116a224129f" kind="function"><name>computeStressSensitivity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a7f2ba7f3b943fa1f0ed2f09db10aa8d8" kind="function"><name>computeStressSensitivity</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aaf51bc7c90ed437614453209297f3f10" kind="function"><name>computeStressCore</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6a20868e32b6076876a0da3c9eac141a" kind="function"><name>computeNumericalTangent</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a360933b087af3d21ba95163e736c544b" kind="variable"><name>baseMaterialSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kind="variable"><name>nNonlocal</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" kind="function"><name>fromEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a7a658b4b36411385e65f50bce91c018b" kind="function"><name>toEigen</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kind="class"><name>Marmot::Materials::GradientEnhancedHypoElasticWrapper</name>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a195bba4e3103111469f8511e6b47de6f" kind="typedef"><name>Interface</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kind="typedef"><name>NonlocalVector</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" kind="typedef"><name>BaseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kind="variable"><name>nNonlocal</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a360933b087af3d21ba95163e736c544b" kind="variable"><name>baseMaterialSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1acc34dc784fc607c4d5ca9923e35959ad" kind="function"><name>GradientEnhancedHypoElasticWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a73b87108904d4be057de2407c8d70d7a" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1add3a9870bc31931faee82a7daa6ee826" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a02dfcddb856ce04648814483e0e2d6a6" kind="function"><name>getNonlocalViscosity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1abbdd26a27b6589587b4c9de28a9bd7f4" kind="function"><name>getNonlocalMicroInertia</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" kind="function"><name>fromEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7a658b4b36411385e65f50bce91c018b" kind="function"><name>toEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a68e4208d1f8eeac416433d3d1a20a6f3" kind="function"><name>baseMaterialIncrement</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7f0650b65a688125f6cb079be90b210b" kind="function"><name>toNonlocalVector</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ac406864c175255f0f2e35e73fdbfd8dd" kind="function"><name>baseMaterialState</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ade29c1532c729452e73acb899bc25a56" kind="function"><name>initializeBaseMaterial</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry" kind="struct"><name>Marmot::Materials::MaterialPointSolverFiniteStrain::HistoryEntry</name>
     <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1a71c0e095ea1f492b53d9f5b6d85e2099" kind="variable"><name>time</name></member>
@@ -157,34 +207,38 @@
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1abb5be23b6acc28e67e160c82a8898d09" kind="function"><name>computeStress</name></member>
   </compound>
   <compound refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" kind="class"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</name>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a095f07a58e87c74ffd626d0732294e1c" kind="variable"><name>materialProperties</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a89c9f71f954ab6ba0013ff0a5ac69cad" kind="variable"><name>nMaterialProperties</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acdabeb84fc8d5b7730be4e28cf1c8d99" kind="variable"><name>materialNumber</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a561608dc98d88f02e52d1859740e419e" kind="variable"><name>stateLayout</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a8cc0121be163f6e2b72570b00724b50b" kind="function"><name>MaterialGradientEnhancedFiniteStrain</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5adeade2cb79589df1202309101da9fb" kind="function"><name>~MaterialGradientEnhancedFiniteStrain</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aa9de1795520d1dbe3b60e686f7e4536d" kind="function"><name>computeStressExplicit</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a93d05216a532a38c0651341cd155bb57" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2586f5ecd2d47bebcbe2e98c10c71128" kind="function"><name>computePlaneStrain</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2e1248af0e1d3f4ea5707226b0af6786" kind="function"><name>computePlaneStrain</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19be83d43104508436f6ed8f7d757201" kind="function"><name>computePlaneStrainExplicit</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af37d4ff0a7ffdf18e3730ff94ad6b6ae" kind="function"><name>findEigenDeformationForEigenStress</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a42eaa5a0682ef65cb573b3f7bb511df7" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5709f75fabfad0c5efe1e740ae97c6b7" kind="function"><name>getNumberOfRequiredStateVars</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7c70693345d5d7633e8d474424fd8067" kind="function"><name>initializeYourself</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac9d0f522e6fe382762642be915ae0bb0" kind="function"><name>getDensity</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ae454eee4e3524d003f8b80adf9218dd5" kind="function"><name>setCharacteristicElementLength</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af7001dc0458d90af2e84410a45e4330e" kind="function"><name>getNonlocalViscosity</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" kind="function"><name>getNonlocalMicroInertia</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kind="typedef"><name>NonlocalVector</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a0e3cbf4fea7000530ab8777de32a323b" kind="typedef"><name>NonlocalMatrix</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a54dca7bdbd14c35a638214683b351451" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a60300da441e8b673e97f66d262dc9ed6" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a67ba693dc7710c92339f4071f41072eb" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a13520a6d51d73f717eb3999ea1e84ce0" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ad2bd241b80e99a952e1a6a117acc0ffd" kind="variable"><name>nNonlocalVariables</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adf48d2418423017793cba1f6cd88cc8e" kind="function"><name>MaterialGradientEnhancedFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a4d66453948f40dee116b054662c8bffa" kind="function"><name>~MaterialGradientEnhancedFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2a4053b65541f2dddc02c266a0ef07ef" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a3ffacae620abb7dffe0c3a977a790cee" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adb1b42fce3f1a1b6d408eacb4e0c2ac9" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acbe8cf984c2b338da05e56170ed1568b" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac8ef6820ba3d7f66a2344c68c3f5fca4" kind="function"><name>computePlaneStrainExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac7095f8ea233575e2a845d56ac2c9bce" kind="function"><name>findEigenDeformationForEigenStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a35806c5ab920e53f9f198ffeb9e90e1d" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ab3f4081e35502f156353c8af36843478" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2ad3efdfc590446972cad3bb7049a09b" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7363437cec66f93ee6ad3d0715ce09a5" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a95d40e8b493a8079910821a045cbaa77" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19da5badf39e69625928c40559e5ace6" kind="function"><name>getNonlocalViscosity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a37a4e2a684608e3c9d876aebcb79ad23" kind="function"><name>getNonlocalMicroInertia</name></member>
   </compound>
   <compound refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory" kind="class"><name>Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory</name>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1afeefcba42c5c05418fad1815f783f8ca" kind="typedef"><name>materialFactoryFunction</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a08a1214d69965ac68377bf85ea2e620a" kind="typedef"><name>MaterialFactoryMap</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a3e95e1129dd74c2c4ff6e3170098ad3b" kind="function"><name>MaterialGradientEnhancedFiniteStrainFactory</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a45480c8b1a77b1c08322ab8ca89df3b7" kind="function"><name>createMaterial</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1addd2bbfd51fd892b15fe02f784d3d57e" kind="function"><name>registerMaterial</name></member>
-    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1ad225a5025973d688dfb8c6521b6b3702" kind="function"><name>materialFactoryFunctionByName</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a061d8a8b44bbdd991eed506659b6c15b" kind="typedef"><name>Material</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a71f46cc1fb563cd98c033ed7337e7c81" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1ab37509fdf537e8965cde8bcf87348b5b" kind="typedef"><name>MaterialFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a8d5385f309bdfcac9768a28b55e1f59c" kind="function"><name>MaterialGradientEnhancedFiniteStrainFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a0471dc3098a686d5af6fa50a11cdad6b" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a6c0dca9821579a26284c2f5abdba6613" kind="function"><name>registerMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a84ea3e3a4b1784871984a52d8f5ef8b7" kind="function"><name>materialFactoryFunctionByName</name></member>
   </compound>
   <compound refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain" kind="class"><name>Marmot::Materials::MaterialPointSolverFiniteStrain</name>
     <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a93a7ee962b36b0106aa623f2a5088fc2" kind="variable"><name>material</name></member>
@@ -250,8 +304,8 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1a3104b7283e6a64a185cf71c0beef0e6f" kind="variable"><name>dT</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" kind="variable"><name>dT</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1b5ec2f6e291fcf002cd86d97ae06d08" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a0d2b14a722381bbec586b695f6514bc1" kind="variable"><name>dT</name></member>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
   </compound>
@@ -319,6 +373,7 @@
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a8503d71dcafbdc254c2bbea2599e5791" kind="enumvalue"><name>Analytic</name></member>
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" kind="enumvalue"><name>Exact</name></member>
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" kind="enumvalue"><name>Numerical</name></member>
+    <member refid="_marmot_material_gradient_enhanced_hypo_elastic_wrapper_8h_1aaea23bd603b64f339c6d130d7e7f38f0" kind="function"><name>nNonlocalVariablesOf</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>
@@ -338,11 +393,15 @@
   </compound>
   <compound refid="_marmot_material_finite_strain_substepped_8h" kind="file"><name>MarmotMaterialFiniteStrainSubstepped.h</name>
   </compound>
+  <compound refid="_marmot_material_gradient_enhanced_corotational_8h" kind="file"><name>MarmotMaterialGradientEnhancedCorotational.h</name>
+  </compound>
   <compound refid="_marmot_material_gradient_enhanced_finite_strain_8h" kind="file"><name>MarmotMaterialGradientEnhancedFiniteStrain.h</name>
   </compound>
   <compound refid="_marmot_material_gradient_enhanced_finite_strain_factory_8h" kind="file"><name>MarmotMaterialGradientEnhancedFiniteStrainFactory.h</name>
   </compound>
   <compound refid="_marmot_material_gradient_enhanced_hughes_winget_8h" kind="file"><name>MarmotMaterialGradientEnhancedHughesWinget.h</name>
+  </compound>
+  <compound refid="_marmot_material_gradient_enhanced_hypo_elastic_wrapper_8h" kind="file"><name>MarmotMaterialGradientEnhancedHypoElasticWrapper.h</name>
   </compound>
   <compound refid="_marmot_material_hughes_winget_8h" kind="file"><name>MarmotMaterialHughesWinget.h</name>
   </compound>

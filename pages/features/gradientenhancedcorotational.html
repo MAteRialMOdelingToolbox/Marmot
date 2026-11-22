@@ -1,0 +1,931 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-enhanced corotational wrapper &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-enhanced compressible Neo-Hooke damage" href="gradientenhancedcompressibleneohookedamage.html" />
+    <link rel="prev" title="Gradient-enhanced Hughes-Winget wrapper" href="gradientenhancedhugheswinget.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinesofteningplasticity.html">Rankine softening plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinedamageplasticity.html">Rankine damage-plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinegradientdamageplasticity.html">Gradient-enhanced Rankine damage-plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rankinegradientsofteningplasticity.html">Gradient-enhanced Rankine softening plasticity model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-enhanced corotational wrapper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#what-is-verified">What is verified</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bondsliplaws.html">Bond-Slip Laws</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Gradient-enhanced corotational wrapper</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gradientenhancedcorotational.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-corotational-wrapper">
+<span id="gradientenhancedcorotationalwrapper"></span><h1>Gradient-enhanced corotational wrapper<a class="headerlink" href="#gradient-enhanced-corotational-wrapper" title="Link to this heading"></a></h1>
+<p>The wrapper makes a small-strain gradient-enhanced material, <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt;n&gt;</span></code>,
+usable as a finite-strain one, <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt;n&gt;</span></code>, in the frame of the polar
+rotation. It is the wrapper for a material that <strong>recomputes its stress from total strains</strong>, such as <a class="reference internal" href="gm7.html"><span class="doc">Gradient-enhanced microplane model M7 (GM7)</span></a>, for
+which the <a class="reference internal" href="gradientenhancedhugheswinget.html#gradientenhancedhugheswingetwrapper"><span class="std std-ref">Hughes-Winget wrapper</span></a> is not objective: that one rotates the
+stress it hands over, and GM7 overwrites it.</p>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The deformation gradient is split into the polar rotation and the right stretch,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol F = \boldsymbol R\,\boldsymbol U, \qquad \boldsymbol U = \boldsymbol C^{1/2}, \qquad
+\boldsymbol C = \boldsymbol F^T\boldsymbol F .\]</div>
+<p>The wrapped material lives in the frame that rotates with <span class="math notranslate nohighlight">\(\boldsymbol R\)</span>. It is driven by the increment of the
+logarithmic (Hencky) strain and returns the rotated Kirchhoff stress, which is rotated out:</p>
+<div class="math notranslate nohighlight">
+\[\Delta\hat{\boldsymbol\varepsilon} = \ln\boldsymbol U^{(n+1)} - \ln\boldsymbol U^{(n)}, \qquad
+\ln\boldsymbol U = \tfrac12 \ln\boldsymbol C, \qquad
+\boldsymbol\tau = \boldsymbol R\,\hat{\boldsymbol\tau}\,\boldsymbol R^T .\]</div>
+<ul class="simple">
+<li><p>A superposed rigid rotation changes <span class="math notranslate nohighlight">\(\boldsymbol R\)</span> only. Everything the wrapped material sees is unchanged, so
+the stress rotates exactly, whatever the material does with its state; its tensor-valued internal variables (the
+microplane state of GM7) live in the rotating frame and are objective as well.</p></li>
+<li><p>The logarithmic strain increments sum to <span class="math notranslate nohighlight">\(\ln\boldsymbol U\)</span>, independent of the path. Under a pure stretch the
+material sees <span class="math notranslate nohighlight">\(\ln\lambda = (\lambda-1) + O((\lambda-1)^2)\)</span>: the small-strain model is recovered up to second
+order.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat{\boldsymbol\tau}\)</span> is work-conjugate to <span class="math notranslate nohighlight">\(\ln\boldsymbol U\)</span> for an isotropic response, so the energy
+densities of the wrapped material are per unit reference volume and are passed through unchanged.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\boldsymbol C\)</span> is the same for <span class="math notranslate nohighlight">\(\boldsymbol F\)</span> and for its mirror image, so the strain does not show that
+a material point is turned inside out: <span class="math notranslate nohighlight">\(\boldsymbol F = -\boldsymbol 1\)</span> would be a point without strain or stress,
+with a reflection for <span class="math notranslate nohighlight">\(\boldsymbol R\)</span>. The wrapper therefore refuses a deformation gradient whose determinant is
+not positive (<code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code>).</p>
+<p>The nonlocal fields are handed over as they are, together with their increment since the last call. They are referred
+to the rotating frame too (the nonlocal strain of GM7 is the nonlocal counterpart of <span class="math notranslate nohighlight">\(\hat{\boldsymbol\varepsilon}\)</span>),
+and their balance is written in the reference configuration by the consumers, so they are invariant under a rigid
+rotation.</p>
+<section id="tangent">
+<h3>Tangent<a class="headerlink" href="#tangent" title="Link to this heading"></a></h3>
+<p>The tangent is analytic and consistent,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\tau_{ij}}{\partial F_{kL}} =
+  \frac{\partial R_{ia}}{\partial F_{kL}}\,\hat\tau_{ab}\,R_{jb} + R_{ia}\,\hat\tau_{ab}\,
+  \frac{\partial R_{jb}}{\partial F_{kL}} + R_{ia}R_{jb}\,\mathbb C_{abcd}\,
+  \frac{\partial(\ln U)_{cd}}{\partial F_{kL}},
+\qquad
+\frac{\partial\boldsymbol R}{\partial F_{kL}} = \Bigl(\frac{\partial\boldsymbol F}{\partial F_{kL}}
+  - \boldsymbol R\,\frac{\partial\boldsymbol U}{\partial F_{kL}}\Bigr)\boldsymbol U^{-1},\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbb C\)</span> the algorithmic tangent of the wrapped material. The derivatives of the isotropic tensor
+functions <span class="math notranslate nohighlight">\(\tfrac12\ln\boldsymbol C\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol C^{1/2}\)</span> follow from the spectral decomposition
+<span class="math notranslate nohighlight">\(\boldsymbol C = \sum_a \lambda_a \boldsymbol N_a\otimes\boldsymbol N_a\)</span> (Daleckii-Krein),</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial f(\boldsymbol C)_{ij}}{\partial C_{IJ}} = \sum_{a,b} \theta_{ab}\, N_{a,i} N_{b,j} N_{a,I} N_{b,J},
+\qquad \theta_{ab} = \frac{f(\lambda_a) - f(\lambda_b)}{\lambda_a - \lambda_b}, \quad \theta_{aa} = f'(\lambda_a),\]</div>
+<p>which is continuous where eigenvalues coincide. The divided differences are evaluated without cancellation
+(<span class="math notranslate nohighlight">\(\ln\)</span>: by <code class="docutils literal notranslate"><span class="pre">log1p</span></code>; the square root: <span class="math notranslate nohighlight">\(1/(\sqrt{\lambda_a}+\sqrt{\lambda_b})\)</span>). The explicit update,
+<code class="docutils literal notranslate"><span class="pre">computeStressExplicit</span></code>, skips the tangent. The tangent of the nonlocal variables is
+<span class="math notranslate nohighlight">\(\partial\boldsymbol\tau/\partial\bar N_K = \boldsymbol R\,(\partial\hat{\boldsymbol\tau}/\partial\bar N_K)\,
+\boldsymbol R^T\)</span> and <span class="math notranslate nohighlight">\(\partial L_K/\partial\boldsymbol F = \partial L_K/\partial\hat{\boldsymbol\varepsilon} :
+\partial\ln\boldsymbol U/\partial\boldsymbol F\)</span>.</p>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>The wrapper is registered as <code class="docutils literal notranslate"><span class="pre">GM7/COROTATIONAL</span></code> in the <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory&lt;6&gt;</span></code>.
+Its material properties are those of <a class="reference internal" href="gm7.html"><span class="doc">Gradient-enhanced microplane model M7 (GM7)</span></a>, unchanged; the wrapper consumes none. It drives the particles
+<code class="docutils literal notranslate"><span class="pre">GradientEnhanced6FiniteStrain...</span></code> of <a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>, e.g. in EdelweissMeshfree:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">material</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"material"</span><span class="p">:</span> <span class="s2">"GM7/COROTATIONAL"</span><span class="p">,</span> <span class="s2">"properties"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">...</span><span class="p">])}</span>
+<span class="n">particle</span> <span class="o">=</span> <span class="n">MarmotParticleWrapper</span><span class="p">(</span><span class="s2">"GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa"</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="state-variables">
+<h3>State variables<a class="headerlink" href="#state-variables" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Corotational_logU_n</span></code></p></td>
+<td><p>6</p></td>
+<td><p><span class="math notranslate nohighlight">\(\ln\boldsymbol U\)</span> of the last call, Voigt notation with engineering shear</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Corotational_tau_n</span></code></p></td>
+<td><p>6</p></td>
+<td><p>rotated Kirchhoff stress <span class="math notranslate nohighlight">\(\hat{\boldsymbol\tau}\)</span> of the last call, Voigt notation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Corotational_N_n</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+<td><p>nonlocal fields of the last call</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">materialstate</span></code></p></td>
+<td><p>as the wrapped material</p></td>
+<td><p>its state; its own names are resolved as well</p></td>
+</tr>
+</tbody>
+</table>
+<p>A zero state is the undeformed, stress-free one.</p>
+</section>
+</section>
+<section id="what-is-verified">
+<h2>What is verified<a class="headerlink" href="#what-is-verified" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">testGM7Corotational.cpp</span></code> (GM7 module) checks</p>
+<ul class="simple">
+<li><p>the spectral derivative of <span class="math notranslate nohighlight">\(\tfrac12\ln\boldsymbol C\)</span> against central differences, for distinct and for
+repeated eigenvalues;</p></li>
+<li><p>a rigid rotation superposed on every increment of an anisotropic stretch path that runs into softening: the Kirchhoff
+stress rotates to <span class="math notranslate nohighlight">\(10^{-10}\)</span> of its norm, the local driving forces stay unchanged;</p></li>
+<li><p>a pure stretch against small-strain GM7: the difference is of second order in the strain (halving the strain divides
+it by four);</p></li>
+<li><p>the analytic tangent (all four blocks) against central differences at a damaged, rotated state, and that the explicit
+update gives the same stress;</p></li>
+<li><p>that density, nonlocal viscosity and micro-inertia of GM7 are forwarded and its state names resolved.</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials35GradientEnhancedCorotationalWrapperE">
+<span id="_CPPv3I0EN6Marmot9Materials35GradientEnhancedCorotationalWrapperE"></span><span id="_CPPv2I0EN6Marmot9Materials35GradientEnhancedCorotationalWrapperE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BaseMaterialType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedCorotationalWrapper</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper"><span class="n"><span class="pre">GradientEnhancedHypoElasticWrapper</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials35GradientEnhancedCorotationalWrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::BaseMaterialType"><span class="n"><span class="pre">BaseMaterialType</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::GradientEnhancedCorotationalWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-4976e8d5565bc84535b4b1411e89a89144b11387.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::GradientEnhancedCorotationalWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ea5b3b788a3120eec179c35438eea11982f56c24.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Decorator presenting a small-strain gradient-enhanced material as a finite-strain one, in the frame of the polar rotation. </p>
+<p>
+The deformation gradient is decomposed into the polar rotation and the right stretch, <span class="math notranslate nohighlight">\( \boldsymbol{F} = \boldsymbol{R}\,\boldsymbol{U} \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{U} = \boldsymbol{C}^{1/2} \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} \)</span>. The wrapped material lives in the frame that rotates with <span class="math notranslate nohighlight">\( \boldsymbol{R} \)</span> (the frame of the material fibres; Green-Naghdi): it is driven by the increment of the logarithmic (Hencky) strain    <div class="math notranslate nohighlight">
+\[  \Delta\hat{\boldsymbol{\varepsilon}} = \ln\boldsymbol{U}^{(n+1)} - \ln\boldsymbol{U}^{(n)},
+  \qquad \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C},
+\]</div>
+ and its stress is read as the rotated Kirchhoff stress, which is rotated out,   <div class="math notranslate nohighlight">
+\[  \boldsymbol{\tau} = \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T .
+\]</div>
+</p>
+<p><strong>Why this frame.</strong> A superposed rigid rotation changes <span class="math notranslate nohighlight">\( \boldsymbol{R} \)</span> and leaves <span class="math notranslate nohighlight">\( \boldsymbol{U} \)</span> – and hence everything the wrapped material sees – unchanged, so the Kirchhoff stress rotates exactly, whatever the wrapped material does with its own state. That is what <a class="reference internal" href="gradientenhancedhugheswinget.html#classMarmot_1_1Materials_1_1GradientEnhancedHughesWingetWrapper"><span class="std std-ref">Marmot::Materials::GradientEnhancedHughesWingetWrapper</span></a> cannot offer a material that recomputes its stress from total strains (<a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a> does: its stress is the homogenized microplane stress of its stored strains, and the stress it is handed is overwritten); it rotates the stress it hands over, which such a material discards. Tensor-valued internal variables of the wrapped material (<a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a>’s microplane state, its stored strains) live in the rotating frame too, so they are objective as well.</p>
+<p><strong>Why the logarithmic strain.</strong> It sums to a total strain,  <span class="math notranslate nohighlight">\( \sum\Delta\hat{\boldsymbol{\varepsilon}} =
+\ln\boldsymbol{U} \)</span>, independent of the path, so a material that accumulates its strain stores the Hencky strain; and under a pure stretch <span class="math notranslate nohighlight">\( \lambda \)</span> it hands the material  <span class="math notranslate nohighlight">\( \ln\lambda = (\lambda-1) + O((\lambda-
+1)^2) \)</span>, i.e. the wrapped model is recovered up to second order in the strain. The rotated Kirchhoff stress is the stress work-conjugate to <span class="math notranslate nohighlight">\( \ln\boldsymbol{U} \)</span> for an isotropic response, so the elastic and dissipated energies the wrapped material reports are densities per unit reference volume and are passed through unchanged.</p>
+<p>The nonlocal fields are handed over as they are (see <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper"><span class="std std-ref">GradientEnhancedHypoElasticWrapper</span></a>): they are referred to the rotating frame as well – for <a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a>, the nonlocal strain is the nonlocal counterpart of <span class="math notranslate nohighlight">\( \hat{\boldsymbol{\varepsilon}} \)</span> – and their balance is written in the reference configuration, so they are invariant under a superposed rigid rotation.</p>
+<p><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>this interface reports  </p></th>
+<th class="head"><p>from the wrapped material  </p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">response.tau</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\( \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T \)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">response.L</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">KLocal</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">response.nonLocalRadius</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\( \sqrt{c_K} \)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tangents.dTau_dN</span></code>[K]  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \ilinebr &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;
+\boldsymbol{R}\,(\partial\hat{\boldsymbol{\tau}}/\partial\bar{N}_K)\,\boldsymbol{R}^T \)</span> | | <code class="docutils literal notranslate"><span class="pre">tangents.dL_dF</span></code>[K] |  <span class="math notranslate nohighlight">\( \partial K^{\text{local}}_K/\partial\hat{\boldsymbol{\varepsilon}} :
+\partial\ln\boldsymbol{U}/\partial\boldsymbol{F} \)</span> | | <code class="docutils literal notranslate"><span class="pre">tangents.dL_dN</span></code> | <code class="docutils literal notranslate"><span class="pre">dKLocalddK</span></code> |</p>
+<p><strong>Tangent.</strong> Consistent and analytic:        <div class="math notranslate nohighlight">
+\[  \frac{\partial\tau_{ij}}{\partial F_{kL}} =
+    \frac{\partial R_{ia}}{\partial F_{kL}}\,\hat\tau_{ab}\,R_{jb} + R_{ia}\,\hat\tau_{ab}\,
+    \frac{\partial R_{jb}}{\partial F_{kL}} + R_{ia}R_{jb}\,\mathbb{C}_{abcd}\,
+    \frac{\partial(\ln U)_{cd}}{\partial F_{kL}},
+  \qquad \frac{\partial\boldsymbol{R}}{\partial F_{kL}} = \Bigl(\frac{\partial\boldsymbol{F}}{\partial F_{kL}}
+    - \boldsymbol{R}\,\frac{\partial\boldsymbol{U}}{\partial F_{kL}}\Bigr)\boldsymbol{U}^{-1},
+\]</div>
+ with <span class="math notranslate nohighlight">\( \mathbb{C} \)</span> the algorithmic tangent of the wrapped material and the derivatives of the isotropic tensor functions <span class="math notranslate nohighlight">\( \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C} \)</span> and  <span class="math notranslate nohighlight">\( \boldsymbol{U} =
+\boldsymbol{C}^{1/2} \)</span> from the spectral decomposition of <span class="math notranslate nohighlight">\( \boldsymbol{C} \)</span> (<a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1abaa0d78f9312c3ca78a74dace61c7b54"><span class="std std-ref">spectralDerivative()</span></a>). It is exact for any wrapped material whose stress does not depend on the stress it is handed (<a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a>), and for an incremental one too, since the stress it is handed is the rotated stress of the last call, which does not depend on <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span>. The explicit path, <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a6b501e4e534c980892429396c9db398b"><span class="std std-ref">computeStressExplicit()</span></a>, skips it.</p>
+<p><strong>What it refuses.</strong> <span class="math notranslate nohighlight">\( \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} \)</span> is the same for <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span> and for its mirror image, so the strain does not show that a material point is turned inside out ( <span class="math notranslate nohighlight">\( \det\boldsymbol{F} &lt; 0 \)</span>; <span class="math notranslate nohighlight">\( \boldsymbol{F} = -\boldsymbol{1} \)</span> would be a point without strain or stress, with a reflection for <span class="math notranslate nohighlight">\( \boldsymbol{R} \)</span>). A deformation gradient without a positive determinant is refused (std::invalid_argument).</p>
+<p>The state of the wrapper: <span class="math notranslate nohighlight">\( \ln\boldsymbol{U} \)</span> and <span class="math notranslate nohighlight">\( \hat{\boldsymbol{\tau}} \)</span> of the last call (both in Voigt notation, the strain with engineering shear), the nonlocal fields of the last call, and the state of the wrapped material. A zero state is the undeformed, stress-free one, so no initialization beyond the wrapped material’s is needed. </p>
+</td>
+</tr>
+</tbody>
+</table>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BaseMaterialType</strong> – A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt;n&gt;; the wrapper has the same n nonlocal variables.</p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE">
+<span id="_CPPv3I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE"></span><span id="_CPPv2I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a32796d36d5ab57f6ccffc33287c76ff4"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ConstitutiveResponse</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Wrapper"><span class="n"><span class="pre">Wrapper</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Interface</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>Constitutive response, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE">
+<span id="_CPPv3I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE"></span><span id="_CPPv2I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a0be4c193c6a09db7af1736f89fdae180"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AlgorithmicModuli</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Wrapper"><span class="n"><span class="pre">Wrapper</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Interface</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>Algorithmic moduli, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE">
+<span id="_CPPv3I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE"></span><span id="_CPPv2I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a313e8f15ef5879ccf11b49a8d6a9328b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Deformation</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Wrapper"><span class="n"><span class="pre">Wrapper</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Interface</span></span><span class="p"><span class="pre">::</span></span><span class="k"><span class="pre">template</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p><a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a313e8f15ef5879ccf11b49a8d6a9328b"><span class="std std-ref">Deformation</span></a>, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1ab1b4d04c367f59a6cf9604d70f4a0542"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimeIncrement</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Wrapper"><span class="n"><span class="pre">Wrapper</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Interface</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TimeIncrement</span></span><br /></dt>
+<dd><p>Time increment, see Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper35GradientEnhancedCorotationalWrapperEPKdii">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper35GradientEnhancedCorotationalWrapperEPKdii"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper35GradientEnhancedCorotationalWrapperEPKdii"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::GradientEnhancedCorotationalWrapper__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a3db5270910a58b1f9f37f2dbbc14e097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedCorotationalWrapper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Construct the wrapper and the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> Material property values; forwarded <strong>unchanged</strong> to the wrapped material. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of material property values. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Unique identifier for this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper18initializeYourselfEPdi">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper18initializeYourselfEPdi"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper18initializeYourselfEPdi"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::initializeYourself__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a4966e93a8be8a2b16721aecb49114332"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Initialise the state: zero logarithmic strain, stress and nonlocal fields of the last call, plus the wrapped material’s own state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to the state variable array. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a3c8fb260be1db91df41f32a07f8f818f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Corotational stress update of the wrapped material, with the consistent tangent. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response; carries the state variables and the energies in, the Kirchhoff stress, the local driving forces and the nonlocal radii out. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient and nonlocal fields. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials35GradientEnhancedCorotationalWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials35GradientEnhancedCorotationalWrapper21computeStressExplicitER20ConstitutiveResponseIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressExplicit__ConstitutiveResponse:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a6b501e4e534c980892429396c9db398b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressExplicit</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Corotational stress update without the tangent, for explicit time integration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient and nonlocal fields. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a9affa2999d9f5904d4e00cc42d0393f8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>Update the material state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a32796d36d5ab57f6ccffc33287c76ff4"><span class="std std-ref">ConstitutiveResponse</span></a> instance; carries the state variables in and the Kirchhoff stress, local driving forces and nonlocal radii out. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a0be4c193c6a09db7af1736f89fdae180"><span class="std std-ref">AlgorithmicModuli</span></a> instance. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a313e8f15ef5879ccf11b49a8d6a9328b"><span class="std std-ref">Deformation</span></a> gradient and nonlocal fields. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
+<span id="_CPPv3NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a5acbd49153110c2176ab410cc12dcf69"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a32796d36d5ab57f6ccffc33287c76ff4"><span class="std std-ref">ConstitutiveResponse</span></a> instance. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a0be4c193c6a09db7af1736f89fdae180"><span class="std std-ref">AlgorithmicModuli</span></a> instance; scaled to the eigen deformation. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a313e8f15ef5879ccf11b49a8d6a9328b"><span class="std std-ref">Deformation</span></a> gradient and nonlocal fields. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Eigen deformation in each spatial direction. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper18spectralDerivativeERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKNSt8functionIFdddEEE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper18spectralDerivativeERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKNSt8functionIFdddEEE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper18spectralDerivativeERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKNSt8functionIFdddEEE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1abaa0d78f9312c3ca78a74dace61c7b54"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11Tensor3333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">spectralDerivative</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenvalues</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenvectors</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dividedDifference</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Derivative of an isotropic function of a symmetric tensor (Daleckii-Krein formula). </p>
+<p>
+The divided difference is continuous where eigenvalues coincide, so the formula holds for repeated eigenvalues as well, whatever eigenvectors the decomposition picks within the eigenspace. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eigenvalues</strong> – <strong>[in]</strong> Eigenvalues <span class="math notranslate nohighlight">\( \lambda_a \)</span> of the tensor. </p></li>
+<li><p><strong>eigenvectors</strong> – <strong>[in]</strong> Its eigenvectors, by column. </p></li>
+<li><p><strong>dividedDifference</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \theta(\lambda_a, \lambda_b) \)</span>:  <span class="math notranslate nohighlight">\( (f(\lambda_a) - f(\lambda_b)) /
+                           (\lambda_a - \lambda_b) \)</span>, and <span class="math notranslate nohighlight">\( f'(\lambda_a) \)</span> for equal arguments. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( \partial f(\boldsymbol{C})_{ij}/\partial C_{IJ} = \sum_{a,b} \theta(\lambda_a, \lambda_b)\,
+        Q_{ia} Q_{jb} Q_{Ia} Q_{Jb} \)</span>, for a symmetric increment of <span class="math notranslate nohighlight">\( \boldsymbol{C} \)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials35GradientEnhancedCorotationalWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials35GradientEnhancedCorotationalWrapper17computeStressCoreER20ConstitutiveResponseIX3EEP17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressCore__ConstitutiveResponse:3:R.AlgorithmicModuli:3:P.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a0b59ec8130bd35526bb277a6cb158ba7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressCore</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper20ConstitutiveResponseE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::ConstitutiveResponse"><span class="n"><span class="pre">ConstitutiveResponse</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper11DeformationE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper13TimeIncrementE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The corotational update proper. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli, or nullptr for none. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient and nonlocal fields. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the determinant of the deformation gradient is not positive: the polar decomposition would then give a reflection for the rotation, and <span class="math notranslate nohighlight">\( \boldsymbol{C} \)</span> a strain as if nothing were wrong. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper14computeTangentER17AlgorithmicModuliIXL3EEERKN5Eigen8Matrix3dERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN12BaseMaterial8tangentsE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper14computeTangentER17AlgorithmicModuliIXL3EEERKN5Eigen8Matrix3dERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN12BaseMaterial8tangentsE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper14computeTangentER17AlgorithmicModuliIX3EERKN5Eigen8Matrix3dERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN12BaseMaterial8tangentsE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::computeTangent__AlgorithmicModuli:3:R.Eigen::Matrix3dCR.Eigen::Vector3dCR.Eigen::Matrix3dCR.Eigen::Matrix3dCR.Eigen::Matrix3dCR.Eigen::Matrix3dCR.BaseMaterial::tangentsCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1adbdfc5e144e3dd1b77548dd0c4956902"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeTangent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials35GradientEnhancedCorotationalWrapper17AlgorithmicModuliE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::AlgorithmicModuli"><span class="n"><span class="pre">AlgorithmicModuli</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lambda</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Q</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">UInv</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">R</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tauHat</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper12BaseMaterialE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::BaseMaterial"><span class="n"><span class="pre">BaseMaterial</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The consistent tangent of <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a0b59ec8130bd35526bb277a6cb158ba7"><span class="std std-ref">computeStressCore()</span></a>, see the class description. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli. </p></li>
+<li><p><strong>F</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a313e8f15ef5879ccf11b49a8d6a9328b"><span class="std std-ref">Deformation</span></a> gradient. </p></li>
+<li><p><strong>lambda</strong> – <strong>[in]</strong> Eigenvalues of <span class="math notranslate nohighlight">\( \boldsymbol{C} \)</span>. </p></li>
+<li><p><strong>Q</strong> – <strong>[in]</strong> Eigenvectors of <span class="math notranslate nohighlight">\( \boldsymbol{C} \)</span>, by column. </p></li>
+<li><p><strong>UInv</strong> – <strong>[in]</strong> Inverse of the right stretch. </p></li>
+<li><p><strong>R</strong> – <strong>[in]</strong> Polar rotation. </p></li>
+<li><p><strong>tauHat</strong> – <strong>[in]</strong> Rotated Kirchhoff stress. </p></li>
+<li><p><strong>tan</strong> – <strong>[in]</strong> Algorithmic tangents of the wrapped material. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-attributes">Protected Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper21logarithmicStrainSlotE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper21logarithmicStrainSlotE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper21logarithmicStrainSlotE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::logarithmicStrainSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1af71f45a566e816395fcaa7682a9c7d8f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">logarithmicStrainSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;Corotational_logU_n&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding <span class="math notranslate nohighlight">\( \ln\boldsymbol{U} \)</span> of the last call (Voigt, engineering shear). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper17rotatedStressSlotE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper17rotatedStressSlotE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper17rotatedStressSlotE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::rotatedStressSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1ab8d0e886742a3b11eee55d9f144fa7d8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rotatedStressSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;Corotational_tau_n&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the rotated Kirchhoff stress of the last call (Voigt). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper17nonlocalFieldSlotE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper17nonlocalFieldSlotE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper17nonlocalFieldSlotE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::nonlocalFieldSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a12b14c9db1ca86760d34d0bf6a1ed557"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nonlocalFieldSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;Corotational_N_n&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the nonlocal fields of the last call. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-types">Private Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper7WrapperE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1adda9967146486fc0f42da35be2295343"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Wrapper</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper"><span class="n"><span class="pre">GradientEnhancedHypoElasticWrapper</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials35GradientEnhancedCorotationalWrapperE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::BaseMaterialType"><span class="n"><span class="pre">BaseMaterialType</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper12BaseMaterialE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper12BaseMaterialE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper12BaseMaterialE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1ae2801da8a3cfa4d50fead26148f06bfc"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BaseMaterial</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper9nNonlocalE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::nNonlocal"><span class="n"><span class="pre">nNonlocal</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>The small-strain interface of the wrapped material. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper12baseMaterialE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper12baseMaterialE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper12baseMaterialE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::baseMaterial__std::unique_ptr:BaseMaterial:"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1af271fa6f9b0117cebe445b27d5b22c3a"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper12BaseMaterialE" title="Marmot::Materials::GradientEnhancedCorotationalWrapper::BaseMaterial"><span class="n"><span class="pre">BaseMaterial</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterial</span></span></span><br /></dt>
+<dd><p>The wrapped small-strain material, held as the base interface. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper9fromEigenERKN5Eigen8Matrix3dE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::fromEigen__Eigen::Matrix3dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a2d8108b25dcb9f85475f9fa5a7be8878"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fromEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert an Eigen 3x3 matrix into a Fastor tensor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>m</strong> – <strong>[in]</strong> The matrix. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same values as a Fastor tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::toEigen__Marmot::Math::Tensors::FastorTensors::Tensor33dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a7a658b4b36411385e65f50bce91c018b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">toEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert a Fastor 3x3 tensor into an Eigen matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – <strong>[in]</strong> The tensor. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same values as an Eigen matrix. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-attributes">Private Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper16baseMaterialSlotE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper16baseMaterialSlotE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper16baseMaterialSlotE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::baseMaterialSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1a360933b087af3d21ba95163e736c544b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialSlot</span></span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the state variables of the wrapped material. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper9nNonlocalE">
+<span id="_CPPv3N6Marmot9Materials35GradientEnhancedCorotationalWrapper9nNonlocalE"></span><span id="_CPPv2N6Marmot9Materials35GradientEnhancedCorotationalWrapper9nNonlocalE"></span><span id="Marmot::Materials::GradientEnhancedCorotationalWrapper::nNonlocal__i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper_1aa7948a218528c8a5de24e23b23ee42a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNonlocal</span></span></span><br /></dt>
+<dd><p>The number of nonlocal variables, that of the wrapped material. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE">
+<span id="_CPPv3I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE"></span><span id="_CPPv2I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BaseMaterialType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedHypoElasticWrapper</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials20nNonlocalVariablesOfEiPK35MaterialGradientEnhancedHypoElasticI18nNonlocalVariablesE" title="Marmot::Materials::nNonlocalVariablesOf"><span class="n"><span class="pre">nNonlocalVariablesOf</span></span></a><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">static_cast</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::BaseMaterialType"><span class="n"><span class="pre">BaseMaterialType</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::GradientEnhancedHypoElasticWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-8f98e0905ec3b72876e4184b33e9ba492df9cd8b.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot;]
+    &quot;4&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::GradientEnhancedHypoElasticWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-988ffe65d874e4f418f02893f15770baf5fe646e.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Common base of the decorators presenting a small-strain gradient-enhanced material as a finite-strain one. </p>
+<p>
+What the decorators share: they own the wrapped material, keep its state variables in the slot <code class="docutils literal notranslate"><span class="pre">materialstate</span></code> of their own layout, forward its density, nonlocal viscosity and micro-inertia, resolve state names they do not know themselves in the wrapped material, and hand it the nonlocal fields together with their increment. The finite-strain interface passes the TOTAL nonlocal fields, while the wrapped material wants the fields <strong>and their increment</strong>; the increment is formed against the value of the last call, which each decorator keeps in a slot of its own layout (<a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a68e4208d1f8eeac416433d3d1a20a6f3"><span class="std std-ref">baseMaterialIncrement()</span></a> below). The kinematics – which strain increment the wrapped material is driven by, and which stress it returns – is the derived class’ own: <a class="reference internal" href="gradientenhancedhugheswinget.html#classMarmot_1_1Materials_1_1GradientEnhancedHughesWingetWrapper"><span class="std std-ref">GradientEnhancedHughesWingetWrapper</span></a> (an objective rate, for a material incremental in stress) and <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper"><span class="std std-ref">GradientEnhancedCorotationalWrapper</span></a> (the logarithmic strain in the frame of the polar rotation, for any material).</p>
+<p>Each derived class builds its layout in its constructor: its own slots, a slot for the nonlocal fields of the last call, and baseMaterialSlot, of size baseMaterial-&gt;getNumberOfRequiredStateVars(). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>BaseMaterialType</strong> – A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt;n&gt;; the wrapper has the same number n of nonlocal variables.</p>
+</dd>
+</dl>
+<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedCorotationalWrapper"><span class="std std-ref">Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;</span></a>, <a class="reference internal" href="gradientenhancedhugheswinget.html#classMarmot_1_1Materials_1_1GradientEnhancedHughesWingetWrapper"><span class="std std-ref">Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9InterfaceE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9InterfaceE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9InterfaceE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a195bba4e3103111469f8511e6b47de6f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Interface</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::nNonlocal"><span class="n"><span class="pre">nNonlocal</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>The finite-strain interface presented. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1aef8719fab9320791ffb17dad62428f8d"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NonlocalVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::nNonlocal"><span class="n"><span class="pre">nNonlocal</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>a value per nonlocal variable </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper34GradientEnhancedHypoElasticWrapperEPKdii">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper34GradientEnhancedHypoElasticWrapperEPKdii"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper34GradientEnhancedHypoElasticWrapperEPKdii"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::GradientEnhancedHypoElasticWrapper__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1acc34dc784fc607c4d5ca9923e35959ad"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedHypoElasticWrapper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Construct the wrapper and the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> Material property values; forwarded <strong>unchanged</strong> to the wrapped material. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of material property values. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Unique identifier for this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper12getStateViewERKNSt6stringEPd">
+<span id="_CPPv3NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper12getStateViewERKNSt6stringEPd"></span><span id="_CPPv2NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper12getStateViewERKNSt6stringEPd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::getStateView__ssCR.doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a73b87108904d4be057de2407c8d70d7a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Resolve a state variable by name: a slot of the wrapper, or else a state of the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
+<li><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A view of the requested state variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper10getDensityEPKd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1add3a9870bc31931faee82a7daa6ee826"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Mass density of the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mass density. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper20getNonlocalViscosityEPKd">
+<span id="_CPPv3NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper20getNonlocalViscosityEPKd"></span><span id="_CPPv2NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper20getNonlocalViscosityEPKd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::getNonlocalViscosity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a02dfcddb856ce04648814483e0e2d6a6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalViscosity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Nonlocal viscosities of the wrapped small-strain material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The wrapped material’s own <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a02dfcddb856ce04648814483e0e2d6a6"><span class="std std-ref">getNonlocalViscosity()</span></a>, one entry per nonlocal variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper23getNonlocalMicroInertiaEPKd">
+<span id="_CPPv3NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper23getNonlocalMicroInertiaEPKd"></span><span id="_CPPv2NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper23getNonlocalMicroInertiaEPKd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::getNonlocalMicroInertia__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1abbdd26a27b6589587b4c9de28a9bd7f4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalMicroInertia</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Nonlocal micro-inertias of the wrapped small-strain material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The wrapped material’s own <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1abbdd26a27b6589587b4c9de28a9bd7f4"><span class="std std-ref">getNonlocalMicroInertia()</span></a>, one entry per nonlocal variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::nNonlocal__i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1aa7948a218528c8a5de24e23b23ee42a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNonlocal</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I_iEN6Marmot9Materials20nNonlocalVariablesOfEiPK35MaterialGradientEnhancedHypoElasticI18nNonlocalVariablesE" title="Marmot::Materials::nNonlocalVariablesOf"><span class="n"><span class="pre">nNonlocalVariablesOf</span></span></a><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">static_cast</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4I0EN6Marmot9Materials34GradientEnhancedHypoElasticWrapperE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::BaseMaterialType"><span class="n"><span class="pre">BaseMaterialType</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p>The number of nonlocal variables, that of the wrapped material. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12BaseMaterialE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12BaseMaterialE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12BaseMaterialE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1ae2801da8a3cfa4d50fead26148f06bfc"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BaseMaterial</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9nNonlocalE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::nNonlocal"><span class="n"><span class="pre">nNonlocal</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>The small-strain interface of the wrapped material. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper17baseMaterialStateEPd">
+<span id="_CPPv3NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper17baseMaterialStateEPd"></span><span id="_CPPv2NK6Marmot9Materials34GradientEnhancedHypoElasticWrapper17baseMaterialStateEPd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialState__doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1ac406864c175255f0f2e35e73fdbfd8dd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialState</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The state variables of the wrapped material inside those of this wrapper. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pointer to the slot baseMaterialSlot. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper22initializeBaseMaterialEPd">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper22initializeBaseMaterialEPd"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper22initializeBaseMaterialEPd"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::initializeBaseMaterial__doubleP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1ade29c1532c729452e73acb899bc25a56"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeBaseMaterial</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Initialise the state variables of the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12baseMaterialE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12baseMaterialE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12baseMaterialE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterial__std::unique_ptr:BaseMaterial:"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1af271fa6f9b0117cebe445b27d5b22c3a"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12BaseMaterialE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::BaseMaterial"><span class="n"><span class="pre">BaseMaterial</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterial</span></span></span><br /></dt>
+<dd><p>The wrapped small-strain material, held as the base interface. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9fromEigenERKN5Eigen8Matrix3dE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::fromEigen__Eigen::Matrix3dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a2d8108b25dcb9f85475f9fa5a7be8878"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fromEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert an Eigen 3x3 matrix into a Fastor tensor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>m</strong> – <strong>[in]</strong> The matrix. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same values as a Fastor tensor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::toEigen__Marmot::Math::Tensors::FastorTensors::Tensor33dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a7a658b4b36411385e65f50bce91c018b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">toEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert a Fastor 3x3 tensor into an Eigen matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – <strong>[in]</strong> The tensor. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same values as an Eigen matrix. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper21baseMaterialIncrementERK14NonlocalVectorRK14NonlocalVectorRKN6Marmot4Math8Vector6dERKN9Interface13TimeIncrementE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper21baseMaterialIncrementERK14NonlocalVectorRK14NonlocalVectorRKN6Marmot4Math8Vector6dERKN9Interface13TimeIncrementE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper21baseMaterialIncrementERK14NonlocalVectorRK14NonlocalVectorRKN6Marmot4Math8Vector6dERKN9Interface13TimeIncrementE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialIncrement__NonlocalVectorCR.NonlocalVectorCR.Marmot::Math::Vector6dCR.Interface::TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a68e4208d1f8eeac416433d3d1a20a6f3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper12BaseMaterialE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::BaseMaterial"><span class="n"><span class="pre">BaseMaterial</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialIncrement</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Nn</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper9InterfaceE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::Interface"><span class="n"><span class="pre">Interface</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The increment the wrapped material is handed for a total nonlocal field, and the field it is formed against. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – <strong>[in]</strong> Total nonlocal fields of this call. </p></li>
+<li><p><strong>Nn</strong> – <strong>[in]</strong> Nonlocal fields of the last call, as kept in the wrapper’s own slot. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Strain increment, in Voigt notation with engineering shear. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Time and time increment of the call. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The increment for the wrapped material: <code class="docutils literal notranslate"><span class="pre">dStrain</span></code>, <span class="math notranslate nohighlight">\( K = \bar{N} \)</span>, <span class="math notranslate nohighlight">\( \Delta K = \bar{N} - \bar{N}_n \)</span> and the time. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16toNonlocalVectorERKNSt6vectorIdEE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16toNonlocalVectorERKNSt6vectorIdEE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16toNonlocalVectorERKNSt6vectorIdEE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::toNonlocalVector__std::vector:double:CR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a7f0650b65a688125f6cb079be90b210b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper14NonlocalVectorE" title="Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">toNonlocalVector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Copy a per-nonlocal-variable std::vector, as the small-strain interface reports one, into a vector of the finite-strain interface. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> – <strong>[in]</strong> One value per nonlocal variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The same values. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-attributes">Protected Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16baseMaterialSlotE">
+<span id="_CPPv3N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16baseMaterialSlotE"></span><span id="_CPPv2N6Marmot9Materials34GradientEnhancedHypoElasticWrapper16baseMaterialSlotE"></span><span id="Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedHypoElasticWrapper_1a360933b087af3d21ba95163e736c544b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;materialstate&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the state variables of the wrapped material. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gradientenhancedhugheswinget.html" class="btn btn-neutral float-left" title="Gradient-enhanced Hughes-Winget wrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gradientenhancedcompressibleneohookedamage.html" class="btn btn-neutral float-right" title="Gradient-enhanced compressible Neo-Hooke damage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

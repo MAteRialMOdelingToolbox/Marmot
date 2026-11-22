@@ -2,7 +2,9 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_materials" kind="namespace" language="C++">
     <compoundname>Marmot::Materials</compoundname>
+    <innerclass refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" prot="public">Marmot::Materials::GradientEnhancedCorotationalWrapper</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" prot="public">Marmot::Materials::GradientEnhancedHughesWingetWrapper</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" prot="public">Marmot::Materials::GradientEnhancedHypoElasticWrapper</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" prot="public">Marmot::Materials::HughesWingetWrapper</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain" prot="public">Marmot::Materials::MaterialFiniteStrain</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD</innerclass>
@@ -19,7 +21,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="7">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
+<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="115">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" prot="public">
@@ -27,7 +29,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>As HughesWingetTangent::Analytic, but the operator <formula id="8">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
+<para>As HughesWingetTangent::Analytic, but the operator <formula id="116">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" prot="public">
@@ -35,11 +37,11 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>The complete update is forward-differenced with respect to the nine components of <formula id="9">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
+<para>The complete update is forward-differenced with respect to the nine components of <formula id="3">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
-<para>Selects how the algorithmic tangent <formula id="0">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">Marmot::Materials::HughesWingetWrapper</ref> is evaluated. </para>
+<para>Selects how the algorithmic tangent <formula id="92">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">Marmot::Materials::HughesWingetWrapper</ref> is evaluated. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -48,10 +50,49 @@
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="46" bodyend="66"/>
       </memberdef>
     </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_material_gradient_enhanced_hypo_elastic_wrapper_8h_1aaea23bd603b64f339c6d130d7e7f38f0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNonlocalVariables</declname>
+            <defname>nNonlocalVariables</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Marmot::Materials::nNonlocalVariablesOf</definition>
+        <argsstring>(const MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt; *)</argsstring>
+        <name>nNonlocalVariablesOf</name>
+        <qualifiedname>Marmot::Materials::nNonlocalVariablesOf</qualifiedname>
+        <param>
+          <type>const MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt; *</type>
+        </param>
+        <briefdescription>
+<para>Number of nonlocal variables of a small-strain gradient-enhanced material type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNonlocalVariables</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deduced from the base class Marmot::Materials::MaterialGradientEnhancedHypoElastic. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>nNonlocalVariables</computeroutput>.</para>
+</simplesect>
+Called unevaluated, on a null pointer of the material type, to read the template argument of its base. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="45" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="45" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="40" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="36" column="1"/>
   </compounddef>
 </doxygen>

@@ -23,7 +23,7 @@
           <declname>lengthOfLastAxis</declname>
         </param>
         <briefdescription>
-<para>The node coordinates of a unit square or cube element, in the Abaqus node order: the corner nodes, then the midside nodes, each at <formula id="39">$(\xi + 1) / 2$</formula> of its natural coordinates. </para>
+<para>The node coordinates of a unit square or cube element, in the Abaqus node order: the corner nodes, then the midside nodes, each at <formula id="64">$(\xi + 1) / 2$</formula> of its natural coordinates. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -74,7 +74,7 @@
           <declname>nDisplacementDof</declname>
         </param>
         <briefdescription>
-<para>The stable time increment <formula id="40">$2 / \omega_{\max}$</formula> of an element on its own, at rest: the largest eigenvalue of <formula id="31">$\mathbf{M}^{-1}\mathbf{K}$</formula> of its displacement block, with the tangent computeKernels() returns and the lumped mass computeLumpedInertia() assembles. </para>
+<para>The stable time increment <formula id="65">$2 / \omega_{\max}$</formula> of an element on its own, at rest: the largest eigenvalue of <formula id="37">$\mathbf{M}^{-1}\mathbf{K}$</formula> of its displacement block, with the tangent computeKernels() returns and the lumped mass computeLumpedInertia() assembles. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>

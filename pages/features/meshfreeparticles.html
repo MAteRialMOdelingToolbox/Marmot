@@ -191,8 +191,19 @@ the shape functions are evaluated, e.g., for checking the coverage by kernel sup
 </tbody>
 </table>
 <p>For explicit dynamics, <code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computeBodyLoadExplicit</span></code> and
-<code class="docutils literal notranslate"><span class="pre">computeDistributedLoadExplicit</span></code> are provided, together with <code class="docutils literal notranslate"><span class="pre">computeLumpedInertia</span></code> and <code class="docutils literal notranslate"><span class="pre">computeLumpedMomentum</span></code>.
-The explicit methods default to doing nothing and the lumped methods throw, unless a particle overrides them.</p>
+<code class="docutils literal notranslate"><span class="pre">computeDistributedLoadExplicit</span></code> are provided, together with <code class="docutils literal notranslate"><span class="pre">computeLumpedInertia</span></code> (the coefficients of the second
+time derivatives), <code class="docutils literal notranslate"><span class="pre">computeLumpedDamping</span></code> (those of the first: the nonlocal viscosity of a gradient-enhanced field,
+which integrates a first-order field on its own and damps a second-order one) and <code class="docutils literal notranslate"><span class="pre">computeLumpedMomentum</span></code>.
+The lumped damping defaults to no damping; <code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit</span></code>, the explicit
+loads, the lumped inertia and the momentum throw unless a particle overrides them, so that a force, a load or a mass is
+never left out silently: a particle without the explicit path is refused by an explicit host, instead of being
+integrated with its mass and without its force. The registered particles with the explicit path are the NSNI
+particles of the displacement family (<code class="docutils literal notranslate"><span class="pre">Displacement*xNSNI/...</span></code>) and all particles of the gradient-enhanced family
+(<code class="docutils literal notranslate"><span class="pre">GradientEnhanced*FiniteStrain*/...</span></code>); the point, SQCNI, SNNI and SDI particles of the displacement family have
+none. EdelweissMeshfree loads the particles of an explicit analysis through <code class="docutils literal notranslate"><span class="pre">computeBodyLoad</span></code> and
+<code class="docutils literal notranslate"><span class="pre">computeDistributedLoad</span></code> and discards their tangent; it does not call the explicit loads. A particle gives no
+critical time step: the stable increment of a particle discretization is a property of the assembled system (see
+<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>).</p>
 <p><strong>Dof layout.</strong> Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 <code class="docutils literal notranslate"><span class="pre">dofIndicesPermutationPattern</span></code>) is used: the residual and the stiffness matrix are stored node-wise, in the order in
 which the kernel functions were assigned, e.g., <code class="docutils literal notranslate"><span class="pre">[node_1_displacement,</span> <span class="pre">node_1_temperature,</span> <span class="pre">node_2_displacement,</span> <span class="pre">...]</span></code>,
@@ -442,15 +453,17 @@ subdomain starts at the same alignment as the state of a stand-alone material po
 stores on the tensor maps into it (without the padding, a block starting at an odd double caused a segmentation fault
 with GCC 14.2 at <code class="docutils literal notranslate"><span class="pre">-O3</span></code>). The offsets are relative to the start of the particle block, so the host framework must pass
 a suitably aligned block for the absolute alignment to hold. <code class="docutils literal notranslate"><span class="pre">getNumberOfRequiredStateVars</span></code> includes the padding.</p>
-<p><code class="docutils literal notranslate"><span class="pre">GenericSDIParticle</span></code> does not override the explicit-dynamics methods, so the SDI particles inherit their empty
-defaults from <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Particle</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">GenericSDIParticle</span></code> does not override the explicit-dynamics methods, so the SDI particles refuse an explicit
+analysis with the defaults of <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Particle</span></code>.</p>
 </section>
 <section id="the-particle-factory">
 <h2>The particle factory<a class="headerlink" href="#the-particle-factory" title="Link to this heading"></a></h2>
 <p><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot8Registry15ParticleFactoryE" title="Marmot::Registry::ParticleFactory"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Registry::ParticleFactory</span></code></a> maps names to factory functions. Particle modules register their
 types in <code class="docutils literal notranslate"><span class="pre">*Registration.cpp</span></code> files at static initialization (<code class="docutils literal notranslate"><span class="pre">registerParticle</span></code>); the host creates them with
-<code class="docutils literal notranslate"><span class="pre">createParticle</span></code>, which throws <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code> for an unknown name. Names are converted to upper case at
-registration and at creation, so they are case-insensitive. The factory function receives the particle number, the
+<code class="docutils literal notranslate"><span class="pre">createParticle</span></code>, which throws <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code> for an unknown name. <code class="docutils literal notranslate"><span class="pre">isRegistered</span></code> says whether a name
+is known, i.e. whether the module of the particle is part of the build: a host asks it first, to tell a particle that is
+not built from one that fails to be created. Names are converted to upper case at registration, at creation and in
+<code class="docutils literal notranslate"><span class="pre">isRegistered</span></code>, so they are case-insensitive. The factory function receives the particle number, the
 vertex coordinates (the center coordinates for point particles), their number, the volume (zero for cell-shaped
 particles, which compute it from the vertices), the material name and properties, and the meshfree approximation,
 which must outlive the particle.</p>
@@ -462,7 +475,7 @@ which must outlive the particle.</p>
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="Marmot::Discretizations::Meshfree::Particle"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Particle</span></span></span><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::Particle:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-11c5317c2e210f53de3480637a7522bbb3e1551b.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e527298e35eb2168c418518779a76fbdc3e9e0af.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -474,9 +487,9 @@ which must outlive the particle.</p>
     &quot;8&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot;]
-    &quot;10&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim &gt;&quot;]
-    &quot;11&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices &gt;&quot;]
-    &quot;12&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot;]
+    &quot;10&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot;]
+    &quot;11&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
+    &quot;12&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::Particle&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::Particle&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
@@ -507,8 +520,9 @@ which must outlive the particle.</p>
 <p><strong>State contract:</strong> the state variable block is a <em>trial</em> copy. Before every call of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a>, the host restores it to the values committed by the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>, and <code class="docutils literal notranslate"><span class="pre">dQ</span></code> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> and back in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>.</p>
 <p>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, …], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <span class="math notranslate nohighlight">\( n_{\text{nodes}} \cdot \)</span> <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a5b7d8e653f4401f8958656bc737c92ed"><span class="std std-ref">getNBaseDof()</span></a>.</p>
 <p>For the stiffness matrix, a column-major layout is used.</p>
-<p>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_… methods. The global assembly and solution of the VCI correction is done by the host framework. </p>
-<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainparticle.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1GradientEnhancedFiniteStrainParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim &gt;</span></a></p>
+<p>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_… methods. The global assembly and solution of the VCI correction is done by the host framework.</p>
+<p>Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing ones do not move: a library and a host built against different versions then fail on the one new call instead of silently calling the wrong method. This is why methods that belong together by subject may stand apart. </p>
+<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainparticle.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1GradientEnhancedFiniteStrainParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-variationally-consistent-integration-(vci)">Variationally consistent integration (VCI)</p>
 <p>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <span class="math notranslate nohighlight">\( \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C \)</span>, such that the integration by parts is exact under the numerical integration for a polynomial basis <span class="math notranslate nohighlight">\( P_C(Y) \)</span> (the complete monomials up to the VCI order); <span class="math notranslate nohighlight">\( \chi_A \)</span> is the indicator of the support of kernel function <span class="math notranslate nohighlight">\( A \)</span>,    <div class="math notranslate nohighlight">
@@ -884,7 +898,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::updatePhysicsExplicit__doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a8a04e0e7f26751788e4f9132bc97cdaf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updatePhysicsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Explicit dynamics: update the kinematics and the material state for the dof increment. </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -893,6 +906,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would be integrated with its mass and without its force, silently. </p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -900,10 +916,12 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computePhysicsKernelsExplicit__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a6a23907b325ea1016f0190d158e00ec8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePhysicsKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fInt</span></span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Explicit dynamics: compute the internal force vector for the state set by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a8a04e0e7f26751788e4f9132bc97cdaf"><span class="std std-ref">updatePhysicsExplicit()</span></a>. </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fInt</strong> – <strong>[inout]</strong> Internal force vector (node-wise). </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would be integrated with its mass and without its force, silently. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -912,7 +930,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle23computeBodyLoadExplicitEiPKdPddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeBodyLoadExplicit__i.doubleCP.doubleP.double.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a99516fb62c45b198a972e061d4c40227"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyLoadExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Explicit dynamics: compute a body load (no tangent). </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -923,6 +940,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
 </dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would leave the load out silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1abf6cf34751b3791f91a25d592ee9cc95"><span class="std std-ref">computeBodyLoad()</span></a> and discards the tangent. </p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -930,7 +950,6 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle30computeDistributedLoadExplicitEiiPKdPddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeDistributedLoadExplicit__i.i.doubleCP.doubleP.double.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a14e0a4159b73753989a01bc02c1b5896"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoadExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">boundaryFaceID</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Explicit dynamics: compute a distributed load (no tangent). </p>
-<p>The default implementation does nothing. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -941,6 +960,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment. </p></li>
 <li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – in the default implementation: a particle without it would leave the load out silently. EdelweissMeshfree does not call it: it loads the particles of an explicit analysis through <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7d46e721a71cf53a8f00b08b0e2724a5"><span class="std std-ref">computeDistributedLoad()</span></a> and discards the tangent. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1041,6 +1063,18 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>conditionName</strong> – <strong>[in]</strong> Name of the initial condition. </p></li>
 <li><p><strong>value</strong> – <strong>[in]</strong> Values of the initial condition. </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeLumpedDamping__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1ae9c16ebb511868904d2b537b21cbab97"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedDamping</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cLumped</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle. </p>
+<p>The coefficient of each field’s FIRST time derivative, node-wise and in the layout of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a74371407f7597a403fc0def9d5b62573"><span class="std std-ref">computeLumpedInertia()</span></a>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cLumped</strong> – <strong>[inout]</strong> Lumped damping vector (node-wise); entries left untouched mean no damping. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -2847,16 +2881,14 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 </dl>
 </dd></dl>
 
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE">
-<span id="_CPPv3N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE"></span><span id="_CPPv2N6Marmot8Registry15ParticleFactory27checkIfParticleIsRegisteredERKNSt6stringE"></span><span id="Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered__ssCR"></span><span class="target" id="classMarmot_1_1Registry_1_1ParticleFactory_1add041efc5ad2a0fbb56a0e537b1eaae9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkIfParticleIsRegistered</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleName</span></span><span class="sig-paren">)</span><br /></dt>
-<dd><p>Check whether a particle name is registered (declared only, not defined). </p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE">
+<span id="_CPPv3N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE"></span><span id="_CPPv2N6Marmot8Registry15ParticleFactory12isRegisteredERKNSt6stringE"></span><span id="Marmot::Registry::ParticleFactory::isRegistered__ssCR"></span><span class="target" id="classMarmot_1_1Registry_1_1ParticleFactory_1a0112d86ad5846426234937cd3d51c1a2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isRegistered</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleName</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Whether a particle type is registered under a name, i.e. whether its module is part of this build. </p>
+<p>A host asks before <a class="reference internal" href="#classMarmot_1_1Registry_1_1ParticleFactory_1a266536851384fc947103426794ba6875"><span class="std std-ref">createParticle()</span></a>, to tell a particle that is not built (which it may skip) from a particle that fails to be created (an error of the input). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>particleName</strong> – <strong>[in]</strong> Name of the particle type. </p>
+<dd class="field-odd"><p><strong>particleName</strong> – <strong>[in]</strong> Name of the particle type (case-insensitive). </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>true if registered. </p>

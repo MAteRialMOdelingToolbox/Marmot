@@ -111,8 +111,10 @@
 <h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
 <p>This element couples the displacement field <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> dofs per node) to a single scalar
 nonlocal field <span class="math notranslate nohighlight">\(\bar N\)</span> (1 dof per node) at finite strains. It is the finite-element consumer of
-<code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code> (see <a class="reference internal" href="gradientenhancedhugheswinget.html"><span class="doc">Gradient-enhanced Hughes-Winget wrapper</span></a> and the material models that
-implement that interface).</p>
+<code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt;1&gt;</span></code>, the materials with one nonlocal variable (see
+<a class="reference internal" href="gradientenhancedhugheswinget.html"><span class="doc">Gradient-enhanced Hughes-Winget wrapper</span></a> and the material models that implement that interface). Six nonlocal variables (GM7)
+are carried by the particles of <a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>, and by
+<a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html"><span class="doc">General Gradient-Enhanced Displacement Finite Element</span></a> in small strain.</p>
 <p>The momentum balance is written with the Kirchhoff stress and the spatial gradients of the shape functions,
 integrated over the reference volume,</p>
 <div class="math notranslate nohighlight">
@@ -242,8 +244,9 @@ must be initialized (<code class="docutils literal notranslate"><span class="pre
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE">
-<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af1a9697ab46654356d24a48fa3254345"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Material</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials36MaterialGradientEnhancedFiniteStrainE" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain"><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ae868380f6ded52bce66c45a3a9ea4b4c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Material</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Link to this definition"></a><br /></dt>
+<dd><p>the consumed material interface: the element carries one nonlocal variable </p>
+</dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13JacobianSizedE">
@@ -374,7 +377,7 @@ must be initialized (<code class="docutils literal notranslate"><span class="pre
 <dd><p>Create the material of every quadrature point. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>MarmotElementProperty</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af1a9697ab46654356d24a48fa3254345"><span class="std std-ref">Material</span></a> name and properties. </p>
+<dd class="field-odd"><p><strong>MarmotElementProperty</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ae868380f6ded52bce66c45a3a9ea4b4c"><span class="std std-ref">Material</span></a> name and properties. </p>
 </dd>
 </dl>
 </dd></dl>

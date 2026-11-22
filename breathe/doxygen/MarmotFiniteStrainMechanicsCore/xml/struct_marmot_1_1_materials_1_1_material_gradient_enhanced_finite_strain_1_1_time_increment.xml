@@ -4,9 +4,9 @@
     <compoundname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</compoundname>
     <includes refid="_marmot_material_gradient_enhanced_finite_strain_8h" local="no">MarmotMaterialGradientEnhancedFiniteStrain.h</includes>
     <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1b5ec2f6e291fcf002cd86d97ae06d08" prot="public" static="no" mutable="no">
         <type>const double</type>
-        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::time</definition>
+        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::TimeIncrement::time</definition>
         <argsstring></argsstring>
         <name>time</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::time</qualifiedname>
@@ -17,11 +17,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="185" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="185" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="203" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="203" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" prot="public" static="no" mutable="no">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a0d2b14a722381bbec586b695f6514bc1" prot="public" static="no" mutable="no">
         <type>const double</type>
-        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::dT</definition>
+        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::TimeIncrement::dT</definition>
         <argsstring></argsstring>
         <name>dT</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::dT</qualifiedname>
@@ -32,7 +32,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="186" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="186" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="204" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="204" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -40,10 +40,10 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="184" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="184" bodyend="187"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="202" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="202" bodyend="205"/>
     <listofallmembers>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>dT</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>time</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a0d2b14a722381bbec586b695f6514bc1" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1b5ec2f6e291fcf002cd86d97ae06d08" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>time</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

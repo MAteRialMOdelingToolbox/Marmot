@@ -150,9 +150,10 @@ the reproducing kernel approximation, kernel functions, generic particle impleme
 <ul class="simple">
 <li><p><strong>Displacement</strong>: finite-strain displacement formulation, for materials of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code>
 interface;</p></li>
-<li><p><strong>GradientEnhancedFiniteStrain</strong>: finite-strain displacement formulation coupled to a scalar nonlocal field
-(implicit-gradient regularization), for materials of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code> interface,
-e.g. <a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html"><span class="doc">Gradient-enhanced compressible Neo-Hooke damage</span></a> and <a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html"><span class="doc">Gradient-enhanced finite-strain Drucker-Prager</span></a>. It is
+<li><p><strong>GradientEnhancedFiniteStrain</strong>: finite-strain displacement formulation coupled to nonlocal fields
+(implicit-gradient regularization), for materials of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt;n&gt;</span></code>
+interface, e.g. <a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html"><span class="doc">Gradient-enhanced compressible Neo-Hooke damage</span></a> and <a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html"><span class="doc">Gradient-enhanced finite-strain Drucker-Prager</span></a>
+(one nonlocal variable) or <code class="docutils literal notranslate"><span class="pre">GM7/COROTATIONAL</span></code> (six, the particles <code class="docutils literal notranslate"><span class="pre">GradientEnhanced6FiniteStrain...</span></code>). It is
 the meshfree counterpart of <a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html"><span class="doc">Gradient-Enhanced Finite-Strain Displacement Element</span></a>.</p></li>
 </ul>
 </section>

@@ -1,0 +1,624 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::GradientEnhancedHypoElasticWrapper</compoundname>
+    <basecompoundref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" prot="public" virt="non-virtual">Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;</basecompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" prot="public" virt="non-virtual">Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" prot="public" virt="non-virtual">Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</derivedcompoundref>
+    <includes refid="_marmot_material_gradient_enhanced_hypo_elastic_wrapper_8h" local="no">MarmotMaterialGradientEnhancedHypoElasticWrapper.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename BaseMaterialType</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a195bba4e3103111469f8511e6b47de6f" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adf48d2418423017793cba1f6cd88cc8e" kindref="member">MaterialGradientEnhancedFiniteStrain</ref>&lt; <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kindref="member">nNonlocal</ref> &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::Interface = MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;</definition>
+        <argsstring></argsstring>
+        <name>Interface</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::Interface</qualifiedname>
+        <briefdescription>
+<para>The finite-strain interface presented. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" prot="public" static="no">
+        <type>Eigen::Vector&lt; double, <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kindref="member">nNonlocal</ref> &gt;</type>
+        <definition>using Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocal &gt;::NonlocalVector = Eigen::Vector&lt; double, nNonlocal &gt;</definition>
+        <argsstring></argsstring>
+        <name>NonlocalVector</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::NonlocalVector</qualifiedname>
+        <briefdescription>
+<para>a value per nonlocal variable </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="81" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="protected" static="no">
+        <type>MaterialGradientEnhancedHypoElastic&lt; <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" kindref="member">nNonlocal</ref> &gt;</type>
+        <definition>using Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::BaseMaterial = MaterialGradientEnhancedHypoElastic&lt; nNonlocal &gt;</definition>
+        <argsstring></argsstring>
+        <name>BaseMaterial</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::BaseMaterial</qualifiedname>
+        <briefdescription>
+<para>The small-strain interface of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="85" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::nNonlocal</definition>
+        <argsstring></argsstring>
+        <name>nNonlocal</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::nNonlocal</qualifiedname>
+        <initializer>= nNonlocalVariablesOf( static_cast&lt; BaseMaterialType* &gt;( nullptr ) )</initializer>
+        <briefdescription>
+<para>The number of nonlocal variables, that of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="76" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" kindref="member">BaseMaterial</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; BaseMaterial &gt; Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterial</definition>
+        <argsstring></argsstring>
+        <name>baseMaterial</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterial</qualifiedname>
+        <briefdescription>
+<para>The wrapped small-strain material, held as the base interface. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="88" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a360933b087af3d21ba95163e736c544b" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterialSlot</definition>
+        <argsstring></argsstring>
+        <name>baseMaterialSlot</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialSlot</qualifiedname>
+        <initializer>= &quot;materialstate&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the state variables of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="91" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1acc34dc784fc607c4d5ca9923e35959ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::GradientEnhancedHypoElasticWrapper</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>GradientEnhancedHypoElasticWrapper</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::GradientEnhancedHypoElasticWrapper</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct the wrapper and the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material property values; forwarded <bold>unchanged</bold> to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="100" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="100" bodyend="104"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a73b87108904d4be057de2407c8d70d7a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const override</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::getStateView</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a35806c5ab920e53f9f198ffeb9e90e1d">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Resolve a state variable by name: a slot of the wrapper, or else a state of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A view of the requested state variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="112" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="112" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1add3a9870bc31931faee82a7daa6ee826" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::getDensity</definition>
+        <argsstring>(const double *stateVars) const override</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::getDensity</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7363437cec66f93ee6ad3d0715ce09a5">getDensity</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Mass density of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Mass density. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="125" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="125" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a02dfcddb856ce04648814483e0e2d6a6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
+        <definition>NonlocalVector Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::getNonlocalViscosity</definition>
+        <argsstring>(const double *stateVars) const override</argsstring>
+        <name>getNonlocalViscosity</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::getNonlocalViscosity</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19da5badf39e69625928c40559e5ace6">getNonlocalViscosity</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Nonlocal viscosities of the wrapped small-strain material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The wrapped material&apos;s own <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a02dfcddb856ce04648814483e0e2d6a6" kindref="member">getNonlocalViscosity()</ref>, one entry per nonlocal variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="135" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="135" bodyend="139"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1abbdd26a27b6589587b4c9de28a9bd7f4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
+        <definition>NonlocalVector Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::getNonlocalMicroInertia</definition>
+        <argsstring>(const double *stateVars) const override</argsstring>
+        <name>getNonlocalMicroInertia</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::getNonlocalMicroInertia</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a37a4e2a684608e3c9d876aebcb79ad23">getNonlocalMicroInertia</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Nonlocal micro-inertias of the wrapped small-strain material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The wrapped material&apos;s own <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1abbdd26a27b6589587b4c9de28a9bd7f4" kindref="member">getNonlocalMicroInertia()</ref>, one entry per nonlocal variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="146" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="146" bodyend="150"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor33d</type>
+        <definition>static Marmot::Math::Tensors::FastorTensors::Tensor33d Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::fromEigen</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;m)</argsstring>
+        <name>fromEigen</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::fromEigen</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Convert an Eigen 3x3 matrix into a Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The same values as a Fastor tensor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="158" column="60" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="158" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7a658b4b36411385e65f50bce91c018b" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>static Eigen::Matrix3d Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::toEigen</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;t)</argsstring>
+        <name>toEigen</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::toEigen</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Convert a Fastor 3x3 tensor into an Eigen matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The same values as an Eigen matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="170" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="170" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a68e4208d1f8eeac416433d3d1a20a6f3" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>BaseMaterial::increment</type>
+        <definition>static BaseMaterial::increment Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterialIncrement</definition>
+        <argsstring>(const NonlocalVector &amp;N, const NonlocalVector &amp;Nn, const Marmot::Math::Vector6d &amp;dStrain, const typename Interface::TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>baseMaterialIncrement</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialIncrement</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref> &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref> &amp;</type>
+          <declname>Nn</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const typename <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">Interface::TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>The increment the wrapped material is handed for a total nonlocal field, and the field it is formed against. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total nonlocal fields of this call. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">Nn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Nonlocal fields of the last call, as kept in the wrapper&apos;s own slot. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Strain increment, in Voigt notation with engineering shear. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time and time increment of the call. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The increment for the wrapped material: <computeroutput>dStrain</computeroutput>, <formula id="62">$ K = \bar{N} $</formula>, <formula id="63">$ \Delta K = \bar{N} - \bar{N}_n $</formula> and the time. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="204" column="45" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="204" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7f0650b65a688125f6cb079be90b210b" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
+        <definition>static NonlocalVector Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::toNonlocalVector</definition>
+        <argsstring>(const std::vector&lt; double &gt; &amp;values)</argsstring>
+        <name>toNonlocalVector</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::toNonlocalVector</qualifiedname>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>values</declname>
+        </param>
+        <briefdescription>
+<para>Copy a per-nonlocal-variable std::vector, as the small-strain interface reports one, into a vector of the finite-strain interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>One value per nonlocal variable. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The same values. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="225" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="225" bodyend="231"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ac406864c175255f0f2e35e73fdbfd8dd" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double *</type>
+        <definition>double * Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::baseMaterialState</definition>
+        <argsstring>(double *stateVars) const</argsstring>
+        <name>baseMaterialState</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::baseMaterialState</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>The state variables of the wrapped material inside those of this wrapper. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the slot baseMaterialSlot. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="180" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="180" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ade29c1532c729452e73acb899bc25a56" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;::initializeBaseMaterial</definition>
+        <argsstring>(double *stateVars)</argsstring>
+        <name>initializeBaseMaterial</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedHypoElasticWrapper::initializeBaseMaterial</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialise the state variables of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="189" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="189" bodyend="192"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Common base of the decorators presenting a small-strain gradient-enhanced material as a finite-strain one. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BaseMaterialType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt;n&gt;; the wrapper has the same number n of nonlocal variables.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+What the decorators share: they own the wrapped material, keep its state variables in the slot <computeroutput>materialstate</computeroutput> of their own layout, forward its density, nonlocal viscosity and micro-inertia, resolve state names they do not know themselves in the wrapped material, and hand it the nonlocal fields together with their increment. The finite-strain interface passes the TOTAL nonlocal fields, while the wrapped material wants the fields <bold>and their increment</bold>; the increment is formed against the value of the last call, which each decorator keeps in a slot of its own layout (<ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a68e4208d1f8eeac416433d3d1a20a6f3" kindref="member">baseMaterialIncrement()</ref> below). The kinematics <ndash/> which strain increment the wrapped material is driven by, and which stress it returns <ndash/> is the derived class&apos; own: <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kindref="compound">GradientEnhancedHughesWingetWrapper</ref> (an objective rate, for a material incremental in stress) and <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kindref="compound">GradientEnhancedCorotationalWrapper</ref> (the logarithmic strain in the frame of the polar rotation, for any material).</para>
+<para>Each derived class builds its layout in its constructor: its own slots, a slot for the nonlocal fields of the last call, and baseMaterialSlot, of size baseMaterial-&gt;<ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ab3f4081e35502f156353c8af36843478" kindref="member">getNumberOfRequiredStateVars()</ref>. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::GradientEnhancedHypoElasticWrapper&lt; BaseMaterialType &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::MaterialGradientEnhancedFiniteStrain&lt; nNonlocalVariablesOf(static_cast&lt; BaseMaterialType * &gt;(nullptr)) &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" line="71" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="72" bodyend="232"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>BaseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>baseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a68e4208d1f8eeac416433d3d1a20a6f3" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>baseMaterialIncrement</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a360933b087af3d21ba95163e736c544b" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>baseMaterialSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ac406864c175255f0f2e35e73fdbfd8dd" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>baseMaterialState</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adb1b42fce3f1a1b6d408eacb4e0c2ac9" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac8ef6820ba3d7f66a2344c68c3f5fca4" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" prot="public" virt="pure-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2a4053b65541f2dddc02c266a0ef07ef" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac7095f8ea233575e2a845d56ac2c9bce" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a2d8108b25dcb9f85475f9fa5a7be8878" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>fromEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1add3a9870bc31931faee82a7daa6ee826" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1abbdd26a27b6589587b4c9de28a9bd7f4" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>getNonlocalMicroInertia</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a02dfcddb856ce04648814483e0e2d6a6" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>getNonlocalViscosity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ab3f4081e35502f156353c8af36843478" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a73b87108904d4be057de2407c8d70d7a" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1acc34dc784fc607c4d5ca9923e35959ad" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>GradientEnhancedHypoElasticWrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1ade29c1532c729452e73acb899bc25a56" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>initializeBaseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2ad3efdfc590446972cad3bb7049a09b" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a195bba4e3103111469f8511e6b47de6f" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>Interface</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adf48d2418423017793cba1f6cd88cc8e" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>MaterialGradientEnhancedFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a67ba693dc7710c92339f4071f41072eb" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a54dca7bdbd14c35a638214683b351451" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a60300da441e8b673e97f66d262dc9ed6" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>nNonlocal</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ad2bd241b80e99a952e1a6a117acc0ffd" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>nNonlocalVariables</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a0e3cbf4fea7000530ab8777de32a323b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>NonlocalMatrix</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1aef8719fab9320791ffb17dad62428f8d" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>NonlocalVector</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a95d40e8b493a8079910821a045cbaa77" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a13520a6d51d73f717eb3999ea1e84ce0" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7a658b4b36411385e65f50bce91c018b" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>toEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper_1a7f0650b65a688125f6cb079be90b210b" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>toNonlocalVector</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a4d66453948f40dee116b054662c8bffa" prot="public" virt="virtual"><scope>Marmot::Materials::GradientEnhancedHypoElasticWrapper</scope><name>~MaterialGradientEnhancedFiniteStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
