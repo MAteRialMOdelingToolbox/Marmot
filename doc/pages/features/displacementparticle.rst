@@ -59,9 +59,9 @@ increment for a displacement (EdelweissFE's implicit dynamic solver skips it). T
 
 The tangent is assembled node by node from the derivatives of the force of node :math:`A` with respect to the gradient
 of the interpolated increment (the bracket above without :math:`\partial N_B/\partial Y_L`, with
-:math:`\partial N_B/\partial x_i = \partial Y_L/\partial x_i\,\partial N_B/\partial Y_L`), which also give the bound
-of the absolute stiffness for explicit schemes (``computeBoundOfAbsoluteStiffnessTimes``, see
-:doc:`meshfreeparticles`).
+:math:`\partial N_B/\partial x_i = \partial Y_L/\partial x_i\,\partial N_B/\partial Y_L`), which are also
+the stiffness the particle describes to a visitor (``describeStiffness``), e.g. for the bound of the absolute stiffness
+of explicit schemes (see :doc:`meshfreeparticles`).
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^

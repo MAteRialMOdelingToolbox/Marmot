@@ -125,8 +125,8 @@ particle's own bound, :math:`\lambda_\mathrm{max}(\boldsymbol M_p^{-1}\boldsymbo
 unbounded: a particle's stiffness couples nodes at which its own lumped mass vanishes (the mass is taken at the
 centre, the smoothed gradients at the faces). The stable increment is therefore a property of the assembled system,
 which the explicit solver bounds from the assembled lumped mass and a bound of the absolute value of every particle's
-stiffness, ``computeBoundOfAbsoluteStiffnessTimes``, computed node by node without the stiffness (see
-:doc:`meshfreeparticles`; EdelweissMeshfree).
+stiffness, ``addBoundOfAbsoluteStiffnessTimes``, computed node by node from the stiffness the particle describes
+(``describeStiffness``), without forming it (see :doc:`meshfreeparticles`; EdelweissMeshfree).
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
