@@ -61,10 +61,13 @@ namespace Marmot::Discretizations::Meshfree {
    * The particle describes the stiffness in this factored form: first the shape functions at its evaluation point
    * (visitShapeFunctions()), once, then for every node @f$ A @f$ the three derivatives of its force, which do not
    * depend on @f$ B @f$ (visitStiffnessOfNode()). A visitor does with them what it needs, e.g. bound the absolute
-   * value of the stiffness (AbsoluteStiffnessBound) without forming its @f$ n^2 @f$ blocks.
+   * value of the stiffness (AbsoluteStiffnessBound) without forming its @f$ n^2 @f$ blocks, or form them
+   * (StiffnessAssembler; both in MarmotParticleStiffnessVisitors.h, for the host).
    *
    * The visitor is not templated, as Particle is not: the dimension and the number of dofs per node are given with the
-   * shape functions, and all arrays are column-major. With @f$ n_d @f$ = nDim and @f$ n @f$ = nDofPerNode:
+   * shape functions, and all arrays are column-major. A particle without second gradients gives nullptr for both
+   * second-gradient arrays (of the shape functions and of the forces). With @f$ n_d @f$ = nDim and @f$ n @f$ =
+   * nDofPerNode:
    * - @p N: 1 x nNodes, @p dN_dY: @f$ n_d @f$ x nNodes, @p d2N_dYdY: @f$ n_d^2 @f$ x nNodes, entry
    *   @f$ (l\, n_d + m, B) @f$ is @f$ \partial^2 N_B / \partial Y_l \partial Y_m @f$;
    * - each derivative of the force of a node is a block of @f$ n @f$ x @f$ n @f$: row @f$ i @f$ is the component of
@@ -102,7 +105,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] df_dIncrementGradient @f$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} /
      * \partial Y_l) @f$, nDim blocks.
      * @param[in] df_dIncrementSecondGradient @f$ \partial \boldsymbol{f}_A / \partial (\partial^2
-     * \Delta\boldsymbol{q} / \partial Y_l \partial Y_m) @f$, nDim^2 blocks; zero for a particle without second
+     * \Delta\boldsymbol{q} / \partial Y_l \partial Y_m) @f$, nDim^2 blocks; nullptr for a particle without second
      * gradients.
      */
     virtual void visitStiffnessOfNode( int           A,
@@ -123,38 +126,61 @@ namespace Marmot::Discretizations::Meshfree {
     /// @brief A derivative of the force of the node with respect to a component of the interpolated increment.
     using Block = Eigen::Matrix< double, nDofPerNode, nDofPerNode >;
 
-    static_assert( sizeof( Block ) == nDofPerNode * nDofPerNode * sizeof( double ),
-                   "the blocks of a derivative follow each other without a gap (the layout of StiffnessVisitor)" );
-
     /// @f$ \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} @f$.
     Block df_dIncrement;
-    /// Entry @f$ l @f$: @f$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} / \partial Y_l) @f$.
-    std::array< Block, nDim > df_dIncrementGradient;
-    /// Entry @f$ l\, n_{\text{dim}} + m @f$: @f$ \partial \boldsymbol{f}_A / \partial (\partial^2
-    /// \Delta\boldsymbol{q} / \partial Y_l \partial Y_m) @f$; zero for a particle without second gradients.
-    std::array< Block, nDim * nDim > df_dIncrementSecondGradient;
+    /// The blocks @f$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} / \partial Y_l) @f$
+    /// side by side, block @f$ l @f$ in the columns @f$ l\, n_{\text{dof/node}} @f$ on (see gradientBlock()).
+    Eigen::Matrix< double, nDofPerNode, nDim * nDofPerNode > df_dIncrementGradient;
+    /// The blocks @f$ \partial \boldsymbol{f}_A / \partial (\partial^2 \Delta\boldsymbol{q} / \partial Y_l
+    /// \partial Y_m) @f$ side by side, block @f$ l\, n_{\text{dim}} + m @f$ (see secondGradientBlock()); zero for a
+    /// particle without second gradients.
+    Eigen::Matrix< double, nDofPerNode, nDim * nDim * nDofPerNode > df_dIncrementSecondGradient;
 
     /// @brief Set all derivatives to zero.
     void setZero()
     {
       df_dIncrement.setZero();
-      for ( auto& block : df_dIncrementGradient )
-        block.setZero();
-      for ( auto& block : df_dIncrementSecondGradient )
-        block.setZero();
+      df_dIncrementGradient.setZero();
+      df_dIncrementSecondGradient.setZero();
     }
 
     /**
-     * @brief Describe the stiffness of node @p A to a visitor (StiffnessVisitor::visitStiffnessOfNode()).
-     * @param[in,out] visitor The visitor.
-     * @param[in] A The node.
+     * @brief The derivative with respect to the gradient of the interpolated increment along @f$ Y_l @f$.
+     * @param[in] l The direction.
+     * @return Block @f$ l @f$ of df_dIncrementGradient.
      */
-    void describeTo( StiffnessVisitor& visitor, int A ) const
+    auto gradientBlock( int l ) { return df_dIncrementGradient.template middleCols< nDofPerNode >( nDofPerNode * l ); }
+
+    /**
+     * @brief The derivative with respect to the gradient of the interpolated increment along @f$ Y_l @f$.
+     * @param[in] l The direction.
+     * @return Block @f$ l @f$ of df_dIncrementGradient.
+     */
+    auto gradientBlock( int l ) const
     {
-      visitor.visitStiffnessOfNode( A,
-                                    df_dIncrement.data(),
-                                    df_dIncrementGradient.front().data(),
-                                    df_dIncrementSecondGradient.front().data() );
+      return df_dIncrementGradient.template middleCols< nDofPerNode >( nDofPerNode * l );
+    }
+
+    /**
+     * @brief The derivative with respect to the second gradient of the interpolated increment along
+     * @f$ Y_l, Y_m @f$.
+     * @param[in] lm The index @f$ l\, n_{\text{dim}} + m @f$.
+     * @return Block @p lm of df_dIncrementSecondGradient.
+     */
+    auto secondGradientBlock( int lm )
+    {
+      return df_dIncrementSecondGradient.template middleCols< nDofPerNode >( nDofPerNode * lm );
+    }
+
+    /**
+     * @brief The derivative with respect to the second gradient of the interpolated increment along
+     * @f$ Y_l, Y_m @f$.
+     * @param[in] lm The index @f$ l\, n_{\text{dim}} + m @f$.
+     * @return Block @p lm of df_dIncrementSecondGradient.
+     */
+    auto secondGradientBlock( int lm ) const
+    {
+      return df_dIncrementSecondGradient.template middleCols< nDofPerNode >( nDofPerNode * lm );
     }
   };
 
@@ -166,7 +192,8 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * @tparam nDim        Spatial dimension.
    * @tparam nDofPerNode Number of degrees of freedom per node.
-   * @param[in] ofNode The derivatives of the force of node @p A with respect to the interpolated increment.
+   * @param[in] ofNode The derivatives of the force of node @p A with respect to the interpolated increment (in
+   * computePhysicsKernels() with its inertia).
    * @param[in] A The node.
    * @param[in] N The trial shape functions @f$ N_B @f$, 1 x nNodes.
    * @param[in] dN_dY Their gradients @f$ \partial N_B / \partial Y_l @f$, nDim x nNodes.
@@ -186,10 +213,10 @@ namespace Marmot::Discretizations::Meshfree {
     for ( int B = 0; B < N.size(); B++ ) {
       typename StiffnessOfNode< nDim, nDofPerNode >::Block K_AB = ofNode.df_dIncrement * N( B );
       for ( int l = 0; l < nDim; l++ )
-        K_AB += ofNode.df_dIncrementGradient[l] * dN_dY( l, B );
+        K_AB += ofNode.gradientBlock( l ) * dN_dY( l, B );
       if ( d2N_dYdY.size() )
         for ( int lm = 0; lm < nDim * nDim; lm++ )
-          K_AB += ofNode.df_dIncrementSecondGradient[lm] * d2N_dYdY( lm, B );
+          K_AB += ofNode.secondGradientBlock( lm ) * d2N_dYdY( lm, B );
       K.template block< nDofPerNode, nDofPerNode >( idxA, nDofPerNode * B ) += K_AB;
     }
   }
@@ -223,11 +250,15 @@ namespace Marmot::Discretizations::Meshfree {
                                  N.data(),
                                  dN_dY.data(),
                                  d2N_dYdY.size() ? d2N_dYdY.data() : nullptr );
+    const bool                           withSecondGradients = d2N_dYdY.size() != 0;
     StiffnessOfNode< nDim, nDofPerNode > ofNode;
     for ( int A = 0; A < nNodes; A++ ) {
       ofNode.setZero();
       addStiffnessOfNode( A, ofNode );
-      ofNode.describeTo( visitor, A );
+      visitor.visitStiffnessOfNode( A,
+                                    ofNode.df_dIncrement.data(),
+                                    ofNode.df_dIncrementGradient.data(),
+                                    withSecondGradients ? ofNode.df_dIncrementSecondGradient.data() : nullptr );
     }
   }
 
@@ -237,7 +268,9 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * @details A particle describes its stiffness (Particle::describeStiffness()) at a zero increment of its material
    * point, which overwrites all three. It saves them first; they are put back also if the evaluation or the visitor
-   * throws, so the particle is left as it was found.
+   * throws, so the particle is left as it was found. The state variables are those the material point was assigned
+   * (MaterialPoint::getAssignedStateVars()). The density the material point keeps is not touched: it is taken once,
+   * at initializeYourself().
    *
    * @tparam MaterialPoint A material point with the public members @c response and @c tangents.
    */
@@ -247,14 +280,13 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Save the response, the tangents and the state variables of a material point.
      * @param[in,out] materialPoint The material point; it is put back on destruction.
-     * @param[in] stateVars Its state variables.
      */
-    SavedMaterialPoint( MaterialPoint& materialPoint, const Marmot::Utilities::StateView& stateVars )
+    explicit SavedMaterialPoint( MaterialPoint& materialPoint )
       : _materialPoint( materialPoint ),
         _response( materialPoint.response ),
         _tangents( materialPoint.tangents ),
-        _stateVars( stateVars ),
-        _savedStateVars( stateVars.stateLocation, stateVars.stateLocation + stateVars.stateSize )
+        _stateVars( materialPoint.getAssignedStateVars() ),
+        _savedStateVars( _stateVars.stateLocation, _stateVars.stateLocation + _stateVars.stateSize )
     {
     }
 
@@ -277,176 +309,6 @@ namespace Marmot::Discretizations::Meshfree {
     const std::vector< double >               _savedStateVars; ///< their saved values
   };
 
-  /**
-   * @brief Bounds the absolute value of a particle's stiffness times nonnegative weights,
-   * @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, from the stiffness it describes node by node, without forming it.
-   *
-   * @details What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the
-   * Collatz-Wielandt bound, @f$ \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i @f$ for positive weights
-   * @f$ \boldsymbol{w} @f$. The stiffness of a particle with @f$ n @f$ nodes has @f$ n^2 @f$ blocks; this bound of
-   * @f$ |\boldsymbol{K}|\boldsymbol{W} @f$ costs @f$ O(n) @f$: the rows of node @f$ A @f$ are linear in the shape
-   * functions of the other node @f$ B @f$ (see StiffnessVisitor), and the sum over @f$ B @f$ is taken from a few
-   * weighted moments of the shape functions, computed once per particle (visitShapeFunctions()). Row @f$ i @f$ of
-   * node @f$ A @f$, column component @f$ k @f$, with the weights @f$ w_B @f$ of component @f$ k @f$ of the nodes and
-   * the factors @f$ a = \partial f_{Ai}/\partial \Delta q_k @f$, @f$ \boldsymbol{b} @f$ (its gradient factors) and
-   * @f$ \boldsymbol{h} @f$ (its second-gradient factors):
-   * @f[
-   *   \sum_B |K_{Ai,Bk}|\, w_B \le |a| \sum_B w_B |N_B|
-   *   + \sqrt{ \sum_B w_B \|\boldsymbol{g}_B\| \; \boldsymbol{b}^T \Big( \sum_B
-   *     \frac{w_B}{\|\boldsymbol{g}_B\|} \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b} }
-   *   + (\text{the same for } \boldsymbol{h} \text{ and the second gradients}),
-   * @f]
-   * with @f$ \boldsymbol{g}_B = \partial N_B / \partial \boldsymbol{Y} @f$. The first term is exact; the others are
-   * the Cauchy-Schwarz inequality over the nodes, @f$ \sum_B w_B |\boldsymbol{b}\cdot\boldsymbol{g}_B| \le
-   * \sqrt{\sum_B w_B \|\boldsymbol{g}_B\|} \sqrt{\sum_B w_B (\boldsymbol{b}\cdot\boldsymbol{g}_B)^2 /
-   * \|\boldsymbol{g}_B\|} @f$, which keeps the directions of the gradients: it is exact if all gradients are
-   * parallel, and @f$ 2/\sqrt{3} @f$ times the exact sum (@f$ \pi/(2\sqrt{2}) @f$ in 2D) if their directions are
-   * spread evenly. The terms are added by the triangle inequality. The bound holds for every stiffness of the form of
-   * StiffnessVisitor, symmetric or not; the second gradients of the shape functions must be symmetric (their
-   * symmetric components are used).
-   *
-   * A host uses it through addBoundOfAbsoluteStiffnessTimes(). Both are compiled in Marmot, for nDim 2 and 3, not in
-   * the host: a host that compiled them with its own flags (e.g. with FMA contraction) would change the last bits of
-   * the bound.
-   *
-   * @tparam nDim Spatial dimension.
-   */
-  template < int nDim >
-  class AbsoluteStiffnessBound : public StiffnessVisitor {
-  public:
-    /// The number of independent components of a symmetric second gradient.
-    static constexpr int nSym = nDim * ( nDim + 1 ) / 2;
-
-    /**
-     * @brief A bound to be added to @p bound, for the weights @p columnWeights.
-     * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, (nNodes nDofPerNode) x
-     * nColumns, in the dof order of the particle.
-     * @param[in] nColumns The number of columns of @p columnWeights.
-     * @param[in,out] bound The bound, column-major, (nNodes nDofPerNode) x nColumns; the bound of every row is added.
-     */
-    AbsoluteStiffnessBound( const double* columnWeights, int nColumns, double* bound )
-      : _columnWeights( columnWeights ), _nColumns( nColumns ), _bound( bound )
-    {
-    }
-
-    /**
-     * @brief Compute the weighted moments of the shape functions.
-     * @param[in] nDimOfParticle The spatial dimension of the particle; must be nDim.
-     * @param[in] nDofPerNode The number of dofs per node.
-     * @param[in] nNodes The number of nodes.
-     * @param[in] N The trial shape functions, 1 x nNodes.
-     * @param[in] dN_dY Their gradients, nDim x nNodes.
-     * @param[in] d2N_dYdY Their second gradients, nDim^2 x nNodes; nullptr for a particle without second gradients.
-     * @throws std::invalid_argument if the particle is not of dimension nDim.
-     */
-    void visitShapeFunctions( int           nDimOfParticle,
-                              int           nDofPerNode,
-                              int           nNodes,
-                              const double* N,
-                              const double* dN_dY,
-                              const double* d2N_dYdY ) override;
-
-    /**
-     * @brief Add the bound of the rows of node @p A: @f$ (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} @f$ for all
-     * components @f$ i @f$ and columns @f$ c @f$.
-     * @param[in] A The node.
-     * @param[in] df_dIncrement The derivative of its force with respect to the interpolated increment.
-     * @param[in] df_dIncrementGradient The derivatives with respect to its gradient.
-     * @param[in] df_dIncrementSecondGradient The derivatives with respect to its second gradient.
-     */
-    void visitStiffnessOfNode( int           A,
-                               const double* df_dIncrement,
-                               const double* df_dIncrementGradient,
-                               const double* df_dIncrementSecondGradient ) override;
-
-  private:
-    /**
-     * @brief Add the bound of the rows of node @p A (see visitStiffnessOfNode()), with the number of dofs per node
-     * known at compile time for the particles of Marmot, so that the loops over the components are unrolled.
-     * @tparam nDofPerNodeAtCompileTime The number of dofs per node; 0: the one given by visitShapeFunctions().
-     * @param[in] A The node.
-     * @param[in] df_dIncrement The derivative of its force with respect to the interpolated increment.
-     * @param[in] df_dIncrementGradient The derivatives with respect to its gradient.
-     * @param[in] df_dIncrementSecondGradient The derivatives with respect to its second gradient.
-     */
-    template < int nDofPerNodeAtCompileTime >
-    void addBoundOfRowsOfNode( int           A,
-                               const double* df_dIncrement,
-                               const double* df_dIncrementGradient,
-                               const double* df_dIncrementSecondGradient );
-
-    /// @brief The weighted moments of the shape functions for one column and one component of the nodes.
-    struct Moments {
-      bool   active             = false; ///< some weight of the column and component is positive
-      double sumOfValues        = 0.0;   ///< @f$ \sum_B w_B |N_B| @f$
-      double sumOfGradientNorms = 0.0;   ///< @f$ \sum_B w_B \|\boldsymbol{g}_B\| @f$
-      /// @f$ \sum_B w_B \boldsymbol{g}_B \boldsymbol{g}_B^T / \|\boldsymbol{g}_B\| @f$
-      Eigen::Matrix< double, nDim, nDim > gradientMoments          = Eigen::Matrix< double, nDim, nDim >::Zero();
-      double                              sumOfSecondGradientNorms = 0.0; ///< the same for the second gradients
-      /// the same for the symmetric components of the second gradients
-      Eigen::Matrix< double, nSym, nSym > secondGradientMoments = Eigen::Matrix< double, nSym, nSym >::Zero();
-    };
-
-    /**
-     * @brief Add the moments of one node: @f$ w \|\boldsymbol{g}\| @f$ and @f$ w\, \boldsymbol{g}
-     * \boldsymbol{g}^T / \|\boldsymbol{g}\| @f$ (nothing for @f$ \boldsymbol{g} = \boldsymbol{0} @f$).
-     * @tparam n The size of @p g.
-     * @param[in] g The gradient (or the symmetric components of the second gradient) of the node.
-     * @param[in] w The weight of the node.
-     * @param[in,out] sumOfNorms The sum of the weighted norms.
-     * @param[in,out] moments The sum of the weighted outer products.
-     */
-    template < int n >
-    static void addMoments( const Eigen::Matrix< double, n, 1 >& g,
-                            double                               w,
-                            double&                              sumOfNorms,
-                            Eigen::Matrix< double, n, n >&       moments );
-
-    /**
-     * @brief The independent components @f$ (l, m), l \le m @f$ of a symmetric second gradient.
-     * @param[in] d2N_dYdY The second gradient of one node, entry @f$ l\, n_{\text{dim}} + m @f$.
-     * @return The nSym components, in the order @f$ (0,0), (0,1), \ldots, (1,1), \ldots @f$.
-     */
-    static Eigen::Matrix< double, nSym, 1 > symmetricComponents( const double* d2N_dYdY );
-
-    const double*          _columnWeights;               ///< the weights, column-major
-    const int              _nColumns;                    ///< the number of columns of the weights
-    double*                _bound;                       ///< the bound, column-major
-    int                    _nDofPerNode         = 0;     ///< the number of dofs per node of the particle
-    int                    _nDof                = 0;     ///< the number of dofs of the particle
-    bool                   _withSecondGradients = false; ///< the particle has second gradients
-    std::vector< Moments > _moments;                     ///< entry @f$ c\, n_{\text{dof/node}} + k @f$
-  };
-
-  /// @cond INTERNAL (compiled once, in Marmot: src/MarmotParticleStiffness.cpp)
-  extern template class AbsoluteStiffnessBound< 2 >;
-  extern template class AbsoluteStiffnessBound< 3 >;
-  /// @endcond
-
-  /**
-   * @brief Add an upper bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, the absolute value of a particle's
-   * stiffness at its current state times nonnegative weights, without forming the stiffness (AbsoluteStiffnessBound,
-   * which the particle describes its stiffness to). The particle is left as it was found.
-   *
-   * @details The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt
-   * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only. It costs O(nodes)
-   * instead of the O(nodes^2) of the stiffness.
-   * @param[in,out] particle The particle (Particle::describeStiffness()).
-   * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, nDof x nColumns, in the dof
-   * order of the particle.
-   * @param[in] nColumns The number of columns of @p columnWeights.
-   * @param[in,out] bound Column-major, nDof x nColumns: the bound is added.
-   * @param[in] timeNew The time of the zero increment the stiffness is evaluated with.
-   * @param[in] dT The time increment of the zero increment.
-   * @throws std::invalid_argument for a particle of a dimension other than 2 or 3; std::runtime_error from a particle
-   * that does not describe its stiffness.
-   */
-  void addBoundOfAbsoluteStiffnessTimes( Particle&     particle,
-                                         const double* columnWeights,
-                                         int           nColumns,
-                                         double*       bound,
-                                         double        timeNew,
-                                         double        dT );
   /**
    * @brief The NSNI stabilization of the displacement rows of a particle, shared by the displacement and the
    * gradient-enhanced particles (whose dofs of a node start with the displacement).
@@ -549,7 +411,7 @@ namespace Marmot::Discretizations::Meshfree {
               double dfStabilization = 0.0;
               for ( int i = 0; i < nDim; i++ )
                 dfStabilization += D( i, m ) * dTau_dDeltaF( i, j, k, l );
-              ofNode.df_dIncrementSecondGradient[l * nDim + m]( j, k ) += dfStabilization;
+              ofNode.secondGradientBlock( l * nDim + m )( j, k ) += dfStabilization;
             }
     }
 
@@ -578,7 +440,7 @@ namespace Marmot::Discretizations::Meshfree {
             for ( int i = 0; i < nDim; i++ )
               for ( int m = 0; m < nDim; m++ )
                 dfStabilization += D( k, m ) * dTau_dY( i, j, m ) * dY_dx( l, i );
-            ofNode.df_dIncrementGradient[l]( j, k ) -= dfStabilization;
+            ofNode.gradientBlock( l )( j, k ) -= dfStabilization;
           }
     }
 
