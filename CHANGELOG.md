@@ -141,6 +141,8 @@ All notable changes to Marmot are documented in this file. The format follows
   (`c18`, `c21`, the reference strength and modulus), the default values of `fc` and `transitionWidth` and the
   stiffness tolerance of the unloading transition, so that the models can be used in any consistent unit system.
   Results with the default are unchanged.
+- `materials/GM7`: optional property 16, `nonlocalMicroInertia` (after the nonlocal viscosity): makes the six nonlocal
+  fields second order in time, admissible up to eta^2/4; absent, they stay first order.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
