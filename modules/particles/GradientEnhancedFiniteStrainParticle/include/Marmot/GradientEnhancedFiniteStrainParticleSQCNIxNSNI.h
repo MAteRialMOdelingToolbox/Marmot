@@ -133,7 +133,7 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief The stiffness rows of node @p A: those of GradientEnhancedFiniteStrainParticle plus the stabilization of
+     * @brief The stiffness of node @p A: those of GradientEnhancedFiniteStrainParticle plus the stabilization of
      * the displacement rows at the current state, which depends on the second gradient of the displacement increment,
      * @f[
      *   \frac{\partial f^U_{Aj}}{\partial (\partial^2 \Delta u_k / \partial Y_l \partial Y_m)} = D_{im}
@@ -145,15 +145,15 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] A The node.
      * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
      * the same for all its nodes: computed once per particle by the caller.
-     * @param[in,out] rows The derivatives; the stiffness of the node is added.
+     * @param[in,out] ofNode The derivatives; the stiffness of the node is added.
      */
-    void addStiffnessRowsOfNode( int                                         A,
-                                 const Fastor::Tensor< double, nDim, nDim >& dY_dx,
-                                 typename ParentPointParticle::TangentRows&  rows ) const override;
+    void addStiffnessOfNode( int                                         A,
+                             const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                             StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const override;
 
     /**
      * @brief The smoothed second gradients of the trial shape functions, symmetrized, in the layout of
-     * addTangentRowsOfNode() (NSNI::secondGradientsOfNodes()).
+     * addRowsOfNode() (NSNI::secondGradientsOfNodes()).
      * @return The nDim^2 x nNodes matrix.
      */
     Eigen::MatrixXd secondGradientsOfTrialFunctions() const override
@@ -443,7 +443,7 @@ namespace Marmot::Discretizations::Meshfree {
 
     const Eigen::MatrixXd d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    typename ParentPointParticle::TangentRows rows;
+    StiffnessOfNode< nDim, nDim + nNonlocal > ofNode;
     for ( int A = 0; A < _nNodes; A++ ) {
 
       const double  T_A     = _T( A );
@@ -477,31 +477,32 @@ namespace Marmot::Discretizations::Meshfree {
         P( idxA_n + kNl ) += r_N;
       }
 
-      rows.setZero();
-      addStiffnessRowsOfNode( A, dY_dx, rows );
-      rows.df_dIncrement
+      // the rows of the tangent: the stiffness of the node, its inertia and the stabilization of the increment
+      ofNode.setZero();
+      addStiffnessOfNode( A, dY_dx, ofNode );
+      ofNode.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
                                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
                                                da_ddu.data() );
 
       // the stabilization through the stress gradient of the increment: D_kK dTau_ij/dY_K dN_B/dx_i
-      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, rows );
+      NSNI::addStressGradientRows< nDim >( d2NA_dxdY_x_MOIScaled, dS_dY, dY_dx, ofNode );
 
-      addTangentRowsOfNode( rows, A, _N, _dN_dY, d2N_dYdY, K );
+      addRowsOfNode( ofNode, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 
   template < int nDim, int nVertices, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::addStiffnessRowsOfNode(
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::addStiffnessOfNode(
     int                                         A,
     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
-    typename ParentPointParticle::TangentRows&  rows ) const
+    StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const
   {
-    ParentPointParticle::addStiffnessRowsOfNode( A, dY_dx, rows );
+    ParentPointParticle::addStiffnessOfNode( A, dY_dx, ofNode );
     NSNI::addSecondGradientRows< nDim >( momentWeightedSecondGradientOfTestFunction( A, dY_dx ),
                                          this->_mp.tangents.dS_dDeltaF,
-                                         rows );
+                                         ofNode );
   }
 
   template < int nDim, int nVertices, int nNonlocal >

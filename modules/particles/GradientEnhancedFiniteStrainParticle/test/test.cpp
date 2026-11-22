@@ -986,7 +986,7 @@ namespace {
     throwExceptionOnFailure( close( totalMass, density * V0, density * V0 ), name + ": total mass" );
   }
 
-  // The bound of |K| W the particle gives for the stable time increment (computeBoundOfAbsoluteStiffnessTimes), against
+  // The bound of |K| W of the particle for the stable time increment (addBoundOfAbsoluteStiffnessTimes), against
   // the stiffness itself, the tangent of a zero increment, at a state off the reference: never below |K| W, and its
   // largest entry of each column (what the Collatz-Wielandt bound takes) at most maxOverestimate times the exact one
   // (the Cauchy-Schwarz inequality over the nodes overestimates the gradient terms by about 1.2 in 2D, 1.3 in 3D).
@@ -1009,12 +1009,11 @@ namespace {
     for ( int a = 0; a < n; a++ )
       W( a, a % nBlock < nDim ? 0 : 1 ) = 1.0 + 0.5 * std::sin( 0.7 * a );
 
-    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name,
-                                                                  *s.particle,
-                                                                  s.stateVars,
-                                                                  K,
-                                                                  W,
-                                                                  maxOverestimate );
+    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name, *s.particle, K, W, maxOverestimate );
+
+    // the description of the stiffness leaves the particle as it was, also in the middle of an increment
+    const Eigen::VectorXd dQ = increment< nDim, nNonlocal >( s.nNodes(), 0.5 * scaleU, 0.5e-2 * scaleU );
+    Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged( name, *s.particle, s.stateVars, dQ, true );
   }
 
   // The explicit force after an accepted increment, where F_n != I and the nonlocal field is no longer zero: the
