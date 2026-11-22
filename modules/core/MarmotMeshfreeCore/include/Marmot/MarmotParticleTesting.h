@@ -24,7 +24,6 @@
  */
 
 #pragma once
-#pragma once
 
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotParticle.h"
