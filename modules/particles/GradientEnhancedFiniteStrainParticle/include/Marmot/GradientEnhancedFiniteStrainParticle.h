@@ -29,7 +29,7 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
-#include "Marmot/MarmotParticleTangent.h"
+#include "Marmot/MarmotParticleStiffness.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
@@ -123,8 +123,10 @@ namespace Marmot::Discretizations::Meshfree {
     /// the material point type
     using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim, nNonlocal >;
 
-    MaterialPoint*                       __mp;                     ///< the owned material point
-    MaterialPoint&                       _mp;                      ///< reference to the material point
+    MaterialPoint* __mp; ///< the owned material point
+    MaterialPoint& _mp;  ///< reference to the material point
+    /// the state variables of the material point (assignStateVars()), which describeStiffness() puts back
+    Marmot::Utilities::StateView         _stateVarsOfMaterialPoint{ nullptr, 0 };
     const Approximation&                 _meshfreeApproximation;   ///< the meshfree approximation
     std::vector< const KernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
 
@@ -269,7 +271,11 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] stateVars  State variable vector.
      * @param[in]     nStateVars Its size.
      */
-    void assignStateVars( double* stateVars, int nStateVars ) override { _mp.assignStateVars( stateVars, nStateVars ); }
+    void assignStateVars( double* stateVars, int nStateVars ) override
+    {
+      _mp.assignStateVars( stateVars, nStateVars );
+      _stateVarsOfMaterialPoint = { stateVars, nStateVars };
+    }
 
     /**
      * @brief Assign the kernel functions of the nodes and evaluate the shape functions.
@@ -530,21 +536,15 @@ namespace Marmot::Discretizations::Meshfree {
     void computeLumpedMomentum( double* mLumped ) const override;
 
     /**
-     * @brief Add an upper bound of @f$ |\boldsymbol{K}|\boldsymbol{W} @f$ for the stiffness at the current state,
-     * see Particle::computeBoundOfAbsoluteStiffnessTimes(): the material point is evaluated at a zero increment, and
-     * the bound follows from addStiffnessRowsOfNode() node by node (AbsoluteTangentBound), without the stiffness.
-     * Used by all particles derived from this one.
-     * @param[in] columnWeights The nonnegative weights, column-major, nDof x nColumns.
-     * @param[in] nColumns The number of columns of @p columnWeights.
-     * @param[in,out] bound Column-major, nDof x nColumns: the bound is added.
-     * @param[in] timeNew The time of the evaluation.
-     * @param[in] dT The time increment of the evaluation.
+     * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
+     * point is evaluated at a zero increment, the stiffness of every node follows from addStiffnessOfNode(), and the
+     * material point is put back as it was (SavedMaterialPoint). Used by all particles derived from this one.
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment.
+     * @param[in] dT The time increment of the zero increment.
      */
-    void computeBoundOfAbsoluteStiffnessTimes( const double* columnWeights,
-                                               int           nColumns,
-                                               double*       bound,
-                                               double        timeNew,
-                                               double        dT ) override;
+    void describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT ) override;
+
     /**
      * @brief Access a state variable.
      *
@@ -694,13 +694,10 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
   protected:
-    /// The rows of one node of the tangent, factored by the chain rule (see TangentRowsOfNode).
-    using TangentRows = TangentRowsOfNode< nDim, nDim + nNonlocal >;
-
     /**
-     * @brief The rows of node @p A of the stiffness at the current response of the material point: the tangent of
+     * @brief The stiffness of node @p A at the current response of the material point: the tangent of
      * computePhysicsKernels() without the inertia, as derivatives of the force of the node with respect to the
-     * interpolated increment (TangentRowsOfNode), in the dof order of a node, @f$ [\Delta\boldsymbol{u},
+     * interpolated increment (StiffnessOfNode), in the dof order of a node, @f$ [\Delta\boldsymbol{u},
      * \Delta\bar{\boldsymbol{N}}] @f$.
      * @details The forces of node @f$ A @f$ are @f$ f^U_{Aj} = \partial T_A/\partial x_i\, \tau_{ij} V_0 @f$ and
      * @f$ f^N_{AK} = \big( T_A (\bar{N}_K - L_K) + c_K\, \partial T_A/\partial X_i\, \partial \bar{N}_K/\partial X_i
@@ -724,14 +721,14 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] A The node.
      * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
      * the same for all its nodes: computed once per particle by the caller.
-     * @param[in,out] rows The derivatives; the stiffness of the node is added.
+     * @param[in,out] ofNode The derivatives; the stiffness of the node is added.
      */
-    virtual void addStiffnessRowsOfNode( int                                         A,
-                                         const Fastor::Tensor< double, nDim, nDim >& dY_dx,
-                                         TangentRows&                                rows ) const;
+    virtual void addStiffnessOfNode( int                                         A,
+                                     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                     StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const;
 
     /**
-     * @brief The second gradients of the trial shape functions, in the layout of addTangentRowsOfNode().
+     * @brief The second gradients of the trial shape functions, in the layout of addRowsOfNode().
      * @return An empty matrix: the point particle has none; a stabilized particle overrides it.
      */
     virtual Eigen::MatrixXd secondGradientsOfTrialFunctions() const { return Eigen::MatrixXd(); }
@@ -900,7 +897,7 @@ namespace Marmot::Discretizations::Meshfree {
     const Tensor< double, nDim, nDim > dY_dx    = inv( _mp.dx_dY() );
     const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    TangentRows rows;
+    StiffnessOfNode< nDim, nDim + nNonlocal > ofNode;
     for ( int A = 0; A < _nNodes; A++ ) {
 
       const double                 T_A     = _T( A );
@@ -928,22 +925,23 @@ namespace Marmot::Discretizations::Meshfree {
         P( idxA_n + kNl ) += r_N;
       }
 
-      rows.setZero();
-      addStiffnessRowsOfNode( A, dY_dx, rows );
-      rows.df_dIncrement
+      // the rows of the tangent: the stiffness of the node and its inertia
+      ofNode.setZero();
+      addStiffnessOfNode( A, dY_dx, ofNode );
+      ofNode.df_dIncrement
         .template topLeftCorner< nDim,
                                  nDim >() += density0 * T_A * V0 *
                                              Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
                                                da_ddu.data() );
-      addTangentRowsOfNode( rows, A, _N, _dN_dY, d2N_dYdY, K );
+      addRowsOfNode( ofNode, A, _N, _dN_dY, d2N_dYdY, K );
     }
   }
 
   template < int nDim, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::addStiffnessRowsOfNode(
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::addStiffnessOfNode(
     int                                         A,
     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
-    TangentRows&                                rows ) const
+    StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
@@ -968,7 +966,7 @@ namespace Marmot::Discretizations::Meshfree {
           double material = 0.0;
           for ( int i = 0; i < nDim; i++ )
             material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
-          rows.df_dIncrementGradient[l]( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+          ofNode.df_dIncrementGradient[l]( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
         }
       }
 
@@ -979,31 +977,31 @@ namespace Marmot::Discretizations::Meshfree {
         double dfU_dN = 0.0;
         for ( int i = 0; i < nDim; i++ )
           dfU_dN += dT_A_dx( i ) * t.dS_dN[K]( i, j );
-        rows.df_dIncrement( j, nK ) += V0 * dfU_dN;
+        ofNode.df_dIncrement( j, nK ) += V0 * dfU_dN;
       }
       // nonlocal row K: displacement columns, and the gradient term of its own nonlocal column
       for ( int l = 0; l < nDim; l++ ) {
         for ( int k = 0; k < nDim; k++ )
-          rows.df_dIncrementGradient[l]( nK, k ) -= V0 * T_A * t.dL_dDeltaF[K]( k, l );
+          ofNode.df_dIncrementGradient[l]( nK, k ) -= V0 * T_A * t.dL_dDeltaF[K]( k, l );
         double dT_A_dX_dot_dYl_dX = 0.0;
         for ( int i = 0; i < nDim; i++ )
           dT_A_dX_dot_dYl_dX += dT_A_dX( i ) * dY_dX( l, i );
-        rows.df_dIncrementGradient[l]( nK, nK ) += V0 * R( K ) * R( K ) * dT_A_dX_dot_dYl_dX;
+        ofNode.df_dIncrementGradient[l]( nK, nK ) += V0 * R( K ) * R( K ) * dT_A_dX_dot_dYl_dX;
       }
       // nonlocal row K, nonlocal columns M
       for ( int M = 0; M < nNonlocal; M++ )
-        rows.df_dIncrement( nK, nDim + M ) += V0 * T_A * ( ( K == M ? 1.0 : 0.0 ) - t.dL_dN( K, M ) );
+        ofNode.df_dIncrement( nK, nDim + M ) += V0 * T_A * ( ( K == M ? 1.0 : 0.0 ) - t.dL_dN( K, M ) );
     }
   }
 
   template < int nDim, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeBoundOfAbsoluteStiffnessTimes(
-    const double* columnWeights,
-    int           nColumns,
-    double*       bound,
-    double        timeNew,
-    double        dT )
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::describeStiffness( StiffnessVisitor& visitor,
+                                                                                   double            timeNew,
+                                                                                   double            dT )
   {
+    // what the evaluation changes is put back on return
+    const SavedMaterialPoint saved( _mp, _stateVarsOfMaterialPoint );
+
     // the material point at the current state: a zero increment
     std::array< Fastor::Tensor< double, nDim >, nNonlocal > dn_dY;
     dn_dY.fill( Fastor::Tensor< double, nDim >( 0.0 ) );
@@ -1015,14 +1013,14 @@ namespace Marmot::Discretizations::Meshfree {
     _mp.computeYourself( timeNew, dT );
 
     const Fastor::Tensor< double, nDim, nDim > dY_dx = inv( _mp.dx_dY() );
-    addBoundOfAbsoluteTangentTimesWeights< nDim, nDim + nNonlocal >(
-      columnWeights,
-      nColumns,
-      _N,
-      _dN_dY,
-      secondGradientsOfTrialFunctions(),
-      [&]( int A, TangentRows& rows ) { addStiffnessRowsOfNode( A, dY_dx, rows ); },
-      bound );
+    describeStiffnessNodeByNode< nDim, nDim + nNonlocal >( visitor,
+                                                           _N,
+                                                           _dN_dY,
+                                                           secondGradientsOfTrialFunctions(),
+                                                           [&]( int                                        A,
+                                                                StiffnessOfNode< nDim, nDim + nNonlocal >& ofNode ) {
+                                                             addStiffnessOfNode( A, dY_dx, ofNode );
+                                                           } );
   }
 
   template < int nDim, int nNonlocal >

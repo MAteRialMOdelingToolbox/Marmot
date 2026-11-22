@@ -34,6 +34,8 @@
 
 namespace Marmot::Discretizations::Meshfree {
 
+  class StiffnessVisitor;
+
   /**
    * @class Marmot::Discretizations::Meshfree::Particle
    * @brief Abstract interface of a particle of the reproducing kernel particle method (RKPM).
@@ -61,10 +63,10 @@ namespace Marmot::Discretizations::Meshfree {
    * -# per increment: assignMeshfreeKernelFunctions(), optionally the VCI methods (vci_...), then repeatedly
    *    computePhysicsKernels() and the load methods, and after convergence acceptStateAndPosition().
    *
-   * That is an implicit increment. The calls of an explicit increment, in their order, and the four contracts that
-   * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the bound comes after the
-   * force, the material's tangent is required) are written down once, on the page "Meshfree Particles" of the
-   * documentation, section "The explicit life cycle of a particle".
+   * That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that
+   * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material's tangent is
+   * required) are written down once, on the page "Meshfree Particles" of the documentation, section "The explicit life
+   * cycle of a particle". describeStiffness() is not one of them: it leaves the particle as it was found.
    *
    * **State contract:** the state variable block is a *trial* copy. Before every call of computePhysicsKernels(),
    * the host restores it to the values committed by the last acceptStateAndPosition(), and @c dQ is the total
@@ -464,32 +466,24 @@ namespace Marmot::Discretizations::Meshfree {
     virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
 
     /**
-     * @brief Explicit dynamics: add an upper bound of @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, the absolute value of
-     * the particle's stiffness at its current state times nonnegative weights, without assembling the stiffness.
-     * @details @f$ \boldsymbol{K} @f$ is the tangent of computePhysicsKernels() at a zero increment, without the
-     * inertia: what a host bounds the stable time increment of its explicit scheme with (e.g. by the Collatz-Wielandt
-     * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only). The bound costs
-     * O(nodes) instead of the O(nodes^2) of the stiffness; see AbsoluteTangentBound. The material point is evaluated
-     * at a zero increment on the working copy of the state, which the host resets afterwards, as after a trial
-     * computePhysicsKernels(). That evaluation also overwrites the response and the tangents the material point keeps
-     * (not state variables, so the reset does not restore them): in explicit dynamics, call it after
-     * computePhysicsKernelsExplicit() of the increment, which reads them: it is call 8 of an explicit increment (the
-     * page "Meshfree Particles", section "The explicit life cycle of a particle"). The default throws: a particle with
-     * an own inertia must provide it.
-     * @param[in] columnWeights The nonnegative weights @f$ \boldsymbol{W} @f$, column-major, nDof x nColumns, in the
-     * dof order of the particle.
-     * @param[in] nColumns The number of columns of @p columnWeights.
-     * @param[in,out] bound Column-major, nDof x nColumns: the bound is added.
-     * @param[in] timeNew The time of the evaluation.
-     * @param[in] dT The time increment of the evaluation.
+     * @brief Describe the stiffness of the particle at its current state to a visitor, node by node: the shape
+     * functions at its evaluation point, then for every node the derivatives of its force with respect to the
+     * increment the particle interpolates (see StiffnessVisitor).
+     * @details The stiffness is the tangent of computePhysicsKernels() at a zero increment, without the inertia. The
+     * material point is evaluated at a zero increment of the current state; the particle is left as it was found
+     * (state variables, and the response and the tangents the material point keeps), so a host may ask for it at any
+     * point of an increment. The default throws: a particle that does not describe its stiffness refuses a host that
+     * needs it, e.g. for the bound of the stable time increment of an explicit scheme
+     * (addBoundOfAbsoluteStiffnessTimes()).
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment the material point is evaluated with.
+     * @param[in] dT The time increment of the zero increment.
      */
-    virtual void computeBoundOfAbsoluteStiffnessTimes( [[maybe_unused]] const double* columnWeights,
-                                                       [[maybe_unused]] int           nColumns,
-                                                       [[maybe_unused]] double*       bound,
-                                                       [[maybe_unused]] double        timeNew,
-                                                       [[maybe_unused]] double        dT )
+    virtual void describeStiffness( [[maybe_unused]] StiffnessVisitor& visitor,
+                                    [[maybe_unused]] double            timeNew,
+                                    [[maybe_unused]] double            dT )
     {
-      throw std::runtime_error( "Particle::computeBoundOfAbsoluteStiffnessTimes: not implemented for this particle." );
+      throw std::runtime_error( "Particle::describeStiffness: not implemented for this particle." );
     };
   };
 
