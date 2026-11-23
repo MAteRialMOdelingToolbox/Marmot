@@ -155,6 +155,20 @@ All notable changes to Marmot are documented in this file. The format follows
   lumped inertia (density; micro-inertia on the nonlocal rows, zero for a first-order field), lumped damping (nonlocal
   viscosity) and lumped momentum (including the nonlocal rate). `Particle::computeLumpedDamping` (default: no
   damping).
+- `Particle::describeStiffness`: the particle describes its stiffness (the tangent of a zero increment of the last
+  accepted configuration and the working state, without the inertia) node by node to a `StiffnessVisitor`, in the
+  factored form of the chain rule: the shape functions at its evaluation point, then per node the derivatives of its
+  force with respect to the interpolated increment, its gradient and its second gradient (`StiffnessOfNode`). It
+  leaves the particle as it was found (the state variables the material point was assigned,
+  `MaterialPoint::getAssignedStateVars`, and the response and tangents of the material point, `SavedMaterialPoint`),
+  also if the visitor throws; the default throws. Implemented in `DisplacementParticle` and
+  `GradientEnhancedFiniteStrainParticle` for all derived particles (`addStiffnessOfNode`). The host's visitors, in
+  `MarmotParticleStiffnessVisitors.h` and compiled in Marmot: the bound of |K| W, the absolute value of the stiffness
+  times nonnegative weights, for the stable time increment of an explicit host (`addBoundOfAbsoluteStiffnessTimes`
+  with `AbsoluteStiffnessBound`, in O(nodes) from weighted moments of the shape functions), and the stiffness itself
+  (`assembleStiffness` with `StiffnessAssembler`). The particles' tangent is assembled from the same factors
+  (`addRowsOfNode`): equal to the former one to round-off, residuals bitwise. The NSNI stabilization rows are shared by
+  both particle families (`Meshfree::NSNI`). The material points take their density once, at `initializeYourself`.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package

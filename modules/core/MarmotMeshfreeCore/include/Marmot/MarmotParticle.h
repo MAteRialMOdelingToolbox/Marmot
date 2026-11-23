@@ -34,6 +34,8 @@
 
 namespace Marmot::Discretizations::Meshfree {
 
+  class StiffnessVisitor;
+
   /**
    * @class Marmot::Discretizations::Meshfree::Particle
    * @brief Abstract interface of a particle of the reproducing kernel particle method (RKPM).
@@ -60,6 +62,12 @@ namespace Marmot::Discretizations::Meshfree {
    * -# assignStateVars() with a block of getNumberOfRequiredStateVars() doubles, initializeYourself(),
    * -# per increment: assignMeshfreeKernelFunctions(), optionally the VCI methods (vci_...), then repeatedly
    *    computePhysicsKernels() and the load methods, and after convergence acceptStateAndPosition().
+   *
+   * That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that
+   * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material's tangent is
+   * required) are written down once, on the page "Meshfree Particles" of the documentation, section "The explicit life
+   * cycle of a particle". describeStiffness() is not one of them: it leaves the particle as it was found (and is of an
+   * accepted state after acceptStateAndPosition()).
    *
    * **State contract:** the state variable block is a *trial* copy. Before every call of computePhysicsKernels(),
    * the host restores it to the values committed by the last acceptStateAndPosition(), and @c dQ is the total
@@ -143,7 +151,9 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Accept the current state after a converged increment and move the particle to the new configuration.
      * @details The configuration reached becomes the reference intermediate configuration @f$ Y @f$ of the next
-     * increment (updated position, volume, geometry and, for VCI, the monomial basis).
+     * increment (updated position, volume, geometry and, for VCI, the monomial basis). It must be idempotent: a host
+     * may accept twice without an increment in between (calls 2 and 3 of an explicit increment, see the page
+     * "Meshfree Particles", section "The explicit life cycle of a particle").
      */
     virtual void acceptStateAndPosition() = 0;
 
@@ -256,6 +266,9 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Explicit dynamics: update the kinematics and the material state for the dof increment.
+     * @details Call 1 of an explicit increment; a zero-length increment leaves the rates alone. The call order of an
+     * explicit increment and its contracts: the page "Meshfree Particles", section "The explicit life cycle of a
+     * particle".
      * @param[in] dQ Increment of the nodal dofs, node-wise.
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
@@ -271,6 +284,9 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Explicit dynamics: compute the internal force vector for the state set by updatePhysicsExplicit().
+     * @details Call 5 of an explicit increment, on the kernel functions of the new configuration. The call order of an
+     * explicit increment and its contracts: the page "Meshfree Particles", section "The explicit life cycle of a
+     * particle".
      * @param[in,out] fInt Internal force vector (node-wise).
      * @throws std::runtime_error in the default implementation: a particle without it would be integrated with its
      * mass and without its force, silently.
@@ -324,6 +340,8 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Compute the lumped (row-sum) inertia contribution of the particle.
+     * @details Call 6 of an explicit increment. The call order of an explicit increment and its contracts: the page
+     * "Meshfree Particles", section "The explicit life cycle of a particle".
      * @param[in,out] mLumped Lumped mass vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
@@ -334,6 +352,8 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Compute the lumped momentum contribution of the particle.
+     * @details Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and
+     * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
      * @param[in,out] mLumped Lumped momentum vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
@@ -440,10 +460,34 @@ namespace Marmot::Discretizations::Meshfree {
      * @details The coefficient of each field's FIRST time derivative, node-wise and in the layout of
      * computeLumpedInertia(), which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced
      * field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing,
-     * i.e. no damping, which is the case of a displacement field.
+     * i.e. no damping, which is the case of a displacement field. Call 7 of an explicit increment; the call order and
+     * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
      * @param[in,out] cLumped Lumped damping vector (node-wise); entries left untouched mean no damping.
      */
     virtual void computeLumpedDamping( [[maybe_unused]] double* cLumped ) const {};
+
+    /**
+     * @brief Describe the stiffness of the particle to a visitor, node by node: the shape functions at its evaluation
+     * point, then for every node the derivatives of its force with respect to the increment the particle interpolates
+     * (see StiffnessVisitor).
+     * @details The stiffness is the tangent of computePhysicsKernels() at a zero increment, without the inertia: the
+     * material point is evaluated with the configuration of the last acceptStateAndPosition() and the working copy of
+     * the state. It is the stiffness of an accepted state after acceptStateAndPosition(), where an explicit host asks
+     * for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes
+     * neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the
+     * tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses
+     * a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme
+     * (addBoundOfAbsoluteStiffnessTimes() in MarmotParticleStiffnessVisitors.h).
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment the material point is evaluated with.
+     * @param[in] dT The time increment of the zero increment.
+     */
+    virtual void describeStiffness( [[maybe_unused]] StiffnessVisitor& visitor,
+                                    [[maybe_unused]] double            timeNew,
+                                    [[maybe_unused]] double            dT )
+    {
+      throw std::runtime_error( "Particle::describeStiffness: not implemented for this particle." );
+    };
   };
 
 } // namespace Marmot::Discretizations::Meshfree

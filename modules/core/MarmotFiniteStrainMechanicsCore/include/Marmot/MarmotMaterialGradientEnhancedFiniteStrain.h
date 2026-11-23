@@ -224,7 +224,9 @@ namespace Marmot::Materials {
      * @param[in]     timeIncrement Current time and time increment.
      *
      * @note The default implementation calls computeStress() and discards the algorithmic tangent.
-     * Derived classes may override it for efficiency.
+     * Derived classes may override it for efficiency. The gradient-enhanced particles never call it, not even in an
+     * explicit analysis: they need the tangent (for the NSNI stabilization and the stiffness they describe), see
+     * the page "Meshfree Particles", section "The explicit life cycle of a particle".
      */
     virtual void computeStressExplicit( ConstitutiveResponse< 3 >& response,
                                         const Deformation< 3 >&    deformation,

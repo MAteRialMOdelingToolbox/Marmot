@@ -158,7 +158,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     TensorD _x0;                          ///< coordinates @f$ \boldsymbol{X} @f$ in the undeformed configuration
 
     double _vol0;                         ///< volume @f$ V_0 @f$ in the undeformed configuration
-    double _density;                      ///< mass density in the reference configuration, as reported by the material
+    double _density;                      ///< mass density in the reference configuration, from initializeYourself()
 
     std::unique_ptr< Material > material; ///< the assigned material
 
@@ -387,7 +387,8 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     /**
      * @brief Mass density in the reference configuration.
-     * @return Density reported by the material at initializeYourself() and after each computeYourself().
+     * @return Density reported by the material at initializeYourself(), the mass of the material point over its
+     * reference volume: an evaluation does not change it.
      */
     double getDensityUndeformed() const override { return _density; };
 
@@ -426,7 +427,9 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Accept the current increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$,
      * @f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$.
      *
-     * The increment itself is not reset here; the next prepareYourself() does that.
+     * The increment itself is not reset here; the next prepareYourself() does that. A second accept before it would
+     * apply the increment twice: a particle, whose accept must be idempotent, calls prepareYourself() right after
+     * (GradientEnhancedFiniteStrainParticle::acceptStateAndPosition()).
      */
     void acceptStateAndPosition() override
     {

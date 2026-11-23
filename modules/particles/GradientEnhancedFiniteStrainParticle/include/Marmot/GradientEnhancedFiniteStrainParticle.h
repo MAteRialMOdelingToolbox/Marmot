@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
+#include "Marmot/MarmotParticleStiffness.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
@@ -527,6 +528,17 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
      */
     void computeLumpedMomentum( double* mLumped ) const override;
+
+    /**
+     * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
+     * point is evaluated at a zero increment, the stiffness of every node follows from addStiffnessOfNode(), and the
+     * material point is put back as it was (SavedMaterialPoint). Used by all particles derived from this one.
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment.
+     * @param[in] dT The time increment of the zero increment.
+     */
+    void describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT ) override;
+
     /**
      * @brief Access a state variable.
      *
@@ -677,6 +689,45 @@ namespace Marmot::Discretizations::Meshfree {
 
   protected:
     /**
+     * @brief The stiffness of node @p A at the current response of the material point: the tangent of
+     * computePhysicsKernels() without the inertia, as derivatives of the force of the node with respect to the
+     * interpolated increment (StiffnessOfNode), in the dof order of a node, @f$ [\Delta\boldsymbol{u},
+     * \Delta\bar{\boldsymbol{N}}] @f$.
+     * @details The forces of node @f$ A @f$ are @f$ f^U_{Aj} = \partial T_A/\partial x_i\, \tau_{ij} V_0 @f$ and
+     * @f$ f^N_{AK} = \big( T_A (\bar{N}_K - L_K) + c_K\, \partial T_A/\partial X_i\, \partial \bar{N}_K/\partial X_i
+     * \big) V_0 @f$, with @f$ c_K @f$ the square of the nonlocal radius. Their derivatives:
+     * @f[
+     *   \frac{\partial f^U_{Aj}}{\partial (\partial \Delta u_k / \partial Y_l)} = V_0 \Big(
+     *   \frac{\partial T_A}{\partial x_i} \frac{\partial \tau_{ij}}{\partial \Delta F_{kl}}
+     *   - \frac{\partial T_A}{\partial x_k}\, \tau_{ij} \frac{\partial Y_l}{\partial x_i} \Big), \qquad
+     *   \frac{\partial f^U_{Aj}}{\partial \Delta\bar{N}_M} = V_0 \frac{\partial T_A}{\partial x_i}
+     *   \frac{\partial \tau_{ij}}{\partial \bar{N}_M},
+     * @f]
+     * @f[
+     *   \frac{\partial f^N_{AK}}{\partial (\partial \Delta u_k / \partial Y_l)} = -V_0\, T_A
+     *   \frac{\partial L_K}{\partial \Delta F_{kl}}, \qquad
+     *   \frac{\partial f^N_{AK}}{\partial \Delta\bar{N}_M} = V_0\, T_A \Big( \delta_{KM} -
+     *   \frac{\partial L_K}{\partial \bar{N}_M} \Big), \qquad
+     *   \frac{\partial f^N_{AK}}{\partial (\partial \Delta\bar{N}_K / \partial Y_l)} = V_0\, c_K
+     *   \frac{\partial T_A}{\partial X_i} \frac{\partial Y_l}{\partial X_i}.
+     * @f]
+     * Derived particles add their own terms (e.g. a stabilization).
+     * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
+     * @param[in,out] ofNode The derivatives; the stiffness of the node is added.
+     */
+    virtual void addStiffnessOfNode( int                                         A,
+                                     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                     StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const;
+
+    /**
+     * @brief The second gradients of the trial shape functions, in the layout of addRowsOfNode().
+     * @return An empty matrix: the point particle has none; a stabilized particle overrides it.
+     */
+    virtual Eigen::MatrixXd secondGradientsOfTrialFunctions() const { return Eigen::MatrixXd(); }
+
+    /**
      * @brief Interpolate the increment of the current step from the nodal increments.
      * @param[in]  dQ    Increment of the nodal dofs, node by node.
      * @param[out] du    @f$ \Delta\boldsymbol{u} = N_B\,\Delta\boldsymbol{q}^U_B @f$.
@@ -792,7 +843,6 @@ namespace Marmot::Discretizations::Meshfree {
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
-    using to_jk = Fastor::OIndex< j_, k_ >;
 
     constexpr int nodeBlockSize = nDim + nNonlocal;
 
@@ -825,11 +875,6 @@ namespace Marmot::Discretizations::Meshfree {
     Tensor< double, nDim > r_U( 0.0 );
     double                 r_N( 0.0 );
 
-    Tensor< double, nDim, nDim > k_UU( 0.0 );
-    Tensor< double, nDim >       k_UN( 0.0 );
-    Tensor< double, nDim >       k_NU( 0.0 );
-    double                       k_NN( 0.0 );
-
     const auto& S           = _mp.response.S;
     const auto& dLocalField = _mp.response.dL;
     const auto& R           = _mp.response.nonLocalRadius;
@@ -840,89 +885,136 @@ namespace Marmot::Discretizations::Meshfree {
 
     const double V0 = getVolumeUndeformed();
 
-    const auto& t = _mp.tangents;
-
     Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
     Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
-    // clang-format off
+    const Tensor< double, nDim, nDim > dY_dx    = inv( _mp.dx_dY() );
+    const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
+
+    StiffnessOfNode< nDim, nDim + nNonlocal > rowsOfNode;
     for ( int A = 0; A < _nNodes; A++ ) {
 
-      const double T_A = _T( A );
+      const double                 T_A     = _T( A );
       const auto                   dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
-      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp.dx_dY() ), dT_A_dY );
+      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
       const Tensor< double, nDim > dT_A_dX = einsum< ji, j >( _mp.dY_dX(), dT_A_dY );
 
-        const int idxA_u = nodeBlockSize * A;
-        const int idxA_n = nodeBlockSize * A + nDim;
+      const int idxA_u = nodeBlockSize * A;
+      const int idxA_n = nodeBlockSize * A + nDim;
 
-        r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
+      r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
 
-        // add inertia
-        r_U += density0 * a * T_A * V0;
+      // add inertia
+      r_U += density0 * a * T_A * V0;
 
-        {
-          using namespace Eigen;
-          P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
-        }
+      P.template segment< nDim >( idxA_u ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
 
-        for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
-          const Tensor< double, nDim > dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY[kNl] );
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+        const Tensor< double, nDim > dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY[kNl] );
 
-          r_N = evaluate( ( T_A * dn( kNl ) + c( kNl ) * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField( kNl ) ) * V0 ).toscalar();
+        r_N = evaluate( ( T_A * dn( kNl ) + c( kNl ) * einsum< i, i >( dT_A_dX, dn_dX ) - T_A * dLocalField( kNl ) ) *
+                        V0 )
+                .toscalar();
 
-          P( idxA_n + kNl ) += r_N;
-        }
-
-        for ( int B = 0; B < _nNodes; B++ ) {
-
-          const int idxB_u = nodeBlockSize * B;
-          const int idxB_n = nodeBlockSize * B + nDim;
-
-          const double N_B     = _N( B );
-          const auto dN_B_dY = TensorMap< const double, nDim >( _dN_dY.col(B).data() );
-          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp.dx_dY() ), dN_B_dY ) );
-          const auto dN_B_dX = evaluate( einsum< ji, j >( _mp.dY_dX(), dN_B_dY ) ); // no dependence on current deformations!
-
-          // aux stiffness tensor
-          const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY ) );
-
-          k_UU  = ( + einsum< i, ijk > ( dT_A_dx, dS_dqU_B )                              ) * V0;
-
-          k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
-
-          k_UU += density0 * da_ddu * T_A * N_B * V0;
-
-          {
-              using namespace Eigen;
-              K.template block< nDim, nDim >( idxA_u, idxB_u ) += Map< Matrix< double, nDim, nDim > >( torowmajor( k_UU ).data() );
-          }
-
-          for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
-            const auto dS_dqN_B = evaluate (                      ( t.dS_dN[kNl] *      N_B    ) );
-            const auto dL_dqU_B = evaluate ( + einsum <   kl, l > ( t.dL_dDeltaF[kNl], dN_B_dY ) );
-
-            k_UN  = ( + einsum< i,  ij > ( dT_A_dx, dS_dqN_B )                              ) * V0;
-            k_NU  = (                     - ( T_A * dL_dqU_B )                              ) * V0;
-
-            {
-                using namespace Eigen;
-                K.template block< nDim,    1 >( idxA_u, idxB_n + kNl ) += Map< Matrix< double, nDim,    1 > >( torowmajor( k_UN ).data() );
-                K.template block<    1, nDim >( idxA_n + kNl, idxB_u ) += Map< Matrix< double,    1, nDim > >( torowmajor( k_NU ).data() );
-            }
-
-            for ( int mNl = 0; mNl < nNonlocal; mNl++ ) {
-              if ( kNl == mNl )
-                k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) * c( kNl ) - T_A * N_B * t.dL_dN( kNl, mNl ) ) * V0;
-              else
-                k_NN  = (                                                    - T_A * N_B * t.dL_dN( kNl, mNl ) ) * V0;
-
-              K                             ( idxA_n + kNl, idxB_n + mNl ) +=                                  k_NN           ;
-            }
-          }
+        P( idxA_n + kNl ) += r_N;
       }
+
+      // the rows of the tangent: the stiffness of the node plus its inertia
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement
+        .template topLeftCorner< nDim,
+                                 nDim >() += density0 * T_A * V0 *
+                                             Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                               da_ddu.data() );
+      addRowsOfNode( rowsOfNode, A, _N, _dN_dY, d2N_dYdY, K );
     }
-    // clang-format on
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::addStiffnessOfNode(
+    int                                         A,
+    const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+    StiffnessOfNode< nDim, nDim + nNonlocal >&  ofNode ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    const auto&                        S       = _mp.response.S;
+    const auto&                        R       = _mp.response.nonLocalRadius;
+    const auto&                        t       = _mp.tangents;
+    const double                       V0      = getVolumeUndeformed();
+    const double                       T_A     = _T( A );
+    const Tensor< double, nDim, nDim > dY_dX   = _mp.dY_dX();
+    const auto                         dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
+    const Tensor< double, nDim >       dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
+    const Tensor< double, nDim >       dT_A_dX = einsum< ji, j >( dY_dX, dT_A_dY );
+
+    // displacement rows, displacement columns: the material and the geometric part
+    for ( int l = 0; l < nDim; l++ )
+      for ( int j = 0; j < nDim; j++ ) {
+        double geometric = 0.0;
+        for ( int i = 0; i < nDim; i++ )
+          geometric += S( i, j ) * dY_dx( l, i );
+        for ( int k = 0; k < nDim; k++ ) {
+          double material = 0.0;
+          for ( int i = 0; i < nDim; i++ )
+            material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
+          ofNode.gradientBlock( l )( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+        }
+      }
+
+    for ( int K = 0; K < nNonlocal; K++ ) {
+      const int nK = nDim + K;
+      // displacement rows, nonlocal column K
+      for ( int j = 0; j < nDim; j++ ) {
+        double dfU_dN = 0.0;
+        for ( int i = 0; i < nDim; i++ )
+          dfU_dN += dT_A_dx( i ) * t.dS_dN[K]( i, j );
+        ofNode.df_dIncrement( j, nK ) += V0 * dfU_dN;
+      }
+      // nonlocal row K: displacement columns, and the gradient term of its own nonlocal column
+      for ( int l = 0; l < nDim; l++ ) {
+        for ( int k = 0; k < nDim; k++ )
+          ofNode.gradientBlock( l )( nK, k ) -= V0 * T_A * t.dL_dDeltaF[K]( k, l );
+        double dT_A_dX_dot_dYl_dX = 0.0;
+        for ( int i = 0; i < nDim; i++ )
+          dT_A_dX_dot_dYl_dX += dT_A_dX( i ) * dY_dX( l, i );
+        ofNode.gradientBlock( l )( nK, nK ) += V0 * R( K ) * R( K ) * dT_A_dX_dot_dYl_dX;
+      }
+      // nonlocal row K, nonlocal columns M
+      for ( int M = 0; M < nNonlocal; M++ )
+        ofNode.df_dIncrement( nK, nDim + M ) += V0 * T_A * ( ( K == M ? 1.0 : 0.0 ) - t.dL_dN( K, M ) );
+    }
+  }
+
+  template < int nDim, int nNonlocal >
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::describeStiffness( StiffnessVisitor& visitor,
+                                                                                   double            timeNew,
+                                                                                   double            dT )
+  {
+    // what the evaluation changes is put back on return
+    const SavedMaterialPoint saved( _mp );
+
+    // the material point at the current state: a zero increment
+    std::array< Fastor::Tensor< double, nDim >, nNonlocal > dn_dY;
+    dn_dY.fill( Fastor::Tensor< double, nDim >( 0.0 ) );
+    _mp.prepareYourself( timeNew, dT );
+    _mp.incrementDeformation( Fastor::Tensor< double, nDim >( 0.0 ),
+                              Fastor::Tensor< double, nDim, nDim >( 0.0 ),
+                              NonlocalVector::Zero(),
+                              dn_dY );
+    _mp.computeYourself( timeNew, dT );
+
+    const Fastor::Tensor< double, nDim, nDim > dY_dx = inv( _mp.dx_dY() );
+    describeStiffnessNodeByNode< nDim, nDim + nNonlocal >( visitor,
+                                                           _N,
+                                                           _dN_dY,
+                                                           secondGradientsOfTrialFunctions(),
+                                                           [&]( int                                        A,
+                                                                StiffnessOfNode< nDim, nDim + nNonlocal >& ofNode ) {
+                                                             addStiffnessOfNode( A, dY_dx, ofNode );
+                                                           } );
   }
 
   template < int nDim, int nNonlocal >

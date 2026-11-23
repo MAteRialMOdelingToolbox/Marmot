@@ -28,6 +28,7 @@
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleTesting.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -915,6 +916,36 @@ namespace {
     throwExceptionOnFailure( close( totalMass, density * V0, density * V0 ), name + ": total mass" );
   }
 
+  // The bound of |K| W of the particle for the stable time increment (addBoundOfAbsoluteStiffnessTimes), against
+  // the stiffness itself, the tangent of a zero increment, at a state off the reference: never below |K| W, and its
+  // largest entry of each column (what the Collatz-Wielandt bound takes) at most maxOverestimate times the exact one
+  // (the Cauchy-Schwarz inequality over the nodes overestimates the gradient terms by about 1.2 in 2D, 1.3 in 3D).
+  // The weights are positive and varying on the dofs of one field and zero on the other, as the host's field blocks.
+  template < int nDim, int nNonlocal >
+  void checkBoundOfAbsoluteStiffness( const std::string&           name,
+                                      const std::string&           shape,
+                                      const std::string&           materialName,
+                                      const std::vector< double >& properties,
+                                      double                       scaleU,
+                                      double                       maxOverestimate )
+  {
+    constexpr int            nBlock = nDim + nNonlocal;
+    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
+    s.accept( increment< nDim, nNonlocal >( s.nNodes(), scaleU, 1e-2 * scaleU ) );
+
+    const int             n = s.nDof();
+    const Eigen::MatrixXd K = s.trial( Eigen::VectorXd::Zero( n ) ).second;
+    Eigen::MatrixXd       W = Eigen::MatrixXd::Zero( n, 2 );
+    for ( int a = 0; a < n; a++ )
+      W( a, a % nBlock < nDim ? 0 : 1 ) = 1.0 + 0.5 * std::sin( 0.7 * a );
+
+    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name, *s.particle, K, W, maxOverestimate );
+
+    // the description of the stiffness leaves the particle as it was, also in the middle of an increment
+    const Eigen::VectorXd dQ = increment< nDim, nNonlocal >( s.nNodes(), 0.5 * scaleU, 0.5e-2 * scaleU );
+    Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged( name, *s.particle, s.stateVars, dQ, true );
+  }
+
   // The explicit force after an accepted increment, where F_n != I and the nonlocal field is no longer zero: the
   // nonlocal rows against r^N_A = (T_A (N - L) + c grad_X T_A . grad_X N) V0 by hand, with grad_X T_A = F_n^T grad_Y
   // T_A and the total grad_X N = grad_Y dN_1 + F_n^T grad_Y dN_2 of the two increments, each from the shape functions
@@ -1161,6 +1192,24 @@ int main()
                                     gm7Props[16] );
     } );
   }
+
+  // the bound of the absolute stiffness, for every particle with an own inertia
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 2, 1 >( name, shape, testMaterialName, matProps, 0.02, 1.5 );
+    } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 3, 1 >( name, shape, testMaterialName, matProps, 0.02, 1.5 );
+    } );
+  for ( const auto& [name, shape] :
+        std::vector< std::pair< std::string, std::string > >{ { "GradientEnhanced6FiniteStrain/3D/Point", "Point3D" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNI/3D/Hexa", "Hexa" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa",
+                                                                "Hexa" } } )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 3, 6 >( name, shape, "GM7/COROTATIONAL", gm7Props, 2e-4, 1.5 );
+    } );
 
   testFunctions.push_back( testUnknownParticleIsRejected );
 

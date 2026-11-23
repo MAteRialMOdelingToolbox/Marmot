@@ -179,6 +179,16 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @param[in] value         Values of the initial condition.
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
+
+    /**
+     * @brief The state variables assigned by assignStateVars(): the block the material point keeps its state in.
+     * @return The block; a null location and size zero before the assignment.
+     */
+    Marmot::Utilities::StateView getAssignedStateVars() const { return _assignedStateVars; }
+
+  protected:
+    /// the state variables assigned by assignStateVars(); every implementation of assignStateVars() sets it
+    Marmot::Utilities::StateView _assignedStateVars{ nullptr, 0 };
   };
 
 } // namespace Marmot::Discretizations::MaterialPoints

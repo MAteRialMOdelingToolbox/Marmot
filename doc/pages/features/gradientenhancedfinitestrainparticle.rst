@@ -87,9 +87,10 @@ as in :doc:`gradientenhancedfinitestraincell` and :doc:`gradientenhancedfinitest
 Explicit dynamics
 ^^^^^^^^^^^^^^^^^
 All three particle classes provide the explicit scheme (``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``
-and the lumped operators); the NSNI particle adds its stabilization to the force and to the momentum, as
-:doc:`displacementparticle` does. ``updatePhysicsExplicit`` advances the material point by the increment and stores the
-rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t` and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
+and the lumped operators), in the order of :ref:`explicit-life-cycle-of-a-particle`; the NSNI particle adds its
+stabilization to the force and to the momentum, as :doc:`displacementparticle` does. ``updatePhysicsExplicit``
+advances the material point by the increment and stores the rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t`
+and :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
 After the host has accepted the state and assigned the kernel functions of the new position,
 ``computePhysicsKernelsExplicit`` returns the internal force, with the nonlocal balance in **total** form,
 
@@ -119,7 +120,9 @@ explicit particle scheme depends on the support factor, the kernel order and the
 particle's own bound, :math:`\lambda_\mathrm{max}(\boldsymbol M_p^{-1}\boldsymbol K_p)` as for a finite element, is
 unbounded: a particle's stiffness couples nodes at which its own lumped mass vanishes (the mass is taken at the
 centre, the smoothed gradients at the faces). The stable increment is therefore a property of the assembled system,
-which the explicit solver bounds from the particles' tangents and the assembled lumped mass (EdelweissMeshfree).
+which the explicit solver bounds from the assembled lumped mass and a bound of the absolute value of every particle's
+stiffness, ``addBoundOfAbsoluteStiffnessTimes``, computed node by node from the stiffness the particle describes
+(``describeStiffness``), without forming it (see :doc:`meshfreeparticles`; EdelweissMeshfree).
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
