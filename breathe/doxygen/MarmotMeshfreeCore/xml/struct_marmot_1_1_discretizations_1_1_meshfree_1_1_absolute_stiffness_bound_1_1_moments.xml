@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments" kind="struct" language="C++" prot="private">
+    <compoundname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a40c4027c491f00d59583681a50848135" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::active</definition>
+        <argsstring></argsstring>
+        <name>active</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::active</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>some weight of the column and component is positive </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="146" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a7d3ddad0d2ab73cdc15e5dfe6aab61c1" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::sumOfValues</definition>
+        <argsstring></argsstring>
+        <name>sumOfValues</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfValues</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="196">$ \sum_B w_B |N_B| $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="147" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1ac36a591ec74e7ecf83dddb169fdcf43a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::sumOfGradientNorms</definition>
+        <argsstring></argsstring>
+        <name>sumOfGradientNorms</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfGradientNorms</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="197">$ \sum_B w_B \|\boldsymbol{g}_B\| $</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="148" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a1697ee897fc8e7600508ab27ecd97e0d" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, nDim &gt; Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::gradientMoments</definition>
+        <argsstring></argsstring>
+        <name>gradientMoments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::gradientMoments</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, nDim, nDim &gt;::Zero()</initializer>
+        <briefdescription>
+<para><formula id="198">$ \sum_B w_B \boldsymbol{g}_B \boldsymbol{g}_B^T / \|\boldsymbol{g}_B\| $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="150" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a27a2fcfa97c244ad542b5ef2d149ff74" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::sumOfSecondGradientNorms</definition>
+        <argsstring></argsstring>
+        <name>sumOfSecondGradientNorms</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfSecondGradientNorms</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>the same for the second gradients </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="151" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a2701e80e2d95a3c657e0ee02e52d428d" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kindref="member">nSym</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kindref="member">nSym</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nSym, nSym &gt; Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::Moments::secondGradientMoments</definition>
+        <argsstring></argsstring>
+        <name>secondGradientMoments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::secondGradientMoments</qualifiedname>
+        <initializer>= Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kindref="member">nSym</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kindref="member">nSym</ref> &gt;::Zero()</initializer>
+        <briefdescription>
+<para>the same for the symmetric components of the second gradients </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="153" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The weighted moments of the shape functions for one column and one component of the nodes. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="145" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="145" bodyend="154"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a40c4027c491f00d59583681a50848135" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>active</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a1697ee897fc8e7600508ab27ecd97e0d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>gradientMoments</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a2701e80e2d95a3c657e0ee02e52d428d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>secondGradientMoments</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1ac36a591ec74e7ecf83dddb169fdcf43a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>sumOfGradientNorms</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a27a2fcfa97c244ad542b5ef2d149ff74" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>sumOfSecondGradientNorms</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a7d3ddad0d2ab73cdc15e5dfe6aab61c1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</scope><name>sumOfValues</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

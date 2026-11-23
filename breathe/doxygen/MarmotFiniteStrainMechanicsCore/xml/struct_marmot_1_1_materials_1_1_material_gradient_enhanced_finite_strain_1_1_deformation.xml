@@ -33,7 +33,7 @@
         <name>N</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation::N</qualifiedname>
         <briefdescription>
-<para>nonlocal fields <formula id="78">$ \bar{N}_K $</formula>; totals, not increments </para>
+<para>nonlocal fields <formula id="121">$ \bar{N}_K $</formula>; totals, not increments </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

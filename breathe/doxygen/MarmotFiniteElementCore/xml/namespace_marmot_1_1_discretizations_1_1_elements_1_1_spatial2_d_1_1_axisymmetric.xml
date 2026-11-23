@@ -27,7 +27,7 @@
         <qualifiedname>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::axisTolerance</qualifiedname>
         <initializer>= 1e-12</initializer>
         <briefdescription>
-<para>Tolerance for nodes on the axis, relative to the element size: accepts the round-off of a mesher, rejects a mesh drawn in <formula id="89">$r &lt; 0$</formula>. </para>
+<para>Tolerance for nodes on the axis, relative to the element size: accepts the round-off of a mesher, rejects a mesh drawn in <formula id="98">$r &lt; 0$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -63,7 +63,7 @@
           <declname>r</declname>
         </param>
         <briefdescription>
-<para>Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows (11, 22, 12), the hoop row is <formula id="88">$N_i / r$</formula>. </para>
+<para>Compute the axisymmetric B-operator from the planar one: the rows rr, zz and rz are the planar rows (11, 22, 12), the hoop row is <formula id="97">$N_i / r$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -194,15 +194,15 @@
           <declname>elementLabel</declname>
         </param>
         <briefdescription>
-<para>Rejects an element with a node at <formula id="90">$r &lt; -\epsilon\, h$</formula>, with the tolerance <formula id="91">$\epsilon$</formula> (axisTolerance) and the diagonal <formula id="46">$h$</formula> of the element&apos;s bounding box. </para>
+<para>Rejects an element with a node at <formula id="99">$r &lt; -\epsilon\, h$</formula>, with the tolerance <formula id="100">$\epsilon$</formula> (axisTolerance) and the diagonal <formula id="75">$h$</formula> of the element&apos;s bounding box. </para>
         </briefdescription>
         <detaileddescription>
-<para>A mesh drawn in <formula id="89">$r &lt; 0$</formula>, or straddling the axis, gives a negative volume and an infinite hoop strain <formula id="88">$N_i / r$</formula>. <parameterlist kind="param"><parameteritem>
+<para>A mesh drawn in <formula id="98">$r &lt; 0$</formula>, or straddling the axis, gives a negative volume and an infinite hoop strain <formula id="97">$N_i / r$</formula>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">nodes</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Nodal coordinates, one column <formula id="92">$(r, z)$</formula> per node. </para>
+<para>Nodal coordinates, one column <formula id="101">$(r, z)$</formula> per node. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -219,7 +219,7 @@
 <parametername>std::invalid_argument</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if a node lies at <formula id="90">$r &lt; -\epsilon\, h$</formula>. </para>
+<para>if a node lies at <formula id="99">$r &lt; -\epsilon\, h$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -244,7 +244,7 @@
           <declname>elementLabel</declname>
         </param>
         <briefdescription>
-<para>Rejects a quadrature point at <formula id="93">$r \leq 0$</formula>, where the hoop strain <formula id="88">$N_i / r$</formula> is undefined. </para>
+<para>Rejects a quadrature point at <formula id="102">$r \leq 0$</formula>, where the hoop strain <formula id="97">$N_i / r$</formula> is undefined. </para>
         </briefdescription>
         <detaileddescription>
 <para>Gauss points are interior, so this happens only for an element collapsed onto the axis. <parameterlist kind="param"><parameteritem>
@@ -269,7 +269,7 @@
 <parametername>std::invalid_argument</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if <formula id="93">$r \leq 0$</formula>. </para>
+<para>if <formula id="102">$r \leq 0$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -290,10 +290,10 @@
           <declname>C</declname>
         </param>
         <briefdescription>
-<para>The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz, <formula id="32">$\theta\theta$</formula>, rz). </para>
+<para>The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz, <formula id="26">$\theta\theta$</formula>, rz). </para>
         </briefdescription>
         <detaileddescription>
-<para>The block is exact for any 3D material: <formula id="94">$\gamma_{r\theta} = \gamma_{z\theta} = 0$</formula> is kinematic. <parameterlist kind="param"><parameteritem>
+<para>The block is exact for any 3D material: <formula id="103">$\gamma_{r\theta} = \gamma_{z\theta} = 0$</formula> is kinematic. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">C</parametername>
 </parameternamelist>

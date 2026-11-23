@@ -205,7 +205,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-Computes the Kirchhoff <formula id="65">$\boldsymbol{\tau}$</formula> stress from the deformation gradient <formula id="7">$\boldsymbol{F}$</formula> and the time increment <formula id="66">$\Delta t$</formula>. It further updates the mass density <formula id="67">$\rho$</formula> and the elastic energy density. Additionally, computes the algorithmic tangent moduli <formula id="64">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula>. </para>
+Computes the Kirchhoff <formula id="19">$\boldsymbol{\tau}$</formula> stress from the deformation gradient <formula id="18">$\boldsymbol{F}$</formula> and the time increment <formula id="20">$\Delta t$</formula>. It further updates the mass density <formula id="21">$\rho$</formula> and the elastic energy density. Additionally, computes the algorithmic tangent moduli <formula id="17">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -686,7 +686,7 @@ It uses the general 3D computeStress function and iteratively finds the out-of-p
 <parametername direction="out">dTau11_dF11</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>condensed algorithmic tangent <formula id="68">$\frac{\mathrm{d}\tau_{11}}{\mathrm{d}F_{11}}$</formula> under the constraint <formula id="69">$\tau_{22} = \tau_{33} = 0$</formula> </para>
+<para>condensed algorithmic tangent <formula id="22">$\frac{\mathrm{d}\tau_{11}}{\mathrm{d}F_{11}}$</formula> under the constraint <formula id="23">$\tau_{22} = \tau_{33} = 0$</formula> </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -694,7 +694,7 @@ It uses the general 3D computeStress function and iteratively finds the out-of-p
 <parametername direction="inout">deformation</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> instance; <formula id="70">$F_{11}$</formula> is the prescribed axial stretch, <formula id="71">$F_{22}$</formula> and <formula id="72">$F_{33}$</formula> are the initial guess of the lateral stretches on entry and the converged ones on exit. All off-diagonal components must be zero. </para>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> instance; <formula id="24">$F_{11}$</formula> is the prescribed axial stretch, <formula id="25">$F_{22}$</formula> and <formula id="26">$F_{33}$</formula> are the initial guess of the lateral stretches on entry and the converged ones on exit. All off-diagonal components must be zero. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -706,7 +706,7 @@ It uses the general 3D computeStress function and iteratively finds the out-of-p
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The general 3D computeStress function is called repeatedly, and the lateral stretches are found by a Newton iteration on <formula id="69">$\tau_{22} = \tau_{33} = 0$</formula>. The state variables and the response are reset to their values at the beginning of the increment before every evaluation, so path dependent materials see one single update. The axis <formula id="73">$1$</formula> is the axis of the uniaxial stress state, e.g., the axis of a truss. The reduction requires that the material answers a diagonal deformation gradient with a diagonal stress (e.g., isotropic materials): only <formula id="74">$\tau_{22}$</formula> and <formula id="75">$\tau_{33}$</formula> are condensed. A material with a closed-form uniaxial response may override it.</para>
+The general 3D computeStress function is called repeatedly, and the lateral stretches are found by a Newton iteration on <formula id="23">$\tau_{22} = \tau_{33} = 0$</formula>. The state variables and the response are reset to their values at the beginning of the increment before every evaluation, so path dependent materials see one single update. The axis <formula id="27">$1$</formula> is the axis of the uniaxial stress state, e.g., the axis of a truss. The reduction requires that the material answers a diagonal deformation gradient with a diagonal stress (e.g., isotropic materials): only <formula id="28">$\tau_{22}$</formula> and <formula id="29">$\tau_{33}$</formula> are condensed. A material with a closed-form uniaxial response may override it.</para>
 <para><parameterlist kind="exception"><parameteritem>
 <parameternamelist>
 <parametername>Marmot::Utilities::StressUpdateFailed</parametername>

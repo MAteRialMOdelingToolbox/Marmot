@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::MaterialPoints::MaterialPoint" alt="" coords="5,5,552,53"/>
+<area shape="rect" id="node2" title="Marmot::Utilities::StateView" alt="" coords="131,101,426,149"/>
+<area shape="poly" id="edge1" title="usage" alt="" coords="280,52,281,87,276,85,277,56"/>
+</map>

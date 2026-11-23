@@ -1,0 +1,260 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::StiffnessOfNode</compoundname>
+    <includes refid="_marmot_particle_stiffness_8h" local="no">MarmotParticleStiffness.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nDofPerNode</declname>
+        <defname>nDofPerNode</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDofPerNode, nDofPerNode &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::Block = Eigen::Matrix&lt; double, nDofPerNode, nDofPerNode &gt;</definition>
+        <argsstring></argsstring>
+        <name>Block</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::Block</qualifiedname>
+        <briefdescription>
+<para>A derivative of the force of the node with respect to a component of the interpolated increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="127" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af131d712c7b8d75501ecdf87a8f631cd" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kindref="member">Block</ref></type>
+        <definition>Block Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::df_dIncrement</definition>
+        <argsstring></argsstring>
+        <name>df_dIncrement</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrement</qualifiedname>
+        <briefdescription>
+<para><formula id="154">$ \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="130" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="130" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a601b7035f055ee3a8e7b5c5774719ea8" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nDofPerNode, nDim *nDofPerNode &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDofPerNode, nDim * nDofPerNode &gt; Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::df_dIncrementGradient</definition>
+        <argsstring></argsstring>
+        <name>df_dIncrementGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrementGradient</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The blocks <formula id="157">$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} / \partial Y_l) $</formula> side by side, block <formula id="140">$ l $</formula> in the columns <formula id="158">$ l\, n_{\text{dof/node}} $</formula> on (see <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a8236e03546b0e75074da8e353a3e2227" kindref="member">gradientBlock()</ref>). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="133" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af5f9c3cde2d365b855aa0c630c2b6b21" prot="public" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nDofPerNode, nDim *nDim *nDofPerNode &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDofPerNode, nDim * nDim * nDofPerNode &gt; Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::df_dIncrementSecondGradient</definition>
+        <argsstring></argsstring>
+        <name>df_dIncrementSecondGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrementSecondGradient</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The blocks  <formula id="159">$ \partial \boldsymbol{f}_A / \partial (\partial^2 \Delta\boldsymbol{q} / \partial Y_l
+\partial Y_m) $</formula> side by side, block <formula id="160">$ l\, n_{\text{dim}} + m $</formula> (see <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a323c0157503160bc5a89cacb86e17792" kindref="member">secondGradientBlock()</ref>); zero for a particle without second gradients. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="137" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af80a0e6b9e8a4f7ec7039817b420bac5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::setZero</definition>
+        <argsstring>()</argsstring>
+        <name>setZero</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::setZero</qualifiedname>
+        <briefdescription>
+<para>Set all derivatives to zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="140" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="140" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a8236e03546b0e75074da8e353a3e2227" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::gradientBlock</definition>
+        <argsstring>(int l)</argsstring>
+        <name>gradientBlock</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::gradientBlock</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+<para>The derivative with respect to the gradient of the interpolated increment along <formula id="161">$ Y_l $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">l</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The direction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kindref="member">Block</ref> <formula id="140">$ l $</formula> of df_dIncrementGradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="152" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a231cb7d55b887a4e392ba29fa2b5871c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::gradientBlock</definition>
+        <argsstring>(int l) const</argsstring>
+        <name>gradientBlock</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::gradientBlock</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>l</declname>
+        </param>
+        <briefdescription>
+<para>The derivative with respect to the gradient of the interpolated increment along <formula id="161">$ Y_l $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">l</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The direction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kindref="member">Block</ref> <formula id="140">$ l $</formula> of df_dIncrementGradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="159" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="159" bodyend="162"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a323c0157503160bc5a89cacb86e17792" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::secondGradientBlock</definition>
+        <argsstring>(int lm)</argsstring>
+        <name>secondGradientBlock</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::secondGradientBlock</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>lm</declname>
+        </param>
+        <briefdescription>
+<para>The derivative with respect to the second gradient of the interpolated increment along <formula id="162">$ Y_l, Y_m $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">lm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The index <formula id="160">$ l\, n_{\text{dim}} + m $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kindref="member">Block</ref> <computeroutput>lm</computeroutput> of df_dIncrementSecondGradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="170" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="170" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1ae1a9731cf2348110cf36ff1ef9602285" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto Marmot::Discretizations::Meshfree::StiffnessOfNode&lt; nDim, nDofPerNode &gt;::secondGradientBlock</definition>
+        <argsstring>(int lm) const</argsstring>
+        <name>secondGradientBlock</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::StiffnessOfNode::secondGradientBlock</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>lm</declname>
+        </param>
+        <briefdescription>
+<para>The derivative with respect to the second gradient of the interpolated increment along <formula id="162">$ Y_l, Y_m $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">lm</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The index <formula id="160">$ l\, n_{\text{dim}} + m $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kindref="member">Block</ref> <computeroutput>lm</computeroutput> of df_dIncrementSecondGradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="181" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="181" bodyend="184"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The stiffness of one node of a particle: the derivatives of the force of the node with respect to the increment the particle interpolates (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), in the layout <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref> documents. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of degrees of freedom per node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="125" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="125" bodyend="185"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>Block</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af131d712c7b8d75501ecdf87a8f631cd" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>df_dIncrement</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a601b7035f055ee3a8e7b5c5774719ea8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>df_dIncrementGradient</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af5f9c3cde2d365b855aa0c630c2b6b21" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>df_dIncrementSecondGradient</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a8236e03546b0e75074da8e353a3e2227" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>gradientBlock</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a231cb7d55b887a4e392ba29fa2b5871c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>gradientBlock</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a323c0157503160bc5a89cacb86e17792" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>secondGradientBlock</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1ae1a9731cf2348110cf36ff1ef9602285" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>secondGradientBlock</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af80a0e6b9e8a4f7ec7039817b420bac5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::StiffnessOfNode</scope><name>setZero</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

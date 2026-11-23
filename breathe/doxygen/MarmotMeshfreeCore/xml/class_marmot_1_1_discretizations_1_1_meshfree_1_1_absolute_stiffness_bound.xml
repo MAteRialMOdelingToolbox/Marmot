@@ -1,0 +1,610 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</compoundname>
+    <basecompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::StiffnessVisitor</basecompoundref>
+    <includes refid="_marmot_particle_stiffness_visitors_8h" local="no">MarmotParticleStiffnessVisitors.h</includes>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments" prot="private">Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::nSym</definition>
+        <argsstring></argsstring>
+        <name>nSym</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym</qualifiedname>
+        <initializer>= nDim * ( nDim + 1 ) / 2</initializer>
+        <briefdescription>
+<para>The number of independent components of a symmetric second gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="83" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac49ed13692a727ec005da51339fab21e" prot="private" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_columnWeights</definition>
+        <argsstring></argsstring>
+        <name>_columnWeights</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_columnWeights</qualifiedname>
+        <briefdescription>
+<para>the weights, column-major </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="178" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a88bc157b6d75690d8f4b6910bc0d7a20" prot="private" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_nColumns</definition>
+        <argsstring></argsstring>
+        <name>_nColumns</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_nColumns</qualifiedname>
+        <briefdescription>
+<para>the number of columns of the weights </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="179" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1af5b84e44bbe12e6947d04ce0897dfd9e" prot="private" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_bound</definition>
+        <argsstring></argsstring>
+        <name>_bound</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_bound</qualifiedname>
+        <briefdescription>
+<para>the bound, column-major </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="180" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a28f18f8fa00a7b7eec51022b2d87eb1b" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_nDof</definition>
+        <argsstring></argsstring>
+        <name>_nDof</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_nDof</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>the number of dofs of the particle </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="181" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac2e369754a229500def83d4eab9e783f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_withSecondGradients</definition>
+        <argsstring></argsstring>
+        <name>_withSecondGradients</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_withSecondGradients</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para>the particle has second gradients </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="182" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="182" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a25cdc436e5264ecce1f65c68de43a5ce" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; Moments &gt;</type>
+        <definition>std::vector&lt; Moments &gt; Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::_moments</definition>
+        <argsstring></argsstring>
+        <name>_moments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_moments</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>entry <formula id="195">$ c\, n_{\text{dof/node}} + k $</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="183" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="183" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a1631fd1b428396c2518bbde36fa6b08d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::AbsoluteStiffnessBound</definition>
+        <argsstring>(const double *columnWeights, int nColumns, double *bound)</argsstring>
+        <name>AbsoluteStiffnessBound</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::AbsoluteStiffnessBound</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>columnWeights</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nColumns</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>bound</declname>
+        </param>
+        <briefdescription>
+<para>A bound to be added to <computeroutput>bound</computeroutput>, for the weights <computeroutput>columnWeights</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">columnWeights</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The nonnegative weights <formula id="187">$ \boldsymbol{W} $</formula>, column-major, (nNodes nDofPerNode) x nColumns, in the dof order of the particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nColumns</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of columns of <computeroutput>columnWeights</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">bound</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The bound, column-major, (nNodes nDofPerNode) x nColumns; the bound of every row is added. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="92" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="92" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::visitShapeFunctions</definition>
+        <argsstring>(int nDimOfParticle, int nDofPerNode, int nNodes, const double *N, const double *dN_dY, const double *d2N_dYdY) override</argsstring>
+        <name>visitShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::visitShapeFunctions</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1aa2e93274e740593d3ab2ad570194174b">visitShapeFunctions</reimplements>
+        <param>
+          <type>int</type>
+          <declname>nDimOfParticle</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nDofPerNode</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>dN_dY</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>d2N_dYdY</declname>
+        </param>
+        <briefdescription>
+<para>Compute the weighted moments of the shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nDimOfParticle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The spatial dimension of the particle; must be nDim. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of dofs per node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of nodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The trial shape functions, 1 x nNodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dN_dY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Their gradients, nDim x nNodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d2N_dYdY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Their second gradients, nDim^2 x nNodes; nullptr for a particle without second gradients. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the particle is not of dimension nDim, or has more than maxDofsPerNode dofs per node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="108" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7a8aaba0a83f6ebae0104ecbbb8edd46" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::visitStiffnessOfNode</definition>
+        <argsstring>(int A, const double *df_dIncrement, const double *df_dIncrementGradient, const double *df_dIncrementSecondGradient) override</argsstring>
+        <name>visitStiffnessOfNode</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::visitStiffnessOfNode</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a96a2984c188f6732600f490905cc33bd">visitStiffnessOfNode</reimplements>
+        <param>
+          <type>int</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrement</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrementGradient</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrementSecondGradient</declname>
+        </param>
+        <briefdescription>
+<para>Add the bound of the rows of node <computeroutput>A:</computeroutput> <formula id="188">$ (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} $</formula> for all components <formula id="15">$ i $</formula> and columns <formula id="189">$ c $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivative of its force with respect to the interpolated increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrementGradient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives with respect to its gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrementSecondGradient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives with respect to its second gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="123" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6438468c1194e67fc3b181a5c777b665" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDofPerNode</declname>
+            <defname>nDofPerNode</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::addBoundOfRowsOfNode</definition>
+        <argsstring>(int A, const double *df_dIncrement, const double *df_dIncrementGradient, const double *df_dIncrementSecondGradient)</argsstring>
+        <name>addBoundOfRowsOfNode</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::addBoundOfRowsOfNode</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrement</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrementGradient</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>df_dIncrementSecondGradient</declname>
+        </param>
+        <briefdescription>
+<para>Add the bound of the rows of node <computeroutput>A</computeroutput> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7a8aaba0a83f6ebae0104ecbbb8edd46" kindref="member">visitStiffnessOfNode()</ref>), with the number of dofs per node known at compile time: the derivatives are read as typed blocks, and the loops over the components unrolled. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of dofs per node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivative of its force with respect to the interpolated increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrementGradient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives with respect to its gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">df_dIncrementSecondGradient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives with respect to its second gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="139" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a86e744b8e76f308c56d4ca15a4f8054d" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>n</declname>
+            <defname>n</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::addMoments</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, n, 1 &gt; &amp;g, double w, double &amp;sumOfNorms, Eigen::Matrix&lt; double, n, n &gt; &amp;moments)</argsstring>
+        <name>addMoments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::addMoments</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, n, 1 &gt; &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>w</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>sumOfNorms</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; double, n, n &gt; &amp;</type>
+          <declname>moments</declname>
+        </param>
+        <briefdescription>
+<para>Add the moments of one node: <formula id="190">$ w \|\boldsymbol{g}\| $</formula> and  <formula id="191">$ w\, \boldsymbol{g}
+\boldsymbol{g}^T / \|\boldsymbol{g}\| $</formula> (nothing for <formula id="192">$ \boldsymbol{g} = \boldsymbol{0} $</formula>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The size of <computeroutput>g</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">g</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The gradient (or the symmetric components of the second gradient) of the node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">w</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The weight of the node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">sumOfNorms</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The sum of the weighted norms. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">moments</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The sum of the weighted outer products. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="166" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7088f0fc62fbd5915d747f1117305bdb" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kindref="member">nSym</ref>, 1 &gt;</type>
+        <definition>static Eigen::Matrix&lt; double, nSym, 1 &gt; Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;::symmetricComponents</definition>
+        <argsstring>(const double *d2N_dYdY)</argsstring>
+        <name>symmetricComponents</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::symmetricComponents</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>d2N_dYdY</declname>
+        </param>
+        <briefdescription>
+<para>The independent components <formula id="193">$ (l, m), l \le m $</formula> of a symmetric second gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d2N_dYdY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The second gradient of one node, entry <formula id="160">$ l\, n_{\text{dim}} + m $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The nSym components, in the order <formula id="194">$ (0,0), (0,1), \ldots, (1,1), \ldots $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="176" column="26"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Bounds the absolute value of a particle&apos;s stiffness times nonnegative weights, <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, from the stiffness it describes node by node, without forming it. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the Collatz-Wielandt bound, <formula id="173">$ \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i $</formula> for positive weights <formula id="174">$ \boldsymbol{w} $</formula>. The stiffness of a particle with <formula id="68">$ n $</formula> nodes has <formula id="135">$ n^2 $</formula> blocks; this bound of <formula id="175">$ |\boldsymbol{K}|\boldsymbol{W} $</formula> costs <formula id="176">$ O(n) $</formula>: the rows of node <formula id="16">$ A $</formula> are linear in the shape functions of the other node <formula id="133">$ B $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), and the sum over <formula id="133">$ B $</formula> is taken from a few weighted moments of the shape functions, computed once per particle (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" kindref="member">visitShapeFunctions()</ref>). Row <formula id="15">$ i $</formula> of node <formula id="16">$ A $</formula>, column component <formula id="73">$ k $</formula>, with the weights <formula id="177">$ w_B $</formula> of component <formula id="73">$ k $</formula> of the nodes and the factors <formula id="178">$ a = \partial f_{Ai}/\partial \Delta q_k $</formula>, <formula id="179">$ \boldsymbol{b} $</formula> (its gradient factors) and <formula id="180">$ \boldsymbol{h} $</formula> (its second-gradient factors):      <formula id="181">\[  \sum_B |K_{Ai,Bk}|\, w_B \le |a| \sum_B w_B |N_B|
+  + \sqrt{ \sum_B w_B \|\boldsymbol{g}_B\| \; \boldsymbol{b}^T \Big( \sum_B
+    \frac{w_B}{\|\boldsymbol{g}_B\|} \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b} }
+  + (\text{the same for } \boldsymbol{h} \text{ and the second gradients}),
+\]</formula> with <formula id="182">$ \boldsymbol{g}_B = \partial N_B / \partial \boldsymbol{Y} $</formula>. The first term is exact; the others are the Cauchy-Schwarz inequality over the nodes,   <formula id="183">$ \sum_B w_B |\boldsymbol{b}\cdot\boldsymbol{g}_B| \le
+\sqrt{\sum_B w_B \|\boldsymbol{g}_B\|} \sqrt{\sum_B w_B (\boldsymbol{b}\cdot\boldsymbol{g}_B)^2 /
+\|\boldsymbol{g}_B\|} $</formula>, which keeps the directions of the gradients: it is exact if all gradients are parallel, and <formula id="184">$ 2/\sqrt{3} $</formula> times the exact sum ( <formula id="185">$ \pi/(2\sqrt{2}) $</formula> in 2D) if their directions are spread evenly. The terms are added by the triangle inequality. The bound holds for every stiffness of the form of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>, symmetric or not; the second gradients of the shape functions must be symmetric (their symmetric components are used).</para>
+<para>A host uses it through <ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">addBoundOfAbsoluteStiffnessTimes()</ref>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::StiffnessVisitor</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::StiffnessVisitor</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" line="80" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" bodystart="80" bodyend="191"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1af5b84e44bbe12e6947d04ce0897dfd9e" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_bound</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac49ed13692a727ec005da51339fab21e" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_columnWeights</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a25cdc436e5264ecce1f65c68de43a5ce" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_moments</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a88bc157b6d75690d8f4b6910bc0d7a20" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_nColumns</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a28f18f8fa00a7b7eec51022b2d87eb1b" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_nDof</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac2e369754a229500def83d4eab9e783f" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>_withSecondGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a1631fd1b428396c2518bbde36fa6b08d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>AbsoluteStiffnessBound</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6438468c1194e67fc3b181a5c777b665" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>addBoundOfRowsOfNode</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a86e744b8e76f308c56d4ca15a4f8054d" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>addMoments</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>nSym</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7088f0fc62fbd5915d747f1117305bdb" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>symmetricComponents</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>visitShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7a8aaba0a83f6ebae0104ecbbb8edd46" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>visitStiffnessOfNode</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a528e7157331ae4265c06487a3f9660c9" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</scope><name>~StiffnessVisitor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

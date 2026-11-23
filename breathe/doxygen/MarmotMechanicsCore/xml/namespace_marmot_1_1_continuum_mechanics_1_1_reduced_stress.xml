@@ -12,7 +12,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::planeStressPrescribed</qualifiedname>
         <initializer>= { 0, 1, 3 }</initializer>
         <briefdescription>
-<para>Plane stress, prescribed components: <formula id="416">$\varepsilon_{11}, \varepsilon_{22}, \gamma_{12}$</formula> (in the order of the plane Voigt notation). </para>
+<para>Plane stress, prescribed components: <formula id="60">$\varepsilon_{11}, \varepsilon_{22}, \gamma_{12}$</formula> (in the order of the plane Voigt notation). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -28,7 +28,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::planeStressFree</qualifiedname>
         <initializer>= { 2, 4, 5 }</initializer>
         <briefdescription>
-<para>Plane stress, stress-free components: <formula id="16">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula>. </para>
+<para>Plane stress, stress-free components: <formula id="61">$\sigma_{33} = \sigma_{13} = \sigma_{23} = 0$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -44,7 +44,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::uniaxialStressPrescribed</qualifiedname>
         <initializer>= { 0 }</initializer>
         <briefdescription>
-<para>Uniaxial stress, prescribed component: <formula id="417">$\varepsilon_{11}$</formula>. </para>
+<para>Uniaxial stress, prescribed component: <formula id="62">$\varepsilon_{11}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -60,7 +60,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::uniaxialStressFree</qualifiedname>
         <initializer>= { 1, 2, 3, 4, 5 }</initializer>
         <briefdescription>
-<para>Uniaxial stress, stress-free components: all but <formula id="25">$\sigma_{11}$</formula>. </para>
+<para>Uniaxial stress, stress-free components: all but <formula id="63">$\sigma_{11}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -76,7 +76,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::convergenceTolerance</qualifiedname>
         <initializer>= 1e-12</initializer>
         <briefdescription>
-<para>Convergence tolerance of <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref>: <formula id="418">$\max_i |\sigma_{f_i}|$</formula> relative to the stress scale. </para>
+<para>Convergence tolerance of <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref>: <formula id="64">$\max_i |\sigma_{f_i}|$</formula> relative to the stress scale. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -108,7 +108,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::rankTolerance</qualifiedname>
         <initializer>= 1e-12</initializer>
         <briefdescription>
-<para>Rank threshold of <formula id="411">$\mathbf{C}_{ff}$</formula>: a pivot of its complete orthogonal decomposition below this fraction of the largest pivot counts as zero. </para>
+<para>Rank threshold of <formula id="55">$\mathbf{C}_{ff}$</formula>: a pivot of its complete orthogonal decomposition below this fraction of the largest pivot counts as zero. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -124,8 +124,8 @@
         <qualifiedname>Marmot::ContinuumMechanics::ReducedStress::consistencyTolerance</qualifiedname>
         <initializer>= 1e-9</initializer>
         <briefdescription>
-<para>Consistency of a singular <formula id="411">$\mathbf{C}_{ff}$</formula> (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>): the largest component of <formula id="419">$\mathbf{C}_{pf}\, \mathbf{N}$</formula> and of  <formula id="420">$(\mathbf{I} - \mathbf{C}_{ff} \mathbf{C}_{ff}^{+})\,
-\mathbf{C}_{fp}$</formula>, with <formula id="421">$\mathbf{N}$</formula> the projector on the null space of <formula id="411">$\mathbf{C}_{ff}$</formula>, relative to <formula id="422">$\max_{ij} |C_{ij}|$</formula>; and of the stress residual outside the range of <formula id="411">$\mathbf{C}_{ff}$</formula> (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref>) relative to the stress scale. </para>
+<para>Consistency of a singular <formula id="55">$\mathbf{C}_{ff}$</formula> (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>): the largest component of <formula id="65">$\mathbf{C}_{pf}\, \mathbf{N}$</formula> and of  <formula id="66">$(\mathbf{I} - \mathbf{C}_{ff} \mathbf{C}_{ff}^{+})\,
+\mathbf{C}_{fp}$</formula>, with <formula id="67">$\mathbf{N}$</formula> the projector on the null space of <formula id="55">$\mathbf{C}_{ff}$</formula>, relative to <formula id="68">$\max_{ij} |C_{ij}|$</formula>; and of the stress residual outside the range of <formula id="55">$\mathbf{C}_{ff}$</formula> (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref>) relative to the stress scale. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -245,7 +245,7 @@
           <declname>f</declname>
         </param>
         <briefdescription>
-<para>The static condensation of a 3D tangent: the condensed tangent, the sensitivity of the free strains and the complete orthogonal decomposition of <formula id="411">$\mathbf{C}_{ff}$</formula> (see the namespace <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" kindref="compound">ReducedStress</ref>). </para>
+<para>The static condensation of a 3D tangent: the condensed tangent, the sensitivity of the free strains and the complete orthogonal decomposition of <formula id="55">$\mathbf{C}_{ff}$</formula> (see the namespace <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" kindref="compound">ReducedStress</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -270,7 +270,7 @@
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>the 3D tangent <formula id="423">$\partial\boldsymbol{\sigma} / \partial\boldsymbol{\varepsilon}$</formula> (Voigt, engineering shear strains) </para>
+<para>the 3D tangent <formula id="69">$\partial\boldsymbol{\sigma} / \partial\boldsymbol{\varepsilon}$</formula> (Voigt, engineering shear strains) </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -305,7 +305,7 @@
 <parametername>Marmot::Utilities::StressUpdateFailed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if <computeroutput>C</computeroutput> is not finite, or if <formula id="411">$\mathbf{C}_{ff}$</formula> is singular (rankTolerance) and the condensation is inconsistent (consistencyTolerance): <formula id="414">$\boldsymbol{\sigma}_p$</formula> depends on strains along the null space of <formula id="411">$\mathbf{C}_{ff}$</formula>, or <formula id="424">$\mathbf{C}_{fp}$</formula> is not in its range. The reduced stress state is then not determined by the material; this happens within a stress update, so the caller can cut back. A consistent singular <formula id="411">$\mathbf{C}_{ff}$</formula> is condensed with its pseudo-inverse. </para>
+<para>if <computeroutput>C</computeroutput> is not finite, or if <formula id="55">$\mathbf{C}_{ff}$</formula> is singular (rankTolerance) and the condensation is inconsistent (consistencyTolerance): <formula id="58">$\boldsymbol{\sigma}_p$</formula> depends on strains along the null space of <formula id="55">$\mathbf{C}_{ff}$</formula>, or <formula id="70">$\mathbf{C}_{fp}$</formula> is not in its range. The reduced stress state is then not determined by the material; this happens within a stress update, so the caller can cut back. A consistent singular <formula id="55">$\mathbf{C}_{ff}$</formula> is condensed with its pseudo-inverse. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -356,9 +356,9 @@
 <para>A reduced stress state of a 3D stress update: Newton&apos;s method on the strains at the stress-free components (see the namespace <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress" kindref="compound">ReducedStress</ref>). </para>
         </briefdescription>
         <detaileddescription>
-<para>Each iteration evaluates <computeroutput>computeStress3D</computeroutput> at the current strain increment and corrects the free strains by  <formula id="425">$\Delta\boldsymbol{\varepsilon}_f \leftarrow \Delta\boldsymbol{\varepsilon}_f -
-\mathbf{C}_{ff}^{+} \boldsymbol{\sigma}_f$</formula> (minimum norm, see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>), until  <formula id="426">$\max_i |\sigma_{f_i}|
-\leq 10^{-12}\, s$</formula> (convergenceTolerance), or <formula id="427">$10^{-9}\, s$</formula> (relaxedConvergenceTolerance) from the 9th evaluation on. The stress scale <formula id="428">$s$</formula> is the largest stress component <formula id="429">$|\sigma_i|$</formula> (all six) of all evaluations of this call, so the tolerance is relative and unit free, and it is met by a stress state of round-off size; if all stresses vanish, the residual does too. After 15 evaluations without convergence, it throws.</para>
+<para>Each iteration evaluates <computeroutput>computeStress3D</computeroutput> at the current strain increment and corrects the free strains by  <formula id="71">$\Delta\boldsymbol{\varepsilon}_f \leftarrow \Delta\boldsymbol{\varepsilon}_f -
+\mathbf{C}_{ff}^{+} \boldsymbol{\sigma}_f$</formula> (minimum norm, see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>), until  <formula id="72">$\max_i |\sigma_{f_i}|
+\leq 10^{-12}\, s$</formula> (convergenceTolerance), or <formula id="73">$10^{-9}\, s$</formula> (relaxedConvergenceTolerance) from the 9th evaluation on. The stress scale <formula id="74">$s$</formula> is the largest stress component <formula id="75">$|\sigma_i|$</formula> (all six) of all evaluations of this call, so the tolerance is relative and unit free, and it is met by a stress state of round-off size; if all stresses vanish, the residual does too. After 15 evaluations without convergence, it throws.</para>
 <para>The last evaluation of <computeroutput>computeStress3D</computeroutput> is the one at the converged strain, so additional outputs of the callable (state variables, energies, other derivatives) refer to the converged 3D state.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -433,7 +433,7 @@
 <parametername>Marmot::Utilities::StressUpdateFailed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if the iteration does not converge, a stress is not finite, the condensation is inconsistent (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>), or <formula id="411">$\mathbf{C}_{ff}$</formula> is singular and the residual <formula id="415">$\boldsymbol{\sigma}_f$</formula> has a component outside its range larger than consistencyTolerance <formula id="428">$s$</formula>, which no correction of the free strains can remove; the stress update can then be repeated with a smaller increment. </para>
+<para>if the iteration does not converge, a stress is not finite, the condensation is inconsistent (<ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref>), or <formula id="55">$\mathbf{C}_{ff}$</formula> is singular and the residual <formula id="59">$\boldsymbol{\sigma}_f$</formula> has a component outside its range larger than consistencyTolerance <formula id="74">$s$</formula>, which no correction of the free strains can remove; the stress update can then be repeated with a smaller increment. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -475,7 +475,7 @@
           <declname>dStressF_dX</declname>
         </param>
         <briefdescription>
-<para>The sensitivity of the free strains to a further variable <formula id="430">$\mathbf{x}$</formula> of the stress update (e.g., nonlocal variables), with the same pseudo-inverse as the condensation:  <formula id="431">$\mathrm{d}\boldsymbol{\varepsilon}_f /
+<para>The sensitivity of the free strains to a further variable <formula id="76">$\mathbf{x}$</formula> of the stress update (e.g., nonlocal variables), with the same pseudo-inverse as the condensation:  <formula id="77">$\mathrm{d}\boldsymbol{\varepsilon}_f /
 \mathrm{d}\mathbf{x} = -\mathbf{C}_{ff}^{+}\, \partial\boldsymbol{\sigma}_f / \partial\mathbf{x}$</formula>, such that the free stresses stay zero. </para>
         </briefdescription>
         <detaileddescription>
@@ -517,19 +517,19 @@
 <parametername>dStressF_dX</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="432">$\partial\boldsymbol{\sigma}_f / \partial\mathbf{x}$</formula> </para>
+<para><formula id="78">$\partial\boldsymbol{\sigma}_f / \partial\mathbf{x}$</formula> </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="433">$\mathrm{d}\boldsymbol{\varepsilon}_f / \mathrm{d}\mathbf{x}$</formula> </para>
+<simplesect kind="return"><para><formula id="79">$\mathrm{d}\boldsymbol{\varepsilon}_f / \mathrm{d}\mathbf{x}$</formula> </para>
 </simplesect>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
 <parametername>Marmot::Utilities::StressUpdateFailed</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if <formula id="411">$\mathbf{C}_{ff}$</formula> is singular and a column of <computeroutput>dStressF_dX</computeroutput> has a component outside its range larger than consistencyTolerance times the column&apos;s scale (  <formula id="434">$\max(|\partial\sigma_{f_i}/\partial x_j|, \max|\mathbf{C}_{ff}|\, \max_i|\mathrm{d}\varepsilon_{f_i} /
-\mathrm{d}x_j|)$</formula>): no change of the free strains then keeps the free stresses zero when <formula id="430">$\mathbf{x}$</formula> changes. </para>
+<para>if <formula id="55">$\mathbf{C}_{ff}$</formula> is singular and a column of <computeroutput>dStressF_dX</computeroutput> has a component outside its range larger than consistencyTolerance times the column&apos;s scale (  <formula id="80">$\max(|\partial\sigma_{f_i}/\partial x_j|, \max|\mathbf{C}_{ff}|\, \max_i|\mathrm{d}\varepsilon_{f_i} /
+\mathrm{d}x_j|)$</formula>): no change of the free strains then keeps the free stresses zero when <formula id="76">$\mathbf{x}$</formula> changes. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -544,17 +544,17 @@
 <para>Reduced stress states by static condensation: some stress components vanish, the strains at them follow. </para>
     </briefdescription>
     <detaileddescription>
-<para>In Marmot&apos;s Voigt order <formula id="400">$[11, 22, 33, 12, 13, 23]$</formula> (engineering shear strains), a reduced stress state is defined by the prescribed strain components <formula id="401">$p$</formula> and the stress-free components <formula id="264">$f$</formula>: the strains <formula id="402">$\boldsymbol{\varepsilon}_p$</formula> are given, <formula id="403">$\boldsymbol{\sigma}_f = \mathbf{0}$</formula> determines the strains <formula id="404">$\boldsymbol{\varepsilon}_f$</formula>, and the strains at the components in neither set keep their given values (usually zero). With the 3D tangent partitioned into the blocks  <formula id="405">$\mathbf{C}_{pp}, \mathbf{C}_{pf},
-\mathbf{C}_{fp}, \mathbf{C}_{ff}$</formula>, linearizing <formula id="403">$\boldsymbol{\sigma}_f = \mathbf{0}$</formula> gives the sensitivity of the free strains and the condensed tangent:      <formula id="406">\[  \frac{\partial \boldsymbol{\varepsilon}_f}{\partial \boldsymbol{\varepsilon}_p}
+<para>In Marmot&apos;s Voigt order <formula id="43">$[11, 22, 33, 12, 13, 23]$</formula> (engineering shear strains), a reduced stress state is defined by the prescribed strain components <formula id="44">$p$</formula> and the stress-free components <formula id="45">$f$</formula>: the strains <formula id="46">$\boldsymbol{\varepsilon}_p$</formula> are given, <formula id="47">$\boldsymbol{\sigma}_f = \mathbf{0}$</formula> determines the strains <formula id="48">$\boldsymbol{\varepsilon}_f$</formula>, and the strains at the components in neither set keep their given values (usually zero). With the 3D tangent partitioned into the blocks  <formula id="49">$\mathbf{C}_{pp}, \mathbf{C}_{pf},
+\mathbf{C}_{fp}, \mathbf{C}_{ff}$</formula>, linearizing <formula id="47">$\boldsymbol{\sigma}_f = \mathbf{0}$</formula> gives the sensitivity of the free strains and the condensed tangent:      <formula id="50">\[  \frac{\partial \boldsymbol{\varepsilon}_f}{\partial \boldsymbol{\varepsilon}_p}
     = -\mathbf{C}_{ff}^{-1}\, \mathbf{C}_{fp}, \qquad
   \frac{\partial \boldsymbol{\sigma}_p}{\partial \boldsymbol{\varepsilon}_p}
     = \mathbf{C}_{pp} - \mathbf{C}_{pf}\, \mathbf{C}_{ff}^{-1}\, \mathbf{C}_{fp}.
-\]</formula> Any other derivative is condensed the same way: e.g. a quantity  <formula id="407">$\mathbf{y}(\boldsymbol{\varepsilon},
-\mathbf{K})$</formula> with an additional argument <formula id="408">$\mathbf{K}$</formula> has  <formula id="409">$\mathrm{d}\boldsymbol{\varepsilon}_f /
-\mathrm{d}\mathbf{K} = -\mathbf{C}_{ff}^{-1}\, \partial\boldsymbol{\sigma}_f / \partial \mathbf{K}$</formula> and   <formula id="410">$\mathrm{d}\mathbf{y} / \mathrm{d}\boldsymbol{\varepsilon}_p = \partial\mathbf{y} /
+\]</formula> Any other derivative is condensed the same way: e.g. a quantity  <formula id="51">$\mathbf{y}(\boldsymbol{\varepsilon},
+\mathbf{K})$</formula> with an additional argument <formula id="52">$\mathbf{K}$</formula> has  <formula id="53">$\mathrm{d}\boldsymbol{\varepsilon}_f /
+\mathrm{d}\mathbf{K} = -\mathbf{C}_{ff}^{-1}\, \partial\boldsymbol{\sigma}_f / \partial \mathbf{K}$</formula> and   <formula id="54">$\mathrm{d}\mathbf{y} / \mathrm{d}\boldsymbol{\varepsilon}_p = \partial\mathbf{y} /
 \partial\boldsymbol{\varepsilon}_p + \partial\mathbf{y} / \partial\boldsymbol{\varepsilon}_f\, \partial
 \boldsymbol{\varepsilon}_f / \partial \boldsymbol{\varepsilon}_p$</formula>.</para>
-<para>A singular <formula id="411">$\mathbf{C}_{ff}$</formula> is admitted if the reduced problem stays consistent, e.g. a fully softened smeared crack without out-of-plane shear stiffness: then <formula id="412">$\mathbf{C}_{ff}^{-1}$</formula> above is the pseudo-inverse <formula id="413">$\mathbf{C}_{ff}^{+}$</formula>, so the strains along the null space of <formula id="411">$\mathbf{C}_{ff}$</formula> are not changed (minimum norm corrections), which is exact as long as neither <formula id="414">$\boldsymbol{\sigma}_p$</formula> nor <formula id="415">$\boldsymbol{\sigma}_f$</formula> depend on them. Otherwise, the reduced stress state is not determined, and StressUpdateFailed is thrown.</para>
+<para>A singular <formula id="55">$\mathbf{C}_{ff}$</formula> is admitted if the reduced problem stays consistent, e.g. a fully softened smeared crack without out-of-plane shear stiffness: then <formula id="56">$\mathbf{C}_{ff}^{-1}$</formula> above is the pseudo-inverse <formula id="57">$\mathbf{C}_{ff}^{+}$</formula>, so the strains along the null space of <formula id="55">$\mathbf{C}_{ff}$</formula> are not changed (minimum norm corrections), which is exact as long as neither <formula id="58">$\boldsymbol{\sigma}_p$</formula> nor <formula id="59">$\boldsymbol{\sigma}_f$</formula> depend on them. Otherwise, the reduced stress state is not determined, and StressUpdateFailed is thrown.</para>
 <para><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a6c9eccb1c84b4124824da2c4d4359081" kindref="member">computeReducedStress()</ref> is the iteration of a 3D stress update to such a state, <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_reduced_stress_1a2b38179c3d7b789c69c97eb29451c2dc" kindref="member">condense()</ref> the algebra of a given tangent. The standard states are defined below: plane stress (planeStressPrescribed, planeStressFree) and uniaxial stress (uniaxialStressPrescribed, uniaxialStressFree). </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="75" column="3"/>

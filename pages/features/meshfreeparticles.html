@@ -203,7 +203,10 @@ particles of the displacement family (<code class="docutils literal notranslate"
 none. EdelweissMeshfree loads the particles of an explicit analysis through <code class="docutils literal notranslate"><span class="pre">computeBodyLoad</span></code> and
 <code class="docutils literal notranslate"><span class="pre">computeDistributedLoad</span></code> and discards their tangent; it does not call the explicit loads. A particle gives no
 critical time step: the stable increment of a particle discretization is a property of the assembled system (see
-<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>).</p>
+<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>). What the host needs from a particle to bound it is its stiffness,
+which the particle describes node by node (<code class="docutils literal notranslate"><span class="pre">describeStiffness</span></code>, see below); the bound is a visitor of that
+description, <code class="docutils literal notranslate"><span class="pre">addBoundOfAbsoluteStiffnessTimes</span></code>. A particle that does not describe its stiffness throws. The order in
+which a host calls the explicit methods, and what each may change, is in <a class="reference internal" href="#explicit-life-cycle-of-a-particle"><span class="std std-ref">The explicit life cycle of a particle</span></a>.</p>
 <p><strong>Dof layout.</strong> Since the number of nodes of a particle is not fixed, no field-blocked layout (no
 <code class="docutils literal notranslate"><span class="pre">dofIndicesPermutationPattern</span></code>) is used: the residual and the stiffness matrix are stored node-wise, in the order in
 which the kernel functions were assigned, e.g., <code class="docutils literal notranslate"><span class="pre">[node_1_displacement,</span> <span class="pre">node_1_temperature,</span> <span class="pre">node_2_displacement,</span> <span class="pre">...]</span></code>,
@@ -218,6 +221,104 @@ additionally provide <code class="docutils literal notranslate"><span class="pre
 each, the displacements of the vertices of the deformed geometry and of the smoothing domain with respect to the
 undeformed geometry), and the subdomain-integration particles forward all other names to the material point of
 subdomain <code class="docutils literal notranslate"><span class="pre">qp</span></code>.</p>
+</section>
+<section id="the-explicit-life-cycle-of-a-particle">
+<span id="explicit-life-cycle-of-a-particle"></span><h2>The explicit life cycle of a particle<a class="headerlink" href="#the-explicit-life-cycle-of-a-particle" title="Link to this heading"></a></h2>
+<p>An explicit host (in EdelweissMeshfree, the explicit dynamic solver <code class="docutils literal notranslate"><span class="pre">NED</span></code> of EdelweissFE with the particles’
+discrete system) advances the particles by one increment <span class="math notranslate nohighlight">\([t_n, t_{n+1}]\)</span> with the following calls, particle
+by particle, in this order. Calls 1 to 3 advance the particle to <span class="math notranslate nohighlight">\(t_{n+1}\)</span>, with the kernel functions of
+<span class="math notranslate nohighlight">\(t_n\)</span>; calls 4 to 7 evaluate it there, on the kernel functions it reaches.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit(dQ,</span> <span class="pre">timeNew,</span> <span class="pre">dT)</span></code>, with <span class="math notranslate nohighlight">\(\Delta\boldsymbol{Q} = \boldsymbol{V}_{n+1/2}\,\Delta t\)</span>
+of the nodes. The host has restored the working copy of the state to the accepted one before (the state contract
+of <a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE" title="Marmot::Discretizations::Meshfree::Particle"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Particle</span></code></a>). It changes the state: the kinematics, the material
+state, the response the material point keeps, and the rates (velocity, acceleration, the rate of a nonlocal field).
+<strong>A zero-length increment</strong> (<code class="docutils literal notranslate"><span class="pre">dT</span> <span class="pre">==</span> <span class="pre">0</span></code>, the zero increment at the start of a step) <strong>leaves the rates alone</strong>:
+they cannot be formed from it, and the motion of the step starts from them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acceptStateAndPosition()</span></code>: the state becomes the accepted one, and the particle moves to the new configuration
+<span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> (position, volume, geometry), which is the reference of the next increment: there, the
+increment is the identity, <span class="math notranslate nohighlight">\(\partial\boldsymbol{x}/\partial\boldsymbol{Y} = \boldsymbol{I}\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acceptStateAndPosition()</span></code> again, before the host searches the new kernel functions, and once more when a run
+is resumed. <strong>An accept must be idempotent</strong>: a second accept without an increment in between changes nothing.
+A particle whose material point does not reset its increment when it accepts resets it itself, as
+<code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrainParticle::acceptStateAndPosition</span></code> does with <code class="docutils literal notranslate"><span class="pre">prepareYourself</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assignMeshfreeKernelFunctions</span></code>, for a particle whose kernel functions changed: the shape functions and
+gradients of the new configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit(fInt)</span></code> and <code class="docutils literal notranslate"><span class="pre">computeLumpedMomentum(p)</span></code>: the internal force of the state of call
+1, in total form, and the momentum, both on the new kernel functions. They read the state and the response the
+material point keeps, and change neither.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">computeLumpedInertia(m)</span></code>: the coefficients of the second time derivatives, a mass on the displacement field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">computeLumpedDamping(c)</span></code>: the coefficients of the first time derivatives.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">describeStiffness</span></code>, through which the host bounds the stable increment (not every increment), is not part of this
+order: wherever it is called, it leaves the particle as it was found. What it describes is the stiffness of the
+configuration of the last accept with the working copy of the state, which is the stiffness of an accepted state after
+call 2 or 3, where <code class="docutils literal notranslate"><span class="pre">NED</span></code> asks for it; between calls 1 and 2 the working copy holds the advanced state.</p>
+<p><strong>The tangent is required in an explicit analysis.</strong> The particles call the material with its tangent
+(<code class="docutils literal notranslate"><span class="pre">computeStress</span></code>), never <code class="docutils literal notranslate"><span class="pre">computeStressExplicit</span></code>: the stiffness a particle describes, and with it the bound of the
+stable increment, and the NSNI stabilization are formed from the tangent. A material whose tangent is inconsistent
+gives a bound of the stable increment that is too large, with no message.</p>
+<p>A particle without the explicit path refuses calls 1 and 5 (the defaults throw), so the host stops at the first
+increment instead of integrating a mass without a force.</p>
+</section>
+<section id="the-tangent-through-the-interpolated-increment">
+<h2>The tangent through the interpolated increment<a class="headerlink" href="#the-tangent-through-the-interpolated-increment" title="Link to this heading"></a></h2>
+<p>A particle with one material point sees the increments <span class="math notranslate nohighlight">\(\Delta\boldsymbol{Q}_B\)</span> of its nodes only through the
+increment it interpolates at its evaluation point: its value, its gradient and, for an NSNI particle, its second
+gradient,</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol{q} = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+\frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,\Delta\boldsymbol{Q}_B,
+\qquad
+\frac{\partial^2 \Delta\boldsymbol{q}}{\partial Y_l \partial Y_m} = \sum_B \frac{\partial^2 N_B}{\partial Y_l
+\partial Y_m}\,\Delta\boldsymbol{Q}_B .\]</div>
+<p>By the chain rule, the block of the tangent that couples the force <span class="math notranslate nohighlight">\(\boldsymbol{f}_A\)</span> of node <span class="math notranslate nohighlight">\(A\)</span> with node
+<span class="math notranslate nohighlight">\(B\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{K}_{AB} = \frac{\partial \boldsymbol{f}_A}{\partial \Delta\boldsymbol{q}}\,N_B
++ \sum_l \frac{\partial \boldsymbol{f}_A}{\partial (\partial \Delta\boldsymbol{q}/\partial Y_l)}\,
+\frac{\partial N_B}{\partial Y_l}
++ \sum_{l,m} \frac{\partial \boldsymbol{f}_A}{\partial (\partial^2 \Delta\boldsymbol{q}/\partial Y_l\partial Y_m)}\,
+\frac{\partial^2 N_B}{\partial Y_l\partial Y_m} .\]</div>
+<p>The three derivatives belong to node <span class="math notranslate nohighlight">\(A\)</span> alone (its test function and the state of the material point). The
+particles compute them once per node (<a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode"><code class="xref cpp cpp-struct docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::StiffnessOfNode</span></code></a>, in
+<code class="docutils literal notranslate"><span class="pre">addStiffnessOfNode</span></code> of <a class="reference internal" href="displacementparticle.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree20DisplacementParticleE" title="Marmot::Discretizations::Meshfree::DisplacementParticle"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::DisplacementParticle</span></code></a> and
+<a class="reference internal" href="gradientenhancedfinitestrainparticle.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree36GradientEnhancedFiniteStrainParticleE" title="Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle</span></code></a>, which the NSNI particles extend by
+their stabilization), and every block of the node’s rows follows from the shape functions of the other node
+(<code class="docutils literal notranslate"><span class="pre">addRowsOfNode</span></code>). The tangent of <code class="docutils literal notranslate"><span class="pre">computePhysicsKernels</span></code> is assembled this way, from the stiffness of each node and
+its inertia.</p>
+<p><strong>The stiffness, described to a visitor.</strong> In this factored form a particle describes its stiffness, the tangent of a
+zero increment without the inertia (see above for the state it is of): <code class="docutils literal notranslate"><span class="pre">describeStiffness</span></code> hands a
+<a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorE" title="Marmot::Discretizations::Meshfree::StiffnessVisitor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::StiffnessVisitor</span></code></a> first the shape functions at the evaluation point,
+then the three derivatives of every node. It evaluates the material point at a zero increment and puts back what that
+evaluation changes, the state variables it was assigned and the response and the tangents the material point keeps
+(<a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::SavedMaterialPoint</span></code></a>), also if the evaluation or the visitor throws: the
+particle is left as it was found. The density the material point keeps is taken once, when it is initialized. The
+particle knows nothing of what the visitor does with its stiffness. For an NSNI particle, the part of the
+stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the stabilization
+itself is shared by the displacement and the gradient-enhanced particles (<code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::NSNI</span></code>).</p>
+<p><strong>The bound of the absolute stiffness.</strong> An explicit host bounds the stable time increment of the particles by the
+Collatz-Wielandt bound of the mass-scaled stiffness, which needs the row sums <span class="math notranslate nohighlight">\(|\boldsymbol{K}|\,\boldsymbol{w}\)</span>
+only. The stiffness of a particle with <span class="math notranslate nohighlight">\(n\)</span> nodes has <span class="math notranslate nohighlight">\(n^2\)</span> blocks; its rows are linear in the shape
+functions of the other node, so the sum over that node is taken from a few weighted moments of the shape functions,
+computed once per particle, at a cost of <span class="math notranslate nohighlight">\(O(n)\)</span>: a visitor of the stiffness,
+<a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</span></code></a>, which the host applies to a particle with
+<code class="docutils literal notranslate"><span class="pre">addBoundOfAbsoluteStiffnessTimes</span></code>. It lives with the host’s other visitor,
+<a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssemblerE" title="Marmot::Discretizations::Meshfree::StiffnessAssembler"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::StiffnessAssembler</span></code></a> (<code class="docutils literal notranslate"><span class="pre">assembleStiffness</span></code>, the stiffness itself, e.g. to
+check the bound against), in <code class="docutils literal notranslate"><span class="pre">MarmotParticleStiffnessVisitors.h</span></code>, which the particles do not include; both are compiled
+in Marmot. For row <span class="math notranslate nohighlight">\(i\)</span> of node <span class="math notranslate nohighlight">\(A\)</span> and column component <span class="math notranslate nohighlight">\(k\)</span>, with the
+weights <span class="math notranslate nohighlight">\(w_B\)</span> of component <span class="math notranslate nohighlight">\(k\)</span> of the nodes, the value factor <span class="math notranslate nohighlight">\(a\)</span>, the gradient factors
+<span class="math notranslate nohighlight">\(\boldsymbol{b}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{g}_B = \partial N_B/\partial\boldsymbol{Y}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum_B |K_{Ai,Bk}|\,w_B \le |a| \sum_B w_B |N_B|
++ \sqrt{\sum_B w_B \|\boldsymbol{g}_B\| \;\; \boldsymbol{b}^T \Big( \sum_B \frac{w_B}{\|\boldsymbol{g}_B\|}
+\boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b}}
++ \ldots ,\]</div>
+<p>and the same for the second gradients. The value term is exact; the gradient term is the Cauchy-Schwarz inequality
+over the nodes, which keeps the directions of the gradients: it is exact for parallel gradients and
+<span class="math notranslate nohighlight">\(2/\sqrt{3}\)</span> of the exact sum for gradients spread evenly in 3D (<span class="math notranslate nohighlight">\(\pi/(2\sqrt{2})\)</span> in 2D). The terms are
+added by the triangle inequality, so the bound never lies below <span class="math notranslate nohighlight">\(|\boldsymbol{K}|\,\boldsymbol{w}\)</span>, for symmetric
+and unsymmetric stiffnesses alike.</p>
 </section>
 <section id="the-particle-domain">
 <h2>The particle domain<a class="headerlink" href="#the-particle-domain" title="Link to this heading"></a></h2>
@@ -517,6 +618,9 @@ which must outlive the particle.</p>
 <li><p>per increment: <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a6cc5735e24f3c305aa6a85219908527a"><span class="std std-ref">assignMeshfreeKernelFunctions()</span></a>, optionally the VCI methods (vci_…), then repeatedly <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> and the load methods, and after convergence <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>.</p></li>
 </ol>
 </p>
+<p><p>That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material’s tangent is required) are written down once, on the page “Meshfree Particles” of the documentation, section “The explicit life</p>
+<p>cycle of a particle”.</p>
+<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">describeStiffness()</span></a> is not one of them: it leaves the particle as it was found (and is of an accepted state after <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>).</p>
 <p><strong>State contract:</strong> the state variable block is a <em>trial</em> copy. Before every call of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a>, the host restores it to the values committed by the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>, and <code class="docutils literal notranslate"><span class="pre">dQ</span></code> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> and back in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>.</p>
 <p>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, …], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <span class="math notranslate nohighlight">\( n_{\text{nodes}} \cdot \)</span> <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a5b7d8e653f4401f8958656bc737c92ed"><span class="std std-ref">getNBaseDof()</span></a>.</p>
 <p>For the stiffness matrix, a column-major layout is used.</p>
@@ -693,7 +797,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle22acceptStateAndPositionEv">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle22acceptStateAndPositionEv"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle22acceptStateAndPositionEv"></span><span id="Marmot::Discretizations::Meshfree::Particle::acceptStateAndPosition"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">acceptStateAndPosition</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
 <dd><p>Accept the current state after a converged increment and move the particle to the new configuration. </p>
-<p>The configuration reached becomes the reference intermediate configuration <span class="math notranslate nohighlight">\( Y \)</span> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). </p>
+<p>The configuration reached becomes the reference intermediate configuration <span class="math notranslate nohighlight">\( Y \)</span> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). It must be idempotent: a host may accept twice without an increment in between (calls 2 and 3 of an explicit increment, see the page “Meshfree Particles”, section “The explicit life cycle of a particle”). </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -898,6 +1002,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle21updatePhysicsExplicitEPKddd"></span><span id="Marmot::Discretizations::Meshfree::Particle::updatePhysicsExplicit__doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a8a04e0e7f26751788e4f9132bc97cdaf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updatePhysicsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Explicit dynamics: update the kinematics and the material state for the dof increment. </p>
+<p><p>Call 1 of an explicit increment; a zero-length increment leaves the rates alone. The call order of an explicit increment and its contracts: the page “Meshfree Particles”, section “The explicit life cycle of a</p>
+<p>particle”.</p>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -916,6 +1023,9 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle29computePhysicsKernelsExplicitEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computePhysicsKernelsExplicit__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a6a23907b325ea1016f0190d158e00ec8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computePhysicsKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fInt</span></span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Explicit dynamics: compute the internal force vector for the state set by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a8a04e0e7f26751788e4f9132bc97cdaf"><span class="std std-ref">updatePhysicsExplicit()</span></a>. </p>
+<p><p>Call 5 of an explicit increment, on the kernel functions of the new configuration. The call order of an explicit increment and its contracts: the page “Meshfree Particles”, section “The explicit life cycle of a</p>
+<p>particle”.</p>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>fInt</strong> – <strong>[inout]</strong> Internal force vector (node-wise). </p>
@@ -971,6 +1081,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedInertiaEPd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedInertiaEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedInertiaEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeLumpedInertia__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a74371407f7597a403fc0def9d5b62573"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mLumped</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Compute the lumped (row-sum) inertia contribution of the particle. </p>
+<p>Call 6 of an explicit increment. The call order of an explicit increment and its contracts: the page “Meshfree Particles”, section “The explicit life cycle of a particle”. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mLumped</strong> – <strong>[inout]</strong> Lumped mass vector (node-wise). </p>
@@ -985,6 +1096,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle21computeLumpedMomentumEPd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle21computeLumpedMomentumEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle21computeLumpedMomentumEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeLumpedMomentum__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1ae631e6c29145a031f9a4b2b8602abe0b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedMomentum</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mLumped</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Compute the lumped momentum contribution of the particle. </p>
+<p>Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and its contracts: the page “Meshfree Particles”, section “The explicit life cycle of a particle”. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>mLumped</strong> – <strong>[inout]</strong> Lumped momentum vector (node-wise). </p>
@@ -1071,10 +1183,26 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle20computeLumpedDampingEPd"></span><span id="Marmot::Discretizations::Meshfree::Particle::computeLumpedDamping__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1ae9c16ebb511868904d2b537b21cbab97"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedDamping</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">cLumped</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle. </p>
-<p>The coefficient of each field’s FIRST time derivative, node-wise and in the layout of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a74371407f7597a403fc0def9d5b62573"><span class="std std-ref">computeLumpedInertia()</span></a>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. </p>
+<p>The coefficient of each field’s FIRST time derivative, node-wise and in the layout of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a74371407f7597a403fc0def9d5b62573"><span class="std std-ref">computeLumpedInertia()</span></a>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. Call 7 of an explicit increment; the call order and its contracts: the page “Meshfree Particles”, section “The explicit life cycle of a particle”. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cLumped</strong> – <strong>[inout]</strong> Lumped damping vector (node-wise); entries left untouched mean no damping. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle17describeStiffnessER16StiffnessVisitordd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle17describeStiffnessER16StiffnessVisitordd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle17describeStiffnessER16StiffnessVisitordd"></span><span id="Marmot::Discretizations::Meshfree::Particle::describeStiffness__StiffnessVisitorR.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">describeStiffness</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorE" title="Marmot::Discretizations::Meshfree::StiffnessVisitor"><span class="n"><span class="pre">StiffnessVisitor</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">visitor</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Describe the stiffness of the particle to a visitor, node by node: the shape functions at its evaluation point, then for every node the derivatives of its force with respect to the increment the particle interpolates (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a>). </p>
+<p>The stiffness is the tangent of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a153da1e94e222703cfe32025067e320b"><span class="std std-ref">computePhysicsKernels()</span></a> at a zero increment, without the inertia: the material point is evaluated with the configuration of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a> and the working copy of the state. It is the stiffness of an accepted state after <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a7a9a889fbae0e7b252333e5b9736243d"><span class="std std-ref">acceptStateAndPosition()</span></a>, where an explicit host asks for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme (<a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1a3d65119bd6c2ee382e8727acb4941ebe"><span class="std std-ref">addBoundOfAbsoluteStiffnessTimes()</span></a> in MarmotParticleStiffnessVisitors.h). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>visitor</strong> – <strong>[inout]</strong> The visitor. </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> The time of the zero increment the material point is evaluated with. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> The time increment of the zero increment. </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -2903,6 +3031,726 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot8Registry15ParticleFactory29particleFactoryFunctionByNameEv">
 <span id="_CPPv3N6Marmot8Registry15ParticleFactory29particleFactoryFunctionByNameEv"></span><span id="_CPPv2N6Marmot8Registry15ParticleFactory29particleFactoryFunctionByNameEv"></span><span id="Marmot::Registry::ParticleFactory::particleFactoryFunctionByName"></span><span class="target" id="classMarmot_1_1Registry_1_1ParticleFactory_1ab2755c1a37a3c690083983dbadbfb15c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot8Registry15ParticleFactory23particleFactoryFunctionE" title="Marmot::Registry::ParticleFactory::particleFactoryFunction"><span class="n"><span class="pre">particleFactoryFunction</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">particleFactoryFunctionByName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Registered factory functions by upper-case particle name (a function-local static: registrations run during static initialization, possibly before a static data member of this translation unit would be constructed). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree16StiffnessVisitorE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree16StiffnessVisitorE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessVisitor"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StiffnessVisitor</span></span></span><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::StiffnessVisitor:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-80356307ba1e1f6b1aaba914af8bf6af40dc7ebe.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Sees the stiffness of a particle node by node, as the particle describes it (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a>). </p>
+<p>A particle sees the increments <span class="math notranslate nohighlight">\( \Delta\boldsymbol{Q}_B \)</span> of its nodes only through the increment it interpolates at its evaluation point: its value, its gradient and, for a stabilized particle, its second gradient,       <div class="math notranslate nohighlight">
+\[  \Delta\boldsymbol{q} = \sum_B N_B\, \Delta\boldsymbol{Q}_B, \qquad
+  \frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,
+  \Delta\boldsymbol{Q}_B, \qquad
+  \frac{\partial^2 \Delta\boldsymbol{q}}{\partial Y_l \partial Y_m} = \sum_B
+  \frac{\partial^2 N_B}{\partial Y_l \partial Y_m}\, \Delta\boldsymbol{Q}_B .
+\]</div>
+ By the chain rule, the block of the stiffness that couples the force <span class="math notranslate nohighlight">\( \boldsymbol{f}_A \)</span> of node <span class="math notranslate nohighlight">\( A \)</span> with the increment of node <span class="math notranslate nohighlight">\( B \)</span> is       <div class="math notranslate nohighlight">
+\[  \boldsymbol{K}_{AB} = \frac{\partial \boldsymbol{f}_A}{\partial \Delta\boldsymbol{q}}\, N_B
+  + \sum_l \frac{\partial \boldsymbol{f}_A}{\partial (\partial \Delta\boldsymbol{q} / \partial Y_l)}\,
+  \frac{\partial N_B}{\partial Y_l}
+  + \sum_{l,m} \frac{\partial \boldsymbol{f}_A}{\partial (\partial^2 \Delta\boldsymbol{q} / \partial Y_l
+  \partial Y_m)}\, \frac{\partial^2 N_B}{\partial Y_l \partial Y_m} .
+\]</div>
+ The particle describes the stiffness in this factored form: first the shape functions at its evaluation point (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor_1aa2e93274e740593d3ab2ad570194174b"><span class="std std-ref">visitShapeFunctions()</span></a>), once, then for every node <span class="math notranslate nohighlight">\( A \)</span> the three derivatives of its force, which do not depend on <span class="math notranslate nohighlight">\( B \)</span> (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor_1a96a2984c188f6732600f490905cc33bd"><span class="std std-ref">visitStiffnessOfNode()</span></a>). A visitor does with them what it needs, e.g. bound the absolute value of the stiffness (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound"><span class="std std-ref">AbsoluteStiffnessBound</span></a>) without forming its <span class="math notranslate nohighlight">\( n^2 \)</span> blocks, or form them (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler"><span class="std std-ref">StiffnessAssembler</span></a>; both in MarmotParticleStiffnessVisitors.h, for the host).</p>
+<p>The visitor is not templated, as <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle"><span class="std std-ref">Particle</span></a> is not: the dimension and the number of dofs per node are given with the shape functions, and all arrays are column-major. A particle without second gradients gives nullptr for both second-gradient arrays (of the shape functions and of the forces). With <span class="math notranslate nohighlight">\( n_d \)</span> = nDim and <span class="math notranslate nohighlight">\( n \)</span> = nDofPerNode:<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">N:</span></code> 1 x nNodes, <code class="docutils literal notranslate"><span class="pre">dN_dY:</span></code> <span class="math notranslate nohighlight">\( n_d \)</span> x nNodes, <code class="docutils literal notranslate"><span class="pre">d2N_dYdY:</span></code> <span class="math notranslate nohighlight">\( n_d^2 \)</span> x nNodes, entry <span class="math notranslate nohighlight">\( (l\, n_d + m, B) \)</span> is <span class="math notranslate nohighlight">\( \partial^2 N_B / \partial Y_l \partial Y_m \)</span>;</p></li>
+<li><p>each derivative of the force of a node is a block of <span class="math notranslate nohighlight">\( n \)</span> x <span class="math notranslate nohighlight">\( n \)</span>: row <span class="math notranslate nohighlight">\( i \)</span> is the component of the force of the node, column <span class="math notranslate nohighlight">\( k \)</span> the component of the interpolated increment (the fields of a node, in its dof order). The <span class="math notranslate nohighlight">\( n_d \)</span> gradient blocks follow each other, block <span class="math notranslate nohighlight">\( l \)</span> at offset <span class="math notranslate nohighlight">\( l\, n^2 \)</span>, and so do the <span class="math notranslate nohighlight">\( n_d^2 \)</span> second-gradient blocks, block <span class="math notranslate nohighlight">\( l\, n_d + m \)</span> at offset <span class="math notranslate nohighlight">\( (l\, n_d + m)\, n^2 \)</span>.</p></li>
+</ul>
+</p>
+<p>The arrays are valid during the call only. </p>
+<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound"><span class="std std-ref">Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler"><span class="std std-ref">Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorD0Ev">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree16StiffnessVisitorD0Ev"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree16StiffnessVisitorD0Ev"></span><span id="Marmot::Discretizations::Meshfree::StiffnessVisitor::~StiffnessVisitor"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor_1a528e7157331ae4265c06487a3f9660c9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~StiffnessVisitor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitor19visitShapeFunctionsEiiiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree16StiffnessVisitor19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree16StiffnessVisitor19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::StiffnessVisitor::visitShapeFunctions__i.i.i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor_1aa2e93274e740593d3ab2ad570194174b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitShapeFunctions</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDofPerNode</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nNodes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dN_dY</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d2N_dYdY</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>The shape functions at the evaluation point of the particle, before its nodes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – <strong>[in]</strong> The spatial dimension. </p></li>
+<li><p><strong>nDofPerNode</strong> – <strong>[in]</strong> The number of dofs per node. </p></li>
+<li><p><strong>nNodes</strong> – <strong>[in]</strong> The number of nodes. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> The trial shape functions <span class="math notranslate nohighlight">\( N_B \)</span>, 1 x nNodes. </p></li>
+<li><p><strong>dN_dY</strong> – <strong>[in]</strong> Their gradients <span class="math notranslate nohighlight">\( \partial N_B / \partial Y_l \)</span>, nDim x nNodes. </p></li>
+<li><p><strong>d2N_dYdY</strong> – <strong>[in]</strong> Their second gradients, nDim^2 x nNodes; nullptr for a particle without second gradients. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitor20visitStiffnessOfNodeEiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree16StiffnessVisitor20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree16StiffnessVisitor20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::StiffnessVisitor::visitStiffnessOfNode__i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor_1a96a2984c188f6732600f490905cc33bd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitStiffnessOfNode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementGradient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementSecondGradient</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>The derivatives of the force of node <code class="docutils literal notranslate"><span class="pre">A</span></code> with respect to the interpolated increment. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – <strong>[in]</strong> The node. </p></li>
+<li><p><strong>df_dIncrement</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} \)</span>, one block. </p></li>
+<li><p><strong>df_dIncrementGradient</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} /
+\partial Y_l) \)</span>, nDim blocks. </p></li>
+<li><p><strong>df_dIncrementSecondGradient</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial (\partial^2
+\Delta\boldsymbol{q} / \partial Y_l \partial Y_m) \)</span>, nDim^2 blocks; nullptr for a particle without second gradients. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE">
+<span id="_CPPv3I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE"></span><span id="_CPPv2I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNode</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StiffnessOfNode</span></span></span><br /></dt>
+<dd><p>The stiffness of one node of a particle: the derivatives of the force of the node with respect to the increment the particle interpolates (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a>), in the layout <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a> documents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Spatial dimension. </p></li>
+<li><p><strong>nDofPerNode</strong> – Number of degrees of freedom per node. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode5BlockE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode5BlockE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode5BlockE"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a836ca325a89af4ad85b25effffa3baab"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Block</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>A derivative of the force of the node with respect to a component of the interpolated increment. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode7setZeroEv">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode7setZeroEv"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode7setZeroEv"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::setZero"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1af80a0e6b9e8a4f7ec7039817b420bac5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setZero</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Set all derivatives to zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::gradientBlock__i"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a8236e03546b0e75074da8e353a3e2227"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradientBlock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The derivative with respect to the gradient of the interpolated increment along <span class="math notranslate nohighlight">\( Y_l \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> – <strong>[in]</strong> The direction. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a836ca325a89af4ad85b25effffa3baab"><span class="std std-ref">Block</span></a> <span class="math notranslate nohighlight">\( l \)</span> of df_dIncrementGradient. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree15StiffnessOfNode13gradientBlockEi"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::gradientBlock__iC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a231cb7d55b887a4e392ba29fa2b5871c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradientBlock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The derivative with respect to the gradient of the interpolated increment along <span class="math notranslate nohighlight">\( Y_l \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> – <strong>[in]</strong> The direction. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a836ca325a89af4ad85b25effffa3baab"><span class="std std-ref">Block</span></a> <span class="math notranslate nohighlight">\( l \)</span> of df_dIncrementGradient. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::secondGradientBlock__i"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a323c0157503160bc5a89cacb86e17792"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">secondGradientBlock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lm</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The derivative with respect to the second gradient of the interpolated increment along <span class="math notranslate nohighlight">\( Y_l, Y_m \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lm</strong> – <strong>[in]</strong> The index <span class="math notranslate nohighlight">\( l\, n_{\text{dim}} + m \)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a836ca325a89af4ad85b25effffa3baab"><span class="std std-ref">Block</span></a> <code class="docutils literal notranslate"><span class="pre">lm</span></code> of df_dIncrementSecondGradient. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree15StiffnessOfNode19secondGradientBlockEi"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::secondGradientBlock__iC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1ae1a9731cf2348110cf36ff1ef9602285"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">secondGradientBlock</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lm</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The derivative with respect to the second gradient of the interpolated increment along <span class="math notranslate nohighlight">\( Y_l, Y_m \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lm</strong> – <strong>[in]</strong> The index <span class="math notranslate nohighlight">\( l\, n_{\text{dim}} + m \)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a836ca325a89af4ad85b25effffa3baab"><span class="std std-ref">Block</span></a> <code class="docutils literal notranslate"><span class="pre">lm</span></code> of df_dIncrementSecondGradient. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode13df_dIncrementE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode13df_dIncrementE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode13df_dIncrementE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrement__Block"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1af131d712c7b8d75501ecdf87a8f631cd"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode5BlockE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::Block"><span class="n"><span class="pre">Block</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">df_dIncrement</span></span></span><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode21df_dIncrementGradientE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode21df_dIncrementGradientE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode21df_dIncrementGradientE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrementGradient__Eigen::Matrix:double.nDofPerNode.nDim-*-nDofPerNode:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a601b7035f055ee3a8e7b5c5774719ea8"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">df_dIncrementGradient</span></span></span><br /></dt>
+<dd><p>The blocks <span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} / \partial Y_l) \)</span> side by side, block <span class="math notranslate nohighlight">\( l \)</span> in the columns <span class="math notranslate nohighlight">\( l\, n_{\text{dof/node}} \)</span> on (see <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a8236e03546b0e75074da8e353a3e2227"><span class="std std-ref">gradientBlock()</span></a>). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree15StiffnessOfNode27df_dIncrementSecondGradientE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree15StiffnessOfNode27df_dIncrementSecondGradientE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree15StiffnessOfNode27df_dIncrementSecondGradientE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessOfNode::df_dIncrementSecondGradient__Eigen::Matrix:double.nDofPerNode.nDim-*-nDim-*-nDofPerNode:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1af5f9c3cde2d365b855aa0c630c2b6b21"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">df_dIncrementSecondGradient</span></span></span><br /></dt>
+<dd><p>The blocks  <span class="math notranslate nohighlight">\( \partial \boldsymbol{f}_A / \partial (\partial^2 \Delta\boldsymbol{q} / \partial Y_l
+\partial Y_m) \)</span> side by side, block <span class="math notranslate nohighlight">\( l\, n_{\text{dim}} + m \)</span> (see <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode_1a323c0157503160bc5a89cacb86e17792"><span class="std std-ref">secondGradientBlock()</span></a>); zero for a particle without second gradients. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AbsoluteStiffnessBound</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorE" title="Marmot::Discretizations::Meshfree::StiffnessVisitor"><span class="n"><span class="pre">StiffnessVisitor</span></span></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-05bc831a7556dea1755f7bce1e212887ee2d2956.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-05bc831a7556dea1755f7bce1e212887ee2d2956.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Bounds the absolute value of a particle’s stiffness times nonnegative weights, <span class="math notranslate nohighlight">\( |\boldsymbol{K}|\, \boldsymbol{W} \)</span>, from the stiffness it describes node by node, without forming it. </p>
+<p>What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the Collatz-Wielandt bound, <span class="math notranslate nohighlight">\( \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i \)</span> for positive weights <span class="math notranslate nohighlight">\( \boldsymbol{w} \)</span>. The stiffness of a particle with <span class="math notranslate nohighlight">\( n \)</span> nodes has <span class="math notranslate nohighlight">\( n^2 \)</span> blocks; this bound of <span class="math notranslate nohighlight">\( |\boldsymbol{K}|\boldsymbol{W} \)</span> costs <span class="math notranslate nohighlight">\( O(n) \)</span>: the rows of node <span class="math notranslate nohighlight">\( A \)</span> are linear in the shape functions of the other node <span class="math notranslate nohighlight">\( B \)</span> (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a>), and the sum over <span class="math notranslate nohighlight">\( B \)</span> is taken from a few weighted moments of the shape functions, computed once per particle (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a82f1d4575f5bbebaffe338326a9aa1fe"><span class="std std-ref">visitShapeFunctions()</span></a>). Row <span class="math notranslate nohighlight">\( i \)</span> of node <span class="math notranslate nohighlight">\( A \)</span>, column component <span class="math notranslate nohighlight">\( k \)</span>, with the weights <span class="math notranslate nohighlight">\( w_B \)</span> of component <span class="math notranslate nohighlight">\( k \)</span> of the nodes and the factors <span class="math notranslate nohighlight">\( a = \partial f_{Ai}/\partial \Delta q_k \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{b} \)</span> (its gradient factors) and <span class="math notranslate nohighlight">\( \boldsymbol{h} \)</span> (its second-gradient factors):      <div class="math notranslate nohighlight">
+\[  \sum_B |K_{Ai,Bk}|\, w_B \le |a| \sum_B w_B |N_B|
+  + \sqrt{ \sum_B w_B \|\boldsymbol{g}_B\| \; \boldsymbol{b}^T \Big( \sum_B
+    \frac{w_B}{\|\boldsymbol{g}_B\|} \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b} }
+  + (\text{the same for } \boldsymbol{h} \text{ and the second gradients}),
+\]</div>
+ with <span class="math notranslate nohighlight">\( \boldsymbol{g}_B = \partial N_B / \partial \boldsymbol{Y} \)</span>. The first term is exact; the others are the Cauchy-Schwarz inequality over the nodes,   <span class="math notranslate nohighlight">\( \sum_B w_B |\boldsymbol{b}\cdot\boldsymbol{g}_B| \le
+\sqrt{\sum_B w_B \|\boldsymbol{g}_B\|} \sqrt{\sum_B w_B (\boldsymbol{b}\cdot\boldsymbol{g}_B)^2 /
+\|\boldsymbol{g}_B\|} \)</span>, which keeps the directions of the gradients: it is exact if all gradients are parallel, and <span class="math notranslate nohighlight">\( 2/\sqrt{3} \)</span> times the exact sum ( <span class="math notranslate nohighlight">\( \pi/(2\sqrt{2}) \)</span> in 2D) if their directions are spread evenly. The terms are added by the triangle inequality. The bound holds for every stiffness of the form of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a>, symmetric or not; the second gradients of the shape functions must be symmetric (their symmetric components are used).</p>
+<p>A host uses it through <a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1a3d65119bd6c2ee382e8727acb4941ebe"><span class="std std-ref">addBoundOfAbsoluteStiffnessTimes()</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDim</strong> – Spatial dimension. </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound22AbsoluteStiffnessBoundEPKdiPd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound22AbsoluteStiffnessBoundEPKdiPd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound22AbsoluteStiffnessBoundEPKdiPd"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::AbsoluteStiffnessBound__doubleCP.i.doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a1631fd1b428396c2518bbde36fa6b08d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AbsoluteStiffnessBound</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">columnWeights</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nColumns</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">bound</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>A bound to be added to <code class="docutils literal notranslate"><span class="pre">bound</span></code>, for the weights <code class="docutils literal notranslate"><span class="pre">columnWeights</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>columnWeights</strong> – <strong>[in]</strong> The nonnegative weights <span class="math notranslate nohighlight">\( \boldsymbol{W} \)</span>, column-major, (nNodes nDofPerNode) x nColumns, in the dof order of the particle. </p></li>
+<li><p><strong>nColumns</strong> – <strong>[in]</strong> The number of columns of <code class="docutils literal notranslate"><span class="pre">columnWeights</span></code>. </p></li>
+<li><p><strong>bound</strong> – <strong>[inout]</strong> The bound, column-major, (nNodes nDofPerNode) x nColumns; the bound of every row is added. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19visitShapeFunctionsEiiiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::visitShapeFunctions__i.i.i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a82f1d4575f5bbebaffe338326a9aa1fe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitShapeFunctions</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDimOfParticle</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDofPerNode</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nNodes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dN_dY</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d2N_dYdY</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Compute the weighted moments of the shape functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDimOfParticle</strong> – <strong>[in]</strong> The spatial dimension of the particle; must be nDim. </p></li>
+<li><p><strong>nDofPerNode</strong> – <strong>[in]</strong> The number of dofs per node. </p></li>
+<li><p><strong>nNodes</strong> – <strong>[in]</strong> The number of nodes. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> The trial shape functions, 1 x nNodes. </p></li>
+<li><p><strong>dN_dY</strong> – <strong>[in]</strong> Their gradients, nDim x nNodes. </p></li>
+<li><p><strong>d2N_dYdY</strong> – <strong>[in]</strong> Their second gradients, nDim^2 x nNodes; nullptr for a particle without second gradients. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the particle is not of dimension nDim, or has more than maxDofsPerNode dofs per node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20visitStiffnessOfNodeEiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::visitStiffnessOfNode__i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a7a8aaba0a83f6ebae0104ecbbb8edd46"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitStiffnessOfNode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementGradient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementSecondGradient</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Add the bound of the rows of node <code class="docutils literal notranslate"><span class="pre">A:</span></code> <span class="math notranslate nohighlight">\( (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} \)</span> for all components <span class="math notranslate nohighlight">\( i \)</span> and columns <span class="math notranslate nohighlight">\( c \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – <strong>[in]</strong> The node. </p></li>
+<li><p><strong>df_dIncrement</strong> – <strong>[in]</strong> The derivative of its force with respect to the interpolated increment. </p></li>
+<li><p><strong>df_dIncrementGradient</strong> – <strong>[in]</strong> The derivatives with respect to its gradient. </p></li>
+<li><p><strong>df_dIncrementSecondGradient</strong> – <strong>[in]</strong> The derivatives with respect to its second gradient. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a6c82c6b4c717f1600e15c3d15ddcc4fd"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nSym</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="o"><span class="pre">/</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><br /></dt>
+<dd><p>The number of independent components of a symmetric second gradient. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20addBoundOfRowsOfNodeEviPKdPKdPKd">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20addBoundOfRowsOfNodeEiPKdPKdPKd"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20addBoundOfRowsOfNodeEiPKdPKdPKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNode</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a6438468c1194e67fc3b181a5c777b665"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addBoundOfRowsOfNode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementGradient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementSecondGradient</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the bound of the rows of node <code class="docutils literal notranslate"><span class="pre">A</span></code> (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a7a8aaba0a83f6ebae0104ecbbb8edd46"><span class="std std-ref">visitStiffnessOfNode()</span></a>), with the number of dofs per node known at compile time: the derivatives are read as typed blocks, and the loops over the components unrolled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDofPerNode</strong> – The number of dofs per node. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – <strong>[in]</strong> The node. </p></li>
+<li><p><strong>df_dIncrement</strong> – <strong>[in]</strong> The derivative of its force with respect to the interpolated increment. </p></li>
+<li><p><strong>df_dIncrementGradient</strong> – <strong>[in]</strong> The derivatives with respect to its gradient. </p></li>
+<li><p><strong>df_dIncrementSecondGradient</strong> – <strong>[in]</strong> The derivatives with respect to its second gradient. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound14_columnWeightsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound14_columnWeightsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound14_columnWeightsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_columnWeights__doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1ac49ed13692a727ec005da51339fab21e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">_columnWeights</span></span></span><br /></dt>
+<dd><p>the weights, column-major </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound9_nColumnsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound9_nColumnsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound9_nColumnsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_nColumns__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a88bc157b6d75690d8f4b6910bc0d7a20"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_nColumns</span></span></span><br /></dt>
+<dd><p>the number of columns of the weights </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound6_boundE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound6_boundE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound6_boundE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_bound__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1af5b84e44bbe12e6947d04ce0897dfd9e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">_bound</span></span></span><br /></dt>
+<dd><p>the bound, column-major </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound5_nDofE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound5_nDofE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound5_nDofE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_nDof__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a28f18f8fa00a7b7eec51022b2d87eb1b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_nDof</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>the number of dofs of the particle </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20_withSecondGradientsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20_withSecondGradientsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound20_withSecondGradientsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_withSecondGradients__b"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1ac2e369754a229500def83d4eab9e783f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_withSecondGradients</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><br /></dt>
+<dd><p>the particle has second gradients </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound8_momentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound8_momentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound8_momentsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::_moments__std::vector:Moments:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a25cdc436e5264ecce1f65c68de43a5ce"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7MomentsE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments"><span class="n"><span class="pre">Moments</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_moments</span></span></span><br /></dt>
+<dd><p>entry <span class="math notranslate nohighlight">\( c\, n_{\text{dof/node}} + k \)</span></p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsEvRKN5Eigen6MatrixId1nXL1EEEEdRdRN5Eigen6MatrixId1n1nEE">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsERKN5Eigen6MatrixId1nXL1EEEEdRdRN5Eigen6MatrixId1n1nEE"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsERKN5Eigen6MatrixId1nX1EEEdRdRN5Eigen6MatrixId1n1nEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">n</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a6466d7d86967974f205d2e3d4443345e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addMoments</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsEvRKN5Eigen6MatrixId1nXL1EEEEdRdRN5Eigen6MatrixId1n1nEE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::addMoments::n"><span class="n"><span class="pre">n</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">g</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">w</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sumOfNorms</span></span>, <a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsEvRKN5Eigen6MatrixId1nXL1EEEEdRdRN5Eigen6MatrixId1n1nEE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::addMoments::n"><span class="n"><span class="pre">n</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound10addMomentsEvRKN5Eigen6MatrixId1nXL1EEEEdRdRN5Eigen6MatrixId1n1nEE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::addMoments::n"><span class="n"><span class="pre">n</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">moments</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the moments of one node: <span class="math notranslate nohighlight">\( w \|\boldsymbol{g}\| \)</span> and  <span class="math notranslate nohighlight">\( w\, \boldsymbol{g}
+\boldsymbol{g}^T / \|\boldsymbol{g}\| \)</span> (nothing for <span class="math notranslate nohighlight">\( \boldsymbol{g} = \boldsymbol{0} \)</span>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – The size of <code class="docutils literal notranslate"><span class="pre">g</span></code>. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>g</strong> – <strong>[in]</strong> The gradient (or the symmetric components of the second gradient) of the node. </p></li>
+<li><p><strong>w</strong> – <strong>[in]</strong> The weight of the node. </p></li>
+<li><p><strong>sumOfNorms</strong> – <strong>[inout]</strong> The sum of the weighted norms. </p></li>
+<li><p><strong>moments</strong> – <strong>[inout]</strong> The sum of the weighted outer products. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19symmetricComponentsEPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19symmetricComponentsEPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound19symmetricComponentsEPKd"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::symmetricComponents__doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1a582b52e6f1671496504167bcc8156b1d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym"><span class="n"><span class="pre">nSym</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">symmetricComponents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d2N_dYdY</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The independent components <span class="math notranslate nohighlight">\( (l, m), l \le m \)</span> of a symmetric second gradient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d2N_dYdY</strong> – <strong>[in]</strong> The second gradient of one node, entry <span class="math notranslate nohighlight">\( l\, n_{\text{dim}} + m \)</span>. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The nSym components, in the order <span class="math notranslate nohighlight">\( (0,0), (0,1), \ldots, (1,1), \ldots \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7MomentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7MomentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7MomentsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Moments</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7MomentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>The weighted moments of the shape functions for one column and one component of the nodes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments6activeE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments6activeE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments6activeE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::active__b"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1a40c4027c491f00d59583681a50848135"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">active</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments6activeE" title="Link to this definition"></a><br /></dt>
+<dd><p>some weight of the column and component is positive </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments11sumOfValuesE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments11sumOfValuesE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments11sumOfValuesE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfValues__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1a7d3ddad0d2ab73cdc15e5dfe6aab61c1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sumOfValues</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments11sumOfValuesE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \sum_B w_B |N_B| \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments18sumOfGradientNormsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments18sumOfGradientNormsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments18sumOfGradientNormsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfGradientNorms__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1ac36a591ec74e7ecf83dddb169fdcf43a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sumOfGradientNorms</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments18sumOfGradientNormsE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \sum_B w_B \|\boldsymbol{g}_B\| \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments15gradientMomentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments15gradientMomentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments15gradientMomentsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::gradientMoments__Eigen::Matrix:double.nDim.nDim:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1a1697ee897fc8e7600508ab27ecd97e0d"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gradientMoments</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBoundE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments15gradientMomentsE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \sum_B w_B \boldsymbol{g}_B \boldsymbol{g}_B^T / \|\boldsymbol{g}_B\| \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments24sumOfSecondGradientNormsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments24sumOfSecondGradientNormsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments24sumOfSecondGradientNormsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfSecondGradientNorms__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1a27a2fcfa97c244ad542b5ef2d149ff74"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sumOfSecondGradientNorms</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments24sumOfSecondGradientNormsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the same for the second gradients </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments21secondGradientMomentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments21secondGradientMomentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments21secondGradientMomentsE"></span><span id="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::secondGradientMoments__Eigen::Matrix:double.nSym.nSym:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound_1_1Moments_1a2701e80e2d95a3c657e0ee02e52d428d"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym"><span class="n"><span class="pre">nSym</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym"><span class="n"><span class="pre">nSym</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">secondGradientMoments</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym"><span class="n"><span class="pre">nSym</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound4nSymE" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::nSym"><span class="n"><span class="pre">nSym</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments21secondGradientMomentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the same for the symmetric components of the second gradients </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree32addBoundOfAbsoluteStiffnessTimesER8ParticlePKdiPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree32addBoundOfAbsoluteStiffnessTimesER8ParticlePKdiPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree32addBoundOfAbsoluteStiffnessTimesER8ParticlePKdiPddd"></span><span id="Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes__ParticleR.doubleCP.i.doubleP.double.double"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1a3d65119bd6c2ee382e8727acb4941ebe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">addBoundOfAbsoluteStiffnessTimes</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE" title="Marmot::Discretizations::Meshfree::Particle"><span class="n"><span class="pre">Particle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particle</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">columnWeights</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nColumns</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">bound</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add an upper bound of <span class="math notranslate nohighlight">\( |\boldsymbol{K}|\, \boldsymbol{W} \)</span>, the absolute value of a particle’s stiffness times nonnegative weights, without forming the stiffness (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1AbsoluteStiffnessBound"><span class="std std-ref">AbsoluteStiffnessBound</span></a>, which the particle describes its stiffness to; see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a> for the state it is of). The particle is left as it was found. </p>
+<p>The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <span class="math notranslate nohighlight">\( |\boldsymbol{K}|\boldsymbol{w} \)</span> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>particle</strong> – <strong>[inout]</strong> The particle (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a>). </p></li>
+<li><p><strong>columnWeights</strong> – <strong>[in]</strong> The nonnegative weights <span class="math notranslate nohighlight">\( \boldsymbol{W} \)</span>, column-major, nDof x nColumns, in the dof order of the particle. </p></li>
+<li><p><strong>nColumns</strong> – <strong>[in]</strong> The number of columns of <code class="docutils literal notranslate"><span class="pre">columnWeights</span></code>. </p></li>
+<li><p><strong>bound</strong> – <strong>[inout]</strong> Column-major, nDof x nColumns: the bound is added. </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> The time of the zero increment the stiffness is evaluated with. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> The time increment of the zero increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a particle of a dimension other than 2 or 3, or with more than maxDofsPerNode dofs per node; std::runtime_error from a particle that does not describe its stiffness. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssemblerE">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssemblerE"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssemblerE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StiffnessAssembler</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree16StiffnessVisitorE" title="Marmot::Discretizations::Meshfree::StiffnessVisitor"><span class="n"><span class="pre">StiffnessVisitor</span></span></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::StiffnessAssembler:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6a90571e9b173f2abad5421712736c58cc19e096.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Meshfree::StiffnessAssembler:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6a90571e9b173f2abad5421712736c58cc19e096.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::StiffnessVisitor&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Assembles the stiffness of a particle from the stiffness it describes node by node: the blocks <span class="math notranslate nohighlight">\( \boldsymbol{K}_{AB} \)</span> of all nodes (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessVisitor"><span class="std std-ref">StiffnessVisitor</span></a>), with addRowsOfNode(), as the particle’s computePhysicsKernels() forms its tangent, without the inertia. </p>
+<p>A host uses it through <a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1ad37467af1b4bb17a958c394b9b7652e5"><span class="std std-ref">assembleStiffness()</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDim</strong> – Spatial dimension. </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler18StiffnessAssemblerEPd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler18StiffnessAssemblerEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler18StiffnessAssemblerEPd"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::StiffnessAssembler__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1a03e8dfd353130472acdba2ded17eb860"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StiffnessAssembler</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>A stiffness to be added to <code class="docutils literal notranslate"><span class="pre">K</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>K</strong> – <strong>[inout]</strong> The stiffness, column-major, nDof x nDof; the stiffness of the particle is added. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler19visitShapeFunctionsEiiiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler19visitShapeFunctionsEiiiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::visitShapeFunctions__i.i.i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1a091edc55ec9d1e749474f8438c54e060"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitShapeFunctions</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDimOfParticle</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDofPerNode</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nNodes</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dN_dY</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d2N_dYdY</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Keep the shape functions for the rows of the nodes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDimOfParticle</strong> – <strong>[in]</strong> The spatial dimension of the particle; must be nDim. </p></li>
+<li><p><strong>nDofPerNode</strong> – <strong>[in]</strong> The number of dofs per node. </p></li>
+<li><p><strong>nNodes</strong> – <strong>[in]</strong> The number of nodes. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> The trial shape functions, 1 x nNodes. </p></li>
+<li><p><strong>dN_dY</strong> – <strong>[in]</strong> Their gradients, nDim x nNodes. </p></li>
+<li><p><strong>d2N_dYdY</strong> – <strong>[in]</strong> Their second gradients, nDim^2 x nNodes; nullptr for a particle without second gradients. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the particle is not of dimension nDim, or has more than maxDofsPerNode dofs per node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler20visitStiffnessOfNodeEiPKdPKdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler20visitStiffnessOfNodeEiPKdPKdPKd"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::visitStiffnessOfNode__i.doubleCP.doubleCP.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1af68ada57f96bcf47c459ee2b5c09c551"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visitStiffnessOfNode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementGradient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementSecondGradient</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Add the rows of node <code class="docutils literal notranslate"><span class="pre">A:</span></code> <span class="math notranslate nohighlight">\( \boldsymbol{K}_{AB} \)</span> for all nodes <span class="math notranslate nohighlight">\( B \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – <strong>[in]</strong> The node. </p></li>
+<li><p><strong>df_dIncrement</strong> – <strong>[in]</strong> The derivative of its force with respect to the interpolated increment. </p></li>
+<li><p><strong>df_dIncrementGradient</strong> – <strong>[in]</strong> The derivatives with respect to its gradient. </p></li>
+<li><p><strong>df_dIncrementSecondGradient</strong> – <strong>[in]</strong> The derivatives with respect to its second gradient. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssembler16addRowsOfNodeToKEviPKdPKdPKd">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssembler16addRowsOfNodeToKEiPKdPKdPKd"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree18StiffnessAssembler16addRowsOfNodeToKEiPKdPKdPKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNode</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1a4e652e993f93b3ca6767f45752fd61b5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addRowsOfNodeToK</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementGradient</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">df_dIncrementSecondGradient</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the rows of node <code class="docutils literal notranslate"><span class="pre">A</span></code> (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1af68ada57f96bcf47c459ee2b5c09c551"><span class="std std-ref">visitStiffnessOfNode()</span></a>) with addRowsOfNode(), for the number of dofs per node at compile time. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDofPerNode</strong> – The number of dofs per node. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>A</strong> – <strong>[in]</strong> The node. </p></li>
+<li><p><strong>df_dIncrement</strong> – <strong>[in]</strong> The derivative of its force with respect to the interpolated increment. </p></li>
+<li><p><strong>df_dIncrementGradient</strong> – <strong>[in]</strong> The derivatives with respect to its gradient. </p></li>
+<li><p><strong>df_dIncrementSecondGradient</strong> – <strong>[in]</strong> The derivatives with respect to its second gradient. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_KE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_KE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_KE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::_K__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1af62e3134704150f094909f88b93e8fa4"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">_K</span></span></span><br /></dt>
+<dd><p>the stiffness, column-major </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler5_nDofE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler5_nDofE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler5_nDofE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::_nDof__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1adc0f09956bfc4c9bb76f4bc38e2c667b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_nDof</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>the number of dofs of the particle </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_NE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_NE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler2_NE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::_N__Eigen::MatrixXd"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1af1a90ec0abf483e84f774cb0871a1b8e"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_N</span></span></span><br /></dt>
+<dd><p>the trial shape functions, 1 x nNodes </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler6_dN_dYE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler6_dN_dYE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler6_dN_dYE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::_dN_dY__Eigen::MatrixXd"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1a7c93ee6fddc1e2e9fc5a07d4808eb07e"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_dN_dY</span></span></span><br /></dt>
+<dd><p>their gradients, nDim x nNodes </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18StiffnessAssembler9_d2N_dYdYE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18StiffnessAssembler9_d2N_dYdYE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18StiffnessAssembler9_d2N_dYdYE"></span><span id="Marmot::Discretizations::Meshfree::StiffnessAssembler::_d2N_dYdY__Eigen::MatrixXd"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler_1ac96ce0195792a23ec750e5964701c298"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_d2N_dYdY</span></span></span><br /></dt>
+<dd><p>their second gradients, nDim^2 x nNodes; empty without second gradients </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree17assembleStiffnessER8ParticlePddd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree17assembleStiffnessER8ParticlePddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree17assembleStiffnessER8ParticlePddd"></span><span id="Marmot::Discretizations::Meshfree::assembleStiffness__ParticleR.doubleP.double.double"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1ad37467af1b4bb17a958c394b9b7652e5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">assembleStiffness</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE" title="Marmot::Discretizations::Meshfree::Particle"><span class="n"><span class="pre">Particle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the stiffness of a particle to a matrix (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessAssembler"><span class="std std-ref">StiffnessAssembler</span></a>, which the particle describes its stiffness to; see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a> for the state it is of): the tangent of computePhysicsKernels() at a zero increment, without the inertia. The particle is left as it was found. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>particle</strong> – <strong>[inout]</strong> The particle (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a>). </p></li>
+<li><p><strong>K</strong> – <strong>[inout]</strong> Column-major, nDof x nDof, in the dof order of the particle: the stiffness is added. </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> The time of the zero increment the stiffness is evaluated with. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> The time increment of the zero increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a particle of a dimension other than 2 or 3, or with more than maxDofsPerNode dofs per node; std::runtime_error from a particle that does not describe its stiffness. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE">
+<span id="_CPPv3I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE"></span><span id="_CPPv2I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialPoint</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SavedMaterialPoint</span></span></span><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Discretizations::Meshfree::SavedMaterialPoint:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f30934bdc2e0160f910ef3590dd8369e00c17bfb.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>What an evaluation of a material point changes, saved, and put back when this goes out of scope: the response and the tangents the material point keeps, and its state variables. </p>
+<p>A particle describes its stiffness (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aab0d22df342729365537585c8b3a6517"><span class="std std-ref">Particle::describeStiffness()</span></a>) at a zero increment of its material point, which overwrites all three. It saves them first; they are put back also if the evaluation or the visitor throws, so the particle is left as it was found. The state variables are those the material point was assigned (MaterialPoint::getAssignedStateVars()). The density the material point keeps is not touched: it is taken once, at initializeYourself().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MaterialPoint</strong> – A material point with the public members <code class="docutils literal notranslate"><span class="pre">response</span></code> and <code class="docutils literal notranslate"><span class="pre">tangents</span></code>. </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointER13MaterialPoint">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointER13MaterialPoint"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointER13MaterialPoint"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::SavedMaterialPoint__MaterialPointR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1add76a289fe1b494ac3aa1047bd48d9ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SavedMaterialPoint</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialPoint</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Save the response, the tangents and the state variables of a material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>materialPoint</strong> – <strong>[inout]</strong> The material point; it is put back on destruction. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPointD0Ev">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPointD0Ev"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPointD0Ev"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::~SavedMaterialPoint"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1a09dbc486ef5c7aea59ff821b89bef240"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~SavedMaterialPoint</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Put the response, the tangents and the state variables back. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointERK18SavedMaterialPoint">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointERK18SavedMaterialPoint"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointERK18SavedMaterialPoint"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::SavedMaterialPoint__SavedMaterialPointCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1afae0d9e64472cc66f22b693323c1b1dc"></span><span class="sig-name descname"><span class="n"><span class="pre">SavedMaterialPoint</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint18SavedMaterialPointERK18SavedMaterialPoint" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint::SavedMaterialPoint"><span class="n"><span class="pre">SavedMaterialPoint</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><br /></dt>
+<dd><p>not copyable: it puts back once </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPointaSERK18SavedMaterialPoint">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPointaSERK18SavedMaterialPoint"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPointaSERK18SavedMaterialPoint"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::assign-operator__SavedMaterialPointCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1ae1682a843e55d21c4fbe16fdab7bc005"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint"><span class="n"><span class="pre">SavedMaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint"><span class="n"><span class="pre">SavedMaterialPoint</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><br /></dt>
+<dd><p>not copyable: it puts back once </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint14_materialPointE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint14_materialPointE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint14_materialPointE"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::_materialPoint__MaterialPointR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1a3571d2f2b4a63e2358d69f2222bc60f7"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">_materialPoint</span></span></span><br /></dt>
+<dd><p>the material point </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_responseE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_responseE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_responseE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1acc683f5e36530533142f4ce12782b5f3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_response</span></span></span><br /></dt>
+<dd><p>its saved response </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_tangentsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_tangentsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint9_tangentsE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1a7e4aa76d432de267ef3bb0d721d52669"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">decltype</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree18SavedMaterialPointE" title="Marmot::Discretizations::Meshfree::SavedMaterialPoint::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tangents</span></span><span class="p"><span class="pre">)</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_tangents</span></span></span><br /></dt>
+<dd><p>its saved tangents </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint10_stateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint10_stateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint10_stateVarsE"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::_stateVars__Marmot::Utilities::StateViewC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1aa6ef0fb4cc2da447f94e727f2a7da3a8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_stateVars</span></span></span><br /></dt>
+<dd><p>where its state variables are </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18SavedMaterialPoint15_savedStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18SavedMaterialPoint15_savedStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18SavedMaterialPoint15_savedStateVarsE"></span><span id="Marmot::Discretizations::Meshfree::SavedMaterialPoint::_savedStateVars__std::vector:double:C"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1SavedMaterialPoint_1a242904921906f5e24121fb8ebf367183"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_savedStateVars</span></span></span><br /></dt>
+<dd><p>their saved values </p>
 </dd></dl>
 
 </div>

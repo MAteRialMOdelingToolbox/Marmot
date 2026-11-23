@@ -245,17 +245,19 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6281bcc1b02612b645492a77edf34d3a0edea27e.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-456fa3f3d0d2432e8ea122326e93aff7f602d9b4.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
-    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -468,7 +470,7 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv">
 <span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getDensityUndeformedC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a2961c8e62cca70a4d13a96ce92b9c12d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensityUndeformed</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Mass density in the undeformed configuration, as provided by the material. </p>
+<dd><p>Mass density in the undeformed configuration, as provided by the material at <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1af8649e019e763252a226d24e62b65156"><span class="std std-ref">initializeYourself()</span></a>: an evaluation does not change it. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The density. </p>
@@ -682,7 +684,7 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_density__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1afd88f6d3b0af7d1ba89f526da3f68efd"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_density</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE" title="Link to this definition"></a><br /></dt>
-<dd><p>mass density in the undeformed configuration, as provided by the material </p>
+<dd><p>mass density in the undeformed configuration, as provided by the material at <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1af8649e019e763252a226d24e62b65156"><span class="std std-ref">initializeYourself()</span></a></p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -882,24 +884,26 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fa2d4dd3142e7ecc2ce51a4865d864103a05ca17.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7ae8bcddb81a2e98447f1f13e52389be1205e7ed.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
-    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
-    &quot;6&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;6&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;7&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;7&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;7&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -976,24 +980,26 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-452dc937645a8c9a6fdc3e0ec6c536d440ce7552.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-22cd39e463f7038e2f1b038c802b6f8fb4093114.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
-    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
-    &quot;6&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;6&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;7&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;7&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;7&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

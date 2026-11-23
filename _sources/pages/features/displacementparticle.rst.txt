@@ -57,6 +57,12 @@ unchanged acceleration stays in the residual. A host that integrates in time the
 increment for a displacement (EdelweissFE's implicit dynamic solver skips it). The particles also provide a lumped mass :math:`\rho_0\,T_A\,V_0` and a lumped momentum
 :math:`\rho_0\,T_A\,V_0\,\boldsymbol{v}` for explicit schemes.
 
+The tangent is assembled node by node from the derivatives of the force of node :math:`A` with respect to the gradient
+of the interpolated increment (the bracket above without :math:`\partial N_B/\partial Y_L`, with
+:math:`\partial N_B/\partial x_i = \partial Y_L/\partial x_i\,\partial N_B/\partial Y_L`), which are also
+the stiffness the particle describes to a visitor (``describeStiffness``), e.g. for the bound of the absolute stiffness
+of explicit schemes (see :doc:`meshfreeparticles`).
+
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
 

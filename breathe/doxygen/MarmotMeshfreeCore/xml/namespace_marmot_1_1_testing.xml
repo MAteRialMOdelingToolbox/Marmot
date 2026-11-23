@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_testing" kind="namespace" language="C++">
+    <compoundname>Marmot::Testing</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1aada80ec024a9dbc01b7b9f2984799b1a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness</definition>
+        <argsstring>(const std::string &amp;name, Marmot::Discretizations::Meshfree::Particle &amp;particle, const Eigen::MatrixXd &amp;K, const Eigen::MatrixXd &amp;W, double maxOverestimate)</argsstring>
+        <name>checkAbsoluteStiffnessBoundAgainstStiffness</name>
+        <qualifiedname>Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref> &amp;</type>
+          <declname>particle</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>W</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>maxOverestimate</declname>
+        </param>
+        <briefdescription>
+<para>Check the bound of <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula> of a particle (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()</ref>) against its stiffness  <formula id="58">$ \boldsymbol{K}
+$</formula>: the bound never lies below <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, and the largest entry of each column (what the Collatz-Wielandt bound takes) is at most <computeroutput>maxOverestimate</computeroutput> times the exact one. The stiffness the particle describes, assembled (<ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">Marmot::Discretizations::Meshfree::assembleStiffness()</ref>), is <computeroutput>K</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the particle, for the messages. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>particle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The particle, at the state of <computeroutput>K</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stiffness of the particle at a zero increment, column-major, nDof x nDof. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>W</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The nonnegative weights, nDof x nColumns. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxOverestimate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The largest admissible ratio of the largest entries of a column. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(throwExceptionOnFailure()) if the bound fails either check. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" line="56" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" bodystart="56" bodyend="88"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1ab53dc9b566332842d48381549aa8090a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged</definition>
+        <argsstring>(const std::string &amp;name, Marmot::Discretizations::Meshfree::Particle &amp;particle, const std::vector&lt; double &gt; &amp;stateVars, const Eigen::VectorXd &amp;dQ, bool explicitPath)</argsstring>
+        <name>checkDescribingTheStiffnessLeavesTheParticleUnchanged</name>
+        <qualifiedname>Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref> &amp;</type>
+          <declname>particle</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>dQ</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>explicitPath</declname>
+        </param>
+        <briefdescription>
+<para>Check that a particle that describes its stiffness (Particle::describeStiffness()) is left as it was found, in the middle of an increment: advanced by <computeroutput>dQ</computeroutput> and not yet accepted, so that its state holds the increment and its material point keeps the response of it, both of which the zero increment of the description would overwrite. The state variables, the bound of two descriptions in a row (addBoundOfAbsoluteStiffnessTimes()) and, for a particle with the explicit path, the internal force before and after a description, which reads the response the material point keeps, must be equal to the last bit; also after a description whose visitor throws. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the particle, for the messages. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>particle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The particle, with kernel functions assigned. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its state variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The increment of its nodes, node-wise. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>explicitPath</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the particle has the explicit path: it is advanced by updatePhysicsExplicit() and its explicit internal force is compared; else it is advanced by computePhysicsKernels(). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(throwExceptionOnFailure()) if the description changes the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" line="105" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" bodystart="105" bodyend="169"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Helpers for the tests of particles. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" line="41" column="1"/>
+  </compounddef>
+</doxygen>

@@ -17,17 +17,17 @@
 <para>Computes the plane stress derivative of the stress with respect to the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the 3D derivative of the stress tensor with respect to the deformation gradient <formula id="445">$ F_{ij} $</formula> to a plane stress setting.</para>
+<para>Reduces the 3D derivative of the stress tensor with respect to the deformation gradient <formula id="92">$ F_{ij} $</formula> to a plane stress setting.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>dStressdDeformationGradient3D</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of 3D stress w.r.t. deformation gradient ( <formula id="0">$6 \times 3 \times 3$</formula> tensor). </para>
+<para>Derivative of 3D stress w.r.t. deformation gradient ( <formula id="29">$6 \times 3 \times 3$</formula> tensor). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Reduced derivative of stress w.r.t. deformation gradient ( <formula id="446">$3 \times 2 \times 2$</formula> tensor) for plane stress. </para>
+<simplesect kind="return"><para>Reduced derivative of stress w.r.t. deformation gradient ( <formula id="93">$3 \times 2 \times 2$</formula> tensor) for plane stress. </para>
 </simplesect>
 </para>
         </detaileddescription>

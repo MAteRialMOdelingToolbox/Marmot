@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound&lt; nDim &gt;" alt="" coords="5,5,694,53"/>
+<area shape="rect" id="node3" title="Marmot::Discretizations::Meshfree::StiffnessVisitor" alt="" coords="439,101,951,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="436,51,597,97,592,97,435,57"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::StiffnessAssembler&lt; nDim &gt;" alt="" coords="718,5,1362,53"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="957,54,796,100,795,94,951,54"/>
+</map>

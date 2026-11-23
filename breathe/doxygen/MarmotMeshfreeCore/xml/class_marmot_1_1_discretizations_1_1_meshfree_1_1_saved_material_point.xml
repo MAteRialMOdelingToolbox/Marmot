@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::SavedMaterialPoint</compoundname>
+    <includes refid="_marmot_particle_stiffness_8h" local="no">MarmotParticleStiffness.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename MaterialPoint</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a3571d2f2b4a63e2358d69f2222bc60f7" prot="private" static="no" mutable="no">
+        <type>MaterialPoint &amp;</type>
+        <definition>MaterialPoint&amp; Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::_materialPoint</definition>
+        <argsstring></argsstring>
+        <name>_materialPoint</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::_materialPoint</qualifiedname>
+        <briefdescription>
+<para>the material point </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="305" column="46" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="305" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1acc683f5e36530533142f4ce12782b5f3" prot="private" static="no" mutable="no">
+        <type>const decltype(MaterialPoint::response)</type>
+        <definition>const decltype( MaterialPoint::response ) Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::_response</definition>
+        <argsstring></argsstring>
+        <name>_response</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::_response</qualifiedname>
+        <briefdescription>
+<para>its saved response </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="306" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="306" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a7e4aa76d432de267ef3bb0d721d52669" prot="private" static="no" mutable="no">
+        <type>const decltype(MaterialPoint::tangents)</type>
+        <definition>const decltype( MaterialPoint::tangents ) Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::_tangents</definition>
+        <argsstring></argsstring>
+        <name>_tangents</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::_tangents</qualifiedname>
+        <briefdescription>
+<para>its saved tangents </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="307" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="307" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1aa6ef0fb4cc2da447f94e727f2a7da3a8" prot="private" static="no" mutable="no">
+        <type>const Marmot::Utilities::StateView</type>
+        <definition>const Marmot::Utilities::StateView Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::_stateVars</definition>
+        <argsstring></argsstring>
+        <name>_stateVars</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::_stateVars</qualifiedname>
+        <briefdescription>
+<para>where its state variables are </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="308" column="47" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="308" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a242904921906f5e24121fb8ebf367183" prot="private" static="no" mutable="no">
+        <type>const std::vector&lt; double &gt;</type>
+        <definition>const std::vector&lt; double &gt; Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::_savedStateVars</definition>
+        <argsstring></argsstring>
+        <name>_savedStateVars</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::_savedStateVars</qualifiedname>
+        <briefdescription>
+<para>their saved values </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="309" column="37" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="309" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1add76a289fe1b494ac3aa1047bd48d9ab" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::SavedMaterialPoint</definition>
+        <argsstring>(MaterialPoint &amp;materialPoint)</argsstring>
+        <name>SavedMaterialPoint</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::SavedMaterialPoint</qualifiedname>
+        <param>
+          <type>MaterialPoint &amp;</type>
+          <declname>materialPoint</declname>
+        </param>
+        <briefdescription>
+<para>Save the response, the tangents and the state variables of a material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">materialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point; it is put back on destruction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="284" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="284" bodyend="291"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a09dbc486ef5c7aea59ff821b89bef240" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::~SavedMaterialPoint</definition>
+        <argsstring>()</argsstring>
+        <name>~SavedMaterialPoint</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::~SavedMaterialPoint</qualifiedname>
+        <briefdescription>
+<para>Put the response, the tangents and the state variables back. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="294" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="294" bodyend="299"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1afae0d9e64472cc66f22b693323c1b1dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::SavedMaterialPoint</definition>
+        <argsstring>(const SavedMaterialPoint &amp;)=delete</argsstring>
+        <name>SavedMaterialPoint</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::SavedMaterialPoint</qualifiedname>
+        <param>
+          <type>const SavedMaterialPoint &amp;</type>
+        </param>
+        <briefdescription>
+<para>not copyable: it puts back once </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="301" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1ae1682a843e55d21c4fbe16fdab7bc005" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1add76a289fe1b494ac3aa1047bd48d9ab" kindref="member">SavedMaterialPoint</ref> &amp;</type>
+        <definition>SavedMaterialPoint &amp; Marmot::Discretizations::Meshfree::SavedMaterialPoint&lt; MaterialPoint &gt;::operator=</definition>
+        <argsstring>(const SavedMaterialPoint &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::SavedMaterialPoint::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1add76a289fe1b494ac3aa1047bd48d9ab" kindref="member">SavedMaterialPoint</ref> &amp;</type>
+        </param>
+        <briefdescription>
+<para>not copyable: it puts back once </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="302" column="24"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>What an evaluation of a material point changes, saved, and put back when this goes out of scope: the response and the tangents the material point keeps, and its state variables. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A particle describes its stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref>) at a zero increment of its material point, which overwrites all three. It saves them first; they are put back also if the evaluation or the visitor throws, so the particle is left as it was found. The state variables are those the material point was assigned (MaterialPoint::getAssignedStateVars()). The density the material point keeps is not touched: it is taken once, at initializeYourself().</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>MaterialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A material point with the public members <computeroutput>response</computeroutput> and <computeroutput>tangents</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="278" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="278" bodyend="310"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a3571d2f2b4a63e2358d69f2222bc60f7" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>_materialPoint</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1acc683f5e36530533142f4ce12782b5f3" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>_response</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a242904921906f5e24121fb8ebf367183" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>_savedStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1aa6ef0fb4cc2da447f94e727f2a7da3a8" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>_stateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a7e4aa76d432de267ef3bb0d721d52669" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>_tangents</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1ae1682a843e55d21c4fbe16fdab7bc005" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>operator=</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1add76a289fe1b494ac3aa1047bd48d9ab" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>SavedMaterialPoint</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1afae0d9e64472cc66f22b693323c1b1dc" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>SavedMaterialPoint</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a09dbc486ef5c7aea59ff821b89bef240" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::SavedMaterialPoint</scope><name>~SavedMaterialPoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

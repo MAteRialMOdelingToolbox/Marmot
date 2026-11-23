@@ -301,17 +301,19 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-8382be6a1af4a0f79fe7f0c90fcf08ae216f0384.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-31ecc3b58517161a5a337aa3af7caa20144e09bf.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Response&quot;]
-    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Response&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -558,7 +560,7 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <dd><p>Mass density in the reference configuration. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Density reported by the material at <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a27055fc3d6e958aed22b17b329344f35"><span class="std std-ref">initializeYourself()</span></a> and after each <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ae5fefa88d3f8be38f5d6d8e97bef101f"><span class="std std-ref">computeYourself()</span></a>. </p>
+<dd class="field-odd"><p>Density reported by the material at <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a27055fc3d6e958aed22b17b329344f35"><span class="std std-ref">initializeYourself()</span></a>, the mass of the material point over its reference volume: an evaluation does not change it. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -608,7 +610,7 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint22acceptStateAndPositionEv">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint22acceptStateAndPositionEv"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint22acceptStateAndPositionEv"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::acceptStateAndPosition"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a946fa2987c483571dda99a81451d7d78"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">acceptStateAndPosition</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint22acceptStateAndPositionEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Accept the current increment: <span class="math notranslate nohighlight">\( \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span>. </p>
-<p>The increment itself is not reset here; the next <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ad4b74577884018c7f45a1ecb14e1c7fe"><span class="std std-ref">prepareYourself()</span></a> does that. </p>
+<p>The increment itself is not reset here; the next <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ad4b74577884018c7f45a1ecb14e1c7fe"><span class="std std-ref">prepareYourself()</span></a> does that. A second accept before it would apply the increment twice: a particle, whose accept must be idempotent, calls <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ad4b74577884018c7f45a1ecb14e1c7fe"><span class="std std-ref">prepareYourself()</span></a> right after (GradientEnhancedFiniteStrainParticle::acceptStateAndPosition()). </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -867,7 +869,7 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8_densityE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8_densityE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8_densityE"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::_density__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a5415230d96ec77dd1259742dd95ca8a3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_density</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8_densityE" title="Link to this definition"></a><br /></dt>
-<dd><p>mass density in the reference configuration, as reported by the material </p>
+<dd><p>mass density in the reference configuration, from <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a27055fc3d6e958aed22b17b329344f35"><span class="std std-ref">initializeYourself()</span></a></p>
 </dd></dl>
 
 <dl class="cpp var">

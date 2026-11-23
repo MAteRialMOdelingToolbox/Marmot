@@ -755,6 +755,18 @@ and the constructor throws for degrees above 1.</p></li>
 }" class="graphviz" /></div>
 </div>
 </figure>
+<p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::MaterialPoint:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-3343ce5cd440f9af0d4b6fb325edaa5ac0d92343.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
 <p>Abstract interface of a material point of the material point method (MPM). </p>
 <p>A material point is a Lagrangian integration point that carries mass (volume and density), position and the complete history (deformation, stress, material state variables) through the simulation, while the background cells (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1Cell"><span class="std std-ref">Marmot::Discretizations::Cells::Cell</span></a>) carry the nodal fields and are reset every increment. A material point owns its constitutive model (assigned with <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a47338654c1fd44ad3d9a43f6fa38a7c3"><span class="std std-ref">assignMaterial()</span></a>); its state variables live in an externally owned array (assigned with <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a0e1436d59382f9bf28c7c0fe94e265f5"><span class="std std-ref">assignStateVars()</span></a>).</p>
 <p><strong>Life cycle</strong> (as called by the host framework, e.g. EdelweissMeshfree):<ol class="loweralpha simple">
@@ -977,6 +989,26 @@ and the constructor throws for degrees above 1.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints13MaterialPoint20getAssignedStateVarsEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints13MaterialPoint20getAssignedStateVarsEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints13MaterialPoint20getAssignedStateVarsEv"></span><span id="Marmot::Discretizations::MaterialPoints::MaterialPoint::getAssignedStateVarsC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1afbf8a7df75d7ddc063d4096a7087aedf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAssignedStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The state variables assigned by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a0e1436d59382f9bf28c7c0fe94e265f5"><span class="std std-ref">assignStateVars()</span></a>: the block the material point keeps its state in. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The block; a null location and size zero before the assignment. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints13MaterialPoint18_assignedStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints13MaterialPoint18_assignedStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints13MaterialPoint18_assignedStateVarsE"></span><span id="Marmot::Discretizations::MaterialPoints::MaterialPoint::_assignedStateVars__Marmot::Utilities::StateView"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a69df198efa2e3fb5af6b773914a08422"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_assignedStateVars</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dd><p>the state variables assigned by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a0e1436d59382f9bf28c7c0fe94e265f5"><span class="std std-ref">assignStateVars()</span></a>; every implementation of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1MaterialPoint_1a0e1436d59382f9bf28c7c0fe94e265f5"><span class="std std-ref">assignStateVars()</span></a> sets it </p>
 </dd></dl>
 
 </div>

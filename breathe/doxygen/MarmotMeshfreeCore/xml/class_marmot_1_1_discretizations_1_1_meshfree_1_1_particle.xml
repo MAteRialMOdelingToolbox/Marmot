@@ -7,9 +7,9 @@
     <includes refid="_marmot_particle_8h" local="no">MarmotParticle.h</includes>
     <sectiondef kind="user-defined">
       <header>Variationally consistent integration (VCI)</header>
-      <description><para>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <formula id="191">$ \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C $</formula>, such that the integration by parts is exact under the numerical integration for a polynomial basis <formula id="192">$ P_C(Y) $</formula> (the complete monomials up to the VCI order); <formula id="154">$ \chi_A $</formula> is the indicator of the support of kernel function <formula id="74">$ A $</formula>,    <formula id="193">\[  \int_\Omega \frac{\partial T_A}{\partial Y_i} P_C \, dV + \int_\Omega T_A \frac{\partial P_C}{\partial Y_i} \,
+      <description><para>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <formula id="40">$ \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C $</formula>, such that the integration by parts is exact under the numerical integration for a polynomial basis <formula id="41">$ P_C(Y) $</formula> (the complete monomials up to the VCI order); <formula id="42">$ \chi_A $</formula> is the indicator of the support of kernel function <formula id="16">$ A $</formula>,    <formula id="43">\[  \int_\Omega \frac{\partial T_A}{\partial Y_i} P_C \, dV + \int_\Omega T_A \frac{\partial P_C}{\partial Y_i} \,
 dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
-\]</formula> The particles provide their local contributions to these integrals, all arrays are row-major, sized <formula id="182">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> (index <formula id="194">$ AiC $</formula>) or <formula id="186">$ n_{\text{nodes}} \times n_C \times n_C $</formula> (index <formula id="195">$ ACD $</formula>), and contributions are accumulated (+=). The host framework assembles them over all particles per node <formula id="74">$ A $</formula> and solves <formula id="196">$ \sum_D M_{ACD}\, \eta_{AiD} = R_{AiC} $</formula> with the residual  <formula id="197">$ R_{AiC} = \int_{\partial\Omega} T_A P_C n_i\,dA - \int_\Omega \partial_i T_A\, P_C\,dV
+\]</formula> The particles provide their local contributions to these integrals, all arrays are row-major, sized <formula id="44">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> (index <formula id="45">$ AiC $</formula>) or <formula id="46">$ n_{\text{nodes}} \times n_C \times n_C $</formula> (index <formula id="47">$ ACD $</formula>), and contributions are accumulated (+=). The host framework assembles them over all particles per node <formula id="16">$ A $</formula> and solves <formula id="48">$ \sum_D M_{ACD}\, \eta_{AiD} = R_{AiC} $</formula> with the residual  <formula id="49">$ R_{AiC} = \int_{\partial\Omega} T_A P_C n_i\,dA - \int_\Omega \partial_i T_A\, P_C\,dV
 - \int_\Omega T_A\, \partial_i P_C\,dV $</formula>. </para>
 </description>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
@@ -21,7 +21,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774">vci_getNumberOfConstraints</reimplementedby>
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e">vci_getNumberOfConstraints</reimplementedby>
         <briefdescription>
-<para>Get the number of VCI constraints <formula id="173">$ n_C $</formula> (the size of the polynomial basis). </para>
+<para>Get the number of VCI constraints <formula id="50">$ n_C $</formula> (the size of the polynomial basis). </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>The number of VCI constraints. </para>
@@ -30,7 +30,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="392" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="412" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -53,7 +53,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Accumulate the boundary integral <formula id="198">$ \int_{\partial\Omega} T_A P_C n_i \, dA $</formula> of a boundary face. </para>
+<para>Accumulate the boundary integral <formula id="51">$ \int_{\partial\Omega} T_A P_C n_i \, dA $</formula> of a boundary face. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -61,7 +61,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="182">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="44">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -69,7 +69,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="in">boundarySurfaceVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Outward boundary surface vector <formula id="199">$ n\,dA $</formula> given by the host. </para>
+<para>Outward boundary surface vector <formula id="52">$ n\,dA $</formula> given by the host. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -85,7 +85,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="400" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="420" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab3a36559ef36ab4c6450503006396da6" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -100,7 +100,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>R_AiC_RowMajow</declname>
         </param>
         <briefdescription>
-<para>Accumulate the volume integral <formula id="200">$ \int_\Omega \partial T_A / \partial Y_i \, P_C \, dV $</formula>. </para>
+<para>Accumulate the volume integral <formula id="53">$ \int_\Omega \partial T_A / \partial Y_i \, P_C \, dV $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -108,7 +108,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajow</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="182">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="44">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -116,7 +116,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="408" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="428" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8d50e229b42e2c88d072fad3fd9296d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -131,7 +131,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate the volume integral <formula id="201">$ \int_\Omega T_A \, \partial P_C / \partial Y_i \, dV $</formula>. </para>
+<para>Accumulate the volume integral <formula id="54">$ \int_\Omega T_A \, \partial P_C / \partial Y_i \, dV $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -139,7 +139,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">R_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="182">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+<para>Row-major array <formula id="44">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -147,7 +147,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="414" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="434" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad08bba752f036670caa1b9d23e28c15a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -162,7 +162,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
           <declname>M_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate the moment matrix <formula id="202">$ M_{ACD} = \int_\Omega \chi_A P_C P_D \, dV $</formula> of the correction. </para>
+<para>Accumulate the moment matrix <formula id="55">$ M_{ACD} = \int_\Omega \chi_A P_C P_D \, dV $</formula> of the correction. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -170,7 +170,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">M_ACD_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="186">$ n_{\text{nodes}} \times n_C \times n_C $</formula>. </para>
+<para>Row-major array <formula id="46">$ n_{\text{nodes}} \times n_C \times n_C $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -178,7 +178,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="420" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="440" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad3dd12ee8f542b0a0130dd9a243c8d31" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -201,7 +201,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="in">eta_AiC_RowMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row-major array <formula id="182">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> of the coefficients <formula id="203">$ \eta_{AiC} $</formula> for the nodes of this particle. </para>
+<para>Row-major array <formula id="44">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> of the coefficients <formula id="56">$ \eta_{AiC} $</formula> for the nodes of this particle. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -209,7 +209,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="427" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="447" column="18"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -226,7 +226,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="96" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="104" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aca1f817c1a3d7ac8e66afe6f0310e8dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -241,7 +241,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="99" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="107" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -284,7 +284,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="107" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="115" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa96fbc7b18e0e211a93a8494cdd21978" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -327,7 +327,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="114" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="122" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; std::string &gt;</type>
@@ -347,7 +347,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="121" column="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="129" column="25"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -377,7 +377,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="130" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="138" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -419,7 +419,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="138" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="146" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a13850f7f8c70e4bf1472164a059c6732" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -435,7 +435,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="141" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="149" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -448,11 +448,11 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Accept the current state after a converged increment and move the particle to the new configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para>The configuration reached becomes the reference intermediate configuration <formula id="189">$ Y $</formula> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). </para>
+<para>The configuration reached becomes the reference intermediate configuration <formula id="37">$ Y $</formula> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). It must be idempotent: a host may accept twice without an increment in between (calls 2 and 3 of an explicit increment, see the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="148" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="158" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2d270d98f07b9888e1aa7cd29f0262a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -497,7 +497,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="156" column="42"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="166" column="42"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -516,7 +516,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="160" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="170" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -536,7 +536,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="164" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="174" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -556,7 +556,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="168" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="178" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a079069bee25014d8ffbc1a533c563bab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -574,7 +574,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="172" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="182" column="20"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a1258440ecb02c95a4e980b554c2c4da4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>std::string</type>
@@ -594,7 +594,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="176" column="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="186" column="25"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a750a36251603e02b97cf15bf06a3cba1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -625,7 +625,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="181" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="191" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a09ac7d6f8b5b73438dfd75f5dae59504" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -656,7 +656,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="186" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="196" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a73f6ee2bf83f162d11fc1d795fef103f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -699,7 +699,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="191" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="201" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac394d0c39f485a832e4ef801f0477f5b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -730,7 +730,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="195" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="205" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -748,7 +748,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="200" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="210" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a9173eea5b80fa7f5ef3b8ae0db4f7688" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>const std::vector&lt; std::string &gt; &amp;</type>
@@ -766,7 +766,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="205" column="31"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="215" column="31"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -812,7 +812,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="inout">fInt</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Internal force vector of size <formula id="190">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>. </para>
+<para>Internal force vector of size <formula id="38">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -844,7 +844,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="217" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="227" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -933,7 +933,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="232" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="242" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1034,7 +1034,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="249" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="259" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1058,7 +1058,8 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Explicit dynamics: update the kinematics and the material state for the dof increment. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>Call 1 of an explicit increment; a zero-length increment leaves the rates alone. The call order of an explicit increment and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a
+particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dQ</parametername>
 </parameternamelist>
@@ -1096,7 +1097,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="265" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="265" bodyend="270"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="278" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="278" bodyend="283"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1112,7 +1113,8 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Explicit dynamics: compute the internal force vector for the state set by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" kindref="member">updatePhysicsExplicit()</ref>. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>Call 5 of an explicit increment, on the kernel functions of the new configuration. The call order of an explicit increment and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a
+particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">fInt</parametername>
 </parameternamelist>
@@ -1134,7 +1136,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="278" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="278" bodyend="281"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="294" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="294" bodyend="297"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1220,7 +1222,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="294" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="294" bodyend="301"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="310" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="310" bodyend="317"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1318,7 +1320,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="315" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="315" bodyend="323"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="331" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="331" bodyend="339"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1334,7 +1336,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Compute the lumped (row-sum) inertia contribution of the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>Call 6 of an explicit increment. The call order of an explicit increment and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">mLumped</parametername>
 </parameternamelist>
@@ -1356,7 +1358,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="330" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="330" bodyend="333"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="348" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="348" bodyend="351"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1372,7 +1374,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Compute the lumped momentum contribution of the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">mLumped</parametername>
 </parameternamelist>
@@ -1394,7 +1396,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="340" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="340" bodyend="343"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="360" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="360" bodyend="363"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aff90338cf5e44ce344b9262920c25e1c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1421,7 +1423,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <parametername direction="out">vec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Array of <formula id="179">$ n_{\text{nodes}} $</formula> shape function values. </para>
+<para>Array of <formula id="39">$ n_{\text{nodes}} $</formula> shape function values. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -1437,7 +1439,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="350" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="370" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
@@ -1455,7 +1457,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="354" column="38"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="374" column="38"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
@@ -1473,7 +1475,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="358" column="38"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="378" column="38"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1503,7 +1505,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="363" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="383" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -1522,7 +1524,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="367" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="387" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1563,7 +1565,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="436" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="456" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1579,7 +1581,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <para>Explicit dynamics: compute the lumped (row-sum) damping contribution of the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para>The coefficient of each field&apos;s FIRST time derivative, node-wise and in the layout of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" kindref="member">computeLumpedInertia()</ref>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. <parameterlist kind="param"><parameteritem>
+<para>The coefficient of each field&apos;s FIRST time derivative, node-wise and in the layout of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" kindref="member">computeLumpedInertia()</ref>, which holds the coefficient of the SECOND: the nonlocal viscosity of a gradient-enhanced field, which integrates a first-order field on its own and damps a second-order one. The default adds nothing, i.e. no damping, which is the case of a displacement field. Call 7 of an explicit increment; the call order and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">cLumped</parametername>
 </parameternamelist>
@@ -1592,15 +1594,68 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="446" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="446" bodyend="446"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="467" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="467" bodyend="467"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::describeStiffness</definition>
+        <argsstring>(StiffnessVisitor &amp;visitor, double timeNew, double dT)</argsstring>
+        <name>describeStiffness</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::describeStiffness</qualifiedname>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref> &amp;</type>
+          <declname>visitor</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Describe the stiffness of the particle to a visitor, node by node: the shape functions at its evaluation point, then for every node the derivatives of its force with respect to the increment the particle interpolates (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The stiffness is the tangent of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> at a zero increment, without the inertia: the material point is evaluated with the configuration of the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> and the working copy of the state. It is the stiffness of an accepted state after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, where an explicit host asks for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">addBoundOfAbsoluteStiffnessTimes()</ref> in <ref refid="_marmot_particle_stiffness_visitors_8h" kindref="compound">MarmotParticleStiffnessVisitors.h</ref>). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">visitor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The visitor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The time of the zero increment the material point is evaluated with. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The time increment of the zero increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="485" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="485" bodyend="490"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>Abstract interface of a particle of the reproducing kernel particle method (RKPM). </para>
     </briefdescription>
     <detaileddescription>
-<para>A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain, commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the meshfree kernel functions (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), via the shape functions of a meshfree approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose support covers the particle and hands them over with <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>; the particle then evaluates the shape functions <formula id="161">$ N_A $</formula> and (possibly smoothed) gradients <formula id="187">$ \partial N_A / \partial Y $</formula> of these <formula id="188">$ A = 1 \dots n_{\text{nodes}} $</formula> nodes.</para>
-<para>Similar to finite elements, a particle computes the internal forces and their derivatives (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>), body loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>) and distributed loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>). Concrete particles work in an updated Lagrangian setting: gradients are taken with respect to the coordinates <formula id="189">$ Y $</formula> of the last accepted (reference intermediate) configuration, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> moves the particle to the new configuration at the end of a converged increment.</para>
+<para>A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain, commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the meshfree kernel functions (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), via the shape functions of a meshfree approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose support covers the particle and hands them over with <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>; the particle then evaluates the shape functions <formula id="34">$ N_A $</formula> and (possibly smoothed) gradients <formula id="35">$ \partial N_A / \partial Y $</formula> of these <formula id="36">$ A = 1 \dots n_{\text{nodes}} $</formula> nodes.</para>
+<para>Similar to finite elements, a particle computes the internal forces and their derivatives (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>), body loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>) and distributed loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>). Concrete particles work in an updated Lagrangian setting: gradients are taken with respect to the coordinates <formula id="37">$ Y $</formula> of the last accepted (reference intermediate) configuration, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> moves the particle to the new configuration at the end of a converged increment.</para>
 <para>A typical life cycle driven by the host framework is<orderedlist>
 <listitem><para>creation via <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kindref="member">Marmot::Registry::ParticleFactory::createParticle()</ref>,</para>
 </listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" kindref="member">setProperties()</ref> (e.g., the order of the variationally consistent integration and time integration parameters),</para>
@@ -1608,8 +1663,10 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 </listitem><listitem><para>per increment: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>, optionally the VCI methods (vci_...), then repeatedly <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> and the load methods, and after convergence <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
 </listitem></orderedlist>
 </para>
+<para>That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material&apos;s tangent is required) are written down once, on the page &quot;Meshfree Particles&quot; of the documentation, section &quot;The explicit life
+cycle of a particle&quot;. <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">describeStiffness()</ref> is not one of them: it leaves the particle as it was found (and is of an accepted state after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>).</para>
 <para><bold>State contract:</bold> the state variable block is a <emphasis>trial</emphasis> copy. Before every call of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>, the host restores it to the values committed by the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, and <computeroutput>dQ</computeroutput> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> and back in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
-<para>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, ...], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <formula id="190">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>.</para>
+<para>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, ...], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <formula id="38">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>.</para>
 <para>For the stiffness matrix, a column-major layout is used.</para>
 <para>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_... methods. The global assembly and solution of the VCI correction is done by the host framework.</para>
 <para>Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing ones do not move: a library and a host built against different versions then fail on the one new call instead of silently calling the wrong method. This is why methods that belong together by subject may stand apart. </para>
@@ -1632,7 +1689,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
         <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle"/>
       </node>
     </inheritancegraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="92" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="92" bodyend="447"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="100" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="100" bodyend="491"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>acceptStateAndPosition</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>assignMeshfreeKernelFunctions</name></member>
@@ -1646,6 +1703,7 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedMomentum</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernels</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernelsExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>describeStiffness</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac394d0c39f485a832e4ef801f0477f5b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getCenterCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getDimension</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getEvaluationCoordinates</name></member>

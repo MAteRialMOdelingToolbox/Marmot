@@ -310,13 +310,13 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="note"><para>The default implementation calls <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" kindref="member">computeStress()</ref> and discards the algorithmic tangent. Derived classes may override it for efficiency. </para>
+<simplesect kind="note"><para>The default implementation calls <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" kindref="member">computeStress()</ref> and discards the algorithmic tangent. Derived classes may override it for efficiency. The gradient-enhanced particles never call it, not even in an explicit analysis: they need the tangent (for the NSNI stabilization and the stiffness they describe), see the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="229" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="229" bodyend="235"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="231" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="231" bodyend="237"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a3ffacae620abb7dffe0c3a977a790cee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -393,7 +393,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="245" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="247" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adb1b42fce3f1a1b6d408eacb4e0c2ac9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -460,7 +460,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="262" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="264" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acbe8cf984c2b338da05e56170ed1568b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -537,7 +537,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="275" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="277" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac8ef6820ba3d7f66a2344c68c3f5fca4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -592,7 +592,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="289" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="289" bodyend="295"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="291" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="291" bodyend="297"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac7095f8ea233575e2a845d56ac2c9bce" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; double, double, double &gt;</type>
@@ -647,7 +647,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="307" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="309" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a35806c5ab920e53f9f198ffeb9e90e1d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -691,7 +691,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="318" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="318" bodyend="321"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="320" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="320" bodyend="323"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ab3f4081e35502f156353c8af36843478" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -709,7 +709,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="327" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="327" bodyend="327"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="329" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="329" bodyend="329"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2ad3efdfc590446972cad3bb7049a09b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -754,7 +754,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="337" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="337" bodyend="341"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="339" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="339" bodyend="343"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7363437cec66f93ee6ad3d0715ce09a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -786,7 +786,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="348" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="350" column="20"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a95d40e8b493a8079910821a045cbaa77" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -817,7 +817,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="358" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="358" bodyend="358"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="360" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="360" bodyend="360"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19da5badf39e69625928c40559e5ace6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
@@ -831,7 +831,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal viscosities <formula id="88">$ \eta_K $</formula> of the nonlocal balances. </para>
+<para>Nonlocal viscosities <formula id="131">$ \eta_K $</formula> of the nonlocal balances. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -843,7 +843,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Nonlocal viscosity of each nonlocal variable, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="89">\[  m_K\,\ddot{\bar{N}}_K + \eta_K\,\dot{\bar{N}}_K + \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K .
+<simplesect kind="return"><para>Nonlocal viscosity of each nonlocal variable, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="132">\[  m_K\,\ddot{\bar{N}}_K + \eta_K\,\dot{\bar{N}}_K + \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K .
 \]</formula></para>
 </simplesect>
 <simplesect kind="note"><para>Zero by default, which is the quasi-static model. Unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this default lets a material that is only ever used implicitly leave it alone. </para>
@@ -852,7 +852,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="373" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="373" bodyend="373"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="375" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="375" bodyend="375"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a37a4e2a684608e3c9d876aebcb79ad23" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aef8719fab9320791ffb17dad62428f8d" kindref="member">NonlocalVector</ref></type>
@@ -866,7 +866,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal micro-inertias <formula id="90">$ m_K $</formula> of the nonlocal balances. </para>
+<para>Nonlocal micro-inertias <formula id="133">$ m_K $</formula> of the nonlocal balances. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -886,7 +886,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="384" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="384" bodyend="384"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="386" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="386" bodyend="386"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -898,21 +898,21 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
 <parametername>nNonlocal</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Number of nonlocal variables <formula id="78">$ \bar{N}_K $</formula>, <formula id="79">$ K = 1 \dots n_\mathrm{nonlocal} $</formula>: one for a scalar nonlocal damage driver, six for a nonlocal strain tensor (GM7).</para>
+<para>Number of nonlocal variables <formula id="121">$ \bar{N}_K $</formula>, <formula id="122">$ K = 1 \dots n_\mathrm{nonlocal} $</formula>: one for a scalar nonlocal damage driver, six for a nonlocal strain tensor (GM7).</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to <computeroutput>nNonlocal</computeroutput> nonlocal fields <formula id="78">$ \bar{N}_K $</formula>, each governed by the additional balance equation    <formula id="80">\[  \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K(\boldsymbol{F},\,\bar{\boldsymbol{N}}),
+The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to <computeroutput>nNonlocal</computeroutput> nonlocal fields <formula id="121">$ \bar{N}_K $</formula>, each governed by the additional balance equation    <formula id="123">\[  \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K(\boldsymbol{F},\,\bar{\boldsymbol{N}}),
   \qquad c_K = R_K^2,
-\]</formula> where <formula id="81">$ L_K $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" kindref="member">ConstitutiveResponse::L</ref> and <formula id="82">$ R_K $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
+\]</formula> where <formula id="124">$ L_K $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" kindref="member">ConstitutiveResponse::L</ref> and <formula id="125">$ R_K $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
 <para>Quantities of the nonlocal space are Eigen vectors of size <computeroutput>nNonlocal</computeroutput>, as in the small-strain interface; a tangent mixing a spatial tensor with a nonlocal variable is one Fastor tensor per nonlocal variable, so that a consumer evaluates for each nonlocal variable exactly the expression it would evaluate for a single one.</para>
-<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="83">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="84">$ c_K $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="85">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="86">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires. A nonlocal variable that stands for a tensor (the six components of a nonlocal strain) must therefore be referred to a frame that a superposed rigid rotation does not change, e.g. the frame of the polar rotation (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kindref="compound">GradientEnhancedCorotationalWrapper</ref>).</para>
+<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="126">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="127">$ c_K $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="128">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="129">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires. A nonlocal variable that stands for a tensor (the six components of a nonlocal strain) must therefore be referred to a frame that a superposed rigid rotation does not change, e.g. the frame of the polar rotation (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kindref="compound">GradientEnhancedCorotationalWrapper</ref>).</para>
 </simplesect>
-<simplesect kind="note"><para>There is **no slot for <formula id="87">$ \partial c_K/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="84">$ c_K $</formula>, but not its derivative, so its consistent tangent would be incomplete. </para>
+<simplesect kind="note"><para>There is **no slot for <formula id="130">$ \partial c_K/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="127">$ c_K $</formula>, but not its derivative, so its consistent tangent would be incomplete. </para>
 </simplesect>
 </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="69" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="69" bodyend="385"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="69" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="69" bodyend="387"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1adb1b42fce3f1a1b6d408eacb4e0c2ac9" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computePlaneStrain</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acbe8cf984c2b338da05e56170ed1568b" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computePlaneStrain</name></member>

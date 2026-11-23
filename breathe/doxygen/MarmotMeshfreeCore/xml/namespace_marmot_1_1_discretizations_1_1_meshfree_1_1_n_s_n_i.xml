@@ -1,0 +1,399 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Meshfree::NSNI</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1ae076b82f54fbecb8d1a85e6a1b9ede7e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Discretizations::Meshfree::NSNI::secondGradientOfNode</definition>
+        <argsstring>(const std::array&lt; Eigen::MatrixXd, nDim &gt; &amp;d2N_dYdY, int B)</argsstring>
+        <name>secondGradientOfNode</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::NSNI::secondGradientOfNode</qualifiedname>
+        <param>
+          <type>const std::array&lt; Eigen::MatrixXd, nDim &gt; &amp;</type>
+          <declname>d2N_dYdY</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+<para>The symmetrized smoothed second gradient of the shape function of node <computeroutput>B</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d2N_dYdY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The face sums: <computeroutput>d2N_dYdY[J](I, B)</computeroutput> is the sum of  <formula id="163">$ \partial N_B / \partial Y_I\, n_J\,
+dA / V $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="164">$ \tfrac{1}{2} (\text{d2N\_dYdY}[J](I, B) + \text{d2N\_dYdY}[I](J, B)) $</formula> at <formula id="165">$ (I, J) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="338" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="338" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1a4df70b2bb0eca419d29d2d437aab1bf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::NSNI::secondGradientsOfNodes</definition>
+        <argsstring>(const std::array&lt; Eigen::MatrixXd, nDim &gt; &amp;d2N_dYdY, int nNodes)</argsstring>
+        <name>secondGradientsOfNodes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::NSNI::secondGradientsOfNodes</qualifiedname>
+        <param>
+          <type>const std::array&lt; Eigen::MatrixXd, nDim &gt; &amp;</type>
+          <declname>d2N_dYdY</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <briefdescription>
+<para>The symmetrized smoothed second gradients of all nodes, in the layout of addRowsOfNode(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">d2N_dYdY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The face sums, see <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1ae076b82f54fbecb8d1a85e6a1b9ede7e" kindref="member">secondGradientOfNode()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The nDim^2 x nNodes matrix, entry <formula id="147">$ (l\, n_{\text{dim}} + m, B) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="356" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="356" bodyend="366"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1aa85caa73175a3545856144f291cfd20b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Discretizations::Meshfree::NSNI::momentWeightedSecondGradient</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;dY_dx, const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;d2T_dYdY, const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;secondMoments, double J_Y)</argsstring>
+        <name>momentWeightedSecondGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::NSNI::momentWeightedSecondGradient</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>dY_dx</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>d2T_dYdY</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>secondMoments</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>J_Y</declname>
+        </param>
+        <briefdescription>
+<para>The moment-weighted second gradient <formula id="166">$ \boldsymbol{D} $</formula> of a test function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dY_dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The inverse of the gradient of the motion of the particle, <formula id="167">$ \partial Y / \partial x $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">d2T_dYdY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The second gradient of the test function of the node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">secondMoments</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The second moments <formula id="150">$ \boldsymbol{M}^Y $</formula> of the particle domain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">J_Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The volume ratio <formula id="168">$ J_Y $</formula> of the intermediate reference configuration. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="169">$ D_{iK} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="378" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="378" bodyend="388"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1a8e1beab69c1f1c1ba84970085d798841" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nDofPerNode</declname>
+            <defname>nDofPerNode</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::NSNI::addSecondGradientRows</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;D, const Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &amp;dTau_dDeltaF, StiffnessOfNode&lt; nDim, nDofPerNode &gt; &amp;ofNode)</argsstring>
+        <name>addSecondGradientRows</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::NSNI::addSecondGradientRows</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &amp;</type>
+          <declname>dTau_dDeltaF</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>&lt; nDim, nDofPerNode &gt; &amp;</type>
+          <declname>ofNode</declname>
+        </param>
+        <briefdescription>
+<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> with respect to the second gradient of the displacement increment,  <formula id="170">$ \partial f_{Aj} / \partial (\partial^2 \Delta u_k / \partial Y_l \partial Y_m) = D_{im}\,
+\partial \tau_{ij} / \partial \Delta F_{kl} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of degrees of freedom per node; the displacement comes first. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The moment-weighted second gradient of the test function of the node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau_dDeltaF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivative of the Kirchhoff stress with respect to the increment of the deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">ofNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives of the node; the stabilization is added. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="403" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="403" bodyend="416"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1af92bab9e5a50592c3a238658d75376f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nDofPerNode</declname>
+            <defname>nDofPerNode</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::NSNI::addStressGradientRows</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;D, const Fastor::Tensor&lt; double, nDim, nDim, nDim &gt; &amp;dTau_dY, const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;dY_dx, StiffnessOfNode&lt; nDim, nDofPerNode &gt; &amp;ofNode)</argsstring>
+        <name>addStressGradientRows</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::NSNI::addStressGradientRows</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>D</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim, nDim &gt; &amp;</type>
+          <declname>dTau_dY</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>dY_dx</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>&lt; nDim, nDofPerNode &gt; &amp;</type>
+          <declname>ofNode</declname>
+        </param>
+        <briefdescription>
+<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> through the spatial gradient of the shape functions in the stress gradient of the increment,  <formula id="171">$ \partial f_{Aj} / \partial (\partial \Delta u_k /
+\partial Y_l) \mathrel{-}= D_{km}\, \partial \tau_{ij} / \partial Y_m\, \partial Y_l / \partial x_i $</formula>; zero at a zero increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of degrees of freedom per node; the displacement comes first. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The moment-weighted second gradient of the test function of the node. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau_dY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The gradient of the Kirchhoff stress of the increment along <formula id="172">$ \boldsymbol{Y} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dY_dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The inverse of the gradient of the motion of the particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">ofNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivatives of the node; the stabilization is added. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="431" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" bodystart="431" bodyend="445"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> stabilization of the displacement rows of a particle, shared by the displacement and the gradient-enhanced particles (whose dofs of a node start with the displacement). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The stabilization adds to the force of node <formula id="16">$ A $</formula> the term  <formula id="148">$ D_{iK}\, \partial \tau_{ij} /
+\partial Y_K $</formula>, with the moment-weighted second gradient of the test function    <formula id="149">\[  D_{iK} = \frac{\partial Y_j}{\partial x_i}\, \frac{\partial^2 T_A}{\partial Y_j \partial Y_L}\,
+  \frac{M^Y_{LK}}{J_Y} ,
+\]</formula> the second moments <formula id="150">$ \boldsymbol{M}^Y $</formula> of the particle domain and  <formula id="151">$ J_Y = \det \partial\boldsymbol{Y} /
+\partial\boldsymbol{X} $</formula>. The second gradients of the shape functions are the smoothed ones of the particle domain, <formula id="152">$ \partial^2 N_B / \partial Y_I \partial Y_J $</formula> from the face sums <computeroutput>d2N_dYdY[J](I, B)</computeroutput> of <formula id="153">$ \partial N_B / \partial Y_I\, n_J\, dA / V $</formula>, symmetrized. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="327" column="3"/>
+  </compounddef>
+</doxygen>

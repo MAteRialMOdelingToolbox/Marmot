@@ -1,5 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kind="class"><name>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6c82c6b4c717f1600e15c3d15ddcc4fd" kind="variable"><name>nSym</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac49ed13692a727ec005da51339fab21e" kind="variable"><name>_columnWeights</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a88bc157b6d75690d8f4b6910bc0d7a20" kind="variable"><name>_nColumns</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1af5b84e44bbe12e6947d04ce0897dfd9e" kind="variable"><name>_bound</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a28f18f8fa00a7b7eec51022b2d87eb1b" kind="variable"><name>_nDof</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1ac2e369754a229500def83d4eab9e783f" kind="variable"><name>_withSecondGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a25cdc436e5264ecce1f65c68de43a5ce" kind="variable"><name>_moments</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a1631fd1b428396c2518bbde36fa6b08d" kind="function"><name>AbsoluteStiffnessBound</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" kind="function"><name>visitShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7a8aaba0a83f6ebae0104ecbbb8edd46" kind="function"><name>visitStiffnessOfNode</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a6438468c1194e67fc3b181a5c777b665" kind="function"><name>addBoundOfRowsOfNode</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a86e744b8e76f308c56d4ca15a4f8054d" kind="function"><name>addMoments</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a7088f0fc62fbd5915d747f1117305bdb" kind="function"><name>symmetricComponents</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::Approximation</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" kind="function"><name>Approximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" kind="function"><name>~Approximation</name></member>
@@ -335,6 +350,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a67c22640fbe41dd543d969db4bd0cfc2" kind="function"><name>test</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kind="class"><name>Marmot::Discretizations::MaterialPoints::MaterialPoint</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a69df198efa2e3fb5af6b773914a08422" kind="variable"><name>_assignedStateVars</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" kind="function"><name>~MaterialPoint</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" kind="function"><name>assignStateVars</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kind="function"><name>assignMaterial</name></member>
@@ -354,6 +370,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" kind="function"><name>getVolumeUndeformed</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" kind="function"><name>getDensityUndeformed</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" kind="function"><name>setInitialCondition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1afbf8a7df75d7ddc063d4096a7087aedf" kind="function"><name>getAssignedStateVars</name></member>
   </compound>
   <compound refid="class_marmot_1_1_registry_1_1_material_point_factory" kind="class"><name>Marmot::Registry::MaterialPointFactory</name>
     <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" kind="typedef"><name>materialPointFactoryFunction</name></member>
@@ -362,6 +379,14 @@
     <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1ae7ab20142947ce63ea5d24074d42ab69" kind="function"><name>registerMaterialPoint</name></member>
     <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a8f27afbe8b1e75155524263368e45c12" kind="function"><name>checkIfMaterialPointIsRegistered</name></member>
     <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a6e9e4fd9aea7b4ae362f26f4533911ca" kind="function"><name>materialPointFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments" kind="struct"><name>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a40c4027c491f00d59583681a50848135" kind="variable"><name>active</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a7d3ddad0d2ab73cdc15e5dfe6aab61c1" kind="variable"><name>sumOfValues</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1ac36a591ec74e7ecf83dddb169fdcf43a" kind="variable"><name>sumOfGradientNorms</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a1697ee897fc8e7600508ab27ecd97e0d" kind="variable"><name>gradientMoments</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a27a2fcfa97c244ad542b5ef2d149ff74" kind="variable"><name>sumOfSecondGradientNorms</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a2701e80e2d95a3c657e0ee02e52d428d" kind="variable"><name>secondGradientMoments</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class"><name>Marmot::Discretizations::Meshfree::Particle</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" kind="function"><name>vci_getNumberOfConstraints</name></member>
@@ -407,6 +432,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" kind="function"><name>getNumberOfEvaluationPoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" kind="function"><name>setInitialCondition</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" kind="function"><name>computeLumpedDamping</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kind="function"><name>describeStiffness</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kind="enum"><name>SmoothingDomainUpdateType</name></member>
@@ -481,6 +507,44 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8" kind="function"><name>computeShapeFunctionGradients</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point" kind="class"><name>Marmot::Discretizations::Meshfree::SavedMaterialPoint</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a3571d2f2b4a63e2358d69f2222bc60f7" kind="variable"><name>_materialPoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1acc683f5e36530533142f4ce12782b5f3" kind="variable"><name>_response</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a7e4aa76d432de267ef3bb0d721d52669" kind="variable"><name>_tangents</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1aa6ef0fb4cc2da447f94e727f2a7da3a8" kind="variable"><name>_stateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a242904921906f5e24121fb8ebf367183" kind="variable"><name>_savedStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1add76a289fe1b494ac3aa1047bd48d9ab" kind="function"><name>SavedMaterialPoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1a09dbc486ef5c7aea59ff821b89bef240" kind="function"><name>~SavedMaterialPoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1afae0d9e64472cc66f22b693323c1b1dc" kind="function"><name>SavedMaterialPoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point_1ae1682a843e55d21c4fbe16fdab7bc005" kind="function"><name>operator=</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler" kind="class"><name>Marmot::Discretizations::Meshfree::StiffnessAssembler</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1af62e3134704150f094909f88b93e8fa4" kind="variable"><name>_K</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1adc0f09956bfc4c9bb76f4bc38e2c667b" kind="variable"><name>_nDof</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1af1a90ec0abf483e84f774cb0871a1b8e" kind="variable"><name>_N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1a7c93ee6fddc1e2e9fc5a07d4808eb07e" kind="variable"><name>_dN_dY</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1ac96ce0195792a23ec750e5964701c298" kind="variable"><name>_d2N_dYdY</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1a03e8dfd353130472acdba2ded17eb860" kind="function"><name>StiffnessAssembler</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1a091edc55ec9d1e749474f8438c54e060" kind="function"><name>visitShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1af68ada57f96bcf47c459ee2b5c09c551" kind="function"><name>visitStiffnessOfNode</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler_1a4e652e993f93b3ca6767f45752fd61b5" kind="function"><name>addRowsOfNodeToK</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kind="struct"><name>Marmot::Discretizations::Meshfree::StiffnessOfNode</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a836ca325a89af4ad85b25effffa3baab" kind="typedef"><name>Block</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af131d712c7b8d75501ecdf87a8f631cd" kind="variable"><name>df_dIncrement</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a601b7035f055ee3a8e7b5c5774719ea8" kind="variable"><name>df_dIncrementGradient</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af5f9c3cde2d365b855aa0c630c2b6b21" kind="variable"><name>df_dIncrementSecondGradient</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1af80a0e6b9e8a4f7ec7039817b420bac5" kind="function"><name>setZero</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a8236e03546b0e75074da8e353a3e2227" kind="function"><name>gradientBlock</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a231cb7d55b887a4e392ba29fa2b5871c" kind="function"><name>gradientBlock</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1a323c0157503160bc5a89cacb86e17792" kind="function"><name>secondGradientBlock</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node_1ae1a9731cf2348110cf36ff1ef9602285" kind="function"><name>secondGradientBlock</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kind="class"><name>Marmot::Discretizations::Meshfree::StiffnessVisitor</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a528e7157331ae4265c06487a3f9660c9" kind="function"><name>~StiffnessVisitor</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1aa2e93274e740593d3ab2ad570194174b" kind="function"><name>visitShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a96a2984c188f6732600f490905cc33bd" kind="function"><name>visitStiffnessOfNode</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions" kind="struct"><name>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</name>
     <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac6cd4a721a95565d7036ea98e493ec0d" kind="variable"><name>N</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a4db8963ea55b1d14b2b7f3d687d6ae1e" kind="variable"><name>dN_dY</name></member>
@@ -504,19 +568,35 @@
   <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree" kind="namespace"><name>Marmot::Discretizations::Meshfree</name>
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kind="typedef"><name>Quad4</name></member>
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kind="typedef"><name>Hex8</name></member>
+    <member refid="_marmot_particle_stiffness_visitors_8h_1a882210e8d6ace186579151d9004cbe51" kind="variable"><name>maxDofsPerNode</name></member>
+    <member refid="_marmot_particle_stiffness_8h_1a837f4a950e82657c633fe12de814885c" kind="function"><name>addRowsOfNode</name></member>
+    <member refid="_marmot_particle_stiffness_8h_1ae4af54c9858a1b24e669c154a96c4ff7" kind="function"><name>describeStiffnessNodeByNode</name></member>
+    <member refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kind="function"><name>addBoundOfAbsoluteStiffnessTimes</name></member>
+    <member refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kind="function"><name>assembleStiffness</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kind="namespace"><name>Marmot::Discretizations::Meshfree::NSNI</name>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1ae076b82f54fbecb8d1a85e6a1b9ede7e" kind="function"><name>secondGradientOfNode</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1a4df70b2bb0eca419d29d2d437aab1bf7" kind="function"><name>secondGradientsOfNodes</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1aa85caa73175a3545856144f291cfd20b" kind="function"><name>momentWeightedSecondGradient</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1a8e1beab69c1f1c1ba84970085d798841" kind="function"><name>addSecondGradientRows</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1af92bab9e5a50592c3a238658d75376f5" kind="function"><name>addStressGradientRows</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
-    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
-    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
-    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
-    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" kind="function"><name>computeSizeOfMonomialBasisVector</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" kind="function"><name>_computeMonomialBasisRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" kind="function"><name>_computeMonomialBasisGradientRecursion</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" kind="function"><name>computeMonomialBasis</name></member>
     <member refid="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" kind="function"><name>computeMonomialBasisGradient</name></member>
+    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
+    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
+    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
+    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
+    <member refid="namespace_marmot_1_1_testing_1aada80ec024a9dbc01b7b9f2984799b1a" kind="function"><name>checkAbsoluteStiffnessBoundAgainstStiffness</name></member>
+    <member refid="namespace_marmot_1_1_testing_1ab53dc9b566332842d48381549aa8090a" kind="function"><name>checkDescribingTheStiffnessLeavesTheParticleUnchanged</name></member>
   </compound>
   <compound refid="_generic_particle_8h" kind="file"><name>GenericParticle.h</name>
   </compound>
@@ -561,6 +641,12 @@
   <compound refid="_marmot_particle_domain_8h" kind="file"><name>MarmotParticleDomain.h</name>
   </compound>
   <compound refid="_marmot_particle_library_8h" kind="file"><name>MarmotParticleLibrary.h</name>
+  </compound>
+  <compound refid="_marmot_particle_stiffness_8h" kind="file"><name>MarmotParticleStiffness.h</name>
+  </compound>
+  <compound refid="_marmot_particle_stiffness_visitors_8h" kind="file"><name>MarmotParticleStiffnessVisitors.h</name>
+  </compound>
+  <compound refid="_marmot_particle_testing_8h" kind="file"><name>MarmotParticleTesting.h</name>
   </compound>
   <compound refid="deprecated" kind="page"><name>deprecated</name>
   </compound>
