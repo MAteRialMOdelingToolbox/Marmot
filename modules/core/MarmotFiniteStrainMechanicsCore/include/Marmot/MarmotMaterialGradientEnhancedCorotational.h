@@ -192,7 +192,7 @@ namespace Marmot::Materials {
                         const Deformation< 3 >&    deformation,
                         const TimeIncrement&       timeIncrement ) const override
     {
-      computeStressCore( response, &tangents, deformation, timeIncrement );
+      computeStressWithOptionalTangents( response, &tangents, deformation, timeIncrement );
     }
 
     /**
@@ -205,7 +205,7 @@ namespace Marmot::Materials {
                                 const Deformation< 3 >&    deformation,
                                 const TimeIncrement&       timeIncrement ) const override
     {
-      computeStressCore( response, nullptr, deformation, timeIncrement );
+      computeStressWithOptionalTangents( response, nullptr, deformation, timeIncrement );
     }
 
     /**
@@ -253,10 +253,10 @@ namespace Marmot::Materials {
      *                               decomposition would then give a reflection for the rotation, and
      *                               @f$ \boldsymbol{C} @f$ a strain as if nothing were wrong.
      */
-    void computeStressCore( ConstitutiveResponse< 3 >& response,
-                            AlgorithmicModuli< 3 >*    tangents,
-                            const Deformation< 3 >&    deformation,
-                            const TimeIncrement&       timeIncrement ) const
+    void computeStressWithOptionalTangents( ConstitutiveResponse< 3 >& response,
+                                            AlgorithmicModuli< 3 >*    tangents,
+                                            const Deformation< 3 >&    deformation,
+                                            const TimeIncrement&       timeIncrement ) const
     {
       using namespace Marmot::Math::Tensors::FastorTensors;
       using namespace Marmot::ContinuumMechanics::Voigt;
@@ -339,7 +339,7 @@ namespace Marmot::Materials {
     }
 
     /**
-     * @brief The consistent tangent of computeStressCore(), see the class description.
+     * @brief The consistent tangent of computeStressWithOptionalTangents(), see the class description.
      * @param[out] tangents Algorithmic moduli.
      * @param[in]  F        Deformation gradient.
      * @param[in]  lambda   Eigenvalues of @f$ \boldsymbol{C} @f$.

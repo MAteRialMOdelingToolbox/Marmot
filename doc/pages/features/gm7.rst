@@ -19,7 +19,9 @@ volumetric and shear boundaries are evaluated with the *over-nonlocal* strain in
    \Delta \hat{\eps} = m \, \Delta \bar{\eps} + \left( 1 - m \right) \Delta \eps,
 
 in which :math:`m` weights the nonlocal against the local strain. The consistent tangents with respect to the local
-and the nonlocal strain follow accordingly.
+and the nonlocal strain follow accordingly. For explicit dynamics, ``computeStressExplicit`` performs the same update
+without homogenizing the tangents of the microplanes (one update, with the tangents an optional output): the stress
+and the state variables are those of ``computeStress``, bitwise.
 
 The microplane discretization is taken from the shared ``Marmot::ContinuumMechanics::Microplane`` module (37-microplane scheme ``N37``,
 fixed at compile time). The closed-form transition function for the elastic unloading stiffness and the gradient

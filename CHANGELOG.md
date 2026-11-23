@@ -272,6 +272,9 @@ All notable changes to Marmot are documented in this file. The format follows
   (`Math::computeMonomialBasis` and `computeMonomialBasisGradient` use it, take any contiguous Eigen vector or matrix,
   `Eigen::Ref`, and give the same values); the moment matrix is assembled entry by entry. Shape functions change by
   round-off.
+- `GM7` overrides `computeStressExplicit`: the stress update without homogenizing the tangents of the microplanes, one
+  update with the tangents an optional output (`stress_update`); stress and state variables are those of
+  `computeStress`, bitwise. The explicit path of `GeneralGradientEnhancedDisplacementFiniteElement` takes it.
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
