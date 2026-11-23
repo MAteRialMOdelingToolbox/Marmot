@@ -605,12 +605,12 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
-      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2f32a3310c6ffa27114ec0fe8f7d4d6c" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
-        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeStressCore</definition>
+        <definition>void Marmot::Materials::GradientEnhancedCorotationalWrapper&lt; BaseMaterialType &gt;::computeStressWithOptionalTangents</definition>
         <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; *tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
-        <name>computeStressCore</name>
-        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressCore</qualifiedname>
+        <name>computeStressWithOptionalTangents</name>
+        <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressWithOptionalTangents</qualifiedname>
         <param>
           <type><ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" kindref="member">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
           <declname>response</declname>
@@ -720,7 +720,7 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
           <declname>tan</declname>
         </param>
         <briefdescription>
-<para>The consistent tangent of <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" kindref="member">computeStressCore()</ref>, see the class description. </para>
+<para>The consistent tangent of <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2f32a3310c6ffa27114ec0fe8f7d4d6c" kindref="member">computeStressWithOptionalTangents()</ref>, see the class description. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1015,9 +1015,9 @@ The deformation gradient is decomposed into the polar rotation and the right str
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a9c8c937092aab89252db1cdfaf29ace8" prot="public" virt="pure-virtual" ambiguityscope="Marmot::Materials::GradientEnhancedHypoElasticWrapper::"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStress</name></member>
-      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressCore</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressExplicit</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2a4053b65541f2dddc02c266a0ef07ef" prot="public" virt="virtual" ambiguityscope="Marmot::Materials::GradientEnhancedHypoElasticWrapper::"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2f32a3310c6ffa27114ec0fe8f7d4d6c" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeStressWithOptionalTangents</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adbdfc5e144e3dd1b77548dd0c4956902" prot="protected" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>computeTangent</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a32796d36d5ab57f6ccffc33287c76ff4" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>ConstitutiveResponse</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a313e8f15ef5879ccf11b49a8d6a9328b" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedCorotationalWrapper</scope><name>Deformation</name></member>

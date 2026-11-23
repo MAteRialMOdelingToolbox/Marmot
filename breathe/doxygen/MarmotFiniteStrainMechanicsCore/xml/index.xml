@@ -64,7 +64,7 @@
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" kind="function"><name>spectralDerivative</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a0b59ec8130bd35526bb277a6cb158ba7" kind="function"><name>computeStressCore</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a2f32a3310c6ffa27114ec0fe8f7d4d6c" kind="function"><name>computeStressWithOptionalTangents</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adbdfc5e144e3dd1b77548dd0c4956902" kind="function"><name>computeTangent</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1af271fa6f9b0117cebe445b27d5b22c3a" kind="variable"><name>baseMaterial</name></member>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a360933b087af3d21ba95163e736c544b" kind="variable"><name>baseMaterialSlot</name></member>

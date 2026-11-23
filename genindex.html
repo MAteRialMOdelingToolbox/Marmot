@@ -4473,14 +4473,14 @@
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4N6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI25DisplacementParticleSQCNIEiPKdidRKNSt6stringEPKdiRK13ApproximationKN18ParticleDomainType25SmoothingDomainUpdateTypeE">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::DisplacementParticleSQCNI (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/features/displacementparticle.html#_CPPv4NK6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI29getBoundaryVectorIntermediateEi">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::getBoundaryVectorIntermediate (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4NK6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI20getCenterCoordinatesEPd">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::getCenterCoordinates (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4NK6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI24getEvaluationCoordinatesEPd">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::getEvaluationCoordinates (C++ function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pages/features/displacementparticle.html#_CPPv4NK6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI18getFaceCoordinatesEiPd">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::getFaceCoordinates (C++ function)</a>
 </li>
       <li><a href="pages/features/displacementparticle.html#_CPPv4NK6Marmot15Discretizations8Meshfree25DisplacementParticleSQCNI27getNumberOfEvaluationPointsEv">Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI::getNumberOfEvaluationPoints (C++ function)</a>
@@ -5959,6 +5959,10 @@
 </li>
       <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM713computeStressER8responseR8tangentsRK9increment">Marmot::Materials::GM7::computeStress (C++ function)</a>
 </li>
+      <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM721computeStressExplicitER8responseRK9increment">Marmot::Materials::GM7::computeStressExplicit (C++ function)</a>
+</li>
+      <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM733computeStressWithOptionalTangentsER8responseP8tangentsRK9increment">Marmot::Materials::GM7::computeStressWithOptionalTangents (C++ function)</a>
+</li>
       <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM710getDensityEPKd">Marmot::Materials::GM7::getDensity (C++ function)</a>
 </li>
       <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM723getNonlocalMicroInertiaEPKd">Marmot::Materials::GM7::getNonlocalMicroInertia (C++ function)</a>
@@ -5989,7 +5993,13 @@
 </li>
       <li><a href="pages/features/gm7.html#_CPPv4N6Marmot9Materials3GM73nqpE">Marmot::Materials::GM7::nqp (C++ member)</a>
 </li>
-      <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPd">Marmot::Materials::GM7::stress_update (C++ function)</a>
+      <li><a href="pages/features/gm7.html#_CPPv4NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPdP20StressUpdateTangents">Marmot::Materials::GM7::stress_update (C++ function)</a>
+</li>
+      <li><a href="pages/features/gm7.html#_CPPv4N6Marmot9Materials3GM720StressUpdateTangentsE">Marmot::Materials::GM7::StressUpdateTangents (C++ struct)</a>
+</li>
+      <li><a href="pages/features/gm7.html#_CPPv4N6Marmot9Materials3GM720StressUpdateTangents20dStressddStrainLocalE">Marmot::Materials::GM7::StressUpdateTangents::dStressddStrainLocal (C++ member)</a>
+</li>
+      <li><a href="pages/features/gm7.html#_CPPv4N6Marmot9Materials3GM720StressUpdateTangents27dStressddStrainOverNonLocalE">Marmot::Materials::GM7::StressUpdateTangents::dStressddStrainOverNonLocal (C++ member)</a>
 </li>
       <li><a href="pages/features/gradientenhancedcompressibleneohookedamage.html#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamageE">Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage (C++ class)</a>
 </li>
@@ -6023,9 +6033,9 @@
 </li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStress (C++ function)</a>, <a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[1]</a>, <a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">[2]</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[3]</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[4]</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">[5]</a>
 </li>
-      <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressCore (C++ function)</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[1]</a>
-</li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressExplicit (C++ function)</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[1]</a>
+</li>
+      <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper33computeStressWithOptionalTangentsER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">Marmot::Materials::GradientEnhancedCorotationalWrapper::computeStressWithOptionalTangents (C++ function)</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4NK6Marmot9Materials35GradientEnhancedCorotationalWrapper33computeStressWithOptionalTangentsER20ConstitutiveResponseIXL3EEEP17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">[1]</a>
 </li>
       <li><a href="pages/codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper14computeTangentER17AlgorithmicModuliIXL3EEERKN5Eigen8Matrix3dERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN12BaseMaterial8tangentsE">Marmot::Materials::GradientEnhancedCorotationalWrapper::computeTangent (C++ function)</a>, <a href="pages/features/gradientenhancedcorotational.html#_CPPv4N6Marmot9Materials35GradientEnhancedCorotationalWrapper14computeTangentER17AlgorithmicModuliIXL3EEERKN5Eigen8Matrix3dERKN5Eigen8Vector3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN5Eigen8Matrix3dERKN12BaseMaterial8tangentsE">[1]</a>
 </li>

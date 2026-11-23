@@ -184,9 +184,13 @@ K^{NN}_{AB} &amp;= \Bigl( T_A N_B\,\bigl(1 - \frac{\partial L}{\partial\bar N}\b
 <h3>Explicit dynamics<a class="headerlink" href="#explicit-dynamics" title="Link to this heading"></a></h3>
 <p>All three particle classes provide the explicit scheme (<code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit</span></code>
 and the lumped operators), in the order of <a class="reference internal" href="meshfreeparticles.html#explicit-life-cycle-of-a-particle"><span class="std std-ref">The explicit life cycle of a particle</span></a>; the NSNI particle adds its
-stabilization to the force and to the momentum, as <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a> does. <code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code>
-advances the material point by the increment and stores the rates <span class="math notranslate nohighlight">\(\boldsymbol v = \Delta\boldsymbol u/\Delta t\)</span>
-and <span class="math notranslate nohighlight">\(\dot{\bar N}_K = \Delta\bar N_K/\Delta t\)</span>.
+stabilization to the force and to the momentum, as <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a> does. The explicit advance of every
+particle evaluates the material with its tangents, not with the stress alone: the NSNI stabilization charges the stress
+gradient of the increment through the tangent <span class="math notranslate nohighlight">\(\partial\tau/\partial\Delta\boldsymbol F\)</span>, and the bound of the
+stable increment needs the tangents for every particle. The stress-only path of the materials
+(<code class="docutils literal notranslate"><span class="pre">computeStressExplicit</span></code>) serves the gradient-enhanced finite element. <code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code> advances the
+material point by the increment and stores the rates <span class="math notranslate nohighlight">\(\boldsymbol v = \Delta\boldsymbol u/\Delta t\)</span> and
+<span class="math notranslate nohighlight">\(\dot{\bar N}_K = \Delta\bar N_K/\Delta t\)</span>.
 After the host has accepted the state and assigned the kernel functions of the new position,
 <code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit</span></code> returns the internal force, with the nonlocal balance in <strong>total</strong> form,</p>
 <div class="math notranslate nohighlight">
