@@ -169,10 +169,12 @@ All notable changes to Marmot are documented in this file. The format follows
   (`assembleStiffness` with `StiffnessAssembler`). The particles' tangent is assembled from the same factors
   (`addRowsOfNode`): equal to the former one to round-off, residuals bitwise. The NSNI stabilization rows are shared by
   both particle families (`Meshfree::NSNI`). The material points take their density once, at `initializeYourself`.
-- `Particle::getAttachedPointInterpolationVector`: the coefficients
-  `G_B = N_B(Y_c) + dN_B/dY . (Y - Y_c)` with which a particle moves a point attached to it (a vertex, a face center,
-  its center) in its next increment. A constraint that measures such a point where the particle puts it must
-  distribute its force with it, so that a penalty is conservative.
+- `Particle::getInterpolationVectorLinearizedAboutCenter`: the shape functions linearized about the center of the
+  particle, `G_B = N_B(Y_c) + dN_B/dY . (Y - Y_c)`, the particle's own interpolation at its own points (its center, a
+  vertex, a face center) for every field: for the displacement the motion of the point in the next increment, for a
+  nonlocal field the value the particle carries there. `getInterpolationVector` stays the exact shape functions at an
+  arbitrary location. A constraint that measures a field at a point of the particle and distributes its force there
+  with `G_B` is symmetric and conservative.
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
@@ -259,9 +261,9 @@ All notable changes to Marmot are documented in this file. The format follows
   its mass and without its force, and never leaves a load out silently. The explicit path is in the NSNI particles of
   the displacement family and in all gradient-enhanced particles; `DisplacementParticleSQCNI` implements the explicit
   distributed load only. The defaults of the lumped inertia and momentum name the method in their message.
-- **Breaking** for implementers of `Particle` outside Marmot: `Particle::getAttachedPointInterpolationVector` is pure
+- **Breaking** for implementers of `Particle` outside Marmot: `Particle::getInterpolationVectorLinearizedAboutCenter` is pure
   virtual, so a particle must implement it to compile (there is no safe default: the shape functions at the point are
-  the wrong answer).
+  not the particle's own interpolation).
 - `Math::MonomialBasis` multiplies only the factors of nonzero exponent of an entry, listed at construction, and sets
   the derivative with respect to a coordinate that is not a factor to zero: the values and nonzero derivatives are
   unchanged (bitwise; a zero derivative is +0).
@@ -301,7 +303,7 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** the gradient-enhanced SQCNI/SNNI particles (`GradientEnhanced[6]FiniteStrainSQCNI...`,
   `...SNNI...`, `..._R...`, `..._RU...`) report the vertices and face centers of their geometry, mapped with the
   deformation gradient, as the displacement particles do, not those of the smoothing domain (which differ for SNNI,
-  `_R` and `_RU`): the vertices then move with `getAttachedPointInterpolationVector`. The geometry is stored in the
+  `_R` and `_RU`): the vertices then move with `getInterpolationVectorLinearizedAboutCenter`. The geometry is stored in the
   state (one more block of `nDim x nVertices` values); the state views are `vertex displacements` (geometry) and
   `smoothing vertex displacements` (smoothing domain, formerly `vertex displacements`). The physics is unchanged.
 - **Results** The critical time step of the continuum elements (`DisplacementFiniteElement`,
