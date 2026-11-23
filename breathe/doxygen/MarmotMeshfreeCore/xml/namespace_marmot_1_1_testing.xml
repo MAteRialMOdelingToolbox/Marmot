@@ -30,8 +30,8 @@
           <declname>maxOverestimate</declname>
         </param>
         <briefdescription>
-<para>Check the bound of <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula> of a particle (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()</ref>) against its stiffness  <formula id="58">$ \boldsymbol{K}
-$</formula>: the bound never lies below <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, and the largest entry of each column (what the Collatz-Wielandt bound takes) is at most <computeroutput>maxOverestimate</computeroutput> times the exact one. The stiffness the particle describes, assembled (<ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">Marmot::Discretizations::Meshfree::assembleStiffness()</ref>), is <computeroutput>K</computeroutput>. </para>
+<para>Check the bound of <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula> of a particle (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()</ref>) against its stiffness  <formula id="70">$ \boldsymbol{K}
+$</formula>: the bound never lies below <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, and the largest entry of each column (what the Collatz-Wielandt bound takes) is at most <computeroutput>maxOverestimate</computeroutput> times the exact one. The stiffness the particle describes, assembled (<ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">Marmot::Discretizations::Meshfree::assembleStiffness()</ref>), is <computeroutput>K</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>

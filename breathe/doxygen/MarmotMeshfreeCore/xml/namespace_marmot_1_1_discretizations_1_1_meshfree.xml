@@ -116,7 +116,7 @@
           <declname>K</declname>
         </param>
         <briefdescription>
-<para>Add the rows of node <computeroutput>A</computeroutput> to a matrix of a particle: <formula id="144">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="133">$ B $</formula>, from the derivatives of the force of the node (<ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>) and the trial shape functions at the evaluation point. computePhysicsKernels() of a particle forms its tangent this way, from the stiffness of each node and its inertia. </para>
+<para>Add the rows of node <computeroutput>A</computeroutput> to a matrix of a particle: <formula id="156">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="145">$ B $</formula>, from the derivatives of the force of the node (<ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>) and the trial shape functions at the evaluation point. computePhysicsKernels() of a particle forms its tangent this way, from the stiffness of each node and its inertia. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -157,7 +157,7 @@
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The trial shape functions <formula id="145">$ N_B $</formula>, 1 x nNodes. </para>
+<para>The trial shape functions <formula id="64">$ N_B $</formula>, 1 x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -165,7 +165,7 @@
 <parametername direction="in">dN_dY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their gradients <formula id="146">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
+<para>Their gradients <formula id="157">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -173,7 +173,7 @@
 <parametername direction="in">d2N_dYdY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their second gradients, nDim^2 x nNodes, entry <formula id="147">$ (l\, n_{\text{dim}} + m, B) $</formula> is <formula id="139">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>; empty for a particle without second gradients. </para>
+<para>Their second gradients, nDim^2 x nNodes, entry <formula id="158">$ (l\, n_{\text{dim}} + m, B) $</formula> is <formula id="151">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>; empty for a particle without second gradients. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -339,10 +339,10 @@
           <declname>dT</declname>
         </param>
         <briefdescription>
-<para>Add an upper bound of <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, the absolute value of a particle&apos;s stiffness times nonnegative weights, without forming the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>, which the particle describes its stiffness to; see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref> for the state it is of). The particle is left as it was found. </para>
+<para>Add an upper bound of <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, the absolute value of a particle&apos;s stiffness times nonnegative weights, without forming the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>, which the particle describes its stiffness to; see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref> for the state it is of). The particle is left as it was found. </para>
         </briefdescription>
         <detaileddescription>
-<para>The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="186">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
+<para>The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="196">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">particle</parametername>
 </parameternamelist>
@@ -355,7 +355,7 @@
 <parametername direction="in">columnWeights</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The nonnegative weights <formula id="187">$ \boldsymbol{W} $</formula>, column-major, nDof x nColumns, in the dof order of the particle. </para>
+<para>The nonnegative weights <formula id="197">$ \boldsymbol{W} $</formula>, column-major, nDof x nColumns, in the dof order of the particle. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>

@@ -188,6 +188,11 @@ reference intermediate configuration</p></td>
 the shape functions are evaluated, e.g., for checking the coverage by kernel supports),
 <code class="docutils literal notranslate"><span class="pre">getInterpolationVector</span></code></p></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getInterpolationVectorLinearizedAboutCenter</span></code></p></td>
+<td><p>the shape functions linearized about the center, <span class="math notranslate nohighlight">\(G_B\)</span>: the particle’s own interpolation at its own points
+(its center, a vertex, a face center), for every field; <code class="docutils literal notranslate"><span class="pre">getInterpolationVector</span></code> gives the exact shape
+functions at an arbitrary location (see below)</p></td>
+</tr>
 </tbody>
 </table>
 <p>For explicit dynamics, <code class="docutils literal notranslate"><span class="pre">updatePhysicsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computePhysicsKernelsExplicit</span></code>, <code class="docutils literal notranslate"><span class="pre">computeBodyLoadExplicit</span></code> and
@@ -373,6 +378,27 @@ entries of <span class="math notranslate nohighlight">\(\boldsymbol{U}\)</span> 
 </tr>
 </tbody>
 </table>
+<p><strong>The points of a particle.</strong> The particle moves as a whole: its center by <span class="math notranslate nohighlight">\(\sum_B N_B\,\Delta\boldsymbol{Q}_B\)</span>
+and its geometry with the deformation gradient increment
+<span class="math notranslate nohighlight">\(\Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B/\partial\boldsymbol{Y}\)</span>
+about the center, with the shape functions at the center and the (smoothed) gradients that drive its kinematics. A
+point <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> of the geometry – a vertex, a face center – therefore moves by
+<span class="math notranslate nohighlight">\(\sum_B G_B\,\Delta\boldsymbol{Q}_B\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[G_B = N_B(\boldsymbol{Y}_c) + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,\]</div>
+<p>which <code class="docutils literal notranslate"><span class="pre">getInterpolationVectorLinearizedAboutCenter</span></code> returns: the shape functions linearized about the center. A
+particle knows every field it carries only by its value and its gradient at its center, so this is its own
+interpolation at its own points for every field: for the displacement, the motion of the point; for a nonlocal field
+or a temperature, the value the particle carries there. It sums to one, and it is not the vector of the shape functions
+at the point, <code class="docutils literal notranslate"><span class="pre">getInterpolationVector</span></code>, except at the center: that one is exact at an arbitrary location, and for a
+nodal field that is not linear the two differ by a large fraction at a vertex. A constraint that measures a field at a
+point of the particle and distributes its force there with <span class="math notranslate nohighlight">\(G_B\)</span> has the symmetric penalty stiffness
+<span class="math notranslate nohighlight">\(k\,\boldsymbol{G}\boldsymbol{G}^\mathsf{T}\)</span> and is conservative. With the shape functions at the point for the
+force, while the point moves with <span class="math notranslate nohighlight">\(G_B\)</span>, the stiffness <span class="math notranslate nohighlight">\(k\,\boldsymbol{N}\boldsymbol{G}^\mathsf{T}\)</span> does work
+over a closed cycle of motion and can feed energy into a softened particle body (EdelweissMeshfree lets its
+constraints on the points of particles choose). The vertices of every cell-shaped particle
+(<code class="docutils literal notranslate"><span class="pre">getVertexCoordinates</span></code>) are those of its deformed geometry, which moves with <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>, not those of a
+smoothing domain that follows only a part of it.</p>
 <p><code class="docutils literal notranslate"><span class="pre">ParticleDomain::uniformSubdivided</span></code> splits the undeformed domain once in each direction (4 quadrilaterals or 8
 hexahedra); every subdomain is again a <code class="docutils literal notranslate"><span class="pre">ParticleDomain</span></code> with the same update type. This is the basis of the subdomain
 integration.</p>
@@ -502,8 +528,8 @@ form as a sum over the subdomains (<code class="docutils literal notranslate"><s
 <p>The particle as a whole moves with its center. <code class="docutils literal notranslate"><span class="pre">computePhysicsKernels</span></code> first evaluates the shape functions of the
 main domain and updates the center kinematics,</p>
 <div class="math notranslate nohighlight">
-\[\Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{q}_B, \qquad
-\Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \frac{\partial N_B}{\partial
+\[\Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+\Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \frac{\partial N_B}{\partial
 \boldsymbol{Y}} ,\]</div>
 <p>(<span class="math notranslate nohighlight">\(\boldsymbol{u}_c \mathrel{+}= \Delta\boldsymbol{u}_c\)</span>, which relies on the host restoring the state block of
 the last accepted state before every iteration, as EdelweissMeshfree does), and then calls the physics on the
@@ -1110,7 +1136,8 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle22getInterpolationVectorEPdPKd">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle22getInterpolationVectorEPdPKd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle22getInterpolationVectorEPdPKd"></span><span id="Marmot::Discretizations::Meshfree::Particle::getInterpolationVector__doubleP.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aff90338cf5e44ce344b9262920c25e1c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInterpolationVector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
-<dd><p>Evaluate the shape functions of the assigned kernel functions at arbitrary coordinates. </p>
+<dd><p>The shape functions of the assigned kernel functions, evaluated exactly at arbitrary coordinates, <span class="math notranslate nohighlight">\( N_B(\boldsymbol{x}) \)</span>. </p>
+<p>For a location that is not one of the particle’s own points, e.g. where a host interpolates a field of the kernel functions somewhere in the body. At its own points (its center, its vertices, its face centers) a particle knows a field only by the value and the gradient at its center: its own interpolation there is <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a82f97f4f249f05b54cdf68abc63f8069"><span class="std std-ref">getInterpolationVectorLinearizedAboutCenter()</span></a>, which differs from this one away from the center. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1202,6 +1229,50 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <li><p><strong>visitor</strong> – <strong>[inout]</strong> The visitor. </p></li>
 <li><p><strong>timeNew</strong> – <strong>[in]</strong> The time of the zero increment the material point is evaluated with. </p></li>
 <li><p><strong>dT</strong> – <strong>[in]</strong> The time increment of the zero increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree8Particle43getInterpolationVectorLinearizedAboutCenterEPdPKd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree8Particle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree8Particle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="Marmot::Discretizations::Meshfree::Particle::getInterpolationVectorLinearizedAboutCenter__doubleP.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a82f97f4f249f05b54cdf68abc63f8069"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInterpolationVectorLinearizedAboutCenter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><br /></dt>
+<dd><p>The shape functions linearized about the center of the particle,  <span class="math notranslate nohighlight">\( G_B(\boldsymbol{Y}) = N_B(\boldsymbol{Y}_c) + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} -
+\boldsymbol{Y}_c) \)</span>: the particle’s own interpolation at its own points. </p>
+<p>A particle knows every field it carries only by its value at its center,  <span class="math notranslate nohighlight">\( \sum_B N_B
+\boldsymbol{Q}_B \)</span>, and its (possibly smoothed) gradient there,  <span class="math notranslate nohighlight">\( \sum_B \boldsymbol{Q}_B \otimes \partial
+N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients that drive its kinematics. At a point <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> of its own (its center, a vertex, a face center) its interpolation of a field is therefore the linearization about the center,    <div class="math notranslate nohighlight">
+\[  G_B = N_B(\boldsymbol{Y}_c) + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} -
+  \boldsymbol{Y}_c) ,
+\]</div>
+ for every field: for the displacement, the motion of the point in the next increment, <span class="math notranslate nohighlight">\( \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{Q}_B \)</span> (the particle moves as a whole, its center with <span class="math notranslate nohighlight">\( N_B \)</span> and its domain with the homogeneous deformation gradient increment about the center); for a nonlocal field or a temperature, the value the particle carries at the point. It is not <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1aff90338cf5e44ce344b9262920c25e1c"><span class="std std-ref">getInterpolationVector()</span></a> at the point, <span class="math notranslate nohighlight">\( N_B(\boldsymbol{Y}) \)</span>, except at the center: that one is exact at an arbitrary location, not the particle’s view of its own points. A constraint that measures a field at a point of the particle and distributes its force with the same vector, <span class="math notranslate nohighlight">\( \boldsymbol{f}_B = G_B\,\boldsymbol{f} \)</span>, has a symmetric stiffness and is conservative (the work of the force on the nodes is the work on the point). The vector sums to one (a rigid translation moves the point as the nodes). It has no default, unlike the methods next to it: the only candidate, the shape functions at the point, is not the particle’s own interpolation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – <strong>[out]</strong> Array of <span class="math notranslate nohighlight">\( n_{\text{nodes}} \)</span> values. </p></li>
+<li><p><strong>coordinates</strong> – <strong>[in]</strong> The point in the reference intermediate configuration (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7"><span class="std std-ref">getDimension()</span></a> values). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8Particle40interpolationVectorLinearizedAboutCenterEPdPKdPKdPKdPKdii">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree8Particle40interpolationVectorLinearizedAboutCenterEPdPKdPKdPKdPKdii"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8Particle40interpolationVectorLinearizedAboutCenterEPdPKdPKdPKdPKdii"></span><span id="Marmot::Discretizations::Meshfree::Particle::interpolationVectorLinearizedAboutCenter__doubleP.doubleCP.doubleCP.doubleCP.doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a2446c83aae573d561a9b358641c9c605"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">interpolationVectorLinearizedAboutCenter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dN_dY</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">centerCoordinates</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nDim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nNodes</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The shape functions linearized about the center (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a82f97f4f249f05b54cdf68abc63f8069"><span class="std std-ref">getInterpolationVectorLinearizedAboutCenter()</span></a>), <span class="math notranslate nohighlight">\( G_B = N_B + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) \)</span>, from the shape functions and gradients that drive the particle’s kinematics. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – <strong>[out]</strong> Array of <code class="docutils literal notranslate"><span class="pre">nNodes</span></code> values. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> Shape functions at the center, <code class="docutils literal notranslate"><span class="pre">nNodes</span></code> values. </p></li>
+<li><p><strong>dN_dY</strong> – <strong>[in]</strong> Their gradients, column-major <code class="docutils literal notranslate"><span class="pre">nDim</span></code> x <code class="docutils literal notranslate"><span class="pre">nNodes</span></code>. </p></li>
+<li><p><strong>centerCoordinates</strong> – <strong>[in]</strong> The center <span class="math notranslate nohighlight">\( \boldsymbol{Y}_c \)</span> (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> values). </p></li>
+<li><p><strong>coordinates</strong> – <strong>[in]</strong> The point <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> values). </p></li>
+<li><p><strong>nDim</strong> – <strong>[in]</strong> The number of dimensions. </p></li>
+<li><p><strong>nNodes</strong> – <strong>[in]</strong> The number of nodes. </p></li>
 </ul>
 </dd>
 </dl>
@@ -1869,6 +1940,20 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vec</strong> – <strong>[out]</strong> Array of <span class="math notranslate nohighlight">\( n_{\text{nodes}} \)</span> values. </p></li>
 <li><p><strong>coordinates</strong> – <strong>[in]</strong> Evaluation point (nDim values). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree15GenericParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree15GenericParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree15GenericParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="Marmot::Discretizations::Meshfree::GenericParticle::getInterpolationVectorLinearizedAboutCenter__doubleP.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericParticle_1abdfe23d4a60f5f0c409eb7c2dec062d3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInterpolationVectorLinearizedAboutCenter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>The shape functions linearized about the center, from the trial functions <span class="math notranslate nohighlight">\( N_A \)</span> and gradients <span class="math notranslate nohighlight">\( \partial N_A / \partial Y_i \)</span> at the center (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a82f97f4f249f05b54cdf68abc63f8069"><span class="std std-ref">Particle::getInterpolationVectorLinearizedAboutCenter()</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – <strong>[out]</strong> Array of <span class="math notranslate nohighlight">\( n_{\text{nodes}} \)</span> values. </p></li>
+<li><p><strong>coordinates</strong> – <strong>[in]</strong> A point of the particle (nDim values). </p></li>
 </ul>
 </dd>
 </dl>
@@ -2566,6 +2651,20 @@ dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vec</strong> – <strong>[out]</strong> Pointer to an array where the interpolation vector will be stored. </p></li>
 <li><p><strong>coordinates</strong> – <strong>[in]</strong> Pointer to the coordinates at which to evaluate. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree18GenericSDIParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree18GenericSDIParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree18GenericSDIParticle43getInterpolationVectorLinearizedAboutCenterEPdPKd"></span><span id="Marmot::Discretizations::Meshfree::GenericSDIParticle::getInterpolationVectorLinearizedAboutCenter__doubleP.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1ac45ae9b4c1ac37a62c673ccc5dd0d384"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInterpolationVectorLinearizedAboutCenter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">final</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>The shape functions linearized about the center, from the shape functions and smoothed gradients of the main domain, which move the center and the domain in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1ad8040a3eddfb94aa12cd33fd429272ec"><span class="std std-ref">computePhysicsKernels()</span></a> (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1a82f97f4f249f05b54cdf68abc63f8069"><span class="std std-ref">Particle::getInterpolationVectorLinearizedAboutCenter()</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – <strong>[out]</strong> Pointer to an array of <span class="math notranslate nohighlight">\( n_{\text{nodes}} \)</span> values. </p></li>
+<li><p><strong>coordinates</strong> – <strong>[in]</strong> Pointer to the coordinates of a point of the particle. </p></li>
 </ul>
 </dd>
 </dl>

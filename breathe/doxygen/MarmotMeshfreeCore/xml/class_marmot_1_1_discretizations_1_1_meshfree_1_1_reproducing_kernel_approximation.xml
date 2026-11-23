@@ -13,7 +13,7 @@
         <name>_dim</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_dim</qualifiedname>
         <briefdescription>
-<para>spatial dimension <formula id="66">$ d $</formula> </para>
+<para>spatial dimension <formula id="78">$ d $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -28,7 +28,7 @@
         <name>_desiredCompletenessOrder</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_desiredCompletenessOrder</qualifiedname>
         <briefdescription>
-<para>requested completeness order <formula id="68">$ n $</formula> (may be reduced per point) </para>
+<para>requested completeness order <formula id="80">$ n $</formula> (may be reduced per point) </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -57,16 +57,16 @@
           <declname>completenessOrder</declname>
         </param>
         <briefdescription>
-<para>Compute the monomial basis vector <formula id="122">$ \boldsymbol{H} $</formula> at shifted coordinates. </para>
+<para>Compute the monomial basis vector <formula id="134">$ \boldsymbol{H} $</formula> at shifted coordinates. </para>
         </briefdescription>
         <detaileddescription>
-<para>Wraps Math::computeMonomialBasis(); callers pass <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>.</para>
+<para>Wraps Math::computeMonomialBasis(); callers pass <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">globalCoord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shifted coordinates <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> at which the basis is evaluated (despite the name, not the global coordinates). </para>
+<para>Shifted coordinates <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> at which the basis is evaluated (despite the name, not the global coordinates). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -82,11 +82,11 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="68">$ n $</formula>. </para>
+<para>Completeness order <formula id="80">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="237">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula>, of size <formula id="67">$ \binom{d + n}{d} $</formula>. </para>
+<simplesect kind="return"><para><formula id="247">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula>, of size <formula id="79">$ \binom{d + n}{d} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -113,16 +113,16 @@
           <declname>completenessOrder</declname>
         </param>
         <briefdescription>
-<para>Compute the gradient <formula id="238">$ \partial \boldsymbol{H} / \partial x_i $</formula> of the monomial basis vector. </para>
+<para>Compute the gradient <formula id="248">$ \partial \boldsymbol{H} / \partial x_i $</formula> of the monomial basis vector. </para>
         </briefdescription>
         <detaileddescription>
-<para>Wraps Math::computeMonomialBasisGradient(); callers pass <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. Since <formula id="89">$ \boldsymbol{x}_A $</formula> is fixed, the derivative with respect to the shifted coordinates equals that with respect to <formula id="86">$ \boldsymbol{x} $</formula>.</para>
+<para>Wraps Math::computeMonomialBasisGradient(); callers pass <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. Since <formula id="101">$ \boldsymbol{x}_A $</formula> is fixed, the derivative with respect to the shifted coordinates equals that with respect to <formula id="98">$ \boldsymbol{x} $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">globalCoord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shifted coordinates <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (despite the name, not the global coordinates). </para>
+<para>Shifted coordinates <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (despite the name, not the global coordinates). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -138,11 +138,11 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="68">$ n $</formula>. </para>
+<para>Completeness order <formula id="80">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Matrix of size <formula id="239">$ \binom{d + n}{d} \times d $</formula>; column <formula id="15">$ i $</formula> holds <formula id="238">$ \partial \boldsymbol{H} / \partial x_i $</formula>. </para>
+<simplesect kind="return"><para>Matrix of size <formula id="249">$ \binom{d + n}{d} \times d $</formula>; column <formula id="15">$ i $</formula> holds <formula id="248">$ \partial \boldsymbol{H} / \partial x_i $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -169,7 +169,7 @@
           <declname>completenessOrder</declname>
         </param>
         <briefdescription>
-<para>Compute the moment matrix  <formula id="240">$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)
+<para>Compute the moment matrix  <formula id="250">$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)
 \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
@@ -178,7 +178,7 @@
 <parametername direction="in">globalCoord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="86">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="98">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -186,7 +186,7 @@
 <parametername direction="in">coveringShapeFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Kernel functions <formula id="241">$ \phi_B $</formula> summed over (kernels that do not cover <formula id="86">$ \boldsymbol{x} $</formula> contribute zero). </para>
+<para>Kernel functions <formula id="251">$ \phi_B $</formula> summed over (kernels that do not cover <formula id="98">$ \boldsymbol{x} $</formula> contribute zero). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -194,11 +194,11 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="68">$ n $</formula>. </para>
+<para>Completeness order <formula id="80">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The symmetric moment matrix, of size <formula id="242">$ \binom{d + n}{d} \times \binom{d + n}{d} $</formula>. </para>
+<simplesect kind="return"><para>The symmetric moment matrix, of size <formula id="252">$ \binom{d + n}{d} \times \binom{d + n}{d} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -225,17 +225,17 @@
           <declname>completenessOrder</declname>
         </param>
         <briefdescription>
-<para>Compute the moment matrix <formula id="117">$ \boldsymbol{M} $</formula> and its gradients <formula id="124">$ \boldsymbol{M}_{,i} $</formula>. </para>
+<para>Compute the moment matrix <formula id="129">$ \boldsymbol{M} $</formula> and its gradients <formula id="136">$ \boldsymbol{M}_{,i} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="243">$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
-\boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i} $</formula>, with <formula id="122">$ \boldsymbol{H} $</formula> evaluated at <formula id="236">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>.</para>
+<para><formula id="253">$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
+\boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i} $</formula>, with <formula id="134">$ \boldsymbol{H} $</formula> evaluated at <formula id="246">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">globalCoord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="86">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="98">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -243,7 +243,7 @@
 <parametername direction="in">coveringShapeFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Kernel functions <formula id="241">$ \phi_B $</formula> summed over. </para>
+<para>Kernel functions <formula id="251">$ \phi_B $</formula> summed over. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -251,11 +251,11 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="68">$ n $</formula>. </para>
+<para>Completeness order <formula id="80">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Pair of <formula id="117">$ \boldsymbol{M} $</formula> and the <formula id="66">$ d $</formula> matrices <formula id="124">$ \boldsymbol{M}_{,i} $</formula>. </para>
+<simplesect kind="return"><para>Pair of <formula id="129">$ \boldsymbol{M} $</formula> and the <formula id="78">$ d $</formula> matrices <formula id="136">$ \boldsymbol{M}_{,i} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -274,7 +274,7 @@
           <declname>sizeHVector</declname>
         </param>
         <briefdescription>
-<para>Get <formula id="244">$ \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T $</formula>. </para>
+<para>Get <formula id="254">$ \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -315,10 +315,10 @@
           <declname>nCoveringKernels</declname>
         </param>
         <briefdescription>
-<para>Factorize the moment matrix <formula id="245">$ \boldsymbol{M}(\boldsymbol{x}) $</formula> and check that it is regular. </para>
+<para>Factorize the moment matrix <formula id="255">$ \boldsymbol{M}(\boldsymbol{x}) $</formula> and check that it is regular. </para>
         </briefdescription>
         <detaileddescription>
-<para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <formula id="117">$ \boldsymbol{M} $</formula> is singular, and solving it would silently give shape functions without partition of unity. <parameterlist kind="param"><parameteritem>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <formula id="129">$ \boldsymbol{M} $</formula> is singular, and solving it would silently give shape functions without partition of unity. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">M</parametername>
 </parameternamelist>
@@ -371,7 +371,7 @@
           <declname>n</declname>
         </param>
         <briefdescription>
-<para>Compute the factorial <formula id="246">$ n! $</formula> recursively. </para>
+<para>Compute the factorial <formula id="256">$ n! $</formula> recursively. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -383,7 +383,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="246">$ n! $</formula>. </para>
+<simplesect kind="return"><para><formula id="256">$ n! $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -409,7 +409,7 @@
 <para>Check if the completeness order leads to a non-singular equation system. </para>
         </briefdescription>
         <detaileddescription>
-<para>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <formula id="247">$ n_\mathrm{nodes} \ge \binom{d + n}{d} $</formula>. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <formula id="248">$ n \le 0 $</formula>.</para>
+<para>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <formula id="257">$ n_\mathrm{nodes} \ge \binom{d + n}{d} $</formula>. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <formula id="258">$ n \le 0 $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">nNodes</parametername>
@@ -423,7 +423,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="68">$ n $</formula>. </para>
+<para>Completeness order <formula id="80">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -459,7 +459,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The highest order <formula id="72">$ \le $</formula> the desired one for which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds. </para>
+<simplesect kind="return"><para>The highest order <formula id="84">$ \le $</formula> the desired one for which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -490,7 +490,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="86">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="98">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -502,7 +502,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Indices (into <computeroutput>kernelFunctions</computeroutput>) of the kernels with <formula id="249">$ |\phi_A(\boldsymbol{x})| &gt; 10^{-14} $</formula>. </para>
+<simplesect kind="return"><para>Indices (into <computeroutput>kernelFunctions</computeroutput>) of the kernels with <formula id="259">$ |\phi_A(\boldsymbol{x})| &gt; 10^{-14} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -535,7 +535,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="66">$ d $</formula>. </para>
+<para>Spatial dimension <formula id="78">$ d $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -543,7 +543,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Desired completeness order <formula id="68">$ n $</formula> (order of the reproduced polynomials). </para>
+<para>Desired completeness order <formula id="80">$ n $</formula> (order of the reproduced polynomials). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -588,7 +588,7 @@
           <declname>shapeFunctionValues</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values <formula id="250">$ \Psi_A = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A) \boldsymbol{b} \phi_A $</formula>. </para>
+<para>Compute the RK shape function values <formula id="260">$ \Psi_A = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A) \boldsymbol{b} \phi_A $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -596,7 +596,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="86">$ \boldsymbol{x} $</formula> (length <formula id="66">$ d $</formula>). </para>
+<para>Evaluation point <formula id="98">$ \boldsymbol{x} $</formula> (length <formula id="78">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -604,7 +604,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="127">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="139">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -612,7 +612,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="127">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="86">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="139">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="98">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -711,7 +711,7 @@
           <declname>shapeFunctionValueGradients_ColMajor</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values and their explicit (exact) gradients <formula id="251">$ \Psi_{A,i} $</formula>. </para>
+<para>Compute the RK shape function values and their explicit (exact) gradients <formula id="261">$ \Psi_{A,i} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -719,7 +719,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="86">$ \boldsymbol{x} $</formula> (length <formula id="66">$ d $</formula>). </para>
+<para>Evaluation point <formula id="98">$ \boldsymbol{x} $</formula> (length <formula id="78">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -727,7 +727,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="127">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="139">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -735,7 +735,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="127">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="86">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="139">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="98">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -743,7 +743,7 @@
 <parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradients, column-major <formula id="128">$ d \times n_\mathrm{c} $</formula> (entry <formula id="129">$ i + d A $</formula> is <formula id="251">$ \Psi_{A,i} $</formula>); zero for non-covering candidates. </para>
+<para>Gradients, column-major <formula id="140">$ d \times n_\mathrm{c} $</formula> (entry <formula id="141">$ i + d A $</formula> is <formula id="261">$ \Psi_{A,i} $</formula>); zero for non-covering candidates. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -767,22 +767,22 @@
 <para>Reproducing kernel (RK) approximation with explicit (direct) shape function gradients. </para>
     </briefdescription>
     <detaileddescription>
-<para>The shape function of node <formula id="16">$ A $</formula> is the kernel <formula id="228">$ \phi_A $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>) multiplied by a correction function,    <formula id="229">\[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
+<para>The shape function of node <formula id="16">$ A $</formula> is the kernel <formula id="238">$ \phi_A $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>) multiplied by a correction function,    <formula id="239">\[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
   \phi_A(\boldsymbol{x}),
-\]</formula> where <formula id="122">$ \boldsymbol{H} $</formula> is the vector of all monomials up to the completeness order <formula id="68">$ n $</formula> (Math::computeMonomialBasis(), first entry <formula id="85">$ 1 $</formula>) evaluated at the shifted coordinates <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. The coefficient vector <formula id="179">$ \boldsymbol{b} $</formula> solves      <formula id="231">\[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
+\]</formula> where <formula id="134">$ \boldsymbol{H} $</formula> is the vector of all monomials up to the completeness order <formula id="80">$ n $</formula> (Math::computeMonomialBasis(), first entry <formula id="97">$ 1 $</formula>) evaluated at the shifted coordinates <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. The coefficient vector <formula id="189">$ \boldsymbol{b} $</formula> solves      <formula id="241">\[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
   \qquad \boldsymbol{M}(\boldsymbol{x}) = \sum_{B} \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)\,
   \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B)\, \phi_B(\boldsymbol{x}),
   \qquad \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T,
-\]</formula> with the moment matrix <formula id="117">$ \boldsymbol{M} $</formula> summed over the kernels covering <formula id="86">$ \boldsymbol{x} $</formula>. This enforces the reproducing conditions  <formula id="232">$ \sum_A \Psi_A(\boldsymbol{x})\, (\boldsymbol{x} - \boldsymbol{x}_A)^{\boldsymbol{\alpha}} =
-\delta_{\boldsymbol{\alpha}\boldsymbol{0}} $</formula>, or equivalently  <formula id="233">$ \sum_A \Psi_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} = \boldsymbol{x}^{\boldsymbol{\alpha}}
-$</formula>, for all multi-indices <formula id="65">$ |\boldsymbol{\alpha}| \le n $</formula>; in particular, the shape functions form a partition of unity. The continuity of <formula id="115">$ \Psi_A $</formula> is that of the kernels.</para>
-<para>The gradients are the exact derivatives of <formula id="115">$ \Psi_A $</formula> (product rule),       <formula id="234">\[  \Psi_{A,i} = \left( \boldsymbol{b}_{,i}^T \boldsymbol{H} + \boldsymbol{b}^T \boldsymbol{H}_{,i} \right)
+\]</formula> with the moment matrix <formula id="129">$ \boldsymbol{M} $</formula> summed over the kernels covering <formula id="98">$ \boldsymbol{x} $</formula>. This enforces the reproducing conditions  <formula id="242">$ \sum_A \Psi_A(\boldsymbol{x})\, (\boldsymbol{x} - \boldsymbol{x}_A)^{\boldsymbol{\alpha}} =
+\delta_{\boldsymbol{\alpha}\boldsymbol{0}} $</formula>, or equivalently  <formula id="243">$ \sum_A \Psi_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} = \boldsymbol{x}^{\boldsymbol{\alpha}}
+$</formula>, for all multi-indices <formula id="77">$ |\boldsymbol{\alpha}| \le n $</formula>; in particular, the shape functions form a partition of unity. The continuity of <formula id="127">$ \Psi_A $</formula> is that of the kernels.</para>
+<para>The gradients are the exact derivatives of <formula id="127">$ \Psi_A $</formula> (product rule),       <formula id="244">\[  \Psi_{A,i} = \left( \boldsymbol{b}_{,i}^T \boldsymbol{H} + \boldsymbol{b}^T \boldsymbol{H}_{,i} \right)
   \phi_A + \boldsymbol{b}^T \boldsymbol{H}\, \phi_{A,i},
   \qquad \boldsymbol{b}_{,i} = -\boldsymbol{M}^{-1} \boldsymbol{M}_{,i}\, \boldsymbol{b},
   \qquad \boldsymbol{M}_{,i} = \sum_B \left( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
   \boldsymbol{H}_{,i}^T \right) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i},
-\]</formula> with <formula id="235">$ (\bullet)_{,i} = \partial (\bullet) / \partial x_i $</formula> and <formula id="122">$ \boldsymbol{H} $</formula> evaluated at <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (resp. <formula id="236">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>). The linear systems are solved with a column-pivoting Householder QR decomposition of <formula id="117">$ \boldsymbol{M} $</formula>, which is computed once per evaluation point.</para>
-<para>If fewer kernels cover <formula id="86">$ \boldsymbol{x} $</formula> than the basis has entries, <formula id="117">$ \boldsymbol{M} $</formula> is singular; the completeness order is then reduced for this evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>).</para>
+\]</formula> with <formula id="245">$ (\bullet)_{,i} = \partial (\bullet) / \partial x_i $</formula> and <formula id="134">$ \boldsymbol{H} $</formula> evaluated at <formula id="240">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (resp. <formula id="246">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>). The linear systems are solved with a column-pivoting Householder QR decomposition of <formula id="129">$ \boldsymbol{M} $</formula>, which is computed once per evaluation point.</para>
+<para>If fewer kernels cover <formula id="98">$ \boldsymbol{x} $</formula> than the basis has entries, <formula id="129">$ \boldsymbol{M} $</formula> is singular; the completeness order is then reduced for this evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>).</para>
 <para>See <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kindref="compound">ReproducingKernelApproximationImplicit</ref> for the variant with implicit gradients. </para>
     </detaileddescription>
     <inheritancegraph>

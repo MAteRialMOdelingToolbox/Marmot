@@ -163,6 +163,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aeec7464e8d87a2f925eebfd9b6bfbec2" kind="function"><name>getParticleShape</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa3ed7cf4af833f966615ccda4a8c303d" kind="function"><name>getDimension</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a66d1fabf95051bff30c3595cc2e0aecc" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abdfe23d4a60f5f0c409eb7c2dec062d3" kind="function"><name>getInterpolationVectorLinearizedAboutCenter</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1b6a63e40fcbbec2b64deb7d5f0eda92" kind="function"><name>getEvaluationCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a2fcab76d899065e56dacdf579636457b" kind="function"><name>getNumberOfEvaluationPoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774" kind="function"><name>vci_getNumberOfConstraints</name></member>
@@ -226,6 +227,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7544bef162dc7b093ba4a6fc88b6d601" kind="function"><name>getIntermediateConfigurationBoundaryVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a22c3e2a15f5b660ba54d9bb9b21c91c3" kind="function"><name>getDimension</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6c6c4031f3b3d47942639fd8e03db290" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac45ae9b4c1ac37a62c673ccc5dd0d384" kind="function"><name>getInterpolationVectorLinearizedAboutCenter</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e" kind="function"><name>vci_getNumberOfConstraints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0b7dd7a486a66db04bb3344db8cc7633" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99bee7eecce18ead023d8b8605b8dbaf" kind="function"><name>vci_compute_TestGradient_P_Integral</name></member>
@@ -433,6 +435,8 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" kind="function"><name>setInitialCondition</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" kind="function"><name>computeLumpedDamping</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kind="function"><name>describeStiffness</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kind="function"><name>getInterpolationVectorLinearizedAboutCenter</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2446c83aae573d561a9b358641c9c605" kind="function"><name>interpolationVectorLinearizedAboutCenter</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kind="enum"><name>SmoothingDomainUpdateType</name></member>

@@ -117,7 +117,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>entry <formula id="195">$ c\, n_{\text{dof/node}} + k $</formula> </para>
+<para>entry <formula id="205">$ c\, n_{\text{dof/node}} + k $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -152,7 +152,7 @@
 <parametername direction="in">columnWeights</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The nonnegative weights <formula id="187">$ \boldsymbol{W} $</formula>, column-major, (nNodes nDofPerNode) x nColumns, in the dof order of the particle. </para>
+<para>The nonnegative weights <formula id="197">$ \boldsymbol{W} $</formula>, column-major, (nNodes nDofPerNode) x nColumns, in the dof order of the particle. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -301,7 +301,7 @@
           <declname>df_dIncrementSecondGradient</declname>
         </param>
         <briefdescription>
-<para>Add the bound of the rows of node <computeroutput>A:</computeroutput> <formula id="188">$ (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} $</formula> for all components <formula id="15">$ i $</formula> and columns <formula id="189">$ c $</formula>. </para>
+<para>Add the bound of the rows of node <computeroutput>A:</computeroutput> <formula id="198">$ (|\boldsymbol{K}|\boldsymbol{W})_{Ai,c} $</formula> for all components <formula id="15">$ i $</formula> and columns <formula id="199">$ c $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -458,8 +458,8 @@
           <declname>moments</declname>
         </param>
         <briefdescription>
-<para>Add the moments of one node: <formula id="190">$ w \|\boldsymbol{g}\| $</formula> and  <formula id="191">$ w\, \boldsymbol{g}
-\boldsymbol{g}^T / \|\boldsymbol{g}\| $</formula> (nothing for <formula id="192">$ \boldsymbol{g} = \boldsymbol{0} $</formula>). </para>
+<para>Add the moments of one node: <formula id="200">$ w \|\boldsymbol{g}\| $</formula> and  <formula id="201">$ w\, \boldsymbol{g}
+\boldsymbol{g}^T / \|\boldsymbol{g}\| $</formula> (nothing for <formula id="202">$ \boldsymbol{g} = \boldsymbol{0} $</formula>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -521,7 +521,7 @@
           <declname>d2N_dYdY</declname>
         </param>
         <briefdescription>
-<para>The independent components <formula id="193">$ (l, m), l \le m $</formula> of a symmetric second gradient. </para>
+<para>The independent components <formula id="203">$ (l, m), l \le m $</formula> of a symmetric second gradient. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -529,11 +529,11 @@
 <parametername direction="in">d2N_dYdY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The second gradient of one node, entry <formula id="160">$ l\, n_{\text{dim}} + m $</formula>. </para>
+<para>The second gradient of one node, entry <formula id="171">$ l\, n_{\text{dim}} + m $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The nSym components, in the order <formula id="194">$ (0,0), (0,1), \ldots, (1,1), \ldots $</formula>. </para>
+<simplesect kind="return"><para>The nSym components, in the order <formula id="204">$ (0,0), (0,1), \ldots, (1,1), \ldots $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -543,16 +543,16 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Bounds the absolute value of a particle&apos;s stiffness times nonnegative weights, <formula id="57">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, from the stiffness it describes node by node, without forming it. </para>
+<para>Bounds the absolute value of a particle&apos;s stiffness times nonnegative weights, <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, from the stiffness it describes node by node, without forming it. </para>
     </briefdescription>
     <detaileddescription>
-<para>What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the Collatz-Wielandt bound, <formula id="173">$ \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i $</formula> for positive weights <formula id="174">$ \boldsymbol{w} $</formula>. The stiffness of a particle with <formula id="68">$ n $</formula> nodes has <formula id="135">$ n^2 $</formula> blocks; this bound of <formula id="175">$ |\boldsymbol{K}|\boldsymbol{W} $</formula> costs <formula id="176">$ O(n) $</formula>: the rows of node <formula id="16">$ A $</formula> are linear in the shape functions of the other node <formula id="133">$ B $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), and the sum over <formula id="133">$ B $</formula> is taken from a few weighted moments of the shape functions, computed once per particle (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" kindref="member">visitShapeFunctions()</ref>). Row <formula id="15">$ i $</formula> of node <formula id="16">$ A $</formula>, column component <formula id="73">$ k $</formula>, with the weights <formula id="177">$ w_B $</formula> of component <formula id="73">$ k $</formula> of the nodes and the factors <formula id="178">$ a = \partial f_{Ai}/\partial \Delta q_k $</formula>, <formula id="179">$ \boldsymbol{b} $</formula> (its gradient factors) and <formula id="180">$ \boldsymbol{h} $</formula> (its second-gradient factors):      <formula id="181">\[  \sum_B |K_{Ai,Bk}|\, w_B \le |a| \sum_B w_B |N_B|
+<para>What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the Collatz-Wielandt bound, <formula id="183">$ \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i $</formula> for positive weights <formula id="184">$ \boldsymbol{w} $</formula>. The stiffness of a particle with <formula id="80">$ n $</formula> nodes has <formula id="147">$ n^2 $</formula> blocks; this bound of <formula id="185">$ |\boldsymbol{K}|\boldsymbol{W} $</formula> costs <formula id="186">$ O(n) $</formula>: the rows of node <formula id="16">$ A $</formula> are linear in the shape functions of the other node <formula id="145">$ B $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), and the sum over <formula id="145">$ B $</formula> is taken from a few weighted moments of the shape functions, computed once per particle (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1a82f1d4575f5bbebaffe338326a9aa1fe" kindref="member">visitShapeFunctions()</ref>). Row <formula id="15">$ i $</formula> of node <formula id="16">$ A $</formula>, column component <formula id="85">$ k $</formula>, with the weights <formula id="187">$ w_B $</formula> of component <formula id="85">$ k $</formula> of the nodes and the factors <formula id="188">$ a = \partial f_{Ai}/\partial \Delta q_k $</formula>, <formula id="189">$ \boldsymbol{b} $</formula> (its gradient factors) and <formula id="190">$ \boldsymbol{h} $</formula> (its second-gradient factors):      <formula id="191">\[  \sum_B |K_{Ai,Bk}|\, w_B \le |a| \sum_B w_B |N_B|
   + \sqrt{ \sum_B w_B \|\boldsymbol{g}_B\| \; \boldsymbol{b}^T \Big( \sum_B
     \frac{w_B}{\|\boldsymbol{g}_B\|} \boldsymbol{g}_B \boldsymbol{g}_B^T \Big) \boldsymbol{b} }
   + (\text{the same for } \boldsymbol{h} \text{ and the second gradients}),
-\]</formula> with <formula id="182">$ \boldsymbol{g}_B = \partial N_B / \partial \boldsymbol{Y} $</formula>. The first term is exact; the others are the Cauchy-Schwarz inequality over the nodes,   <formula id="183">$ \sum_B w_B |\boldsymbol{b}\cdot\boldsymbol{g}_B| \le
+\]</formula> with <formula id="192">$ \boldsymbol{g}_B = \partial N_B / \partial \boldsymbol{Y} $</formula>. The first term is exact; the others are the Cauchy-Schwarz inequality over the nodes,   <formula id="193">$ \sum_B w_B |\boldsymbol{b}\cdot\boldsymbol{g}_B| \le
 \sqrt{\sum_B w_B \|\boldsymbol{g}_B\|} \sqrt{\sum_B w_B (\boldsymbol{b}\cdot\boldsymbol{g}_B)^2 /
-\|\boldsymbol{g}_B\|} $</formula>, which keeps the directions of the gradients: it is exact if all gradients are parallel, and <formula id="184">$ 2/\sqrt{3} $</formula> times the exact sum ( <formula id="185">$ \pi/(2\sqrt{2}) $</formula> in 2D) if their directions are spread evenly. The terms are added by the triangle inequality. The bound holds for every stiffness of the form of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>, symmetric or not; the second gradients of the shape functions must be symmetric (their symmetric components are used).</para>
+\|\boldsymbol{g}_B\|} $</formula>, which keeps the directions of the gradients: it is exact if all gradients are parallel, and <formula id="194">$ 2/\sqrt{3} $</formula> times the exact sum ( <formula id="195">$ \pi/(2\sqrt{2}) $</formula> in 2D) if their directions are spread evenly. The terms are added by the triangle inequality. The bound holds for every stiffness of the form of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>, symmetric or not; the second gradients of the shape functions must be symmetric (their symmetric components are used).</para>
 <para>A host uses it through <ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">addBoundOfAbsoluteStiffnessTimes()</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>

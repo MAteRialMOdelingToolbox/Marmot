@@ -85,7 +85,7 @@
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The trial shape functions <formula id="145">$ N_B $</formula>, 1 x nNodes. </para>
+<para>The trial shape functions <formula id="64">$ N_B $</formula>, 1 x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -93,7 +93,7 @@
 <parametername direction="in">dN_dY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their gradients <formula id="146">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
+<para>Their gradients <formula id="157">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -152,7 +152,7 @@
 <parametername direction="in">df_dIncrement</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="154">$ \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} $</formula>, one block. </para>
+<para><formula id="165">$ \partial \boldsymbol{f}_A / \partial \Delta\boldsymbol{q} $</formula>, one block. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -160,7 +160,7 @@
 <parametername direction="in">df_dIncrementGradient</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="155">$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} /
+<para><formula id="166">$ \partial \boldsymbol{f}_A / \partial (\partial \Delta\boldsymbol{q} /
 \partial Y_l) $</formula>, nDim blocks. </para>
 </parameterdescription>
 </parameteritem>
@@ -169,7 +169,7 @@
 <parametername direction="in">df_dIncrementSecondGradient</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="156">$ \partial \boldsymbol{f}_A / \partial (\partial^2
+<para><formula id="167">$ \partial \boldsymbol{f}_A / \partial (\partial^2
 \Delta\boldsymbol{q} / \partial Y_l \partial Y_m) $</formula>, nDim^2 blocks; nullptr for a particle without second gradients. </para>
 </parameterdescription>
 </parameteritem>
@@ -185,20 +185,20 @@
 <para>Sees the stiffness of a particle node by node, as the particle describes it (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref>). </para>
     </briefdescription>
     <detaileddescription>
-<para>A particle sees the increments <formula id="130">$ \Delta\boldsymbol{Q}_B $</formula> of its nodes only through the increment it interpolates at its evaluation point: its value, its gradient and, for a stabilized particle, its second gradient,       <formula id="131">\[  \Delta\boldsymbol{q} = \sum_B N_B\, \Delta\boldsymbol{Q}_B, \qquad
+<para>A particle sees the increments <formula id="142">$ \Delta\boldsymbol{Q}_B $</formula> of its nodes only through the increment it interpolates at its evaluation point: its value, its gradient and, for a stabilized particle, its second gradient,       <formula id="143">\[  \Delta\boldsymbol{q} = \sum_B N_B\, \Delta\boldsymbol{Q}_B, \qquad
   \frac{\partial \Delta\boldsymbol{q}}{\partial Y_l} = \sum_B \frac{\partial N_B}{\partial Y_l}\,
   \Delta\boldsymbol{Q}_B, \qquad
   \frac{\partial^2 \Delta\boldsymbol{q}}{\partial Y_l \partial Y_m} = \sum_B
   \frac{\partial^2 N_B}{\partial Y_l \partial Y_m}\, \Delta\boldsymbol{Q}_B .
-\]</formula> By the chain rule, the block of the stiffness that couples the force <formula id="132">$ \boldsymbol{f}_A $</formula> of node <formula id="16">$ A $</formula> with the increment of node <formula id="133">$ B $</formula> is       <formula id="134">\[  \boldsymbol{K}_{AB} = \frac{\partial \boldsymbol{f}_A}{\partial \Delta\boldsymbol{q}}\, N_B
+\]</formula> By the chain rule, the block of the stiffness that couples the force <formula id="144">$ \boldsymbol{f}_A $</formula> of node <formula id="16">$ A $</formula> with the increment of node <formula id="145">$ B $</formula> is       <formula id="146">\[  \boldsymbol{K}_{AB} = \frac{\partial \boldsymbol{f}_A}{\partial \Delta\boldsymbol{q}}\, N_B
   + \sum_l \frac{\partial \boldsymbol{f}_A}{\partial (\partial \Delta\boldsymbol{q} / \partial Y_l)}\,
   \frac{\partial N_B}{\partial Y_l}
   + \sum_{l,m} \frac{\partial \boldsymbol{f}_A}{\partial (\partial^2 \Delta\boldsymbol{q} / \partial Y_l
   \partial Y_m)}\, \frac{\partial^2 N_B}{\partial Y_l \partial Y_m} .
-\]</formula> The particle describes the stiffness in this factored form: first the shape functions at its evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1aa2e93274e740593d3ab2ad570194174b" kindref="member">visitShapeFunctions()</ref>), once, then for every node <formula id="16">$ A $</formula> the three derivatives of its force, which do not depend on <formula id="133">$ B $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a96a2984c188f6732600f490905cc33bd" kindref="member">visitStiffnessOfNode()</ref>). A visitor does with them what it needs, e.g. bound the absolute value of the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>) without forming its <formula id="135">$ n^2 $</formula> blocks, or form them (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler" kindref="compound">StiffnessAssembler</ref>; both in <ref refid="_marmot_particle_stiffness_visitors_8h" kindref="compound">MarmotParticleStiffnessVisitors.h</ref>, for the host).</para>
-<para>The visitor is not templated, as <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Particle</ref> is not: the dimension and the number of dofs per node are given with the shape functions, and all arrays are column-major. A particle without second gradients gives nullptr for both second-gradient arrays (of the shape functions and of the forces). With <formula id="136">$ n_d $</formula> = nDim and <formula id="68">$ n $</formula> = nDofPerNode:<itemizedlist>
-<listitem><para><computeroutput>N:</computeroutput> 1 x nNodes, <computeroutput>dN_dY:</computeroutput> <formula id="136">$ n_d $</formula> x nNodes, <computeroutput>d2N_dYdY:</computeroutput> <formula id="137">$ n_d^2 $</formula> x nNodes, entry <formula id="138">$ (l\, n_d + m, B) $</formula> is <formula id="139">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>;</para>
-</listitem><listitem><para>each derivative of the force of a node is a block of <formula id="68">$ n $</formula> x <formula id="68">$ n $</formula>: row <formula id="15">$ i $</formula> is the component of the force of the node, column <formula id="73">$ k $</formula> the component of the interpolated increment (the fields of a node, in its dof order). The <formula id="136">$ n_d $</formula> gradient blocks follow each other, block <formula id="140">$ l $</formula> at offset <formula id="141">$ l\, n^2 $</formula>, and so do the <formula id="137">$ n_d^2 $</formula> second-gradient blocks, block <formula id="142">$ l\, n_d + m $</formula> at offset <formula id="143">$ (l\, n_d + m)\, n^2 $</formula>.</para>
+\]</formula> The particle describes the stiffness in this factored form: first the shape functions at its evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1aa2e93274e740593d3ab2ad570194174b" kindref="member">visitShapeFunctions()</ref>), once, then for every node <formula id="16">$ A $</formula> the three derivatives of its force, which do not depend on <formula id="145">$ B $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor_1a96a2984c188f6732600f490905cc33bd" kindref="member">visitStiffnessOfNode()</ref>). A visitor does with them what it needs, e.g. bound the absolute value of the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>) without forming its <formula id="147">$ n^2 $</formula> blocks, or form them (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler" kindref="compound">StiffnessAssembler</ref>; both in <ref refid="_marmot_particle_stiffness_visitors_8h" kindref="compound">MarmotParticleStiffnessVisitors.h</ref>, for the host).</para>
+<para>The visitor is not templated, as <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Particle</ref> is not: the dimension and the number of dofs per node are given with the shape functions, and all arrays are column-major. A particle without second gradients gives nullptr for both second-gradient arrays (of the shape functions and of the forces). With <formula id="148">$ n_d $</formula> = nDim and <formula id="80">$ n $</formula> = nDofPerNode:<itemizedlist>
+<listitem><para><computeroutput>N:</computeroutput> 1 x nNodes, <computeroutput>dN_dY:</computeroutput> <formula id="148">$ n_d $</formula> x nNodes, <computeroutput>d2N_dYdY:</computeroutput> <formula id="149">$ n_d^2 $</formula> x nNodes, entry <formula id="150">$ (l\, n_d + m, B) $</formula> is <formula id="151">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>;</para>
+</listitem><listitem><para>each derivative of the force of a node is a block of <formula id="80">$ n $</formula> x <formula id="80">$ n $</formula>: row <formula id="15">$ i $</formula> is the component of the force of the node, column <formula id="85">$ k $</formula> the component of the interpolated increment (the fields of a node, in its dof order). The <formula id="148">$ n_d $</formula> gradient blocks follow each other, block <formula id="152">$ l $</formula> at offset <formula id="153">$ l\, n^2 $</formula>, and so do the <formula id="149">$ n_d^2 $</formula> second-gradient blocks, block <formula id="154">$ l\, n_d + m $</formula> at offset <formula id="155">$ (l\, n_d + m)\, n^2 $</formula>.</para>
 </listitem></itemizedlist>
 </para>
 <para>The arrays are valid during the call only. </para>
