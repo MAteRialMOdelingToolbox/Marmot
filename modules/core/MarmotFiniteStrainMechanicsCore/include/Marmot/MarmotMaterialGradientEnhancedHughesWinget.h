@@ -60,7 +60,8 @@ namespace Marmot::Materials {
    * of the previous increment rotated forward by the Cayley transform of @f$ \Delta\boldsymbol{\Omega} @f$
    * and the resulting Cauchy stress pushed to the Kirchhoff stress @f$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} @f$.
    * The elastic energy density and the dissipation are converted between this interface (per unit reference
-   * volume) and the wrapped material (per unit current volume) as there, see toDensityPerCurrentVolume().
+   * volume) and the wrapped material (per unit current volume) as there, see
+   * toDensityPerVolumeAtStartOfIncrement() and toDensityPerVolumeAtEndOfIncrement().
    *
    * On top of that it carries the nonlocal fields across the two interfaces, per nonlocal variable K:
    *
@@ -352,10 +353,12 @@ namespace Marmot::Materials {
                                                                                 dEpsVoigt,
                                                                                 timeIncrement );
 
-      // The stored densities are per unit reference volume, the wrapped material's per unit current volume.
+      // The stored densities are per unit reference volume, the wrapped material's per unit current volume:
+      // the elastic energy is a function of the state, the dissipation is accumulated along the path.
       const double Jn                = determinant( Fn );
-      const double seedEnergyDensity = toDensityPerCurrentVolume( response.elasticEnergyDensity, Jn );
-      const double seedDissipation   = toDensityPerCurrentVolume( response.dissipation, Jn );
+      const double J                 = determinant( Fn1 );
+      const double seedEnergyDensity = toDensityPerVolumeAtStartOfIncrement( response.elasticEnergyDensity, Jn );
+      const double seedDissipation   = toDensityPerVolumeAtEndOfIncrement( response.dissipation, J );
 
       typename BaseMaterial::response res;
       res.stress = sigmaRotVoigt;
@@ -383,7 +386,6 @@ namespace Marmot::Materials {
       const Tensor33d              sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
 
       // --- push the Cauchy stress forward to the Kirchhoff stress ---
-      const double    J    = determinant( Fn1 );
       const Tensor33d Finv = inverse( Fn1 );
 
       response.tau = J * sigmaNp1;
@@ -391,10 +393,8 @@ namespace Marmot::Materials {
       // The interface reports the radius, the wrapped material the interaction c = R^2.
       for ( int K = 0; K < nNonlocal; K++ )
         response.nonLocalRadius( K ) = std::sqrt( std::max( 0.0, res.c( K ) ) );
-      // The wrapped material reports densities per unit current volume; the finite-strain consumers
-      // integrate against the reference volume.
-      response.elasticEnergyDensity = J * res.elasticEnergyDensity;
-      response.dissipation          = J * res.dissipation;
+      response.elasticEnergyDensity = toDensityPerReferenceVolume( res.elasticEnergyDensity, J );
+      response.dissipation          = toDensityPerReferenceVolume( res.dissipation, J );
 
       if ( computeTangent ) {
         const Tensor33d Pm = Ident - 0.5 * dl;

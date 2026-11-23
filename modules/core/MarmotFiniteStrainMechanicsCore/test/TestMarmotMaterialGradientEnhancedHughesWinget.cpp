@@ -600,57 +600,70 @@ void testNonlocalMicroInertiaIsForwarded()
 }
 
 /**
- * @brief The energy/dissipation round trip must close at @f$ J \neq 1 @f$.
+ * @brief The energy/dissipation round trip must close at a changing @f$ J @f$.
  *
  * This interface's densities are per unit REFERENCE volume; the wrapped small-strain material knows
- * only its own current volume, so the wrapper multiplies by @f$ J @f$ on the way out and must divide
- * by the previous @f$ J @f$ on the way in. Skipping the second half rescales the history once per
- * increment and compounds it -- invisible to every material in this tree, because none of them
- * touches these fields, and invisible to every other test here for the same reason.
+ * only its own current volume. The elastic energy is a function of the state: the stored value must be
+ * @f$ J\,\psi @f$ of the current state. The dissipation is accumulated along the path: once dissipated, it
+ * must stay constant per unit reference volume, whatever the volume does afterwards.
  *
- * The stub below accumulates a FIXED amount per call, so after n increments at a steady volume
- * change the reported total must be exactly n times that amount times J, and nothing else.
+ * The stub below gains a fixed elastic energy density and a fixed dissipation in its first increment
+ * and keeps both afterwards. The volume first grows, then shrinks below the initial one, so
+ * @f$ J_n \neq J @f$ in every increment. Handing the stored values back unconverted, or both divided by
+ * the same @f$ J @f$ (whether @f$ J_n @f$ or @f$ J @f$), fails.
  */
-void testEnergyDensityRoundTripAtNonUnitJacobian()
+void testEnergyDensityRoundTripAtChangingJacobian()
 {
-  constexpr double perIncrement = 3.0;
+  constexpr double energyInTheFirstIncrement      = 2.0;
+  constexpr double dissipationInTheFirstIncrement = 3.0;
 
-  /// Accumulates a fixed dissipation per call, in its own (current-volume) density.
-  class AccumulatingStub : public IncrementalGradientStub {
+  /// Gains a fixed elastic energy and dissipation, in its own (current-volume) density, in its first increment.
+  class FirstIncrementStub : public IncrementalGradientStub {
   public:
     using IncrementalGradientStub::IncrementalGradientStub;
 
     void computeStress( response& res, tangents& tan, const increment& inc ) const override
     {
+      const bool firstIncrement = res.dissipation == 0.0;
       IncrementalGradientStub::computeStress( res, tan, inc );
-      res.dissipation += perIncrement;
+      if ( firstIncrement ) {
+        res.elasticEnergyDensity += energyInTheFirstIncrement;
+        res.dissipation += dissipationInTheFirstIncrement;
+      }
     }
   };
 
-  GradientEnhancedHughesWingetWrapper< AccumulatingStub > w( stubProps.data(), int( stubProps.size() ), 1 );
-  auto                                                    state = freshState( w );
-
-  // A pure dilatation, held constant after the first increment, so J is the same on every entry.
-  Tensor33d F = Spatial3D::I;
-  F( 0, 0 ) = F( 1, 1 ) = F( 2, 2 ) = 1.1;
-  const double J                    = 1.1 * 1.1 * 1.1;
+  GradientEnhancedHughesWingetWrapper< FirstIncrementStub > w( stubProps.data(), int( stubProps.size() ), 1 );
+  auto                                                      state = freshState( w );
 
   GEResponse r;
   r.stateVars = state.data();
   GETangents t;
 
-  for ( int i = 1; i <= 3; ++i ) {
+  const double lambdas[] = { 1.1, 1.0, 0.95 };
+  const double J1        = lambdas[0] * lambdas[0] * lambdas[0];
+  for ( int i = 0; i < 3; ++i ) {
+    const Tensor33d F( lambdas[i] * Spatial3D::I );
+    const double    J = lambdas[i] * lambdas[i] * lambdas[i];
     w.computeStress( r,
                      t,
                      GEDeformation{ F, GEFiniteStrain::NonlocalVector::Constant( 0.0 ) },
-                     GETimeIncrement{ double( i ), 1.0 } );
+                     GETimeIncrement{ double( i + 1 ), 1.0 } );
 
-    // i increments of `perIncrement` in the wrapped material's own density, reported per reference
-    // volume. Without the inverse conversion this grows by a further factor of J each time.
-    throwExceptionOnFailure( checkIfEqual( r.dissipation, i * perIncrement * J, 1e-10 ),
+    // The energy of the current state, unchanged per current volume since the first increment.
+    const double expectedEnergy = J * energyInTheFirstIncrement;
+    throwExceptionOnFailure( checkIfEqual( r.elasticEnergyDensity, expectedEnergy, 1e-12 ),
                              Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
-                               << r.dissipation << ", expected " << i * perIncrement * J );
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1
+                               << " the elastic energy density is " << r.elasticEnergyDensity << ", expected "
+                               << expectedEnergy );
+
+    // Dissipated in the first increment, at J1; constant afterwards.
+    const double expectedDissipation = J1 * dissipationInTheFirstIncrement;
+    throwExceptionOnFailure( checkIfEqual( r.dissipation, expectedDissipation, 1e-12 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1 << " the dissipation is "
+                               << r.dissipation << ", expected " << expectedDissipation );
   }
 }
 
@@ -826,7 +839,7 @@ int main()
                                                        testUndeformed,
                                                        testEigenDeformationAtZeroStressConverges,
                                                        testNonlocalMicroInertiaIsForwarded,
-                                                       testEnergyDensityRoundTripAtNonUnitJacobian,
+                                                       testEnergyDensityRoundTripAtChangingJacobian,
                                                        testEigenDeformationAndPlaneStrainOverloads,
                                                        testFactoryRoundTripAndUnknownName,
                                                        testRigidRotationIsExact,

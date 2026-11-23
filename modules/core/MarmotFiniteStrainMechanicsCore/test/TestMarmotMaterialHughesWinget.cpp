@@ -502,25 +502,36 @@ void testVolumetricScaling()
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+namespace {
+  /// The volumetric elastic energy density @f$ p^2 / (2K) @f$ for elasticProps.
+  double volumetricEnergyDensity( double pressure )
+  {
+    const double K = elasticProps[0] / ( 3.0 * ( 1.0 - 2.0 * elasticProps[1] ) );
+    return pressure * pressure / ( 2.0 * K );
+  }
+} // namespace
+
 /**
- * @brief The energy/dissipation round trip must close at @f$ J \neq 1 @f$.
+ * @brief The energy/dissipation round trip must close at a changing @f$ J @f$.
  *
  * This interface's densities are per unit REFERENCE volume; the wrapped small-strain material knows
- * only its own current volume, so the wrapper multiplies by @f$ J @f$ on the way out and must divide
- * by the previous @f$ J @f$ on the way in. Skipping the second half multiplies the history by
- * @f$ J @f$ once per increment, compounding, in every material that adds its increment to the value
- * it is given (VonMises, LinearElastic, the Rankine models).
+ * only its own current volume. The elastic energy is a function of the state: the stored value must be
+ * @f$ J\,\psi(\boldsymbol{\sigma}) @f$ of the current state. The dissipation is accumulated along the path:
+ * once dissipated, it must stay constant per unit reference volume, whatever the volume does afterwards.
  *
- * The stub below adds a FIXED amount to both fields per call, so after n increments at a steady
- * volume change the reported totals must be exactly n times that amount times J.
+ * The stub below updates its elastic energy as the wrapped materials do,
+ * @f$ \psi_{n+1} = \psi_\mathrm{in} + \psi(\boldsymbol{\sigma}^{(n+1)}) - \psi(\boldsymbol{\sigma}^{(n)}) @f$, with the
+ * volumetric energy @f$ \psi = p^2 / (2K) @f$, and dissipates a fixed amount in its first increment only.
+ * The volume first grows, then shrinks below the initial one, so @f$ J_n \neq J @f$ in every increment.
+ * Handing the stored values back unconverted, or both divided by the same @f$ J @f$ (whether
+ * @f$ J_n @f$ or @f$ J @f$), fails.
  */
-void testEnergyDensityRoundTripAtNonUnitJacobian()
+void testEnergyDensityRoundTripAtChangingJacobian()
 {
-  constexpr double energyPerIncrement      = 2.0;
-  constexpr double dissipationPerIncrement = 3.0;
+  constexpr double dissipationInTheFirstIncrement = 3.0;
 
-  /// Adds a fixed elastic energy density and dissipation per call, in its own (current-volume) density.
-  class AccumulatingStub : public StubLinearElastic {
+  /// Linear elastic, with the volumetric energy as a function of the stress, dissipating once.
+  class EnergyStub : public StubLinearElastic {
   public:
     using StubLinearElastic::StubLinearElastic;
 
@@ -529,37 +540,45 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
                         const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&               time ) const override
     {
+      const bool   firstIncrement = state.stateVars[0] == 0.0;
+      const double psiOld         = volumetricEnergyDensity( state.stress.head< 3 >().sum() / 3.0 );
       StubLinearElastic::computeStress( state, dStress_dStrain, dStrain, time );
-      state.elasticEnergyDensity += energyPerIncrement;
-      state.dissipation += dissipationPerIncrement;
+      state.elasticEnergyDensity += volumetricEnergyDensity( state.stress.head< 3 >().sum() / 3.0 ) - psiOld;
+      if ( firstIncrement )
+        state.dissipation += dissipationInTheFirstIncrement;
     }
   };
 
-  HughesWingetWrapper< AccumulatingStub > w( elasticProps.data(), int( elasticProps.size() ), 1 );
-  auto                                    state = freshState( w );
-
-  // A pure dilatation, held constant after the first increment, so J is the same on every entry.
-  const double    lambda = 1.1;
-  const Tensor33d F( lambda * Spatial3D::I );
-  const double    J = lambda * lambda * lambda;
+  HughesWingetWrapper< EnergyStub > w( elasticProps.data(), int( elasticProps.size() ), 1 );
+  auto                              state = freshState( w );
 
   Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
   r.stateVars = state.data();
   Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
 
-  for ( int i = 1; i <= 3; ++i ) {
-    w.computeStress( r, t, { F }, { double( i ), 1.0 } );
+  const double lambdas[] = { 1.1, 1.0, 0.95 };
+  const double J1        = lambdas[0] * lambdas[0] * lambdas[0];
+  for ( int i = 0; i < 3; ++i ) {
+    const Tensor33d F( lambdas[i] * Spatial3D::I );
+    const double    J = lambdas[i] * lambdas[i] * lambdas[i];
+    w.computeStress( r, t, { F }, { double( i + 1 ), 1.0 } );
 
-    // i increments in the wrapped material's own density, reported per reference volume. Without the
-    // inverse conversion this grows by a further factor of J each time.
-    throwExceptionOnFailure( checkIfEqual( r.elasticEnergyDensity, i * energyPerIncrement * J, 1e-10 ),
+    // The energy of the current state: J psi(p), with the pressure of sigma = tau / J.
+    const double pressure       = ( r.tau( 0, 0 ) + r.tau( 1, 1 ) + r.tau( 2, 2 ) ) / ( 3.0 * J );
+    const double expectedEnergy = J * volumetricEnergyDensity( pressure );
+    throwExceptionOnFailure( checkIfEqual( r.elasticEnergyDensity, expectedEnergy, 1e-10 * ( 1.0 + expectedEnergy ) ),
                              Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the elastic energy density is "
-                               << r.elasticEnergyDensity << ", expected " << i * energyPerIncrement * J );
-    throwExceptionOnFailure( checkIfEqual( r.dissipation, i * dissipationPerIncrement * J, 1e-10 ),
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1
+                               << " the elastic energy density is " << r.elasticEnergyDensity << ", expected "
+                               << expectedEnergy << " (J psi of the current stress)" );
+
+    // Dissipated in the first increment, at J1; constant afterwards.
+    const double expectedDissipation = J1 * dissipationInTheFirstIncrement;
+    throwExceptionOnFailure( checkIfEqual( r.dissipation, expectedDissipation, 1e-12 * expectedDissipation ),
                              Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
-                               << r.dissipation << ", expected " << i * dissipationPerIncrement * J );
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1 << " the dissipation is "
+                               << r.dissipation << ", expected " << expectedDissipation
+                               << " (dissipated once, at J = " << J1 << ")" );
   }
 }
 
@@ -573,7 +592,7 @@ int main()
                                                        testExactAndNumericalTangentModes,
                                                        testStressSymmetry,
                                                        testVolumetricScaling,
-                                                       testEnergyDensityRoundTripAtNonUnitJacobian };
+                                                       testEnergyDensityRoundTripAtChangingJacobian };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
