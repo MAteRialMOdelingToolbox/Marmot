@@ -363,7 +363,12 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
     /**
-     * @brief Evaluate the shape functions of the assigned kernel functions at arbitrary coordinates.
+     * @brief The shape functions of the assigned kernel functions, evaluated exactly at arbitrary coordinates,
+     * @f$ N_B(\boldsymbol{x}) @f$.
+     * @details For a location that is not one of the particle's own points, e.g. where a host interpolates a field of
+     * the kernel functions somewhere in the body. At its own points (its center, its vertices, its face centers) a
+     * particle knows a field only by the value and the gradient at its center: its own interpolation there is
+     * getInterpolationVectorLinearizedAboutCenter(), which differs from this one away from the center.
      * @param[out] vec Array of @f$ n_{\text{nodes}} @f$ shape function values.
      * @param[in] coordinates Evaluation point (getDimension() values).
      */
@@ -490,50 +495,53 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
     /**
-     * @brief The interpolation vector of a point attached to the particle: the coefficients @f$ G_B @f$ with which
-     * the particle moves that point in its next increment,
-     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{Q}_B @f$.
-     * @details A particle moves as a whole: its center by @f$ \sum_B N_B\,\Delta\boldsymbol{Q}_B @f$ and its domain
-     * with the homogeneous deformation gradient increment
-     * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B / \partial
-     * \boldsymbol{Y} @f$ about the center @f$ \boldsymbol{Y}_c @f$, with the shape functions and the (possibly
-     * smoothed) gradients that drive its kinematics. A point @f$ \boldsymbol{Y} @f$ attached to the particle (its
-     * center, a vertex, a face center) therefore moves with
+     * @brief The shape functions linearized about the center of the particle,
+     * @f$ G_B(\boldsymbol{Y}) = N_B(\boldsymbol{Y}_c) + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} -
+     * \boldsymbol{Y}_c) @f$: the particle's own interpolation at its own points.
+     * @details A particle knows every field it carries only by its value at its center, @f$ \sum_B N_B
+     * \boldsymbol{Q}_B @f$, and its (possibly smoothed) gradient there, @f$ \sum_B \boldsymbol{Q}_B \otimes \partial
+     * N_B / \partial \boldsymbol{Y} @f$, with the shape functions and gradients that drive its kinematics. At a point
+     * @f$ \boldsymbol{Y} @f$ of its own (its center, a vertex, a face center) its interpolation of a field is therefore
+     * the linearization about the center,
      * @f[
-     *   G_B = N_B + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,
+     *   G_B = N_B(\boldsymbol{Y}_c) + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} -
+     *   \boldsymbol{Y}_c) ,
      * @f]
-     * which is not getInterpolationVector() at that point, @f$ N_B(\boldsymbol{Y}) @f$, except at the center. A
-     * constraint that measures a point of the particle where the particle puts it must distribute its force
-     * @f$ \boldsymbol{f} @f$ with the same vector, @f$ \boldsymbol{f}_B = G_B\,\boldsymbol{f} @f$: only then is the
-     * force the transpose of the kinematics (the work of the force on the nodes is the work on the point), so that a
-     * penalty constraint has a symmetric stiffness and is conservative. The vector sums to one (a rigid translation
-     * moves the point as the nodes), so the force is distributed without a net residue. It has no default, unlike the
-     * methods next to it: the only candidate, the shape functions at the point, is precisely the wrong answer.
+     * for every field: for the displacement, the motion of the point in the next increment,
+     * @f$ \Delta\boldsymbol{x} = \sum_B G_B\, \Delta\boldsymbol{Q}_B @f$ (the particle moves as a whole, its center
+     * with @f$ N_B @f$ and its domain with the homogeneous deformation gradient increment about the center); for a
+     * nonlocal field or a temperature, the value the particle carries at the point. It is not getInterpolationVector()
+     * at the point, @f$ N_B(\boldsymbol{Y}) @f$, except at the center: that one is exact at an arbitrary location, not
+     * the particle's view of its own points. A constraint that measures a field at a point of the particle and
+     * distributes its force with the same vector, @f$ \boldsymbol{f}_B = G_B\,\boldsymbol{f} @f$, has a symmetric
+     * stiffness and is conservative (the work of the force on the nodes is the work on the point). The vector sums to
+     * one (a rigid translation moves the point as the nodes). It has no default, unlike the methods next to it: the
+     * only candidate, the shape functions at the point, is not the particle's own interpolation.
      * @param[out] vec Array of @f$ n_{\text{nodes}} @f$ values.
      * @param[in] coordinates The point in the reference intermediate configuration (getDimension() values).
      */
-    virtual void getAttachedPointInterpolationVector( double* vec, const double* coordinates ) const = 0;
+    virtual void getInterpolationVectorLinearizedAboutCenter( double* vec, const double* coordinates ) const = 0;
 
   protected:
     /**
-     * @brief The interpolation vector of a point attached to a particle (see getAttachedPointInterpolationVector()),
+     * @brief The shape functions linearized about the center (see getInterpolationVectorLinearizedAboutCenter()),
      * @f$ G_B = N_B + \partial N_B / \partial \boldsymbol{Y} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) @f$, from the
      * shape functions and gradients that drive the particle's kinematics.
      * @param[out] vec Array of @p nNodes values.
      * @param[in] N Shape functions at the center, @p nNodes values.
      * @param[in] dN_dY Their gradients, column-major @p nDim x @p nNodes.
      * @param[in] centerCoordinates The center @f$ \boldsymbol{Y}_c @f$ (@p nDim values).
-     * @param[in] coordinates The attached point @f$ \boldsymbol{Y} @f$ (@p nDim values).
+     * @param[in] coordinates The point @f$ \boldsymbol{Y} @f$ (@p nDim values).
      * @param[in] nDim The number of dimensions.
      * @param[in] nNodes The number of nodes.
      */
-    static void interpolateAttachedPoint( double*       vec,
-                                          const double* N,
-                                          const double* dN_dY,
-                                          const double* centerCoordinates,
-                                          const double* coordinates,
-                                          int           nDim,
-                                          int           nNodes )
+    static void interpolationVectorLinearizedAboutCenter( double*       vec,
+                                                          const double* N,
+                                                          const double* dN_dY,
+                                                          const double* centerCoordinates,
+                                                          const double* coordinates,
+                                                          int           nDim,
+                                                          int           nNodes )
     {
       for ( int B = 0; B < nNodes; B++ ) {
         vec[B] = N[B];
