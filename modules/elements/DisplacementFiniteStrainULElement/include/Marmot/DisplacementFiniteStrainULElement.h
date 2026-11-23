@@ -432,13 +432,15 @@ namespace Marmot::Discretizations::Elements {
      */
     void computeInternalEnergy( double& internalEnergy ) override;
 
+  protected:
     /** @brief Get a view to a state variable at a specific quadrature point of the element
      * @param[in] stateName Name of the state variable
      * @param[in] qpNumber Number of the quadrature point where the state variable is stored
      * @return View to the requested state variable at the specified quadrature point
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override;
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override;
 
+  public:
     /** @brief Get the coordinates of the element center
      * @return Coordinates of the element center
      */
@@ -456,7 +458,7 @@ namespace Marmot::Discretizations::Elements {
   };
 
   template < int nDim, int nNodes >
-  Marmot::Utilities::StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateView(
+  Marmot::Utilities::StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateViewAtQuadraturePoint(
     const std::string& stateName,
     int                qpNumber )
   {

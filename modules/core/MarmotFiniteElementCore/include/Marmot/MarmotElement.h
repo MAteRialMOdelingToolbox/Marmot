@@ -269,11 +269,26 @@ namespace Marmot::Discretizations::Elements {
     /**
      * @brief Access element state at a quadrature point.
      * @param[in] stateName Name of the state variable.
-     * @param[in] quadraturePoint Index of quadrature point.
+     * @param[in] quadraturePoint Index of the quadrature point, from 0 to getNumberOfQuadraturePoints() - 1.
+     * @return View into state variable.
+     * @throws std::invalid_argument If the quadrature point is not one of the element's.
+     * @details The one check of the index for all elements; the element itself provides the view in
+     * getStateViewAtQuadraturePoint().
+     */
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
+
+  protected:
+    /**
+     * @brief The view of a state of a quadrature point, provided by the element.
+     * @param[in] stateName Name of the state variable.
+     * @param[in] quadraturePoint Index of the quadrature point, which getStateView() has checked to be one of the
+     * element's.
      * @return View into state variable.
      */
-    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
+    virtual Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName,
+                                                                        int                quadraturePoint ) = 0;
 
+  public:
     /**
      * @brief Get coordinates of element center.
      * @return Vector of coordinates at element centroid.
