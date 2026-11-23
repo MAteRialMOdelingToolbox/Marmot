@@ -58,7 +58,7 @@ namespace Marmot::Math {
 
   /**
    * @brief The complete monomial basis @f$ \boldsymbol{H}(\boldsymbol{x}) @f$ of order @f$ n @f$ in @f$ d @f$
-   * dimensions, as a table of exponents.
+   * dimensions, as the list of the factors of its entries.
    *
    * The entries are all monomials @f$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} @f$ with
    * @f$ \alpha_1 + \dots + \alpha_d \le n @f$, ordered with the exponent of the last coordinate varying slowest
@@ -66,11 +66,14 @@ namespace Marmot::Math {
    * @f$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T @f$; in 3D with @f$ n = 1 @f$:
    * @f$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T @f$. The first entry is always @f$ 1 @f$.
    *
-   * The exponents @f$ \boldsymbol{\alpha} @f$ of every entry are listed once, at construction; an evaluation is then
-   * the product of the powers, @f$ H_k = \prod_j x_j^{\alpha_{kj}} @f$, and its gradient that product with the factor
-   * of coordinate @f$ i @f$ replaced by its derivative, @f$ \partial H_k / \partial x_i = \alpha_{ki}\,
-   * x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} @f$. The powers are formed by multiplication, and the
-   * factors are multiplied in the order of the coordinates.
+   * The exponents @f$ \boldsymbol{\alpha} @f$ of every entry are listed once, at construction, as the factors
+   * @f$ x_j^{\alpha_{kj}} @f$ of nonzero exponent of each entry; an evaluation is then the product of the powers, @f$
+   * H_k = \prod_j x_j^{\alpha_{kj}} @f$, and its gradient that product with the factor of coordinate @f$ i @f$ replaced
+   * by its derivative, @f$ \partial H_k / \partial x_i = \alpha_{ki}\, x_i^{\alpha_{ki} - 1} \prod_{j \neq i}
+   * x_j^{\alpha_{kj}} @f$. The powers are formed by multiplication, and the factors are multiplied in the order of the
+   * coordinates. Only the coordinates of nonzero exponent are factors of an entry: a factor @f$ x_j^0 = 1 @f$ would not
+   * change the product, and the derivative with respect to a coordinate that is not a factor is zero. Most exponents of
+   * a low-order basis are zero, e.g. all but three of the twelve of the linear basis in 3D.
    */
   class MonomialBasis {
   public:
@@ -79,18 +82,24 @@ namespace Marmot::Math {
      * @param[in] order Completeness order @f$ n \ge 0 @f$.
      * @param[in] dim   Spatial dimension @f$ d \ge 1 @f$.
      */
-    MonomialBasis( int order, int dim )
-      : _dim( dim ), _size( computeSizeOfMonomialBasisVector( order, dim ) ), _exponents( _size * dim, 0 )
+    MonomialBasis( int order, int dim ) : _dim( dim ), _size( computeSizeOfMonomialBasisVector( order, dim ) )
     {
-      int entry = 0;
-      listExponents( order, dim, entry );
+      // entry k d + j: the exponent of coordinate j in monomial k
+      std::vector< int > exponents( _size * dim, 0 );
+      int                entry = 0;
+      listExponents( order, dim, entry, exponents );
+
+      _firstFactorOf.push_back( 0 );
+      for ( int k = 0; k < _size; k++ ) {
+        for ( int j = 0; j < _dim; j++ )
+          if ( exponents[k * _dim + j] > 0 )
+            _factors.push_back( { j, exponents[k * _dim + j] } );
+        _firstFactorOf.push_back( static_cast< int >( _factors.size() ) );
+      }
     }
 
     /// @brief The number of monomials, @f$ \binom{d + n}{d} @f$.
     int size() const { return _size; }
-
-    /// @brief The exponent of coordinate @p j in monomial @p k.
-    int exponent( int k, int j ) const { return _exponents[k * _dim + j]; }
 
     /**
      * @brief Evaluate the basis.
@@ -102,8 +111,8 @@ namespace Marmot::Math {
     {
       for ( int k = 0; k < _size; k++ ) {
         H( k ) = 1.0;
-        for ( int j = 0; j < _dim; j++ )
-          H( k ) *= power( x( j ), exponent( k, j ) );
+        for ( int f = _firstFactorOf[k]; f < _firstFactorOf[k + 1]; f++ )
+          H( k ) *= power( x( _factors[f].coordinate ), _factors[f].exponent );
       }
     }
 
@@ -115,21 +124,27 @@ namespace Marmot::Math {
      */
     void evaluateGradient( const Eigen::Ref< const Eigen::VectorXd >& x, Eigen::Ref< Eigen::MatrixXd > dH_dx ) const
     {
-      for ( int k = 0; k < _size; k++ )
-        for ( int i = 0; i < _dim; i++ ) {
-          dH_dx( k, i ) = 1.0;
-          for ( int j = 0; j < _dim; j++ ) {
-            const int alpha = exponent( k, j );
-            dH_dx( k, i ) *= j == i ? alpha * power( x( j ), alpha - 1 ) : power( x( j ), alpha );
+      for ( int k = 0; k < _size; k++ ) {
+        // zero with respect to a coordinate that is not a factor of the entry
+        dH_dx.row( k ).setZero();
+        // with respect to the coordinate of factor g: the product with that factor differentiated
+        for ( int g = _firstFactorOf[k]; g < _firstFactorOf[k + 1]; g++ ) {
+          double derivative = 1.0;
+          for ( int f = _firstFactorOf[k]; f < _firstFactorOf[k + 1]; f++ ) {
+            const int j     = _factors[f].coordinate;
+            const int alpha = _factors[f].exponent;
+            derivative *= f == g ? alpha * power( x( j ), alpha - 1 ) : power( x( j ), alpha );
           }
+          dH_dx( k, _factors[g].coordinate ) = derivative;
         }
+      }
     }
 
   private:
-    /// @brief @f$ x^\alpha @f$ by multiplication; zero for @f$ \alpha < 0 @f$ (the derivative of a constant).
+    /// @brief @f$ x^\alpha @f$, @f$ \alpha \ge 0 @f$, by multiplication.
     static double power( double x, int alpha )
     {
-      double result = alpha < 0 ? 0.0 : 1.0;
+      double result = 1.0;
       for ( int p = 0; p < alpha; p++ )
         result *= x;
       return result;
@@ -139,24 +154,35 @@ namespace Marmot::Math {
      * @brief List the exponents of the coordinates @f$ 1, \dots, @f$ @p dim of all monomials of total degree
      * @f$ \le @f$ @p order, from entry @p entry on: the exponent of coordinate @p dim varies slowest, the lower
      * coordinates are listed recursively.
+     * @param[in] order The largest total degree.
+     * @param[in] dim The number of coordinates listed.
+     * @param[in,out] entry The next entry; advanced past the entries listed.
+     * @param[in,out] exponents Entry @f$ k\, d + j @f$: the exponent of coordinate @f$ j @f$ in monomial @f$ k @f$.
      */
-    void listExponents( int order, int dim, int& entry )
+    void listExponents( int order, int dim, int& entry, std::vector< int >& exponents ) const
     {
       for ( int i = 0; i <= order; i++ ) {
         const int first = entry;
         if ( dim > 1 )
-          listExponents( order - i, dim - 1, entry );
+          listExponents( order - i, dim - 1, entry, exponents );
         else
           entry++;
         for ( int k = first; k < entry; k++ )
-          _exponents[k * _dim + dim - 1] = i;
+          exponents[k * _dim + dim - 1] = i;
       }
     }
 
-    int _dim;     ///< the spatial dimension
-    int _size;    ///< the number of monomials
-    std::vector< int >
-      _exponents; ///< entry @f$ k\, d + j @f$: the exponent of coordinate @f$ j @f$ in monomial @f$ k @f$
+    /// @brief A factor @f$ x_j^\alpha @f$, @f$ \alpha > 0 @f$, of a monomial.
+    struct Factor {
+      int coordinate; ///< @f$ j @f$
+      int exponent;   ///< @f$ \alpha @f$
+    };
+
+    int                   _dim;     ///< the spatial dimension
+    int                   _size;    ///< the number of monomials
+    std::vector< Factor > _factors; ///< the factors of all monomials, monomial after monomial, in coordinate order
+    /// the factors of monomial @f$ k @f$ are the entries [_firstFactorOf[k], _firstFactorOf[k + 1]) of _factors
+    std::vector< int > _firstFactorOf;
   };
 
   /**

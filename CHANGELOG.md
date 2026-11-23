@@ -264,6 +264,9 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking** for implementers of `Particle` outside Marmot: `Particle::getInterpolationVectorLinearizedAboutCenter` is pure
   virtual, so a particle must implement it to compile (there is no safe default: the shape functions at the point are
   not the particle's own interpolation).
+- `Math::MonomialBasis` multiplies only the factors of nonzero exponent of an entry, listed at construction, and sets
+  the derivative with respect to a coordinate that is not a factor to zero: the values and nonzero derivatives are
+  unchanged (bitwise; a zero derivative is +0).
 - **Results:** `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit` evaluate each kernel once
   at a point (its gradient only if needed), with one assembly of the moment matrix (and its gradients) for both
   classes, and types of a fixed largest size (up to the cubic basis in 3D): no allocation per evaluation. A larger
