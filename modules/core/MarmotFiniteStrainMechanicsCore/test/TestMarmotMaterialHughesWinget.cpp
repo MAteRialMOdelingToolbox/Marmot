@@ -25,6 +25,7 @@
 
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHughesWinget.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
@@ -501,6 +502,86 @@ void testVolumetricScaling()
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+namespace {
+  /// The volumetric elastic energy density @f$ p^2 / (2K) @f$ for elasticProps.
+  double volumetricEnergyDensity( double pressure )
+  {
+    const double K = elasticProps[0] / ( 3.0 * ( 1.0 - 2.0 * elasticProps[1] ) );
+    return pressure * pressure / ( 2.0 * K );
+  }
+} // namespace
+
+/**
+ * @brief The energy/dissipation round trip must close at a changing @f$ J @f$.
+ *
+ * This interface's densities are per unit REFERENCE volume; the wrapped small-strain material knows
+ * only its own current volume. The elastic energy is a function of the state: the stored value must be
+ * @f$ J\,\psi(\boldsymbol{\sigma}) @f$ of the current state. The dissipation is accumulated along the path:
+ * once dissipated, it must stay constant per unit reference volume, whatever the volume does afterwards.
+ *
+ * The stub below updates its elastic energy as the wrapped materials do,
+ * @f$ \psi_{n+1} = \psi_\mathrm{in} + \psi(\boldsymbol{\sigma}^{(n+1)}) - \psi(\boldsymbol{\sigma}^{(n)}) @f$, with the
+ * volumetric energy @f$ \psi = p^2 / (2K) @f$, and dissipates a fixed amount in its first increment only.
+ * The volume first grows, then shrinks below the initial one, so @f$ J_n \neq J @f$ in every increment.
+ * Handing the stored values back unconverted, or both divided by the same @f$ J @f$ (whether
+ * @f$ J_n @f$ or @f$ J @f$), fails.
+ */
+void testEnergyDensityRoundTripAtChangingJacobian()
+{
+  constexpr double dissipationInTheFirstIncrement = 3.0;
+
+  /// Linear elastic, with the volumetric energy as a function of the stress, dissipating once.
+  class EnergyStub : public StubLinearElastic {
+  public:
+    using StubLinearElastic::StubLinearElastic;
+
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStress_dStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               time ) const override
+    {
+      const bool   firstIncrement = state.stateVars[0] == 0.0;
+      const double psiOld         = volumetricEnergyDensity( state.stress.head< 3 >().sum() / 3.0 );
+      StubLinearElastic::computeStress( state, dStress_dStrain, dStrain, time );
+      state.elasticEnergyDensity += volumetricEnergyDensity( state.stress.head< 3 >().sum() / 3.0 ) - psiOld;
+      if ( firstIncrement )
+        state.dissipation += dissipationInTheFirstIncrement;
+    }
+  };
+
+  HughesWingetWrapper< EnergyStub > w( elasticProps.data(), int( elasticProps.size() ), 1 );
+  auto                              state = freshState( w );
+
+  Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
+  r.stateVars = state.data();
+  Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
+
+  const double lambdas[] = { 1.1, 1.0, 0.95 };
+  const double J1        = lambdas[0] * lambdas[0] * lambdas[0];
+  for ( int i = 0; i < 3; ++i ) {
+    const Tensor33d F( lambdas[i] * Spatial3D::I );
+    const double    J = lambdas[i] * lambdas[i] * lambdas[i];
+    w.computeStress( r, t, { F }, { double( i + 1 ), 1.0 } );
+
+    // The energy of the current state: J psi(p), with the pressure of sigma = tau / J.
+    const double pressure       = ( r.tau( 0, 0 ) + r.tau( 1, 1 ) + r.tau( 2, 2 ) ) / ( 3.0 * J );
+    const double expectedEnergy = J * volumetricEnergyDensity( pressure );
+    throwExceptionOnFailure( checkIfEqual( r.elasticEnergyDensity, expectedEnergy, 1e-10 * ( 1.0 + expectedEnergy ) ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1
+                               << " the elastic energy density is " << r.elasticEnergyDensity << ", expected "
+                               << expectedEnergy << " (J psi of the current stress)" );
+
+    // Dissipated in the first increment, at J1; constant afterwards.
+    const double expectedDissipation = J1 * dissipationInTheFirstIncrement;
+    throwExceptionOnFailure( checkIfEqual( r.dissipation, expectedDissipation, 1e-12 * expectedDissipation ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after increment " << i + 1 << " the dissipation is "
+                               << r.dissipation << ", expected " << expectedDissipation
+                               << " (dissipated once, at J = " << J1 << ")" );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testStateLayout,
@@ -510,7 +591,8 @@ int main()
                                                        testAnalyticTangentVsCentralDifference,
                                                        testExactAndNumericalTangentModes,
                                                        testStressSymmetry,
-                                                       testVolumetricScaling };
+                                                       testVolumetricScaling,
+                                                       testEnergyDensityRoundTripAtChangingJacobian };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

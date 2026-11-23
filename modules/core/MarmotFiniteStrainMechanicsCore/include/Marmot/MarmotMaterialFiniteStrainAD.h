@@ -57,13 +57,14 @@ namespace Marmot::Materials {
      * @brief Constitutive response of a material at given state.
      * @tparam nDim Number of spatial dimensions (2 or 3).
      *
-     *  Contains stress, density and elastic energy density.
+     *  Contains the stress, the elastic energy density and the dissipation. Both densities are per unit
+     *  **reference** volume, as in MaterialFiniteStrain::ConstitutiveResponse.
      */
     template < int nDim >
     struct ConstitutiveResponseAD {
       Fastor::Tensor< autodiff::dual, nDim, nDim > tau;                  ///< Kirchhoff stress
-      double                                       elasticEnergyDensity; ///< elastic energy per unit volume
-      double  dissipation; ///< dissipation per unit volume (for inelastic materials)
+      double                                       elasticEnergyDensity; ///< elastic energy per unit reference volume
+      double  dissipation; ///< dissipation per unit reference volume (for inelastic materials)
       double* stateVars;   ///< pointer to state variables
 
       /**

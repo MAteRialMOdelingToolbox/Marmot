@@ -300,6 +300,18 @@ All notable changes to Marmot are documented in this file. The format follows
   only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
+- **Results** `HughesWingetWrapper` hands the stored elastic energy density and dissipation (per unit reference
+  volume) back to the wrapped material (per unit current volume) converted, as an energy of the state divided by
+  J_n = det(F_n) and as a dissipation accumulated along the path divided by J = det(F_{n+1}), so that
+  D_{n+1} = D_n + J * (the wrapped material's increment). Without it, a wrapped material that adds to the value it
+  is given had its stored energy and dissipation multiplied by J in every increment, compounding:
+  `VONMISES/HUGHES-WINGET` (and its exact tangent variant), `LINEARELASTIC/HUGHES-WINGET`,
+  `RANKINEDAMAGEPLASTICITY/HUGHES-WINGET` and `RANKINESOFTENINGPLASTICITY/HUGHES-WINGET`. The conversions
+  (`Materials::toDensityPerVolumeAtStartOfIncrement`, `toDensityPerVolumeAtEndOfIncrement`,
+  `toDensityPerReferenceVolume`) are shared with `GradientEnhancedHughesWingetWrapper`, which divided both by J_n:
+  its dissipation is now also accumulated along the path, `D_{n+1} = D_n + J * increment`, instead of rescaled by
+  J/J_n in every increment. Stresses, tangents and state variables are unchanged; only the reported energies
+  change, at J != 1. The interface documents both densities as per unit reference volume.
 - **Breaking:** the gradient-enhanced SQCNI/SNNI particles (`GradientEnhanced[6]FiniteStrainSQCNI...`,
   `...SNNI...`, `..._R...`, `..._RU...`) report the vertices and face centers of their geometry, mapped with the
   deformation gradient, as the displacement particles do, not those of the smoothing domain (which differ for SNNI,
