@@ -77,6 +77,47 @@ therefore reduced until the number of covering kernels is at least :math:`\binom
 a line in 2D) can still give a singular moment matrix, so the support radius must be chosen large enough for the
 requested order.
 
+**Limit on the condition of the moment matrix (optional).** Enough kernels may cover :math:`\boldsymbol{x}` and still
+leave :math:`\boldsymbol{M}` nearly singular. This happens at a point on one side of all the kernels that cover it, when
+their centres lie nearly in one plane: a point next to a wall of particles, reached by the kernels of that wall only.
+In an RKPM model it is typically a corner or a face of a strongly stretched (torn) particle that reaches into a void.
+Reproducing the linear field normal to the plane there requires shape functions of the size of the distance to the
+plane over the scatter of the centres about it: :math:`\Psi_A` and its gradients grow without bound, and with them the
+stiffness of the particle and the stable time increment it allows.
+
+The approximations therefore take an optional limit :math:`\kappa_\mathrm{max}` (constructor argument
+``momentMatrixConditionLimit``). A point whose moment matrix exceeds it is evaluated with the completeness order
+:math:`0`, the Shepard functions
+
+.. math::
+
+   \Psi_A(\boldsymbol{x}) = \frac{\phi_A(\boldsymbol{x})}{\sum_B \phi_B(\boldsymbol{x})},
+
+which form a partition of unity of values in :math:`[0, 1]`, but reproduce no linear field. The measure is the condition
+number in the 1-norm of the moment matrix scaled to a unit diagonal,
+
+.. math::
+
+   \kappa = \kappa_1\left(\boldsymbol{D}\boldsymbol{M}\boldsymbol{D}\right), \qquad
+   D_{kk} = M_{kk}^{-1/2}.
+
+The monomials carry the unit of length to their degree, so the condition of :math:`\boldsymbol{M}` itself depends on the
+unit (and grows with every power of a small node spacing); after the scaling, :math:`\kappa` depends on neither the unit
+nor a constant factor of the kernels, and it is close to the smallest condition any diagonal scaling can give (van der
+Sluis). It is estimated from an :math:`\boldsymbol{L}\boldsymbol{D}\boldsymbol{L}^T` factorization of the scaled matrix,
+in the way of LAPACK's reciprocal condition estimate; for the small moment matrices this costs less than the QR
+factorization of the evaluation itself. A singular :math:`\boldsymbol{M}` of order :math:`n \ge 1` counts as infinitely
+ill-conditioned and is evaluated with the order :math:`0` as well; only a point that no kernel covers still throws.
+
+The default is no limit (:math:`\kappa_\mathrm{max} = \infty`): then :math:`\kappa` is not computed. With a limit, a
+point below it is evaluated bit for bit as without one, so the limit changes the results only where it acts. In an
+RKPM model of concrete with cubic B-spline kernels of a support radius of 2.4 particle sizes and the linear basis,
+the points of the intact particles, at the edges and corners of the body included, stayed below
+:math:`\kappa \approx 2 \cdot 10^3`, while the face of a torn particle reaching into a borehole reached
+:math:`\kappa \approx 10^9`, with shape functions of up to :math:`50`. A limit between :math:`10^4` and :math:`10^6`
+separates the two; a limit close to the values of intact points would lower the order where the linear basis is still
+sound.
+
 Explicit gradients
 ^^^^^^^^^^^^^^^^^^
 
@@ -248,9 +289,10 @@ Usage
 -----
 
 The approximation is not registered with a factory; the host constructs it directly. In EdelweissMeshfree the
-approximation types ``ReproducingKernel`` and ``ReproducingKernelImplicitGradient`` (argument ``completenessOrder``)
-and the kernel type ``BSplineBoxed`` (arguments ``supportRadius`` and ``continuityOrder`` = 2 or 3, selecting the 2nd
-or 3rd order kernel) map to the classes of this page; see :doc:`meshfree` for the overall workflow.
+approximation types ``ReproducingKernel`` and ``ReproducingKernelImplicitGradient`` (argument ``completenessOrder``,
+optional argument ``momentMatrixConditionLimit``) and the kernel type ``BSplineBoxed`` (arguments ``supportRadius`` and
+``continuityOrder`` = 2 or 3, selecting the 2nd or 3rd order kernel) map to the classes of this page; see
+:doc:`meshfree` for the overall workflow.
 
 .. list-table::
    :header-rows: 1
@@ -260,7 +302,8 @@ or 3rd order kernel) map to the classes of this page; see :doc:`meshfree` for th
    * - ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed``, ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed``
      - pointer to the center coordinates, dimension :math:`d`, support radius :math:`a`
    * - ``Marmot::Discretizations::Meshfree::ReproducingKernelApproximation``, ``Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit``
-     - dimension :math:`d`, completeness order :math:`n`
+     - dimension :math:`d`, completeness order :math:`n`, optionally the limit :math:`\kappa_\mathrm{max}` on the
+       condition of the moment matrix (default: none)
 
 Implementation
 --------------

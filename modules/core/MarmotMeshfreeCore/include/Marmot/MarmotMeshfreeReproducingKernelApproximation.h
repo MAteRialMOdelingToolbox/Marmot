@@ -28,10 +28,12 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
+#include <Eigen/Cholesky>
 #include <Eigen/Core>
 #include <Eigen/QR>
 #include <array>
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -87,6 +89,19 @@ namespace Marmot::Discretizations::Meshfree {
    * If fewer kernels cover @f$ \boldsymbol{x} @f$ than the basis has entries, @f$ \boldsymbol{M} @f$ is singular;
    * the completeness order is then reduced for this evaluation point (getCorrectedCompletenessOrder()).
    *
+   * **Limit on the condition of the moment matrix (optional).** Enough kernels may cover @f$ \boldsymbol{x} @f$ and
+   * still leave @f$ \boldsymbol{M} @f$ nearly singular: at a point on one side of all covering kernels, each at the
+   * edge of its support (e.g. the corner of a strongly stretched particle reaching into a void), the corrected
+   * kernels extrapolate and @f$ \Psi_A @f$ and its gradients become arbitrarily large. With a limit
+   * @f$ \kappa_\mathrm{max} @f$ on the condition of @f$ \boldsymbol{M} @f$, such a point is evaluated with the
+   * completeness order @f$ 0 @f$ (Shepard functions, @f$ \Psi_A = \phi_A / \sum_B \phi_B @f$, bounded by 1). The
+   * condition is that of the diagonally scaled matrix @f$ \boldsymbol{D} \boldsymbol{M} \boldsymbol{D} @f$,
+   * @f$ D_{kk} = M_{kk}^{-1/2} @f$ (conditionOfMomentMatrix()): the scaling makes it independent of the unit of length
+   * and of a constant factor of the kernels. Without a limit (the default, @f$ \kappa_\mathrm{max} = \infty @f$) the
+   * condition is not computed; with a limit, a point below it is evaluated exactly as without one, and a moment
+   * matrix of order @f$ n \ge 1 @f$ that is singular is evaluated with the order 0 as well (only a point that no kernel
+   * covers still throws).
+   *
    * See ReproducingKernelApproximationImplicit for the variant with implicit gradients.
    */
   class ReproducingKernelApproximation : public Approximation {
@@ -113,6 +128,9 @@ namespace Marmot::Discretizations::Meshfree {
   protected:
     int _dim;                      ///< spatial dimension @f$ d @f$
     int _desiredCompletenessOrder; ///< requested completeness order @f$ n @f$ (may be reduced per point)
+    /// The limit @f$ \kappa_\mathrm{max} @f$ on the condition of the scaled moment matrix, above which a point is
+    /// evaluated with the completeness order 0; infinite for no limit.
+    double _momentMatrixConditionLimit;
     /// The monomial basis of every order up to the desired one, entry @f$ n @f$ (an order may be reduced per point).
     std::vector< Math::MonomialBasis > _basisOfOrder;
 
@@ -191,6 +209,44 @@ namespace Marmot::Discretizations::Meshfree {
                                                                       int                 nCoveringKernels ) const;
 
     /**
+     * @brief The completeness order of a point and its moment matrix: the desired order, reduced for few covering
+     * kernels (getCorrectedCompletenessOrder()), and reduced to 0 if the condition of the moment matrix exceeds the
+     * limit @f$ \kappa_\mathrm{max} @f$ (conditionOfMomentMatrix()); the one choice of the order for both
+     * approximations. Without a limit, or below it, this is assembleMomentMatrix() at the order for the number of
+     * covering kernels.
+     * @param[in]  coord           Evaluation point @f$ \boldsymbol{x} @f$.
+     * @param[in]  kernelFunctions The candidate kernel functions.
+     * @param[in]  phi             Their values, from evaluateKernelFunctions().
+     * @param[in]  dPhi_dx         Their gradients, from evaluateKernelFunctions(); nullptr if @p dM_dx is.
+     * @param[in]  nCovering       The number of kernels that cover the point, from evaluateKernelFunctions().
+     * @param[out] M               The moment matrix of the chosen order.
+     * @param[out] dM_dx           Its @f$ d @f$ gradients; nullptr if not needed.
+     * @return The completeness order the point is evaluated with.
+     */
+    int assembleMomentMatrixOfThePoint( const double*                               coord,
+                                        const std::vector< const KernelFunction* >& kernelFunctions,
+                                        const double*                               phi,
+                                        const double*                               dPhi_dx,
+                                        int                                         nCovering,
+                                        MomentMatrix&                               M,
+                                        MomentMatrixGradient*                       dM_dx ) const;
+
+    /**
+     * @brief The condition of the moment matrix, scaled to a unit diagonal: the estimate of the condition number in
+     * the 1-norm, @f$ \kappa_1(\boldsymbol{D} \boldsymbol{M} \boldsymbol{D}) @f$ with @f$ D_{kk} = M_{kk}^{-1/2}
+     * @f$, from a Cholesky (LDLT) factorization of the scaled matrix and its reciprocal condition estimate.
+     *
+     * The monomials of @f$ \boldsymbol{H} @f$ carry the unit of length to their degree, so the condition of
+     * @f$ \boldsymbol{M} @f$ itself would depend on the unit; scaling to a unit diagonal removes this, and a
+     * constant factor of the kernels, while it is at most @f$ \binom{d+n}{d} @f$ times from the best diagonal scaling
+     * (van der Sluis). For the small, symmetric moment matrices the factorization costs less than the QR
+     * factorization of the evaluation.
+     * @param[in] M The moment matrix.
+     * @return @f$ \kappa_1 \ge 1 @f$; infinite for a singular matrix or a zero entry on its diagonal.
+     */
+    double conditionOfMomentMatrix( const MomentMatrix& M ) const;
+
+    /**
      * @brief Check if the completeness order leads to a non-singular equation system.
      *
      * Checks the necessary condition that at least as many kernels cover the point as the basis has entries,
@@ -226,12 +282,18 @@ namespace Marmot::Discretizations::Meshfree {
   public:
     /**
      * @brief Construct the approximation.
-     * @param[in] dim               Spatial dimension @f$ d \le @f$ maxDim.
-     * @param[in] completenessOrder Desired completeness order @f$ n \ge 0 @f$ (order of the reproduced polynomials).
-     * @throws std::invalid_argument if the order is negative, or the dimension or the basis exceeds maxDim or
-     * maxSizeOfBasis.
+     * @param[in] dim                        Spatial dimension @f$ d \le @f$ maxDim.
+     * @param[in] completenessOrder          Desired completeness order @f$ n \ge 0 @f$ (order of the reproduced
+     *                                       polynomials).
+     * @param[in] momentMatrixConditionLimit The limit @f$ \kappa_\mathrm{max} \ge 1 @f$ on the condition of the
+     *                                       scaled moment matrix, above which a point is evaluated with the
+     *                                       completeness order 0; infinite (the default) for no limit.
+     * @throws std::invalid_argument if the order is negative, the dimension or the basis exceeds maxDim or
+     * maxSizeOfBasis, or the limit is below 1 or not a number.
      */
-    ReproducingKernelApproximation( int dim, int completenessOrder );
+    ReproducingKernelApproximation( int    dim,
+                                    int    completenessOrder,
+                                    double momentMatrixConditionLimit = std::numeric_limits< double >::infinity() );
 
     /// @brief Default destructor.
     virtual ~ReproducingKernelApproximation() = default;

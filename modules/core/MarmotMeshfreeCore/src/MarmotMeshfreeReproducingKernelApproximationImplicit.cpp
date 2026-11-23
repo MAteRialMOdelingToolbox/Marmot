@@ -30,8 +30,10 @@
 #include <cmath>
 
 namespace Marmot::Discretizations::Meshfree {
-  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int dim, int completenessOrder )
-    : ReproducingKernelApproximation( dim, completenessOrder )
+  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int    dim,
+                                                                                  int    completenessOrder,
+                                                                                  double momentMatrixConditionLimit )
+    : ReproducingKernelApproximation( dim, completenessOrder, momentMatrixConditionLimit )
   {
   }
 
@@ -46,11 +48,10 @@ namespace Marmot::Discretizations::Meshfree {
     double*   phi       = shapeFunctionValues_;
     const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, nullptr );
 
-    const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
-    const int sizeH             = _basisOfOrder[completenessOrder].size();
-
     MomentMatrix M;
-    assembleMomentMatrix( coord, kernelFunctions, phi, nullptr, completenessOrder, M, nullptr );
+    const int
+      completenessOrder = assembleMomentMatrixOfThePoint( coord, kernelFunctions, phi, nullptr, nCovering, M, nullptr );
+    const int sizeH     = _basisOfOrder[completenessOrder].size();
 
     // first column for the values, the other columns for the gradients: they reproduce -d(x - x_I)^alpha/dx_i at
     // x_I, which is -1 for the linear monomial x_i and 0 otherwise; the linear monomials are the rows whose gradient

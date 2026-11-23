@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include <Eigen/Core>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -58,19 +59,27 @@ namespace Marmot::Discretizations::Meshfree {
    * so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they
    * are not the derivatives of the values @f$ \Psi_A @f$. They require neither kernel gradients nor
    * @f$ \boldsymbol{M}_{,i} @f$: all @f$ 1 + d @f$ right-hand sides are solved with one QR decomposition of
-   * @f$ \boldsymbol{M} @f$.
+   * @f$ \boldsymbol{M} @f$. The completeness order of a point is chosen as for ReproducingKernelApproximation,
+   * including the optional limit on the condition of @f$ \boldsymbol{M} @f$.
    */
   class ReproducingKernelApproximationImplicit : public ReproducingKernelApproximation {
 
   public:
     /**
      * @brief Construct the approximation.
-     * @param[in] dim               Spatial dimension @f$ d \le @f$ maxDim.
-     * @param[in] completenessOrder Desired completeness order @f$ n \ge 0 @f$.
-     * @throws std::invalid_argument if the order is negative, or the dimension or the basis exceeds maxDim or
-     * maxSizeOfBasis (see ReproducingKernelApproximation).
+     * @param[in] dim                        Spatial dimension @f$ d \le @f$ maxDim.
+     * @param[in] completenessOrder          Desired completeness order @f$ n \ge 0 @f$.
+     * @param[in] momentMatrixConditionLimit The limit @f$ \kappa_\mathrm{max} \ge 1 @f$ on the condition of the
+     *                                       scaled moment matrix, above which a point is evaluated with the
+     *                                       completeness order 0; infinite (the default) for no limit (see
+     *                                       ReproducingKernelApproximation).
+     * @throws std::invalid_argument if the order is negative, the dimension or the basis exceeds maxDim or
+     * maxSizeOfBasis, or the limit is below 1 or not a number (see ReproducingKernelApproximation).
      */
-    ReproducingKernelApproximationImplicit( int dim, int completenessOrder );
+    ReproducingKernelApproximationImplicit(
+      int    dim,
+      int    completenessOrder,
+      double momentMatrixConditionLimit = std::numeric_limits< double >::infinity() );
 
     /// @brief Default destructor.
     virtual ~ReproducingKernelApproximationImplicit() = default;

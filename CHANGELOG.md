@@ -175,6 +175,14 @@ All notable changes to Marmot are documented in this file. The format follows
   nonlocal field the value the particle carries there. `getInterpolationVector` stays the exact shape functions at an
   arbitrary location. A constraint that measures a field at a point of the particle and distributes its force there
   with `G_B` is symmetric and conservative.
+- `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit`: an optional limit on the condition of
+  the moment matrix (constructor argument `momentMatrixConditionLimit`, default none). A point whose moment matrix,
+  scaled to a unit diagonal, has a larger condition number (1-norm estimate, `conditionOfMomentMatrix()`) is evaluated
+  with the completeness order 0, the Shepard functions; so is a singular moment matrix of order ≥ 1. Such a point lies
+  on one side of nearly coplanar covering kernels, e.g. a face of a torn particle reaching into a void, where the
+  linear shape functions grow without bound. Without a limit nothing changes; with one, every point below it is
+  evaluated bit for bit as without one. Both approximations choose the order of a point in one place
+  (`assembleMomentMatrixOfThePoint()`).
 
 ### Changed
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package

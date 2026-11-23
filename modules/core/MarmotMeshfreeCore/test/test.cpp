@@ -37,6 +37,7 @@
 #include <Eigen/Dense>
 #include <cmath>
 #include <functional>
+#include <limits>
 #include <memory>
 #include <random>
 #include <stdexcept>
@@ -370,6 +371,7 @@ void testImplicitGradientReproducingKernelApproximation()
 
 // the moment matrix assembly is protected: expose it for the test, with the kernel evaluation it takes its input from
 struct MomentMatrixAccess : Marmot::Discretizations::Meshfree::ReproducingKernelApproximation {
+  using ReproducingKernelApproximation::conditionOfMomentMatrix;
   using ReproducingKernelApproximation::ReproducingKernelApproximation;
 
   // the moment matrix at x, and its gradients if dM_dx is given
@@ -465,6 +467,132 @@ void testSingularMomentMatrixThrows()
                              Marmot::Utilities::MakeString()
                                << "a singular moment matrix at " << x.transpose() << " must throw" );
   }
+}
+
+// One layer of kernels on a lattice of spacing 1, support radius 1.6, every other centre lifted by a small jitter out
+// of the plane z = 0 (a wall of particles), and a point at z = 0.8 above it (in the void next to the wall): the
+// covering kernels lie nearly in one plane, on one side of the point. Reproducing the linear field z there needs shape
+// functions of the size of the distance over the jitter: the moment matrix of the linear basis is nearly singular, and
+// singular without a jitter.
+struct OneSidedKernels {
+  using K = Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed;
+  std::vector< Eigen::VectorXd >                                          centers;
+  std::vector< std::unique_ptr< K > >                                     kernels;
+  std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > pointers;
+  Eigen::Vector3d                                                         point;
+
+  explicit OneSidedKernels( double jitter, double length = 1.0 ) : point( length * Eigen::Vector3d( 2.1, 1.8, 0.8 ) )
+  {
+    centers.reserve( 25 ); // the kernels keep pointers to their centres
+    for ( int j = 0; j < 5; j++ )
+      for ( int i = 0; i < 5; i++ ) {
+        centers.push_back( length * Eigen::Vector3d( i, j, ( i + j ) % 2 ? jitter : 0.0 ) );
+        kernels.emplace_back( std::make_unique< K >( centers.back().data(), 3, length * 1.6 ) );
+        pointers.push_back( kernels.back().get() );
+      }
+  }
+};
+
+// The optional limit on the condition of the moment matrix: at the one-sided point, the linear shape functions of the
+// unlimited approximation are large; above the limit the point gets the Shepard functions (order 0): a partition of
+// unity of values in [0, 1], with gradients of the size of the inverse support radius. The condition is that of the
+// moment matrix scaled to a unit diagonal, the same in any unit of length.
+void testConditionLimitOfTheMomentMatrix()
+{
+  using RK  = Marmot::Discretizations::Meshfree::ReproducingKernelApproximation;
+  using IRK = Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit;
+  const OneSidedKernels oneSided( 0.02 );
+  const int             n = static_cast< int >( oneSided.pointers.size() );
+
+  const MomentMatrixAccess access( 3, 1 );
+  RK::MomentMatrix         M;
+  access.momentMatrix( oneSided.point, oneSided.pointers, 1, M, nullptr );
+  const double condition = access.conditionOfMomentMatrix( M );
+  throwExceptionOnFailure( condition > 1e4,
+                           Marmot::Utilities::MakeString()
+                             << "the one-sided point must be nearly singular, condition " << condition );
+
+  const OneSidedKernels inMillimetres( 0.02, 1000.0 );
+  RK::MomentMatrix      MInMillimetres;
+  access.momentMatrix( inMillimetres.point, inMillimetres.pointers, 1, MInMillimetres, nullptr );
+  throwExceptionOnFailure( checkIfEqual( access.conditionOfMomentMatrix( MInMillimetres ),
+                                         condition,
+                                         1e-6 * condition ),
+                           "the condition of the scaled moment matrix depends on the unit of length" );
+
+  Eigen::VectorXd N( n ), NLimited( n );
+  Eigen::MatrixXd dN( 3, n ), dNLimited( 3, n );
+  RK( 3, 1 ).computeShapeFunctionsAndGradients( oneSided.point.data(), oneSided.pointers, N.data(), dN.data() );
+  RK( 3, 1, 1e4 )
+    .computeShapeFunctionsAndGradients( oneSided.point.data(), oneSided.pointers, NLimited.data(), dNLimited.data() );
+  throwExceptionOnFailure( N.cwiseAbs().maxCoeff() > 10.0,
+                           Marmot::Utilities::MakeString()
+                             << "without a limit, the one-sided point must have large shape functions, max |N| "
+                             << N.cwiseAbs().maxCoeff() );
+
+  double sumOfShepardKernels = 0;
+  for ( int A = 0; A < n; A++ )
+    sumOfShepardKernels += oneSided.pointers[A]->computeKernelFunction( oneSided.point.data() );
+  for ( int A = 0; A < n; A++ ) {
+    const double phi_A = oneSided.pointers[A]->computeKernelFunction( oneSided.point.data() );
+    throwExceptionOnFailure( std::abs( NLimited( A ) - phi_A / sumOfShepardKernels ) < 1e-14,
+                             "above the limit, the shape functions are the Shepard functions" );
+  }
+  throwExceptionOnFailure( checkIfEqual( NLimited.sum(), 1.0, 1e-14 ) && NLimited.minCoeff() >= 0.0 &&
+                             dNLimited.cwiseAbs().maxCoeff() * 1.6 < 10.0 && dNLimited.rowwise().sum().norm() < 1e-12,
+                           Marmot::Utilities::MakeString()
+                             << "above the limit: a partition of unity in [0, 1] with bounded gradients, max |dN| "
+                             << dNLimited.cwiseAbs().maxCoeff() );
+  for ( int i = 0; i < 3; i++ ) {
+    const double    h  = 1e-6;
+    Eigen::Vector3d xp = oneSided.point, xm = oneSided.point;
+    xp[i] += h;
+    xm[i] -= h;
+    Eigen::VectorXd Np( n ), Nm( n );
+    RK( 3, 1, 1e4 ).computeShapeFunctions( xp.data(), oneSided.pointers, Np.data() );
+    RK( 3, 1, 1e4 ).computeShapeFunctions( xm.data(), oneSided.pointers, Nm.data() );
+    throwExceptionOnFailure( ( dNLimited.row( i ).transpose() - ( Np - Nm ) / ( 2 * h ) ).norm() < 1e-6,
+                             "above the limit, the gradients are those of the Shepard functions" );
+  }
+  Eigen::VectorXd NImplicit( n );
+  Eigen::MatrixXd dNImplicit( 3, n );
+  IRK( 3, 1, 1e4 )
+    .computeShapeFunctionsAndGradients( oneSided.point.data(), oneSided.pointers, NImplicit.data(), dNImplicit.data() );
+  throwExceptionOnFailure( ( NImplicit - NLimited ).norm() < 1e-14,
+                           "the implicit approximation chooses the order as the explicit one" );
+
+  // a healthy point is evaluated bit for bit as without a limit, by both approximations
+  KernelGrid< Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed > grid( 3, 6, 1.6 );
+  const int             nGrid = static_cast< int >( grid.pointers.size() );
+  const Eigen::VectorXd x     = point( 3, 2.55 );
+  for ( bool implicit : { false, true } ) {
+    std::unique_ptr< RK > unlimited = implicit ? std::make_unique< IRK >( 3, 1 ) : std::make_unique< RK >( 3, 1 );
+    std::unique_ptr< RK > limited   = implicit ? std::make_unique< IRK >( 3, 1, 1e4 )
+                                               : std::make_unique< RK >( 3, 1, 1e4 );
+    Eigen::VectorXd       NGrid( nGrid ), NGridLimited( nGrid );
+    Eigen::MatrixXd       dNGrid( 3, nGrid ), dNGridLimited( 3, nGrid );
+    unlimited->computeShapeFunctionsAndGradients( x.data(), grid.pointers, NGrid.data(), dNGrid.data() );
+    limited->computeShapeFunctionsAndGradients( x.data(), grid.pointers, NGridLimited.data(), dNGridLimited.data() );
+    throwExceptionOnFailure( NGrid == NGridLimited && dNGrid == dNGridLimited,
+                             "a healthy point is not evaluated bit for bit as without a limit" );
+  }
+
+  // a singular moment matrix of the linear basis (all covering kernels in one plane) gets the order 0 with a limit
+  const OneSidedKernels coplanar( 0.0 );
+  throwExceptionOnFailure( throws( [&] {
+                             RK( 3, 1 ).computeShapeFunctions( coplanar.point.data(), coplanar.pointers, N.data() );
+                           } ) &&
+                             !throws( [&] {
+                               RK( 3, 1, 1e4 )
+                                 .computeShapeFunctions( coplanar.point.data(), coplanar.pointers, N.data() );
+                             } ) &&
+                             checkIfEqual( N.sum(), 1.0, 1e-14 ),
+                           "a singular moment matrix of the linear basis must throw without a limit and get the "
+                           "Shepard functions with one" );
+
+  for ( double limit : { 0.5, -1.0, std::numeric_limits< double >::quiet_NaN() } )
+    throwExceptionOnFailure( throws( [limit] { RK( 3, 1, limit ); } ) && throws( [limit] { IRK( 3, 1, limit ); } ),
+                             Marmot::Utilities::MakeString() << "the condition limit " << limit << " must be refused" );
 }
 
 // the inverse isoparametric map and the point location test of a distorted cell (Newton's method), and of a box cell
@@ -598,6 +726,7 @@ int main()
                                                                testCompletenessOrderIsReducedForFewNodes,
                                                                testUnsupportedBasisIsRefused,
                                                                testSingularMomentMatrixThrows,
+                                                               testConditionLimitOfTheMomentMatrix,
                                                                testLagrangianCellInverseMap,
                                                                testSubdomainsTileTheDeformedDomain,
                                                                testFactories,
