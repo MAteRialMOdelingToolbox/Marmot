@@ -27,6 +27,7 @@
 #include <Fastor/tensor/Tensor.h>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 namespace Marmot::Materials {
@@ -363,9 +364,11 @@ namespace Marmot::Materials {
      * @brief Get the maximum wave speed of the material for a given deformation gradient.
      * @param[in] stateVars Pointer to the state variable array
      * @param[in] deformationGradient Current deformation gradient used as perturbation reference
-     * @return Maximum wave speed
+     * @return Maximum wave speed; NaN if the stiffness of a direction is NaN.
      * @details The default implementation computes diagonal Voigt tangent entries by centered
-     * finite differences and returns `sqrt(max(C_ii) / rho)`.
+     * finite differences and returns `sqrt(max(C_ii) / rho)`. A NaN entry is returned as NaN, not dropped by the
+     * maximum: the wave speed of the other directions would be too small, and the time increment of an explicit
+     * analysis too large.
      */
     virtual double getMaximumWaveSpeed( const double*                         stateVars,
                                         const Fastor::Tensor< double, 3, 3 >& deformationGradient ) const
@@ -404,7 +407,9 @@ namespace Marmot::Materials {
 
         const double dLogStrain = std::log( 1.0 + dEps ) - std::log( 1.0 - dEps );
         const double Cii        = ( responsePlus.tau( i, i ) - responseMinus.tau( i, i ) ) / dLogStrain;
-        maxStiffnessDiagonal    = std::max( maxStiffnessDiagonal, Cii );
+        if ( std::isnan( Cii ) )
+          return std::numeric_limits< double >::quiet_NaN();
+        maxStiffnessDiagonal = std::max( maxStiffnessDiagonal, Cii );
       }
 
       const double density = getDensity( stateVars );

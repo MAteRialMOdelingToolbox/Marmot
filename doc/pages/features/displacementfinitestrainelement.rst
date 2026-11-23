@@ -28,6 +28,22 @@ with the Kirchhoff stress :math:`\tau_{ij} = J\,t_{ij}`, the body force :math:`f
 
 where :math:`\delta_{ij}` is the Kronecker delta and :math:`\partial \tau_{ij}/\partial F_{kK}` the material tangent obtained from the respective material model.
 
+Axisymmetric elements
+---------------------
+``CX8UL`` and ``CX8RUL`` (:cpp:class:`Marmot::Discretizations::Elements::AxiSymmetricDisplacementFiniteStrainULElement`)
+are the 8-node plane element in the meridian half plane, :math:`r = x_1 \geq 0` and :math:`z = x_2`, with the hoop
+stretch :math:`F_{\theta\theta} = 1 + u_r/r` as the third diagonal entry of the deformation gradient. Everything the
+element integrates is integrated over the ring, :math:`\mathrm{d}V = 2\pi r\,\mathrm{d}A`: the internal force and
+its tangent, the lumped and the consistent mass, the body force, and the operators of the critical time step. The
+ring weight takes the place of the thickness of a plane element; the thickness property is not used by these.
+Distributed loads are still integrated as on the plane element, over the face times the thickness.
+
+The geometry is checked once, when the coordinates are assigned: a node at :math:`r < 0` (beyond the round-off of a
+mesher) or a quadrature point at :math:`r \leq 0`, where the hoop row :math:`N_i/r` is undefined and the ring weight
+not positive, is refused with ``std::invalid_argument``. The hoop stretch is checked in every increment: a ring pulled
+through the axis, :math:`F_{\theta\theta} \leq 0`, throws ``std::runtime_error``, which a solver can answer with a
+smaller increment. The kernels and the wave speed of the critical time step take the same :math:`F_{\theta\theta}`.
+
 Implementation
 --------------
 
