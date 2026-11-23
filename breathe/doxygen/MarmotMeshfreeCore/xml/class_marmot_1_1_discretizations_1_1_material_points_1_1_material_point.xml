@@ -437,7 +437,7 @@
 <para>Volume in the reference configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><formula id="285">$ V_0 $</formula>. </para>
+<para><simplesect kind="return"><para><formula id="290">$ V_0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -455,7 +455,7 @@
 <para>Density in the reference configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><formula id="286">$ \rho_0 $</formula>. </para>
+<para><simplesect kind="return"><para><formula id="291">$ \rho_0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

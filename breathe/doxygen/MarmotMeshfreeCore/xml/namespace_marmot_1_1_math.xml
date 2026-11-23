@@ -83,7 +83,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="93">$ \boldsymbol{x} $</formula> (the dimension <formula id="78">$ d $</formula> is taken from its size). </para>
+<para>Coordinates <formula id="95">$ \boldsymbol{x} $</formula> (the dimension <formula id="78">$ d $</formula> is taken from its size). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -99,7 +99,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="170" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="170" bodyend="175"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="196" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="196" bodyend="201"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1afea7f214264b28e0378b8c007e5d450a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -120,10 +120,10 @@
           <declname>res</declname>
         </param>
         <briefdescription>
-<para>Evaluate the gradient <formula id="94">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the monomial basis (see <ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">MonomialBasis</ref>). </para>
+<para>Evaluate the gradient <formula id="96">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the monomial basis (see <ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">MonomialBasis</ref>). </para>
         </briefdescription>
         <detaileddescription>
-<para>Row <formula id="95">$ k $</formula> corresponds to entry <formula id="95">$ k $</formula> of computeMonomialBasis() (same ordering), column <formula id="15">$ i $</formula> to <formula id="96">$ \partial / \partial x_i $</formula>.</para>
+<para>Row <formula id="97">$ k $</formula> corresponds to entry <formula id="97">$ k $</formula> of computeMonomialBasis() (same ordering), column <formula id="15">$ i $</formula> to <formula id="98">$ \partial / \partial x_i $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
@@ -137,7 +137,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="93">$ \boldsymbol{x} $</formula> (the dimension <formula id="78">$ d $</formula> is taken from its size). </para>
+<para>Coordinates <formula id="95">$ \boldsymbol{x} $</formula> (the dimension <formula id="78">$ d $</formula> is taken from its size). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -145,7 +145,7 @@
 <parametername direction="out">res</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <formula id="97">$ \times d $</formula>. </para>
+<para>Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <formula id="99">$ \times d $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -153,7 +153,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="189" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="189" bodyend="194"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="215" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="215" bodyend="220"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -181,18 +181,18 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the B-spline basis function <formula id="292">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
+<para>Evaluate the B-spline basis function <formula id="297">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="295">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+<para><formula id="300">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
              + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
-\]</formula> where a term is omitted ( <formula id="296">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="297">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
+\]</formula> where a term is omitted ( <formula id="301">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="302">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Degree <formula id="20">$ p $</formula> of the B-spline (order <formula id="298">$ p + 1 $</formula>). </para>
+<para>Degree <formula id="20">$ p $</formula> of the B-spline (order <formula id="303">$ p + 1 $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -201,7 +201,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="299">$ u $</formula>. </para>
+<para>Parameter value <formula id="304">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -209,7 +209,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="300">$ z $</formula>; entries <formula id="301">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="305">$ z $</formula>; entries <formula id="306">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -221,7 +221,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="292">$ N_{i,p}(u) $</formula>. </para>
+<simplesect kind="return"><para><formula id="297">$ N_{i,p}(u) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -255,12 +255,12 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the derivative <formula id="294">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
+<para>Evaluate the derivative <formula id="299">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="302">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
+<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="307">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
   + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N&apos;_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
-\]</formula> omitting terms with a knot difference below <formula id="297">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="303">$ = 0 $</formula>.</para>
+\]</formula> omitting terms with a knot difference below <formula id="302">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="308">$ = 0 $</formula>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
@@ -275,7 +275,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="299">$ u $</formula>. </para>
+<para>Parameter value <formula id="304">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -283,7 +283,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="300">$ z $</formula>; entries <formula id="301">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="305">$ z $</formula>; entries <formula id="306">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -295,7 +295,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="294">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
+<simplesect kind="return"><para><formula id="299">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -324,7 +324,7 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="304">$ [z_i, z_{i+1}) $</formula>. </para>
+<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="309">$ [z_i, z_{i+1}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -332,7 +332,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="299">$ u $</formula>. </para>
+<para>Parameter value <formula id="304">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -340,7 +340,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="300">$ z $</formula>. </para>
+<para>Knot vector <formula id="305">$ z $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -352,7 +352,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="89">$ 1 $</formula> if <formula id="305">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="306">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="89">$ 1 $</formula> if <formula id="310">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="311">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -389,7 +389,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="299">$ u $</formula> (unused). </para>
+<para>Parameter value <formula id="304">$ u $</formula> (unused). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -409,7 +409,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="306">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="311">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

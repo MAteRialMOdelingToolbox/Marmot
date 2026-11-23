@@ -186,6 +186,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations5Cells12CellGeometry4detJERK7XiSized"><code class="docutils literal notranslate"><span class="pre">detJ()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis6FactorE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math::MonomialBasis::Factor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis6Factor10coordinateE"><code class="docutils literal notranslate"><span class="pre">coordinate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis6Factor8exponentE"><code class="docutils literal notranslate"><span class="pre">exponent</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations8Meshfree9GaussRuleE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::GaussRule</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4IEN6Marmot15Discretizations8Meshfree9GaussRuleIXL2EEEE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::GaussRule&lt;</span> <span class="pre">2</span> <span class="pre">&gt;</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree9GaussRuleIXL2EEE6ScalarE"><code class="docutils literal notranslate"><span class="pre">Scalar</span></code></a></li>
@@ -455,13 +460,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasisE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math::MonomialBasis</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis13MonomialBasisEii"><code class="docutils literal notranslate"><span class="pre">MonomialBasis()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv"><code class="docutils literal notranslate"><span class="pre">size()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii"><code class="docutils literal notranslate"><span class="pre">exponent()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"><code class="docutils literal notranslate"><span class="pre">evaluate()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"><code class="docutils literal notranslate"><span class="pre">evaluateGradient()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi"><code class="docutils literal notranslate"><span class="pre">listExponents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis13listExponentsEiiRiRNSt6vectorIiEE"><code class="docutils literal notranslate"><span class="pre">listExponents()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis4_dimE"><code class="docutils literal notranslate"><span class="pre">_dim</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis5_sizeE"><code class="docutils literal notranslate"><span class="pre">_size</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE"><code class="docutils literal notranslate"><span class="pre">_exponents</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis8_factorsE"><code class="docutils literal notranslate"><span class="pre">_factors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis14_firstFactorOfE"><code class="docutils literal notranslate"><span class="pre">_firstFactorOf</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis5powerEdi"><code class="docutils literal notranslate"><span class="pre">power()</span></code></a></li>
 </ul>
 </li>
@@ -2153,6 +2158,27 @@
 <dd class="field-even"><p><span class="math notranslate nohighlight">\( \det(\partial \boldsymbol{X}/\partial\boldsymbol{\xi}) \)</span>. </p>
 </dd>
 </dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis6FactorE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis6FactorE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis6FactorE"></span><span id="Marmot::Math::MonomialBasis::Factor"></span><span class="target" id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Factor</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis6FactorE" title="Link to this definition"></a><br /></dt>
+<dd><p>A factor <span class="math notranslate nohighlight">\( x_j^\alpha \)</span>, <span class="math notranslate nohighlight">\( \alpha &gt; 0 \)</span>, of a monomial. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis6Factor10coordinateE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis6Factor10coordinateE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis6Factor10coordinateE"></span><span id="Marmot::Math::MonomialBasis::Factor::coordinate__i"></span><span class="target" id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a82bdd122e621dda22b37382a2648b521"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coordinate</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis6Factor10coordinateE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( j \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis6Factor8exponentE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis6Factor8exponentE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis6Factor8exponentE"></span><span id="Marmot::Math::MonomialBasis::Factor::exponent__i"></span><span class="target" id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a7272197bc2092fb965a0e643180785ac"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exponent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis6Factor8exponentE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \alpha \)</span></p>
 </dd></dl>
 
 </div>
@@ -5365,10 +5391,10 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) \)</span>, until the residual is below <s
 <span id="_CPPv3N6Marmot4Math13MonomialBasisE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasisE"></span><span id="Marmot::Math::MonomialBasis"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonomialBasis</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasisE" title="Link to this definition"></a><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;<a class="reference internal" href="#_marmot_monomial_basis_functions_8h"><span class="std std-ref">MarmotMonomialBasisFunctions.h</span></a>&gt;</em></div>
-<p>The complete monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x}) \)</span> of order <span class="math notranslate nohighlight">\( n \)</span> in <span class="math notranslate nohighlight">\( d \)</span> dimensions, as a table of exponents. </p>
+<p>The complete monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x}) \)</span> of order <span class="math notranslate nohighlight">\( n \)</span> in <span class="math notranslate nohighlight">\( d \)</span> dimensions, as the list of the factors of its entries. </p>
 <p>The entries are all monomials <span class="math notranslate nohighlight">\( x_1^{\alpha_1} \cdots x_d^{\alpha_d} \)</span> with <span class="math notranslate nohighlight">\( \alpha_1 + \dots + \alpha_d \le n \)</span>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <span class="math notranslate nohighlight">\( n = 2 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T \)</span>; in 3D with <span class="math notranslate nohighlight">\( n = 1 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T \)</span>. The first entry is always <span class="math notranslate nohighlight">\( 1 \)</span>.</p>
-<p>The exponents <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \)</span> of every entry are listed once, at construction; an evaluation is then the product of the powers, <span class="math notranslate nohighlight">\( H_k = \prod_j x_j^{\alpha_{kj}} \)</span>, and its gradient that product with the factor of coordinate <span class="math notranslate nohighlight">\( i \)</span> replaced by its derivative,  <span class="math notranslate nohighlight">\( \partial H_k / \partial x_i = \alpha_{ki}\,
-x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. </p>
+<p>The exponents <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \)</span> of every entry are listed once, at construction, as the factors <span class="math notranslate nohighlight">\( x_j^{\alpha_{kj}} \)</span> of nonzero exponent of each entry; an evaluation is then the product of the powers,  <span class="math notranslate nohighlight">\(H_k = \prod_j x_j^{\alpha_{kj}} \)</span>, and its gradient that product with the factor of coordinate <span class="math notranslate nohighlight">\( i \)</span> replaced by its derivative,  <span class="math notranslate nohighlight">\( \partial H_k / \partial x_i = \alpha_{ki}\, x_i^{\alpha_{ki} - 1} \prod_{j \neq i}
+x_j^{\alpha_{kj}} \)</span>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. Only the coordinates of nonzero exponent are factors of an entry: a factor <span class="math notranslate nohighlight">\( x_j^0 = 1 \)</span> would not change the product, and the derivative with respect to a coordinate that is not a factor is zero. Most exponents of a low-order basis are zero, e.g. all but three of the twelve of the linear basis in 3D. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -5389,12 +5415,6 @@ x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers a
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv">
 <span id="_CPPv3NK6Marmot4Math13MonomialBasis4sizeEv"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis4sizeEv"></span><span id="Marmot::Math::MonomialBasis::sizeC"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>The number of monomials, <span class="math notranslate nohighlight">\( \binom{d + n}{d} \)</span>. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii">
-<span id="_CPPv3NK6Marmot4Math13MonomialBasis8exponentEii"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis8exponentEii"></span><span id="Marmot::Math::MonomialBasis::exponent__i.iC"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exponent</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">j</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii" title="Link to this definition"></a><br /></dt>
-<dd><p>The exponent of coordinate <code class="docutils literal notranslate"><span class="pre">j</span></code> in monomial <code class="docutils literal notranslate"><span class="pre">k</span></code>. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -5429,9 +5449,19 @@ x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers a
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi">
-<span id="_CPPv3N6Marmot4Math13MonomialBasis13listExponentsEiiRi"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis13listExponentsEiiRi"></span><span id="Marmot::Math::MonomialBasis::listExponents__i.i.iR"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">listExponents</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis13listExponentsEiiRiRNSt6vectorIiEE">
+<span id="_CPPv3NK6Marmot4Math13MonomialBasis13listExponentsEiiRiRNSt6vectorIiEE"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis13listExponentsEiiRiRNSt6vectorIiEE"></span><span id="Marmot::Math::MonomialBasis::listExponents__i.i.iR.std::vector:i:RC"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1ab2550b06a62cd3519940b820800a26f6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">listExponents</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">entry</span></span>, <a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">exponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis13listExponentsEiiRiRNSt6vectorIiEE" title="Link to this definition"></a><br /></dt>
 <dd><p>List the exponents of the coordinates <span class="math notranslate nohighlight">\( 1, \dots, \)</span> <code class="docutils literal notranslate"><span class="pre">dim</span></code> of all monomials of total degree <span class="math notranslate nohighlight">\( \le \)</span> <code class="docutils literal notranslate"><span class="pre">order</span></code>, from entry <code class="docutils literal notranslate"><span class="pre">entry</span></code> on: the exponent of coordinate <code class="docutils literal notranslate"><span class="pre">dim</span></code> varies slowest, the lower coordinates are listed recursively. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> – <strong>[in]</strong> The largest total degree. </p></li>
+<li><p><strong>dim</strong> – <strong>[in]</strong> The number of coordinates listed. </p></li>
+<li><p><strong>entry</strong> – <strong>[inout]</strong> The next entry; advanced past the entries listed. </p></li>
+<li><p><strong>exponents</strong> – <strong>[inout]</strong> Entry <span class="math notranslate nohighlight">\( k\, d + j \)</span>: the exponent of coordinate <span class="math notranslate nohighlight">\( j \)</span> in monomial <span class="math notranslate nohighlight">\( k \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -5450,9 +5480,15 @@ x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers a
 </dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE">
-<span id="_CPPv3N6Marmot4Math13MonomialBasis10_exponentsE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis10_exponentsE"></span><span id="Marmot::Math::MonomialBasis::_exponents__std::vector:i:"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_exponents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE" title="Link to this definition"></a><br /></dt>
-<dd><p>entry <span class="math notranslate nohighlight">\( k\, d + j \)</span>: the exponent of coordinate <span class="math notranslate nohighlight">\( j \)</span> in monomial <span class="math notranslate nohighlight">\( k \)</span></p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis8_factorsE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis8_factorsE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis8_factorsE"></span><span id="Marmot::Math::MonomialBasis::_factors__std::vector:Factor:"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1add36213cdf08453efe6e1064d66948ef"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis6FactorE" title="Marmot::Math::MonomialBasis::Factor"><span class="n"><span class="pre">Factor</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_factors</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis8_factorsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the factors of all monomials, monomial after monomial, in coordinate order </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis14_firstFactorOfE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis14_firstFactorOfE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis14_firstFactorOfE"></span><span id="Marmot::Math::MonomialBasis::_firstFactorOf__std::vector:i:"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a5deb380a56fef5014664816b4d234eec"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_firstFactorOf</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis14_firstFactorOfE" title="Link to this definition"></a><br /></dt>
+<dd><p>the factors of monomial <span class="math notranslate nohighlight">\( k \)</span> are the entries [_firstFactorOf[k], _firstFactorOf[k + 1]) of _factors </p>
 </dd></dl>
 
 </div>
@@ -5461,7 +5497,7 @@ x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers a
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis5powerEdi">
 <span id="_CPPv3N6Marmot4Math13MonomialBasis5powerEdi"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis5powerEdi"></span><span id="Marmot::Math::MonomialBasis::power__double.i"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">power</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis5powerEdi" title="Link to this definition"></a><br /></dt>
-<dd><p><span class="math notranslate nohighlight">\( x^\alpha \)</span> by multiplication; zero for <span class="math notranslate nohighlight">\( \alpha &lt; 0 \)</span> (the derivative of a constant). </p>
+<dd><p><span class="math notranslate nohighlight">\( x^\alpha \)</span>, <span class="math notranslate nohighlight">\( \alpha \ge 0 \)</span>, by multiplication. </p>
 </dd></dl>
 
 </div>

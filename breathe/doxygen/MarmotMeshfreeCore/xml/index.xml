@@ -118,6 +118,10 @@
     <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" kind="function"><name>dNdX</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" kind="function"><name>detJ</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor" kind="struct"><name>Marmot::Math::MonomialBasis::Factor</name>
+    <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a82bdd122e621dda22b37382a2648b521" kind="variable"><name>coordinate</name></member>
+    <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a7272197bc2092fb965a0e643180785ac" kind="variable"><name>exponent</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule" kind="struct"><name>Marmot::Discretizations::Meshfree::GaussRule</name>
   </compound>
   <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4" kind="struct"><name>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</name>
@@ -392,14 +396,14 @@
   <compound refid="class_marmot_1_1_math_1_1_monomial_basis" kind="class"><name>Marmot::Math::MonomialBasis</name>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a93d49190f015b20fa722feded97a463f" kind="variable"><name>_dim</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a6aa659f04ac699dc1713ed390eaaa521" kind="variable"><name>_size</name></member>
-    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7" kind="variable"><name>_exponents</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1add36213cdf08453efe6e1064d66948ef" kind="variable"><name>_factors</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a5deb380a56fef5014664816b4d234eec" kind="variable"><name>_firstFactorOf</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1adbeb7c5c1bbd4b881fd7264a84d6a4df" kind="function"><name>MonomialBasis</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kind="function"><name>size</name></member>
-    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7" kind="function"><name>exponent</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a06fb76b6f902508a208b2911350c07a4" kind="function"><name>evaluate</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a1d3f52df9d95834645311a2c7c8dc6cb" kind="function"><name>evaluateGradient</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795" kind="function"><name>power</name></member>
-    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb" kind="function"><name>listExponents</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1ab2550b06a62cd3519940b820800a26f6" kind="function"><name>listExponents</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class"><name>Marmot::Discretizations::Meshfree::Particle</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" kind="function"><name>vci_getNumberOfConstraints</name></member>

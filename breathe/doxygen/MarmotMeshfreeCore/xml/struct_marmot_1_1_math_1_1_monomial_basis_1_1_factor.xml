@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor" kind="struct" language="C++" prot="private">
+    <compoundname>Marmot::Math::MonomialBasis::Factor</compoundname>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a82bdd122e621dda22b37382a2648b521" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::Factor::coordinate</definition>
+        <argsstring></argsstring>
+        <name>coordinate</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::Factor::coordinate</qualifiedname>
+        <briefdescription>
+<para><formula id="107">$ j $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="177" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a7272197bc2092fb965a0e643180785ac" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::Factor::exponent</definition>
+        <argsstring></argsstring>
+        <name>exponent</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::Factor::exponent</qualifiedname>
+        <briefdescription>
+<para><formula id="110">$ \alpha $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="178" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>A factor <formula id="108">$ x_j^\alpha $</formula>, <formula id="109">$ \alpha &gt; 0 $</formula>, of a monomial. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="176" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="176" bodyend="179"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a82bdd122e621dda22b37382a2648b521" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis::Factor</scope><name>coordinate</name></member>
+      <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a7272197bc2092fb965a0e643180785ac" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis::Factor</scope><name>exponent</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
