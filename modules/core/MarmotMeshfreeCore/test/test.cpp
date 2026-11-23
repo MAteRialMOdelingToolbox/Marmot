@@ -41,6 +41,7 @@
 #include <random>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot;
@@ -338,16 +339,6 @@ void checkApproximation( const std::string& name, int dim, int order, double sup
                                    << "D: gradients are not the derivatives of the values" );
       }
   }
-
-  Eigen::MatrixXd dN( dim, nNodes );
-  bool            thrown = false;
-  try {
-    approximation.computeShapeFunctionGradients( point( dim, 2.1 ).data(), grid.pointers, dN.data() );
-  }
-  catch ( const std::runtime_error& ) {
-    thrown = true;
-  }
-  throwExceptionOnFailure( thrown, name + ": computeShapeFunctionGradients is not implemented and must throw" );
 }
 
 void testReproducingKernelApproximation()
@@ -377,10 +368,21 @@ void testImplicitGradientReproducingKernelApproximation()
     }
 }
 
-// the moment matrix helpers are protected: expose them for the test
+// the moment matrix assembly is protected: expose it for the test, with the kernel evaluation it takes its input from
 struct MomentMatrixAccess : Marmot::Discretizations::Meshfree::ReproducingKernelApproximation {
-  using Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrix;
-  using Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrixAndGradient;
+  using ReproducingKernelApproximation::ReproducingKernelApproximation;
+
+  // the moment matrix at x, and its gradients if dM_dx is given
+  void momentMatrix( const Eigen::VectorXd&                                                         x,
+                     const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernels,
+                     int                                                                            order,
+                     MomentMatrix&                                                                  M,
+                     MomentMatrixGradient*                                                          dM_dx ) const
+  {
+    std::vector< double > phi( kernels.size() ), dPhi_dx( _dim * kernels.size() );
+    evaluateKernelFunctions( x.data(), kernels, phi.data(), dPhi_dx.data() );
+    assembleMomentMatrix( x.data(), kernels, phi.data(), dPhi_dx.data(), order, M, dM_dx );
+  }
 };
 
 void testMomentMatrixGradient()
@@ -389,18 +391,23 @@ void testMomentMatrixGradient()
   for ( int dim = 1; dim <= 3; dim++ )
     for ( int order = 1; order <= 2; order++ ) {
       KernelGrid< Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed > grid( dim, 6, 2.4 );
+      const RK                                                                            rk( dim, order );
       const Eigen::VectorXd                                                               x = point( dim, 2.3 );
-      const auto [M, dM] = RK::computeMMatrixAndGradient( x, grid.pointers, order );
-      throwExceptionOnFailure( ( M - RK::computeMMatrix( x, grid.pointers, order ) ).norm() < 1e-14 * M.norm(),
-                               "moment matrix of both evaluations differs" );
+      RK::MomentMatrix                                                                    M, MWithoutGradients;
+      RK::MomentMatrixGradient                                                            dM;
+      rk.momentMatrix( x, grid.pointers, order, M, &dM );
+      rk.momentMatrix( x, grid.pointers, order, MWithoutGradients, nullptr );
+      throwExceptionOnFailure( ( M - MWithoutGradients ).norm() < 1e-14 * M.norm(),
+                               "moment matrix with and without its gradients differs" );
       for ( int i = 0; i < dim; i++ ) {
         const double    h  = 1e-6;
         Eigen::VectorXd xp = x, xm = x;
         xp[i] += h;
         xm[i] -= h;
-        const Eigen::MatrixXd fd = ( RK::computeMMatrix( xp, grid.pointers, order ) -
-                                     RK::computeMMatrix( xm, grid.pointers, order ) ) /
-                                   ( 2 * h );
+        RK::MomentMatrix Mp, Mm;
+        rk.momentMatrix( xp, grid.pointers, order, Mp, nullptr );
+        rk.momentMatrix( xm, grid.pointers, order, Mm, nullptr );
+        const Eigen::MatrixXd fd = ( Mp - Mm ) / ( 2 * h );
         throwExceptionOnFailure( ( dM[i] - fd ).norm() < 1e-6 * ( 1 + fd.norm() ),
                                  Marmot::Utilities::MakeString()
                                    << "gradient " << i << " of the moment matrix of order " << order << " in " << dim
@@ -420,6 +427,17 @@ void testCompletenessOrderIsReducedForFewNodes()
   throwExceptionOnFailure( checkIfEqual( N[0] + N[1], 1.0, 1e-14 ), "partition of unity with a reduced order" );
   throwExceptionOnFailure( std::abs( N[0] * 0 + N[1] * 1 - x ) < 1e-12,
                            "two nodes in 1D still reproduce a linear field" );
+}
+
+// the evaluation is of a fixed largest size: a basis beyond it, a dimension beyond 3 or a negative order is refused
+void testUnsupportedBasisIsRefused()
+{
+  using RK = Marmot::Discretizations::Meshfree::ReproducingKernelApproximation;
+  throwExceptionOnFailure( !throws( [] { RK( 3, 3 ); } ), "the cubic basis in 3D is supported" );
+  for ( const auto& [dim, order] : { std::pair( 3, 4 ), std::pair( 4, 1 ), std::pair( 2, -1 ) } )
+    throwExceptionOnFailure( throws( [dim = dim, order = order] { RK( dim, order ); } ),
+                             Marmot::Utilities::MakeString()
+                               << "dimension " << dim << " and order " << order << " must be refused" );
 }
 
 // a singular moment matrix must throw instead of silently losing the partition of unity: three collinear nodes in 2D
@@ -578,6 +596,7 @@ int main()
                                                                testImplicitGradientReproducingKernelApproximation,
                                                                testMomentMatrixGradient,
                                                                testCompletenessOrderIsReducedForFewNodes,
+                                                               testUnsupportedBasisIsRefused,
                                                                testSingularMomentMatrixThrows,
                                                                testLagrangianCellInverseMap,
                                                                testSubdomainsTileTheDeformedDomain,
