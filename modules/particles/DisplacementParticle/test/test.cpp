@@ -779,12 +779,12 @@ namespace {
                                                                             name.find( "NSNI" ) != std::string::npos );
   }
 
-  // A point attached to the particle (a vertex, the center) moves with getAttachedPointInterpolationVector(): after an
-  // accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ_B to round-off, and G sums to one. The shape
-  // functions at a vertex, getInterpolationVector(), do not move it (they differ by a large fraction of the motion),
-  // the reason a constraint that measures a vertex must distribute its force with G.
+  // A point of the particle's own (a vertex, the center) moves with getInterpolationVectorLinearizedAboutCenter():
+  // after an accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ_B to round-off, and G sums to one.
+  // The shape functions at a vertex, getInterpolationVector(), do not move it (they differ by a large fraction of the
+  // motion), the reason a constraint that measures a vertex must distribute its force with G.
   template < int nDim >
-  void checkAttachedPointMotion( const std::string& name, const std::string& shape )
+  void checkOwnPointsMoveWithTheLinearizedInterpolation( const std::string& name, const std::string& shape )
   {
     using Points = Eigen::Matrix< double, nDim, Eigen::Dynamic >;
     Setup< nDim > s( name, vertices( shape ), volumeArgument( shape ) );
@@ -798,7 +798,7 @@ namespace {
 
     Eigen::MatrixXd G( nN, nV + 1 ), N( nN, nV + 1 );
     for ( int k = 0; k <= nV; k++ ) {
-      s.particle->getAttachedPointInterpolationVector( G.col( k ).data(), points.col( k ).data() );
+      s.particle->getInterpolationVectorLinearizedAboutCenter( G.col( k ).data(), points.col( k ).data() );
       s.particle->getInterpolationVector( N.col( k ).data(), points.col( k ).data() );
     }
 
@@ -814,9 +814,10 @@ namespace {
     const Points motion = moved - points;
 
     throwExceptionOnFailure( ( motion - dq * G ).norm() < 1e-12 * motion.norm(),
-                             name + ": an attached point moves with getAttachedPointInterpolationVector()" );
+                             name +
+                               ": a point of the particle moves with getInterpolationVectorLinearizedAboutCenter()" );
     throwExceptionOnFailure( ( G.colwise().sum().array() - 1.0 ).abs().maxCoeff() < 1e-12,
-                             name + ": the attached-point interpolation is a partition of unity" );
+                             name + ": the linearized interpolation is a partition of unity" );
     if ( shape != "Point" )
       throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
                                name + ": the shape functions at the vertices do not move them" );
@@ -894,9 +895,11 @@ int main()
       testFunctions.push_back(
         [name = name, shape = shape]() { checkBoundOfAbsoluteStiffness< 3 >( name, shape, 1.5 ); } );
   for ( const auto& [name, shape] : planeStrain )
-    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 2 >( name, shape ); } );
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 2 >( name, shape ); } );
   for ( const auto& [name, shape] : solid )
-    testFunctions.push_back( [name = name, shape = shape]() { checkAttachedPointMotion< 3 >( name, shape ); } );
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 3 >( name, shape ); } );
   for ( const auto& [name, formerName] :
         std::vector< std::pair< std::string, std::string > >{ { "DisplacementSQCNIxNSNI", "Displacement/SQCNIxNSNI" },
                                                               { "DisplacementSNNIxNSNI", "Displacement/SNNIxNSNI" },

@@ -148,8 +148,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @f$ \boldsymbol{F}_n @f$ of the last accepted state about the undeformed centroid, plus the center displacement,
      * @f$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}_n(\boldsymbol{X}_v - \boldsymbol{X}_c) +
      * \boldsymbol{u}_c @f$ (the undeformed vertices plus the state `vertex displacements`, updated at each accepted
-     * increment). These are the points the particle moves with getAttachedPointInterpolationVector(), the vertices
-     * supports and contacts act on. They coincide with the smoothing domain only for `DeformationGradient`.
+     * increment). These are the points the particle moves with getInterpolationVectorLinearizedAboutCenter() (its own
+     * points), the vertices supports and contacts act on. They coincide with the smoothing domain only for
+     * `DeformationGradient`.
      * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
      */
     void getVertexCoordinates( double* coordinates ) const override;
