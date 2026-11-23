@@ -29,7 +29,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="112" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="112" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="189" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="189" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-attrib">
@@ -47,7 +47,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="115" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="115" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="192" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="192" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a9beeb9262492c82bfd2b53697cf64551" prot="protected" static="yes" constexpr="yes" mutable="no">
         <type>const char *</type>
@@ -63,7 +63,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="117" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="117" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="194" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="194" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f" prot="protected" static="yes" constexpr="yes" mutable="no">
         <type>const char *</type>
@@ -79,7 +79,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="119" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="119" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="196" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="196" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -134,7 +134,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="128" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="128" bodyend="137"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="205" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="205" bodyend="214"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a8d9516a7ca350e8321c7f5a3044f4bf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -148,7 +148,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="139" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="216" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a0dd9a4032f02422fbde15ecf100b0ac1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -163,7 +163,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="145" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="145" bodyend="151"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="222" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="222" bodyend="228"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -193,7 +193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="157" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="157" bodyend="160"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="234" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="234" bodyend="237"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a418c29a12d2818cb156382e5b32c02b3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -238,7 +238,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="173" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="173" bodyend="179"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="250" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="250" bodyend="256"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a3f28011f30a855bde0a7e589cc496678" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>double</type>
@@ -270,7 +270,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="186" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="186" bodyend="190"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="263" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="263" bodyend="267"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab57e2464e27eed7ad1ddae6441ee6e07" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -288,7 +288,7 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
-<para>Initialise the state: <formula id="10">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="11">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
+<para>Initialise the state: <formula id="11">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="26">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -312,7 +312,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="198" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="198" bodyend="210"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="275" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="275" bodyend="287"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -354,7 +354,7 @@
 <parametername direction="out">tangents</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic moduli <formula id="12">$ \partial\tau_{ij}/\partial F_{kl} $</formula>. </para>
+<para>Algorithmic moduli <formula id="27">$ \partial\tau_{ij}/\partial F_{kl} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -378,7 +378,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="219" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="219" bodyend="232"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="296" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="296" bodyend="309"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a39a2f0828d634962474f5063169ca37d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -432,7 +432,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="240" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="240" bodyend="246"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="317" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="317" bodyend="323"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-func">
@@ -453,7 +453,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="250" column="60" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="250" bodyend="255"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="327" column="60" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="327" bodyend="332"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1af7456ca9d679077a167cdb26ecb7a9db" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>Eigen::Matrix3d</type>
@@ -472,7 +472,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="258" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="258" bodyend="261"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="335" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="335" bodyend="338"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -503,7 +503,7 @@
           <declname>timeInfo</declname>
         </param>
         <briefdescription>
-<para>Recover  <formula id="13">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+<para>Recover  <formula id="28">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
        \partial\boldsymbol{\sigma}_{\text{rot}} $</formula> by forward differences. </para>
         </briefdescription>
         <detaileddescription>
@@ -554,7 +554,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="276" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="276" bodyend="311"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="353" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="353" bodyend="388"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a478178de3d2d038cb27c1bde0de03910" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -631,7 +631,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="321" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="321" bodyend="440"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="398" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="398" bodyend="519"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1951406512092a967b11806d7a8d92ac" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -656,7 +656,7 @@
           <declname>timeIncrement</declname>
         </param>
         <briefdescription>
-<para>Forward-difference the complete update with respect to the nine components of <formula id="14">$ F $</formula>. </para>
+<para>Forward-difference the complete update with respect to the nine components of <formula id="29">$ F $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Every evaluation starts from a pristine copy of the incoming state, and none of them is allowed to commit: the caller runs the unperturbed update afterwards.</para>
@@ -697,7 +697,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="453" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="453" bodyend="496"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="532" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="532" bodyend="575"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -721,13 +721,14 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="1">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="17">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
                          \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
   \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
-\]</formula> split into its symmetric and skew parts <formula id="2">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="3">$ \Delta\boldsymbol{\Omega} $</formula>. The incremental rotation follows from the Cayley transform    <formula id="4">\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
+\]</formula> split into its symmetric and skew parts <formula id="18">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="19">$ \Delta\boldsymbol{\Omega} $</formula>. The incremental rotation follows from the Cayley transform    <formula id="20">\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
                          \left(\boldsymbol{I} + \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right),
-\]</formula> which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <formula id="5">$ \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
-\Delta\boldsymbol{R}^{T} $</formula>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <formula id="6">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} $</formula> expected by the finite-strain consumers.</para>
+\]</formula> which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <formula id="21">$ \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
+\Delta\boldsymbol{R}^{T} $</formula>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <formula id="22">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} $</formula> expected by the finite-strain consumers.</para>
+<para>The elastic energy density and the dissipation of this interface are per unit <bold>reference</bold> volume, those of the wrapped material per unit current volume. They are converted on the way in and out, the elastic energy as a function of the state and the dissipation as a quantity accumulated along the path; see toDensityPerVolumeAtStartOfIncrement() and toDensityPerVolumeAtEndOfIncrement().</para>
 <para><simplesect kind="note"><para><bold>Only the stress is rotated.</bold> Tensor-valued internal variables of the wrapped material (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are passed through untouched and are therefore <emphasis>not</emphasis> objective under large incremental rotations. Models whose internal state is scalar or isotropic-invariant are unaffected.</para>
 </simplesect>
 <simplesect kind="note"><para>The characteristic element length is <bold>not</bold> derived from any geometry here. It must be assigned explicitly via <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" kindref="member">setCharacteristicElementLength</ref>; until then it is NaN, so a wrapped material that relies on it fails loudly instead of silently regularising incorrectly. </para>
@@ -758,7 +759,7 @@ The wrapped material is driven by the objective strain increment of the Hughes-W
         <link refid="class_marmot_1_1_materials_1_1_material_finite_strain"/>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="104" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="104" bodyend="497"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="181" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="181" bodyend="576"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1c431001f9637cd5ecadfe4dee924e59" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>baseMaterial</name></member>
       <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>baseMaterialSlot</name></member>

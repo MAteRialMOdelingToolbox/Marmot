@@ -28,7 +28,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="109" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="109" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="112" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="112" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="private" static="no">
         <type>MaterialGradientEnhancedHypoElastic&lt; nNonlocal &gt;</type>
@@ -43,7 +43,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="110" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="85" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="113" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="85" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-type">
@@ -67,7 +67,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="121" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="121" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="124" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="124" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3e64335039b592e1728522e7fee9cb1" prot="public" static="no">
         <templateparamlist>
@@ -89,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="124" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="124" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="127" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="127" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a98a6f6ed7bf17d68292d40dff9add653" prot="public" static="no">
         <templateparamlist>
@@ -111,7 +111,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="127" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="127" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="130" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="130" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3a28887f75070c0751be5ad1666de841" prot="public" static="no">
         <type>typename Wrapper::Interface::TimeIncrement</type>
@@ -126,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="129" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="129" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="132" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="132" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aef8719fab9320791ffb17dad62428f8d" prot="public" static="no">
         <type>Eigen::Vector&lt; double, nNonlocal &gt;</type>
@@ -141,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="118" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="81" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="121" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="81" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-attrib">
@@ -159,7 +159,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="133" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="133" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="136" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="136" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a434e2d7e79ca0376c88f129319079d1e" prot="protected" static="yes" constexpr="yes" mutable="no">
         <type>const char *</type>
@@ -175,7 +175,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="135" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="135" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="138" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="138" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6d5adae2fba09e31b44e426caaf63ccd" prot="protected" static="yes" constexpr="yes" mutable="no">
         <type>const char *</type>
@@ -191,7 +191,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="137" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="137" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="140" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="140" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -246,7 +246,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="146" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="146" bodyend="150"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="149" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="149" bodyend="153"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af772b5aebe2ff7ddfa713d36e5cfa5be" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -260,7 +260,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="152" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="155" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a76f885dcc4beac3f9df622632733a00d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -275,7 +275,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="163" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="163" bodyend="170"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="166" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="166" bodyend="173"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af14aac8627c9fdfa808d2a1ddb36686d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -293,7 +293,7 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
-<para>Initialise the state: <formula id="10">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="11">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, <formula id="144">$ \bar{\boldsymbol{N}}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
+<para>Initialise the state: <formula id="11">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="26">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, <formula id="158">$ \bar{\boldsymbol{N}}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -317,7 +317,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="179" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="179" bodyend="193"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="182" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="182" bodyend="196"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a1f2f41007df08e89c39bdd745d2e79f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -382,7 +382,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="203" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="203" bodyend="216"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="206" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="206" bodyend="219"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3af7293ee72c03d31ef81d36d3bcfb04" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -435,7 +435,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="224" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="224" bodyend="230"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="227" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="227" bodyend="233"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a9affa2999d9f5904d4e00cc42d0393f8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -500,7 +500,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="157" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="160" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3ffacae620abb7dffe0c3a977a790cee" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -577,7 +577,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="157" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="160" column="5"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -608,7 +608,7 @@
           <declname>dissipation</declname>
         </param>
         <briefdescription>
-<para>Recover  <formula id="13">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+<para>Recover  <formula id="28">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
        \partial\boldsymbol{\sigma}_{\text{rot}} $</formula> by forward differences. </para>
         </briefdescription>
         <detaileddescription>
@@ -659,7 +659,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="244" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="244" bodyend="283"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="247" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="247" bodyend="286"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aaf51bc7c90ed437614453209297f3f10" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -736,7 +736,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="293" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="293" bodyend="466"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="296" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="296" bodyend="456"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6a20868e32b6076876a0da3c9eac141a" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -761,7 +761,7 @@
           <declname>timeIncrement</declname>
         </param>
         <briefdescription>
-<para>Forward-difference the complete update with respect to <formula id="14">$ F $</formula> and <formula id="145">$ \bar{N} $</formula>. </para>
+<para>Forward-difference the complete update with respect to <formula id="29">$ F $</formula> and <formula id="159">$ \bar{N} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Every evaluation starts from a pristine copy of the incoming state and none of them commits: the caller runs the unperturbed update afterwards. This is the verification oracle for the analytic tangent, and it differentiates all four blocks.</para>
@@ -802,7 +802,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="480" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="480" bodyend="539"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="470" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="470" bodyend="529"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-attrib">
@@ -819,7 +819,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="111" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="88" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="114" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="88" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-attrib">
@@ -836,7 +836,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="112" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="91" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="115" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="91" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aa7948a218528c8a5de24e23b23ee42a0" prot="private" static="yes" constexpr="yes" mutable="no">
         <type>int</type>
@@ -851,7 +851,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="114" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="76" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="117" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="76" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-func">
@@ -884,7 +884,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="113" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="158" bodyend="163"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="116" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="158" bodyend="163"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a7a658b4b36411385e65f50bce91c018b" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>Eigen::Matrix3d</type>
@@ -915,7 +915,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="115" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="170" bodyend="173"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="118" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHypoElasticWrapper.h" bodystart="170" bodyend="173"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -939,10 +939,10 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">HughesWingetWrapper</ref>, and it works the same way: the wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="1">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">HughesWingetWrapper</ref>, and it works the same way: the wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="17">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
                          \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
   \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
-\]</formula> split into <formula id="2">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="3">$ \Delta\boldsymbol{\Omega} $</formula>, with the stress of the previous increment rotated forward by the Cayley transform of <formula id="3">$ \Delta\boldsymbol{\Omega} $</formula> and the resulting Cauchy stress pushed to the Kirchhoff stress <formula id="129">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>.</para>
+\]</formula> split into <formula id="18">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="19">$ \Delta\boldsymbol{\Omega} $</formula>, with the stress of the previous increment rotated forward by the Cayley transform of <formula id="19">$ \Delta\boldsymbol{\Omega} $</formula> and the resulting Cauchy stress pushed to the Kirchhoff stress <formula id="143">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>. The elastic energy density and the dissipation are converted between this interface (per unit reference volume) and the wrapped material (per unit current volume) as there, see toDensityPerVolumeAtStartOfIncrement() and toDensityPerVolumeAtEndOfIncrement().</para>
 <para>On top of that it carries the nonlocal fields across the two interfaces, per nonlocal variable K:</para>
 <para><table rows="6" cols="2"><row>
 <entry thead="yes"><para>this interface reports  </para>
@@ -954,15 +954,15 @@ The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hugh
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>response.nonLocalRadius</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="56">$ \sqrt{c_K} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="71">$ \sqrt{c_K} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dTau_dN</computeroutput>[K]  </para>
-</entry><entry thead="no"><para><formula id="138">$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N}_K $</formula>  </para>
+</entry><entry thead="no"><para><formula id="152">$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N}_K $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dL_dF</computeroutput>[K]  </para>
-</entry><entry thead="no"><para><formula id="139">$ \partial K^{\text{local}}_K/\partial\Delta\boldsymbol{\varepsilon} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="153">$ \partial K^{\text{local}}_K/\partial\Delta\boldsymbol{\varepsilon} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dL_dN</computeroutput>  </para>
@@ -973,13 +973,13 @@ The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hugh
 <para><computeroutput>dL_dF</computeroutput> is chained through the Hughes-Winget kinematics. Each row is kept inside the 120-column limit deliberately: <computeroutput>ReflowComments</computeroutput> would otherwise wrap a longer one onto the next line and split the table in two.</para>
 <para><simplesect kind="note"><para>The wrapped material wants the nonlocal fields <bold>and their increment</bold>, while this interface hands over only the totals. The increment is therefore formed against the value of the last call carried in this wrapper&apos;s own state (<computeroutput>HughesWinget_N_n</computeroutput>), see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kindref="compound">GradientEnhancedHypoElasticWrapper</ref>.</para>
 </simplesect>
-<simplesect kind="note"><para><bold>The wrapped material must be incremental in stress.</bold> It has to update the Cauchy stress it is handed, not recompute one from a stored strain: the wrapper&apos;s whole mechanism is to hand over the forward-rotated stress of the last increment, and a material that ignores that argument discards the rotation along with it. <computeroutput>AT2PhaseField</computeroutput> is a counter-example: it carries a six-component <computeroutput>strain</computeroutput> state (<computeroutput>AT2PhaseField.h:60</computeroutput>) and returns <formula id="140">$ g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon} $</formula> from it (<computeroutput>AT2PhaseField.cpp:71</computeroutput>), so its true <formula id="141">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is zero rather than the identity. Measured: wrapped, a rigid rotation on top of an anisotropic stretch leaves its Kirchhoff stress bit-for-bit <bold>unrotated</bold>. It is therefore deliberately not registered with this wrapper, and a total-strain-based model must not be either.</para>
+<simplesect kind="note"><para><bold>The wrapped material must be incremental in stress.</bold> It has to update the Cauchy stress it is handed, not recompute one from a stored strain: the wrapper&apos;s whole mechanism is to hand over the forward-rotated stress of the last increment, and a material that ignores that argument discards the rotation along with it. <computeroutput>AT2PhaseField</computeroutput> is a counter-example: it carries a six-component <computeroutput>strain</computeroutput> state (<computeroutput>AT2PhaseField.h:60</computeroutput>) and returns <formula id="154">$ g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon} $</formula> from it (<computeroutput>AT2PhaseField.cpp:71</computeroutput>), so its true <formula id="155">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is zero rather than the identity. Measured: wrapped, a rigid rotation on top of an anisotropic stretch leaves its Kirchhoff stress bit-for-bit <bold>unrotated</bold>. It is therefore deliberately not registered with this wrapper, and a total-strain-based model must not be either.</para>
 </simplesect>
 <simplesect kind="note"><para><bold>Only the stress is rotated.</bold> Tensor-valued internal variables of the wrapped material are passed through untouched and are therefore <emphasis>not</emphasis> objective under large incremental rotations. A model whose internal state is entirely scalar is unaffected.</para>
 </simplesect>
-<simplesect kind="note"><para>The interaction <formula id="142">$ c $</formula> is reported through its square root, and its derivative <formula id="143">$ \partial c/\partial\bar{N} $</formula> <bold>cannot be forwarded at all</bold>: the finite-strain interface has no slot for it. Harmless for a material whose <formula id="142">$ c $</formula> is constant (<computeroutput>AT2PhaseField</computeroutput> is); a material built on MarmotDecreasingInteractions would keep a correct residual but lose that term of its consistent tangent.</para>
+<simplesect kind="note"><para>The interaction <formula id="156">$ c $</formula> is reported through its square root, and its derivative <formula id="157">$ \partial c/\partial\bar{N} $</formula> <bold>cannot be forwarded at all</bold>: the finite-strain interface has no slot for it. Harmless for a material whose <formula id="156">$ c $</formula> is constant (<computeroutput>AT2PhaseField</computeroutput> is); a material built on MarmotDecreasingInteractions would keep a correct residual but lose that term of its consistent tangent.</para>
 </simplesect>
-<simplesect kind="note"><para>The nonlocal balance is formulated in the material configuration by the consumers of this interface, so <formula id="142">$ c $</formula> is handed over as the material constant the wrapped model reports, neither pushed forward nor weighted by <formula id="128">$ J $</formula>. </para>
+<simplesect kind="note"><para>The nonlocal balance is formulated in the material configuration by the consumers of this interface, so <formula id="156">$ c $</formula> is handed over as the material constant the wrapped model reports, neither pushed forward nor weighted by <formula id="6">$ J $</formula>. </para>
 </simplesect>
 </para>
     </detaileddescription>
@@ -1019,7 +1019,7 @@ The gradient-enhanced sibling of <ref refid="class_marmot_1_1_materials_1_1_hugh
         <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="107" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="107" bodyend="540"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" line="110" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h" bodystart="110" bodyend="530"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3e64335039b592e1728522e7fee9cb1" prot="public" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHughesWingetWrapper</scope><name>AlgorithmicModuli</name></member>
       <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ae2801da8a3cfa4d50fead26148f06bfc" prot="private" virt="non-virtual"><scope>Marmot::Materials::GradientEnhancedHughesWingetWrapper</scope><name>BaseMaterial</name></member>

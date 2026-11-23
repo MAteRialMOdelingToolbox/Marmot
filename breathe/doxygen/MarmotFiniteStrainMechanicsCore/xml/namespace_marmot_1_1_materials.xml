@@ -11,6 +11,147 @@
     <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped" prot="public">Marmot::Materials::MaterialFiniteStrainSubstepped</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</innerclass>
     <innerclass refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain" prot="public">Marmot::Materials::MaterialPointSolverFiniteStrain</innerclass>
+    <sectiondef kind="user-defined">
+      <header>Energy densities across a Hughes-Winget wrapper</header>
+      <description><para>The finite-strain interface reports the elastic energy density and the dissipation per unit <bold>reference</bold> volume, and its hosts store and reload them that way. A wrapped small-strain material knows only its own current volume. A Hughes-Winget wrapper therefore converts both on the way in and multiplies the wrapped material&apos;s updated values by <formula id="1">$ J = \det\boldsymbol{F}^{(n+1)} $</formula> on the way out (toDensityPerReferenceVolume()). The way in differs for the two, because they are different kinds of quantity:</para>
+<para><itemizedlist>
+<listitem><para>The <bold>elastic energy</bold> is a function of the state. The wrapped materials update it as <formula id="2">$ \psi_{n+1} = \psi_\mathrm{in} + \psi(\boldsymbol{\sigma}^{(n+1)}) - \psi(\boldsymbol{\sigma}^{(n)}) $</formula>, so the value handed in must be the density of the state the increment starts from, per unit volume of <formula id="3">$ \boldsymbol{F}^{(n)} $</formula>: the stored value divided by <formula id="4">$ J_n = \det\boldsymbol{F}^{(n)} $</formula> (toDensityPerVolumeAtStartOfIncrement()). The stored result is <formula id="5">$ \Psi_{n+1} = J\,\psi(\boldsymbol{\sigma}^{(n+1)}) $</formula>, the energy of the current state per unit reference volume.</para>
+</listitem><listitem><para>The <bold>dissipation</bold> is accumulated along the path. Per unit reference volume its rate is <formula id="6">$ J $</formula> times the rate per unit current volume, so <formula id="7">$ D_{n+1} = D_n + J\,\Delta d $</formula>, with <formula id="8">$ \Delta d $</formula> the wrapped material&apos;s increment. The stored value is therefore handed in divided by the same <formula id="6">$ J $</formula> it is multiplied with on the way out (toDensityPerVolumeAtEndOfIncrement()): the round trip leaves the history unchanged and pushes forward only the increment. Dividing by <formula id="9">$ J_n $</formula> instead would rescale the whole history by <formula id="10">$ J/J_n $</formula> in every increment, so that a compaction would decrease it.</para>
+</listitem></itemizedlist>
+</para>
+<para>At the first increment <formula id="11">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, and the stored values are zero. An inverted configuration ( <formula id="12">$ J \le 0 $</formula>) makes the energies as meaningless as the stress; all three conversions then pass the value through unchanged, so that a stored value is never divided by zero.</para>
+<para>Shared by <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">HughesWingetWrapper</ref> and <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kindref="compound">GradientEnhancedHughesWingetWrapper</ref>. </para>
+</description>
+      <memberdef kind="function" id="_marmot_material_hughes_winget_8h_1ae42038de079322a19c2d35d6c3e88ebc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::toDensityPerVolumeAtStartOfIncrement</definition>
+        <argsstring>(double densityPerReferenceVolume, double Jn)</argsstring>
+        <name>toDensityPerVolumeAtStartOfIncrement</name>
+        <qualifiedname>Marmot::Materials::toDensityPerVolumeAtStartOfIncrement</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>densityPerReferenceVolume</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Jn</declname>
+        </param>
+        <briefdescription>
+<para>The density of the state an increment starts from, per unit volume of <formula id="3">$ \boldsymbol{F}^{(n)} $</formula>; for the elastic energy density. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">densityPerReferenceVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stored density, per unit reference volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">Jn</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="13">$ \det\boldsymbol{F}^{(n)} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>densityPerReferenceVolume</computeroutput> / <computeroutput>Jn</computeroutput>, or <computeroutput>densityPerReferenceVolume</computeroutput> for <formula id="14">$ J_n \le 0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="107" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="107" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_material_hughes_winget_8h_1a5380d399431d22fad31f80a7b7c931f5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::toDensityPerVolumeAtEndOfIncrement</definition>
+        <argsstring>(double densityPerReferenceVolume, double J)</argsstring>
+        <name>toDensityPerVolumeAtEndOfIncrement</name>
+        <qualifiedname>Marmot::Materials::toDensityPerVolumeAtEndOfIncrement</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>densityPerReferenceVolume</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>J</declname>
+        </param>
+        <briefdescription>
+<para>A density accumulated along the path, per unit volume of <formula id="15">$ \boldsymbol{F}^{(n+1)} $</formula>; for the dissipation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">densityPerReferenceVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stored density, per unit reference volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">J</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="16">$ \det\boldsymbol{F}^{(n+1)} $</formula>, the <formula id="6">$ J $</formula> of toDensityPerReferenceVolume() on the way out. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>densityPerReferenceVolume</computeroutput> / <computeroutput>J</computeroutput>, or <computeroutput>densityPerReferenceVolume</computeroutput> for <formula id="12">$ J \le 0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="120" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="120" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_material_hughes_winget_8h_1a29789f64f53b0897114355e791660e99" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::toDensityPerReferenceVolume</definition>
+        <argsstring>(double densityPerCurrentVolume, double J)</argsstring>
+        <name>toDensityPerReferenceVolume</name>
+        <qualifiedname>Marmot::Materials::toDensityPerReferenceVolume</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>densityPerCurrentVolume</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>J</declname>
+        </param>
+        <briefdescription>
+<para>The wrapped material&apos;s updated density, given per unit volume of <formula id="15">$ \boldsymbol{F}^{(n+1)} $</formula>, as a density per unit reference volume; for both the elastic energy density and the dissipation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">densityPerCurrentVolume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The wrapped material&apos;s density, per unit volume of <formula id="15">$ \boldsymbol{F}^{(n+1)} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">J</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="16">$ \det\boldsymbol{F}^{(n+1)} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>J</computeroutput> * <computeroutput>densityPerCurrentVolume</computeroutput>, or <computeroutput>densityPerCurrentVolume</computeroutput> for <formula id="12">$ J \le 0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="133" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="133" bodyend="136"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="enum">
       <memberdef kind="enum" id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260" prot="public" static="no" strong="yes">
         <type></type>
@@ -21,7 +162,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="7">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
+<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="23">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" prot="public">
@@ -29,7 +170,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>As HughesWingetTangent::Analytic, but the operator <formula id="8">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
+<para>As HughesWingetTangent::Analytic, but the operator <formula id="24">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" prot="public">
@@ -37,7 +178,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>The complete update is forward-differenced with respect to the nine components of <formula id="9">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
+<para>The complete update is forward-differenced with respect to the nine components of <formula id="25">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>

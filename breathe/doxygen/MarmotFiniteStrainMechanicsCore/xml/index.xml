@@ -369,6 +369,9 @@
     <member refid="_marmot_finite_strain_viscoelasticity_8h_1a2fecab850cc6d736420906d463c64c99" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_materials" kind="namespace"><name>Marmot::Materials</name>
+    <member refid="_marmot_material_hughes_winget_8h_1ae42038de079322a19c2d35d6c3e88ebc" kind="function"><name>toDensityPerVolumeAtStartOfIncrement</name></member>
+    <member refid="_marmot_material_hughes_winget_8h_1a5380d399431d22fad31f80a7b7c931f5" kind="function"><name>toDensityPerVolumeAtEndOfIncrement</name></member>
+    <member refid="_marmot_material_hughes_winget_8h_1a29789f64f53b0897114355e791660e99" kind="function"><name>toDensityPerReferenceVolume</name></member>
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260" kind="enum"><name>HughesWingetTangent</name></member>
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a8503d71dcafbdc254c2bbea2599e5791" kind="enumvalue"><name>Analytic</name></member>
     <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" kind="enumvalue"><name>Exact</name></member>

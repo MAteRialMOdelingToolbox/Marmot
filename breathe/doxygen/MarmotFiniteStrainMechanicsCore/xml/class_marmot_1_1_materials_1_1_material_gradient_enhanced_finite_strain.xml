@@ -831,7 +831,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal viscosities <formula id="131">$ \eta_K $</formula> of the nonlocal balances. </para>
+<para>Nonlocal viscosities <formula id="145">$ \eta_K $</formula> of the nonlocal balances. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -843,7 +843,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Nonlocal viscosity of each nonlocal variable, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="132">\[  m_K\,\ddot{\bar{N}}_K + \eta_K\,\dot{\bar{N}}_K + \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K .
+<simplesect kind="return"><para>Nonlocal viscosity of each nonlocal variable, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="146">\[  m_K\,\ddot{\bar{N}}_K + \eta_K\,\dot{\bar{N}}_K + \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K .
 \]</formula></para>
 </simplesect>
 <simplesect kind="note"><para>Zero by default, which is the quasi-static model. Unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this default lets a material that is only ever used implicitly leave it alone. </para>
@@ -866,7 +866,7 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal micro-inertias <formula id="133">$ m_K $</formula> of the nonlocal balances. </para>
+<para>Nonlocal micro-inertias <formula id="147">$ m_K $</formula> of the nonlocal balances. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -898,17 +898,17 @@ Used for geostatic stress initialization. The nonlocal fields are held at zero t
 <parametername>nNonlocal</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Number of nonlocal variables <formula id="121">$ \bar{N}_K $</formula>, <formula id="122">$ K = 1 \dots n_\mathrm{nonlocal} $</formula>: one for a scalar nonlocal damage driver, six for a nonlocal strain tensor (GM7).</para>
+<para>Number of nonlocal variables <formula id="136">$ \bar{N}_K $</formula>, <formula id="137">$ K = 1 \dots n_\mathrm{nonlocal} $</formula>: one for a scalar nonlocal damage driver, six for a nonlocal strain tensor (GM7).</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to <computeroutput>nNonlocal</computeroutput> nonlocal fields <formula id="121">$ \bar{N}_K $</formula>, each governed by the additional balance equation    <formula id="123">\[  \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K(\boldsymbol{F},\,\bar{\boldsymbol{N}}),
+The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to <computeroutput>nNonlocal</computeroutput> nonlocal fields <formula id="136">$ \bar{N}_K $</formula>, each governed by the additional balance equation    <formula id="138">\[  \bar{N}_K - c_K\,\nabla^2\bar{N}_K = L_K(\boldsymbol{F},\,\bar{\boldsymbol{N}}),
   \qquad c_K = R_K^2,
-\]</formula> where <formula id="124">$ L_K $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" kindref="member">ConstitutiveResponse::L</ref> and <formula id="125">$ R_K $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
+\]</formula> where <formula id="139">$ L_K $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a9fee35b5534a9094f63160773d87f3b6" kindref="member">ConstitutiveResponse::L</ref> and <formula id="140">$ R_K $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1af7eac10319069480c81db5e5c2a2c614" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
 <para>Quantities of the nonlocal space are Eigen vectors of size <computeroutput>nNonlocal</computeroutput>, as in the small-strain interface; a tangent mixing a spatial tensor with a nonlocal variable is one Fastor tensor per nonlocal variable, so that a consumer evaluates for each nonlocal variable exactly the expression it would evaluate for a single one.</para>
-<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="126">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="127">$ c_K $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="128">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="129">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires. A nonlocal variable that stands for a tensor (the six components of a nonlocal strain) must therefore be referred to a frame that a superposed rigid rotation does not change, e.g. the frame of the polar rotation (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kindref="compound">GradientEnhancedCorotationalWrapper</ref>).</para>
+<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="141">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="142">$ c_K $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="6">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="143">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires. A nonlocal variable that stands for a tensor (the six components of a nonlocal strain) must therefore be referred to a frame that a superposed rigid rotation does not change, e.g. the frame of the polar rotation (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kindref="compound">GradientEnhancedCorotationalWrapper</ref>).</para>
 </simplesect>
-<simplesect kind="note"><para>There is **no slot for <formula id="130">$ \partial c_K/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="127">$ c_K $</formula>, but not its derivative, so its consistent tangent would be incomplete. </para>
+<simplesect kind="note"><para>There is **no slot for <formula id="144">$ \partial c_K/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="142">$ c_K $</formula>, but not its derivative, so its consistent tangent would be incomplete. </para>
 </simplesect>
 </para>
     </detaileddescription>

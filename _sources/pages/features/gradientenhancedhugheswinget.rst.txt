@@ -15,7 +15,8 @@ last call, the forwarded density, viscosity and micro-inertia), with the :ref:`c
 It works the same way as its local sibling -- the wrapped material is driven by the objective strain
 increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration, with the carried-over
 stress rotated forward by the Cayley transform of the incremental spin and pushed to the Kirchhoff
-stress -- so the kinematics are not repeated here; see the local wrapper's Theory section. What this
+stress, and the elastic energy density and the dissipation converted between reference and current
+volume -- so the kinematics are not repeated here; see the local wrapper's Theory section. What this
 page documents is what is specific to the gradient-enhanced case: how the nonlocal field crosses the
 two interfaces, and the three limitations that follow from wrapping a small-strain rate law rather than
 a total-strain law.

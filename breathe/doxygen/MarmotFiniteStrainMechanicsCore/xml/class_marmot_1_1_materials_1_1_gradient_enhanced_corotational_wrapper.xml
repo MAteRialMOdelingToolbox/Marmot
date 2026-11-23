@@ -147,7 +147,7 @@
         <qualifiedname>Marmot::Materials::GradientEnhancedCorotationalWrapper::logarithmicStrainSlot</qualifiedname>
         <initializer>= &quot;Corotational_logU_n&quot;</initializer>
         <briefdescription>
-<para>Name of the state layout slot holding <formula id="53">$ \ln\boldsymbol{U} $</formula> of the last call (Voigt, engineering shear). </para>
+<para>Name of the state layout slot holding <formula id="68">$ \ln\boldsymbol{U} $</formula> of the last call (Voigt, engineering shear). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -573,7 +573,7 @@
 <parametername direction="in">eigenvalues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Eigenvalues <formula id="67">$ \lambda_a $</formula> of the tensor. </para>
+<para>Eigenvalues <formula id="82">$ \lambda_a $</formula> of the tensor. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -589,13 +589,13 @@
 <parametername direction="in">dividedDifference</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><formula id="68">$ \theta(\lambda_a, \lambda_b) $</formula>:  <formula id="69">$ (f(\lambda_a) - f(\lambda_b)) /
-                           (\lambda_a - \lambda_b) $</formula>, and <formula id="70">$ f&apos;(\lambda_a) $</formula> for equal arguments. </para>
+<para><formula id="83">$ \theta(\lambda_a, \lambda_b) $</formula>:  <formula id="84">$ (f(\lambda_a) - f(\lambda_b)) /
+                           (\lambda_a - \lambda_b) $</formula>, and <formula id="85">$ f&apos;(\lambda_a) $</formula> for equal arguments. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="71">$ \partial f(\boldsymbol{C})_{ij}/\partial C_{IJ} = \sum_{a,b} \theta(\lambda_a, \lambda_b)\,
-        Q_{ia} Q_{jb} Q_{Ia} Q_{Jb} $</formula>, for a symmetric increment of <formula id="63">$ \boldsymbol{C} $</formula>.</para>
+<simplesect kind="return"><para><formula id="86">$ \partial f(\boldsymbol{C})_{ij}/\partial C_{IJ} = \sum_{a,b} \theta(\lambda_a, \lambda_b)\,
+        Q_{ia} Q_{jb} Q_{Ia} Q_{Jb} $</formula>, for a symmetric increment of <formula id="78">$ \boldsymbol{C} $</formula>.</para>
 </simplesect>
 The divided difference is continuous where eigenvalues coincide, so the formula holds for repeated eigenvalues as well, whatever eigenvectors the decomposition picks within the eigenspace. </para>
         </detaileddescription>
@@ -669,7 +669,7 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
 <parametername>std::invalid_argument</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if the determinant of the deformation gradient is not positive: the polar decomposition would then give a reflection for the rotation, and <formula id="63">$ \boldsymbol{C} $</formula> a strain as if nothing were wrong. </para>
+<para>if the determinant of the deformation gradient is not positive: the polar decomposition would then give a reflection for the rotation, and <formula id="78">$ \boldsymbol{C} $</formula> a strain as if nothing were wrong. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -744,7 +744,7 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
 <parametername direction="in">lambda</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Eigenvalues of <formula id="63">$ \boldsymbol{C} $</formula>. </para>
+<para>Eigenvalues of <formula id="78">$ \boldsymbol{C} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -752,7 +752,7 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
 <parametername direction="in">Q</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Eigenvectors of <formula id="63">$ \boldsymbol{C} $</formula>, by column. </para>
+<para>Eigenvectors of <formula id="78">$ \boldsymbol{C} $</formula>, by column. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -921,22 +921,22 @@ The divided difference is continuous where eigenvalues coincide, so the formula 
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The deformation gradient is decomposed into the polar rotation and the right stretch, <formula id="43">$ \boldsymbol{F} = \boldsymbol{R}\,\boldsymbol{U} $</formula>, <formula id="44">$ \boldsymbol{U} = \boldsymbol{C}^{1/2} $</formula>, <formula id="45">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula>. The wrapped material lives in the frame that rotates with <formula id="46">$ \boldsymbol{R} $</formula> (the frame of the material fibres; Green-Naghdi): it is driven by the increment of the logarithmic (Hencky) strain    <formula id="47">\[  \Delta\hat{\boldsymbol{\varepsilon}} = \ln\boldsymbol{U}^{(n+1)} - \ln\boldsymbol{U}^{(n)},
+The deformation gradient is decomposed into the polar rotation and the right stretch, <formula id="58">$ \boldsymbol{F} = \boldsymbol{R}\,\boldsymbol{U} $</formula>, <formula id="59">$ \boldsymbol{U} = \boldsymbol{C}^{1/2} $</formula>, <formula id="60">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula>. The wrapped material lives in the frame that rotates with <formula id="61">$ \boldsymbol{R} $</formula> (the frame of the material fibres; Green-Naghdi): it is driven by the increment of the logarithmic (Hencky) strain    <formula id="62">\[  \Delta\hat{\boldsymbol{\varepsilon}} = \ln\boldsymbol{U}^{(n+1)} - \ln\boldsymbol{U}^{(n)},
   \qquad \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C},
-\]</formula> and its stress is read as the rotated Kirchhoff stress, which is rotated out,   <formula id="48">\[  \boldsymbol{\tau} = \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T .
+\]</formula> and its stress is read as the rotated Kirchhoff stress, which is rotated out,   <formula id="63">\[  \boldsymbol{\tau} = \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T .
 \]</formula></para>
-<para><bold>Why this frame.</bold> A superposed rigid rotation changes <formula id="46">$ \boldsymbol{R} $</formula> and leaves <formula id="49">$ \boldsymbol{U} $</formula> <ndash/> and hence everything the wrapped material sees <ndash/> unchanged, so the Kirchhoff stress rotates exactly, whatever the wrapped material does with its own state. That is what <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kindref="compound">Marmot::Materials::GradientEnhancedHughesWingetWrapper</ref> cannot offer a material that recomputes its stress from total strains (GM7 does: its stress is the homogenized microplane stress of its stored strains, and the stress it is handed is overwritten); it rotates the stress it hands over, which such a material discards. Tensor-valued internal variables of the wrapped material (GM7&apos;s microplane state, its stored strains) live in the rotating frame too, so they are objective as well.</para>
-<para><bold>Why the logarithmic strain.</bold> It sums to a total strain,  <formula id="50">$ \sum\Delta\hat{\boldsymbol{\varepsilon}} =
-\ln\boldsymbol{U} $</formula>, independent of the path, so a material that accumulates its strain stores the Hencky strain; and under a pure stretch <formula id="51">$ \lambda $</formula> it hands the material  <formula id="52">$ \ln\lambda = (\lambda-1) + O((\lambda-
-1)^2) $</formula>, i.e. the wrapped model is recovered up to second order in the strain. The rotated Kirchhoff stress is the stress work-conjugate to <formula id="53">$ \ln\boldsymbol{U} $</formula> for an isotropic response, so the elastic and dissipated energies the wrapped material reports are densities per unit reference volume and are passed through unchanged.</para>
-<para>The nonlocal fields are handed over as they are (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kindref="compound">GradientEnhancedHypoElasticWrapper</ref>): they are referred to the rotating frame as well <ndash/> for GM7, the nonlocal strain is the nonlocal counterpart of <formula id="54">$ \hat{\boldsymbol{\varepsilon}} $</formula> <ndash/> and their balance is written in the reference configuration, so they are invariant under a superposed rigid rotation.</para>
+<para><bold>Why this frame.</bold> A superposed rigid rotation changes <formula id="61">$ \boldsymbol{R} $</formula> and leaves <formula id="64">$ \boldsymbol{U} $</formula> <ndash/> and hence everything the wrapped material sees <ndash/> unchanged, so the Kirchhoff stress rotates exactly, whatever the wrapped material does with its own state. That is what <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kindref="compound">Marmot::Materials::GradientEnhancedHughesWingetWrapper</ref> cannot offer a material that recomputes its stress from total strains (GM7 does: its stress is the homogenized microplane stress of its stored strains, and the stress it is handed is overwritten); it rotates the stress it hands over, which such a material discards. Tensor-valued internal variables of the wrapped material (GM7&apos;s microplane state, its stored strains) live in the rotating frame too, so they are objective as well.</para>
+<para><bold>Why the logarithmic strain.</bold> It sums to a total strain,  <formula id="65">$ \sum\Delta\hat{\boldsymbol{\varepsilon}} =
+\ln\boldsymbol{U} $</formula>, independent of the path, so a material that accumulates its strain stores the Hencky strain; and under a pure stretch <formula id="66">$ \lambda $</formula> it hands the material  <formula id="67">$ \ln\lambda = (\lambda-1) + O((\lambda-
+1)^2) $</formula>, i.e. the wrapped model is recovered up to second order in the strain. The rotated Kirchhoff stress is the stress work-conjugate to <formula id="68">$ \ln\boldsymbol{U} $</formula> for an isotropic response, so the elastic and dissipated energies the wrapped material reports are densities per unit reference volume and are passed through unchanged.</para>
+<para>The nonlocal fields are handed over as they are (see <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hypo_elastic_wrapper" kindref="compound">GradientEnhancedHypoElasticWrapper</ref>): they are referred to the rotating frame as well <ndash/> for GM7, the nonlocal strain is the nonlocal counterpart of <formula id="69">$ \hat{\boldsymbol{\varepsilon}} $</formula> <ndash/> and their balance is written in the reference configuration, so they are invariant under a superposed rigid rotation.</para>
 <para><table rows="5" cols="2"><row>
 <entry thead="yes"><para>this interface reports  </para>
 </entry><entry thead="yes"><para>from the wrapped material  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>response.tau</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="55">$ \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T $</formula>  </para>
+</entry><entry thead="no"><para><formula id="70">$ \boldsymbol{R}\,\hat{\boldsymbol{\tau}}\,\boldsymbol{R}^T $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>response.L</computeroutput>  </para>
@@ -944,23 +944,23 @@ The deformation gradient is decomposed into the polar rotation and the right str
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>response.nonLocalRadius</computeroutput>  </para>
-</entry><entry thead="no"><para><formula id="56">$ \sqrt{c_K} $</formula>  </para>
+</entry><entry thead="no"><para><formula id="71">$ \sqrt{c_K} $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para><computeroutput>tangents.dTau_dN</computeroutput>[K]  </para>
-</entry><entry thead="no"><para><formula id="57">$ \ilinebr &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;
-\boldsymbol{R}\,(\partial\hat{\boldsymbol{\tau}}/\partial\bar{N}_K)\,\boldsymbol{R}^T $</formula> | | <computeroutput>tangents.dL_dF</computeroutput>[K] |  <formula id="58">$ \partial K^{\text{local}}_K/\partial\hat{\boldsymbol{\varepsilon}} :
+</entry><entry thead="no"><para><formula id="72">$ \ilinebr &lt;/td&gt;  &lt;/tr&gt;&lt;/table&gt;
+\boldsymbol{R}\,(\partial\hat{\boldsymbol{\tau}}/\partial\bar{N}_K)\,\boldsymbol{R}^T $</formula> | | <computeroutput>tangents.dL_dF</computeroutput>[K] |  <formula id="73">$ \partial K^{\text{local}}_K/\partial\hat{\boldsymbol{\varepsilon}} :
 \partial\ln\boldsymbol{U}/\partial\boldsymbol{F} $</formula> | | <computeroutput>tangents.dL_dN</computeroutput> | <computeroutput>dKLocalddK</computeroutput> |</para>
-<para><bold>Tangent.</bold> Consistent and analytic:        <formula id="59">\[  \frac{\partial\tau_{ij}}{\partial F_{kL}} =
+<para><bold>Tangent.</bold> Consistent and analytic:        <formula id="74">\[  \frac{\partial\tau_{ij}}{\partial F_{kL}} =
     \frac{\partial R_{ia}}{\partial F_{kL}}\,\hat\tau_{ab}\,R_{jb} + R_{ia}\,\hat\tau_{ab}\,
     \frac{\partial R_{jb}}{\partial F_{kL}} + R_{ia}R_{jb}\,\mathbb{C}_{abcd}\,
     \frac{\partial(\ln U)_{cd}}{\partial F_{kL}},
   \qquad \frac{\partial\boldsymbol{R}}{\partial F_{kL}} = \Bigl(\frac{\partial\boldsymbol{F}}{\partial F_{kL}}
     - \boldsymbol{R}\,\frac{\partial\boldsymbol{U}}{\partial F_{kL}}\Bigr)\boldsymbol{U}^{-1},
-\]</formula> with <formula id="60">$ \mathbb{C} $</formula> the algorithmic tangent of the wrapped material and the derivatives of the isotropic tensor functions <formula id="61">$ \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C} $</formula> and  <formula id="62">$ \boldsymbol{U} =
-\boldsymbol{C}^{1/2} $</formula> from the spectral decomposition of <formula id="63">$ \boldsymbol{C} $</formula> (<ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" kindref="member">spectralDerivative()</ref>). It is exact for any wrapped material whose stress does not depend on the stress it is handed (GM7), and for an incremental one too, since the stress it is handed is the rotated stress of the last call, which does not depend on <formula id="9">$ \boldsymbol{F} $</formula>. The explicit path, <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" kindref="member">computeStressExplicit()</ref>, skips it.</para>
-<para><bold>What it refuses.</bold> <formula id="45">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula> is the same for <formula id="9">$ \boldsymbol{F} $</formula> and for its mirror image, so the strain does not show that a material point is turned inside out ( <formula id="64">$ \det\boldsymbol{F} &lt; 0 $</formula>; <formula id="65">$ \boldsymbol{F} = -\boldsymbol{1} $</formula> would be a point without strain or stress, with a reflection for <formula id="46">$ \boldsymbol{R} $</formula>). A deformation gradient without a positive determinant is refused (std::invalid_argument).</para>
-<para>The state of the wrapper: <formula id="53">$ \ln\boldsymbol{U} $</formula> and <formula id="66">$ \hat{\boldsymbol{\tau}} $</formula> of the last call (both in Voigt notation, the strain with engineering shear), the nonlocal fields of the last call, and the state of the wrapped material. A zero state is the undeformed, stress-free one, so no initialization beyond the wrapped material&apos;s is needed. </para>
+\]</formula> with <formula id="75">$ \mathbb{C} $</formula> the algorithmic tangent of the wrapped material and the derivatives of the isotropic tensor functions <formula id="76">$ \ln\boldsymbol{U} = \tfrac12\ln\boldsymbol{C} $</formula> and  <formula id="77">$ \boldsymbol{U} =
+\boldsymbol{C}^{1/2} $</formula> from the spectral decomposition of <formula id="78">$ \boldsymbol{C} $</formula> (<ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1abaa0d78f9312c3ca78a74dace61c7b54" kindref="member">spectralDerivative()</ref>). It is exact for any wrapped material whose stress does not depend on the stress it is handed (GM7), and for an incremental one too, since the stress it is handed is the rotated stress of the last call, which does not depend on <formula id="25">$ \boldsymbol{F} $</formula>. The explicit path, <ref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1a6b501e4e534c980892429396c9db398b" kindref="member">computeStressExplicit()</ref>, skips it.</para>
+<para><bold>What it refuses.</bold> <formula id="60">$ \boldsymbol{C} = \boldsymbol{F}^T\boldsymbol{F} $</formula> is the same for <formula id="25">$ \boldsymbol{F} $</formula> and for its mirror image, so the strain does not show that a material point is turned inside out ( <formula id="79">$ \det\boldsymbol{F} &lt; 0 $</formula>; <formula id="80">$ \boldsymbol{F} = -\boldsymbol{1} $</formula> would be a point without strain or stress, with a reflection for <formula id="61">$ \boldsymbol{R} $</formula>). A deformation gradient without a positive determinant is refused (std::invalid_argument).</para>
+<para>The state of the wrapper: <formula id="68">$ \ln\boldsymbol{U} $</formula> and <formula id="81">$ \hat{\boldsymbol{\tau}} $</formula> of the last call (both in Voigt notation, the strain with engineering shear), the nonlocal fields of the last call, and the state of the wrapped material. A zero state is the undeformed, stress-free one, so no initialization beyond the wrapped material&apos;s is needed. </para>
 </entry></row>
 </table>
 </para>

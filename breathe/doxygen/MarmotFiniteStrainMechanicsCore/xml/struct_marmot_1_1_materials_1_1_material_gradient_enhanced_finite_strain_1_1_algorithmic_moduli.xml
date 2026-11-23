@@ -33,7 +33,7 @@
         <name>dTau_dN</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dTau_dN</qualifiedname>
         <briefdescription>
-<para><formula id="135">$ \partial\boldsymbol{\tau}/\partial\bar{N}_K $</formula>, one tensor per nonlocal variable K </para>
+<para><formula id="149">$ \partial\boldsymbol{\tau}/\partial\bar{N}_K $</formula>, one tensor per nonlocal variable K </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -48,7 +48,7 @@
         <name>dL_dF</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dF</qualifiedname>
         <briefdescription>
-<para><formula id="136">$ \partial L_K/\partial\boldsymbol{F} $</formula>, one tensor per nonlocal variable K </para>
+<para><formula id="150">$ \partial L_K/\partial\boldsymbol{F} $</formula>, one tensor per nonlocal variable K </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -63,7 +63,7 @@
         <name>dL_dN</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dN</qualifiedname>
         <briefdescription>
-<para><formula id="137">$ \partial L_K/\partial\bar{N}_M $</formula>, row K, column M </para>
+<para><formula id="151">$ \partial L_K/\partial\bar{N}_M $</formula>, row K, column M </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

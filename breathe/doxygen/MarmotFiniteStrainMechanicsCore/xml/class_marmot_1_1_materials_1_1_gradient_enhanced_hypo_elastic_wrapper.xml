@@ -430,7 +430,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The increment for the wrapped material: <computeroutput>dStrain</computeroutput>, <formula id="15">$ K = \bar{N} $</formula>, <formula id="16">$ \Delta K = \bar{N} - \bar{N}_n $</formula> and the time. </para>
+<simplesect kind="return"><para>The increment for the wrapped material: <computeroutput>dStrain</computeroutput>, <formula id="30">$ K = \bar{N} $</formula>, <formula id="31">$ \Delta K = \bar{N} - \bar{N}_n $</formula> and the time. </para>
 </simplesect>
 </para>
         </detaileddescription>

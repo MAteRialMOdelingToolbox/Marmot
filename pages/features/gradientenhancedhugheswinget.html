@@ -137,7 +137,8 @@ last call, the forwarded density, viscosity and micro-inertia), with the <a clas
 <p>It works the same way as its local sibling – the wrapped material is driven by the objective strain
 increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration, with the carried-over
 stress rotated forward by the Cayley transform of the incremental spin and pushed to the Kirchhoff
-stress – so the kinematics are not repeated here; see the local wrapper’s Theory section. What this
+stress, and the elastic energy density and the dissipation converted between reference and current
+volume – so the kinematics are not repeated here; see the local wrapper’s Theory section. What this
 page documents is what is specific to the gradient-enhanced case: how the nonlocal field crosses the
 two interfaces, and the three limitations that follow from wrapping a small-strain rate law rather than
 a total-strain law.</p>
@@ -308,7 +309,7 @@ The gradient-enhanced sibling of <a class="reference internal" href="hugheswinge
                          \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
   \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
 \]</div>
- split into <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\varepsilon} \)</span> and <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\Omega} \)</span>, with the stress of the previous increment rotated forward by the Cayley transform of <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\Omega} \)</span> and the resulting Cauchy stress pushed to the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} = J\,\boldsymbol{\sigma} \)</span>.</p>
+ split into <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\varepsilon} \)</span> and <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\Omega} \)</span>, with the stress of the previous increment rotated forward by the Cayley transform of <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\Omega} \)</span> and the resulting Cauchy stress pushed to the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} = J\,\boldsymbol{\sigma} \)</span>. The elastic energy density and the dissipation are converted between this interface (per unit reference volume) and the wrapped material (per unit current volume) as there, see toDensityPerVolumeAtStartOfIncrement() and toDensityPerVolumeAtEndOfIncrement().</p>
 <p>On top of that it carries the nonlocal fields across the two interfaces, per nonlocal variable K:</p>
 <p><table class="docutils align-default">
 <thead>

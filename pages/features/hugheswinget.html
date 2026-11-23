@@ -189,6 +189,32 @@ rotated forward,</p>
 Kirchhoff stress expected by the consumers,</p>
 <div class="math notranslate nohighlight">
 \[\boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)}, \qquad J = \det\boldsymbol{F}^{(n+1)}.\]</div>
+<p>The elastic energy density and the dissipation are converted as well. The finite-strain interface
+reports them per unit reference volume, and its hosts store and reload them so; the wrapped material
+works per unit current volume. The updated values of the wrapped material are multiplied by <span class="math notranslate nohighlight">\(J\)</span>.
+On the way in, the two differ, because they are different kinds of quantity:</p>
+<ul>
+<li><p>The <strong>elastic energy</strong> is a function of the state. The wrapped materials update it as
+<span class="math notranslate nohighlight">\(\psi^{(n+1)} = \psi_\mathrm{in} + \psi(\boldsymbol{\sigma}^{(n+1)}) - \psi(\boldsymbol{\sigma}^{(n)})\)</span>,
+so the stored value <span class="math notranslate nohighlight">\(\Psi^{(n)}\)</span> is handed in as the density of the state the increment starts
+from, <span class="math notranslate nohighlight">\(\Psi^{(n)} / J_n\)</span> with <span class="math notranslate nohighlight">\(J_n = \det\boldsymbol{F}^{(n)}\)</span>. The stored result is
+<span class="math notranslate nohighlight">\(\Psi^{(n+1)} = J\,\psi(\boldsymbol{\sigma}^{(n+1)})\)</span>, the energy of the current state per unit
+reference volume.</p></li>
+<li><p>The <strong>dissipation</strong> is accumulated along the path. Per unit reference volume its rate is <span class="math notranslate nohighlight">\(J\)</span>
+times the rate per unit current volume, so with the increment <span class="math notranslate nohighlight">\(\Delta d\)</span> of the wrapped
+material</p>
+<div class="math notranslate nohighlight">
+\[D^{(n+1)} = D^{(n)} + J\,\Delta d .\]</div>
+<p>The stored value is therefore handed in as <span class="math notranslate nohighlight">\(D^{(n)} / J\)</span>, divided by the same <span class="math notranslate nohighlight">\(J\)</span> it is
+multiplied with on the way out: the round trip leaves the history unchanged and pushes forward only the
+increment. Dividing by <span class="math notranslate nohighlight">\(J_n\)</span> instead would rescale the whole history by <span class="math notranslate nohighlight">\(J / J_n\)</span> in every
+increment, and a compaction would decrease the dissipation.</p>
+</li>
+</ul>
+<p>Without any conversion on the way in, a wrapped material that adds its increment to the value it is
+given (<code class="docutils literal notranslate"><span class="pre">VonMises</span></code>, <code class="docutils literal notranslate"><span class="pre">LinearElastic</span></code>, the Rankine models) would see its history multiplied by
+<span class="math notranslate nohighlight">\(J\)</span> in every increment, compounding. In an inverted configuration (<span class="math notranslate nohighlight">\(J \le 0\)</span>) the energies
+are as meaningless as the stress; the values are then passed through unconverted.</p>
 <p>Superimposed rigid rotation is reproduced <em>exactly</em>, in a single increment and for any rotation
 angle below <span class="math notranslate nohighlight">\(180^\circ\)</span>: for <span class="math notranslate nohighlight">\(\boldsymbol{F}^{(n+1)}=\boldsymbol{Q}\boldsymbol{F}^{(n)}\)</span>
 the increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{l}\)</span> is exactly skew, hence
@@ -308,6 +334,7 @@ The wrapped material is driven by the objective strain increment of the Hughes-W
 \]</div>
  which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
 \Delta\boldsymbol{R}^{T} \)</span>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} \)</span> expected by the finite-strain consumers.</p>
+<p>The elastic energy density and the dissipation of this interface are per unit <strong>reference</strong> volume, those of the wrapped material per unit current volume. They are converted on the way in and out, the elastic energy as a function of the state and the dissipation as a quantity accumulated along the path; see toDensityPerVolumeAtStartOfIncrement() and toDensityPerVolumeAtEndOfIncrement().</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Only the stress is rotated.</strong> Tensor-valued internal variables of the wrapped material (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are passed through untouched and are therefore <em>not</em> objective under large incremental rotations. Models whose internal state is scalar or isotropic-invariant are unaffected.</p>

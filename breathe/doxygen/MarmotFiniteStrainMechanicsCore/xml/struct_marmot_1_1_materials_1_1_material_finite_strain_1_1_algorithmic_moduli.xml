@@ -24,7 +24,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="123" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="123" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="125" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="125" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -40,9 +40,9 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-Contains the algorithmic tangent moduli <formula id="17">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula> with respect to the deformation gradient <formula id="18">$\boldsymbol{F}$</formula>. </para>
+Contains the algorithmic tangent moduli <formula id="32">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula> with respect to the deformation gradient <formula id="33">$\boldsymbol{F}$</formula>. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="122" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="122" bodyend="124"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="124" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="124" bodyend="126"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli_1a90974cbb6db291743996dfc0a18b2803" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli</scope><name>dTau_dF</name></member>
     </listofallmembers>
