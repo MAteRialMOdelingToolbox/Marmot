@@ -66,6 +66,32 @@ namespace Marmot::Materials {
   };
 
   /**
+   * @brief Convert an energy density stored per unit reference volume into the density per unit current
+   *        volume of the configuration @f$ \boldsymbol{F}^{(n)} @f$ an increment starts from.
+   *
+   * The finite-strain interface reports the elastic energy density and the dissipation per unit
+   * **reference** volume, and its hosts store and reload them that way. A wrapped small-strain material
+   * knows only its own current volume, so a Hughes-Winget wrapper multiplies its output by
+   * @f$ J = \det\boldsymbol{F}^{(n+1)} @f$, and has to divide the stored value by
+   * @f$ J_n = \det\boldsymbol{F}^{(n)} @f$, the @f$ J @f$ it was written with, before it hands it back in.
+   * Without that division a material that adds its increment to the value it is given would see its
+   * history multiplied by @f$ J @f$ on every increment, compounding. At the first increment
+   * @f$ \boldsymbol{F}^{(n)} = \boldsymbol{I} @f$ and the conversion does nothing.
+   *
+   * Shared by HughesWingetWrapper and GradientEnhancedHughesWingetWrapper.
+   *
+   * @param[in] densityPerReferenceVolume The stored density, per unit reference volume.
+   * @param[in] Jn                        @f$ \det\boldsymbol{F}^{(n)} @f$. An inverted configuration
+   *                                      (@f$ J_n \le 0 @f$) is already meaningless, so the value is then
+   *                                      passed through instead of divided.
+   * @return The density per unit current volume of @f$ \boldsymbol{F}^{(n)} @f$.
+   */
+  inline double toDensityPerCurrentVolume( double densityPerReferenceVolume, double Jn )
+  {
+    return Jn > 0.0 ? densityPerReferenceVolume / Jn : densityPerReferenceVolume;
+  }
+
+  /**
    * @class HughesWingetWrapper
    * @brief Decorator presenting a small-strain (hypoelastic) material as a finite-strain material.
    *
@@ -90,6 +116,11 @@ namespace Marmot::Materials {
    * \Delta\boldsymbol{R}^{T} @f$, the wrapped material is evaluated, and the resulting Cauchy stress is
    * pushed to the Kirchhoff stress @f$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} @f$ expected by
    * the finite-strain consumers.
+   *
+   * The elastic energy density and the dissipation of this interface are per unit **reference** volume,
+   * those of the wrapped material per unit current volume. They are converted on the way in (divided by
+   * @f$ J_n = \det\boldsymbol{F}^{(n)} @f$, see toDensityPerCurrentVolume()) and on the way out
+   * (multiplied by @f$ J @f$), so a wrapped material that accumulates into them sees its own history.
    *
    * @note **Only the stress is rotated.** Tensor-valued internal variables of the wrapped material
    *       (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are
@@ -371,10 +402,13 @@ namespace Marmot::Materials {
       const Marmot::Math::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
       const Marmot::Math::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
 
+      // The stored densities are per unit reference volume, the wrapped material's per unit current volume.
+      const double Jn = determinant( Fn );
+
       Marmot::Materials::MaterialHypoElastic::state3D state;
       state.stress               = sigmaRotVoigt;
-      state.elasticEnergyDensity = response.elasticEnergyDensity;
-      state.dissipation          = response.dissipation;
+      state.elasticEnergyDensity = toDensityPerCurrentVolume( response.elasticEnergyDensity, Jn );
+      state.dissipation          = toDensityPerCurrentVolume( response.dissipation, Jn );
       state.stateVars            = baseState;
 
       const Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeIncrement.time, timeIncrement.dT };

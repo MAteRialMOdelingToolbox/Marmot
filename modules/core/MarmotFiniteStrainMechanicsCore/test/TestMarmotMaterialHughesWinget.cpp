@@ -25,6 +25,7 @@
 
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHughesWinget.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
@@ -501,6 +502,67 @@ void testVolumetricScaling()
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+/**
+ * @brief The energy/dissipation round trip must close at @f$ J \neq 1 @f$.
+ *
+ * This interface's densities are per unit REFERENCE volume; the wrapped small-strain material knows
+ * only its own current volume, so the wrapper multiplies by @f$ J @f$ on the way out and must divide
+ * by the previous @f$ J @f$ on the way in. Skipping the second half multiplies the history by
+ * @f$ J @f$ once per increment, compounding, in every material that adds its increment to the value
+ * it is given (VonMises, LinearElastic, the Rankine models).
+ *
+ * The stub below adds a FIXED amount to both fields per call, so after n increments at a steady
+ * volume change the reported totals must be exactly n times that amount times J.
+ */
+void testEnergyDensityRoundTripAtNonUnitJacobian()
+{
+  constexpr double energyPerIncrement      = 2.0;
+  constexpr double dissipationPerIncrement = 3.0;
+
+  /// Adds a fixed elastic energy density and dissipation per call, in its own (current-volume) density.
+  class AccumulatingStub : public StubLinearElastic {
+  public:
+    using StubLinearElastic::StubLinearElastic;
+
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStress_dStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               time ) const override
+    {
+      StubLinearElastic::computeStress( state, dStress_dStrain, dStrain, time );
+      state.elasticEnergyDensity += energyPerIncrement;
+      state.dissipation += dissipationPerIncrement;
+    }
+  };
+
+  HughesWingetWrapper< AccumulatingStub > w( elasticProps.data(), int( elasticProps.size() ), 1 );
+  auto                                    state = freshState( w );
+
+  // A pure dilatation, held constant after the first increment, so J is the same on every entry.
+  const double    lambda = 1.1;
+  const Tensor33d F( lambda * Spatial3D::I );
+  const double    J = lambda * lambda * lambda;
+
+  Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
+  r.stateVars = state.data();
+  Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
+
+  for ( int i = 1; i <= 3; ++i ) {
+    w.computeStress( r, t, { F }, { double( i ), 1.0 } );
+
+    // i increments in the wrapped material's own density, reported per reference volume. Without the
+    // inverse conversion this grows by a further factor of J each time.
+    throwExceptionOnFailure( checkIfEqual( r.elasticEnergyDensity, i * energyPerIncrement * J, 1e-10 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the elastic energy density is "
+                               << r.elasticEnergyDensity << ", expected " << i * energyPerIncrement * J );
+    throwExceptionOnFailure( checkIfEqual( r.dissipation, i * dissipationPerIncrement * J, 1e-10 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
+                               << r.dissipation << ", expected " << i * dissipationPerIncrement * J );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testStateLayout,
@@ -510,7 +572,8 @@ int main()
                                                        testAnalyticTangentVsCentralDifference,
                                                        testExactAndNumericalTangentModes,
                                                        testStressSymmetry,
-                                                       testVolumetricScaling };
+                                                       testVolumetricScaling,
+                                                       testEnergyDensityRoundTripAtNonUnitJacobian };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

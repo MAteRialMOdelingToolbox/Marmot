@@ -79,6 +79,14 @@ Kirchhoff stress expected by the consumers,
 
 .. math:: \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)}, \qquad J = \det\boldsymbol{F}^{(n+1)}.
 
+The elastic energy density and the dissipation are converted the same way. The finite-strain interface
+reports them per unit reference volume, and its hosts store and reload them so; the wrapped material
+works per unit current volume. The stored values are divided by
+:math:`J_n = \det\boldsymbol{F}^{(n)}`, the :math:`J` they were written with, before they are handed to the
+wrapped material, and its updated values are multiplied by :math:`J`. A wrapped material that adds its
+increment to the value it is given (``VonMises``, ``LinearElastic``, the Rankine models) therefore
+accumulates its own history, not one multiplied by :math:`J` in every increment.
+
 Superimposed rigid rotation is reproduced *exactly*, in a single increment and for any rotation
 angle below :math:`180^\circ`: for :math:`\boldsymbol{F}^{(n+1)}=\boldsymbol{Q}\boldsymbol{F}^{(n)}`
 the increment :math:`\Delta\boldsymbol{l}` is exactly skew, hence
