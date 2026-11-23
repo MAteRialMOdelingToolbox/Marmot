@@ -511,21 +511,24 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a64dfbf91d03d7ca6586b9d30006ce413" kind="variable"><name>maxSizeOfBasis</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" kind="variable"><name>_dim</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" kind="variable"><name>_desiredCompletenessOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a3d8886475829576f35633c92d1dc4263" kind="variable"><name>_momentMatrixConditionLimit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9dbdf5dde856cddf5c0f89965acb7fbc" kind="variable"><name>_basisOfOrder</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216" kind="function"><name>evaluateKernelFunctions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a956e4d346f780191765fa03a5fa77547" kind="function"><name>evaluateBasis</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7fb9b63ddd9e35f23fcb622fdd76317c" kind="function"><name>assembleMomentMatrix</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f" kind="function"><name>factorizeMomentMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad34a526a44f9834e3cd2d1302eae9f64" kind="function"><name>chooseCompletenessOrderAndAssembleMomentMatrix</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kind="function"><name>checkNonSingularity</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kind="function"><name>getCorrectedCompletenessOrder</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" kind="function"><name>ReproducingKernelApproximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" kind="function"><name>conditionOfMomentMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a68d2c5f5ef3eeaa8dffc7e4e38c4bd8b" kind="function"><name>ReproducingKernelApproximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" kind="function"><name>~ReproducingKernelApproximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" kind="function"><name>computeShapeFunctions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af8c33e7a67e9e8b46938f2a4f24d0630" kind="function"><name>evaluateShapeFunctions</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</name>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" kind="function"><name>ReproducingKernelApproximationImplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac34f2c32b3afb98645f86414e2a22591" kind="function"><name>ReproducingKernelApproximationImplicit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" kind="function"><name>~ReproducingKernelApproximationImplicit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
   </compound>

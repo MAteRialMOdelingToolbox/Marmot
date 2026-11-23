@@ -49,7 +49,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Evaluate the kernel function <formula id="259">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Evaluate the kernel function <formula id="267">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -241,7 +241,7 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Abstract interface of a meshfree kernel (window) function <formula id="259">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Abstract interface of a meshfree kernel (window) function <formula id="267">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
     </briefdescription>
     <detaileddescription>
 <para>A kernel function is attached to a node (particle) <formula id="16">$ A $</formula> with center <formula id="111">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="137">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="137">$ \Psi_A $</formula> is inherited from the kernel.</para>

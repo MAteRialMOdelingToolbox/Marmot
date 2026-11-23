@@ -1,0 +1,29 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/MarmotMeshfreeApproximation.h" alt="" coords="148,101,576,149"/>
+<area shape="rect" id="node2" title="Marmot/MarmotMeshfreeKernelFunction.h" alt="" coords="5,197,439,245"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="330,149,270,191,268,186,325,151"/>
+<area shape="rect" id="node12" title="vector" alt="" coords="572,197,653,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="425,147,560,199,555,200,424,153"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" alt="" coords="664,5,2052,53"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="1100,55,594,104,592,104,591,99,594,99,1105,53"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="662,54,309,75,191,89,155,96,138,103,132,113,130,123,136,144,153,166,176,188,171,188,149,169,132,146,125,123,127,111,135,99,154,91,190,83,309,70,665,49"/>
+<area shape="rect" id="node4" title="Marmot/MarmotMonomialBasisFunctions.h" alt="" coords="842,101,1279,149"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="1286,53,1149,99,1148,94,1281,55"/>
+<area shape="rect" id="node5" title="Eigen/Cholesky" alt="" coords="650,101,818,149"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="1145,54,998,77,834,103,833,98,997,72,1150,54"/>
+<area shape="rect" id="node6" title="Eigen/Core" alt="" coords="1410,197,1538,245"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="1752,51,1821,71,1847,84,1865,100,1878,118,1884,135,1882,151,1874,165,1860,176,1841,186,1794,201,1735,212,1672,218,1553,223,1553,218,1672,213,1735,206,1792,196,1839,181,1857,172,1870,161,1877,149,1878,136,1874,121,1861,103,1844,89,1819,76,1752,57"/>
+<area shape="rect" id="node7" title="Eigen/QR" alt="" coords="1302,101,1414,149"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="1360,52,1360,88,1356,84,1356,56"/>
+<area shape="rect" id="node8" title="array" alt="" coords="1438,101,1510,149"/>
+<area shape="poly" id="edge9" title="include" alt="" coords="1387,51,1436,92,1431,91,1386,56"/>
+<area shape="rect" id="node9" title="cmath" alt="" coords="1534,101,1614,149"/>
+<area shape="poly" id="edge10" title="include" alt="" coords="1412,51,1522,101,1517,100,1411,56"/>
+<area shape="rect" id="node10" title="limits" alt="" coords="1638,101,1713,149"/>
+<area shape="poly" id="edge11" title="include" alt="" coords="1463,51,1539,71,1626,101,1620,100,1538,76,1463,57"/>
+<area shape="rect" id="node11" title="stdexcept" alt="" coords="1737,101,1851,149"/>
+<area shape="poly" id="edge12" title="include" alt="" coords="1501,51,1606,71,1724,101,1719,101,1605,77,1501,57"/>
+<area shape="poly" id="edge13" title="include" alt="" coords="907,54,733,77,673,89,640,103,627,120,618,140,612,184,608,180,613,138,622,117,636,99,671,84,733,71,912,53"/>
+<area shape="poly" id="edge14" title="include" alt="" coords="1164,147,1398,202,1393,202,1164,153"/>
+<area shape="poly" id="edge15" title="include" alt="" coords="951,150,669,211,668,206,946,150"/>
+</map>

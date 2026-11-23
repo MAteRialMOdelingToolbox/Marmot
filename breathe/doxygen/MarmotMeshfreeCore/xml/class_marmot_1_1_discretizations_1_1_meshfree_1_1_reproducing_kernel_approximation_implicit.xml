@@ -5,10 +5,10 @@
     <basecompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</basecompoundref>
     <includes refid="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h" local="no">MarmotMeshfreeReproducingKernelApproximationImplicit.h</includes>
     <sectiondef kind="public-func">
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac34f2c32b3afb98645f86414e2a22591" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
         <definition>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit</definition>
-        <argsstring>(int dim, int completenessOrder)</argsstring>
+        <argsstring>(int dim, int completenessOrder, double momentMatrixConditionLimit=std::numeric_limits&lt; double &gt;::infinity())</argsstring>
         <name>ReproducingKernelApproximationImplicit</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit</qualifiedname>
         <param>
@@ -19,6 +19,11 @@
           <type>int</type>
           <declname>completenessOrder</declname>
         </param>
+        <param>
+          <type>double</type>
+          <declname>momentMatrixConditionLimit</declname>
+          <defval>std::numeric_limits&lt; double &gt;::infinity()</defval>
+        </param>
         <briefdescription>
 <para>Construct the approximation. </para>
         </briefdescription>
@@ -28,7 +33,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="148">$ d \le $</formula> maxDim. </para>
+<para>Spatial dimension <formula id="149">$ d \le $</formula> maxDim. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -39,13 +44,21 @@
 <para>Desired completeness order <formula id="100">$ n \ge 0 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">momentMatrixConditionLimit</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The limit <formula id="150">$ \kappa_\mathrm{max} \ge 1 $</formula> on the condition of the scaled moment matrix, above which the completeness order of a point is lowered; infinite (the default) for no limit (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>). </para>
+</parameterdescription>
+</parameteritem>
 </parameterlist>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
 <parametername>std::invalid_argument</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if the order is negative, or the dimension or the basis exceeds maxDim or maxSizeOfBasis (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>). </para>
+<para>if the order is negative, the dimension or the basis exceeds maxDim or maxSizeOfBasis, or the limit is below 1 or not a number (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -53,7 +66,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="73" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="84" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -68,7 +81,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="76" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="90" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -94,7 +107,7 @@
           <declname>shapeFunctionValueGradients_ColMajor</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values <formula id="137">$ \Psi_A $</formula> and the implicit gradients <formula id="149">$ \Psi^{(i)}_A $</formula>. </para>
+<para>Compute the RK shape function values <formula id="137">$ \Psi_A $</formula> and the implicit gradients <formula id="151">$ \Psi^{(i)}_A $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -110,7 +123,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="150">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="152">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -118,7 +131,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="150">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="95">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="152">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="95">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -126,7 +139,7 @@
 <parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Implicit gradients, column-major <formula id="151">$ d \times n_\mathrm{c} $</formula> (entry <formula id="152">$ i + d A $</formula> is <formula id="149">$ \Psi^{(i)}_A $</formula>); zero for non-covering candidates. </para>
+<para>Implicit gradients, column-major <formula id="153">$ d \times n_\mathrm{c} $</formula> (entry <formula id="154">$ i + d A $</formula> is <formula id="151">$ \Psi^{(i)}_A $</formula>; the Shepard gradients at a point of order 0); zero for non-covering candidates. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -143,7 +156,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="89" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="104" column="18"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -156,7 +169,8 @@
 \]</formula> with the same moment matrix <formula id="139">$ \boldsymbol{M} $</formula>. The right-hand side  <formula id="140">$ \boldsymbol{H}^{(i)}_0 =
 -\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} $</formula> (the sign stems from the shifted argument <formula id="141">$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A $</formula>) is <formula id="142">$ -1 $</formula> at the position of the linear monomial <formula id="143">$ z_i $</formula> in <formula id="144">$ \boldsymbol{H} $</formula> and zero elsewhere (the position is found from the gradient of the basis at the origin, <ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>, so it is correct for any order). This enforces the gradient reproducing conditions    <formula id="145">\[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
   \frac{\partial \boldsymbol{x}^{\boldsymbol{\alpha}}}{\partial x_i}, \qquad |\boldsymbol{\alpha}| \le n,
-\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="137">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="146">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="147">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="139">$ \boldsymbol{M} $</formula>. </para>
+\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="137">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="146">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="147">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="139">$ \boldsymbol{M} $</formula>. The completeness order of a point is chosen as for <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>, including the optional limit on the condition of <formula id="139">$ \boldsymbol{M} $</formula>.</para>
+<para>At a point evaluated with the order 0 (too few covering kernels, or the limit on the condition), the implicit gradients would reproduce only the derivative of a constant and vanish identically: such a point would carry no strain. It gets the Shepard gradients instead, the derivatives of its values <formula id="148">$ \Psi_A = \phi_A / \sum_B \phi_B $</formula>, as with explicit gradients; only there are kernel gradients evaluated. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="3">
@@ -194,18 +208,21 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="63" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" bodystart="63" bodyend="93"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" line="70" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h" bodystart="70" bodyend="108"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9dbdf5dde856cddf5c0f89965acb7fbc" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>_basisOfOrder</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>_desiredCompletenessOrder</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>_dim</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a3d8886475829576f35633c92d1dc4263" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>_momentMatrixConditionLimit</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>Approximation</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7fb9b63ddd9e35f23fcb622fdd76317c" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>assembleMomentMatrix</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a53e943e3ac42dd38477657a14af77321" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>BasisGradient</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>BasisVector</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>checkNonSingularity</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad34a526a44f9834e3cd2d1302eae9f64" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>chooseCompletenessOrderAndAssembleMomentMatrix</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>computeShapeFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>computeShapeFunctionsAndGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>conditionOfMomentMatrix</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abb2c116b1fb0abf538e3ef98b65e85ea" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>Coordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a956e4d346f780191765fa03a5fa77547" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>evaluateBasis</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>evaluateKernelFunctions</name></member>
@@ -215,8 +232,8 @@
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a64dfbf91d03d7ca6586b9d30006ce413" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>maxSizeOfBasis</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>MomentMatrix</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a1f8356097c91e500fc3f7385dfd4d50f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>MomentMatrixGradient</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>ReproducingKernelApproximation</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>ReproducingKernelApproximationImplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a68d2c5f5ef3eeaa8dffc7e4e38c4bd8b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>ReproducingKernelApproximation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac34f2c32b3afb98645f86414e2a22591" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>ReproducingKernelApproximationImplicit</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>~Approximation</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>~ReproducingKernelApproximation</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</scope><name>~ReproducingKernelApproximationImplicit</name></member>

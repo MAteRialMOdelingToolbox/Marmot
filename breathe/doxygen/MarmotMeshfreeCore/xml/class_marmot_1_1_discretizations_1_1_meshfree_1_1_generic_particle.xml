@@ -49,7 +49,7 @@
         <name>_volReferenceIntermediate</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_volReferenceIntermediate</qualifiedname>
         <briefdescription>
-<para>Volume <formula id="276">$ V_Y $</formula> in the reference intermediate configuration (the integration weight of the VCI integrals). </para>
+<para>Volume <formula id="288">$ V_Y $</formula> in the reference intermediate configuration (the integration weight of the VCI integrals). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -139,7 +139,7 @@
         <name>_P</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_P</qualifiedname>
         <briefdescription>
-<para>VCI basis <formula id="280">$ P_C $</formula> at the particle center, size <formula id="51">$ n_C $</formula>. </para>
+<para>VCI basis <formula id="292">$ P_C $</formula> at the particle center, size <formula id="51">$ n_C $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -156,7 +156,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Gradient <formula id="281">$ \partial P_C / \partial Y_i $</formula> at the particle center, <formula id="282">$ n_C \times n_{\text{dim}} $</formula>. </para>
+<para>Gradient <formula id="293">$ \partial P_C / \partial Y_i $</formula> at the particle center, <formula id="294">$ n_C \times n_{\text{dim}} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -169,7 +169,7 @@
         <name>_N</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_N</qualifiedname>
         <briefdescription>
-<para>The vector of trial shape functions <formula id="34">$ N_A $</formula> ( <formula id="283">$ 1 \times n_{\text{nodes}} $</formula>). </para>
+<para>The vector of trial shape functions <formula id="34">$ N_A $</formula> ( <formula id="295">$ 1 \times n_{\text{nodes}} $</formula>). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -186,7 +186,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The matrix of trial shape functions gradients <formula id="269">$ \partial N_A / \partial Y_i $</formula> ( <formula id="284">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>) </para>
+<para>The matrix of trial shape functions gradients <formula id="281">$ \partial N_A / \partial Y_i $</formula> ( <formula id="296">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>) </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -199,7 +199,7 @@
         <name>_T</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_T</qualifiedname>
         <briefdescription>
-<para>The vector of test shape functions <formula id="270">$ T_A $</formula> ( <formula id="283">$ 1 \times n_{\text{nodes}} $</formula>). </para>
+<para>The vector of test shape functions <formula id="282">$ T_A $</formula> ( <formula id="295">$ 1 \times n_{\text{nodes}} $</formula>). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -216,7 +216,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The matrix of test shape functions gradients <formula id="271">$ \partial T_A / \partial Y_i $</formula> ( <formula id="284">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>), including the VCI correction </para>
+<para>The matrix of test shape functions gradients <formula id="283">$ \partial T_A / \partial Y_i $</formula> ( <formula id="296">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>), including the VCI correction </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -494,7 +494,7 @@
           <declname>kernelFunctions</declname>
         </param>
         <briefdescription>
-<para>Store the kernel functions and evaluate <formula id="34">$ N_A $</formula> and <formula id="269">$ \partial N_A / \partial Y_i $</formula> at the particle center (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kindref="member">getCenterCoordinates()</ref>); the test functions are set equal to the trial functions, which resets any previous VCI correction. </para>
+<para>Store the kernel functions and evaluate <formula id="34">$ N_A $</formula> and <formula id="281">$ \partial N_A / \partial Y_i $</formula> at the particle center (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kindref="member">getCenterCoordinates()</ref>); the test functions are set equal to the trial functions, which resets any previous VCI correction. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -768,7 +768,7 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
-<para>The shape functions linearized about the center, from the trial functions <formula id="34">$ N_A $</formula> and gradients <formula id="269">$ \partial N_A / \partial Y_i $</formula> at the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kindref="member">Particle::getInterpolationVectorLinearizedAboutCenter()</ref>). </para>
+<para>The shape functions linearized about the center, from the trial functions <formula id="34">$ N_A $</formula> and gradients <formula id="281">$ \partial N_A / \partial Y_i $</formula> at the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kindref="member">Particle::getInterpolationVectorLinearizedAboutCenter()</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -882,7 +882,7 @@
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Not available: the boundary integral needs the physics-specific kinematics ( <formula id="285">$ dY/dX $</formula>). </para>
+<para>Not available: the boundary integral needs the physics-specific kinematics ( <formula id="297">$ dY/dX $</formula>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -937,7 +937,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="286">$ R_{AiC} \mathrel{+}= \partial_i T_A\, P_C\, V_Y $</formula>. </para>
+<para>Accumulate <formula id="298">$ R_{AiC} \mathrel{+}= \partial_i T_A\, P_C\, V_Y $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -967,7 +967,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="287">$ R_{AiC} \mathrel{+}= T_A\, \partial_i P_C\, V_Y $</formula>. </para>
+<para>Accumulate <formula id="299">$ R_{AiC} \mathrel{+}= T_A\, \partial_i P_C\, V_Y $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -997,7 +997,7 @@
           <declname>mMatrix_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="288">$ M_{ACD} \mathrel{+}= \chi_A P_C P_D V_Y $</formula>, with <formula id="289">$ \chi_A = 1 $</formula> if the particle center is in the support of kernel function <formula id="16">$ A $</formula>, else 0. </para>
+<para>Accumulate <formula id="300">$ M_{ACD} \mathrel{+}= \chi_A P_C P_D V_Y $</formula>, with <formula id="301">$ \chi_A = 1 $</formula> if the particle center is in the support of kernel function <formula id="16">$ A $</formula>, else 0. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1027,7 +1027,7 @@
           <declname>eta_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Add the VCI correction to the test function gradients, <formula id="279">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. </para>
+<para>Add the VCI correction to the test function gradients, <formula id="291">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>The correction is added to the current test function gradients, so it is meant to be applied once after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kindref="member">assignMeshfreeKernelFunctions()</ref> (which resets them). <parameterlist kind="param"><parameteritem>
@@ -1105,14 +1105,14 @@
     <detaileddescription>
 <para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle" kindref="compound">GenericParticle</ref> implements the parts of the <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Particle</ref> interface that do not depend on the physics:<itemizedlist>
 <listitem><para>the geometry of a point particle: a single vertex at the center <formula id="68">$ \boldsymbol{Y}_c $</formula> in the reference intermediate configuration (the last accepted configuration), shape &quot;point&quot;;</para>
-</listitem><listitem><para>the shape functions: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kindref="member">assignMeshfreeKernelFunctions()</ref> evaluates the trial functions <formula id="34">$ N_A $</formula> and their gradients <formula id="269">$ \partial N_A / \partial Y_i $</formula> at the center (direct nodal integration); the test functions <formula id="270">$ T_A $</formula>, <formula id="271">$ \partial T_A / \partial Y_i $</formula> start as copies of them (Bubnov-Galerkin) and are changed only by the VCI correction (Petrov-Galerkin). Derived classes (e.g., the SQCNI particles) may replace the gradients by smoothed ones;</para>
+</listitem><listitem><para>the shape functions: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kindref="member">assignMeshfreeKernelFunctions()</ref> evaluates the trial functions <formula id="34">$ N_A $</formula> and their gradients <formula id="281">$ \partial N_A / \partial Y_i $</formula> at the center (direct nodal integration); the test functions <formula id="282">$ T_A $</formula>, <formula id="283">$ \partial T_A / \partial Y_i $</formula> start as copies of them (Bubnov-Galerkin) and are changed only by the VCI correction (Petrov-Galerkin). Derived classes (e.g., the SQCNI particles) may replace the gradients by smoothed ones;</para>
 </listitem><listitem><para>the property &quot;VCI order&quot; and the particle contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013).</para>
 </listitem></itemizedlist>
 </para>
-<para><bold>VCI.</bold> For the VCI order <formula id="97">$ k $</formula>, the basis <formula id="272">$ \boldsymbol{P}(\boldsymbol{Y}) $</formula> is the complete monomial basis of degree <formula id="273">$ \le k $</formula> in <formula id="274">$ n_{\text{dim}} $</formula> variables (Math::computeMonomialBasis()), with <formula id="275">$ n_C = \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> entries, evaluated at the particle center. With the particle volume <formula id="276">$ V_Y $</formula> in the reference intermediate configuration as the integration weight, the particle contributes     <formula id="277">\[  \int \partial_i T_A\, P_C \,dV \approx \partial_i T_A\, P_C\, V_Y, \qquad
+<para><bold>VCI.</bold> For the VCI order <formula id="97">$ k $</formula>, the basis <formula id="284">$ \boldsymbol{P}(\boldsymbol{Y}) $</formula> is the complete monomial basis of degree <formula id="285">$ \le k $</formula> in <formula id="286">$ n_{\text{dim}} $</formula> variables (Math::computeMonomialBasis()), with <formula id="287">$ n_C = \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> entries, evaluated at the particle center. With the particle volume <formula id="288">$ V_Y $</formula> in the reference intermediate configuration as the integration weight, the particle contributes     <formula id="289">\[  \int \partial_i T_A\, P_C \,dV \approx \partial_i T_A\, P_C\, V_Y, \qquad
   \int T_A\, \partial_i P_C \,dV \approx T_A\, \partial_i P_C\, V_Y, \qquad
   M_{ACD} \approx \chi_A\, P_C\, P_D\, V_Y,
-\]</formula> where <formula id="278">$ \chi_A \in \{0, 1\} $</formula> indicates whether the particle center is in the support of kernel function <formula id="16">$ A $</formula>. The correction assigned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" kindref="member">vci_assignTestFunctionCorrectionTerms()</ref> is <formula id="279">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. The boundary integral depends on the kinematics of the physics and is left to the derived classes.</para>
+\]</formula> where <formula id="290">$ \chi_A \in \{0, 1\} $</formula> indicates whether the particle center is in the support of kernel function <formula id="16">$ A $</formula>. The correction assigned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" kindref="member">vci_assignTestFunctionCorrectionTerms()</ref> is <formula id="291">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. The boundary integral depends on the kinematics of the physics and is left to the derived classes.</para>
 <para>Derived classes must keep <computeroutput>_centerReferenceIntermediate</computeroutput>, <computeroutput>_volReferenceIntermediate</computeroutput>, <computeroutput>_P</computeroutput> and <computeroutput>_P_Gradient</computeroutput> up to date in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
