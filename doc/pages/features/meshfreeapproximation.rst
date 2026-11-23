@@ -86,14 +86,15 @@ plane over the scatter of the centres about it: :math:`\Psi_A` and its gradients
 stiffness of the particle and the stable time increment it allows.
 
 The approximations therefore take an optional limit :math:`\kappa_\mathrm{max}` (constructor argument
-``momentMatrixConditionLimit``). A point whose moment matrix exceeds it is evaluated with the completeness order
-:math:`0`, the Shepard functions
+``momentMatrixConditionLimit``). The completeness order of a point whose moment matrix exceeds it is lowered one order at
+a time until the condition is below the limit. The last resort is the order :math:`0`, the Shepard functions
 
 .. math::
 
    \Psi_A(\boldsymbol{x}) = \frac{\phi_A(\boldsymbol{x})}{\sum_B \phi_B(\boldsymbol{x})},
 
-which form a partition of unity of values in :math:`[0, 1]`, but reproduce no linear field. The measure is the condition
+which form a partition of unity of values in :math:`[0, 1]`, but reproduce no linear field; it is always accepted. For
+the linear basis, a point above the limit thus goes straight to the Shepard functions. The measure is the condition
 number in the 1-norm of the moment matrix scaled to a unit diagonal,
 
 .. math::
@@ -103,20 +104,39 @@ number in the 1-norm of the moment matrix scaled to a unit diagonal,
 
 The monomials carry the unit of length to their degree, so the condition of :math:`\boldsymbol{M}` itself depends on the
 unit (and grows with every power of a small node spacing); after the scaling, :math:`\kappa` depends on neither the unit
-nor a constant factor of the kernels, and it is close to the smallest condition any diagonal scaling can give (van der
-Sluis). It is estimated from an :math:`\boldsymbol{L}\boldsymbol{D}\boldsymbol{L}^T` factorization of the scaled matrix,
-in the way of LAPACK's reciprocal condition estimate; for the small moment matrices this costs less than the QR
-factorization of the evaluation itself. A singular :math:`\boldsymbol{M}` of order :math:`n \ge 1` counts as infinitely
-ill-conditioned and is evaluated with the order :math:`0` as well; only a point that no kernel covers still throws.
+nor a constant factor of the kernels. In the 2-norm, the scaling to a unit diagonal comes within a factor of the size of
+the basis of the best diagonal scaling (van der Sluis); the 1-norm condition differs from the 2-norm one by at most that
+factor as well. :math:`\kappa` is estimated from an :math:`\boldsymbol{L}\boldsymbol{D}\boldsymbol{L}^T` factorization of
+the scaled matrix, in the way of LAPACK's reciprocal condition estimate; for the small moment matrices this costs less
+than the QR factorization of the evaluation itself. A pivot of the scaled matrix at the rounding level marks it as
+singular. A singular :math:`\boldsymbol{M}` of order :math:`n \ge 1` counts as infinitely ill-conditioned and is
+evaluated with a lower order as well; only a point that no kernel covers still throws.
 
 The default is no limit (:math:`\kappa_\mathrm{max} = \infty`): then :math:`\kappa` is not computed. With a limit, a
-point below it is evaluated bit for bit as without one, so the limit changes the results only where it acts. In an
-RKPM model of concrete with cubic B-spline kernels of a support radius of 2.4 particle sizes and the linear basis,
-the points of the intact particles, at the edges and corners of the body included, stayed below
-:math:`\kappa \approx 2 \cdot 10^3`, while the face of a torn particle reaching into a borehole reached
-:math:`\kappa \approx 10^9`, with shape functions of up to :math:`50`. A limit between :math:`10^4` and :math:`10^6`
-separates the two; a limit close to the values of intact points would lower the order where the linear basis is still
-sound.
+point below it is evaluated bit for bit as without one, so the limit changes the results only where it acts.
+
+**What the lower order costs.** The lower order is a trade of accuracy for boundedness at the points where it acts:
+
+* *A jump.* The shape functions of a point change discontinuously where its condition crosses the limit, in space and in
+  time. When a point crosses it between two increments, the internal force of its particle jumps: a kick in an
+  explicit run, a non-smooth residual for Newton's method in an implicit one.
+* *The patch test.* A point of order 0 reproduces no linear field. A particle integrated with such points (e.g. some
+  of the face points of a smoothed particle at order 0, the others at order 1) no longer integrates a homogeneous
+  deformation exactly: its smoothed strain carries an error even for a constant strain field.
+* *Implicit gradients.* At order 0, the implicit gradients (see below) would reproduce only the derivative of a constant
+  and vanish identically, so the point would carry no strain. The implicit approximation therefore returns the Shepard
+  gradients, the derivatives of the Shepard functions, at every point of order 0, as the explicit one does.
+
+**Choosing the limit.** The limit must lie well above the condition of the points of an intact body, and well below that
+of the points it is meant for. On a regular lattice of cubic B-spline kernels (spacing :math:`h`) with the linear basis,
+:math:`\kappa` is close to 1 inside the body. Half a spacing beyond the outermost kernel centres, at the faces, edges
+and corners of a body of particles whose kernels sit at the particle centres, it stays below :math:`10^4` for a support
+radius of :math:`1.6\,h` and below :math:`10^2` for :math:`2.4\,h` (the ctest of ``MarmotMeshfreeCore`` checks these
+bounds). A point beyond nearly coplanar kernels, by contrast, has no bound at all. A limit between :math:`10^5` and
+:math:`10^6` therefore separates the two for the linear basis down to a support radius of :math:`1.6\,h`, and from
+:math:`10^4` for larger supports; a limit close to the values of intact points would lower the order where the linear
+basis is still sound. Higher orders have a larger healthy condition (the quadratic basis exceeds :math:`10^3` near the
+corner of the same lattice), and need a correspondingly higher limit.
 
 Explicit gradients
 ^^^^^^^^^^^^^^^^^^
@@ -172,7 +192,9 @@ reproducing conditions*
 The implicit gradients reproduce the derivatives of all polynomials up to order :math:`n`, like the explicit ones, but
 they are **not** the derivatives of :math:`\Psi_A`. They need neither kernel gradients nor
 :math:`\boldsymbol{M}_{,i}`: the :math:`1 + d` right-hand sides :math:`[\boldsymbol{H}_0, \boldsymbol{H}^{(1)}_0,
-\dots, \boldsymbol{H}^{(d)}_0]` are solved with a single decomposition of :math:`\boldsymbol{M}`.
+\dots, \boldsymbol{H}^{(d)}_0]` are solved with a single decomposition of :math:`\boldsymbol{M}`. The one exception is a
+point evaluated with the order :math:`0` (too few covering kernels, or the limit on the condition), where the implicit
+gradients would vanish identically: it gets the Shepard gradients, and only there are the kernel gradients evaluated.
 
 Evaluation
 ^^^^^^^^^^

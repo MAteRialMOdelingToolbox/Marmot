@@ -161,7 +161,7 @@ namespace Marmot::Discretizations::Meshfree {
     return MQr;
   }
 
-  int ReproducingKernelApproximation::assembleMomentMatrixOfThePoint(
+  int ReproducingKernelApproximation::chooseCompletenessOrderAndAssembleMomentMatrix(
     const double*                               coord,
     const std::vector< const KernelFunction* >& kernelFunctions,
     const double*                               phi,
@@ -170,19 +170,20 @@ namespace Marmot::Discretizations::Meshfree {
     MomentMatrix&                               M,
     MomentMatrixGradient*                       dM_dx ) const
   {
-    const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
+    int completenessOrder = getCorrectedCompletenessOrder( nCovering );
     assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, completenessOrder, M, dM_dx );
-
-    if ( completenessOrder == 0 || std::isinf( _momentMatrixConditionLimit ) ||
-         conditionOfMomentMatrix( M ) <= _momentMatrixConditionLimit )
+    if ( std::isinf( _momentMatrixConditionLimit ) )
       return completenessOrder;
 
-    // nearly singular: the Shepard functions of the covering kernels
-    assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, 0, M, dM_dx );
-    return 0;
+    // nearly singular: one order lower, down to the Shepard functions of the covering kernels (order 0)
+    while ( completenessOrder > 0 && conditionOfMomentMatrix( M ) > _momentMatrixConditionLimit ) {
+      completenessOrder--;
+      assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, completenessOrder, M, dM_dx );
+    }
+    return completenessOrder;
   }
 
-  double ReproducingKernelApproximation::conditionOfMomentMatrix( const MomentMatrix& M ) const
+  double ReproducingKernelApproximation::conditionOfMomentMatrix( const MomentMatrix& M )
   {
     const Eigen::Index n = M.rows();
     BasisVector        D( n );
@@ -193,8 +194,14 @@ namespace Marmot::Discretizations::Meshfree {
     }
     const MomentMatrix scaledM = D.asDiagonal() * M * D.asDiagonal();
 
+    // The scaled matrix has a unit diagonal, so its pivots are of order 1 when it is healthy and never below its
+    // smallest eigenvalue. A pivot at the rounding level marks it singular: Eigen's LDLT then still succeeds and
+    // solves with the pseudo-inverse of D, so its condition estimate would be finite.
     const Eigen::LDLT< MomentMatrix > scaledMLdlt( scaledM );
-    const double reciprocalCondition = scaledMLdlt.info() == Eigen::Success ? scaledMLdlt.rcond() : 0.0;
+    if ( scaledMLdlt.info() != Eigen::Success ||
+         !( scaledMLdlt.vectorD().minCoeff() > n * std::numeric_limits< double >::epsilon() ) )
+      return std::numeric_limits< double >::infinity();
+    const double reciprocalCondition = scaledMLdlt.rcond();
     return reciprocalCondition > 0.0 ? 1.0 / reciprocalCondition : std::numeric_limits< double >::infinity();
   }
 
@@ -228,13 +235,13 @@ namespace Marmot::Discretizations::Meshfree {
 
     MomentMatrix         M;
     MomentMatrixGradient dM_dx;
-    const int            completenessOrder = assembleMomentMatrixOfThePoint( coord,
-                                                                  kernelFunctions,
-                                                                  phi,
-                                                                  dPhi_dx,
-                                                                  nCovering,
-                                                                  M,
-                                                                  dPsi_dx ? &dM_dx : nullptr );
+    const int            completenessOrder = chooseCompletenessOrderAndAssembleMomentMatrix( coord,
+                                                                                  kernelFunctions,
+                                                                                  phi,
+                                                                                  dPhi_dx,
+                                                                                  nCovering,
+                                                                                  M,
+                                                                                  dPsi_dx ? &dM_dx : nullptr );
     const int            sizeH             = _basisOfOrder[completenessOrder].size();
 
     // b = M^-1 H0, with H0 = H(0) = [1, 0, ..., 0]^T

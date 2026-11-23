@@ -554,12 +554,19 @@ void testConditionLimitOfTheMomentMatrix()
     throwExceptionOnFailure( ( dNLimited.row( i ).transpose() - ( Np - Nm ) / ( 2 * h ) ).norm() < 1e-6,
                              "above the limit, the gradients are those of the Shepard functions" );
   }
+  // the implicit approximation chooses the order as the explicit one, and at the order 0 its gradients are the
+  // Shepard gradients as well (its implicit gradients of order 0 would vanish identically)
   Eigen::VectorXd NImplicit( n );
   Eigen::MatrixXd dNImplicit( 3, n );
   IRK( 3, 1, 1e4 )
     .computeShapeFunctionsAndGradients( oneSided.point.data(), oneSided.pointers, NImplicit.data(), dNImplicit.data() );
   throwExceptionOnFailure( ( NImplicit - NLimited ).norm() < 1e-14,
                            "the implicit approximation chooses the order as the explicit one" );
+  throwExceptionOnFailure( dNLimited.cwiseAbs().maxCoeff() > 0.1 && ( dNImplicit - dNLimited ).norm() < 1e-12,
+                           Marmot::Utilities::MakeString()
+                             << "above the limit, the implicit gradients must be the Shepard gradients, max |dN| "
+                             << dNImplicit.cwiseAbs().maxCoeff() << ", difference "
+                             << ( dNImplicit - dNLimited ).norm() );
 
   // a healthy point is evaluated bit for bit as without a limit, by both approximations
   KernelGrid< Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed > grid( 3, 6, 1.6 );
@@ -590,9 +597,79 @@ void testConditionLimitOfTheMomentMatrix()
                            "a singular moment matrix of the linear basis must throw without a limit and get the "
                            "Shepard functions with one" );
 
+  // an exactly singular matrix is infinitely ill-conditioned, also when its factorization ends on a zero pivot
+  for ( const Eigen::Matrix2d& singular :
+        { Eigen::Matrix2d{ { 1.0, 1.0 }, { 1.0, 1.0 } }, Eigen::Matrix2d{ { 4.0, 2.0 }, { 2.0, 1.0 } } } )
+    throwExceptionOnFailure( std::isinf( MomentMatrixAccess::conditionOfMomentMatrix( singular ) ),
+                             Marmot::Utilities::MakeString()
+                               << "a singular matrix must have an infinite condition, not "
+                               << MomentMatrixAccess::conditionOfMomentMatrix( singular ) );
+
   for ( double limit : { 0.5, -1.0, std::numeric_limits< double >::quiet_NaN() } )
     throwExceptionOnFailure( throws( [limit] { RK( 3, 1, limit ); } ) && throws( [limit] { IRK( 3, 1, limit ); } ),
                              Marmot::Utilities::MakeString() << "the condition limit " << limit << " must be refused" );
+}
+
+// The condition of the scaled moment matrix of the linear basis on a regular lattice of kernels (spacing 1): inside,
+// and at a face, an edge and a corner of a body of particles whose kernels sit at the particle centres, half a spacing
+// beyond the outermost centres. These are the bounds the documentation quotes for the choice of the limit.
+void testConditionOfTheMomentMatrixOnALattice()
+{
+  using K = Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed;
+  const MomentMatrixAccess access( 3, 1 );
+  for ( const auto& [supportRadius, bound] : { std::pair( 1.6, 1e4 ), std::pair( 2.4, 1e2 ) } ) {
+    KernelGrid< K > grid( 3, 6, supportRadius );
+    for ( const Eigen::Vector3d& x : { Eigen::Vector3d( 2.55, 2.45, 2.6 ),
+                                       Eigen::Vector3d( -0.5, 2.45, 2.6 ),
+                                       Eigen::Vector3d( -0.5, -0.5, 2.6 ),
+                                       Eigen::Vector3d( -0.5, -0.5, -0.5 ) } ) {
+      MomentMatrixAccess::MomentMatrix M;
+      access.momentMatrix( x, grid.pointers, 1, M, nullptr );
+      const double condition = MomentMatrixAccess::conditionOfMomentMatrix( M );
+      throwExceptionOnFailure( condition < bound,
+                               Marmot::Utilities::MakeString()
+                                 << "support radius " << supportRadius << ", point " << x.transpose()
+                                 << ": the condition " << condition << " exceeds " << bound );
+    }
+  }
+}
+
+// With a limit, the order of a point is lowered one order at a time: near the corner of a body, the quadratic basis
+// exceeds the limit where the linear one does not, and the point keeps the linear completeness; a point where the
+// quadratic basis is below the limit keeps it.
+void testOrderIsLoweredOneAtATime()
+{
+  using K  = Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed;
+  using RK = Marmot::Discretizations::Meshfree::ReproducingKernelApproximation;
+  KernelGrid< K >          grid( 3, 6, 2.4 );
+  const int                n = static_cast< int >( grid.pointers.size() );
+  const MomentMatrixAccess access( 3, 2 );
+  const double             limit = 1e3;
+
+  const Eigen::Vector3d            nearTheCorner( -0.25, -0.25, -0.25 );
+  MomentMatrixAccess::MomentMatrix M1, M2;
+  access.momentMatrix( nearTheCorner, grid.pointers, 1, M1, nullptr );
+  access.momentMatrix( nearTheCorner, grid.pointers, 2, M2, nullptr );
+  throwExceptionOnFailure( MomentMatrixAccess::conditionOfMomentMatrix( M2 ) > limit &&
+                             MomentMatrixAccess::conditionOfMomentMatrix( M1 ) < limit,
+                           "near the corner, the quadratic basis must exceed the limit and the linear one not" );
+
+  Eigen::VectorXd N( n ), NLinear( n );
+  Eigen::MatrixXd dN( 3, n ), dNLinear( 3, n );
+  RK( 3, 2, limit ).computeShapeFunctionsAndGradients( nearTheCorner.data(), grid.pointers, N.data(), dN.data() );
+  RK( 3, 1 ).computeShapeFunctionsAndGradients( nearTheCorner.data(), grid.pointers, NLinear.data(), dNLinear.data() );
+  Eigen::Vector3d reproduced = Eigen::Vector3d::Zero();
+  for ( int A = 0; A < n; A++ )
+    reproduced += N( A ) * grid.centers[A];
+  throwExceptionOnFailure( ( N - NLinear ).norm() < 1e-14 && ( dN - dNLinear ).norm() < 1e-12 &&
+                             ( reproduced - nearTheCorner ).norm() < 1e-12,
+                           "above the limit of the quadratic basis, the point must get the linear one" );
+
+  const Eigen::Vector3d atTheFace( 0.0, 2.45, 2.6 );
+  Eigen::VectorXd       NQuadratic( n );
+  RK( 3, 2, limit ).computeShapeFunctions( atTheFace.data(), grid.pointers, N.data() );
+  RK( 3, 2 ).computeShapeFunctions( atTheFace.data(), grid.pointers, NQuadratic.data() );
+  throwExceptionOnFailure( N == NQuadratic, "below the limit, the point must keep the quadratic basis" );
 }
 
 // the inverse isoparametric map and the point location test of a distorted cell (Newton's method), and of a box cell
@@ -727,6 +804,8 @@ int main()
                                                                testUnsupportedBasisIsRefused,
                                                                testSingularMomentMatrixThrows,
                                                                testConditionLimitOfTheMomentMatrix,
+                                                               testConditionOfTheMomentMatrixOnALattice,
+                                                               testOrderIsLoweredOneAtATime,
                                                                testLagrangianCellInverseMap,
                                                                testSubdomainsTileTheDeformedDomain,
                                                                testFactories,
