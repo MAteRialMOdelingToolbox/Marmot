@@ -149,7 +149,7 @@ while :math:`N_B` is the point value at the center. The smoothed gradients are u
 displacements (state ``smoothing vertex displacements``) and is updated at each accepted increment from :math:`\boldsymbol F_n` of
 the material point, according to the smoothing domain update type (the vertices of the particle,
 ``getVertexCoordinates``, and its face centers follow :math:`\boldsymbol F_n` for every update type, the geometry the
-particle moves with its interpolation vector of an attached point, see :doc:`meshfreeparticles`; the smoothing domain is
+particle moves with its shape functions linearized about the center, see :doc:`meshfreeparticles`; the smoothing domain is
 ``getVisualizationVertexCoordinates``):
 
 .. list-table::
