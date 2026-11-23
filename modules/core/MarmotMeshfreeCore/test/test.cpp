@@ -597,6 +597,30 @@ void testConditionLimitOfTheMomentMatrix()
                            "a singular moment matrix of the linear basis must throw without a limit and get the "
                            "Shepard functions with one" );
 
+  // a point in the plane of the coplanar kernels: the monomial normal to the plane vanishes at every kernel, so its
+  // diagonal entry of the moment matrix is zero, the condition infinite, and with a limit the point gets the Shepard
+  // functions
+  const Eigen::Vector3d            inThePlane( 2.1, 1.8, 0.0 );
+  MomentMatrixAccess::MomentMatrix MInThePlane;
+  access.momentMatrix( inThePlane, coplanar.pointers, 1, MInThePlane, nullptr );
+  throwExceptionOnFailure( MInThePlane( 3, 3 ) == 0.0 &&
+                             std::isinf( MomentMatrixAccess::conditionOfMomentMatrix( MInThePlane ) ),
+                           "in the plane of the kernels, the moment matrix must have a zero diagonal entry and an "
+                           "infinite condition" );
+  throwExceptionOnFailure( throws( [&] {
+                             RK( 3, 1 ).computeShapeFunctions( inThePlane.data(), coplanar.pointers, N.data() );
+                           } ),
+                           "in the plane of the kernels, the linear basis must throw without a limit" );
+  RK( 3, 1, 1e4 ).computeShapeFunctions( inThePlane.data(), coplanar.pointers, N.data() );
+  double sumOfKernelsInThePlane = 0;
+  for ( int A = 0; A < n; A++ )
+    sumOfKernelsInThePlane += coplanar.pointers[A]->computeKernelFunction( inThePlane.data() );
+  for ( int A = 0; A < n; A++ )
+    throwExceptionOnFailure( std::abs( N( A ) - coplanar.pointers[A]->computeKernelFunction( inThePlane.data() ) /
+                                                  sumOfKernelsInThePlane ) < 1e-14,
+                             "in the plane of the kernels, the shape functions must be the Shepard functions" );
+  throwExceptionOnFailure( checkIfEqual( N.sum(), 1.0, 1e-14 ), "in the plane: a partition of unity" );
+
   // an exactly singular matrix is infinitely ill-conditioned, also when its factorization ends on a zero pivot
   for ( const Eigen::Matrix2d& singular :
         { Eigen::Matrix2d{ { 1.0, 1.0 }, { 1.0, 1.0 } }, Eigen::Matrix2d{ { 4.0, 2.0 }, { 2.0, 1.0 } } } )
