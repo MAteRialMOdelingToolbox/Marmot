@@ -30,8 +30,10 @@
 #include <cmath>
 
 namespace Marmot::Discretizations::Meshfree {
-  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int dim, int completenessOrder )
-    : ReproducingKernelApproximation( dim, completenessOrder )
+  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int    dim,
+                                                                                  int    completenessOrder,
+                                                                                  double momentMatrixConditionLimit )
+    : ReproducingKernelApproximation( dim, completenessOrder, momentMatrixConditionLimit )
   {
   }
 
@@ -46,11 +48,15 @@ namespace Marmot::Discretizations::Meshfree {
     double*   phi       = shapeFunctionValues_;
     const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, nullptr );
 
-    const int completenessOrder = getCorrectedCompletenessOrder( nCovering );
-    const int sizeH             = _basisOfOrder[completenessOrder].size();
-
     MomentMatrix M;
-    assembleMomentMatrix( coord, kernelFunctions, phi, nullptr, completenessOrder, M, nullptr );
+    const int    completenessOrder = chooseCompletenessOrderAndAssembleMomentMatrix( coord,
+                                                                                  kernelFunctions,
+                                                                                  phi,
+                                                                                  nullptr,
+                                                                                  nCovering,
+                                                                                  M,
+                                                                                  nullptr );
+    const int    sizeH             = _basisOfOrder[completenessOrder].size();
 
     // first column for the values, the other columns for the gradients: they reproduce -d(x - x_I)^alpha/dx_i at
     // x_I, which is -1 for the linear monomial x_i and 0 otherwise; the linear monomials are the rows whose gradient
@@ -76,6 +82,24 @@ namespace Marmot::Discretizations::Meshfree {
                                                                kernelFunctions.size() );
     shapeFunctionValueGradients.setZero();
 
+    if ( completenessOrder == 0 ) {
+      // The implicit gradients of order 0 reproduce only the derivative of a constant: they vanish identically, and a
+      // point evaluated with them would carry no strain. The point gets the Shepard gradients instead, the derivatives
+      // of its values, as with explicit gradients: with b = 1 / sum_B phi_B, Psi_A,i = b phi_A,i + b_,i phi_A and
+      // b_,i = -b^2 sum_B phi_B,i. Only here are the kernel gradients needed.
+      const double b                    = bMat( 0, 0 );
+      Coordinates  sumOfKernelGradients = Coordinates::Zero( _dim );
+      for ( size_t A = 0; A < kernelFunctions.size(); A++ )
+        if ( phi[A] != 0.0 ) {
+          kernelFunctions[A]->computeKernelFunctionGradient( coord, shapeFunctionValueGradients.col( A ).data() );
+          sumOfKernelGradients += shapeFunctionValueGradients.col( A );
+        }
+      const Coordinates db_dx = -b * b * sumOfKernelGradients;
+      for ( size_t A = 0; A < kernelFunctions.size(); A++ )
+        if ( phi[A] != 0.0 )
+          shapeFunctionValueGradients.col( A ) = b * shapeFunctionValueGradients.col( A ) + phi[A] * db_dx;
+    }
+
     BasisVector H;
     for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
       const double phi_A = phi[A];
@@ -83,8 +107,9 @@ namespace Marmot::Discretizations::Meshfree {
         continue; // not covering: zero value, already written, and zero gradient
       evaluateBasis( coord, *kernelFunctions[A], completenessOrder, H, nullptr );
 
-      shapeFunctionValues_[A]              = bMat.col( 0 ).dot( H ) * phi_A;
-      shapeFunctionValueGradients.col( A ) = bMat.rightCols( _dim ).transpose() * H * phi_A;
+      shapeFunctionValues_[A] = bMat.col( 0 ).dot( H ) * phi_A;
+      if ( completenessOrder > 0 )
+        shapeFunctionValueGradients.col( A ) = bMat.rightCols( _dim ).transpose() * H * phi_A;
     }
   }
 

@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include <Eigen/Core>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -58,19 +59,32 @@ namespace Marmot::Discretizations::Meshfree {
    * so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they
    * are not the derivatives of the values @f$ \Psi_A @f$. They require neither kernel gradients nor
    * @f$ \boldsymbol{M}_{,i} @f$: all @f$ 1 + d @f$ right-hand sides are solved with one QR decomposition of
-   * @f$ \boldsymbol{M} @f$.
+   * @f$ \boldsymbol{M} @f$. The completeness order of a point is chosen as for ReproducingKernelApproximation,
+   * including the optional limit on the condition of @f$ \boldsymbol{M} @f$.
+   *
+   * At a point evaluated with the order 0 (too few covering kernels, or the limit on the condition), the implicit
+   * gradients would reproduce only the derivative of a constant and vanish identically: such a point would carry
+   * no strain. It gets the Shepard gradients instead, the derivatives of its values
+   * @f$ \Psi_A = \phi_A / \sum_B \phi_B @f$, as with explicit gradients; only there are kernel gradients evaluated.
    */
   class ReproducingKernelApproximationImplicit : public ReproducingKernelApproximation {
 
   public:
     /**
      * @brief Construct the approximation.
-     * @param[in] dim               Spatial dimension @f$ d \le @f$ maxDim.
-     * @param[in] completenessOrder Desired completeness order @f$ n \ge 0 @f$.
-     * @throws std::invalid_argument if the order is negative, or the dimension or the basis exceeds maxDim or
-     * maxSizeOfBasis (see ReproducingKernelApproximation).
+     * @param[in] dim                        Spatial dimension @f$ d \le @f$ maxDim.
+     * @param[in] completenessOrder          Desired completeness order @f$ n \ge 0 @f$.
+     * @param[in] momentMatrixConditionLimit The limit @f$ \kappa_\mathrm{max} \ge 1 @f$ on the condition of the
+     *                                       scaled moment matrix, above which the completeness order of a point
+     *                                       is lowered; infinite (the default) for no limit (see
+     *                                       ReproducingKernelApproximation).
+     * @throws std::invalid_argument if the order is negative, the dimension or the basis exceeds maxDim or
+     * maxSizeOfBasis, or the limit is below 1 or not a number (see ReproducingKernelApproximation).
      */
-    ReproducingKernelApproximationImplicit( int dim, int completenessOrder );
+    ReproducingKernelApproximationImplicit(
+      int    dim,
+      int    completenessOrder,
+      double momentMatrixConditionLimit = std::numeric_limits< double >::infinity() );
 
     /// @brief Default destructor.
     virtual ~ReproducingKernelApproximationImplicit() = default;
@@ -83,7 +97,8 @@ namespace Marmot::Discretizations::Meshfree {
      *                                 do not cover @f$ \boldsymbol{x} @f$.
      * @param[out] shapeFunctionValueGradients_ColMajor Implicit gradients, column-major
      *                                 @f$ d \times n_\mathrm{c} @f$ (entry @f$ i + d A @f$ is
-     *                                 @f$ \Psi^{(i)}_A @f$); zero for non-covering candidates.
+     *                                 @f$ \Psi^{(i)}_A @f$; the Shepard gradients at a point of order 0); zero for
+     *                                 non-covering candidates.
      * @throws std::runtime_error if the moment matrix is singular (see factorizeMomentMatrix()).
      */
     virtual void computeShapeFunctionsAndGradients( const double*                               coord,
