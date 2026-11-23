@@ -79,7 +79,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree13Approximation13ApproximationEv"><code class="docutils literal notranslate"><span class="pre">Approximation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree13ApproximationD0Ev"><code class="docutils literal notranslate"><span class="pre">~Approximation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree13Approximation21computeShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctions()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree13Approximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionGradients()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree13Approximation33computeShapeFunctionsAndGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionsAndGradients()</span></code></a></li>
 </ul>
 </li>
@@ -453,6 +452,19 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree22AbsoluteStiffnessBound7Moments21secondGradientMomentsE"><code class="docutils literal notranslate"><span class="pre">secondGradientMoments</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasisE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math::MonomialBasis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis13MonomialBasisEii"><code class="docutils literal notranslate"><span class="pre">MonomialBasis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv"><code class="docutils literal notranslate"><span class="pre">size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii"><code class="docutils literal notranslate"><span class="pre">exponent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"><code class="docutils literal notranslate"><span class="pre">evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"><code class="docutils literal notranslate"><span class="pre">evaluateGradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi"><code class="docutils literal notranslate"><span class="pre">listExponents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis4_dimE"><code class="docutils literal notranslate"><span class="pre">_dim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis5_sizeE"><code class="docutils literal notranslate"><span class="pre">_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE"><code class="docutils literal notranslate"><span class="pre">_exponents</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasis5powerEdi"><code class="docutils literal notranslate"><span class="pre">power()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Particle</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree8Particle26vci_getNumberOfConstraintsEv"><code class="docutils literal notranslate"><span class="pre">vci_getNumberOfConstraints()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree8Particle35vci_compute_Test_P_BoundaryIntegralEPdPKdi"><code class="docutils literal notranslate"><span class="pre">vci_compute_Test_P_BoundaryIntegral()</span></code></a></li>
@@ -549,29 +561,32 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximationE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE"><code class="docutils literal notranslate"><span class="pre">BasisVector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE"><code class="docutils literal notranslate"><span class="pre">BasisGradient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE"><code class="docutils literal notranslate"><span class="pre">MomentMatrix</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE"><code class="docutils literal notranslate"><span class="pre">MomentMatrixGradient</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11CoordinatesE"><code class="docutils literal notranslate"><span class="pre">Coordinates</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation30ReproducingKernelApproximationEii"><code class="docutils literal notranslate"><span class="pre">ReproducingKernelApproximation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximationD0Ev"><code class="docutils literal notranslate"><span class="pre">~ReproducingKernelApproximation()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21computeShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctions()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionGradients()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33computeShapeFunctionsAndGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionsAndGradients()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERKN5Eigen8MatrixXdEPKdi"><code class="docutils literal notranslate"><span class="pre">factorizeMomentMatrix()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation9factorialEi"><code class="docutils literal notranslate"><span class="pre">factorial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE"><code class="docutils literal notranslate"><span class="pre">maxDim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE"><code class="docutils literal notranslate"><span class="pre">maxSizeOfBasis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation23evaluateKernelFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"><code class="docutils literal notranslate"><span class="pre">evaluateKernelFunctions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13evaluateBasisEPKdRK14KernelFunctioniR11BasisVectorP13BasisGradient"><code class="docutils literal notranslate"><span class="pre">evaluateBasis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20assembleMomentMatrixEPKdRKNSt6vectorIPK14KernelFunctionEEPKdPKdiR12MomentMatrixP20MomentMatrixGradient"><code class="docutils literal notranslate"><span class="pre">assembleMomentMatrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERK12MomentMatrixPKdi"><code class="docutils literal notranslate"><span class="pre">factorizeMomentMatrix()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation19checkNonSingularityEii"><code class="docutils literal notranslate"><span class="pre">checkNonSingularity()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29getCorrectedCompletenessOrderEi"><code class="docutils literal notranslate"><span class="pre">getCorrectedCompletenessOrder()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33findCoveringKernelFunctionIndicesEPKdRKNSt6vectorIPK14KernelFunctionEE"><code class="docutils literal notranslate"><span class="pre">findCoveringKernelFunctionIndices()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation4_dimE"><code class="docutils literal notranslate"><span class="pre">_dim</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25_desiredCompletenessOrderE"><code class="docutils literal notranslate"><span class="pre">_desiredCompletenessOrder</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeHVectorERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"><code class="docutils literal notranslate"><span class="pre">computeHVector()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22computeHVectorGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"><code class="docutils literal notranslate"><span class="pre">computeHVectorGradient()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeMMatrixERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"><code class="docutils literal notranslate"><span class="pre">computeMMatrix()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25computeMMatrixAndGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"><code class="docutils literal notranslate"><span class="pre">computeMMatrixAndGradient()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation8H0VectorEi"><code class="docutils literal notranslate"><span class="pre">H0Vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13_basisOfOrderE"><code class="docutils literal notranslate"><span class="pre">_basisOfOrder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22evaluateShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"><code class="docutils literal notranslate"><span class="pre">evaluateShapeFunctions()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit38ReproducingKernelApproximationImplicitEii"><code class="docutils literal notranslate"><span class="pre">ReproducingKernelApproximationImplicit()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitD0Ev"><code class="docutils literal notranslate"><span class="pre">~ReproducingKernelApproximationImplicit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionGradients()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit33computeShapeFunctionsAndGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"><code class="docutils literal notranslate"><span class="pre">computeShapeFunctionsAndGradients()</span></code></a></li>
 </ul>
 </li>
@@ -652,10 +667,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot4MathE"><code class="docutils literal notranslate"><span class="pre">Marmot::Math</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math32computeSizeOfMonomialBasisVectorEii"><code class="docutils literal notranslate"><span class="pre">computeSizeOfMonomialBasisVector()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisRecursion()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii"><code class="docutils literal notranslate"><span class="pre">_computeMonomialBasisGradientRecursion()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasis()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasisGradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"><code class="docutils literal notranslate"><span class="pre">computeMonomialBasisGradient()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math1BEddPKdi"><code class="docutils literal notranslate"><span class="pre">B()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_iEN6Marmot4Math5dB_dUEddPKdi"><code class="docutils literal notranslate"><span class="pre">dB_dU()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4IEN6Marmot4Math1BIXL0EEEEddPKdi"><code class="docutils literal notranslate"><span class="pre">B&lt;</span> <span class="pre">0</span> <span class="pre">&gt;()</span></code></a></li>
@@ -932,7 +945,7 @@
 </div>
 </figure>
 <p>Abstract interface of a meshfree approximation, which evaluates shape functions from a set of kernels. </p>
-<p>Given an evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> and a list of <span class="math notranslate nohighlight">\( n \)</span> candidate kernel functions <span class="math notranslate nohighlight">\( \phi_A \)</span>, <span class="math notranslate nohighlight">\( A = 0, \dots, n-1 \)</span> (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function"><span class="std std-ref">KernelFunction</span></a>), an approximation computes the shape functions <span class="math notranslate nohighlight">\( \Psi_A(\boldsymbol{x}) \)</span> and/or their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> get zero entries.</p>
+<p>Given an evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> and a list of <span class="math notranslate nohighlight">\( n \)</span> candidate kernel functions <span class="math notranslate nohighlight">\( \phi_A \)</span>, <span class="math notranslate nohighlight">\( A = 0, \dots, n-1 \)</span> (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function"><span class="std std-ref">KernelFunction</span></a>), an approximation computes the shape functions <span class="math notranslate nohighlight">\( \Psi_A(\boldsymbol{x}) \)</span>, alone or with their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> get zero entries.</p>
 <p>The gradient output is a column-major <span class="math notranslate nohighlight">\( d \times n \)</span> array, i.e., entry <span class="math notranslate nohighlight">\( i + d\,A \)</span> holds <span class="math notranslate nohighlight">\( \partial \Psi_A / \partial x_i \)</span>, where <span class="math notranslate nohighlight">\( d \)</span> is the spatial dimension. </p>
 <p>Subclassed by <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation"><span class="std std-ref">Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</span></a></p>
 <div class="breathe-sectiondef docutils container">
@@ -959,21 +972,6 @@
 <li><p><strong>coord</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> of the evaluation point (length <span class="math notranslate nohighlight">\( d \)</span>). </p></li>
 <li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The <span class="math notranslate nohighlight">\( n \)</span> candidate kernel functions. </p></li>
 <li><p><strong>shapeFunctionValues</strong> – <strong>[out]</strong> Shape function values (length <span class="math notranslate nohighlight">\( n \)</span>). </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree13Approximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree13Approximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree13Approximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctionGradients__doubleCP.std::vector:KernelFunctionCP:CR.doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeShapeFunctionGradients</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">shapeFunctionValueGradients</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree13Approximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the shape function gradients <span class="math notranslate nohighlight">\( \partial \Psi_A / \partial x_i \)</span>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coord</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> of the evaluation point. </p></li>
-<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The <span class="math notranslate nohighlight">\( n \)</span> candidate kernel functions. </p></li>
-<li><p><strong>shapeFunctionValueGradients</strong> – <strong>[out]</strong> Shape function gradients, column-major <span class="math notranslate nohighlight">\( d \times n \)</span>. </p></li>
 </ul>
 </dd>
 </dl>
@@ -5363,6 +5361,113 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) \)</span>, until the residual is below <s
 </dd></dl>
 
 <dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasisE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasisE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasisE"></span><span id="Marmot::Math::MonomialBasis"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonomialBasis</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasisE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;<a class="reference internal" href="#_marmot_monomial_basis_functions_8h"><span class="std std-ref">MarmotMonomialBasisFunctions.h</span></a>&gt;</em></div>
+<p>The complete monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x}) \)</span> of order <span class="math notranslate nohighlight">\( n \)</span> in <span class="math notranslate nohighlight">\( d \)</span> dimensions, as a table of exponents. </p>
+<p>The entries are all monomials <span class="math notranslate nohighlight">\( x_1^{\alpha_1} \cdots x_d^{\alpha_d} \)</span> with <span class="math notranslate nohighlight">\( \alpha_1 + \dots + \alpha_d \le n \)</span>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <span class="math notranslate nohighlight">\( n = 2 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T \)</span>; in 3D with <span class="math notranslate nohighlight">\( n = 1 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T \)</span>. The first entry is always <span class="math notranslate nohighlight">\( 1 \)</span>.</p>
+<p>The exponents <span class="math notranslate nohighlight">\( \boldsymbol{\alpha} \)</span> of every entry are listed once, at construction; an evaluation is then the product of the powers, <span class="math notranslate nohighlight">\( H_k = \prod_j x_j^{\alpha_{kj}} \)</span>, and its gradient that product with the factor of coordinate <span class="math notranslate nohighlight">\( i \)</span> replaced by its derivative,  <span class="math notranslate nohighlight">\( \partial H_k / \partial x_i = \alpha_{ki}\,
+x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} \)</span>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis13MonomialBasisEii">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis13MonomialBasisEii"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis13MonomialBasisEii"></span><span id="Marmot::Math::MonomialBasis::MonomialBasis__i.i"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1adbeb7c5c1bbd4b881fd7264a84d6a4df"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MonomialBasis</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis13MonomialBasisEii" title="Link to this definition"></a><br /></dt>
+<dd><p>List the exponents of the basis. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>order</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \ge 0 \)</span>. </p></li>
+<li><p><strong>dim</strong> – <strong>[in]</strong> Spatial dimension <span class="math notranslate nohighlight">\( d \ge 1 \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv">
+<span id="_CPPv3NK6Marmot4Math13MonomialBasis4sizeEv"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis4sizeEv"></span><span id="Marmot::Math::MonomialBasis::sizeC"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis4sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>The number of monomials, <span class="math notranslate nohighlight">\( \binom{d + n}{d} \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii">
+<span id="_CPPv3NK6Marmot4Math13MonomialBasis8exponentEii"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis8exponentEii"></span><span id="Marmot::Math::MonomialBasis::exponent__i.iC"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exponent</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">j</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis8exponentEii" title="Link to this definition"></a><br /></dt>
+<dd><p>The exponent of coordinate <code class="docutils literal notranslate"><span class="pre">j</span></code> in monomial <code class="docutils literal notranslate"><span class="pre">k</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE">
+<span id="_CPPv3NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"></span><span id="Marmot::Math::MonomialBasis::evaluate__Eigen::Ref:Eigen::VectorXdC:CR.Eigen::Ref:Eigen::VectorXd:C"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a06fb76b6f902508a208b2911350c07a4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">H</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis8evaluateERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the basis. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>, <span class="math notranslate nohighlight">\( d \)</span> of them. </p></li>
+<li><p><strong>H</strong> – <strong>[out]</strong> The basis; of size <a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82"><span class="std std-ref">size()</span></a>. Any contiguous vector, e.g. one of a fixed largest size, which needs no allocation. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE">
+<span id="_CPPv3NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"></span><span id="_CPPv2NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"></span><span id="Marmot::Math::MonomialBasis::evaluateGradient__Eigen::Ref:Eigen::VectorXdC:CR.Eigen::Ref:Eigen::MatrixXd:C"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a1d3f52df9d95834645311a2c7c8dc6cb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateGradient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dH_dx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot4Math13MonomialBasis16evaluateGradientERKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the gradient <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial \boldsymbol{x} \)</span> of the basis. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – <strong>[in]</strong> Coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>, <span class="math notranslate nohighlight">\( d \)</span> of them. </p></li>
+<li><p><strong>dH_dx</strong> – <strong>[out]</strong> The gradient, <a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82"><span class="std std-ref">size()</span></a> <span class="math notranslate nohighlight">\( \times d \)</span>: row <span class="math notranslate nohighlight">\( k \)</span> is entry <span class="math notranslate nohighlight">\( k \)</span> of the basis, column <span class="math notranslate nohighlight">\( i \)</span> the derivative with respect to <span class="math notranslate nohighlight">\( x_i \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis13listExponentsEiiRi"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis13listExponentsEiiRi"></span><span id="Marmot::Math::MonomialBasis::listExponents__i.i.iR"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">listExponents</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">entry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis13listExponentsEiiRi" title="Link to this definition"></a><br /></dt>
+<dd><p>List the exponents of the coordinates <span class="math notranslate nohighlight">\( 1, \dots, \)</span> <code class="docutils literal notranslate"><span class="pre">dim</span></code> of all monomials of total degree <span class="math notranslate nohighlight">\( \le \)</span> <code class="docutils literal notranslate"><span class="pre">order</span></code>, from entry <code class="docutils literal notranslate"><span class="pre">entry</span></code> on: the exponent of coordinate <code class="docutils literal notranslate"><span class="pre">dim</span></code> varies slowest, the lower coordinates are listed recursively. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis4_dimE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis4_dimE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis4_dimE"></span><span id="Marmot::Math::MonomialBasis::_dim__i"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a93d49190f015b20fa722feded97a463f"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_dim</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis4_dimE" title="Link to this definition"></a><br /></dt>
+<dd><p>the spatial dimension </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis5_sizeE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis5_sizeE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis5_sizeE"></span><span id="Marmot::Math::MonomialBasis::_size__i"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a6aa659f04ac699dc1713ed390eaaa521"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_size</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis5_sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>the number of monomials </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis10_exponentsE"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis10_exponentsE"></span><span id="Marmot::Math::MonomialBasis::_exponents__std::vector:i:"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_exponents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis10_exponentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>entry <span class="math notranslate nohighlight">\( k\, d + j \)</span>: the exponent of coordinate <span class="math notranslate nohighlight">\( j \)</span> in monomial <span class="math notranslate nohighlight">\( k \)</span></p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-functions">Private Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math13MonomialBasis5powerEdi">
+<span id="_CPPv3N6Marmot4Math13MonomialBasis5powerEdi"></span><span id="_CPPv2N6Marmot4Math13MonomialBasis5powerEdi"></span><span id="Marmot::Math::MonomialBasis::power__double.i"></span><span class="target" id="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">power</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math13MonomialBasis5powerEdi" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( x^\alpha \)</span> by multiplication; zero for <span class="math notranslate nohighlight">\( \alpha &lt; 0 \)</span> (the derivative of a constant). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="Marmot::Discretizations::Meshfree::Particle"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Particle</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE" title="Link to this definition"></a><br /></dt>
 <dd><div class="docutils container">
@@ -6603,7 +6708,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 \[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
   \phi_A(\boldsymbol{x}),
 \]</div>
- where <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> is the vector of all monomials up to the completeness order <span class="math notranslate nohighlight">\( n \)</span> (Math::computeMonomialBasis(), first entry <span class="math notranslate nohighlight">\( 1 \)</span>) evaluated at the shifted coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span>. The coefficient vector <span class="math notranslate nohighlight">\( \boldsymbol{b} \)</span> solves      <div class="math notranslate nohighlight">
+ where <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> is the vector of all monomials up to the completeness order <span class="math notranslate nohighlight">\( n \)</span> (<a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis"><span class="std std-ref">Math::MonomialBasis</span></a>, first entry <span class="math notranslate nohighlight">\( 1 \)</span>) evaluated at the shifted coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span>. The coefficient vector <span class="math notranslate nohighlight">\( \boldsymbol{b} \)</span> solves      <div class="math notranslate nohighlight">
 \[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
   \qquad \boldsymbol{M}(\boldsymbol{x}) = \sum_{B} \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)\,
   \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B)\, \phi_B(\boldsymbol{x}),
@@ -6620,9 +6725,43 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
   \boldsymbol{H}_{,i}^T \right) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i},
 \]</div>
  with <span class="math notranslate nohighlight">\( (\bullet)_{,i} = \partial (\bullet) / \partial x_i \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> evaluated at <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span> (resp. <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_B \)</span>). The linear systems are solved with a column-pivoting Householder QR decomposition of <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span>, which is computed once per evaluation point.</p>
+<p><strong>One evaluation, three passes over the kernels.</strong> First, every candidate kernel is evaluated once, with its gradient if the gradients of the shape functions are asked for (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216"><span class="std std-ref">evaluateKernelFunctions()</span></a>); the values and gradients are kept in the output arrays, which have one entry per candidate. Second, <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> (and <span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} \)</span>) is assembled from them (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7fb9b63ddd9e35f23fcb622fdd76317c"><span class="std std-ref">assembleMomentMatrix()</span></a>); third, the shape functions follow, overwriting the kernel values. Everything in between is of a fixed largest size (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988"><span class="std std-ref">BasisVector</span></a>, <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832"><span class="std std-ref">MomentMatrix</span></a>): an evaluation allocates no memory.</p>
 <p>If fewer kernels cover <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> than the basis has entries, <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> is singular; the completeness order is then reduced for this evaluation point (<a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329"><span class="std std-ref">getCorrectedCompletenessOrder()</span></a>).</p>
 <p>See <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit"><span class="std std-ref">ReproducingKernelApproximationImplicit</span></a> for the variant with implicit gradients. </p>
 <p>Subclassed by <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit"><span class="std std-ref">Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BasisVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColMajor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis"><span class="n"><span class="pre">maxSizeOfBasis</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE" title="Link to this definition"></a><br /></dt>
+<dd><p>The monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> (and vectors of its size), of a size up to maxSizeOfBasis. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a53e943e3ac42dd38477657a14af77321"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BasisGradient</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColMajor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis"><span class="n"><span class="pre">maxSizeOfBasis</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxDim"><span class="n"><span class="pre">maxDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE" title="Link to this definition"></a><br /></dt>
+<dd><p>The gradient <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial \boldsymbol{x} \)</span>, one column per dimension. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MomentMatrix</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColMajor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis"><span class="n"><span class="pre">maxSizeOfBasis</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis"><span class="n"><span class="pre">maxSizeOfBasis</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE" title="Link to this definition"></a><br /></dt>
+<dd><p>The moment matrix <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> (and matrices of its size). </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a1f8356097c91e500fc3f7385dfd4d50f"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MomentMatrixGradient</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrix"><span class="n"><span class="pre">MomentMatrix</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxDim"><span class="n"><span class="pre">maxDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE" title="Link to this definition"></a><br /></dt>
+<dd><p>The gradients <span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} \)</span> of the moment matrix, entry <span class="math notranslate nohighlight">\( i \)</span>. </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11CoordinatesE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11CoordinatesE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11CoordinatesE"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abb2c116b1fb0abf538e3ef98b65e85ea"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Coordinates</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColMajor</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxDim"><span class="n"><span class="pre">maxDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11CoordinatesE" title="Link to this definition"></a><br /></dt>
+<dd><p>A point, or a difference of points, of up to maxDim coordinates. </p>
+</dd></dl>
+
+</div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -6632,9 +6771,12 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dim</strong> – <strong>[in]</strong> Spatial dimension <span class="math notranslate nohighlight">\( d \)</span>. </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Desired completeness order <span class="math notranslate nohighlight">\( n \)</span> (order of the reproduced polynomials). </p></li>
+<li><p><strong>dim</strong> – <strong>[in]</strong> Spatial dimension <span class="math notranslate nohighlight">\( d \le \)</span> maxDim. </p></li>
+<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Desired completeness order <span class="math notranslate nohighlight">\( n \ge 0 \)</span> (order of the reproduced polynomials). </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the order is negative, or the dimension or the basis exceeds maxDim or maxSizeOfBasis. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -6657,23 +6799,8 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <li><p><strong>shapeFunctionValues</strong> – <strong>[out]</strong> Shape function values (length <span class="math notranslate nohighlight">\( n_\mathrm{c} \)</span>); zero for candidates that do not cover <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
 </ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctionGradients__doubleCP.std::vector:KernelFunctionCP:CR.doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeShapeFunctionGradients</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">shapeFunctionValueGradients</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Not implemented; use <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef"><span class="std std-ref">computeShapeFunctionsAndGradients()</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point. </p></li>
-<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> Candidate kernel functions. </p></li>
-<li><p><strong>shapeFunctionValueGradients</strong> – <strong>[out]</strong> Not written. </p></li>
-</ul>
-</dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – always. </p>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the moment matrix is singular (see <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f"><span class="std std-ref">factorizeMomentMatrix()</span></a>). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -6692,17 +6819,90 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </ul>
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the basis is empty (negative completeness order). </p>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the moment matrix is singular (see <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f"><span class="std std-ref">factorizeMomentMatrix()</span></a>). </p>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxDim__i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5137f128efc4618ff4422f1a20420274"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxDim</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation6maxDimE" title="Link to this definition"></a><br /></dt>
+<dd><p>The largest spatial dimension. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis__i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a64dfbf91d03d7ca6586b9d30006ce413"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">maxSizeOfBasis</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14maxSizeOfBasisE" title="Link to this definition"></a><br /></dt>
+<dd><p>The largest monomial basis: the complete cubic basis in 3D, <span class="math notranslate nohighlight">\( \binom{3 + 3}{3} \)</span>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERKN5Eigen8MatrixXdEPKdi">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERKN5Eigen8MatrixXdEPKdi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERKN5Eigen8MatrixXdEPKdi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorizeMomentMatrix__Eigen::MatrixXdCR.doubleCP.iC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aecb715dd20e218e5d92b903bd994a37e"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColPivHouseholderQR</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">factorizeMomentMatrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nCoveringKernels</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERKN5Eigen8MatrixXdEPKdi" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation23evaluateKernelFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation23evaluateKernelFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation23evaluateKernelFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::evaluateKernelFunctions__doubleCP.std::vector:KernelFunctionCP:CR.doubleP.doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateKernelFunctions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dPhi_dx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation23evaluateKernelFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate every candidate kernel at a point, once: its value <span class="math notranslate nohighlight">\( \phi_A(\boldsymbol{x}) \)</span> and, if asked for, its gradient. A kernel with <span class="math notranslate nohighlight">\( |\phi_A(\boldsymbol{x})| \le 10^{-14} \)</span> does not cover the point: its value (and gradient) is set to zero, and it takes no further part. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> (length <span class="math notranslate nohighlight">\( d \)</span>). </p></li>
+<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The <span class="math notranslate nohighlight">\( n_\mathrm{c} \)</span> candidate kernel functions. </p></li>
+<li><p><strong>phi</strong> – <strong>[out]</strong> The kernel values, length <span class="math notranslate nohighlight">\( n_\mathrm{c} \)</span>. </p></li>
+<li><p><strong>dPhi_dx</strong> – <strong>[out]</strong> The kernel gradients, column-major <span class="math notranslate nohighlight">\( d \times n_\mathrm{c} \)</span>; nullptr if not needed. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of kernels that cover the point. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13evaluateBasisEPKdRK14KernelFunctioniR11BasisVectorP13BasisGradient">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13evaluateBasisEPKdRK14KernelFunctioniR11BasisVectorP13BasisGradient"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13evaluateBasisEPKdRK14KernelFunctioniR11BasisVectorP13BasisGradient"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::evaluateBasis__doubleCP.KernelFunctionCR.i.BasisVectorR.BasisGradientPC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a956e4d346f780191765fa03a5fa77547"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateBasis</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunction</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation11BasisVectorE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::BasisVector"><span class="n"><span class="pre">BasisVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">H</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13BasisGradientE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::BasisGradient"><span class="n"><span class="pre">BasisGradient</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dH_dx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13evaluateBasisEPKdRK14KernelFunctioniR11BasisVectorP13BasisGradient" title="Link to this definition"></a><br /></dt>
+<dd><p>The monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) \)</span> at the shifted coordinates of a kernel, and, if asked for, its gradient (<a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis"><span class="std std-ref">Math::MonomialBasis</span></a>). Since <span class="math notranslate nohighlight">\( \boldsymbol{x}_A \)</span> is fixed, the gradient with respect to the shifted coordinates is the one with respect to <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
+<li><p><strong>kernelFunction</strong> – <strong>[in]</strong> The kernel <span class="math notranslate nohighlight">\( \phi_A \)</span>, whose center is <span class="math notranslate nohighlight">\( \boldsymbol{x}_A \)</span>. </p></li>
+<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
+<li><p><strong>H</strong> – <strong>[out]</strong> The basis, of size <span class="math notranslate nohighlight">\( \binom{d + n}{d} \)</span>. </p></li>
+<li><p><strong>dH_dx</strong> – <strong>[out]</strong> Its gradient, one column per dimension; nullptr if not needed. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20assembleMomentMatrixEPKdRKNSt6vectorIPK14KernelFunctionEEPKdPKdiR12MomentMatrixP20MomentMatrixGradient">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20assembleMomentMatrixEPKdRKNSt6vectorIPK14KernelFunctionEEPKdPKdiR12MomentMatrixP20MomentMatrixGradient"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20assembleMomentMatrixEPKdRKNSt6vectorIPK14KernelFunctionEEPKdPKdiR12MomentMatrixP20MomentMatrixGradient"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::assembleMomentMatrix__doubleCP.std::vector:KernelFunctionCP:CR.doubleCP.doubleCP.i.MomentMatrixR.MomentMatrixGradientPC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7fb9b63ddd9e35f23fcb622fdd76317c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assembleMomentMatrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">phi</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dPhi_dx</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrix"><span class="n"><span class="pre">MomentMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20MomentMatrixGradientE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrixGradient"><span class="n"><span class="pre">MomentMatrixGradient</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dM_dx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation20assembleMomentMatrixEPKdRKNSt6vectorIPK14KernelFunctionEEPKdPKdiR12MomentMatrixP20MomentMatrixGradient" title="Link to this definition"></a><br /></dt>
+<dd><p>Assemble the moment matrix  <span class="math notranslate nohighlight">\( \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} -
+\boldsymbol{x}_B) \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) \)</span> over the covering kernels and, if asked for, its gradients   <span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i}
+\boldsymbol{H}^T + \boldsymbol{H} \boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T
+\phi_{B,i} \)</span>: the one assembly of the moment matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
+<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The candidate kernel functions. </p></li>
+<li><p><strong>phi</strong> – <strong>[in]</strong> Their values, from <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216"><span class="std std-ref">evaluateKernelFunctions()</span></a>; zero for a kernel that does not cover the point, which is skipped. </p></li>
+<li><p><strong>dPhi_dx</strong> – <strong>[in]</strong> Their gradients, from <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216"><span class="std std-ref">evaluateKernelFunctions()</span></a>; nullptr if <code class="docutils literal notranslate"><span class="pre">dM_dx</span></code> is. </p></li>
+<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
+<li><p><strong>M</strong> – <strong>[out]</strong> The symmetric moment matrix, of size <span class="math notranslate nohighlight">\( \binom{d + n}{d} \)</span> squared. </p></li>
+<li><p><strong>dM_dx</strong> – <strong>[out]</strong> Its <span class="math notranslate nohighlight">\( d \)</span> gradients; nullptr if not needed. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERK12MomentMatrixPKdi">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERK12MomentMatrixPKdi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERK12MomentMatrixPKdi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorizeMomentMatrix__MomentMatrixCR.doubleCP.iC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f"></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ColPivHouseholderQR</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrix"><span class="n"><span class="pre">MomentMatrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">factorizeMomentMatrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation12MomentMatrixE" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrix"><span class="n"><span class="pre">MomentMatrix</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nCoveringKernels</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation21factorizeMomentMatrixERK12MomentMatrixPKdi" title="Link to this definition"></a><br /></dt>
 <dd><p>Factorize the moment matrix <span class="math notranslate nohighlight">\( \boldsymbol{M}(\boldsymbol{x}) \)</span> and check that it is regular. </p>
 <p><a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba"><span class="std std-ref">checkNonSingularity()</span></a> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> is singular, and solving it would silently give shape functions without partition of unity. </p>
 <dl class="field-list simple">
@@ -6723,24 +6923,10 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation9factorialEi">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation9factorialEi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation9factorialEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorial__iC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a4aeb663d099a242946411c54c1a777b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">factorial</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation9factorialEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the factorial <span class="math notranslate nohighlight">\( n! \)</span> recursively. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>n</strong> – <strong>[in]</strong> Non-negative integer. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( n! \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation19checkNonSingularityEii">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation19checkNonSingularityEii"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation19checkNonSingularityEii"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::checkNonSingularity__i.iC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkNonSingularity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nNodes</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation19checkNonSingularityEii" title="Link to this definition"></a><br /></dt>
 <dd><p>Check if the completeness order leads to a non-singular equation system. </p>
-<p>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <span class="math notranslate nohighlight">\( n_\mathrm{nodes} \ge \binom{d + n}{d} \)</span>. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <span class="math notranslate nohighlight">\( n \le 0 \)</span>.</p>
+<p>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <span class="math notranslate nohighlight">\( n_\mathrm{nodes} \ge \binom{d + n}{d} \)</span>, the size of the basis. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <span class="math notranslate nohighlight">\( n \le 0 \)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -6769,23 +6955,6 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </dl>
 </dd></dl>
 
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33findCoveringKernelFunctionIndicesEPKdRKNSt6vectorIPK14KernelFunctionEE">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33findCoveringKernelFunctionIndicesEPKdRKNSt6vectorIPK14KernelFunctionEE"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33findCoveringKernelFunctionIndicesEPKdRKNSt6vectorIPK14KernelFunctionEE"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::findCoveringKernelFunctionIndices__doubleCP.std::vector:KernelFunctionCP:CRC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abe54a98e7215e69a0c164107740713bd"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">findCoveringKernelFunctionIndices</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation33findCoveringKernelFunctionIndicesEPKdRKNSt6vectorIPK14KernelFunctionEE" title="Link to this definition"></a><br /></dt>
-<dd><p>Find the kernels covering a point. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
-<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> Candidate kernel functions. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Indices (into <code class="docutils literal notranslate"><span class="pre">kernelFunctions</span></code>) of the kernels with <span class="math notranslate nohighlight">\( |\phi_A(\boldsymbol{x})| &gt; 10^{-14} \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
@@ -6801,96 +6970,27 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dd><p>requested completeness order <span class="math notranslate nohighlight">\( n \)</span> (may be reduced per point) </p>
 </dd></dl>
 
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13_basisOfOrderE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13_basisOfOrderE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13_basisOfOrderE"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_basisOfOrder__std::vector:Math::MonomialBasis:"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9dbdf5dde856cddf5c0f89965acb7fbc"></span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot4Math13MonomialBasisE" title="Marmot::Math::MonomialBasis"><span class="n"><span class="pre">MonomialBasis</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_basisOfOrder</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation13_basisOfOrderE" title="Link to this definition"></a><br /></dt>
+<dd><p>The monomial basis of every order up to the desired one, entry <span class="math notranslate nohighlight">\( n \)</span> (an order may be reduced per point). </p>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeHVectorERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi">
-<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeHVectorERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeHVectorERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVector__Eigen::VectorXdCR.std::vector:KernelFunctionCP:CR.i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ae13c28d4dac93ef676bf2972add81183"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeHVector</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">globalCoord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coveringShapeFunctions</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeHVectorERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the monomial basis vector <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> at shifted coordinates. </p>
-<p>Wraps Math::computeMonomialBasis(); callers pass <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span>.</p>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22evaluateShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22evaluateShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22evaluateShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::evaluateShapeFunctions__doubleCP.std::vector:KernelFunctionCP:CR.doubleP.doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af8c33e7a67e9e8b46938f2a4f24d0630"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateShapeFunctions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Psi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dPsi_dx</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22evaluateShapeFunctionsEPKdRKNSt6vectorIPK14KernelFunctionEEPdPd" title="Link to this definition"></a><br /></dt>
+<dd><p>The evaluation behind <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a"><span class="std std-ref">computeShapeFunctions()</span></a> and <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef"><span class="std std-ref">computeShapeFunctionsAndGradients()</span></a>: the values, and the gradients if <code class="docutils literal notranslate"><span class="pre">dPsi_dx</span></code> is given. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>globalCoord</strong> – <strong>[in]</strong> Shifted coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span> at which the basis is evaluated (despite the name, not the global coordinates). </p></li>
-<li><p><strong>coveringShapeFunctions</strong> – <strong>[in]</strong> Covering kernel functions (unused). </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
+<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
+<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The candidate kernel functions. </p></li>
+<li><p><strong>Psi</strong> – <strong>[out]</strong> Shape function values. </p></li>
+<li><p><strong>dPsi_dx</strong> – <strong>[out]</strong> Their gradients, column-major <span class="math notranslate nohighlight">\( d \times n_\mathrm{c} \)</span>; nullptr for the values alone. </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) \)</span>, of size <span class="math notranslate nohighlight">\( \binom{d + n}{d} \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22computeHVectorGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi">
-<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22computeHVectorGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22computeHVectorGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVectorGradient__Eigen::VectorXdCR.std::vector:KernelFunctionCP:CR.i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ab682ccd70a9b0b95c576f12f7ba37213"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeHVectorGradient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">globalCoord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coveringShapeFunctions</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation22computeHVectorGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the gradient <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial x_i \)</span> of the monomial basis vector. </p>
-<p>Wraps Math::computeMonomialBasisGradient(); callers pass <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span>. Since <span class="math notranslate nohighlight">\( \boldsymbol{x}_A \)</span> is fixed, the derivative with respect to the shifted coordinates equals that with respect to <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>globalCoord</strong> – <strong>[in]</strong> Shifted coordinates <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_A \)</span> (despite the name, not the global coordinates). </p></li>
-<li><p><strong>coveringShapeFunctions</strong> – <strong>[in]</strong> Covering kernel functions (unused). </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Matrix of size <span class="math notranslate nohighlight">\( \binom{d + n}{d} \times d \)</span>; column <span class="math notranslate nohighlight">\( i \)</span> holds <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial x_i \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeMMatrixERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi">
-<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeMMatrixERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeMMatrixERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrix__Eigen::VectorXdCR.std::vector:KernelFunctionCP:CR.i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9795dcb299ef20e175a525e5ab6eb159"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMMatrix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">globalCoord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coveringShapeFunctions</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation14computeMMatrixERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the moment matrix  <span class="math notranslate nohighlight">\( \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)
-\boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) \)</span>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>globalCoord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
-<li><p><strong>coveringShapeFunctions</strong> – <strong>[in]</strong> Kernel functions <span class="math notranslate nohighlight">\( \phi_B \)</span> summed over (kernels that do not cover <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span> contribute zero). </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The symmetric moment matrix, of size <span class="math notranslate nohighlight">\( \binom{d + n}{d} \times \binom{d + n}{d} \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25computeMMatrixAndGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi">
-<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25computeMMatrixAndGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25computeMMatrixAndGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrixAndGradient__Eigen::VectorXdCR.std::vector:KernelFunctionCP:CR.i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a60e4bc73d9d6e32d0d74f43141d7048f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMMatrixAndGradient</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">globalCoord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coveringShapeFunctions</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">completenessOrder</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation25computeMMatrixAndGradientERKN5Eigen8VectorXdERKNSt6vectorIPK14KernelFunctionEEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Compute the moment matrix <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> and its gradients <span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} \)</span>. </p>
-<p><span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
-\boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i} \)</span>, with <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> evaluated at <span class="math notranslate nohighlight">\( \boldsymbol{x} - \boldsymbol{x}_B \)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>globalCoord</strong> – <strong>[in]</strong> Evaluation point <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. </p></li>
-<li><p><strong>coveringShapeFunctions</strong> – <strong>[in]</strong> Kernel functions <span class="math notranslate nohighlight">\( \phi_B \)</span> summed over. </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pair of <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span> and the <span class="math notranslate nohighlight">\( d \)</span> matrices <span class="math notranslate nohighlight">\( \boldsymbol{M}_{,i} \)</span>. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation8H0VectorEi">
-<span id="_CPPv3N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation8H0VectorEi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation8H0VectorEi"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::H0Vector__i"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a496cdc07e9e2bf86d6a303e0a44dcf9e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">H0Vector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeHVector</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree30ReproducingKernelApproximation8H0VectorEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Get <span class="math notranslate nohighlight">\( \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T \)</span>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sizeHVector</strong> – <strong>[in]</strong> Size of the monomial basis vector. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The first unit vector of the given size. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -6938,7 +7038,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
   \qquad \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}^{(i)}(\boldsymbol{x}) = \boldsymbol{H}^{(i)}_0,
 \]</div>
  with the same moment matrix <span class="math notranslate nohighlight">\( \boldsymbol{M} \)</span>. The right-hand side  <span class="math notranslate nohighlight">\( \boldsymbol{H}^{(i)}_0 =
--\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} \)</span> (the sign stems from the shifted argument <span class="math notranslate nohighlight">\( \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A \)</span>) is <span class="math notranslate nohighlight">\( -1 \)</span> at the position of the linear monomial <span class="math notranslate nohighlight">\( z_i \)</span> in <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> and zero elsewhere (the position is found from Math::computeMonomialBasisGradient() at the origin, so it is correct for any order). This enforces the gradient reproducing conditions    <div class="math notranslate nohighlight">
+-\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} \)</span> (the sign stems from the shifted argument <span class="math notranslate nohighlight">\( \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A \)</span>) is <span class="math notranslate nohighlight">\( -1 \)</span> at the position of the linear monomial <span class="math notranslate nohighlight">\( z_i \)</span> in <span class="math notranslate nohighlight">\( \boldsymbol{H} \)</span> and zero elsewhere (the position is found from the gradient of the basis at the origin, <a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis"><span class="std std-ref">Math::MonomialBasis</span></a>, so it is correct for any order). This enforces the gradient reproducing conditions    <div class="math notranslate nohighlight">
 \[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
   \frac{\partial \boldsymbol{x}^{\boldsymbol{\alpha}}}{\partial x_i}, \qquad |\boldsymbol{\alpha}| \le n,
 \]</div>
@@ -6952,9 +7052,12 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dim</strong> – <strong>[in]</strong> Spatial dimension <span class="math notranslate nohighlight">\( d \)</span>. </p></li>
-<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Desired completeness order <span class="math notranslate nohighlight">\( n \)</span>. </p></li>
+<li><p><strong>dim</strong> – <strong>[in]</strong> Spatial dimension <span class="math notranslate nohighlight">\( d \le \)</span> maxDim. </p></li>
+<li><p><strong>completenessOrder</strong> – <strong>[in]</strong> Desired completeness order <span class="math notranslate nohighlight">\( n \ge 0 \)</span>. </p></li>
 </ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if the order is negative, or the dimension or the basis exceeds maxDim or maxSizeOfBasis (see <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation"><span class="std std-ref">ReproducingKernelApproximation</span></a>). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -6963,24 +7066,6 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitD0Ev">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitD0Ev"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitD0Ev"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit::~ReproducingKernelApproximationImplicit"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ReproducingKernelApproximationImplicit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicitD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Default destructor. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd"></span><span id="Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit::computeShapeFunctionGradients__doubleCP.std::vector:KernelFunctionCP:CR.doublePC"></span><span class="target" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeShapeFunctionGradients</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coord</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">shapeFunctionValueGradients</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Meshfree38ReproducingKernelApproximationImplicit29computeShapeFunctionGradientsEPKdRKNSt6vectorIPK14KernelFunctionEEPd" title="Link to this definition"></a><br /></dt>
-<dd><p>Not implemented; use <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662"><span class="std std-ref">computeShapeFunctionsAndGradients()</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>coord</strong> – <strong>[in]</strong> Evaluation point. </p></li>
-<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> Candidate kernel functions. </p></li>
-<li><p><strong>shapeFunctionValueGradients</strong> – <strong>[out]</strong> Not written. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – always. </p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="cpp function">
@@ -6997,7 +7082,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </ul>
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the basis is empty (negative completeness order). </p>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the moment matrix is singular (see <a class="reference internal" href="#class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f"><span class="std std-ref">factorizeMomentMatrix()</span></a>). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -7789,52 +7874,9 @@ dA / V \)</span>. </p></li>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii">
-<span id="_CPPv3N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii"></span><span id="_CPPv2N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii"></span><span id="Marmot::Math::_computeMonomialBasisRecursion__i.Eigen::VectorXdCR.Eigen::VectorXdR.i.i"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_computeMonomialBasisRecursion</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">idxEnd</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math30_computeMonomialBasisRecursionEiRKN5Eigen8VectorXdERN5Eigen8VectorXdEii" title="Link to this definition"></a><br /></dt>
-<dd><p>Recursive kernel of computeMonomialBasis(). </p>
-<p>Multiplies the entries starting at <code class="docutils literal notranslate"><span class="pre">idxEnd</span></code> by the powers <span class="math notranslate nohighlight">\( x_k^i \)</span> of the coordinates <span class="math notranslate nohighlight">\( k \le \)</span> <code class="docutils literal notranslate"><span class="pre">dim</span></code>, for all exponent combinations of total degree <span class="math notranslate nohighlight">\( \le \)</span> <code class="docutils literal notranslate"><span class="pre">order</span></code>. The loop over the exponent of coordinate <code class="docutils literal notranslate"><span class="pre">dim</span></code> is the outermost one, the recursion handles the lower coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>order</strong> – <strong>[in]</strong> Remaining total degree. </p></li>
-<li><p><strong>x</strong> – <strong>[in]</strong> Coordinates. </p></li>
-<li><p><strong>res</strong> – <strong>[inout]</strong> Basis vector, initialized with ones by the caller. </p></li>
-<li><p><strong>idxEnd</strong> – <strong>[in]</strong> First entry of <code class="docutils literal notranslate"><span class="pre">res</span></code> treated by this call. </p></li>
-<li><p><strong>dim</strong> – <strong>[in]</strong> Number of (leading) coordinates treated by this call. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>One past the last entry of <code class="docutils literal notranslate"><span class="pre">res</span></code> treated by this call. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii">
-<span id="_CPPv3N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii"></span><span id="_CPPv2N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii"></span><span id="Marmot::Math::_computeMonomialBasisGradientRecursion__i.Eigen::VectorXdCR.Eigen::MatrixXdR.i.i"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_computeMonomialBasisGradientRecursion</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">idxEnd</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dim</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math38_computeMonomialBasisGradientRecursionEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdEii" title="Link to this definition"></a><br /></dt>
-<dd><p>Recursive kernel of computeMonomialBasisGradient(). </p>
-<p>Same traversal as _computeMonomialBasisRecursion(). By the product rule, column <span class="math notranslate nohighlight">\( k \)</span> of an entry is multiplied by <span class="math notranslate nohighlight">\( \partial x_k^i / \partial x_k = i\, x_k^{i-1} \)</span> for its own coordinate and by <span class="math notranslate nohighlight">\( x_j^i \)</span> for all other coordinates <span class="math notranslate nohighlight">\( j \neq k \)</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>order</strong> – <strong>[in]</strong> Remaining total degree. </p></li>
-<li><p><strong>x</strong> – <strong>[in]</strong> Coordinates. </p></li>
-<li><p><strong>res</strong> – <strong>[inout]</strong> Gradient matrix (basis size <span class="math notranslate nohighlight">\( \times d \)</span>), initialized with ones by the caller. </p></li>
-<li><p><strong>idxEnd</strong> – <strong>[in]</strong> First row of <code class="docutils literal notranslate"><span class="pre">res</span></code> treated by this call. </p></li>
-<li><p><strong>dim</strong> – <strong>[in]</strong> Number of (leading) coordinates treated by this call. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>One past the last row of <code class="docutils literal notranslate"><span class="pre">res</span></code> treated by this call. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE">
-<span id="_CPPv3N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE"></span><span id="_CPPv2N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE"></span><span id="Marmot::Math::computeMonomialBasis__i.Eigen::VectorXdCR.Eigen::VectorXdR"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMonomialBasis</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen8VectorXdERN5Eigen8VectorXdE" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the complete monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x}) \)</span> of order <span class="math notranslate nohighlight">\( n \)</span>. </p>
-<p>The entries are all monomials <span class="math notranslate nohighlight">\( x_1^{\alpha_1} \cdots x_d^{\alpha_d} \)</span> with <span class="math notranslate nohighlight">\( \alpha_1 + \dots + \alpha_d \le n \)</span>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <span class="math notranslate nohighlight">\( n = 2 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T \)</span>; in 3D with <span class="math notranslate nohighlight">\( n = 1 \)</span>: <span class="math notranslate nohighlight">\( \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T \)</span>. The first entry is always <span class="math notranslate nohighlight">\( 1 \)</span>.</p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE">
+<span id="_CPPv3N6Marmot4Math20computeMonomialBasisEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"></span><span id="_CPPv2N6Marmot4Math20computeMonomialBasisEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE"></span><span id="Marmot::Math::computeMonomialBasis__i.Eigen::Ref:Eigen::VectorXdC:CR.Eigen::Ref:Eigen::VectorXd:"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1a2530f37cc311f34e4a19876d8e2e0f9f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMonomialBasis</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math20computeMonomialBasisEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8VectorXdEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the complete monomial basis <span class="math notranslate nohighlight">\( \boldsymbol{H}(\boldsymbol{x}) \)</span> of order <span class="math notranslate nohighlight">\( n \)</span> (see <a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis"><span class="std std-ref">MonomialBasis</span></a>, which lists its exponents once for many evaluations). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -7847,9 +7889,9 @@ dA / V \)</span>. </p></li>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE">
-<span id="_CPPv3N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE"></span><span id="_CPPv2N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE"></span><span id="Marmot::Math::computeMonomialBasisGradient__i.Eigen::VectorXdCR.Eigen::MatrixXdR"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMonomialBasisGradient</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen8VectorXdERN5Eigen8MatrixXdE" title="Link to this definition"></a><br /></dt>
-<dd><p>Evaluate the gradient <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial \boldsymbol{x} \)</span> of the monomial basis. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE">
+<span id="_CPPv3N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"></span><span id="_CPPv2N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE"></span><span id="Marmot::Math::computeMonomialBasisGradient__i.Eigen::Ref:Eigen::VectorXdC:CR.Eigen::Ref:Eigen::MatrixXd:"></span><span class="target" id="_marmot_monomial_basis_functions_8h_1afea7f214264b28e0378b8c007e5d450a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMonomialBasisGradient</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">order</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">x</span></span>, <a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ref</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">res</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot4Math28computeMonomialBasisGradientEiRKN5Eigen3RefIKN5Eigen8VectorXdEEEN5Eigen3RefIN5Eigen8MatrixXdEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluate the gradient <span class="math notranslate nohighlight">\( \partial \boldsymbol{H} / \partial \boldsymbol{x} \)</span> of the monomial basis (see <a class="reference internal" href="#class_marmot_1_1_math_1_1_monomial_basis"><span class="std std-ref">MonomialBasis</span></a>). </p>
 <p>Row <span class="math notranslate nohighlight">\( k \)</span> corresponds to entry <span class="math notranslate nohighlight">\( k \)</span> of computeMonomialBasis() (same ordering), column <span class="math notranslate nohighlight">\( i \)</span> to <span class="math notranslate nohighlight">\( \partial / \partial x_i \)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -8031,7 +8073,7 @@ dA / V \)</span>. </p></li>
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for GenericParticle.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-06126a298e0559754b90148c468893bed4974280.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a29dfb79de453e80c9898201eb5d27eda2f2c1e7.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -8039,36 +8081,35 @@ dA / V \)</span>. </p></li>
     &quot;3&quot; [label=&quot;Marmot/MarmotMeshfreeApproximation.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeApproximation.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;]
     &quot;6&quot; [label=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot;]
-    &quot;9&quot; [label=&quot;Marmot/MarmotParticle.h&quot; tooltip=&quot;Marmot/MarmotParticle.h&quot;]
+    &quot;8&quot; [label=&quot;Marmot/MarmotParticle.h&quot; tooltip=&quot;Marmot/MarmotParticle.h&quot;]
     &quot;7&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;14&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
+    &quot;13&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
-    &quot;10&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
-    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;15&quot; [label=&quot;sstream&quot; tooltip=&quot;sstream&quot;]
-    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;12&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
-    &quot;13&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;9&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
+    &quot;14&quot; [label=&quot;sstream&quot; tooltip=&quot;sstream&quot;]
+    &quot;10&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;11&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;12&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
     &quot;5&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;6&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -8101,63 +8142,63 @@ dA / V \)</span>. </p></li>
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for GenericSDIParticle.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-da4b8ed6c87facfb23c5b4c77748be71762985e5.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e78bbf2aa43560d9f136e306cc8613e1afc871b2.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotMeshfreeApproximation.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeApproximation.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;]
-    &quot;15&quot; [label=&quot;Marmot/MarmotMeshfreeQuadHexCell.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeQuadHexCell.h&quot;]
+    &quot;14&quot; [label=&quot;Marmot/MarmotMeshfreeQuadHexCell.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeQuadHexCell.h&quot;]
     &quot;6&quot; [label=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot;]
-    &quot;9&quot; [label=&quot;Marmot/MarmotParticle.h&quot; tooltip=&quot;Marmot/MarmotParticle.h&quot;]
-    &quot;14&quot; [label=&quot;Marmot/MarmotParticleDomain.h&quot; tooltip=&quot;Marmot/MarmotParticleDomain.h&quot;]
+    &quot;8&quot; [label=&quot;Marmot/MarmotParticle.h&quot; tooltip=&quot;Marmot/MarmotParticle.h&quot;]
+    &quot;13&quot; [label=&quot;Marmot/MarmotParticleDomain.h&quot; tooltip=&quot;Marmot/MarmotParticleDomain.h&quot;]
     &quot;7&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;16&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
+    &quot;15&quot; [label=&quot;Eigen/Dense&quot; tooltip=&quot;Eigen/Dense&quot;]
     &quot;19&quot; [label=&quot;Fastor/Fastor.h&quot; tooltip=&quot;Fastor/Fastor.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotFastorTensorBasics.h&quot; tooltip=&quot;Marmot/MarmotFastorTensorBasics.h&quot;]
-    &quot;10&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
-    &quot;17&quot; [label=&quot;array&quot; tooltip=&quot;array&quot;]
-    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;9&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
+    &quot;16&quot; [label=&quot;array&quot; tooltip=&quot;array&quot;]
+    &quot;17&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
     &quot;18&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
-    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;12&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;10&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;11&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
     &quot;20&quot; [label=&quot;tuple&quot; tooltip=&quot;tuple&quot;]
-    &quot;13&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;12&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
     &quot;5&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;16&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;20&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;16&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;17&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;18&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;15&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;6&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;9&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;14&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;14&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;14&quot; -&gt; &quot;16&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;14&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;14&quot; -&gt; &quot;17&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;14&quot; -&gt; &quot;18&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;14&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;14&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;14&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;8&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;13&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;13&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;13&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;13&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;13&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -8743,25 +8784,34 @@ dA / V \)</span>. </p></li>
 <div class="docutils container">
 <em>#include “<a class="reference internal" href="#_marmot_meshfree_kernel_function_8h"><span class="std std-ref">Marmot/MarmotMeshfreeKernelFunction.h</span></a>”</em></div>
 <div class="docutils container">
+<em>#include “<a class="reference internal" href="#_marmot_monomial_basis_functions_8h"><span class="std std-ref">Marmot/MarmotMonomialBasisFunctions.h</span></a>”</em></div>
+<div class="docutils container">
 <em>#include &lt;Eigen/Core&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;Eigen/QR&gt;</em></div>
 <div class="docutils container">
+<em>#include &lt;array&gt;</em></div>
+<div class="docutils container">
 <em>#include &lt;cmath&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;stdexcept&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMeshfreeReproducingKernelApproximation.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-11fd787dd0e22d41344a0f24cde80363721dee35.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fb356e7a42e90d1b1992d3796259f765b50e6df9.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotMeshfreeApproximation.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeApproximation.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;5&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;6&quot; [label=&quot;Eigen/QR&quot; tooltip=&quot;Eigen/QR&quot;]
-    &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;5&quot; [label=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot;]
+    &quot;6&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
+    &quot;7&quot; [label=&quot;Eigen/QR&quot; tooltip=&quot;Eigen/QR&quot;]
+    &quot;8&quot; [label=&quot;array&quot; tooltip=&quot;array&quot;]
+    &quot;9&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;10&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
     &quot;4&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -8770,7 +8820,12 @@ dA / V \)</span>. </p></li>
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -8803,7 +8858,7 @@ dA / V \)</span>. </p></li>
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMeshfreeReproducingKernelApproximationImplicit.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-c81b801e80cc45c98e39bab91ad3d14fe874b6a9.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-8bf2f6cb866a39fdf53874923e234f41cef73601.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -8811,9 +8866,12 @@ dA / V \)</span>. </p></li>
     &quot;2&quot; [label=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot; tooltip=&quot;Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;6&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;7&quot; [label=&quot;Eigen/QR&quot; tooltip=&quot;Eigen/QR&quot;]
-    &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;6&quot; [label=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;Marmot/MarmotMonomialBasisFunctions.h&quot;]
+    &quot;7&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
+    &quot;8&quot; [label=&quot;Eigen/QR&quot; tooltip=&quot;Eigen/QR&quot;]
+    &quot;9&quot; [label=&quot;array&quot; tooltip=&quot;array&quot;]
+    &quot;10&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;11&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
     &quot;5&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;4&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;4&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -8822,12 +8880,17 @@ dA / V \)</span>. </p></li>
     &quot;3&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -8839,16 +8902,16 @@ dA / V \)</span>. </p></li>
 <dd><div class="docutils container">
 <em>#include &lt;Eigen/Core&gt;</em></div>
 <div class="docutils container">
-<em>#include &lt;cmath&gt;</em></div>
+<em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMonomialBasisFunctions.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-9da29429cce9f0621ad80a843242ab81754595b9.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ac6a59421280a5eb4427288b01315b552f9dd65b.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;3&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;3&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
@@ -8856,15 +8919,19 @@ dA / V \)</span>. </p></li>
 </figure>
 <p>This graph shows which files directly or indirectly include MarmotMonomialBasisFunctions.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d9c26f638bf5d2a2a5b4eaa9f2b79aae732d9fee.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-c99dc46c0fb9d7942abd0c4fbb70d56b86ce31e8.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;2&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h&quot;]
     &quot;3&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h&quot;]
+    &quot;4&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot;]
+    &quot;5&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; -&gt; &quot;5&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=back tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=back tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=back tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

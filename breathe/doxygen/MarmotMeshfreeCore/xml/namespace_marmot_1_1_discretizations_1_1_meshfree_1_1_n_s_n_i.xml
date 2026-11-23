@@ -42,7 +42,7 @@
 <parametername direction="in">d2N_dYdY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The face sums: <computeroutput>d2N_dYdY[J](I, B)</computeroutput> is the sum of  <formula id="174">$ \partial N_B / \partial Y_I\, n_J\,
+<para>The face sums: <computeroutput>d2N_dYdY[J](I, B)</computeroutput> is the sum of  <formula id="180">$ \partial N_B / \partial Y_I\, n_J\,
 dA / V $</formula>. </para>
 </parameterdescription>
 </parameteritem>
@@ -55,7 +55,7 @@ dA / V $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="175">$ \tfrac{1}{2} (\text{d2N\_dYdY}[J](I, B) + \text{d2N\_dYdY}[I](J, B)) $</formula> at <formula id="176">$ (I, J) $</formula>. </para>
+<simplesect kind="return"><para><formula id="181">$ \tfrac{1}{2} (\text{d2N\_dYdY}[J](I, B) + \text{d2N\_dYdY}[I](J, B)) $</formula> at <formula id="182">$ (I, J) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -114,7 +114,7 @@ dA / V $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The nDim^2 x nNodes matrix, entry <formula id="158">$ (l\, n_{\text{dim}} + m, B) $</formula>. </para>
+<simplesect kind="return"><para>The nDim^2 x nNodes matrix, entry <formula id="164">$ (l\, n_{\text{dim}} + m, B) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -152,7 +152,7 @@ dA / V $</formula>. </para>
           <declname>J_Y</declname>
         </param>
         <briefdescription>
-<para>The moment-weighted second gradient <formula id="177">$ \boldsymbol{D} $</formula> of a test function. </para>
+<para>The moment-weighted second gradient <formula id="183">$ \boldsymbol{D} $</formula> of a test function. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -169,7 +169,7 @@ dA / V $</formula>. </para>
 <parametername direction="in">dY_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The inverse of the gradient of the motion of the particle, <formula id="178">$ \partial Y / \partial x $</formula>. </para>
+<para>The inverse of the gradient of the motion of the particle, <formula id="184">$ \partial Y / \partial x $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -185,7 +185,7 @@ dA / V $</formula>. </para>
 <parametername direction="in">secondMoments</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The second moments <formula id="161">$ \boldsymbol{M}^Y $</formula> of the particle domain. </para>
+<para>The second moments <formula id="167">$ \boldsymbol{M}^Y $</formula> of the particle domain. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -193,11 +193,11 @@ dA / V $</formula>. </para>
 <parametername direction="in">J_Y</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The volume ratio <formula id="179">$ J_Y $</formula> of the intermediate reference configuration. </para>
+<para>The volume ratio <formula id="185">$ J_Y $</formula> of the intermediate reference configuration. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="180">$ D_{iK} $</formula>. </para>
+<simplesect kind="return"><para><formula id="186">$ D_{iK} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -236,7 +236,7 @@ dA / V $</formula>. </para>
           <declname>ofNode</declname>
         </param>
         <briefdescription>
-<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> with respect to the second gradient of the displacement increment,  <formula id="181">$ \partial f_{Aj} / \partial (\partial^2 \Delta u_k / \partial Y_l \partial Y_m) = D_{im}\,
+<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> with respect to the second gradient of the displacement increment,  <formula id="187">$ \partial f_{Aj} / \partial (\partial^2 \Delta u_k / \partial Y_l \partial Y_m) = D_{im}\,
 \partial \tau_{ij} / \partial \Delta F_{kl} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
@@ -323,7 +323,7 @@ dA / V $</formula>. </para>
           <declname>ofNode</declname>
         </param>
         <briefdescription>
-<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> through the spatial gradient of the shape functions in the stress gradient of the increment,  <formula id="182">$ \partial f_{Aj} / \partial (\partial \Delta u_k /
+<para>Add the derivatives of the stabilization of node <formula id="16">$ A $</formula> through the spatial gradient of the shape functions in the stress gradient of the increment,  <formula id="188">$ \partial f_{Aj} / \partial (\partial \Delta u_k /
 \partial Y_l) \mathrel{-}= D_{km}\, \partial \tau_{ij} / \partial Y_m\, \partial Y_l / \partial x_i $</formula>; zero at a zero increment. </para>
         </briefdescription>
         <detaileddescription>
@@ -388,11 +388,11 @@ dA / V $</formula>. </para>
 <para>The <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> stabilization of the displacement rows of a particle, shared by the displacement and the gradient-enhanced particles (whose dofs of a node start with the displacement). </para>
     </briefdescription>
     <detaileddescription>
-<para>The stabilization adds to the force of node <formula id="16">$ A $</formula> the term  <formula id="159">$ D_{iK}\, \partial \tau_{ij} /
-\partial Y_K $</formula>, with the moment-weighted second gradient of the test function    <formula id="160">\[  D_{iK} = \frac{\partial Y_j}{\partial x_i}\, \frac{\partial^2 T_A}{\partial Y_j \partial Y_L}\,
+<para>The stabilization adds to the force of node <formula id="16">$ A $</formula> the term  <formula id="165">$ D_{iK}\, \partial \tau_{ij} /
+\partial Y_K $</formula>, with the moment-weighted second gradient of the test function    <formula id="166">\[  D_{iK} = \frac{\partial Y_j}{\partial x_i}\, \frac{\partial^2 T_A}{\partial Y_j \partial Y_L}\,
   \frac{M^Y_{LK}}{J_Y} ,
-\]</formula> the second moments <formula id="161">$ \boldsymbol{M}^Y $</formula> of the particle domain and  <formula id="162">$ J_Y = \det \partial\boldsymbol{Y} /
-\partial\boldsymbol{X} $</formula>. The second gradients of the shape functions are the smoothed ones of the particle domain, <formula id="163">$ \partial^2 N_B / \partial Y_I \partial Y_J $</formula> from the face sums <computeroutput>d2N_dYdY[J](I, B)</computeroutput> of <formula id="164">$ \partial N_B / \partial Y_I\, n_J\, dA / V $</formula>, symmetrized. </para>
+\]</formula> the second moments <formula id="167">$ \boldsymbol{M}^Y $</formula> of the particle domain and  <formula id="168">$ J_Y = \det \partial\boldsymbol{Y} /
+\partial\boldsymbol{X} $</formula>. The second gradients of the shape functions are the smoothed ones of the particle domain, <formula id="169">$ \partial^2 N_B / \partial Y_I \partial Y_J $</formula> from the face sums <computeroutput>d2N_dYdY[J](I, B)</computeroutput> of <formula id="170">$ \partial N_B / \partial Y_I\, n_J\, dA / V $</formula>, symmetrized. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" line="327" column="3"/>
   </compounddef>

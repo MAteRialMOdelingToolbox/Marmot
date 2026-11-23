@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_monomial_basis" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::MonomialBasis</compoundname>
+    <includes refid="_marmot_monomial_basis_functions_8h" local="no">MarmotMonomialBasisFunctions.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_monomial_basis_1a93d49190f015b20fa722feded97a463f" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::_dim</definition>
+        <argsstring></argsstring>
+        <name>_dim</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::_dim</qualifiedname>
+        <briefdescription>
+<para>the spatial dimension </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="156" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="156" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_monomial_basis_1a6aa659f04ac699dc1713ed390eaaa521" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::_size</definition>
+        <argsstring></argsstring>
+        <name>_size</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::_size</qualifiedname>
+        <briefdescription>
+<para>the number of monomials </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="157" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Math::MonomialBasis::_exponents</definition>
+        <argsstring></argsstring>
+        <name>_exponents</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::_exponents</qualifiedname>
+        <briefdescription>
+<para>entry <formula id="104">$ k\, d + j $</formula>: the exponent of coordinate <formula id="105">$ j $</formula> in monomial <formula id="95">$ k $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="159" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1adbeb7c5c1bbd4b881fd7264a84d6a4df" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::MonomialBasis::MonomialBasis</definition>
+        <argsstring>(int order, int dim)</argsstring>
+        <name>MonomialBasis</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::MonomialBasis</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>List the exponents of the basis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="98">$ n \ge 0 $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension <formula id="81">$ d \ge 1 $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="82" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="82" bodyend="87"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::size</qualifiedname>
+        <briefdescription>
+<para>The number of monomials, <formula id="79">$ \binom{d + n}{d} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="90" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="90" bodyend="90"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::MonomialBasis::exponent</definition>
+        <argsstring>(int k, int j) const</argsstring>
+        <name>exponent</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::exponent</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>k</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+<para>The exponent of coordinate <computeroutput>j</computeroutput> in monomial <computeroutput>k</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="93" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="93" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1a06fb76b6f902508a208b2911350c07a4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::MonomialBasis::evaluate</definition>
+        <argsstring>(const Eigen::Ref&lt; const Eigen::VectorXd &gt; &amp;x, Eigen::Ref&lt; Eigen::VectorXd &gt; H) const</argsstring>
+        <name>evaluate</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::evaluate</qualifiedname>
+        <param>
+          <type>const Eigen::Ref&lt; const Eigen::VectorXd &gt; &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::VectorXd &gt;</type>
+          <declname>H</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the basis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="93">$ \boldsymbol{x} $</formula>, <formula id="78">$ d $</formula> of them. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">H</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The basis; of size <ref refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kindref="member">size()</ref>. Any contiguous vector, e.g. one of a fixed largest size, which needs no allocation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="101" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="101" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1a1d3f52df9d95834645311a2c7c8dc6cb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::MonomialBasis::evaluateGradient</definition>
+        <argsstring>(const Eigen::Ref&lt; const Eigen::VectorXd &gt; &amp;x, Eigen::Ref&lt; Eigen::MatrixXd &gt; dH_dx) const</argsstring>
+        <name>evaluateGradient</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::evaluateGradient</qualifiedname>
+        <param>
+          <type>const Eigen::Ref&lt; const Eigen::VectorXd &gt; &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::MatrixXd &gt;</type>
+          <declname>dH_dx</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the gradient <formula id="94">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the basis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="93">$ \boldsymbol{x} $</formula>, <formula id="78">$ d $</formula> of them. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dH_dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The gradient, <ref refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kindref="member">size()</ref> <formula id="97">$ \times d $</formula>: row <formula id="95">$ k $</formula> is entry <formula id="95">$ k $</formula> of the basis, column <formula id="15">$ i $</formula> the derivative with respect to <formula id="99">$ x_i $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="116" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="116" bodyend="126"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795" prot="private" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>static double Marmot::Math::MonomialBasis::power</definition>
+        <argsstring>(double x, int alpha)</argsstring>
+        <name>power</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::power</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>alpha</declname>
+        </param>
+        <briefdescription>
+<para><formula id="100">$ x^\alpha $</formula> by multiplication; zero for <formula id="101">$ \alpha &lt; 0 $</formula> (the derivative of a constant). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="130" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="130" bodyend="136"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::MonomialBasis::listExponents</definition>
+        <argsstring>(int order, int dim, int &amp;entry)</argsstring>
+        <name>listExponents</name>
+        <qualifiedname>Marmot::Math::MonomialBasis::listExponents</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <param>
+          <type>int &amp;</type>
+          <declname>entry</declname>
+        </param>
+        <briefdescription>
+<para>List the exponents of the coordinates <formula id="102">$ 1, \dots, $</formula> <computeroutput>dim</computeroutput> of all monomials of total degree <formula id="103">$ \le $</formula> <computeroutput>order</computeroutput>, from entry <computeroutput>entry</computeroutput> on: the exponent of coordinate <computeroutput>dim</computeroutput> varies slowest, the lower coordinates are listed recursively. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="143" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="143" bodyend="154"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The complete monomial basis <formula id="82">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="80">$ n $</formula> in <formula id="78">$ d $</formula> dimensions, as a table of exponents. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The entries are all monomials <formula id="83">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="84">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="85">$ n = 2 $</formula>: <formula id="86">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="87">$ n = 1 $</formula>: <formula id="88">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="89">$ 1 $</formula>.</para>
+<para>The exponents <formula id="90">$ \boldsymbol{\alpha} $</formula> of every entry are listed once, at construction; an evaluation is then the product of the powers, <formula id="91">$ H_k = \prod_j x_j^{\alpha_{kj}} $</formula>, and its gradient that product with the factor of coordinate <formula id="15">$ i $</formula> replaced by its derivative,  <formula id="92">$ \partial H_k / \partial x_i = \alpha_{ki}\,
+x_i^{\alpha_{ki} - 1} \prod_{j \neq i} x_j^{\alpha_{kj}} $</formula>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="75" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="75" bodyend="160"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a93d49190f015b20fa722feded97a463f" prot="private" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>_dim</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7" prot="private" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>_exponents</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a6aa659f04ac699dc1713ed390eaaa521" prot="private" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>_size</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a06fb76b6f902508a208b2911350c07a4" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>evaluate</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a1d3f52df9d95834645311a2c7c8dc6cb" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>evaluateGradient</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>exponent</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb" prot="private" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>listExponents</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1adbeb7c5c1bbd4b881fd7264a84d6a4df" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>MonomialBasis</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795" prot="private" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>power</name></member>
+      <member refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" prot="public" virt="non-virtual"><scope>Marmot::Math::MonomialBasis</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

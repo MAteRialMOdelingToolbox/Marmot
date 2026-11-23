@@ -19,7 +19,6 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" kind="function"><name>Approximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" kind="function"><name>~Approximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4" kind="function"><name>computeShapeFunctions</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3" kind="function"><name>computeShapeFunctionGradients</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" kind="class"><name>Marmot::Discretizations::Cells::BSplineCellGeometry</name>
@@ -390,6 +389,18 @@
     <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a27a2fcfa97c244ad542b5ef2d149ff74" kind="variable"><name>sumOfSecondGradientNorms</name></member>
     <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound_1_1_moments_1a2701e80e2d95a3c657e0ee02e52d428d" kind="variable"><name>secondGradientMoments</name></member>
   </compound>
+  <compound refid="class_marmot_1_1_math_1_1_monomial_basis" kind="class"><name>Marmot::Math::MonomialBasis</name>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a93d49190f015b20fa722feded97a463f" kind="variable"><name>_dim</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a6aa659f04ac699dc1713ed390eaaa521" kind="variable"><name>_size</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a85ec3a08930a6c300a8ed126bcff37c7" kind="variable"><name>_exponents</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1adbeb7c5c1bbd4b881fd7264a84d6a4df" kind="function"><name>MonomialBasis</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kind="function"><name>size</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa9802605bbf397edc5710d080fcf7aa7" kind="function"><name>exponent</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a06fb76b6f902508a208b2911350c07a4" kind="function"><name>evaluate</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a1d3f52df9d95834645311a2c7c8dc6cb" kind="function"><name>evaluateGradient</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795" kind="function"><name>power</name></member>
+    <member refid="class_marmot_1_1_math_1_1_monomial_basis_1aa0ba3a5a2022f33300c2028d6ace38fb" kind="function"><name>listExponents</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class"><name>Marmot::Discretizations::Meshfree::Particle</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" kind="function"><name>vci_getNumberOfConstraints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
@@ -487,28 +498,31 @@
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" kind="function"><name>particleFactoryFunctionByName</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" kind="typedef"><name>BasisVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a53e943e3ac42dd38477657a14af77321" kind="typedef"><name>BasisGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832" kind="typedef"><name>MomentMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a1f8356097c91e500fc3f7385dfd4d50f" kind="typedef"><name>MomentMatrixGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abb2c116b1fb0abf538e3ef98b65e85ea" kind="typedef"><name>Coordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5137f128efc4618ff4422f1a20420274" kind="variable"><name>maxDim</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a64dfbf91d03d7ca6586b9d30006ce413" kind="variable"><name>maxSizeOfBasis</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" kind="variable"><name>_dim</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" kind="variable"><name>_desiredCompletenessOrder</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ae13c28d4dac93ef676bf2972add81183" kind="function"><name>computeHVector</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ab682ccd70a9b0b95c576f12f7ba37213" kind="function"><name>computeHVectorGradient</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9795dcb299ef20e175a525e5ab6eb159" kind="function"><name>computeMMatrix</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a60e4bc73d9d6e32d0d74f43141d7048f" kind="function"><name>computeMMatrixAndGradient</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a496cdc07e9e2bf86d6a303e0a44dcf9e" kind="function"><name>H0Vector</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aecb715dd20e218e5d92b903bd994a37e" kind="function"><name>factorizeMomentMatrix</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a4aeb663d099a242946411c54c1a777b6" kind="function"><name>factorial</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9dbdf5dde856cddf5c0f89965acb7fbc" kind="variable"><name>_basisOfOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216" kind="function"><name>evaluateKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a956e4d346f780191765fa03a5fa77547" kind="function"><name>evaluateBasis</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7fb9b63ddd9e35f23fcb622fdd76317c" kind="function"><name>assembleMomentMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a564c60aa588a887421873e1317ddcb7f" kind="function"><name>factorizeMomentMatrix</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kind="function"><name>checkNonSingularity</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kind="function"><name>getCorrectedCompletenessOrder</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abe54a98e7215e69a0c164107740713bd" kind="function"><name>findCoveringKernelFunctionIndices</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" kind="function"><name>ReproducingKernelApproximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" kind="function"><name>~ReproducingKernelApproximation</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" kind="function"><name>computeShapeFunctions</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6" kind="function"><name>computeShapeFunctionGradients</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af8c33e7a67e9e8b46938f2a4f24d0630" kind="function"><name>evaluateShapeFunctions</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" kind="function"><name>ReproducingKernelApproximationImplicit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" kind="function"><name>~ReproducingKernelApproximationImplicit</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8" kind="function"><name>computeShapeFunctionGradients</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_saved_material_point" kind="class"><name>Marmot::Discretizations::Meshfree::SavedMaterialPoint</name>
@@ -587,10 +601,8 @@
   </compound>
   <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
     <member refid="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" kind="function"><name>computeSizeOfMonomialBasisVector</name></member>
-    <member refid="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" kind="function"><name>_computeMonomialBasisRecursion</name></member>
-    <member refid="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" kind="function"><name>_computeMonomialBasisGradientRecursion</name></member>
-    <member refid="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" kind="function"><name>computeMonomialBasis</name></member>
-    <member refid="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" kind="function"><name>computeMonomialBasisGradient</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1a2530f37cc311f34e4a19876d8e2e0f9f" kind="function"><name>computeMonomialBasis</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1afea7f214264b28e0378b8c007e5d450a" kind="function"><name>computeMonomialBasisGradient</name></member>
     <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
     <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
     <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
