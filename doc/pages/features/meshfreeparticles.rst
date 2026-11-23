@@ -72,6 +72,10 @@ order:
        ``getFaceCoordinates``, ``getEvaluationCoordinates`` and ``getNumberOfEvaluationPoints`` (the points at which
        the shape functions are evaluated, e.g., for checking the coverage by kernel supports),
        ``getInterpolationVector``
+   * - ``getInterpolationVectorLinearizedAboutCenter``
+     - the shape functions linearized about the center, :math:`G_B`: the particle's own interpolation at its own points
+       (its center, a vertex, a face center), for every field; ``getInterpolationVector`` gives the exact shape
+       functions at an arbitrary location (see below)
 
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
@@ -270,6 +274,31 @@ with the total deformation gradient :math:`\boldsymbol{F}` of the particle for t
        entries of :math:`\boldsymbol{U}` in the global basis
      - ``SQCNI_RU``, ``RS-SNNI``
 
+**The points of a particle.** The particle moves as a whole: its center by :math:`\sum_B N_B\,\Delta\boldsymbol{Q}_B`
+and its geometry with the deformation gradient increment
+:math:`\Delta\boldsymbol{F} = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \partial N_B/\partial\boldsymbol{Y}`
+about the center, with the shape functions at the center and the (smoothed) gradients that drive its kinematics. A
+point :math:`\boldsymbol{Y}` of the geometry -- a vertex, a face center -- therefore moves by
+:math:`\sum_B G_B\,\Delta\boldsymbol{Q}_B` with
+
+.. math::
+
+   G_B = N_B(\boldsymbol{Y}_c) + \frac{\partial N_B}{\partial \boldsymbol{Y}} \cdot (\boldsymbol{Y} - \boldsymbol{Y}_c) ,
+
+which ``getInterpolationVectorLinearizedAboutCenter`` returns: the shape functions linearized about the center. A
+particle knows every field it carries only by its value and its gradient at its center, so this is its own
+interpolation at its own points for every field: for the displacement, the motion of the point; for a nonlocal field
+or a temperature, the value the particle carries there. It sums to one, and it is not the vector of the shape functions
+at the point, ``getInterpolationVector``, except at the center: that one is exact at an arbitrary location, and for a
+nodal field that is not linear the two differ by a large fraction at a vertex. A constraint that measures a field at a
+point of the particle and distributes its force there with :math:`G_B` has the symmetric penalty stiffness
+:math:`k\,\boldsymbol{G}\boldsymbol{G}^\mathsf{T}` and is conservative. With the shape functions at the point for the
+force, while the point moves with :math:`G_B`, the stiffness :math:`k\,\boldsymbol{N}\boldsymbol{G}^\mathsf{T}` does work
+over a closed cycle of motion and can feed energy into a softened particle body (EdelweissMeshfree lets its
+constraints on the points of particles choose). The vertices of every cell-shaped particle
+(``getVertexCoordinates``) are those of its deformed geometry, which moves with :math:`\boldsymbol{F}`, not those of a
+smoothing domain that follows only a part of it.
+
 ``ParticleDomain::uniformSubdivided`` splits the undeformed domain once in each direction (4 quadrilaterals or 8
 hexahedra); every subdomain is again a ``ParticleDomain`` with the same update type. This is the basis of the subdomain
 integration.
@@ -404,8 +433,8 @@ main domain and updates the center kinematics,
 
 .. math::
 
-   \Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{q}_B, \qquad
-   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes \frac{\partial N_B}{\partial
+   \Delta\boldsymbol{u}_c = \sum_B N_B\,\Delta\boldsymbol{Q}_B, \qquad
+   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{Q}_B \otimes \frac{\partial N_B}{\partial
    \boldsymbol{Y}} ,
 
 (:math:`\boldsymbol{u}_c \mathrel{+}= \Delta\boldsymbol{u}_c`, which relies on the host restoring the state block of

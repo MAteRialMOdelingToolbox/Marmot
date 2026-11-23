@@ -506,6 +506,27 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
     /**
+     * @brief The shape functions linearized about the center, from the shape functions and smoothed gradients of the
+     *        main domain, which move the center and the domain in computePhysicsKernels() (see
+     *        Particle::getInterpolationVectorLinearizedAboutCenter()).
+     * @param[out] vec Pointer to an array of @f$ n_{\text{nodes}} @f$ values.
+     * @param[in] coordinates Pointer to the coordinates of a point of the particle.
+     */
+    virtual void getInterpolationVectorLinearizedAboutCenter( double*       vec,
+                                                              const double* coordinates ) const override final
+    {
+      const auto [N, dN_dY]         = evaluateShapeFunctionsAndDerivativesForParticleDomain( _particleDomainMain );
+      const CoordinatesSized center = _particleDomainMain.getCenterCoordinates();
+      interpolationVectorLinearizedAboutCenter( vec,
+                                                N.data(),
+                                                dN_dY.data(),
+                                                center.data(),
+                                                coordinates,
+                                                nDim,
+                                                _nNodes );
+    };
+
+    /**
      * @brief Get the number of VCI constraints.
      * @return The number of VCI constraints.
      */

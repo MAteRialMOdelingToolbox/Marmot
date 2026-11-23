@@ -561,6 +561,26 @@ namespace Marmot::Discretizations::Meshfree {
       _meshfreeApproximation.computeShapeFunctions( coordinates, _assignedKernelFunctions, vec );
     };
 
+    /**
+     * @brief The shape functions linearized about the center, from the trial functions and gradients at the center
+     * that drive the kinematics and give the nonlocal fields (see
+     * Particle::getInterpolationVectorLinearizedAboutCenter()).
+     * @param[out] vec         One value per assigned node.
+     * @param[in]  coordinates Coordinates of a point of the particle.
+     */
+    void getInterpolationVectorLinearizedAboutCenter( double* vec, const double* coordinates ) const override
+    {
+      std::array< double, nDim > center;
+      _mp.getCoordinatesAtCenter( center.data() ); // where assignMeshfreeKernelFunctions() evaluated _N and _dN_dY
+      interpolationVectorLinearizedAboutCenter( vec,
+                                                _N.data(),
+                                                _dN_dY.data(),
+                                                center.data(),
+                                                coordinates,
+                                                nDim,
+                                                _nNodes );
+    };
+
     // VCI:
 
     /**

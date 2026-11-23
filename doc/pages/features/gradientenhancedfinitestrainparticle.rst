@@ -146,8 +146,11 @@ face :math:`f` (the face center :math:`\boldsymbol Y_f`),
 
 while :math:`N_B` is the point value at the center. The smoothed gradients are used for both fields, i.e. also for
 :math:`\nabla\Delta\bar N` and the Laplacian term of the nonlocal balance. The smoothing domain is stored by its vertex
-displacements (state ``vertex displacements``) and is updated at each accepted increment from :math:`\boldsymbol F_n` of
-the material point, according to the smoothing domain update type:
+displacements (state ``smoothing vertex displacements``) and is updated at each accepted increment from :math:`\boldsymbol F_n` of
+the material point, according to the smoothing domain update type (the vertices of the particle,
+``getVertexCoordinates``, and its face centers follow :math:`\boldsymbol F_n` for every update type, the geometry the
+particle moves with its shape functions linearized about the center, see :doc:`meshfreeparticles`; the smoothing domain is
+``getVisualizationVertexCoordinates``):
 
 .. list-table::
    :header-rows: 1
@@ -371,8 +374,9 @@ Particle properties (``setProperties`` in this order, or ``setProperty`` by name
      - 0
 
 The state variables are those of the :doc:`gradientenhancedfinitestrainmaterialpoint` (including the material). The
-Quad / Hexa particles append the ``vertex displacements`` of the smoothing domain (:math:`n_\mathrm{dim}\times
-n_\mathrm{vertices}` values); for the point particle, ``vertex displacements`` is the displacement of the material
+Quad / Hexa particles append the ``vertex displacements`` of the particle geometry and the ``smoothing vertex
+displacements`` of the smoothing domain (:math:`n_\mathrm{dim}\times n_\mathrm{vertices}` values each, as the
+displacement particles); for the point particle, ``vertex displacements`` is the displacement of the material
 point. The material point's density is available from the start, since it is queried at initialization.
 
 Implementation
