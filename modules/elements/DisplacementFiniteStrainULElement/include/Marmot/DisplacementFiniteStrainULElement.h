@@ -427,6 +427,30 @@ namespace Marmot::Discretizations::Elements {
     double largestPWaveModulus( const double* QTotal );
 
     /**
+     * @brief The measure of the section per unit of the element's own measure at a point: 1 for a solid, the
+     * thickness for a plane section, the cross section for a 1D one.
+     * @details The one weight of everything the element integrates: initializeYourself() takes it into the weight
+     * \f$J_0 w\f$ of every quadrature point, with which the internal force, the lumped mass and the body force are
+     * integrated, and computeConsistentInertia() evaluates it at the points of its own rule. The axisymmetric element
+     * integrates over the ring instead, see AxiSymmetricDisplacementFiniteStrainULElement.
+     * @param[in] xi Parent coordinates of the point.
+     * @return The section factor.
+     */
+    virtual double sectionFactorAt( const XiSized& xi ) const;
+
+    /**
+     * @brief The stretch \f$F_{33}\f$ normal to the plane of a 2D element at a quadrature point, at the deformation
+     * @p QTotal: 1 in plane strain.
+     * @details The one value of \f$F_{33}\f$ for the kernels and for the wave speed of the critical time step, so
+     * that the time step is the bound of what the element integrates. The axisymmetric element returns its hoop
+     * stretch.
+     * @param[in] qp The quadrature point.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
+     * @return The out-of-plane stretch.
+     */
+    virtual double outOfPlaneStretch( const QuadraturePoint& qp, const double* QTotal ) const;
+
+    /**
      * @brief Compute the internal energy of the element.
      * @param internalEnergy Output parameter for the computed internal energy.
      */
@@ -580,19 +604,25 @@ namespace Marmot::Discretizations::Elements {
       qp.detJ                  = detJ;
 
       qp.dNdX = this->dNdX( dNdXi_, JInv );
-
-      if constexpr ( nDim == 3 ) {
-        qp.J0xW = qp.weight * detJ;
-      }
-      if constexpr ( nDim == 2 ) {
-        const double& thickness = elementProperties[0];
-        qp.J0xW                 = qp.weight * detJ * thickness;
-      }
-      if constexpr ( nDim == 1 ) {
-        const double& crossSection = elementProperties[0];
-        qp.J0xW                    = qp.weight * detJ * crossSection;
-      }
+      qp.J0xW = qp.weight * detJ * sectionFactorAt( qp.xi );
     }
+  }
+
+  template < int nDim, int nNodes >
+  double DisplacementFiniteStrainULElement< nDim, nNodes >::sectionFactorAt( [[maybe_unused]] const XiSized& xi ) const
+  {
+    if constexpr ( nDim == 3 )
+      return 1.0;
+    else
+      return elementProperties[0]; // thickness (2D) or cross section (1D)
+  }
+
+  template < int nDim, int nNodes >
+  double DisplacementFiniteStrainULElement< nDim, nNodes >::outOfPlaneStretch(
+    [[maybe_unused]] const QuadraturePoint& qp,
+    [[maybe_unused]] const double*          QTotal ) const
+  {
+    return 1.0;
   }
 
   template < int nDim, int nNodes >
@@ -973,9 +1003,8 @@ namespace Marmot::Discretizations::Elements {
 
     for ( const auto& point : Marmot::Discretizations::Elements::ConsistentMass::integrationRule( this->shape ) ) {
       const XiSized xi = point.xi;
-      const auto& qp = qps[Marmot::Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
-      // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
-      const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
+      const auto&  qp = qps[Marmot::Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
+      const double sectionFactor = sectionFactorAt( xi );
       const double rho           = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       const double detJ          = this->Jacobian( this->dNdXi( xi ) ).determinant();
       const auto   N_            = this->NB( this->N( xi ) );
@@ -1052,7 +1081,8 @@ namespace Marmot::Discretizations::Elements {
       ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
 
     double pWaveModulus = 0.0;
-    for ( const auto& qp : qps ) {
+    for ( int i = 0; i < static_cast< int >( qps.size() ); i++ ) {
+      const auto& qp = qps[i];
       using namespace Marmot::Math::Tensors::FastorIndices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
       const Tensor< double, nDim, nDim > F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
@@ -1062,16 +1092,13 @@ namespace Marmot::Discretizations::Elements {
       }
       if constexpr ( nDim == 2 ) {
         F_np_3D         = Marmot::Math::Tensors::expandTo3D( F_np );
-        F_np_3D( 2, 2 ) = 1.0;
+        F_np_3D( 2, 2 ) = outOfPlaneStretch( qp, qTotal );
       }
 
-      const double c = qp.material->getMaximumWaveSpeed( qp.managedStateVars->materialStateVars.data(),
+      const double c   = qp.material->getMaximumWaveSpeed( qp.managedStateVars->materialStateVars.data(),
                                                          F_np_3D.data() );
-      if ( c <= 0.0 ) {
-        throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
-      }
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      pWaveModulus     = std::max( pWaveModulus, rho * c * c );
+      pWaveModulus = std::max( pWaveModulus, CriticalTimeStep::pWaveModulusOfQuadraturePoint( rho, c, elLabel, i ) );
     }
     return pWaveModulus;
   }
@@ -1118,10 +1145,28 @@ namespace Marmot::Discretizations::Elements {
     return static_cast< int >( qps.size() );
   }
 
+  /**
+   * @brief The axisymmetric updated Lagrangian element (CX8UL, CX8RUL): the plane element in the meridian half plane
+   * \f$r = x_1 \geq 0\f$, \f$z = x_2\f$, with the hoop stretch \f$F_{\theta\theta} = 1 + u_r / r\f$.
+   * @details Everything the element integrates -- internal force, lumped and consistent mass, body force, and the
+   * operators of the critical time step -- is integrated over the ring, with the section factor \f$2\pi r\f$ in
+   * place of a thickness (sectionFactorAt()). The thickness property is not used by them.
+   * @note computeDistributedLoad() is still the plane element's: it integrates over the face times the thickness, not
+   * over the ring.
+   */
   template < int nNodes >
   class AxiSymmetricDisplacementFiniteStrainULElement : public DisplacementFiniteStrainULElement< 2, nNodes > {
 
+    using Parent = DisplacementFiniteStrainULElement< 2, nNodes >;
     using DisplacementFiniteStrainULElement< 2, nNodes >::DisplacementFiniteStrainULElement;
+
+    /**
+     * @brief Assign the nodal coordinates and check them, once, as a property of the mesh.
+     * @param[in] coordinates Pointer to the nodal coordinates \f$(r, z)\f$ of the element.
+     * @throws std::invalid_argument for a node at \f$r < 0\f$ (beyond the round-off of a mesher), or a quadrature
+     * point at \f$r \leq 0\f$, where the hoop row \f$N_i / r\f$ is undefined and the ring weight not positive.
+     */
+    void assignNodeCoordinates( const double* coordinates ) override;
 
     void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
       override;
@@ -1130,32 +1175,92 @@ namespace Marmot::Discretizations::Elements {
 
     /**
      * @brief Compute the critical time step for explicit dynamics: as the plane element, with the hoop row
-     * \f$N_i / r\f$ in the strain operator and the ring \f$2\pi r\f$ in the integration weight, as computeKernels()
-     * integrates the internal force.
-     * @note The lumped mass is the plane one the element inherits, without the ring weight that its internal force
-     * carries. The bound takes the same mass, so it is the bound of what the element assembles; a lumped mass with
-     * the ring weight would change both.
+     * \f$N_i / r\f$ in the strain operator, the ring weight of the quadrature points (as computeKernels() integrates
+     * the internal force and computeLumpedInertia() the mass), and the wave speed at the hoop stretch.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
+
+    /**
+     * @brief The ring \f$2\pi r\f$ at the point, \f$r\f$ its radius in the reference configuration.
+     * @param[in] xi Parent coordinates of the point.
+     * @return The section factor.
+     */
+    double sectionFactorAt( const typename Parent::XiSized& xi ) const override;
+
+    /**
+     * @brief The hoop stretch \f$F_{\theta\theta} = 1 + u_r / r\f$ of the quadrature point.
+     * @param[in] qp The quadrature point.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
+     * @return The hoop stretch.
+     * @throws std::runtime_error if the hoop stretch is not positive (the ring is pulled through the axis): the
+     * increment cannot be integrated, which a solver may answer with a smaller increment.
+     */
+    double outOfPlaneStretch( const typename Parent::QuadraturePoint& qp, const double* QTotal ) const override;
+
+    /**
+     * @brief The radius \f$r = x_1\f$ of a point in the reference configuration.
+     * @param[in] N The shape functions at the point.
+     * @return The radius.
+     */
+    double radiusAt( const Eigen::Matrix< double, 1, nNodes >& N ) const
+    {
+      return ( this->NB( N ) * this->coordinates )( 0 );
+    }
   };
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::assignNodeCoordinates( const double* coordinates )
+  {
+    Parent::assignNodeCoordinates( coordinates );
+
+    Spatial2D::Axisymmetric::checkNodesAreInTheMeridianHalfPlane( Eigen::Map<
+                                                                    const Eigen::Matrix< double, 2, nNodes > >(
+                                                                    this->coordinates.data() ),
+                                                                  this->elLabel );
+    for ( const auto& qp : Parent::qps )
+      Spatial2D::Axisymmetric::checkRadiusOfQuadraturePoint( radiusAt( this->N( qp.xi ) ), this->elLabel );
+  }
+
+  template < int nNodes >
+  double AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::sectionFactorAt(
+    const typename Parent::XiSized& xi ) const
+  {
+    return 2.0 * Marmot::Math::Constants::Pi * radiusAt( this->N( xi ) );
+  }
+
+  template < int nNodes >
+  double AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::outOfPlaneStretch(
+    const typename Parent::QuadraturePoint& qp,
+    const double*                           QTotal ) const
+  {
+    const auto   N           = this->N( qp.xi );
+    const double r           = radiusAt( N );
+    const double u_r         = ( this->NB( N ) * Eigen::Map< const typename Parent::USizedVector >( QTotal ) )( 0 );
+    const double hoopStretch = 1.0 + u_r / r;
+    if ( !( hoopStretch > 0.0 ) )
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << "axisymmetric element " << this->elLabel
+                                << ": the hoop stretch 1 + u_r / r = " << hoopStretch << " at r = " << r
+                                << " is not positive; the ring is pulled through the axis." );
+    return hoopStretch;
+  }
 
   template < int nNodes >
   void AxiSymmetricDisplacementFiniteStrainULElement< nNodes >::computeCriticalTimeStepForExplicitDynamics(
     double&       criticalTimeStep,
     const double* qTotal )
   {
-    using Parent = DisplacementFiniteStrainULElement< 2, nNodes >;
-
     Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound(
       Parent::sizeLoadVector );
     for ( const auto& qp : Parent::qps ) {
-      const auto   N = this->N( qp.xi );
-      const double r = ( this->NB( N ) * this->coordinates )( 0 );
-      stiffnessBound.addQuadraturePoint( Spatial2D::Axisymmetric::BFromPlanarB< nNodes >( this->B( qp.dNdX ), N, r ),
+      const auto N = this->N( qp.xi );
+      stiffnessBound.addQuadraturePoint( Spatial2D::Axisymmetric::BFromPlanarB< nNodes >( this->B( qp.dNdX ),
+                                                                                          N,
+                                                                                          radiusAt( N ) ),
                                          3,
-                                         qp.J0xW * 2 * Marmot::Math::Constants::Pi * r );
+                                         qp.J0xW );
     }
 
     typename Parent::RhsSized lumpedMass;
@@ -1201,13 +1306,10 @@ namespace Marmot::Discretizations::Elements {
       auto        N_    = this->N( qp.xi );
       const auto& dNdX_ = qp.dNdX;
 
-      Eigen::Vector2d coords = this->NB( N_ ) * this->coordinates;
-      const double    r      = coords[0];
+      const double r = radiusAt( N_ );
 
       const auto N    = Tensor< double, nNodes >( N_.data() );
       const auto dNdX = Tensor< double, nDim, nNodes >( dNdX_.data(), ColumnMajor );
-
-      const auto u_np = evaluate( einsum< A, Ai >( N, qU_np ) );
 
       const auto F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
 
@@ -1232,7 +1334,8 @@ namespace Marmot::Discretizations::Elements {
 
       Material::Deformation< 3 > deformation3D{ Marmot::Math::Tensors::expandTo3D( deformation.F ) };
 
-      deformation3D.F( 2, 2 ) = 1 + u_np[0] / r;
+      const double F33        = outOfPlaneStretch( qp, qTotal );
+      deformation3D.F( 2, 2 ) = F33;
 
       qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
       response.tau = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
@@ -1252,11 +1355,11 @@ namespace Marmot::Discretizations::Elements {
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
-      const double J0xWxRx2Pi                = qp.J0xW * 2 * Marmot::Math::Constants::Pi * r;
-      qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xWxRx2Pi;
-      qp.managedStateVars->dissipation       = response3D.dissipation * J0xWxRx2Pi;
-      qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) *
-                                               J0xWxRx2Pi;
+      // the ring weight 2 pi r is part of J0xW, see sectionFactorAt()
+      const double J0xW                      = qp.J0xW;
+      qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xW;
+      qp.managedStateVars->dissipation       = response3D.dissipation * J0xW;
+      qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) * J0xW;
 
       const auto& tau = response.tau;
 
@@ -1284,30 +1387,29 @@ namespace Marmot::Discretizations::Elements {
 
       // r[ node, dim ] (swap to abuse directly colmajor layout)
       // directly operate via TensorMap
-      r_U += ( +einsum< iA, ij >( dNdx, tau ) ) * J0xWxRx2Pi;
+      r_U += ( +einsum< iA, ij >( dNdx, tau ) ) * J0xW;
 
-      const double F33          = 1 + u_np[0] / r;
       const double invF33       = 1. / F33;
       const double dInvF33_dF33 = -1. / ( F33 * F33 );
 
       for ( int A = 0; A < nNodes; A++ ) {
-        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xW;
 
         for ( int B = 0; B < nNodes; B++ ) {
           // hoop contribution N(A)*invF33*tau33/r enters r_U(A,0) with the same sign as the in-plane term
           for ( int j = 0; j < 2; j++ ) {
-            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
+            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xW;
           }
           const double dF33_dN_qU_0 = ( N( B ) / r );
-          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xW;
         }
       }
 
       // K [dim, node, dim, node ]
-      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dTau_dqU ) ) * J0xWxRx2Pi;
+      k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dTau_dqU ) ) * J0xW;
 
       // geometric contribution (same as the non-axisymmetric case; see computeKernels() above)
-      k_UU += ( -einsum< kA, ij, iB, to_jAkB >( dNdx, tau, dNdx ) ) * J0xWxRx2Pi;
+      k_UU += ( -einsum< kA, ij, iB, to_jAkB >( dNdx, tau, dNdx ) ) * J0xW;
     }
     // copy back to the subblocks using mighty Eigen block access,
     // note the layout swap rowmajor -> colmajor
@@ -1354,13 +1456,10 @@ namespace Marmot::Discretizations::Elements {
       auto        N_    = this->N( qp.xi );
       const auto& dNdX_ = qp.dNdX;
 
-      Eigen::Vector2d coords = this->NB( N_ ) * this->coordinates;
-      const double    r      = coords[0];
+      const double r = radiusAt( N_ );
 
       const auto N    = Tensor< double, nNodes >( N_.data() );
       const auto dNdX = Tensor< double, nDim, nNodes >( dNdX_.data(), ColumnMajor );
-
-      const auto u_np = evaluate( einsum< A, Ai >( N, qU_np ) );
 
       const auto F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
 
@@ -1382,7 +1481,8 @@ namespace Marmot::Discretizations::Elements {
 
       Material::Deformation< 3 > deformation3D{ Marmot::Math::Tensors::expandTo3D( deformation.F ) };
 
-      deformation3D.F( 2, 2 ) = 1 + u_np[0] / r;
+      const double F33        = outOfPlaneStretch( qp, qTotal );
+      deformation3D.F( 2, 2 ) = F33;
 
       qp.material->computePlaneStrainExplicit( response3D, deformation3D, timeIncrement );
       response.tau = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
@@ -1395,23 +1495,22 @@ namespace Marmot::Discretizations::Elements {
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
-      const double J0xWxRx2Pi                = qp.J0xW * 2 * Marmot::Math::Constants::Pi * r;
-      qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xWxRx2Pi;
-      qp.managedStateVars->dissipation       = response3D.dissipation * J0xWxRx2Pi;
-      qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) *
-                                               J0xWxRx2Pi;
+      // the ring weight 2 pi r is part of J0xW, see sectionFactorAt()
+      const double J0xW                      = qp.J0xW;
+      qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xW;
+      qp.managedStateVars->dissipation       = response3D.dissipation * J0xW;
+      qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) * J0xW;
 
       const auto& tau = response.tau;
 
       // r[ node, dim ] (swap to abuse directly colmajor layout)
       // directly operate via TensorMap
-      r_U += ( +einsum< iA, ij >( dNdx, tau ) ) * J0xWxRx2Pi;
+      r_U += ( +einsum< iA, ij >( dNdx, tau ) ) * J0xW;
 
-      const double F33    = 1 + u_np[0] / r;
       const double invF33 = 1. / F33;
 
       for ( int A = 0; A < nNodes; A++ ) {
-        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xW;
       }
     }
   }

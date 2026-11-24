@@ -1650,7 +1650,8 @@ namespace Marmot::Discretizations::Elements {
      * checked anywhere. */
     Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound( sizeDoFU );
     double                                                                      pWaveModulus = 0.0;
-    for ( const auto& qp : qps ) {
+    for ( int i = 0; i < static_cast< int >( qps.size() ); i++ ) {
+      const auto& qp = qps[i];
       if constexpr ( nDim == 2 ) {
         if ( sectionType == SectionType::Axisymmetric )
           stiffnessBound.addQuadraturePoint( axisymmetricB( qp ), 3, qp.J0xW );
@@ -1668,11 +1669,9 @@ namespace Marmot::Discretizations::Elements {
       waveSpeedResponse.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
       waveSpeedResponse.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
 
-      const double c = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
-      if ( c <= 0.0 )
-        throw std::runtime_error( "Material returned non-positive wave speed, cannot compute critical time step" );
+      const double c   = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      pWaveModulus     = std::max( pWaveModulus, rho * c * c );
+      pWaveModulus = std::max( pWaveModulus, CriticalTimeStep::pWaveModulusOfQuadraturePoint( rho, c, elLabel, i ) );
     }
 
     /* The inertia that is actually ASSEMBLED, read by calling the very function that assembles it rather than

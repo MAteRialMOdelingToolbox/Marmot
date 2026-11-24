@@ -45,6 +45,15 @@ elements it is about 0.8 to 1 of the stable increment of the element; for a comp
 incompressible end governs, it can be as low as 0.6 of it at :math:`\nu = 0`. A courant number below one is still
 needed for the nonlinearities the bound does not see.
 
+An element whose bound comes out too large makes the whole analysis unstable, so the numbers it is built from are
+checked, each such that a NaN fails the check: the wave speed and the density of every quadrature point
+(``pWaveModulusOfQuadraturePoint``) before the largest P-wave modulus is taken -- a NaN loses every comparison and
+would otherwise drop out of the maximum, leaving the bound of the other points --, every entry of the lumped mass,
+and the convergence of the eigenvalue solver. A failed check throws with the element and the quadrature point in the
+message. The default ``MaterialFiniteStrain::getMaximumWaveSpeed`` returns NaN if the finite-difference stiffness of
+one direction is NaN, so that the element refuses it. The axisymmetric finite strain elements evaluate the wave speed
+at their hoop stretch, the deformation they integrate.
+
 .. doxygennamespace:: Marmot::Discretizations::Elements::CriticalTimeStep
    :members:
 

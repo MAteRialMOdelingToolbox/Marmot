@@ -1308,7 +1308,8 @@ namespace Marmot::Discretizations::Elements {
     Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound( sizeLoadVector );
     double                                                                      pWaveModulus = 0.0;
 
-    for ( const auto& qp : qps ) {
+    for ( int i = 0; i < static_cast< int >( qps.size() ); i++ ) {
+      const auto& qp = qps[i];
       if constexpr ( nDim == 2 ) {
         if ( sectionType == SectionType::Axisymmetric )
           stiffnessBound.addQuadraturePoint( axisymmetricB( qp ), 3, qp.J0xW );
@@ -1323,11 +1324,9 @@ namespace Marmot::Discretizations::Elements {
                                                              qp.managedStateVars->dissipation / qp.J0xW,
                                                              qp.managedStateVars->materialStateVars.data() );
 
-      const double c = qp.material->getMaximumWaveSpeed( state );
-      if ( c <= 0.0 )
-        throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
+      const double c   = qp.material->getMaximumWaveSpeed( state );
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      pWaveModulus     = std::max( pWaveModulus, rho * c * c );
+      pWaveModulus = std::max( pWaveModulus, CriticalTimeStep::pWaveModulusOfQuadraturePoint( rho, c, elLabel, i ) );
     }
 
     RhsSized lumpedMass;

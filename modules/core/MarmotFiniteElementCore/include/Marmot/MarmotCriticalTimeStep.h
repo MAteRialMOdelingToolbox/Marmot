@@ -25,6 +25,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include <Eigen/Core>
 #include <Eigen/Eigenvalues>
 #include <algorithm>
@@ -72,6 +73,29 @@
 namespace Marmot::Discretizations::Elements::CriticalTimeStep {
 
   /**
+   * @brief The P-wave modulus \f$\rho c^2\f$ of a quadrature point, checked before it is combined with those of the
+   * other points.
+   * @details Every check is written so that a NaN fails it: a quadrature point whose wave speed or density is not a
+   * number must stop the analysis, not drop out of the largest P-wave modulus of the element (a NaN loses every
+   * comparison, so `std::max` would pass over it, and the time increment would come out too large).
+   * @param density The density \f$\rho\f$ of the material at the point.
+   * @param waveSpeed The largest wave speed \f$c\f$ of the material at the point.
+   * @param elementLabel The label of the element, for the message.
+   * @param quadraturePoint The number of the quadrature point, for the message.
+   * @return The P-wave modulus \f$\rho c^2\f$.
+   * @throws std::runtime_error if the wave speed or the density is not a positive number.
+   */
+  inline double pWaveModulusOfQuadraturePoint( double density, double waveSpeed, int elementLabel, int quadraturePoint )
+  {
+    if ( !( waveSpeed > 0.0 ) || !( density > 0.0 ) )
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << "CriticalTimeStep: element " << elementLabel << ", quadrature point "
+                                << quadraturePoint << ": the wave speed (" << waveSpeed << ") and the density ("
+                                << density << ") must be positive numbers." );
+    return density * waveSpeed * waveSpeed;
+  }
+
+  /**
    * @brief The operators \f$\mathbf{K}_\lambda\f$ and \f$\mathbf{K}_\mu\f$ of an element, accumulated
    * quadrature point by quadrature point, and the stable time increment they give with the element's lumped mass;
    * see the namespace documentation.
@@ -112,13 +136,15 @@ namespace Marmot::Discretizations::Elements::CriticalTimeStep {
      * @param lumpedMass The lumped mass of the displacement degrees of freedom, as the element assembles it.
      * @param pWaveModulus The largest P-wave modulus \f$\rho c^2\f$ of the quadrature points.
      * @return The stable time increment.
-     * @throws std::invalid_argument for a non-positive lumped mass or P-wave modulus: no time increment is
-     * meaningful then.
+     * @throws std::invalid_argument for a lumped mass or a P-wave modulus that is not positive, NaN included: no time
+     * increment is meaningful then.
+     * @throws std::runtime_error if the eigenvalue solver fails.
      */
     double stableTimeIncrement( const Eigen::VectorXd& lumpedMass, double pWaveModulus ) const
     {
-      if ( !( lumpedMass.minCoeff() > 0.0 ) )
-        throw std::invalid_argument( "CriticalTimeStep: the element has a non-positive lumped mass." );
+      // every entry: minCoeff() does not promise to return a NaN entry
+      if ( !( lumpedMass.array() > 0.0 ).all() )
+        throw std::invalid_argument( "CriticalTimeStep: the element has a lumped mass that is not positive." );
       if ( !( pWaveModulus > 0.0 ) )
         throw std::invalid_argument( "CriticalTimeStep: non-positive wave speed or density." );
 
@@ -148,6 +174,8 @@ namespace Marmot::Discretizations::Elements::CriticalTimeStep {
     {
       const Eigen::MatrixXd                                  scaled = scaling.asDiagonal() * K * scaling.asDiagonal();
       const Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd > solver( scaled, Eigen::EigenvaluesOnly );
+      if ( solver.info() != Eigen::Success )
+        throw std::runtime_error( "CriticalTimeStep: the eigenvalues of the element's operators did not converge." );
       return solver.eigenvalues().maxCoeff();
     }
   };

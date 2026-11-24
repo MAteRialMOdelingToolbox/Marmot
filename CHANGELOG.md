@@ -314,6 +314,25 @@ All notable changes to Marmot are documented in this file. The format follows
   only, isotropic). Plane stress is `ReducedStress::planeStressPrescribed` / `planeStressFree`.
 
 ### Fixed
+- **Results** The axisymmetric finite strain elements `CX8UL` and `CX8RUL` integrate their lumped and consistent mass
+  and their body force over the ring, with the weight 2 pi r of their internal force, through one section factor
+  (`DisplacementFiniteStrainULElement::sectionFactorAt`, the ring instead of the thickness). The mass and the body
+  force were the plane ones, so force and mass referred to different measures and every dynamic analysis with these
+  elements had the wrong inertia, by a factor 2 pi r that varies over the mesh; the critical time step, built from
+  the mass the element assembles, changes with it. The stored elastic energy and dissipation, read back divided by
+  the plane weight, were off by the same factor. The thickness property is no longer used by them (distributed loads
+  are still integrated as on the plane element).
+- The critical time step of the continuum elements (`DisplacementFiniteElement`, `DisplacementFiniteStrainULElement`,
+  `GeneralGradientEnhancedDisplacementFiniteElement`) refuses a wave speed or a density that is not a positive number
+  at any quadrature point (`CriticalTimeStep::pWaveModulusOfQuadraturePoint`), with the element and the point in the
+  message. A NaN passed the guard `c <= 0` and dropped out of the largest P-wave modulus, which made the time
+  increment too large. `stableTimeIncrement` checks every entry of the lumped mass (Eigen's `minCoeff` may skip a
+  NaN) and the convergence of the eigenvalue solver; the default `MaterialFiniteStrain::getMaximumWaveSpeed` returns
+  NaN for a NaN stiffness of one direction instead of the wave speed of the others.
+- `CX8UL` and `CX8RUL` evaluate the wave speed of the critical time step at their hoop stretch
+  F_tt = 1 + u_r / r, the deformation their kernels integrate, instead of at F_33 = 1; they refuse a node at r < 0 or
+  a quadrature point at r <= 0 when their coordinates are assigned, and a hoop stretch that is not positive in an
+  increment (`std::runtime_error`).
 - `Element::getStateView` throws `std::invalid_argument` (naming the state, the index and the number of quadrature
   points of the element) for a quadrature point outside `0` to `getNumberOfQuadraturePoints() - 1`, instead of
   reading past the end of the element's quadrature points; e.g. an output asking for quadrature points 0 to 8 of a
