@@ -711,10 +711,11 @@ namespace Marmot::Discretizations::Elements {
         internalEnergy += qp.managedStateVars->elasticEnergy;
     }
 
+  protected:
     /// @param[in] stateName The name of a state of the point or of its material.
     /// @param[in] qpNumber  The quadrature point.
     /// @return A view of the state.
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
       if ( qp.managedStateVars->contains( stateName ) )
@@ -725,6 +726,7 @@ namespace Marmot::Discretizations::Elements {
                                     : qp.materialFiniteStrain->getStateView( stateName, materialStateVars );
     }
 
+  public:
     /// @return The coordinates of the center (parent coordinate 0).
     std::vector< double > getCoordinatesAtCenter() override
     {

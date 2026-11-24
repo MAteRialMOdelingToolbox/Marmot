@@ -615,7 +615,8 @@ namespace Marmot::Discretizations::Elements {
         internalEnergy += qp.state->elasticEnergy;
     }
 
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+  protected:
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
       if ( stateName == "section forces" )
@@ -636,6 +637,7 @@ namespace Marmot::Discretizations::Elements {
                                    << __PRETTY_FUNCTION__ << ": unknown state " << stateName );
     }
 
+  public:
     std::vector< double > getCoordinatesAtCenter() override
     {
       const VectorDim x = 0.5 * ( coordinates.col( 0 ) + coordinates.col( 1 ) );
