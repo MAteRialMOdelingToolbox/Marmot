@@ -645,11 +645,12 @@ namespace Marmot::Discretizations::Elements {
      */
     void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
+  protected:
     /**
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
 
@@ -669,6 +670,7 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
+  public:
     /** @brief Get physical coordinates at the element center. */
     std::vector< double > getCoordinatesAtCenter() override;
 

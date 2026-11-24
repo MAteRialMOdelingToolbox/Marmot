@@ -2095,6 +2095,41 @@ void testGetStateViewVariants()
                            "and fail." );
 }
 
+void testGetStateViewRefusesAQuadraturePointOutsideTheElement()
+{
+  // Through the factory, as a framework holds an element: the check is the one of the Element base, for all elements.
+  std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+    Marmot::Registry::ElementFactory::createElement( "CPE4", 1 ) );
+
+  const std::vector< double > nodeCoordinates = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  element->assignNodeCoordinates( nodeCoordinates.data() );
+  const std::vector< double > thickness = { 1.0 };
+  element->assignProperty( Marmot::Discretizations::ElementProperties( thickness.data(), 1 ) );
+  const std::vector< double > materialProperties = { 10000.0, 0.2 };
+  element->assignProperty( Marmot::Discretizations::MaterialSection( "LINEARELASTIC", materialProperties.data(), 2 ) );
+  std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
+  element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+  element->initializeYourself();
+
+  const int nQuadraturePoints = element->getNumberOfQuadraturePoints();
+  throwExceptionOnFailure( element->getStateView( "stress", nQuadraturePoints - 1 ).stateSize == 6,
+                           "getStateView() must give the state of the last quadrature point." );
+
+  for ( const int outside : { nQuadraturePoints, -1 } ) {
+    bool threw = false;
+    try {
+      element->getStateView( "stress", outside );
+    }
+    catch ( const std::invalid_argument& e ) {
+      threw = std::string( e.what() ).find( "quadrature point " + std::to_string( outside ) ) != std::string::npos;
+    }
+    throwExceptionOnFailure( threw,
+                             "getStateView() must refuse quadrature point " + std::to_string( outside ) +
+                               " of an element with " + std::to_string( nQuadraturePoints ) +
+                               ", with a message naming it." );
+  }
+}
+
 void testGetCoordinatesAtQuadraturePoints()
 {
   constexpr int nDim   = 2;
@@ -3254,6 +3289,7 @@ int main()
     testEnergyGradients,
     testEnergyGradientOutputIsRejectedWithoutSupport,
     testGetStateViewVariants,
+    testGetStateViewRefusesAQuadraturePointOutsideTheElement,
     testGetCoordinatesAtQuadraturePoints,
     testGetNodeFieldsAndDofIndicesPermutationPattern,
   };

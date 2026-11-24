@@ -334,14 +334,16 @@ namespace Marmot::Discretizations::Elements {
      */
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
+  protected:
     /**
      * @brief A view of a state of a quadrature point, of the element or of its material.
      * @param[in] stateName Name of the state.
      * @param[in] qpNumber Number of the quadrature point.
      * @return The view.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override;
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override;
 
+  public:
     /// @brief Coordinates of the element center in the reference configuration.
     std::vector< double > getCoordinatesAtCenter() override;
 
@@ -372,9 +374,8 @@ namespace Marmot::Discretizations::Elements {
   };
 
   template < int nDim, int nNodes >
-  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView(
-    const std::string& stateName,
-    int                qpNumber )
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::
+    getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber )
   {
     const auto& qp = qps[qpNumber];
     if ( qp.managedStateVars->contains( stateName ) ) {

@@ -425,7 +425,8 @@ namespace Marmot::Discretizations::Elements {
         internalEnergy += qp.managedStateVars->elasticEnergy;
     }
 
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+  protected:
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
       if ( qp.managedStateVars->contains( stateName ) )
@@ -433,6 +434,7 @@ namespace Marmot::Discretizations::Elements {
       return qp.bondSlipLaw->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
 
+  public:
     std::vector< double > getCoordinatesAtCenter() override
     {
       const VectorDim X = barCoordinates * barN( 0.5 * ( elementProperties[1] + elementProperties[2] ) ).transpose();
