@@ -139,8 +139,8 @@ environment:</p>
 <section id="installation-steps">
 <h3>Installation steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h3>
 <p>If necessary, get Miniforge:</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> curl -L -O \</span>
 <span class="go">     "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"</span>
 <span class="go"> bash "Miniforge3-$(uname)-$(uname -m).sh" -b -p ./miniforge3</span>
@@ -148,8 +148,8 @@ environment:</p>
 </div>
 </div>
 <p>Add conda to your environment:</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Step 2</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Step 2</span><a class="headerlink" href="#id2" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
 <span class="go"> export PATH=$MARMOTROOT/miniforge3/bin:$PATH</span>
 <span class="go"> conda init --all</span>
@@ -158,8 +158,8 @@ environment:</p>
 </div>
 </div>
 <p>Restart shell and activate conda, then install the compilers and the dependencies:</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Step 3</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Step 3</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
 <span class="go"> conda activate</span>
 <span class="go"> mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge \</span>
@@ -168,8 +168,8 @@ environment:</p>
 </div>
 </div>
 <p>Get Marmot:</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id5" title="Link to this code"></a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Step 4</span><a class="headerlink" href="#id4" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
 <span class="go"> git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git</span>
 <span class="go"> cd Marmot</span>
@@ -267,9 +267,9 @@ configuring with <code class="docutils literal notranslate"><span class="pre">-D
 </section>
 <section id="building-with-python-bindings">
 <h2>Building with Python Bindings<a class="headerlink" href="#building-with-python-bindings" title="Link to this heading"></a></h2>
-<p>Marmot optionally provides a Python interface using <a class="reference external" href="https://github.com/wjakob/nanobind">nanobind</a>.
-It does not yet build with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment
-(<a class="reference external" href="https://github.com/MAteRialMOdelingToolbox/Marmot/issues/154">#154</a>).
+<p>Marmot optionally provides a Python interface using <a class="reference external" href="https://github.com/wjakob/nanobind">nanobind</a> (Python 3.10 or
+newer). It also builds with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment, which
+requires CMake 3.30 or newer; the module then runs without the GIL, and every call of a solver locks that solver.
 To enable the Python module, configure CMake with <cite>-DMARMOT_BUILD_PYTHON_BINDINGS=ON</cite>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..</span>
 <span class="go">make install</span>
