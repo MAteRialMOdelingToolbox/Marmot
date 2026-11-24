@@ -135,8 +135,10 @@ are the 8-node plane element in the meridian half plane, <span class="math notra
 stretch <span class="math notranslate nohighlight">\(F_{\theta\theta} = 1 + u_r/r\)</span> as the third diagonal entry of the deformation gradient. Everything the
 element integrates is integrated over the ring, <span class="math notranslate nohighlight">\(\mathrm{d}V = 2\pi r\,\mathrm{d}A\)</span>: the internal force and
 its tangent, the lumped and the consistent mass, the body force, and the operators of the critical time step. The
-ring weight takes the place of the thickness of a plane element; the thickness property is not used by these.
-Distributed loads are still integrated as on the plane element, over the face times the thickness.</p>
+ring weight takes the place of the thickness of a plane element; the thickness property is not used. The distributed
+loads are integrated over the ring of the face, <span class="math notranslate nohighlight">\(\mathrm{d}\bar{A} = 2\pi r\,\mathrm{d}s\)</span>: a pressure on the
+current face, with the current radius, whose derivative is part of the load stiffness, and a surface traction on the
+reference face.</p>
 <p>The geometry is checked once, when the coordinates are assigned: a node at <span class="math notranslate nohighlight">\(r &lt; 0\)</span> (beyond the round-off of a
 mesher) or a quadrature point at <span class="math notranslate nohighlight">\(r \leq 0\)</span>, where the hoop row <span class="math notranslate nohighlight">\(N_i/r\)</span> is undefined and the ring weight
 not positive, is refused with <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code>. The hoop stretch is checked in every increment: a ring pulled
@@ -429,7 +431,7 @@ smaller increment. The kernels and the wave speed of the critical time step take
 <dd><p>Compute the contributions of distributed loads to the element residual vector and stiffness matrix. </p>
 <p>For a given distributed load vector <span class="math notranslate nohighlight">\(\bar{\boldsymbol{t}}^{(n+1)}\)</span> at the current time step  <span class="math notranslate nohighlight">\(t^{(n+1)} =
 t^{(n)} + \Delta\,t\)</span>, compute the distributed load contribution to the negative element residual vector (right hand side of global newton) <span class="math notranslate nohighlight">\(\int_\bar{A}\,\mathbf{N}_A\,\bar{t}_j\,d\bar{A}\)</span> and the element stiffness matrix  <span class="math notranslate nohighlight">\(-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} -
-\delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\)</span>.</p>
+\delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\)</span>. A pressure acts on the current face, a surface traction on the reference face. A plane element multiplies the face integral by its thickness, an axisymmetric element (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a891021e3238f7247291fcae220e0cd82"><span class="std std-ref">isAxisymmetric()</span></a>) integrates over the ring, <span class="math notranslate nohighlight">\(d\bar{A} = 2\pi r\,ds\)</span>, with the radius <span class="math notranslate nohighlight">\(r\)</span> of the face in the same configuration, and the pressure stiffness includes the derivative of <span class="math notranslate nohighlight">\(2\pi r\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -569,6 +571,17 @@ The element’s own eigenvalue bound <span class="math notranslate nohighlight">
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The section factor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement14isAxisymmetricEv">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement14isAxisymmetricEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement14isAxisymmetricEv"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::isAxisymmetricC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a891021e3238f7247291fcae220e0cd82"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isAxisymmetric</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement14isAxisymmetricEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether the element is axisymmetric: its faces are integrated over the ring <span class="math notranslate nohighlight">\(2\pi r\)</span>, as <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1ae0acf3db1cc5b3ce96373e1448ac416c"><span class="std std-ref">sectionFactorAt()</span></a> does for its volume, in place of the thickness of a plane element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>false; true for AxiSymmetricDisplacementFiniteStrainULElement. </p>
 </dd>
 </dl>
 </dd></dl>

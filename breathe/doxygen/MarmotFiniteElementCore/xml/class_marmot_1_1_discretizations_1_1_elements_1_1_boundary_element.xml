@@ -289,19 +289,9 @@
         <name>computeDSurfaceNormalVectorialLoadVector_dCoordinates</name>
         <qualifiedname>Marmot::Discretizations::Elements::BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates</qualifiedname>
         <briefdescription>
-<para>Compute the derivative of the surface-normal load vector with respect to nodal coordinates. </para>
+<para>Compute the derivative of the surface-normal load vector with respect to nodal coordinates; for an axisymmetric boundary element including the derivative of the ring <formula id="105">$2\pi r$</formula> with respect to the radius. </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="exception"><parameteritem>
-<parameternamelist>
-<parametername>std::invalid_argument</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>for an axisymmetric boundary element. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>

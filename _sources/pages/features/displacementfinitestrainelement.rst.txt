@@ -35,8 +35,10 @@ are the 8-node plane element in the meridian half plane, :math:`r = x_1 \geq 0` 
 stretch :math:`F_{\theta\theta} = 1 + u_r/r` as the third diagonal entry of the deformation gradient. Everything the
 element integrates is integrated over the ring, :math:`\mathrm{d}V = 2\pi r\,\mathrm{d}A`: the internal force and
 its tangent, the lumped and the consistent mass, the body force, and the operators of the critical time step. The
-ring weight takes the place of the thickness of a plane element; the thickness property is not used by these.
-Distributed loads are still integrated as on the plane element, over the face times the thickness.
+ring weight takes the place of the thickness of a plane element; the thickness property is not used. The distributed
+loads are integrated over the ring of the face, :math:`\mathrm{d}\bar{A} = 2\pi r\,\mathrm{d}s`: a pressure on the
+current face, with the current radius, whose derivative is part of the load stiffness, and a surface traction on the
+reference face.
 
 The geometry is checked once, when the coordinates are assigned: a node at :math:`r < 0` (beyond the round-off of a
 mesher) or a quadrature point at :math:`r \leq 0`, where the hoop row :math:`N_i/r` is undefined and the ring weight

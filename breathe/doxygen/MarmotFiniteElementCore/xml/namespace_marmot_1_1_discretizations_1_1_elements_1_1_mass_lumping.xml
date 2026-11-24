@@ -73,7 +73,7 @@ The blend adds the row sums of the linear element to the first nodes of the elem
 <parametername>rowSumsHighOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Row sums of the consistent mass matrix built from the element&apos;s own (high-order) shape functions, i.e. the integral of each <formula id="105">$N_i$</formula> over the element. </para>
+<para>Row sums of the consistent mass matrix built from the element&apos;s own (high-order) shape functions, i.e. the integral of each <formula id="106">$N_i$</formula> over the element. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -85,7 +85,7 @@ The blend adds the row sums of the linear element to the first nodes of the elem
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The blend weight <formula id="106">$w$</formula> to use in <formula id="107">$\hat{N} = w\,N + (1-w)\,N_\mathrm{lin}$</formula>.</para>
+<simplesect kind="return"><para>The blend weight <formula id="107">$w$</formula> to use in <formula id="108">$\hat{N} = w\,N + (1-w)\,N_\mathrm{lin}$</formula>.</para>
 </simplesect>
 The scheme is manifold-based lumping:</para>
 <para><itemizedlist>
@@ -95,25 +95,25 @@ The scheme is manifold-based lumping:</para>
    for higher order serendipity finite elements&quot;. CMAME 350, 836-897. <ulink url="https://doi.org/10.1016/j.cma.2019.03.028">https://doi.org/10.1016/j.cma.2019.03.028</ulink></para>
 </listitem></itemizedlist>
 </para>
-<para>It row-sums a blended shape function <formula id="108">$\hat{N} = w N + (1-w) N_\mathrm{lin}$</formula>. Row-summing <formula id="109">$N$</formula> alone is not positive for a serendipity element <ndash/> its corner shape functions integrate to a negative value <ndash/> and blending in the linear shape functions is what restores positivity.</para>
-<para>The weight cannot be a constant, which is the subtlety this function exists for. A corner node&apos;s lumped mass is <formula id="110">$w S^{N}_i + (1-w) S^{\mathrm{lin}}_i$</formula>, so with <formula id="111">$S^{N}_i &lt; 0 &lt; S^{\mathrm{lin}}_i$</formula> positivity requires <formula id="112">\[ w &lt; w_\mathrm{max} = \min_i \frac{S^{\mathrm{lin}}_i}{S^{\mathrm{lin}}_i - S^{N}_i}. \]</formula> That limit is element-dependent, because the corner row sum is:</para>
+<para>It row-sums a blended shape function <formula id="109">$\hat{N} = w N + (1-w) N_\mathrm{lin}$</formula>. Row-summing <formula id="110">$N$</formula> alone is not positive for a serendipity element <ndash/> its corner shape functions integrate to a negative value <ndash/> and blending in the linear shape functions is what restores positivity.</para>
+<para>The weight cannot be a constant, which is the subtlety this function exists for. A corner node&apos;s lumped mass is <formula id="111">$w S^{N}_i + (1-w) S^{\mathrm{lin}}_i$</formula>, so with <formula id="112">$S^{N}_i &lt; 0 &lt; S^{\mathrm{lin}}_i$</formula> positivity requires <formula id="113">\[ w &lt; w_\mathrm{max} = \min_i \frac{S^{\mathrm{lin}}_i}{S^{\mathrm{lin}}_i - S^{N}_i}. \]</formula> That limit is element-dependent, because the corner row sum is:</para>
 <para><itemizedlist>
-<listitem><para>quad8 (2D serendipity): <formula id="113">$S^N = -\tfrac{1}{3}$</formula> per corner (area 4) -&gt; <formula id="114">$w_\mathrm{max} = 0.75$</formula></para>
-</listitem><listitem><para>hexa20 (3D serendipity): <formula id="115">$S^N = -1$</formula> per corner (volume 8) -&gt; <formula id="116">$w_\mathrm{max} = 0.50$</formula></para>
+<listitem><para>quad8 (2D serendipity): <formula id="114">$S^N = -\tfrac{1}{3}$</formula> per corner (area 4) -&gt; <formula id="115">$w_\mathrm{max} = 0.75$</formula></para>
+</listitem><listitem><para>hexa20 (3D serendipity): <formula id="116">$S^N = -1$</formula> per corner (volume 8) -&gt; <formula id="117">$w_\mathrm{max} = 0.50$</formula></para>
 </listitem></itemizedlist>
 </para>
-<para>A hard-coded <formula id="117">$w = \tfrac{1}{2}$</formula> therefore sits comfortably inside the admissible range in 2D and <bold>exactly on its boundary</bold> in 3D, where it produces corner masses of exactly zero <ndash/> a singular lumped mass matrix, and one that lands a few 1e-17 either side of zero in floating point rather than on it, so an &quot;is any mass zero&quot; check downstream passes and the inverse mass comes out around 1e17.</para>
-<para>Returned here is <formula id="118">$w = \min(\tfrac{1}{2}, \tfrac{2}{3} w_\mathrm{max})$</formula>. The <formula id="119">$\tfrac{2}{3}$</formula> is a safety fraction chosen here rather than taken from either reference, but it is not free-floating: it is the largest simple fraction that still yields <formula id="117">$w = \tfrac{1}{2}$</formula> for quad8, and the values it produces are the published ones on both element types where a published value exists <ndash/></para>
+<para>A hard-coded <formula id="118">$w = \tfrac{1}{2}$</formula> therefore sits comfortably inside the admissible range in 2D and <bold>exactly on its boundary</bold> in 3D, where it produces corner masses of exactly zero <ndash/> a singular lumped mass matrix, and one that lands a few 1e-17 either side of zero in floating point rather than on it, so an &quot;is any mass zero&quot; check downstream passes and the inverse mass comes out around 1e17.</para>
+<para>Returned here is <formula id="119">$w = \min(\tfrac{1}{2}, \tfrac{2}{3} w_\mathrm{max})$</formula>. The <formula id="120">$\tfrac{2}{3}$</formula> is a safety fraction chosen here rather than taken from either reference, but it is not free-floating: it is the largest simple fraction that still yields <formula id="118">$w = \tfrac{1}{2}$</formula> for quad8, and the values it produces are the published ones on both element types where a published value exists <ndash/></para>
 <para><itemizedlist>
-<listitem><para><formula id="117">$w = \tfrac{1}{2}$</formula> for quad8, the split of Yang et al. (2017),</para>
-</listitem><listitem><para><formula id="120">$w = \tfrac{1}{3}$</formula> for hexa20, the split assessed by Duczek &amp; Gravenkamp (2019),</para>
+<listitem><para><formula id="118">$w = \tfrac{1}{2}$</formula> for quad8, the split of Yang et al. (2017),</para>
+</listitem><listitem><para><formula id="121">$w = \tfrac{1}{3}$</formula> for hexa20, the split assessed by Duczek &amp; Gravenkamp (2019),</para>
 </listitem></itemizedlist>
 </para>
-<para>so the rule is not merely a way of staying off the positivity boundary; it reproduces the literature wherever the literature has an answer, and extrapolates in the same spirit where it does not. The cap keeps <formula id="121">$\tfrac{1}{2}$</formula> as the value used wherever it is safe.</para>
-<para>An element with no negatively-integrating corner shape function (every linear element, since there <formula id="122">$N_\mathrm{lin} \equiv N$</formula> and the result does not depend on <formula id="106">$w$</formula> at all) is unconstrained and gets <formula id="121">$\tfrac{1}{2}$</formula>.</para>
-<para><simplesect kind="note"><para>The reproduction of <formula id="121">$\tfrac{1}{2}$</formula> for quad8 is exact analytically, not necessarily bit-exact: the row sums are accumulated numerically over the element&apos;s own quadrature points, so <formula id="123">$w_\mathrm{max}$</formula> can land an ulp below <formula id="124">$\tfrac{3}{4}$</formula> (it does for a quad8 under 2x2 reduced integration) and the returned weight then sits an ulp below <formula id="121">$\tfrac{1}{2}$</formula> rather than on it. The difference is far below any tolerance the lumped masses are checked against, but it is a rounding-level difference and not a bitwise identity.</para>
+<para>so the rule is not merely a way of staying off the positivity boundary; it reproduces the literature wherever the literature has an answer, and extrapolates in the same spirit where it does not. The cap keeps <formula id="122">$\tfrac{1}{2}$</formula> as the value used wherever it is safe.</para>
+<para>An element with no negatively-integrating corner shape function (every linear element, since there <formula id="123">$N_\mathrm{lin} \equiv N$</formula> and the result does not depend on <formula id="107">$w$</formula> at all) is unconstrained and gets <formula id="122">$\tfrac{1}{2}$</formula>.</para>
+<para><simplesect kind="note"><para>The reproduction of <formula id="122">$\tfrac{1}{2}$</formula> for quad8 is exact analytically, not necessarily bit-exact: the row sums are accumulated numerically over the element&apos;s own quadrature points, so <formula id="124">$w_\mathrm{max}$</formula> can land an ulp below <formula id="125">$\tfrac{3}{4}$</formula> (it does for a quad8 under 2x2 reduced integration) and the returned weight then sits an ulp below <formula id="122">$\tfrac{1}{2}$</formula> rather than on it. The difference is far below any tolerance the lumped masses are checked against, but it is a rounding-level difference and not a bitwise identity.</para>
 </simplesect>
-<simplesect kind="note"><para>Positivity is enforced at the corner nodes only, which is all a blend weight can reach. A node with no linear counterpart carries <formula id="125">$w S^{N}_i$</formula>, so if its own shape function integrates to a negative value <ndash/> not possible for any of the element types in use, but reachable in principle by a sufficiently distorted one <ndash/> its lumped mass is negative for every <formula id="126">$w &gt; 0$</formula> and this function cannot help. A positive returned weight is therefore not a guarantee of a positive definite lumped mass matrix. </para>
+<simplesect kind="note"><para>Positivity is enforced at the corner nodes only, which is all a blend weight can reach. A node with no linear counterpart carries <formula id="126">$w S^{N}_i$</formula>, so if its own shape function integrates to a negative value <ndash/> not possible for any of the element types in use, but reachable in principle by a sufficiently distorted one <ndash/> its lumped mass is negative for every <formula id="127">$w &gt; 0$</formula> and this function cannot help. A positive returned weight is therefore not a guarantee of a positive definite lumped mass matrix. </para>
 </simplesect>
 </para>
         </detaileddescription>
