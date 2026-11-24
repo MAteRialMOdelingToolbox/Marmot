@@ -70,8 +70,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Construct the kernel.
      * @param[in] centerCoord   Pointer to the center coordinates @f$ \boldsymbol{x}_A @f$ (length @f$ d @f$); the
      *                          kernel keeps (and moveTo() modifies) this storage, it is not copied.
-     * @param[in] dim           Spatial dimension @f$ d @f$.
+     * @param[in] dim           Spatial dimension @f$ d @f$, 1 to maxDim.
      * @param[in] supportRadius Support radius @f$ a @f$.
+     * @throws std::invalid_argument if the dimension is not supported.
      */
     KernelFunctionBSpline3rdOrderBoxed( double* centerCoord, int dim, double supportRadius );
 
@@ -86,33 +87,28 @@ namespace Marmot::Discretizations::Meshfree {
     double computeKernelFunction( const double* coord ) const override;
 
     /**
-     * @brief Evaluate the kernel gradient by the product rule.
-     *
+     * @brief Evaluate the kernel and its gradient (product rule) at once, from one evaluation of the one-dimensional
+     * factors @f$ w @f$ and @f$ w' @f$ per direction:
      * @f$ \partial \phi_A / \partial x_i = w'(x_i - x_{A,i}) \prod_{j \neq i} w(x_j - x_{A,j}) @f$.
      *
      * @param[in]  coord Coordinates @f$ \boldsymbol{x} @f$ of the evaluation point (length @f$ d @f$).
      * @param[out] grad  Gradient @f$ \partial \phi_A / \partial x_i @f$ (length @f$ d @f$).
+     * @return The kernel value @f$ \phi_A(\boldsymbol{x}) @f$, as computeKernelFunction().
      */
-    void computeKernelFunctionGradient( const double* coord, double* grad ) const override;
+    double computeKernelFunctionAndGradient( const double* coord, double* grad ) const override;
 
     /**
-     * @brief Evaluate the one-dimensional B-spline @f$ w(r) @f$.
-     * @param[in] coord_minus_center Signed distance @f$ r = x_i - x_{A,i} @f$ in one coordinate direction.
-     * @return @f$ w(r) @f$.
-     */
-    double computeBSpline3rdOrder( double coord_minus_center ) const;
-
-    /**
-     * @brief Evaluate the derivative @f$ \mathrm{d}w / \mathrm{d}r @f$ of the one-dimensional B-spline.
-     *
+     * @brief Evaluate the one-dimensional B-spline @f$ w(r) @f$ and, if asked for, its derivative
+     * @f$ \mathrm{d}w / \mathrm{d}r @f$, which shares @f$ z @f$ with it:
      * @f[
      *   \frac{\mathrm{d}w}{\mathrm{d}r} = \frac{\operatorname{sign}(r)}{a} \begin{cases} -8 z + 12 z^2, &
      *   z \le \tfrac{1}{2}, \\ -4 + 8 z - 4 z^2, & \tfrac{1}{2} < z \le 1, \\ 0, & z > 1. \end{cases}
      * @f]
-     * @param[in] coord_minus_center Signed distance @f$ r = x_i - x_{A,i} @f$ in one coordinate direction.
-     * @return @f$ \mathrm{d}w / \mathrm{d}r @f$.
+     * @param[in]  coord_minus_center Signed distance @f$ r = x_i - x_{A,i} @f$ in one coordinate direction.
+     * @param[out] dw_dr              The derivative @f$ \mathrm{d}w / \mathrm{d}r @f$; nullptr if not needed.
+     * @return @f$ w(r) @f$.
      */
-    double computeBSpline3rdOrderGradient( double coord_minus_center ) const;
+    double computeBSpline3rdOrder( double coord_minus_center, double* dw_dr = nullptr ) const;
 
     /**
      * @brief Get the center coordinates.

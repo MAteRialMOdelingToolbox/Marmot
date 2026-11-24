@@ -200,19 +200,24 @@ Evaluation
 ^^^^^^^^^^
 
 An approximation offers the values alone (``computeShapeFunctions``) or the values with the gradients
-(``computeShapeFunctionsAndGradients``). Both classes evaluate a point in three passes over the candidate kernels:
+(``computeShapeFunctionsAndGradients``). Both classes evaluate a point in four passes over the candidate kernels:
 
 1. every kernel is evaluated once, with its gradient if the gradients are asked for (and the explicit gradients need
-   it); a kernel with :math:`|\phi_A| \le 10^{-14}` does not cover the point and takes no further part. The values and
-   gradients are kept in the output arrays, one entry per candidate;
-2. the moment matrix, and for the explicit gradients :math:`\boldsymbol{M}_{,i}`, is assembled from them, by one
+   it; ``computeKernelFunctionAndGradient`` gives both from one evaluation of the one-dimensional factors); a kernel
+   with :math:`|\phi_A| \le 10^{-14}` does not cover the point and takes no further part. The values and gradients are
+   kept in the output arrays, one entry per candidate;
+2. the basis :math:`\boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A)` of every covering kernel, and its gradient for
+   the explicit gradients, is evaluated once and kept, one column per candidate: the moment matrix and the shape
+   functions both need it;
+3. the moment matrix, and for the explicit gradients :math:`\boldsymbol{M}_{,i}`, is assembled from them, by one
    routine for both classes, and factorized once;
-3. the shape functions (and gradients) follow kernel by kernel, overwriting the kernel values.
+4. the shape functions (and gradients) follow kernel by kernel, overwriting the kernel values.
 
-The basis, the moment matrix and the right-hand sides are of a fixed largest size, up to the complete cubic basis in
-3D (20 monomials): an evaluation allocates no memory. The monomial basis of every order up to the requested one is
-listed once, as the exponents of its entries (``Marmot::Math::MonomialBasis``), and evaluated by products. A larger basis, a dimension beyond 3 or a negative completeness
-order is refused when the approximation is constructed.
+The moment matrix and the right-hand sides are of a fixed largest size, up to the complete cubic basis in 3D (20
+monomials); the kept bases of the kernels are the one allocation of an evaluation. The monomial basis of every order up
+to the requested one is listed once, as the exponents of its entries (``Marmot::Math::MonomialBasis``), and evaluated
+by products. A larger basis, a dimension beyond 3 or a negative completeness order is refused when the approximation is
+constructed.
 
 Kernel functions
 ^^^^^^^^^^^^^^^^

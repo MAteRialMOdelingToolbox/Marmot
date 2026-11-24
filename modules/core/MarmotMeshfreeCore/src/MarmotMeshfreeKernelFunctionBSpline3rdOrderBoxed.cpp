@@ -23,10 +23,13 @@
  * ---------------------------------------------------------------------
  */
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h"
+#include "Marmot/MarmotJournal.h"
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
+#include <array>
 #include <cmath>
+#include <stdexcept>
 
 namespace Marmot::Discretizations::Meshfree {
 
@@ -35,59 +38,58 @@ namespace Marmot::Discretizations::Meshfree {
                                                                           double  supportRadius )
     : _centerCoord( centerCoord ), _supportRadius( supportRadius ), _dim( dim )
   {
+    if ( dim < 1 || dim > maxDim )
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": dimension " << dim
+                                                                   << " is not supported (1 to " << maxDim << ")" );
   }
 
   double KernelFunctionBSpline3rdOrderBoxed::computeKernelFunction( const double* coord ) const
   {
-
-    double res = 1.0;
-
-    for ( int i = 0; i < _dim; i++ ) {
-      res *= computeBSpline3rdOrder( coord[i] - _centerCoord[i] );
-    }
-
-    return res;
+    double phi = 1.0;
+    for ( int i = 0; i < _dim; i++ )
+      phi *= computeBSpline3rdOrder( coord[i] - _centerCoord[i] );
+    return phi;
   }
 
-  void KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionGradient( const double* coord, double* grad ) const
+  double KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionAndGradient( const double* coord, double* grad ) const
   {
-    for ( int i = 0; i < _dim; i++ ) {
-      grad[i] = 0;
-    }
+    // the one-dimensional factors w(x_i - x_A,i) and their derivatives, once per direction
+    std::array< double, maxDim > w, dw_dr;
+    for ( int i = 0; i < _dim; i++ )
+      w[i] = computeBSpline3rdOrder( coord[i] - _centerCoord[i], &dw_dr[i] );
 
+    double phi = 1.0;
+    for ( int i = 0; i < _dim; i++ )
+      phi *= w[i];
+
+    // product rule: dphi/dx_i = w'_i prod_(j != i) w_j
     for ( int i = 0; i < _dim; i++ ) {
-      double res = 1.0;
-      for ( int j = 0; j < _dim; j++ ) {
-        if ( i == j )
-          res *= computeBSpline3rdOrderGradient( coord[j] - _centerCoord[j] );
-        else
-          res *= computeBSpline3rdOrder( coord[j] - _centerCoord[j] );
-      }
-      grad[i] = res;
+      grad[i] = 1.0;
+      for ( int j = 0; j < _dim; j++ )
+        grad[i] *= i == j ? dw_dr[j] : w[j];
     }
+    return phi;
   }
 
-  double KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrder( double coord_minus_center ) const
+  double KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrder( double coord_minus_center, double* dw_dr ) const
   {
     const double z = std::abs( coord_minus_center ) / _supportRadius;
-
-    if ( z <= 1. / 2 )
-      return 2.0 / 3.0 - 4.0 * z * z + 4.0 * z * z * z;
-    if ( z <= 1 )
-      return 4.0 / 3.0 - 4.0 * z + 4.0 * z * z - 4.0 / 3.0 * z * z * z;
-    return 0;
-  }
-
-  double KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrderGradient( double coord_minus_center ) const
-  {
-    const double z         = std::abs( coord_minus_center ) / _supportRadius;
-    const double dz_dcoord = coord_minus_center > 0 ? 1.0 / _supportRadius : -1.0 / _supportRadius;
-
-    if ( z <= 1. / 2 )
-      return ( -8.0 * z + 12.0 * z * z ) * dz_dcoord;
-    if ( z <= 1 )
-      return ( -4.0 + 8.0 * z - 4.0 * z * z ) * dz_dcoord;
-    return 0;
+    double       w, dw_dz;
+    if ( z <= 1. / 2 ) {
+      w     = 2.0 / 3.0 - 4.0 * z * z + 4.0 * z * z * z;
+      dw_dz = -8.0 * z + 12.0 * z * z;
+    }
+    else if ( z <= 1 ) {
+      w     = 4.0 / 3.0 - 4.0 * z + 4.0 * z * z - 4.0 / 3.0 * z * z * z;
+      dw_dz = -4.0 + 8.0 * z - 4.0 * z * z;
+    }
+    else {
+      w     = 0;
+      dw_dz = 0;
+    }
+    if ( dw_dr )
+      *dw_dr = dw_dz * ( coord_minus_center > 0 ? 1.0 / _supportRadius : -1.0 / _supportRadius );
+    return w;
   }
 
   const double* KernelFunctionBSpline3rdOrderBoxed::getCenterCoordinates() const
