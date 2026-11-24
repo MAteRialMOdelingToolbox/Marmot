@@ -161,7 +161,7 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] materialPoints The material points.
      */
     void assignMaterialPoints(
-      const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
+      const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints ) override;
 
     /**
      * @brief Evaluates the volume change of the cell at a given point instead of the geometric center of its material
@@ -213,7 +213,7 @@ namespace Marmot::Discretizations::Cells {
      * description).
      * @param[in] dQ Nodal displacement increments (node-wise, nDim values per node).
      */
-    void interpolateFieldsToMaterialPoints( const double* dQ ) const;
+    void interpolateFieldsToMaterialPoints( const double* dQ ) const override;
 
     /**
      * @brief Internal force vector and its exact tangent, see the class description. The material points must have
@@ -228,7 +228,7 @@ namespace Marmot::Discretizations::Cells {
                                       double*       fInt,
                                       double*       dfInt_dQ,
                                       double        timeNew,
-                                      double        dT ) const;
+                                      double        dT ) const override;
 
     /**
      * @brief Follower pressure load at a single material point, see DisplacementCell::computeDistributedLoad(), with
@@ -250,7 +250,7 @@ namespace Marmot::Discretizations::Cells {
                                  double*       fExt,
                                  double*       dExt_dQ,
                                  double        timeNew,
-                                 double        dT ) const;
+                                 double        dT ) const override;
   };
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
