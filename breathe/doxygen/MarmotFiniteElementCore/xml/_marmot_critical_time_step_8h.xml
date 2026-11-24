@@ -2,6 +2,7 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_marmot_critical_time_step_8h" kind="file" language="C++">
     <compoundname>MarmotCriticalTimeStep.h</compoundname>
+    <includes local="yes">Marmot/MarmotJournal.h</includes>
     <includes local="no">Eigen/Core</includes>
     <includes local="no">Eigen/Eigenvalues</includes>
     <includes local="no">algorithm</includes>
@@ -21,20 +22,25 @@
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-      </node>
-      <node id="2">
-        <label>Eigen/Core</label>
+        <childnode refid="7" relation="include">
+        </childnode>
       </node>
       <node id="3">
-        <label>Eigen/Eigenvalues</label>
+        <label>Eigen/Core</label>
       </node>
       <node id="4">
-        <label>algorithm</label>
+        <label>Eigen/Eigenvalues</label>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotJournal.h</label>
       </node>
       <node id="5">
-        <label>cmath</label>
+        <label>algorithm</label>
       </node>
       <node id="6">
+        <label>cmath</label>
+      </node>
+      <node id="7">
         <label>stdexcept</label>
       </node>
     </incdepgraph>
@@ -75,61 +81,75 @@
 <codeline lineno="25"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
 <codeline lineno="26"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Eigenvalues&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="72" refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kindref="compound">Marmot::Discretizations::Elements::CriticalTimeStep</ref><sp/>{</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"></highlight></codeline>
-<codeline lineno="79" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kindref="member">IsotropicElasticStiffnessBound</ref><sp/>{</highlight></codeline>
-<codeline lineno="80"><highlight class="normal"></highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="86" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kindref="member">IsotropicElasticStiffnessBound</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDof<sp/>)</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>lambdaOperator(<sp/>Eigen::MatrixXd::Zero(<sp/>nDof,<sp/>nDof<sp/>)<sp/>),<sp/>muOperator(<sp/>Eigen::MatrixXd::Zero(<sp/>nDof,<sp/>nDof<sp/>)<sp/>)</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="90"><highlight class="normal"></highlight></codeline>
-<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Derived<sp/>&gt;</highlight></codeline>
-<codeline lineno="101" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" kindref="member">addQuadraturePoint</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixBase&lt;<sp/>Derived<sp/>&gt;&amp;<sp/>B,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNormalStrains,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dV<sp/>)</highlight></codeline>
-<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::RowVectorXd<sp/>divergence<sp/>=<sp/>B.topRows(<sp/>nNormalStrains<sp/>).colwise().sum();</highlight></codeline>
-<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>lambdaOperator<sp/>+=<sp/>divergence.transpose()<sp/>*<sp/>divergence<sp/>*<sp/>dV;</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>muOperator<sp/>+=<sp/>2.0<sp/>*<sp/>B.topRows(<sp/>nNormalStrains<sp/>).transpose()<sp/>*<sp/>B.topRows(<sp/>nNormalStrains<sp/>)<sp/>*<sp/>dV;</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nShearStrains<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>B.rows()<sp/>)<sp/>-<sp/>nNormalStrains;</highlight></codeline>
-<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>muOperator<sp/>+=<sp/>B.bottomRows(<sp/>nShearStrains<sp/>).transpose()<sp/>*<sp/>B.bottomRows(<sp/>nShearStrains<sp/>)<sp/>*<sp/>dV;</highlight></codeline>
-<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="109"><highlight class="normal"></highlight></codeline>
-<codeline lineno="118" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" kindref="member">stableTimeIncrement</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>lumpedMass,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>pWaveModulus<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
-<codeline lineno="119"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
-<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!(<sp/>lumpedMass.minCoeff()<sp/>&gt;<sp/>0.0<sp/>)<sp/>)</highlight></codeline>
-<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::invalid_argument(<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>the<sp/>element<sp/>has<sp/>a<sp/>non-positive<sp/>lumped<sp/>mass.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
-<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!(<sp/>pWaveModulus<sp/>&gt;<sp/>0.0<sp/>)<sp/>)</highlight></codeline>
-<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::invalid_argument(<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>non-positive<sp/>wave<sp/>speed<sp/>or<sp/>density.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
-<codeline lineno="124"><highlight class="normal"></highlight></codeline>
-<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd<sp/>scaling<sp/>=<sp/>lumpedMass.cwiseInverse().cwiseSqrt();</highlight></codeline>
-<codeline lineno="126"><highlight class="normal"></highlight></codeline>
-<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lambda,<sp/>the<sp/>bound<sp/>of<sp/>omega_max^2<sp/>per<sp/>unit<sp/>P-wave<sp/>modulus:<sp/>the<sp/>larger<sp/>of<sp/>the<sp/>two<sp/>ends</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>largestFrequencySquaredPerPWaveModulus<sp/>=<sp/>std::max(<sp/>largestEigenvalue(<sp/>scaling,<sp/>lambdaOperator<sp/>),</highlight></codeline>
-<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0.5<sp/>*<sp/>largestEigenvalue(<sp/>scaling,<sp/>muOperator<sp/>)<sp/>);</highlight></codeline>
-<codeline lineno="130"><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2.0<sp/>/<sp/>std::sqrt(<sp/>pWaveModulus<sp/>*<sp/>largestFrequencySquaredPerPWaveModulus<sp/>);</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotJournal.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Eigenvalues&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73" refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kindref="compound">Marmot::Discretizations::Elements::CriticalTimeStep</ref><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1a944a898321a064cf0b8a17499844e8bb" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1a944a898321a064cf0b8a17499844e8bb" kindref="member">pWaveModulusOfQuadraturePoint</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>density,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>waveSpeed,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>elementLabel,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>quadraturePoint<sp/>)</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!(<sp/>waveSpeed<sp/>&gt;<sp/>0.0<sp/>)<sp/>||<sp/>!(<sp/>density<sp/>&gt;<sp/>0.0<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(<sp/>Marmot::Utilities::MakeString()</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>element<sp/>&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>elementLabel<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;,<sp/>quadrature<sp/>point<sp/>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>quadraturePoint<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;:<sp/>the<sp/>wave<sp/>speed<sp/>(&quot;</highlight><highlight class="normal"><sp/>&lt;&lt;<sp/>waveSpeed<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>and<sp/>the<sp/>density<sp/>(&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>density<sp/>&lt;&lt;<sp/></highlight><highlight class="stringliteral">&quot;)<sp/>must<sp/>be<sp/>positive<sp/>numbers.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>density<sp/>*<sp/>waveSpeed<sp/>*<sp/>waveSpeed;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kindref="member">IsotropicElasticStiffnessBound</ref><sp/>{</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="110" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">explicit</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kindref="member">IsotropicElasticStiffnessBound</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDof<sp/>)</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>lambdaOperator(<sp/>Eigen::MatrixXd::Zero(<sp/>nDof,<sp/>nDof<sp/>)<sp/>),<sp/>muOperator(<sp/>Eigen::MatrixXd::Zero(<sp/>nDof,<sp/>nDof<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Derived<sp/>&gt;</highlight></codeline>
+<codeline lineno="125" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" kindref="member">addQuadraturePoint</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixBase&lt;<sp/>Derived<sp/>&gt;&amp;<sp/>B,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNormalStrains,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dV<sp/>)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::RowVectorXd<sp/>divergence<sp/>=<sp/>B.topRows(<sp/>nNormalStrains<sp/>).colwise().sum();</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>lambdaOperator<sp/>+=<sp/>divergence.transpose()<sp/>*<sp/>divergence<sp/>*<sp/>dV;</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>muOperator<sp/>+=<sp/>2.0<sp/>*<sp/>B.topRows(<sp/>nNormalStrains<sp/>).transpose()<sp/>*<sp/>B.topRows(<sp/>nNormalStrains<sp/>)<sp/>*<sp/>dV;</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nShearStrains<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>B.rows()<sp/>)<sp/>-<sp/>nNormalStrains;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>muOperator<sp/>+=<sp/>B.bottomRows(<sp/>nShearStrains<sp/>).transpose()<sp/>*<sp/>B.bottomRows(<sp/>nShearStrains<sp/>)<sp/>*<sp/>dV;</highlight></codeline>
 <codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
 <codeline lineno="133"><highlight class="normal"></highlight></codeline>
-<codeline lineno="134"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
-<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>lambdaOperator;</highlight></codeline>
-<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>muOperator;</highlight></codeline>
-<codeline lineno="139"><highlight class="normal"></highlight></codeline>
-<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>largestEigenvalue(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>scaling,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd&amp;<sp/>K<sp/>)</highlight></codeline>
-<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scaled<sp/>=<sp/>scaling.asDiagonal()<sp/>*<sp/>K<sp/>*<sp/>scaling.asDiagonal();</highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::SelfAdjointEigenSolver&lt;<sp/>Eigen::MatrixXd<sp/>&gt;<sp/>solver(<sp/>scaled,<sp/>Eigen::EigenvaluesOnly<sp/>);</highlight></codeline>
-<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>solver.eigenvalues().maxCoeff();</highlight></codeline>
-<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="153"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
-<codeline lineno="154"><highlight class="normal"></highlight></codeline>
-<codeline lineno="155"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Elements::CriticalTimeStep</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="143" refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" kindref="member">stableTimeIncrement</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>lumpedMass,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>pWaveModulus<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="144"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>every<sp/>entry:<sp/>minCoeff()<sp/>does<sp/>not<sp/>promise<sp/>to<sp/>return<sp/>a<sp/>NaN<sp/>entry</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="146"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!(<sp/>lumpedMass.array()<sp/>&gt;<sp/>0.0<sp/>).all()<sp/>)</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::invalid_argument(<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>the<sp/>element<sp/>has<sp/>a<sp/>lumped<sp/>mass<sp/>that<sp/>is<sp/>not<sp/>positive.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>!(<sp/>pWaveModulus<sp/>&gt;<sp/>0.0<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::invalid_argument(<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>non-positive<sp/>wave<sp/>speed<sp/>or<sp/>density.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"></highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd<sp/>scaling<sp/>=<sp/>lumpedMass.cwiseInverse().cwiseSqrt();</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Lambda,<sp/>the<sp/>bound<sp/>of<sp/>omega_max^2<sp/>per<sp/>unit<sp/>P-wave<sp/>modulus:<sp/>the<sp/>larger<sp/>of<sp/>the<sp/>two<sp/>ends</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>largestFrequencySquaredPerPWaveModulus<sp/>=<sp/>std::max(<sp/>largestEigenvalue(<sp/>scaling,<sp/>lambdaOperator<sp/>),</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>0.5<sp/>*<sp/>largestEigenvalue(<sp/>scaling,<sp/>muOperator<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>2.0<sp/>/<sp/>std::sqrt(<sp/>pWaveModulus<sp/>*<sp/>largestFrequencySquaredPerPWaveModulus<sp/>);</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>lambdaOperator;</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>muOperator;</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>largestEigenvalue(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>scaling,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd&amp;<sp/>K<sp/>)</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>scaled<sp/>=<sp/>scaling.asDiagonal()<sp/>*<sp/>K<sp/>*<sp/>scaling.asDiagonal();</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::SelfAdjointEigenSolver&lt;<sp/>Eigen::MatrixXd<sp/>&gt;<sp/>solver(<sp/>scaled,<sp/>Eigen::EigenvaluesOnly<sp/>);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>solver.info()<sp/>!=<sp/>Eigen::Success<sp/>)</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">throw</highlight><highlight class="normal"><sp/>std::runtime_error(<sp/></highlight><highlight class="stringliteral">&quot;CriticalTimeStep:<sp/>the<sp/>eigenvalues<sp/>of<sp/>the<sp/>element&apos;s<sp/>operators<sp/>did<sp/>not<sp/>converge.&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>solver.eigenvalues().maxCoeff();</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Elements::CriticalTimeStep</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h"/>
   </compounddef>

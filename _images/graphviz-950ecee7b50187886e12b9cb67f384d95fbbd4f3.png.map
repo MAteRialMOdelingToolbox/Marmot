@@ -1,0 +1,15 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" alt="" coords="28,5,1209,53"/>
+<area shape="rect" id="node2" title="Eigen/Core" alt="" coords="5,101,133,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="417,55,290,76,148,104,147,98,289,71,422,53"/>
+<area shape="rect" id="node3" title="Eigen/Eigenvalues" alt="" coords="156,101,355,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="530,54,361,100,360,94,525,54"/>
+<area shape="rect" id="node4" title="Marmot/MarmotJournal.h" alt="" coords="379,101,644,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="594,53,551,93,548,89,589,55"/>
+<area shape="rect" id="node5" title="algorithm" alt="" coords="668,101,782,149"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="646,51,690,92,685,90,644,56"/>
+<area shape="rect" id="node6" title="cmath" alt="" coords="806,101,886,149"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="678,51,794,100,789,100,677,57"/>
+<area shape="rect" id="node7" title="stdexcept" alt="" coords="910,101,1025,149"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="718,51,898,101,893,101,717,57"/>
+</map>

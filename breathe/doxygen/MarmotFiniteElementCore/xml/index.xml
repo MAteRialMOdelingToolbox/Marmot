@@ -319,6 +319,7 @@
     <member refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_consistent_mass_1a9d0e05a22c0a0c31e2344ba29d28cc07" kind="function"><name>nearestQuadraturePoint</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kind="namespace"><name>Marmot::Discretizations::Elements::CriticalTimeStep</name>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1a944a898321a064cf0b8a17499844e8bb" kind="function"><name>pWaveModulusOfQuadraturePoint</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_e_a_s" kind="namespace"><name>Marmot::Discretizations::Elements::EAS</name>
     <member refid="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899" kind="enum"><name>EASType</name></member>

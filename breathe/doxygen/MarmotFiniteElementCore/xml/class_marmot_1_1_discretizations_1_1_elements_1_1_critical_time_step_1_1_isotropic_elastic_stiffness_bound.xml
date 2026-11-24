@@ -11,13 +11,13 @@
         <name>lambdaOperator</name>
         <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::lambdaOperator</qualifiedname>
         <briefdescription>
-<para>The operator <formula id="25">$\mathbf{K}_\lambda$</formula> of the Lame constant <formula id="13">$\lambda$</formula>, <formula id="29">$\int \mathbf{b}\,\mathbf{b}^T$</formula>. </para>
+<para>The operator <formula id="27">$\mathbf{K}_\lambda$</formula> of the Lame constant <formula id="13">$\lambda$</formula>, <formula id="30">$\int \mathbf{b}\,\mathbf{b}^T$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="136" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="136" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="162" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="162" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a95020610239325d64b6193a1cccc9834" prot="private" static="no" mutable="no">
         <type>Eigen::MatrixXd</type>
@@ -26,13 +26,13 @@
         <name>muOperator</name>
         <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::muOperator</qualifiedname>
         <briefdescription>
-<para>The operator <formula id="9">$\mathbf{K}_\mu$</formula> of the shear modulus, <formula id="30">$\int \mathbf{B}^T \mathbf{D}\,\mathbf{B}$</formula>. </para>
+<para>The operator <formula id="9">$\mathbf{K}_\mu$</formula> of the shear modulus, <formula id="31">$\int \mathbf{B}^T \mathbf{D}\,\mathbf{B}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="138" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="138" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="164" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="164" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -63,7 +63,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="86" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="86" bodyend="89"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="110" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="110" bodyend="113"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <templateparamlist>
@@ -114,7 +114,7 @@
 <parametername>nNormalStrains</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The number of rows of the normal strains: the spatial dimension, or 3 for an axisymmetric section (rr, zz, <formula id="26">$\theta\theta$</formula>). </para>
+<para>The number of rows of the normal strains: the spatial dimension, or 3 for an axisymmetric section (rr, zz, <formula id="28">$\theta\theta$</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -130,7 +130,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="101" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="101" bodyend="108"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="125" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="125" bodyend="132"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -147,7 +147,7 @@
           <declname>pWaveModulus</declname>
         </param>
         <briefdescription>
-<para>The stable time increment <formula id="27">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
+<para>The stable time increment <formula id="29">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -163,7 +163,7 @@
 <parametername>pWaveModulus</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The largest P-wave modulus <formula id="28">$\rho c^2$</formula> of the quadrature points. </para>
+<para>The largest P-wave modulus <formula id="25">$\rho c^2$</formula> of the quadrature points. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -174,7 +174,15 @@
 <parametername>std::invalid_argument</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>for a non-positive lumped mass or P-wave modulus: no time increment is meaningful then. </para>
+<para>for a lumped mass or a P-wave modulus that is not positive, NaN included: no time increment is meaningful then. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the eigenvalue solver fails. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -182,7 +190,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="118" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="118" bodyend="132"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="143" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="143" bodyend="158"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="private-static-func">
@@ -201,7 +209,7 @@
           <declname>K</declname>
         </param>
         <briefdescription>
-<para>The largest eigenvalue of <formula id="31">$\mathbf{M}^{-1}\mathbf{K}$</formula>, as that of the symmetric <formula id="32">$\mathbf{M}^{-1/2}\mathbf{K}\mathbf{M}^{-1/2}$</formula>. </para>
+<para>The largest eigenvalue of <formula id="32">$\mathbf{M}^{-1}\mathbf{K}$</formula>, as that of the symmetric <formula id="33">$\mathbf{M}^{-1/2}\mathbf{K}\mathbf{M}^{-1/2}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -209,7 +217,7 @@
 <parametername>scaling</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The diagonal <formula id="33">$\mathbf{M}^{-1/2}$</formula>. </para>
+<para>The diagonal <formula id="34">$\mathbf{M}^{-1/2}$</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -227,15 +235,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="147" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="147" bodyend="152"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="173" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="173" bodyend="180"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The operators <formula id="25">$\mathbf{K}_\lambda$</formula> and <formula id="9">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element&apos;s lumped mass; see the namespace documentation. </para>
+<para>The operators <formula id="27">$\mathbf{K}_\lambda$</formula> and <formula id="9">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element&apos;s lumped mass; see the namespace documentation. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="79" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="79" bodyend="153"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="103" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="103" bodyend="181"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>addQuadraturePoint</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>IsotropicElasticStiffnessBound</name></member>

@@ -3,6 +3,84 @@
   <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kind="namespace" language="C++">
     <compoundname>Marmot::Discretizations::Elements::CriticalTimeStep</compoundname>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound" prot="public">Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1a944a898321a064cf0b8a17499844e8bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::CriticalTimeStep::pWaveModulusOfQuadraturePoint</definition>
+        <argsstring>(double density, double waveSpeed, int elementLabel, int quadraturePoint)</argsstring>
+        <name>pWaveModulusOfQuadraturePoint</name>
+        <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::pWaveModulusOfQuadraturePoint</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>density</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>waveSpeed</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>elementLabel</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>quadraturePoint</declname>
+        </param>
+        <briefdescription>
+<para>The P-wave modulus <formula id="25">$\rho c^2$</formula> of a quadrature point, checked before it is combined with those of the other points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Every check is written so that a NaN fails it: a quadrature point whose wave speed or density is not a number must stop the analysis, not drop out of the largest P-wave modulus of the element (a NaN loses every comparison, so <computeroutput>std::max</computeroutput> would pass over it, and the time increment would come out too large). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>density</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The density <formula id="26">$\rho$</formula> of the material at the point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>waveSpeed</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The largest wave speed <formula id="11">$c$</formula> of the material at the point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>elementLabel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The label of the element, for the message. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>quadraturePoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of the quadrature point, for the message. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The P-wave modulus <formula id="25">$\rho c^2$</formula>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the wave speed or the density is not a positive number. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="88" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="88" bodyend="96"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
 <para>The stable time increment of the central difference method for a continuum element, from the largest eigenfrequency of the element. </para>
     </briefdescription>
@@ -20,6 +98,6 @@
 <para>A plane stress section is covered by the plane operators: its in-plane modulus  <formula id="24">$2\lambda\mu / (\lambda +
 2\mu)$</formula> is smaller than <formula id="13">$\lambda$</formula>. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="72" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="73" column="1"/>
   </compounddef>
 </doxygen>

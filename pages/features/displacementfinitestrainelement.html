@@ -60,6 +60,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Displacement Finite Strain Element</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#preliminaries">Preliminaries</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#axisymmetric-elements">Axisymmetric elements</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
 </li>
@@ -126,6 +127,21 @@
 \[\begin{split} \frac{\partial \mathbf{r}_{Aj}}{\partial \mathbf{q}_{Bk}} &amp;= \mathbf{K}_{AjBk} = \int_{V_0} \mathbf{N}_{A,i}\, \frac{\partial \tau_{ij}}{\partial F_{kK}}\,\mathbf{N}_{B,K} - \mathbf{N}_{A,k}\,\mathbf{N}_{B,i}\,\tau_{ij}\,dV_0\, -\\
 &amp;- \int_{\bar{A}}\,\mathbf{N}_A\,\bar{t}_i\, \left(\delta_{ij}\delta_{lk} - \delta_{ik}\delta_{lj}\right)\, \mathbf{N}_{B,l}\, d\bar{A},\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta_{ij}\)</span> is the Kronecker delta and <span class="math notranslate nohighlight">\(\partial \tau_{ij}/\partial F_{kK}\)</span> the material tangent obtained from the respective material model.</p>
+</section>
+<section id="axisymmetric-elements">
+<h2>Axisymmetric elements<a class="headerlink" href="#axisymmetric-elements" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CX8UL</span></code> and <code class="docutils literal notranslate"><span class="pre">CX8RUL</span></code> (<code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::AxiSymmetricDisplacementFiniteStrainULElement</span></code>)
+are the 8-node plane element in the meridian half plane, <span class="math notranslate nohighlight">\(r = x_1 \geq 0\)</span> and <span class="math notranslate nohighlight">\(z = x_2\)</span>, with the hoop
+stretch <span class="math notranslate nohighlight">\(F_{\theta\theta} = 1 + u_r/r\)</span> as the third diagonal entry of the deformation gradient. Everything the
+element integrates is integrated over the ring, <span class="math notranslate nohighlight">\(\mathrm{d}V = 2\pi r\,\mathrm{d}A\)</span>: the internal force and
+its tangent, the lumped and the consistent mass, the body force, and the operators of the critical time step. The
+ring weight takes the place of the thickness of a plane element; the thickness property is not used by these.
+Distributed loads are still integrated as on the plane element, over the face times the thickness.</p>
+<p>The geometry is checked once, when the coordinates are assigned: a node at <span class="math notranslate nohighlight">\(r &lt; 0\)</span> (beyond the round-off of a
+mesher) or a quadrature point at <span class="math notranslate nohighlight">\(r \leq 0\)</span>, where the hoop row <span class="math notranslate nohighlight">\(N_i/r\)</span> is undefined and the ring weight
+not positive, is refused with <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code>. The hoop stretch is checked in every increment: a ring pulled
+through the axis, <span class="math notranslate nohighlight">\(F_{\theta\theta} \leq 0\)</span>, throws <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code>, which a solver can answer with a
+smaller increment. The kernels and the wave speed of the critical time step take the same <span class="math notranslate nohighlight">\(F_{\theta\theta}\)</span>.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
@@ -538,6 +554,39 @@ The element’s own eigenvalue bound <span class="math notranslate nohighlight">
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The P-wave modulus. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement15sectionFactorAtERK7XiSized">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement15sectionFactorAtERK7XiSized"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement15sectionFactorAtERK7XiSized"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::sectionFactorAt__XiSizedCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1ae0acf3db1cc5b3ce96373e1448ac416c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sectionFactorAt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement7XiSizedE" title="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">xi</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement15sectionFactorAtERK7XiSized" title="Link to this definition"></a><br /></dt>
+<dd><p>The measure of the section per unit of the element’s own measure at a point: 1 for a solid, the thickness for a plane section, the cross section for a 1D one. </p>
+<p>The one weight of everything the element integrates: <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a71a4e6d2b83014b71e5e36ac08b98fe4"><span class="std std-ref">initializeYourself()</span></a> takes it into the weight <span class="math notranslate nohighlight">\(J_0 w\)</span> of every quadrature point, with which the internal force, the lumped mass and the body force are integrated, and <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1adc415ea1eb9ac46d34ca8943703164fc"><span class="std std-ref">computeConsistentInertia()</span></a> evaluates it at the points of its own rule. The axisymmetric element integrates over the ring instead, see AxiSymmetricDisplacementFiniteStrainULElement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xi</strong> – <strong>[in]</strong> Parent coordinates of the point. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The section factor. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement17outOfPlaneStretchERK15QuadraturePointPKd">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement17outOfPlaneStretchERK15QuadraturePointPKd"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement17outOfPlaneStretchERK15QuadraturePointPKd"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::outOfPlaneStretch__QuadraturePointCR.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a9fd1d0c6063c1b0830f42f8a3c783568"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outOfPlaneStretch</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement15QuadraturePointE" title="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">qp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement17outOfPlaneStretchERK15QuadraturePointPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>The stretch <span class="math notranslate nohighlight">\(F_{33}\)</span> normal to the plane of a 2D element at a quadrature point, at the deformation <code class="docutils literal notranslate"><span class="pre">QTotal:</span></code> 1 in plane strain. </p>
+<p>The one value of <span class="math notranslate nohighlight">\(F_{33}\)</span> for the kernels and for the wave speed of the critical time step, so that the time step is the bound of what the element integrates. The axisymmetric element returns its hoop stretch. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qp</strong> – <strong>[in]</strong> The quadrature point. </p></li>
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total (current) degrees of freedom of the element. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The out-of-plane stretch. </p>
 </dd>
 </dl>
 </dd></dl>

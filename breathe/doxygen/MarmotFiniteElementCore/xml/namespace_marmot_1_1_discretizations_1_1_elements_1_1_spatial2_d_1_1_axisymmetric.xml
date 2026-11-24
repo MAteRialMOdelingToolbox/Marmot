@@ -290,7 +290,7 @@
           <declname>C</declname>
         </param>
         <briefdescription>
-<para>The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz, <formula id="26">$\theta\theta$</formula>, rz). </para>
+<para>The block of a 3D tangent carried by the axisymmetric section, rows and columns (rr, zz, <formula id="28">$\theta\theta$</formula>, rz). </para>
         </briefdescription>
         <detaileddescription>
 <para>The block is exact for any 3D material: <formula id="103">$\gamma_{r\theta} = \gamma_{z\theta} = 0$</formula> is kinematic. <parameterlist kind="param"><parameteritem>

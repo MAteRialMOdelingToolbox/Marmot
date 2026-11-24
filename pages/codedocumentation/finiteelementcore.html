@@ -361,7 +361,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN6Marmot15Discretizations8Elements14ConsistentMass22nearestQuadraturePointENSt6size_tERKN5Eigen8VectorXdERK24QuadraturePointContainer"><code class="docutils literal notranslate"><span class="pre">nearestQuadraturePoint()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStepE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::CriticalTimeStep</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStepE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::CriticalTimeStep</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii"><code class="docutils literal notranslate"><span class="pre">pWaveModulusOfQuadraturePoint()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements3EASE"><code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::EAS</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements3EAS7EASTypeE"><code class="docutils literal notranslate"><span class="pre">EASType</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements3EAS1FERKN5Eigen8MatrixXdE"><code class="docutils literal notranslate"><span class="pre">F()</span></code></a></li>
@@ -2800,7 +2803,10 @@ The operator stores the surface displacement gradient in row-major tensor order 
 </ul>
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a non-positive lumped mass or P-wave modulus: no time increment is meaningful then. </p>
+<dd class="field-even"><ul class="simple">
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a lumped mass or a P-wave modulus that is not positive, NaN included: no time increment is meaningful then. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the eigenvalue solver fails. </p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The stable time increment. </p>
@@ -3628,6 +3634,32 @@ Convenience overload for an explicit element, which has the strain increment at 
  The bound is exact for a material at the end whose term is the larger one and conservative everywhere else, by as much as a compact linear element at <span class="math notranslate nohighlight">\(\nu = 0\)</span>, where the incompressible end governs (its time increment is then about 0.6 of the element’s true one). It assumes an isotropic material with the same <span class="math notranslate nohighlight">\(\nu\)</span> at all quadrature points of the element, <span class="math notranslate nohighlight">\(\nu \geq 0\)</span>, and takes the largest P-wave modulus of its quadrature points.</p>
 <p>A plane stress section is covered by the plane operators: its in-plane modulus  <span class="math notranslate nohighlight">\(2\lambda\mu / (\lambda +
 2\mu)\)</span> is smaller than <span class="math notranslate nohighlight">\(\lambda\)</span>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii">
+<span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::pWaveModulusOfQuadraturePoint__double.double.i.i"></span><span class="target" id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1a944a898321a064cf0b8a17499844e8bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pWaveModulusOfQuadraturePoint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">density</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">waveSpeed</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementLabel</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">quadraturePoint</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii" title="Link to this definition"></a><br /></dt>
+<dd><p>The P-wave modulus <span class="math notranslate nohighlight">\(\rho c^2\)</span> of a quadrature point, checked before it is combined with those of the other points. </p>
+<p>Every check is written so that a NaN fails it: a quadrature point whose wave speed or density is not a number must stop the analysis, not drop out of the largest P-wave modulus of the element (a NaN loses every comparison, so <code class="docutils literal notranslate"><span class="pre">std::max</span></code> would pass over it, and the time increment would come out too large). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>density</strong> – The density <span class="math notranslate nohighlight">\(\rho\)</span> of the material at the point. </p></li>
+<li><p><strong>waveSpeed</strong> – The largest wave speed <span class="math notranslate nohighlight">\(c\)</span> of the material at the point. </p></li>
+<li><p><strong>elementLabel</strong> – The label of the element, for the message. </p></li>
+<li><p><strong>quadraturePoint</strong> – The number of the quadrature point, for the message. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the wave speed or the density is not a positive number. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The P-wave modulus <span class="math notranslate nohighlight">\(\rho c^2\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 </dd></dl>
 
 <dl class="cpp type">
@@ -4966,6 +4998,8 @@ J_0 w\)</span>, without forming the B-operator. </p>
 <dt class="sig sig-object cpp">
 <span class="target" id="_marmot_critical_time_step_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">MarmotCriticalTimeStep.h</span></span></dt>
 <dd><div class="docutils container">
+<em>#include “Marmot/MarmotJournal.h”</em></div>
+<div class="docutils container">
 <em>#include &lt;Eigen/Core&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;Eigen/Eigenvalues&gt;</em></div>
@@ -4977,21 +5011,23 @@ J_0 w\)</span>, without forming the B-operator. </p>
 <em>#include &lt;stdexcept&gt;</em></div>
 <p>Include dependency graph for MarmotCriticalTimeStep.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-447477fcde0ef6f09d781ff12b7f4742ccfc6064.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-950ecee7b50187886e12b9cb67f384d95fbbd4f3.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;2&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
-    &quot;3&quot; [label=&quot;Eigen/Eigenvalues&quot; tooltip=&quot;Eigen/Eigenvalues&quot;]
-    &quot;4&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;5&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;6&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;3&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
+    &quot;4&quot; [label=&quot;Eigen/Eigenvalues&quot; tooltip=&quot;Eigen/Eigenvalues&quot;]
+    &quot;2&quot; [label=&quot;Marmot/MarmotJournal.h&quot; tooltip=&quot;Marmot/MarmotJournal.h&quot;]
+    &quot;5&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
+    &quot;6&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
+    &quot;7&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

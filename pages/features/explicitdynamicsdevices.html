@@ -145,6 +145,14 @@ affine in <span class="math notranslate nohighlight">\(\mu\)</span>, and its lar
 elements it is about 0.8 to 1 of the stable increment of the element; for a compact linear element, whose
 incompressible end governs, it can be as low as 0.6 of it at <span class="math notranslate nohighlight">\(\nu = 0\)</span>. A courant number below one is still
 needed for the nonlinearities the bound does not see.</p>
+<p>An element whose bound comes out too large makes the whole analysis unstable, so the numbers it is built from are
+checked, each such that a NaN fails the check: the wave speed and the density of every quadrature point
+(<code class="docutils literal notranslate"><span class="pre">pWaveModulusOfQuadraturePoint</span></code>) before the largest P-wave modulus is taken – a NaN loses every comparison and
+would otherwise drop out of the maximum, leaving the bound of the other points –, every entry of the lumped mass,
+and the convergence of the eigenvalue solver. A failed check throws with the element and the quadrature point in the
+message. The default <code class="docutils literal notranslate"><span class="pre">MaterialFiniteStrain::getMaximumWaveSpeed</span></code> returns NaN if the finite-difference stiffness of
+one direction is NaN, so that the element refuses it. The axisymmetric finite strain elements evaluate the wave speed
+at their hoop stretch, the deformation they integrate.</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStepE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStepE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStepE"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CriticalTimeStep</span></span></span><br /></dt>
@@ -165,6 +173,32 @@ needed for the nonlinearities the bound does not see.</p>
  The bound is exact for a material at the end whose term is the larger one and conservative everywhere else, by as much as a compact linear element at <span class="math notranslate nohighlight">\(\nu = 0\)</span>, where the incompressible end governs (its time increment is then about 0.6 of the element’s true one). It assumes an isotropic material with the same <span class="math notranslate nohighlight">\(\nu\)</span> at all quadrature points of the element, <span class="math notranslate nohighlight">\(\nu \geq 0\)</span>, and takes the largest P-wave modulus of its quadrature points.</p>
 <p>A plane stress section is covered by the plane operators: its in-plane modulus  <span class="math notranslate nohighlight">\(2\lambda\mu / (\lambda +
 2\mu)\)</span> is smaller than <span class="math notranslate nohighlight">\(\lambda\)</span>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii">
+<span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStep29pWaveModulusOfQuadraturePointEddii"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::pWaveModulusOfQuadraturePoint__double.double.i.i"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep_1a944a898321a064cf0b8a17499844e8bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pWaveModulusOfQuadraturePoint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">density</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">waveSpeed</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementLabel</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">quadraturePoint</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The P-wave modulus <span class="math notranslate nohighlight">\(\rho c^2\)</span> of a quadrature point, checked before it is combined with those of the other points. </p>
+<p>Every check is written so that a NaN fails it: a quadrature point whose wave speed or density is not a number must stop the analysis, not drop out of the largest P-wave modulus of the element (a NaN loses every comparison, so <code class="docutils literal notranslate"><span class="pre">std::max</span></code> would pass over it, and the time increment would come out too large). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>density</strong> – The density <span class="math notranslate nohighlight">\(\rho\)</span> of the material at the point. </p></li>
+<li><p><strong>waveSpeed</strong> – The largest wave speed <span class="math notranslate nohighlight">\(c\)</span> of the material at the point. </p></li>
+<li><p><strong>elementLabel</strong> – The label of the element, for the message. </p></li>
+<li><p><strong>quadraturePoint</strong> – The number of the quadrature point, for the message. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the wave speed or the density is not a positive number. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The P-wave modulus <span class="math notranslate nohighlight">\(\rho c^2\)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBoundE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBoundE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBoundE"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep_1_1IsotropicElasticStiffnessBound"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsotropicElasticStiffnessBound</span></span></span><br /></dt>
@@ -214,7 +248,10 @@ needed for the nonlinearities the bound does not see.</p>
 </ul>
 </dd>
 <dt class="field-even">Throws<span class="colon">:</span></dt>
-<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a non-positive lumped mass or P-wave modulus: no time increment is meaningful then. </p>
+<dd class="field-even"><ul class="simple">
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a lumped mass or a P-wave modulus that is not positive, NaN included: no time increment is meaningful then. </p></li>
+<li><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the eigenvalue solver fails. </p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The stable time increment. </p>

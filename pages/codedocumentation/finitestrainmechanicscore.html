@@ -2568,7 +2568,7 @@ This function iteratively finds the eigen deformation that corresponds to a give
 <span id="_CPPv3NK6Marmot9Materials20MaterialFiniteStrain19getMaximumWaveSpeedEPKdRKN6Fastor6TensorIdXL3EEXL3EEEE"></span><span id="_CPPv2NK6Marmot9Materials20MaterialFiniteStrain19getMaximumWaveSpeedEPKdRKN6Fastor6TensorIdX3EX3EEE"></span><span id="Marmot::Materials::MaterialFiniteStrain::getMaximumWaveSpeed__doubleCP.Fastor::Tensor:double.3.3:CRC"></span><span class="target" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a85661aaa97a64688d360ac90b3042b4a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMaximumWaveSpeed</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformationGradient</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials20MaterialFiniteStrain19getMaximumWaveSpeedEPKdRKN6Fastor6TensorIdXL3EEXL3EEEE" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the maximum wave speed of the material for a given deformation gradient. </p>
 <p>
-The default implementation computes diagonal Voigt tangent entries by centered finite differences and returns <code class="docutils literal notranslate"><span class="pre">sqrt(max(C_ii)</span> <span class="pre">/</span> <span class="pre">rho)</span></code>. </p>
+The default implementation computes diagonal Voigt tangent entries by centered finite differences and returns <code class="docutils literal notranslate"><span class="pre">sqrt(max(C_ii)</span> <span class="pre">/</span> <span class="pre">rho)</span></code>. A NaN entry is returned as NaN, not dropped by the maximum: the wave speed of the other directions would be too small, and the time increment of an explicit analysis too large. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2577,7 +2577,7 @@ The default implementation computes diagonal Voigt tangent entries by centered f
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Maximum wave speed</p>
+<dd class="field-even"><p>Maximum wave speed; NaN if the stiffness of a direction is NaN.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4944,10 +4944,12 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <div class="docutils container">
 <em>#include &lt;cmath&gt;</em></div>
 <div class="docutils container">
+<em>#include &lt;limits&gt;</em></div>
+<div class="docutils container">
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialFiniteStrain.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-4138bb3149d64a4d54e7434e1619ce4e3192815a.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-c16e34017041ccb96a60452a8493e77b39e049dc.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -4956,12 +4958,14 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;2&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
     &quot;4&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;5&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;6&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;6&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;7&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -5004,31 +5008,33 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;functional&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialFiniteStrainAD.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fdb758f01d9dc1a82eef51c6f4c5c159794d18a3.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-46b8e35575ec6d8cc892feb928cef20e6c3306e4.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotMaterialFiniteStrain.h&quot; tooltip=&quot;Marmot/MarmotMaterialFiniteStrain.h&quot;]
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;10&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
+    &quot;11&quot; [label=&quot;Eigen/Core&quot; tooltip=&quot;Eigen/Core&quot;]
     &quot;6&quot; [label=&quot;Fastor/tensor/Tensor.h&quot; tooltip=&quot;Fastor/tensor/Tensor.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotAutomaticDifferentiationForFastor.h&quot; tooltip=&quot;Marmot/MarmotAutomaticDifferentiationForFastor.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotFastorTensorBasics.h&quot; tooltip=&quot;Marmot/MarmotFastorTensorBasics.h&quot;]
     &quot;5&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
     &quot;7&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;8&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;11&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;9&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;12&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;9&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;10&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;4&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;4&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;4&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;4&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;4&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;4&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -5049,7 +5055,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;unordered_map&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialFiniteStrainFactory.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-070f1563ee1cb2ccdcd46bbbddaaaa8724366ade.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-12624f56ceada509ba3e627381e69878f75d36d8.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -5058,22 +5064,24 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;4&quot; [label=&quot;Fastor/tensor/Tensor.h&quot; tooltip=&quot;Fastor/tensor/Tensor.h&quot;]
     &quot;3&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
     &quot;5&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
-    &quot;8&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
+    &quot;9&quot; [label=&quot;cassert&quot; tooltip=&quot;cassert&quot;]
     &quot;6&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;9&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
-    &quot;10&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
-    &quot;11&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
-    &quot;7&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;10&quot; [label=&quot;functional&quot; tooltip=&quot;functional&quot;]
+    &quot;7&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;11&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;12&quot; [label=&quot;unordered_map&quot; tooltip=&quot;unordered_map&quot;]
+    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -5098,7 +5106,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;stdexcept&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialFiniteStrainSubstepped.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-83a65fd0362eefcd7d9c40590571345d8737a12b.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e0a868e42655d5f93707b2c932a1a422c40306d3.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -5106,26 +5114,28 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;5&quot; [label=&quot;Fastor/tensor/Tensor.h&quot; tooltip=&quot;Fastor/tensor/Tensor.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotFastorTensorBasics.h&quot; tooltip=&quot;Marmot/MarmotFastorTensorBasics.h&quot;]
-    &quot;9&quot; [label=&quot;Marmot/MarmotNumericalDifferentiation.h&quot; tooltip=&quot;Marmot/MarmotNumericalDifferentiation.h&quot;]
+    &quot;10&quot; [label=&quot;Marmot/MarmotNumericalDifferentiation.h&quot; tooltip=&quot;Marmot/MarmotNumericalDifferentiation.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
     &quot;6&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;10&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
-    &quot;11&quot; [label=&quot;memory&quot; tooltip=&quot;memory&quot;]
-    &quot;12&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
-    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;11&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
+    &quot;8&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;12&quot; [label=&quot;memory&quot; tooltip=&quot;memory&quot;]
+    &quot;13&quot; [label=&quot;stdexcept&quot; tooltip=&quot;stdexcept&quot;]
+    &quot;9&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -5338,7 +5348,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialGradientEnhancedHughesWinget.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e25ddc20828a62d940f4e89d8c2cf1f03dfa7c16.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6e809b0b55e7f40d0063df8a0c412a3a2b0cd0bb.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -5351,17 +5361,17 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;9&quot; [label=&quot;Fastor/tensor/Tensor.h&quot; tooltip=&quot;Fastor/tensor/Tensor.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotFastorTensorBasics.h&quot; tooltip=&quot;Marmot/MarmotFastorTensorBasics.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h&quot;]
-    &quot;20&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
+    &quot;21&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
     &quot;25&quot; [label=&quot;Marmot/MarmotNumericalDifferentiation.h&quot; tooltip=&quot;Marmot/MarmotNumericalDifferentiation.h&quot;]
     &quot;6&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;21&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;22&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
     &quot;7&quot; [label=&quot;Marmot/MarmotUtils.h&quot; tooltip=&quot;Marmot/MarmotUtils.h&quot;]
-    &quot;22&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
+    &quot;23&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
     &quot;18&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;10&quot; [label=&quot;array&quot; tooltip=&quot;array&quot;]
     &quot;19&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;23&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
-    &quot;24&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;24&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
+    &quot;20&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
     &quot;13&quot; [label=&quot;memory&quot; tooltip=&quot;memory&quot;]
     &quot;11&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
     &quot;12&quot; [label=&quot;tuple&quot; tooltip=&quot;tuple&quot;]
@@ -5371,6 +5381,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;17&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;17&quot; -&gt; &quot;18&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;17&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;17&quot; -&gt; &quot;20&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;17&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;5&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -5383,11 +5394,11 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;16&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;25&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;21&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;22&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;23&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;24&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;20&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -5400,12 +5411,12 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;3&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;17&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;16&quot; -&gt; &quot;20&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;21&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;22&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;16&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;23&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;16&quot; -&gt; &quot;19&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;24&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;16&quot; -&gt; &quot;20&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;16&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
@@ -5511,7 +5522,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialHughesWinget.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d9ad37da0dd581105d1f1f522499750163fc2646.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-99c994a911161cc9ac121793ff0edd748d10b4f9.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -5519,33 +5530,34 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;1&quot; [label=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h&quot; tooltip=&quot;/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;5&quot; [label=&quot;Fastor/tensor/Tensor.h&quot; tooltip=&quot;Fastor/tensor/Tensor.h&quot;]
     &quot;2&quot; [label=&quot;Marmot/MarmotFastorTensorBasics.h&quot; tooltip=&quot;Marmot/MarmotFastorTensorBasics.h&quot;]
-    &quot;9&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
+    &quot;10&quot; [label=&quot;Marmot/MarmotMaterialHypoElastic.h&quot; tooltip=&quot;Marmot/MarmotMaterialHypoElastic.h&quot;]
     &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
-    &quot;10&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
-    &quot;11&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
+    &quot;11&quot; [label=&quot;Marmot/MarmotTypedefs.h&quot; tooltip=&quot;Marmot/MarmotTypedefs.h&quot;]
+    &quot;12&quot; [label=&quot;Marmot/MarmotVoigt.h&quot; tooltip=&quot;Marmot/MarmotVoigt.h&quot;]
     &quot;6&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;12&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
-    &quot;13&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;13&quot; [label=&quot;cstring&quot; tooltip=&quot;cstring&quot;]
+    &quot;8&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
     &quot;14&quot; [label=&quot;memory&quot; tooltip=&quot;memory&quot;]
     &quot;15&quot; [label=&quot;type_traits&quot; tooltip=&quot;type_traits&quot;]
-    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;9&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;13&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;14&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;15&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -5580,7 +5592,7 @@ Called unevaluated, on a null pointer of the material type, to read the template
 <em>#include &lt;vector&gt;</em></div>
 <p>Include dependency graph for MarmotMaterialPointSolverFiniteStrain.h:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-5eda760f35ee7c2d3ecffafaf8399f52ad675638.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-ae5211ab42b162aba99f5b868062ed3008cac9dc.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -5591,21 +5603,23 @@ Called unevaluated, on a null pointer of the material type, to read the template
     &quot;4&quot; [label=&quot;Marmot/MarmotStateHelpers.h&quot; tooltip=&quot;Marmot/MarmotStateHelpers.h&quot;]
     &quot;6&quot; [label=&quot;algorithm&quot; tooltip=&quot;algorithm&quot;]
     &quot;7&quot; [label=&quot;cmath&quot; tooltip=&quot;cmath&quot;]
-    &quot;9&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
-    &quot;10&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
-    &quot;11&quot; [label=&quot;utility&quot; tooltip=&quot;utility&quot;]
-    &quot;8&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
+    &quot;10&quot; [label=&quot;iostream&quot; tooltip=&quot;iostream&quot;]
+    &quot;8&quot; [label=&quot;limits&quot; tooltip=&quot;limits&quot;]
+    &quot;11&quot; [label=&quot;string&quot; tooltip=&quot;string&quot;]
+    &quot;12&quot; [label=&quot;utility&quot; tooltip=&quot;utility&quot;]
+    &quot;9&quot; [label=&quot;vector&quot; tooltip=&quot;vector&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;3&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;3&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;include&quot;]
     &quot;1&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;include&quot;]
-    &quot;1&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;include&quot;]
+    &quot;1&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;include&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>

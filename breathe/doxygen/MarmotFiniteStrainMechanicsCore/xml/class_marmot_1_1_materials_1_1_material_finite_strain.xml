@@ -24,7 +24,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="44" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="45" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a8db69ec3edfc5f28c6cce88da5224eb7" prot="protected" static="no" mutable="no">
         <type>const int</type>
@@ -39,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="45" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="46" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="46" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-attrib">
@@ -56,7 +56,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="48" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="48" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="49" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a9923b35e9bef5a429caadca4c3d3d74a" prot="public" static="no" mutable="no">
         <type>Marmot::Utilities::StateLayoutDynamic</type>
@@ -71,7 +71,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="67" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="67" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="68" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="68" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -126,7 +126,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="56" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="56" bodyend="61"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="57" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="57" bodyend="62"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a5fb9244be5f3982e58414b96667973f3" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -141,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="64" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="65" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1af123a7f01a7534862ec08e82fcc0a443" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -209,7 +209,7 @@ Computes the Kirchhoff <formula id="34">$\boldsymbol{\tau}$</formula> stress fro
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="167" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="168" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a6e355595e26df823bae850e03aeacd85" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -267,7 +267,7 @@ Computes the Kirchhoff <formula id="34">$\boldsymbol{\tau}$</formula> stress fro
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="181" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="181" bodyend="187"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="182" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="182" bodyend="188"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1aa32851be167d4234e11182aeeb7a32e4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -344,7 +344,7 @@ Computes the Kirchhoff <formula id="34">$\boldsymbol{\tau}$</formula> stress fro
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="198" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="199" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -409,7 +409,7 @@ It uses the general 3D computeStress function for a plane strain <ref refid="str
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="214" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="215" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a3bf3cf62925f7d455ec4c90174a45bd8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -439,7 +439,7 @@ It uses the general 3D computeStress function for a plane strain <ref refid="str
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="223" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="223" bodyend="229"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="224" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="224" bodyend="230"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -516,7 +516,7 @@ It uses the general 3D computeStress function for a plane strain <ref refid="str
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="242" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="243" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a04ae82bf6b55b7406402e244056d5c0e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -550,7 +550,7 @@ It uses the general 3D computeStress function for a plane strain <ref refid="str
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="253" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="253" bodyend="260"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="254" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="254" bodyend="261"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a7b3edcf9103bce626425fbdfec9c019c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -615,7 +615,7 @@ It uses the general 3D computeStress function and iteratively finds the out-of-p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="272" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="273" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1afb9af3285d55f00fb3983a9111ad1b7a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -645,7 +645,7 @@ It uses the general 3D computeStress function and iteratively finds the out-of-p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="281" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="281" bodyend="287"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="282" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="282" bodyend="288"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1aae18c14fa332ebc9d8c0ec1db9dad1c1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -728,7 +728,7 @@ The general 3D computeStress function is called repeatedly, and the lateral stre
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="312" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="313" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a1a44e61c30c6a18bf204a0375305ddfc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; double, double, double &gt;</type>
@@ -783,7 +783,7 @@ This function iteratively finds the eigen deformation that corresponds to a give
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="327" column="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="328" column="16"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1af07a0556b7f723dd0c1fc47fa33a128e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -827,7 +827,7 @@ This function iteratively finds the eigen deformation that corresponds to a give
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="338" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="338" bodyend="341"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="339" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="339" bodyend="342"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a7ad41a3c35aead0da007341ff2152ef4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -845,7 +845,7 @@ This function iteratively finds the eigen deformation that corresponds to a give
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="347" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="347" bodyend="347"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="348" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="348" bodyend="348"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1ab63e79f271a977946637c538eb4bb1ae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -890,7 +890,7 @@ This function iteratively finds the eigen deformation that corresponds to a give
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="355" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="355" bodyend="360"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="356" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="356" bodyend="361"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a85661aaa97a64688d360ac90b3042b4a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>double</type>
@@ -927,13 +927,13 @@ This function iteratively finds the eigen deformation that corresponds to a give
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Maximum wave speed</para>
+<simplesect kind="return"><para>Maximum wave speed; NaN if the stiffness of a direction is NaN.</para>
 </simplesect>
-The default implementation computes diagonal Voigt tangent entries by centered finite differences and returns <computeroutput>sqrt(max(C_ii) / rho)</computeroutput>. </para>
+The default implementation computes diagonal Voigt tangent entries by centered finite differences and returns <computeroutput>sqrt(max(C_ii) / rho)</computeroutput>. A NaN entry is returned as NaN, not dropped by the maximum: the wave speed of the other directions would be too small, and the time increment of an explicit analysis too large. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="370" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="370" bodyend="412"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="373" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="373" bodyend="417"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1a3985323a46813f83562a8e8980a6329a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -964,7 +964,7 @@ The default implementation computes diagonal Voigt tangent entries by centered f
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="422" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="422" bodyend="422"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="427" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="427" bodyend="427"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_1ae4d2733228b5cacd8b39cb26c8914b8f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -997,7 +997,7 @@ The default implementation computes diagonal Voigt tangent entries by centered f
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="429" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="434" column="20"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -1030,7 +1030,7 @@ The default implementation computes diagonal Voigt tangent entries by centered f
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="41" bodyend="430"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="42" bodyend="435"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrain</scope><name>computePlaneStrain</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrain</scope><name>computePlaneStrain</name></member>
