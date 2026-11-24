@@ -382,7 +382,8 @@ namespace Marmot::Math::Differentiation::Automatic {
       // triples a <= b <= c of directions (a = dim * i + j for T_ij), seeded on the levels 1, 2 and 3, and the third
       // derivative is copied to all permutations. With isSymmetric, a triple is skipped if its transpose (all three
       // directions T_ij -> T_ji) sorts lower, and its derivatives are copied from the transpose. The first and second
-      // derivatives come out of the same evaluations; the few that none of them provides are evaluated separately.
+      // derivatives come out of the same evaluations: every pair and every single direction is the leading part of an
+      // evaluated triple or of the transpose of one.
       constexpr size_t n          = dim * dim;
       auto             transposed = []( size_t a ) { return ( a % dim ) * dim + a / dim; };
 
@@ -392,8 +393,6 @@ namespace Marmot::Math::Differentiation::Automatic {
       Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > d3F_dT3;
       Fastor::Tensor< dual3rd, dim, dim >                    T_right = Tensors::makeHigherOrderDual< 3 >( T );
       dual3rd*                                               t       = T_right.data();
-      std::array< bool, n >                                  hasD1{};
-      std::array< std::array< bool, n >, n >                 hasD2{};
 
       auto setD3 = [&]( size_t a, size_t b, size_t c, double v ) {
         const std::array< size_t, 3 >                   d     = { a, b, c };
@@ -405,12 +404,8 @@ namespace Marmot::Math::Differentiation::Automatic {
       auto setD2 = [&]( size_t a, size_t b, double v ) {
         d2F_dT2( a / dim, a % dim, b / dim, b % dim ) = v;
         d2F_dT2( b / dim, b % dim, a / dim, a % dim ) = v;
-        hasD2[a][b] = hasD2[b][a] = true;
       };
-      auto setD1 = [&]( size_t a, double v ) {
-        dF_dT_( a / dim, a % dim ) = v;
-        hasD1[a]                   = true;
-      };
+      auto setD1 = [&]( size_t a, double v ) { dF_dT_( a / dim, a % dim ) = v; };
 
       for ( size_t a = 0; a < n; a++ )
         for ( size_t b = a; b < n; b++ )
@@ -438,34 +433,6 @@ namespace Marmot::Math::Differentiation::Automatic {
               setD1( transposed( a ), derivative< 1 >( F_right ) );
             }
           }
-
-      // second derivatives not yet provided (only possible with isSymmetric)
-      for ( size_t a = 0; a < n; a++ )
-        for ( size_t b = a; b < n; b++ ) {
-          if ( hasD2[a][b] )
-            continue;
-          seed< 1 >( t[a], 1.0 );
-          seed< 2 >( t[b], 1.0 );
-          const dual3rd F_right = F( T_right );
-          seed< 2 >( t[b], 0.0 );
-          seed< 1 >( t[a], 0.0 );
-          setD2( a, b, derivative< 2 >( F_right ) );
-          setD1( a, derivative< 1 >( F_right ) );
-        }
-
-      // first derivatives not yet provided (only possible with isSymmetric)
-      for ( size_t a = 0; a < n; a++ ) {
-        if ( hasD1[a] )
-          continue;
-        if ( isSymmetric && hasD1[transposed( a )] ) {
-          setD1( a, dF_dT_( transposed( a ) / dim, transposed( a ) % dim ) );
-          continue;
-        }
-        seed< 1 >( t[a], 1.0 );
-        const dual3rd F_right = F( T_right );
-        seed< 1 >( t[a], 0.0 );
-        setD1( a, derivative< 1 >( F_right ) );
-      }
 
       return { F_, dF_dT_, d2F_dT2, d3F_dT3 };
     }

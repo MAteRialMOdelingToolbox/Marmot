@@ -99,6 +99,18 @@ void testElementaryFunctions()
       []( HyperDual< 3 > a ) { return pow( a, 2 ); },
       []( Taylor< 3 > a ) { return pow( a, 2 ); },
       { x * x, 2 * x, 2, 0 } },
+    { "pow( x, 3 )",
+      []( HyperDual< 3 > a ) { return pow( a, 3 ); },
+      []( Taylor< 3 > a ) { return pow( a, 3 ); },
+      { x * x * x, 3 * x * x, 6 * x, 6 } },
+    { "pow( x, 4 )",
+      []( HyperDual< 3 > a ) { return pow( a, 4 ); },
+      []( Taylor< 3 > a ) { return pow( a, 4 ); },
+      { x * x * x * x, 4 * x * x * x, 12 * x * x, 24 * x } },
+    { "pow( x, 0 )",
+      []( HyperDual< 3 > a ) { return pow( a, 0 ); },
+      []( Taylor< 3 > a ) { return pow( a, 0 ); },
+      { 1, 0, 0, 0 } },
     { "pow( 2, x )",
       []( HyperDual< 3 > a ) { return pow( 2., a ); },
       []( Taylor< 3 > a ) { return pow( 2., a ); },
@@ -234,6 +246,19 @@ void testTaylorAtZero()
   }
 }
 
+void testPowAtZeroBase()
+{
+  // a vanishing base: the derivatives follow without dividing by the base
+  using D  = HyperDual< 1 >;
+  D x      = 0.0;
+  x.grad() = 1.0;
+  check( pow( x, 1.0 ).grad(), 1.0, "d/dx x^1 at 0" );
+  check( pow( x, 2.5 ).grad(), 0.0, "d/dx x^2.5 at 0" );
+  check( pow( 0., D( 0.6 ) + x ).grad(), 0.0, "d/dx 0^( 0.6 + x )" );
+  const D one = 1.0;
+  check( pow( x, one ).grad(), 1.0, "d/dx x^y at x = 0, y = 1" );
+}
+
 void testEigen()
 {
   // gradient of |A x|^2 / 2 with dual numbers in Eigen, one direction per evaluation
@@ -257,6 +282,7 @@ int main()
                                                        testElementaryFunctions,
                                                        testTaylorHighOrder,
                                                        testTaylorAtZero,
+                                                       testPowAtZeroBase,
                                                        testEigen };
 
   executeTestsAndCollectExceptions( tests );

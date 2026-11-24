@@ -273,6 +273,7 @@ void testSecondOrderElementaryFunctions()
       2.5 * std::pow( x, 1.5 ),
       3.75 * std::pow( x, 0.5 ) },
     { "pow( x, 2 )", []( const H3& a ) { return pow( a, 2 ); }, x * x, 2 * x, 2 },
+    { "pow( x, 0 )", []( const H3& a ) { return pow( a, 0 ); }, 1, 0, 0 },
     { "pow( 2, x )",
       []( const H3& a ) { return pow( 2., a ); },
       std::pow( 2, x ),
@@ -365,6 +366,22 @@ void testSecondOrderBinaryOperations()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " comparisons" );
 }
 
+void testSecondOrderSpecialCases()
+{
+  // a vanishing base: pow without dividing by the base
+  const H3 p = pow( variable( 0.0, 1 ), 2.5 );
+  checkClose( p.val(), 0.0, "0^2.5" );
+  checkClose( p.dx( 1 ), 0.0, "d x^2.5/dx at 0" );
+  checkClose( p.dxx( 1, 1 ), 0.0, "d2 x^2.5/dx2 at 0" );
+
+  // seeding a number again makes it the new variable alone
+  H3 x = variable( 0.7, 0 ) * variable( 1.3, 1 );
+  x.seed( 2 );
+  checkClose( x.dx( 0 ) + x.dx( 1 ) + x.dxx( 0, 1 ) + x.dxx( 1, 0 ), 0.0, "reseeded: old derivatives" );
+  checkClose( x.dx( 2 ), 1.0, "reseeded: new derivative" );
+  throwExceptionOnFailure( x.mask() == 4u, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " reseeded mask" );
+}
+
 void testSecondOrderAgainstHyperDual()
 {
   // the full Hessian of a composite function of 3 variables against nested hyper-dual numbers, one pair at a time
@@ -394,6 +411,7 @@ int main()
                                                        testFastor,
                                                        testSecondOrderElementaryFunctions,
                                                        testSecondOrderBinaryOperations,
+                                                       testSecondOrderSpecialCases,
                                                        testSecondOrderAgainstHyperDual };
 
   executeTestsAndCollectExceptions( tests );
