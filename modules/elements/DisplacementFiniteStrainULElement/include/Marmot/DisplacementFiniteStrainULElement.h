@@ -295,6 +295,10 @@ namespace Marmot::Discretizations::Elements {
      * hand side of global newton) \f$\int_\bar{A}\,\mathbf{N}_A\,\bar{t}_j\,d\bar{A}\f$ and the element stiffness
      * matrix \f$-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} -
      * \delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\f$.
+     * A pressure acts on the current face, a surface traction on the reference face. A plane element multiplies the
+     * face integral by its thickness, an axisymmetric element (isAxisymmetric()) integrates over the ring,
+     * \f$d\bar{A} = 2\pi r\,ds\f$, with the radius \f$r\f$ of the face in the same configuration, and the pressure
+     * stiffness includes the derivative of \f$2\pi r\f$.
      *
      * @param[in] loadType Type of the distributed load, e.g., pressure or surface traction
      * @param[in,out] P Pointer to the element residual vector (right hand side of the global equation system)
@@ -437,6 +441,13 @@ namespace Marmot::Discretizations::Elements {
      * @return The section factor.
      */
     virtual double sectionFactorAt( const XiSized& xi ) const;
+
+    /**
+     * @brief Whether the element is axisymmetric: its faces are integrated over the ring \f$2\pi r\f$, as
+     * sectionFactorAt() does for its volume, in place of the thickness of a plane element.
+     * @return false; true for AxiSymmetricDisplacementFiniteStrainULElement.
+     */
+    virtual bool isAxisymmetric() const { return false; }
 
     /**
      * @brief The stretch \f$F_{33}\f$ normal to the plane of a 2D element at a quadrature point, at the deformation
@@ -877,6 +888,10 @@ namespace Marmot::Discretizations::Elements {
 
     Eigen::Map< USizedVector > r_U( rightHandSide );
 
+    // the boundary element of an axisymmetric element integrates over the ring; plane elements multiply by thickness
+    const bool axisymmetric = isAxisymmetric();
+    const bool plane        = nDim == 2 && !axisymmetric;
+
     switch ( loadType ) {
 
     case Marmot::Discretizations::Elements::Element::Pressure: {
@@ -887,12 +902,16 @@ namespace Marmot::Discretizations::Elements {
       Eigen::Ref< Eigen::Matrix< double, bsU, bsU > >                       kUU( K.topLeftCorner( bsU, bsU ) );
 
       const USizedVector                                 coordinates_np = this->coordinates + qU;
-      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape,
+                                                                     elementFace,
+                                                                     nDim,
+                                                                     coordinates_np,
+                                                                     axisymmetric );
 
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
-      if constexpr ( nDim == 2 ) {
+      if ( plane ) {
         Pb *= elementProperties[0]; // thickness
         Kb *= elementProperties[0];
       }
@@ -907,12 +926,13 @@ namespace Marmot::Discretizations::Elements {
       Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape,
                                                                      elementFace,
                                                                      nDim,
-                                                                     this->coordinates );
+                                                                     this->coordinates,
+                                                                     axisymmetric );
 
       const Eigen::Map< const Eigen::VectorXd > tractionVector( load, nDim );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
-      if constexpr ( nDim == 2 )
+      if ( plane )
         Pk *= elementProperties[0]; // thickness
       boundaryEl.assembleIntoParentVectorial( Pk, r_U );
 
@@ -1150,9 +1170,8 @@ namespace Marmot::Discretizations::Elements {
    * \f$r = x_1 \geq 0\f$, \f$z = x_2\f$, with the hoop stretch \f$F_{\theta\theta} = 1 + u_r / r\f$.
    * @details Everything the element integrates -- internal force, lumped and consistent mass, body force, and the
    * operators of the critical time step -- is integrated over the ring, with the section factor \f$2\pi r\f$ in
-   * place of a thickness (sectionFactorAt()). The thickness property is not used by them.
-   * @note computeDistributedLoad() is still the plane element's: it integrates over the face times the thickness, not
-   * over the ring.
+   * place of a thickness (sectionFactorAt()); so are the distributed loads, over the ring of the face
+   * (isAxisymmetric()). The thickness property is not used.
    */
   template < int nNodes >
   class AxiSymmetricDisplacementFiniteStrainULElement : public DisplacementFiniteStrainULElement< 2, nNodes > {
@@ -1188,6 +1207,12 @@ namespace Marmot::Discretizations::Elements {
      * @return The section factor.
      */
     double sectionFactorAt( const typename Parent::XiSized& xi ) const override;
+
+    /**
+     * @brief The element is axisymmetric: its faces are integrated over the ring.
+     * @return true.
+     */
+    bool isAxisymmetric() const override { return true; }
 
     /**
      * @brief The hoop stretch \f$F_{\theta\theta} = 1 + u_r / r\f$ of the quadrature point.

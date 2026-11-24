@@ -1447,6 +1447,128 @@ void testAxiSymmetricMassAndBodyForceAreThoseOfTheRing()
   }
 }
 
+namespace {
+  /// The nodal loads of a distributed load on a face of an element, and their tangent.
+  struct DistributedLoad {
+    /// The nodal loads.
+    Eigen::VectorXd P;
+    /// The tangent, as computeDistributedLoad() assembles it.
+    Eigen::MatrixXd K;
+  };
+
+  /**
+   * @brief The distributed load on a face of an element at a displacement.
+   * @param element The element.
+   * @param loadType Pressure or surface traction.
+   * @param face The face, 1-based.
+   * @param load The pressure, or the traction vector.
+   * @param QTotal The displacement of the element.
+   * @return The nodal loads and their tangent.
+   */
+  DistributedLoad distributedLoadOf( Marmot::Discretizations::Elements::Element&                      element,
+                                     Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
+                                     int                                                              face,
+                                     const std::vector< double >&                                     load,
+                                     const Eigen::VectorXd&                                           QTotal )
+  {
+    const int       nDof = element.getNDofPerElement();
+    DistributedLoad result{ Eigen::VectorXd::Zero( nDof ), Eigen::MatrixXd::Zero( nDof, nDof ) };
+    element
+      .computeDistributedLoad( loadType, result.P.data(), result.K.data(), face, load.data(), QTotal.data(), 0.0, 1.0 );
+    return result;
+  }
+
+  /**
+   * @brief The resultant of the nodal loads of an 8-node 2D element in a direction.
+   * @param P The nodal loads.
+   * @param d The direction.
+   * @return The sum of the loads in direction @p d.
+   */
+  double resultantOf( const Eigen::VectorXd& P, int d )
+  {
+    double resultant = 0.0;
+    for ( int A = 0; A < 8; A++ )
+      resultant += P[2 * A + d];
+    return resultant;
+  }
+} // namespace
+
+void testAxiSymmetricSurfaceLoadsAreThoseOfTheRing()
+{
+  // The ring r in [1, 2], z in [0, 1] (faces 1: z = 0, 2: r = 2, 3: z = 1, 4: r = 1), expanded radially by u_r = (s -
+  // 1) r. A pressure p acts on the current face, against its outward normal, with the resultant p 2 pi int r ds: the
+  // faces r = r_0 are at s r_0 with the length 1, int r ds = s r_0; the faces z = z_0 reach from s to 2 s, int r ds =
+  // 3/2 s^2. The thickness 7 of ringSection() is not used.
+  const double p     = 3.0;
+  const double twoPi = 2.0 * Marmot::Math::Constants::Pi;
+
+  struct Face {
+    int    id;
+    int    normalDirection;
+    double outwardSign;
+  };
+  const std::vector< Face > faces = { { 1, 1, -1.0 }, { 2, 0, +1.0 }, { 3, 1, +1.0 }, { 4, 0, -1.0 } };
+
+  for ( const std::string type : { "CX8UL", "CX8RUL" } )
+    for ( const double s : { 1.0, 1.1 } ) {
+      auto  underTest = ringSection( type );
+      auto& element   = *underTest.element;
+
+      Eigen::VectorXd QTotal = Eigen::VectorXd::Zero( 16 );
+      for ( int A = 0; A < 8; A++ )
+        QTotal[2 * A] = ( s - 1.0 ) * ringSectionCoordinates[2 * A];
+
+      for ( const auto& face : faces ) {
+        const auto        load          = distributedLoadOf( element, Element::Pressure, face.id, { p }, QTotal );
+        const double      integralOfRds = face.normalDirection == 0 ? s * ( face.id == 2 ? 2.0 : 1.0 ) : 1.5 * s * s;
+        const std::string at            = type + ", face " + std::to_string( face.id ) + ", s = " + std::to_string( s );
+
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, face.normalDirection ),
+                                               -face.outwardSign * p * twoPi * integralOfRds,
+                                               1e-12 ),
+                                 at + ": the resultant of the pressure is not p 2 pi int r ds of the current face." );
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, 1 - face.normalDirection ), 0.0, 1e-12 ),
+                                 at + ": the pressure has a resultant along the face." );
+      }
+
+      // a surface traction acts on the reference face z = 1: 2 pi int r ds = 2 pi 3/2
+      const std::vector< double > traction = { 0.3, -1.7 };
+      const auto                  load = distributedLoadOf( element, Element::SurfaceTraction, 3, traction, QTotal );
+      for ( int d = 0; d < 2; d++ )
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, d ), traction[d] * twoPi * 1.5, 1e-12 ),
+                                 type + ": the resultant of the surface traction is not t 2 pi int r ds of the "
+                                        "reference face." );
+    }
+}
+
+void testPressureStiffnessMatchesNumericalDifferentiation()
+{
+  // the pressure acts on the current face: its stiffness is the derivative of the nodal loads, negated as the
+  // element's stiffness is that of the residual; for the ring with the derivative of 2 pi r
+  for ( const std::string type : { "CX8UL", "CX8RUL", "CPE8RUL" } ) {
+    auto  underTest = ringSection( type );
+    auto& element   = *underTest.element;
+
+    Eigen::VectorXd Q0( 16 );
+    for ( int i = 0; i < 16; i++ )
+      Q0[i] = 0.05 * std::sin( 1.3 * ( i + 1 ) );
+
+    for ( int face = 1; face <= 4; face++ ) {
+      const std::vector< double >             p     = { 3.0 };
+      NumDiff::vector_to_vector_function_type loads = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+        return distributedLoadOf( element, Element::Pressure, face, p, Q ).P;
+      };
+
+      throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd(
+                                               -distributedLoadOf( element, Element::Pressure, face, p, Q0 ).K ),
+                                             NumDiff::centralDifference( loads, Q0 ),
+                                             1e-6 ),
+                               type + ", face " + std::to_string( face ) +
+                                 ": the pressure stiffness does not match the numerical derivative." );
+    }
+  }
+}
+
 void testAxiSymmetricCriticalTimeStepRefusesAWaveSpeedOrDensityThatIsNotANumber()
 {
   const auto criticalTimeStep = []( Marmot::Discretizations::Elements::Element& element ) {
@@ -1593,6 +1715,8 @@ int main()
     testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual,
     testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium,
     testAxiSymmetricMassAndBodyForceAreThoseOfTheRing,
+    testAxiSymmetricSurfaceLoadsAreThoseOfTheRing,
+    testPressureStiffnessMatchesNumericalDifferentiation,
     testAxiSymmetricCriticalTimeStepRefusesAWaveSpeedOrDensityThatIsNotANumber,
     testAxiSymmetricWaveSpeedIsTakenAtTheHoopStretch,
     testAxiSymmetricElementsRefuseARingThroughTheAxis,
