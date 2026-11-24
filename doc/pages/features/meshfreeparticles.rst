@@ -89,7 +89,7 @@ particles of the displacement family (``Displacement*xNSNI/...``) and all partic
 (``GradientEnhanced*FiniteStrain*/...``); the point, SQCNI, SNNI and SDI particles of the displacement family have
 none. EdelweissMeshfree loads the particles of an explicit analysis through ``computeBodyLoad`` and
 ``computeDistributedLoad`` and discards their tangent; it does not call the explicit loads. A particle gives no
-critical time step: the stable increment of a particle discretization is a property of the assembled system (see
+critical time step: the critical time step of a particle discretization is a property of the assembled system (see
 :doc:`gradientenhancedfinitestrainparticle`). What the host needs from a particle to bound it is its stiffness,
 which the particle describes node by node (``describeStiffness``, see below); the bound is a visitor of that
 description, ``addBoundOfAbsoluteStiffnessTimes``. A particle that does not describe its stiffness throws. The order in
@@ -143,15 +143,15 @@ by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`
 #. ``computeLumpedInertia(m)``: the coefficients of the second time derivatives, a mass on the displacement field.
 #. ``computeLumpedDamping(c)``: the coefficients of the first time derivatives.
 
-``describeStiffness``, through which the host bounds the stable increment (not every increment), is not part of this
+``describeStiffness``, through which the host bounds the critical time step (not every increment), is not part of this
 order: wherever it is called, it leaves the particle as it was found. What it describes is the stiffness of the
 configuration of the last accept with the working copy of the state, which is the stiffness of an accepted state after
 call 2 or 3, where ``NED`` asks for it; between calls 1 and 2 the working copy holds the advanced state.
 
 **The tangent is required in an explicit analysis.** The particles call the material with its tangent
 (``computeStress``), never ``computeStressExplicit``: the stiffness a particle describes, and with it the bound of the
-stable increment, and the NSNI stabilization are formed from the tangent. A material whose tangent is inconsistent
-gives a bound of the stable increment that is too large, with no message.
+critical time step, and the NSNI stabilization are formed from the tangent. A material whose tangent is inconsistent
+gives a bound of the critical time step that is too large, with no message.
 
 A particle without the explicit path refuses calls 1 and 5 (the defaults throw), so the host stops at the first
 increment instead of integrating a mass without a force.
@@ -201,7 +201,7 @@ particle knows nothing of what the visitor does with its stiffness. For an NSNI 
 stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the stabilization
 itself is shared by the displacement and the gradient-enhanced particles (``Marmot::Discretizations::Meshfree::NSNI``).
 
-**The bound of the absolute stiffness.** An explicit host bounds the stable time increment of the particles by the
+**The bound of the absolute stiffness.** An explicit host bounds the critical time step of the particles by the
 Collatz-Wielandt bound of the mass-scaled stiffness, which needs the row sums :math:`|\boldsymbol{K}|\,\boldsymbol{w}`
 only. The stiffness of a particle with :math:`n` nodes has :math:`n^2` blocks; its rows are linear in the shape
 functions of the other node, so the sum over that node is taken from a few weighted moments of the shape functions,

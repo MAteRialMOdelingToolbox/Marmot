@@ -1446,17 +1446,17 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
       double                            criticalTimeStep = 0.0;
       underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
-                                                                                           c.nDim * c.nNodes );
+      const double exactCriticalTimeStep = Marmot::Testing::exactCriticalTimeStepOfTheElement( *underTest.element,
+                                                                                               c.nDim * c.nNodes );
 
-      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+      throwExceptionOnFailure( criticalTimeStep <= exactCriticalTimeStep * ( 1.0 + 1e-10 ),
                                c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " exceeds the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
-      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                                 " exceeds the exact critical time step of the element " +
+                                 std::to_string( exactCriticalTimeStep ) + "." );
+      throwExceptionOnFailure( criticalTimeStep >= 0.7 * exactCriticalTimeStep,
                                c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " is more than 30 % below the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
+                                 " is more than 30 % below the exact critical time step of the element " +
+                                 std::to_string( exactCriticalTimeStep ) + "." );
     }
 }
 
@@ -1796,7 +1796,7 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
 {
   /* The micro-inertia was an element property and is now a material one. A deck that still assigns
    * it here has to FAIL, not be quietly ignored: ignored, the non-local field would stay first
-   * order in time -- with a stable increment falling off as h^2 and nothing checking it -- while
+   * order in time -- with a critical time step falling off as h^2 and nothing checking it -- while
    * the deck's author reads the property in their own input file and believes otherwise. The
    * element must also not advertise it, or a front end validating against getPropertyNames() would
    * accept the deck before the element ever saw the value.
@@ -2410,7 +2410,7 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   throwExceptionOnFailure( dtWithTiny < dtMechanical,
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
-                             << " was ignored -- the stable increment stayed at the mechanical " << dtMechanical );
+                             << " was ignored -- the critical time step stayed at the mechanical " << dtMechanical );
 
   // And it reaches the assembled vector, not just the time step.
   constexpr int nDim          = 3;
@@ -2470,7 +2470,7 @@ void testNonlocalViscosityLowersTheCriticalTimeStep()
   // wrong would leave a damped run integrating above its limit while the estimate reported safety.
   throwExceptionOnFailure( dtDamped < dtLeastDamped,
                            Marmot::Utilities::MakeString()
-                             << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment (" << dtDamped
+                             << __PRETTY_FUNCTION__ << ": damping did not lower the critical time step (" << dtDamped
                              << " against " << dtLeastDamped << ")" );
 }
 

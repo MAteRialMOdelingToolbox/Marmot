@@ -217,7 +217,7 @@ namespace Marmot::Discretizations::Elements {
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
        * @details A current wave speed costs a full constitutive evaluation, which is affordable
-       * for the stable increment (asked for rarely) and not per quadrature point per explicit
+       * for the critical time step (asked for rarely) and not per quadrature point per explicit
        * increment. What is cached is the UNDAMAGED speed: the term damps the highest frequency the
        * MESH can carry, which the undamaged material sets, and holding it fixed as the material
        * softens damps slightly harder -- the safe direction here. Empty means "not yet computed": a
@@ -592,7 +592,7 @@ namespace Marmot::Discretizations::Elements {
      * @param[out] C Diagonal of the lumped damping, in the element's dof order.
      * @details Zero on the displacement block; the non-local block carries the material's
      * non-local viscosity, weighted exactly as computeLumpedInertia() weights that block, since
-     * the stable increment is read off both distributions together. Reported unconditionally,
+     * the critical time step is read off both distributions together. Reported unconditionally,
      * with or without a micro-inertia: it integrates a first-order field on its own and damps a
      * second-order one.
      */
@@ -951,7 +951,7 @@ namespace Marmot::Discretizations::Elements {
        * while the two lived at different levels of the stack.
        *
        * A deck that still assigns it here must fail, not be ignored: ignoring it would leave the
-       * non-local field FIRST order in time -- integrated by its viscosity, with a stable increment
+       * non-local field FIRST order in time -- integrated by its viscosity, with a critical time step
        * falling off as h^2 and nothing checking it -- while the deck's author reads the property in
        * their own input file and believes the field is hyperbolic.
        */
@@ -1586,7 +1586,7 @@ namespace Marmot::Discretizations::Elements {
      * block, and is now the same in every respect: since the micro-inertia became a material
      * property both coefficients are material responses read per quadrature point, so the two
      * blocks differ only in which of the two they multiply. The blend is still derived here rather
-     * than shared through a helper, because the stable increment is read off the RATIO of the two
+     * than shared through a helper, because the critical time step is read off the RATIO of the two
      * distributions and a helper that drifted would be invisible in either one alone -- but there
      * is no longer anything preventing that helper from existing.
      */
@@ -1678,7 +1678,7 @@ namespace Marmot::Discretizations::Elements {
      * re-deriving the lumping here; the non-local part below reads its block as well. */
     RhsSized lumpedInertia = RhsSized::Zero();
     computeLumpedInertia( lumpedInertia.data() );
-    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedInertia.head( sizeDoFU ), pWaveModulus );
+    criticalTimeStep = stiffnessBound.criticalTimeStep( lumpedInertia.head( sizeDoFU ), pWaveModulus );
 
     /* The non-local field's own limit, where it has one. Without a micro-inertia that field is
      * first order in time and is not integrated by the central-difference update this function's
@@ -1813,7 +1813,7 @@ namespace Marmot::Discretizations::Elements {
     if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported.exchange( true ) ) {
       Marmot::Utilities::Journal::
         warningToMSG( Marmot::Utilities::MakeString()
-                      << "element " << elLabel << ": the stable increment is bounded by the NON-LOCAL "
+                      << "element " << elLabel << ": the critical time step is bounded by the NON-LOCAL "
                       << "field (" << criticalTimeStep << " s), not by the mesh (" << mechanicalTimeStep
                       << " s). Mass scaling cannot raise it -- no density enters "
                       << "that bound. Raise the micro-inertia m_k, which is the mass of this bound. It "

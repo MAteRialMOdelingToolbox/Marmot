@@ -292,6 +292,11 @@ All notable changes to Marmot are documented in this file. The format follows
 - `GM7` overrides `computeStressExplicit`: the stress update without homogenizing the tangents of the microplanes, one
   update with the tangents an optional output (`stress_update`); stress and state variables are those of
   `computeStress`, bitwise. The explicit path of `GeneralGradientEnhancedDisplacementFiniteElement` takes it.
+- One name for one quantity: the limit 2 / omega_max of the central difference method is the critical time step
+  everywhere (documentation, messages, and `CriticalTimeStep::IsotropicElasticStiffnessBound::criticalTimeStep`, was
+  `stableTimeIncrement`; the test helper `Testing::exactCriticalTimeStepOfTheElement`, was
+  `stableTimeIncrementOfTheElement`). **Breaking** for code that calls the two functions. The momentum buffer of
+  `Particle::computeLumpedMomentum` is named `pLumped` (was `mLumped`, the name of the mass buffer).
 
 ### Deprecated
 - `BoundaryElement::computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements()`: construct the boundary element
@@ -331,7 +336,7 @@ All notable changes to Marmot are documented in this file. The format follows
   `GeneralGradientEnhancedDisplacementFiniteElement`) refuses a wave speed or a density that is not a positive number
   at any quadrature point (`CriticalTimeStep::pWaveModulusOfQuadraturePoint`), with the element and the point in the
   message. A NaN passed the guard `c <= 0` and dropped out of the largest P-wave modulus, which made the time
-  increment too large. `stableTimeIncrement` checks every entry of the lumped mass (Eigen's `minCoeff` may skip a
+  increment too large. `criticalTimeStep` checks every entry of the lumped mass (Eigen's `minCoeff` may skip a
   NaN) and the convergence of the eigenvalue solver; the default `MaterialFiniteStrain::getMaximumWaveSpeed` returns
   NaN for a NaN stiffness of one direction instead of the wave speed of the others.
 - `CX8UL` and `CX8RUL` evaluate the wave speed of the critical time step at their hoop stretch

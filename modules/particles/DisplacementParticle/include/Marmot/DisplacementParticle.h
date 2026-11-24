@@ -378,9 +378,9 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Lumped momentum, @f$ p_{Ai} \mathrel{+}= \rho_0\,T_A\,V_0\,v_i @f$.
-     * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
@@ -691,7 +691,7 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim >
-  void DisplacementParticle< nDim >::computeLumpedMomentum( double* mLumped ) const
+  void DisplacementParticle< nDim >::computeLumpedMomentum( double* pLumped ) const
   {
     const double density0 = _mp->getDensityUndeformed();
     const double V0       = getVolumeUndeformed();
@@ -702,7 +702,7 @@ namespace Marmot::Discretizations::Meshfree {
       const int    idxA_u = nDofPerNodeU * A;
 
       for ( int i = 0; i < nDofPerNodeU; i++ ) {
-        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        pLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
       }
     }
   }

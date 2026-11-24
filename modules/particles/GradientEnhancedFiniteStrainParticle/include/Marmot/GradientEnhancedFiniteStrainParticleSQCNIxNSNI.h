@@ -299,9 +299,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Lumped momentum of GradientEnhancedFiniteStrainParticle::computeLumpedMomentum plus the NSNI
      * stabilization of the displacement rows, @f$ \rho_0\,\partial\boldsymbol{v}/\partial\boldsymbol{Y}\,
      * \boldsymbol{M}^Y\,\partial T_A/\partial\boldsymbol{Y} / J_Y @f$.
-     * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector, node by node; the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Accept the increment (see GradientEnhancedFiniteStrainParticle::acceptStateAndPosition) and push the
@@ -571,12 +571,12 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices, int nNonlocal >
   void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::computeLumpedMomentum(
-    double* mLumped ) const
+    double* pLumped ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
-    ParentPointParticle::computeLumpedMomentum( mLumped );
+    ParentPointParticle::computeLumpedMomentum( pLumped );
 
     constexpr int nodeBlockSize = nDim + nNonlocal;
 
@@ -588,7 +588,7 @@ namespace Marmot::Discretizations::Meshfree {
       const TensorD dT_A_dY = TensorD( this->_dT_dY.col( A ).data() );
       const TensorD aux     = einsum< ij, j >( dv_dY_x_Y2, dT_A_dY );
       for ( int i = 0; i < nDim; i++ )
-        mLumped[nodeBlockSize * A + i] += density0 * aux( i ) / detJIntermediate;
+        pLumped[nodeBlockSize * A + i] += density0 * aux( i ) / detJIntermediate;
     }
   }
 

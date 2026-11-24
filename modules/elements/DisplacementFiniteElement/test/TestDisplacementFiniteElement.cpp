@@ -1000,7 +1000,7 @@ void testDistributedPressureOnLinearSimplices()
 void testInertiaAndCriticalTimeStepOfLinearSimplices()
 {
   // lumped mass: a linear simplex is its own linear counterpart in the mass lumping, so each node carries 1 / nNodes of
-  // the mass of a distorted element, too, and the stable increment is finite;
+  // the mass of a distorted element, too, and the critical time step is finite;
   // consistent mass: rho V / 12 ( 1 + delta_ij ) for a triangle and rho V / 20 ( 1 + delta_ij ) for a tetrahedron, per
   // displacement component (the 1-point rule of Tetra4 would give a mass of rank 3 out of 12)
   const double density = 2.0;
@@ -1059,7 +1059,7 @@ void testInertiaAndCriticalTimeStepOfLinearSimplices()
 
 void testStableIncrementOfLinearSimplices()
 {
-  // The stable increment of a linear simplex must stay below the exact one, 2 / omega_max of its stiffness and lumped
+  // The critical time step of a linear simplex must stay below the exact one, 2 / omega_max of its stiffness and lumped
   // mass, and must not depend on which node is numbered first. The length of the quadrilaterals and hexahedra, twice
   // the smallest singular value of the Jacobian, assumes the reference cube [-1, 1]^nDim: for these shapes it gave 1.9
   // to 2.5 times the exact increment, and the smallest altitude would give 1.4 times it for the regular tetrahedron.
@@ -1123,12 +1123,12 @@ void testStableIncrementOfLinearSimplices()
       const double exactIncrement = 2.0 / omegaMax;
 
       throwExceptionOnFailure( stableIncrement <= exactIncrement && stableIncrement > 0.6 * exactIncrement,
-                               name + " stable increment must lie between 0.6 and 1 times the exact one." );
+                               name + " critical time step must lie between 0.6 and 1 times the exact one." );
 
       if ( shift == 0 )
         firstNumbering = stableIncrement;
       throwExceptionOnFailure( std::abs( stableIncrement - firstNumbering ) < 1e-12 * firstNumbering,
-                               name + " stable increment must not depend on the node numbering." );
+                               name + " critical time step must not depend on the node numbering." );
     }
   }
 }
@@ -3201,7 +3201,8 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
                                       { "C3D20", 3, 20, {} },
                                       { "C3D20R", 3, 20, {} } };
 
-  // the bound is safe for every nu in [0, 1/2), the two ends included; it is close to the stable increment at nu = 0.3
+  // the bound is safe for every nu in [0, 1/2), the two ends included; it is close to the critical time step at nu =
+  // 0.3
   for ( const auto& c : cases )
     for ( const double lengthOfLastAxis : { 1.0, 0.25 } )
       for ( const double nu : { 0.0, 0.3, 0.49 } ) {
@@ -3216,19 +3217,19 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
         double                            criticalTimeStep = 0.0;
         underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-        const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
-                                                                                             c.nDim * c.nNodes );
+        const double exactCriticalTimeStep = Marmot::Testing::exactCriticalTimeStepOfTheElement( *underTest.element,
+                                                                                                 c.nDim * c.nNodes );
 
         const std::string at = c.type + " at nu = " + std::to_string( nu );
-        throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+        throwExceptionOnFailure( criticalTimeStep <= exactCriticalTimeStep * ( 1.0 + 1e-10 ),
                                  at + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                   " exceeds the stable increment of the element " +
-                                   std::to_string( stableTimeIncrement ) + "." );
+                                   " exceeds the exact critical time step of the element " +
+                                   std::to_string( exactCriticalTimeStep ) + "." );
         if ( nu == 0.3 )
-          throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+          throwExceptionOnFailure( criticalTimeStep >= 0.7 * exactCriticalTimeStep,
                                    at + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                     " is more than 30 % below the stable increment of the element " +
-                                     std::to_string( stableTimeIncrement ) + "." );
+                                     " is more than 30 % below the exact critical time step of the element " +
+                                     std::to_string( exactCriticalTimeStep ) + "." );
       }
 }
 

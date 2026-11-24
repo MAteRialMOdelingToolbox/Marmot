@@ -354,10 +354,10 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Compute the lumped momentum contribution of the particle.
      * @details Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and
      * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
-     * @param[in,out] mLumped Lumped momentum vector (node-wise).
+     * @param[in,out] pLumped Lumped momentum vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
-    virtual void computeLumpedMomentum( [[maybe_unused]] double* mLumped ) const
+    virtual void computeLumpedMomentum( [[maybe_unused]] double* pLumped ) const
     {
       throw std::runtime_error( "Particle::computeLumpedMomentum: not implemented for this particle." );
     };
@@ -481,7 +481,7 @@ namespace Marmot::Discretizations::Meshfree {
      * for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes
      * neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the
      * tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses
-     * a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme
+     * a host that needs it, e.g. for the bound of the critical time step of an explicit scheme
      * (addBoundOfAbsoluteStiffnessTimes() in MarmotParticleStiffnessVisitors.h).
      * @param[in,out] visitor The visitor.
      * @param[in] timeNew The time of the zero increment the material point is evaluated with.
