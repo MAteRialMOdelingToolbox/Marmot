@@ -201,9 +201,9 @@ configuring with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` fails there.
 Building with Python Bindings
 *****************************
 
-Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_.
-It does not yet build with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment
-(`#154 <https://github.com/MAteRialMOdelingToolbox/Marmot/issues/154>`_).
+Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_ (Python 3.10 or
+newer). It also builds with a free-threaded Python, such as the Python 3.14 of the EdelweissFE environment, which
+requires CMake 3.30 or newer; the module then runs without the GIL, and every call of a solver locks that solver.
 To enable the Python module, configure CMake with `-DMARMOT_BUILD_PYTHON_BINDINGS=ON`:
 
 .. code-block:: console

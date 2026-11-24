@@ -13,10 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # The default build. Without the Python bindings until they build with the free-threaded Python of the
-          # stack (#154).
+          # The default build, with the Python bindings (their tests are the Python_* tests of ctest).
           - name: default
-            cmake_options: ""
+            cmake_options: -DMARMOT_BUILD_PYTHON_BINDINGS=ON
           # Exports only the MARMOT_API-marked API, as the Windows DLL does; the Python bindings are not supported
           # then. tests/consumer links the shared library and checks that the exported API is complete.
           - name: export-api-only
