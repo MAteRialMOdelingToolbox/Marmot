@@ -26,6 +26,7 @@
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleTesting.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -659,6 +660,15 @@ namespace {
                                  << name << ": explicit internal force differs from the implicit one, "
                                  << ( P - PExplicit ).norm() / P.norm() );
     }
+    // every other particle refuses the explicit path, instead of being integrated with its mass and without its force
+    else {
+      Setup< nDim >         s( name, v, V );
+      const Eigen::VectorXd dQ        = increment( s.nDof(), 0.03 );
+      Eigen::VectorXd       PExplicit = Eigen::VectorXd::Zero( s.nDof() );
+      throwExceptionOnFailure( throws( [&]() { s.particle->updatePhysicsExplicit( dQ.data(), 1.0, 1.0 ); } ) &&
+                                 throws( [&]() { s.particle->computePhysicsKernelsExplicit( PExplicit.data() ); } ),
+                               name + ": a particle without the explicit path must refuse it" );
+    }
 
     // the weak-form correction on all faces balances the internal force of a homogeneous deformation (divergence
     // theorem of the smoothed gradient), before and after an accepted finite increment
@@ -727,7 +737,7 @@ namespace {
         Eigen::MatrixXd       K = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
         s.trial( dQ );
         s.particle->computeDistributedLoad( type, 2, &p, P.data(), K.data(), 1.0, 1.0 );
-        // only the pressure is available explicitly, and the SDI particles inherit the empty explicit interface
+        // only the pressure is available explicitly, and the SDI particles refuse the explicit loads
         if ( throws(
                [&]() { s.particle->computeDistributedLoadExplicit( type, 2, &p, PExplicit.data(), 1.0, 1.0 ); } ) ||
              PExplicit.norm() == 0 )
@@ -738,6 +748,80 @@ namespace {
     }
   }
 
+  // The bound of |K| W of the particle for the stable time increment (addBoundOfAbsoluteStiffnessTimes), against
+  // the stiffness itself, the tangent of a zero increment, at a state off the reference: never below |K| W, and its
+  // largest entry of each column (what the Collatz-Wielandt bound takes) at most maxOverestimate times the exact one
+  // (the Cauchy-Schwarz inequality over the nodes overestimates the gradient terms by about 1.2 in 2D, 1.3 in 3D).
+  // Two columns of positive, varying weights: on all dofs, and on the first component only.
+  template < int nDim >
+  void checkBoundOfAbsoluteStiffness( const std::string& name, const std::string& shape, double maxOverestimate )
+  {
+    Setup< nDim > s( name, vertices( shape ), volumeArgument( shape ) );
+    s.accept( increment( s.nDof(), 0.02 ) );
+
+    const int             n = s.nDof();
+    const Eigen::MatrixXd K = s.trial( Eigen::VectorXd::Zero( n ) ).second;
+    Eigen::MatrixXd       W = Eigen::MatrixXd::Zero( n, 2 );
+    for ( int a = 0; a < n; a++ ) {
+      W( a, 0 ) = 1.0 + 0.5 * std::sin( 0.7 * a );
+      if ( a % nDim == 0 )
+        W( a, 1 ) = 1.0 + 0.5 * std::cos( 0.3 * a );
+    }
+
+    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name, *s.particle, K, W, maxOverestimate );
+
+    // the description of the stiffness leaves the particle as it was, also in the middle of an increment (the
+    // explicit path: the NSNI particles)
+    Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged( name,
+                                                                            *s.particle,
+                                                                            s.stateVars,
+                                                                            increment( n, 0.01 ),
+                                                                            name.find( "NSNI" ) != std::string::npos );
+  }
+
+  // A point of the particle's own (a vertex, the center) moves with getInterpolationVectorLinearizedAboutCenter():
+  // after an accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ_B to round-off, and G sums to one.
+  // The shape functions at a vertex, getInterpolationVector(), do not move it (they differ by a large fraction of the
+  // motion), the reason a constraint that measures a vertex must distribute its force with G.
+  template < int nDim >
+  void checkOwnPointsMoveWithTheLinearizedInterpolation( const std::string& name, const std::string& shape )
+  {
+    using Points = Eigen::Matrix< double, nDim, Eigen::Dynamic >;
+    Setup< nDim > s( name, vertices( shape ), volumeArgument( shape ) );
+    s.accept( increment( s.nDof(), 0.05 ) ); // a deformed, accepted state
+
+    const int nV = s.particle->getNumberOfVertices();
+    const int nN = s.nNodes();
+    Points    points( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( points.data() );
+    s.particle->getCenterCoordinates( points.col( nV ).data() );
+
+    Eigen::MatrixXd G( nN, nV + 1 ), N( nN, nV + 1 );
+    for ( int k = 0; k <= nV; k++ ) {
+      s.particle->getInterpolationVectorLinearizedAboutCenter( G.col( k ).data(), points.col( k ).data() );
+      s.particle->getInterpolationVector( N.col( k ).data(), points.col( k ).data() );
+    }
+
+    Eigen::VectorXd dQ( s.nDof() );
+    for ( int i = 0; i < s.nDof(); i++ )
+      dQ[i] = 0.03 * std::cos( 2.3 * ( i + 1 ) );
+    const Eigen::Map< const Points > dq( dQ.data(), nDim, nN );
+    s.accept( dQ );
+
+    Points moved( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( moved.data() );
+    s.particle->getCenterCoordinates( moved.col( nV ).data() );
+    const Points motion = moved - points;
+
+    throwExceptionOnFailure( ( motion - dq * G ).norm() < 1e-12 * motion.norm(),
+                             name +
+                               ": a point of the particle moves with getInterpolationVectorLinearizedAboutCenter()" );
+    throwExceptionOnFailure( ( G.colwise().sum().array() - 1.0 ).abs().maxCoeff() < 1e-12,
+                             name + ": the linearized interpolation is a partition of unity" );
+    if ( shape != "Point" )
+      throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
+                               name + ": the shape functions at the vertices do not move them" );
+  }
 } // namespace
 
 // the NSNI particles keep their former names ("Displacement/SQCNIxNSNI/..." etc.) as aliases of the names of the naming
@@ -780,6 +864,14 @@ int main()
   };
 
   std::vector< std::function< void() > > testFunctions;
+  testFunctions.push_back( [&]() {
+    for ( const auto& [name, shape] : planeStrain )
+      throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( name ), name + " is registered" );
+    throwExceptionOnFailure( Marmot::Registry::ParticleFactory::isRegistered( "displacement/planestrain/point" ),
+                             "the registry is case-insensitive" );
+    throwExceptionOnFailure( !Marmot::Registry::ParticleFactory::isRegistered( "NoSuchParticle/3D/Hexa" ),
+                             "an unknown name is not registered" );
+  } );
   // the NSNI stabilization's tangent omits d2tau/dF2 (not exposed by the material interface), so it is
   // approximate by construction: measured 1.1e-3 (2D) and 1.3e-3 (3D) relative error; all others are exact
   auto tolerance = []( const std::string& name ) { return name.find( "NSNI" ) != std::string::npos ? 5e-3 : 1e-7; };
@@ -793,6 +885,21 @@ int main()
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 2 >( name, shape ); } );
   for ( const auto& [name, shape] : solid )
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 3 >( name, shape ); } );
+  // the bound of the absolute stiffness, for every particle with an own inertia (all but the SDI particles)
+  for ( const auto& [name, shape] : planeStrain )
+    if ( name.find( "SDI" ) == std::string::npos )
+      testFunctions.push_back(
+        [name = name, shape = shape]() { checkBoundOfAbsoluteStiffness< 2 >( name, shape, 1.5 ); } );
+  for ( const auto& [name, shape] : solid )
+    if ( name.find( "SDI" ) == std::string::npos )
+      testFunctions.push_back(
+        [name = name, shape = shape]() { checkBoundOfAbsoluteStiffness< 3 >( name, shape, 1.5 ); } );
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 3 >( name, shape ); } );
   for ( const auto& [name, formerName] :
         std::vector< std::pair< std::string, std::string > >{ { "DisplacementSQCNIxNSNI", "Displacement/SQCNIxNSNI" },
                                                               { "DisplacementSNNIxNSNI", "Displacement/SNNIxNSNI" },

@@ -428,10 +428,11 @@ namespace Marmot::Discretizations::Elements {
      */
     void computeLumpedInertia( double* M ) override;
 
+  protected:
     /**
      * @brief Access a named state view at a quadrature point.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
 
@@ -448,6 +449,7 @@ namespace Marmot::Discretizations::Elements {
       return material->getStateView( stateName, qp.managedStateVars->materialStateVars.data() );
     }
 
+  public:
     /**
      * @brief Coordinates of the element center (on reference interface side).
      */

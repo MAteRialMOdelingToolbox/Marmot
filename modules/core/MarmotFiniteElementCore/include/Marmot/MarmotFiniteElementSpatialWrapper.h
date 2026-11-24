@@ -167,9 +167,12 @@ namespace Marmot::Discretizations::Elements {
     void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
       override;
 
-    /// @copydoc Element::getStateView
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint ) override;
+  protected:
+    /// @copydoc Element::getStateViewAtQuadraturePoint
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName,
+                                                                int                quadraturePoint ) override;
 
+  public:
     /// @copydoc Element::getCoordinatesAtCenter
     std::vector< double > getCoordinatesAtCenter() override;
 

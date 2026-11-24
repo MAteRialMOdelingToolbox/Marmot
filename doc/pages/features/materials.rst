@@ -30,6 +30,7 @@ This section contains the ready to use available material models.
   rankinegradientsofteningplasticity
   hugheswinget
   gradientenhancedhugheswinget
+  gradientenhancedcorotational
   gradientenhancedcompressibleneohookedamage
   gradientenhancedfinitestraindruckerprager
   bondsliplaws

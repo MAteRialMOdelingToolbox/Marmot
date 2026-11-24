@@ -237,7 +237,7 @@ void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeBodyForce(
   Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView(
+Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateViewAtQuadraturePoint(
   const std::string& stateName,
   int                quadraturePoint )
 {

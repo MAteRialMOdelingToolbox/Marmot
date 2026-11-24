@@ -30,6 +30,7 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
+#include "Marmot/MarmotParticleStiffness.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
@@ -120,6 +121,34 @@ namespace Marmot::Discretizations::Meshfree {
       this->_mp->getCenterDisplacement( u.data() );
       return u;
     }
+
+    /**
+     * @brief The stiffness of node @p A at the current response of the material point: the tangent of
+     * computePhysicsKernels() without the inertia, as derivatives of the force of the node with respect to the
+     * interpolated increment (StiffnessOfNode).
+     * @details The force of node @f$ A @f$ is @f$ f_{Aj} = \partial T_A/\partial x_i\, \tau_{ij} V_0 @f$; it depends on
+     * the gradient of the increment only, @f$ \Delta F_{kl} = \delta_{kl} + \partial \Delta u_k / \partial Y_l @f$:
+     * @f[
+     *   \frac{\partial f_{Aj}}{\partial (\partial \Delta u_k / \partial Y_l)} = V_0 \Big(
+     *   \frac{\partial T_A}{\partial x_i} \frac{\partial \tau_{ij}}{\partial \Delta F_{kl}}
+     *   - \frac{\partial T_A}{\partial x_k}\, \tau_{ij} \frac{\partial Y_l}{\partial x_i} \Big),
+     * @f]
+     * the material part and the geometric part (the spatial gradient of the test function changes with the
+     * deformation). Derived particles add their own terms (e.g. a stabilization).
+     * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
+     * @param[in,out] ofNode The derivatives; the stiffness of the node is added.
+     */
+    virtual void addStiffnessOfNode( int                                         A,
+                                     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                     StiffnessOfNode< nDim, nDim >&              ofNode ) const;
+
+    /**
+     * @brief The second gradients of the trial shape functions, in the layout of addRowsOfNode().
+     * @return An empty matrix: the point particle has none; a stabilized particle overrides it.
+     */
+    virtual Eigen::MatrixXd secondGradientsOfTrialFunctions() const { return Eigen::MatrixXd(); }
 
   public:
     /// Body load types.
@@ -354,6 +383,16 @@ namespace Marmot::Discretizations::Meshfree {
     void computeLumpedMomentum( double* mLumped ) const override;
 
     /**
+     * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
+     * point is evaluated at a zero increment, the stiffness of every node follows from addStiffnessOfNode(), and the
+     * material point is put back as it was (SavedMaterialPoint). Used by all particles derived from this one.
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment.
+     * @param[in] dT The time increment of the zero increment.
+     */
+    void describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT ) override;
+
+    /**
      * @brief State of the material point (see DisplacementMaterialPoint::getStateView()).
      * @param[in] stateName Name of the state.
      * @param[in] qp Evaluation point (not used; the particle has a single material point).
@@ -476,10 +515,6 @@ namespace Marmot::Discretizations::Meshfree {
 
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
-    using to_jk = Fastor::OIndex< j_, k_ >;
-
-    const static Tensor< double, nDim, nDim > I(
-      ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
 
     constexpr int nodeBlockSize = nDim;
 
@@ -523,61 +558,85 @@ namespace Marmot::Discretizations::Meshfree {
 
     Tensor< double, nDim > r_U( 0.0 );
 
-    Tensor< double, nDim, nDim > k_UU( 0.0 );
-
     const auto& S = _mp->response.S;
 
     const double V0 = getVolumeUndeformed();
 
-    const auto& t = _mp->tangents;
+    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize );
+    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, this->_nNodes * nodeBlockSize, this->_nNodes * nodeBlockSize );
 
-    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize ); // Use base class _nNodes
-    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ,
-                                     this->_nNodes * nodeBlockSize,
-                                     this->_nNodes * nodeBlockSize ); // Use base class _nNodes
+    const Tensor< double, nDim, nDim > dY_dx    = inv( _mp->dx_dY() );
+    const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    // clang-format off
-    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
+    StiffnessOfNode< nDim, nDim > rowsOfNode;
+    for ( int A = 0; A < this->_nNodes; A++ ) {
 
-      const double T_A = this->_T( A ); // Use base class _T
-      const auto                   dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() ); // Use base class _dT_dY
-      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp->dx_dY() ), dT_A_dY );
+      const double                 T_A     = this->_T( A );
+      const auto                   dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
+      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
 
-        const int idxA_u = nodeBlockSize * A;
+      r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
 
-        r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
+      // add inertia
+      r_U += density0 * a * T_A * V0;
 
-        // add inertia
-        r_U += density0 * a * T_A * V0;
+      P.template segment< nDim >( nodeBlockSize * A ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
 
-        {
-          using namespace Eigen;
-          P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
-        }
-
-        for ( int B = 0; B < this->_nNodes; B++ ) { // Use base class _nNodes
-
-          const int idxB_u = nodeBlockSize * B;
-
-          const double                 N_B     = this->_N( B ); // Use base class _N
-          const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col(B).data() ); // Use base class _dN_dY
-          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp->dx_dY() ), dN_B_dY ) );
-
-          // aux stiffness tensors
-          const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY )                                            );
-
-          k_UU  = ( + einsum< i, ijk        >  ( dT_A_dx, dS_dqU_B )   ) * V0;
-          k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
-          k_UU += density0 * da_ddu * T_A * N_B * V0;
-
-          {
-              using namespace Eigen;
-              // TODO: check if we can use transpose instead of torowmajor:
-              K.template block< nDim, nDim >( idxA_u, idxB_u ) += Map< Matrix< double, nDim, nDim > >( torowmajor( k_UU ).data() );
-          }
-      }
+      // the rows of the tangent: the stiffness of the node plus its inertia
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement += density0 * T_A * V0 *
+                                  Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                    da_ddu.data() );
+      addRowsOfNode( rowsOfNode, A, this->_N, this->_dN_dY, d2N_dYdY, K );
     }
-    // clang-format on
+  }
+
+  template < int nDim >
+  void DisplacementParticle< nDim >::addStiffnessOfNode( int                                         A,
+                                                         const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                                         StiffnessOfNode< nDim, nDim >&              ofNode ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    const auto&   S       = _mp->response.S;
+    const auto&   t       = _mp->tangents;
+    const double  V0      = getVolumeUndeformed();
+    const auto    dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
+    const TensorD dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
+
+    for ( int l = 0; l < nDim; l++ )
+      for ( int j = 0; j < nDim; j++ )
+        for ( int k = 0; k < nDim; k++ ) {
+          double material = 0.0, geometric = 0.0;
+          for ( int i = 0; i < nDim; i++ ) {
+            material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
+            geometric += S( i, j ) * dY_dx( l, i );
+          }
+          ofNode.gradientBlock( l )( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+        }
+  }
+
+  template < int nDim >
+  void DisplacementParticle< nDim >::describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT )
+  {
+    // what the evaluation changes is put back on return
+    const SavedMaterialPoint saved( *_mp );
+
+    // the material point at the current state: a zero increment
+    _mp->prepareYourself( timeNew, dT );
+    _mp->incrementDeformation( TensorD( 0.0 ), TensorDD( 0.0 ) );
+    _mp->computeYourself( timeNew, dT );
+
+    const TensorDD dY_dx = inv( _mp->dx_dY() );
+    describeStiffnessNodeByNode< nDim, nDim >( visitor,
+                                               this->_N,
+                                               this->_dN_dY,
+                                               secondGradientsOfTrialFunctions(),
+                                               [&]( int A, StiffnessOfNode< nDim, nDim >& ofNode ) {
+                                                 addStiffnessOfNode( A, dY_dx, ofNode );
+                                               } );
   }
 
   template < int nDim >

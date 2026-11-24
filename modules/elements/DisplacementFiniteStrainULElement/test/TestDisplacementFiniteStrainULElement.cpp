@@ -1,11 +1,15 @@
+#include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/DisplacementFiniteStrainULElement.h"
+#include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotElementTesting.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <cmath>
+#include <limits>
 #include <string>
 
 using namespace Marmot;
@@ -933,54 +937,48 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 }
 
 // ---------------------------------------------------------------------------------------------
-// computeCriticalTimeStepForExplicitDynamics()
+// computeCriticalTimeStepForExplicitDynamics(): the element's own eigenvalue bound, safe and close
 // ---------------------------------------------------------------------------------------------
 
-void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
+void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
 {
-  const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
-  const auto secType = DisplacementFiniteStrainULElement< 3, 8 >::SectionType::Solid;
+  struct Case {
+    std::string           type;
+    int                   nDim;
+    int                   nNodes;
+    std::vector< double > properties;
+  };
+  const std::vector< Case > cases = { { "CPE8UL", 2, 8, { 1.0 } },
+                                      { "CPE8RUL", 2, 8, { 1.0 } },
+                                      { "CX8UL", 2, 8, { 1.0 } },
+                                      { "C3D8UL", 3, 8, {} },
+                                      { "C3D20UL", 3, 20, {} },
+                                      { "C3D20RUL", 3, 20, {} } };
 
-  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  for ( const auto& c : cases )
+    for ( const double lengthOfLastAxis : { 1.0, 0.25 } ) {
+      Marmot::Testing::ElementUnderTest
+                                  underTest( c.type,
+                   Marmot::Testing::unitElementCoordinates( c.nDim, c.nNodes, lengthOfLastAxis ),
+                   c.properties,
+                   "COMPRESSIBLENEOHOOKE",
+                                             { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1.0 } );
+      const std::vector< double > QTotal( underTest.element->getNDofPerElement(), 0.0 );
+      double                      criticalTimeStep = 0.0;
+      underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-  auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
-  element->assignNodeCoordinates( nodeCoordsVec.data() );
+      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
+                                                                                           c.nDim * c.nNodes );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
-                                                            matProps.data(),
-                                                            static_cast< int >( matProps.size() ) );
-  element->assignProperty( materialSection );
-
-  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
-  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
-  element->assignStateVars( stateVars.data(), nStateVarsTotal );
-  element->initializeYourself();
-
-  const int                   nDof = element->getNDofPerElement();
-  const std::vector< double > QTotal( nDof, 0.0 );
-
-  double criticalTimeStep = 0.0;
-  element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
-
-  const auto& qp0 = element->qps[0];
-
-  Fastor::Tensor< double, 3, 3 > F( 0.0 );
-  F( 0, 0 ) = 1.0;
-  F( 1, 1 ) = 1.0;
-  F( 2, 2 ) = 1.0;
-
-  const double c = qp0.material->getMaximumWaveSpeed( qp0.managedStateVars->materialStateVars.data(), F );
-
-  // Hexa8 is a regular, linear (non-serendipity) element, so the mass-distribution factor (see
-  // MarmotMassLumping.h) is exactly 1 for every node, and the characteristic length of the unit
-  // cube is 2 * 0.5 = 1 (twice the smallest Jacobian singular value).
-  const double expected = 1.0 / c;
-
-  throwExceptionOnFailure( checkIfEqual( criticalTimeStep, expected, 1e-8 ),
-                           "Hexa8 critical time step does not match the material wave speed for a unit mass "
-                           "distribution factor." );
+      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " exceeds the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " is more than 30 % below the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1163,13 +1161,7 @@ void testAxiSymmetricComputeKernelsTangentMatchesNumericalDifferentiation()
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
-  // AxiSymmetricDisplacementFiniteStrainULElement inherits initializeYourself() from the nDim=2
-  // base, which unconditionally reads elementProperties[0] as a thickness (even though the
-  // axisymmetric kernels themselves integrate 2*pi*r and never use it): a dummy value is
-  // required here purely to satisfy that read.
-  const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
-  element->assignProperty( elProps );
+  // no thickness: the axisymmetric element integrates over the ring
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
   std::vector< double > stateVars( nStateVarsTotal, 0.0 );
@@ -1220,10 +1212,6 @@ void testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual()
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
-  const std::vector< double >                elPropsVecImplicit = { 1.0 }; // dummy thickness; see comment above
-  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVecImplicit.data(),
-                                                              static_cast< int >( elPropsVecImplicit.size() ) );
-  elementImplicit->assignProperty( elPropsImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
   elementImplicit->assignStateVars( stateVarsImplicit.data(), nStateVarsTotalImplicit );
@@ -1236,10 +1224,6 @@ void testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual()
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
-  const std::vector< double >                elPropsVecExplicit = { 1.0 }; // dummy thickness; see comment above
-  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVecExplicit.data(),
-                                                              static_cast< int >( elPropsVecExplicit.size() ) );
-  elementExplicit->assignProperty( elPropsExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
   elementExplicit->assignStateVars( stateVarsExplicit.data(), nStateVarsTotalExplicit );
@@ -1276,9 +1260,8 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
   const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = DisplacementFiniteStrainULElement< 2, 4 >::SectionType::PlaneStrain;
 
-  const std::vector< double > matProps   = { 1.0, 1.0, 1.0 }; // K, G, density
-  const std::vector< double > elPropsVec = { 1.0 };           // dummy thickness; see comment above
-  const double                a          = 0.01;
+  const std::vector< double > matProps = { 1.0, 1.0, 1.0 }; // K, G, density
+  const double                a        = 0.01;
 
   // element 0: r in [1, 1.5], element 1: r in [1.5, 2]; z in [0, 1]
   const std::vector< std::vector< double > > nodeCoords = { { 1.0, 0.0, 1.5, 0.0, 1.5, 1.0, 1.0, 1.0 },
@@ -1295,8 +1278,6 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
                                                               matProps.data(),
                                                               static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
-    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
-    element->assignProperty( elProps );
     const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
     stateVars[e].assign( nStateVarsTotal, 0.0 );
     element->assignStateVars( stateVars[e].data(), nStateVarsTotal );
@@ -1351,6 +1332,360 @@ void testCenterOfLinearSimplices()
                            "The center of a tetrahedron must be its centroid." );
 }
 
+// ---------------------------------------------------------------------------------------------
+// The axisymmetric elements CX8UL, CX8RUL: the ring, and the checks of the critical time step
+// ---------------------------------------------------------------------------------------------
+
+namespace {
+
+  /// The 8-node ring section r in [1, 2], z in [0, 1].
+  const std::vector< double > ringSectionCoordinates =
+    { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.5, 0.0, 2.0, 0.5, 1.5, 1.0, 1.0, 0.5 };
+
+  /// K, G, density of a compressible Neo-Hooke material with E = 1000, nu = 0.3.
+  const std::vector< double > neoHookeProperties = { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ),
+                                                     1000.0 / ( 2 * ( 1 + 0.3 ) ),
+                                                     2.0 };
+
+  Marmot::Testing::ElementUnderTest ringSection( const std::string& type )
+  {
+    // the thickness, which the ring does not use
+    return Marmot::Testing::ElementUnderTest( type,
+                                              ringSectionCoordinates,
+                                              { 7.0 },
+                                              "COMPRESSIBLENEOHOOKE",
+                                              neoHookeProperties );
+  }
+
+  /// The quadrature points of an axisymmetric element, to give one of them another material.
+  auto& quadraturePointsOf( Marmot::Discretizations::Elements::Element& element )
+  {
+    return dynamic_cast< DisplacementFiniteStrainULElement< 2, 8 >& >( element ).qps;
+  }
+
+  constexpr double notANumber = std::numeric_limits< double >::quiet_NaN();
+
+  struct NeoHookeWithoutAWaveSpeed : Marmot::Materials::CompressibleNeoHooke {
+    using CompressibleNeoHooke::CompressibleNeoHooke;
+    double getMaximumWaveSpeed( const double*, const Fastor::Tensor< double, 3, 3 >& ) const override
+    {
+      return notANumber;
+    }
+  };
+
+  struct NeoHookeWithoutADensity : Marmot::Materials::CompressibleNeoHooke {
+    using CompressibleNeoHooke::CompressibleNeoHooke;
+    double getDensity( const double* ) const override { return notANumber; }
+  };
+
+  /// The default wave speed, from finite differences of a stress whose 22 component is not a number.
+  struct NeoHookeWithoutAStressIn22 : Marmot::Materials::CompressibleNeoHooke {
+    using CompressibleNeoHooke::CompressibleNeoHooke;
+    void computeStressExplicit( ConstitutiveResponse< 3 >& response,
+                                const Deformation< 3 >&    deformation,
+                                const TimeIncrement&       timeIncrement ) const override
+    {
+      CompressibleNeoHooke::computeStressExplicit( response, deformation, timeIncrement );
+      response.tau( 1, 1 ) = notANumber;
+    }
+  };
+
+  /// Whether a call throws an exception of type E whose message contains every one of the given parts.
+  template < typename E, typename F >
+  bool throwsNaming( F&& call, const std::vector< std::string >& parts )
+  {
+    try {
+      call();
+    }
+    catch ( const E& e ) {
+      const std::string message = e.what();
+      for ( const auto& part : parts )
+        if ( message.find( part ) == std::string::npos )
+          return false;
+      return true;
+    }
+    return false;
+  }
+
+} // namespace
+
+void testAxiSymmetricMassAndBodyForceAreThoseOfTheRing()
+{
+  // the volume of the ring r in [1, 2], z in [0, 1]
+  const double volume = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 ) * 1.0;
+  const double rho    = neoHookeProperties[2];
+
+  for ( const std::string type : { "CX8UL", "CX8RUL" } ) {
+    auto      underTest = ringSection( type );
+    auto&     element   = *underTest.element;
+    const int nDof      = element.getNDofPerElement();
+
+    Eigen::VectorXd lumpedMass( nDof );
+    element.computeLumpedInertia( lumpedMass.data() );
+
+    Eigen::MatrixXd consistentMass( nDof, nDof );
+    element.computeConsistentInertia( consistentMass.data() );
+
+    Eigen::VectorXd       bodyForce = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd       K         = Eigen::MatrixXd::Zero( nDof, nDof );
+    const Eigen::Vector2d b( 3.0, -5.0 );
+    const Eigen::VectorXd QTotal = Eigen::VectorXd::Zero( nDof );
+    element.computeBodyForce( bodyForce.data(), K.data(), b.data(), QTotal.data(), 0.0, 1.0 );
+
+    for ( int d = 0; d < 2; d++ ) {
+      Eigen::VectorXd translation = Eigen::VectorXd::Zero( nDof );
+      for ( int A = 0; A < 8; A++ )
+        translation[2 * A + d] = 1.0;
+
+      throwExceptionOnFailure( checkIfEqual( translation.dot( lumpedMass ), rho * volume, 1e-12 ),
+                               type + ": the lumped mass is not rho times the volume of the ring." );
+      throwExceptionOnFailure( checkIfEqual( translation.dot( consistentMass * translation ), rho * volume, 1e-12 ),
+                               type + ": the consistent mass is not rho times the volume of the ring." );
+      throwExceptionOnFailure( checkIfEqual( translation.dot( bodyForce ), b[d] * volume, 1e-12 ),
+                               type + ": the body force is not the load times the volume of the ring." );
+    }
+  }
+}
+
+namespace {
+  /// The nodal loads of a distributed load on a face of an element, and their tangent.
+  struct DistributedLoad {
+    /// The nodal loads.
+    Eigen::VectorXd P;
+    /// The tangent, as computeDistributedLoad() assembles it.
+    Eigen::MatrixXd K;
+  };
+
+  /**
+   * @brief The distributed load on a face of an element at a displacement.
+   * @param element The element.
+   * @param loadType Pressure or surface traction.
+   * @param face The face, 1-based.
+   * @param load The pressure, or the traction vector.
+   * @param QTotal The displacement of the element.
+   * @return The nodal loads and their tangent.
+   */
+  DistributedLoad distributedLoadOf( Marmot::Discretizations::Elements::Element&                      element,
+                                     Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
+                                     int                                                              face,
+                                     const std::vector< double >&                                     load,
+                                     const Eigen::VectorXd&                                           QTotal )
+  {
+    const int       nDof = element.getNDofPerElement();
+    DistributedLoad result{ Eigen::VectorXd::Zero( nDof ), Eigen::MatrixXd::Zero( nDof, nDof ) };
+    element
+      .computeDistributedLoad( loadType, result.P.data(), result.K.data(), face, load.data(), QTotal.data(), 0.0, 1.0 );
+    return result;
+  }
+
+  /**
+   * @brief The resultant of the nodal loads of an 8-node 2D element in a direction.
+   * @param P The nodal loads.
+   * @param d The direction.
+   * @return The sum of the loads in direction @p d.
+   */
+  double resultantOf( const Eigen::VectorXd& P, int d )
+  {
+    double resultant = 0.0;
+    for ( int A = 0; A < 8; A++ )
+      resultant += P[2 * A + d];
+    return resultant;
+  }
+} // namespace
+
+void testAxiSymmetricSurfaceLoadsAreThoseOfTheRing()
+{
+  // The ring r in [1, 2], z in [0, 1] (faces 1: z = 0, 2: r = 2, 3: z = 1, 4: r = 1), expanded radially by u_r = (s -
+  // 1) r. A pressure p acts on the current face, against its outward normal, with the resultant p 2 pi int r ds: the
+  // faces r = r_0 are at s r_0 with the length 1, int r ds = s r_0; the faces z = z_0 reach from s to 2 s, int r ds =
+  // 3/2 s^2. The thickness 7 of ringSection() is not used.
+  const double p     = 3.0;
+  const double twoPi = 2.0 * Marmot::Math::Constants::Pi;
+
+  struct Face {
+    int    id;
+    int    normalDirection;
+    double outwardSign;
+  };
+  const std::vector< Face > faces = { { 1, 1, -1.0 }, { 2, 0, +1.0 }, { 3, 1, +1.0 }, { 4, 0, -1.0 } };
+
+  for ( const std::string type : { "CX8UL", "CX8RUL" } )
+    for ( const double s : { 1.0, 1.1 } ) {
+      auto  underTest = ringSection( type );
+      auto& element   = *underTest.element;
+
+      Eigen::VectorXd QTotal = Eigen::VectorXd::Zero( 16 );
+      for ( int A = 0; A < 8; A++ )
+        QTotal[2 * A] = ( s - 1.0 ) * ringSectionCoordinates[2 * A];
+
+      for ( const auto& face : faces ) {
+        const auto        load          = distributedLoadOf( element, Element::Pressure, face.id, { p }, QTotal );
+        const double      integralOfRds = face.normalDirection == 0 ? s * ( face.id == 2 ? 2.0 : 1.0 ) : 1.5 * s * s;
+        const std::string at            = type + ", face " + std::to_string( face.id ) + ", s = " + std::to_string( s );
+
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, face.normalDirection ),
+                                               -face.outwardSign * p * twoPi * integralOfRds,
+                                               1e-12 ),
+                                 at + ": the resultant of the pressure is not p 2 pi int r ds of the current face." );
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, 1 - face.normalDirection ), 0.0, 1e-12 ),
+                                 at + ": the pressure has a resultant along the face." );
+      }
+
+      // a surface traction acts on the reference face z = 1: 2 pi int r ds = 2 pi 3/2
+      const std::vector< double > traction = { 0.3, -1.7 };
+      const auto                  load = distributedLoadOf( element, Element::SurfaceTraction, 3, traction, QTotal );
+      for ( int d = 0; d < 2; d++ )
+        throwExceptionOnFailure( checkIfEqual( resultantOf( load.P, d ), traction[d] * twoPi * 1.5, 1e-12 ),
+                                 type + ": the resultant of the surface traction is not t 2 pi int r ds of the "
+                                        "reference face." );
+    }
+}
+
+void testPressureStiffnessMatchesNumericalDifferentiation()
+{
+  // the pressure acts on the current face: its stiffness is the derivative of the nodal loads, negated as the
+  // element's stiffness is that of the residual; for the ring with the derivative of 2 pi r
+  for ( const std::string type : { "CX8UL", "CX8RUL", "CPE8RUL" } ) {
+    auto  underTest = ringSection( type );
+    auto& element   = *underTest.element;
+
+    Eigen::VectorXd Q0( 16 );
+    for ( int i = 0; i < 16; i++ )
+      Q0[i] = 0.05 * std::sin( 1.3 * ( i + 1 ) );
+
+    for ( int face = 1; face <= 4; face++ ) {
+      const std::vector< double >             p     = { 3.0 };
+      NumDiff::vector_to_vector_function_type loads = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+        return distributedLoadOf( element, Element::Pressure, face, p, Q ).P;
+      };
+
+      throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd(
+                                               -distributedLoadOf( element, Element::Pressure, face, p, Q0 ).K ),
+                                             NumDiff::centralDifference( loads, Q0 ),
+                                             1e-6 ),
+                               type + ", face " + std::to_string( face ) +
+                                 ": the pressure stiffness does not match the numerical derivative." );
+    }
+  }
+}
+
+void testAxiSymmetricCriticalTimeStepRefusesAWaveSpeedOrDensityThatIsNotANumber()
+{
+  const auto criticalTimeStep = []( Marmot::Discretizations::Elements::Element& element ) {
+    const std::vector< double > QTotal( element.getNDofPerElement(), 0.0 );
+    double                      timeStep = 0.0;
+    element.computeCriticalTimeStepForExplicitDynamics( timeStep, QTotal.data() );
+  };
+
+  {
+    auto underTest = ringSection( "CX8UL" );
+    quadraturePointsOf( *underTest.element )[2]
+      .material = std::make_unique< NeoHookeWithoutAWaveSpeed >( neoHookeProperties.data(),
+                                                                 static_cast< int >( neoHookeProperties.size() ),
+                                                                 1 );
+    throwExceptionOnFailure( throwsNaming< std::runtime_error >( [&]() { criticalTimeStep( *underTest.element ); },
+                                                                 { "element 1", "quadrature point 2" } ),
+                             "A wave speed that is not a number must stop the critical time step, naming the "
+                             "element and the quadrature point." );
+  }
+  {
+    auto underTest = ringSection( "CX8UL" );
+    quadraturePointsOf( *underTest.element )[2]
+      .material = std::make_unique< NeoHookeWithoutADensity >( neoHookeProperties.data(),
+                                                               static_cast< int >( neoHookeProperties.size() ),
+                                                               1 );
+    throwExceptionOnFailure( throwsNaming< std::runtime_error >( [&]() { criticalTimeStep( *underTest.element ); },
+                                                                 { "element 1", "quadrature point 2" } ),
+                             "A density that is not a number must stop the critical time step." );
+  }
+  {
+    // the default wave speed of MaterialFiniteStrain: a NaN stiffness in one direction must not be dropped
+    auto underTest = ringSection( "CX8UL" );
+    quadraturePointsOf( *underTest.element )[2]
+      .material = std::make_unique< NeoHookeWithoutAStressIn22 >( neoHookeProperties.data(),
+                                                                  static_cast< int >( neoHookeProperties.size() ),
+                                                                  1 );
+    throwExceptionOnFailure( throwsNaming< std::runtime_error >( [&]() { criticalTimeStep( *underTest.element ); },
+                                                                 { "element 1", "quadrature point 2" } ),
+                             "A stiffness that is not a number in one direction must stop the critical time step." );
+  }
+}
+
+void testAxiSymmetricWaveSpeedIsTakenAtTheHoopStretch()
+{
+  // a uniform radial expansion u_r = epsilon r: F = diag( 1 + epsilon, 1, 1 + epsilon ) at every point
+  const double epsilon   = 0.2;
+  auto         underTest = ringSection( "CX8UL" );
+  auto&        element   = dynamic_cast< DisplacementFiniteStrainULElement< 2, 8 >& >( *underTest.element );
+
+  Eigen::VectorXd QTotal = Eigen::VectorXd::Zero( element.getNDofPerElement() );
+  for ( int A = 0; A < 8; A++ )
+    QTotal[2 * A] = epsilon * ringSectionCoordinates[2 * A];
+
+  const Marmot::Materials::CompressibleNeoHooke material( neoHookeProperties.data(),
+                                                          static_cast< int >( neoHookeProperties.size() ),
+                                                          1 );
+  const auto                                    pWaveModulusAt = [&]( double F33 ) {
+    Fastor::Tensor< double, 3, 3 > F( 0.0 );
+    F( 0, 0 )      = 1.0 + epsilon;
+    F( 1, 1 )      = 1.0;
+    F( 2, 2 )      = F33;
+    const double c = material.getMaximumWaveSpeed( nullptr, F );
+    return neoHookeProperties[2] * c * c;
+  };
+
+  const double ofTheRing  = pWaveModulusAt( 1.0 + epsilon );
+  const double ofThePlane = pWaveModulusAt( 1.0 );
+  throwExceptionOnFailure( std::abs( ofTheRing - ofThePlane ) > 1e-3 * ofTheRing,
+                           "The test needs a material whose wave speed depends on the hoop stretch." );
+  throwExceptionOnFailure( checkIfEqual( element.largestPWaveModulus( QTotal.data() ), ofTheRing, 1e-6 ),
+                           "The P-wave modulus of the critical time step must be the one at the hoop stretch "
+                           "1 + u_r / r, the deformation the kernels integrate." );
+}
+
+void testAxiSymmetricElementsRefuseARingThroughTheAxis()
+{
+  // a node at r < 0, when the coordinates are assigned
+  std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+    Marmot::Registry::ElementFactory::createElement( "CX8UL", 1 ) );
+  auto beyond = ringSectionCoordinates;
+  beyond[0]   = -0.5;
+  throwExceptionOnFailure( throwsNaming<
+                             std::invalid_argument >( [&]() { element->assignNodeCoordinates( beyond.data() ); },
+                                                      { "element 1", "r = x_1 = -0.5" } ),
+                           "A node at r < 0 must be refused when the coordinates are assigned." );
+
+  // an increment that pulls the ring through the axis, u_r <= -r
+  auto            underTest = ringSection( "CX8UL" );
+  const int       nDof      = underTest.element->getNDofPerElement();
+  Eigen::VectorXd QTotal    = Eigen::VectorXd::Zero( nDof );
+  for ( int A = 0; A < 8; A++ )
+    QTotal[2 * A] = -1.5 * ringSectionCoordinates[2 * A];
+  Eigen::VectorXd P = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K = Eigen::MatrixXd::Zero( nDof, nDof );
+  throwExceptionOnFailure( throwsNaming< std::runtime_error >(
+                             [&]() {
+                               underTest.element
+                                 ->computeKernels( QTotal.data(), QTotal.data(), P.data(), K.data(), 0.0, 1.0 );
+                             },
+                             { "element 1", "hoop stretch" } ),
+                           "An increment with u_r <= -r must be refused with a message." );
+}
+
+void testStableTimeIncrementRefusesALumpedMassThatIsNotANumber()
+{
+  Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound bound( 2 );
+  bound.addQuadraturePoint( Eigen::Matrix< double, 1, 2 >( 1.0, -1.0 ), 1, 1.0 );
+
+  for ( const double entry : { notANumber, 0.0, -1.0 } ) {
+    const Eigen::Vector2d lumpedMass( 1.0, entry );
+    throwExceptionOnFailure( throwsNaming<
+                               std::invalid_argument >( [&]() { bound.stableTimeIncrement( lumpedMass, 1.0 ); },
+                                                        { "lumped mass" } ),
+                             "A lumped mass entry " + std::to_string( entry ) + " must be refused." );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -1372,13 +1707,20 @@ int main()
     testComputeConsistentInertiaConservesTotalMassPerDirection,
     testConsistentInertiaHexa20IsIndependentOfTheElementRule,
     testComputeBodyForceConservesTotalForcePerDirection,
-    testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8,
+    testCriticalTimeStepBoundsTheStableIncrementOfTheElement,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
     testGetStateViewReturnsQuadraturePointManagedState,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testAxiSymmetricComputeKernelsTangentMatchesNumericalDifferentiation,
     testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual,
     testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium,
+    testAxiSymmetricMassAndBodyForceAreThoseOfTheRing,
+    testAxiSymmetricSurfaceLoadsAreThoseOfTheRing,
+    testPressureStiffnessMatchesNumericalDifferentiation,
+    testAxiSymmetricCriticalTimeStepRefusesAWaveSpeedOrDensityThatIsNotANumber,
+    testAxiSymmetricWaveSpeedIsTakenAtTheHoopStretch,
+    testAxiSymmetricElementsRefuseARingThroughTheAxis,
+    testStableTimeIncrementRefusesALumpedMassThatIsNotANumber,
   };
 
   executeTestsAndCollectExceptions( tests );

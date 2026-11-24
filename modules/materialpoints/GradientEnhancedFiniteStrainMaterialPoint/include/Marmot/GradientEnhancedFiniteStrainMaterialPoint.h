@@ -38,22 +38,66 @@
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 
+#include <array>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace Marmot::Discretizations::MaterialPoints {
+
+  /**
+   * @brief Names of the nonlocal fields of the gradient-enhanced finite-strain discretizations.
+   * @tparam nNonlocal Number of nonlocal variables.
+   *
+   * The node field follows the gradient-enhanced finite elements
+   * (Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement): six nonlocal variables are a
+   * nonlocal strain tensor, the field `strain symmetric`; any other number is a set of scalar fields, `nonlocal
+   * damage`, `nonlocal damage 2`, ... The state variables of a material point are named alike: `nonlocal strain` and
+   * `local strain` for six, `nonlocal damage` and `local damage` otherwise.
+   */
+  template < int nNonlocal >
+  struct GradientEnhancedFiniteStrainNames {
+
+    /**
+     * @brief The node fields of the nonlocal variables.
+     * @return `strain symmetric` for six variables, else `nonlocal damage`, `nonlocal damage 2`, ...
+     */
+    static std::vector< std::string > nonlocalNodeFields()
+    {
+      if constexpr ( nNonlocal == 6 )
+        return { "strain symmetric" };
+      else {
+        std::vector< std::string > fields = { "nonlocal damage" };
+        for ( int K = 1; K < nNonlocal; K++ )
+          fields.push_back( "nonlocal damage " + std::to_string( K + 1 ) );
+        return fields;
+      }
+    }
+
+    /**
+     * @brief The state variable holding the nonlocal fields @f$ \bar{N}_K @f$.
+     * @return `nonlocal strain` for six variables, else `nonlocal damage`.
+     */
+    static std::string nonlocalState() { return nNonlocal == 6 ? "nonlocal strain" : "nonlocal damage"; }
+
+    /**
+     * @brief The state variable holding the local driving forces @f$ L_K @f$.
+     * @return `local strain` for six variables, else `local damage`.
+     */
+    static std::string localState() { return nNonlocal == 6 ? "local strain" : "local damage"; }
+  };
 
   /**
    * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
    * @brief Material point for gradient-enhanced (implicit-gradient) finite-strain materials without a micropolar
    *        continuum.
    *
-   * The material point carries the displacement field @f$ \boldsymbol{u} @f$ and a single scalar nonlocal field
-   * @f$ \bar{N} @f$ and drives a Marmot::Materials::MaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff
+   * The material point carries the displacement field @f$ \boldsymbol{u} @f$ and @p nNonlocal nonlocal fields
+   * @f$ \bar{N}_K @f$ and drives a Marmot::Materials::MaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff
    * stress
-   * @f$ \boldsymbol{\tau} @f$, the local driving force @f$ L @f$ (the source of @f$ \bar{N} - c\,\nabla^2\bar{N} = L
-   * @f$, @f$ c = R^2 @f$ with the nonlocal radius @f$ R @f$) and the four algorithmic tangents. It is the material
-   * point both of the MPM cell GradientEnhancedFiniteStrainCell and of the RKPM particle
+   * @f$ \boldsymbol{\tau} @f$, the local driving forces @f$ L_K @f$ (the sources of @f$ \bar{N}_K - c_K\,\nabla^2
+   * \bar{N}_K = L_K @f$, @f$ c_K = R_K^2 @f$ with the nonlocal radius @f$ R_K @f$) and the four algorithmic tangents.
+   * It is the material point both of the MPM cell GradientEnhancedFiniteStrainCell and of the RKPM particle
    * GradientEnhancedFiniteStrainParticle (and its SQCNI / NSNI variants). There is no micro-rotation field and hence
    * no couple stress.
    *
@@ -64,12 +108,12 @@ namespace Marmot::Discretizations::MaterialPoints {
    * @f$ \Delta\boldsymbol{F} = \partial\boldsymbol{x}/\partial\boldsymbol{Y} @f$ accumulated since. The material is
    * evaluated at
    * @f[
-   *   \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n, \qquad \bar{N} = \bar{N}_n + \Delta\bar{N},
+   *   \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n, \qquad \bar{N}_K = \bar{N}_{K,n} + \Delta\bar{N}_K,
    * @f]
-   * where @f$ \Delta F_{ij} = \delta_{ij} + \partial\Delta u_i/\partial Y_j @f$ and @f$ \Delta\bar{N} @f$ are
+   * where @f$ \Delta F_{ij} = \delta_{ij} + \partial\Delta u_i/\partial Y_j @f$ and @f$ \Delta\bar{N}_K @f$ are
    * accumulated by incrementDeformation() from the increments interpolated by the cell or particle. Because the
    * unknowns of an increment are
-   * @f$ \Delta\boldsymbol{F} @f$ and @f$ \Delta\bar{N} @f$, computeYourself() converts the stress and driving-force
+   * @f$ \Delta\boldsymbol{F} @f$ and @f$ \Delta\bar{N}_K @f$, computeYourself() converts the stress and driving-force
    * tangents with respect to @f$ \boldsymbol{F} @f$ to tangents with respect to @f$ \Delta\boldsymbol{F} @f$ by the
    * chain rule
    * @f[
@@ -77,13 +121,30 @@ namespace Marmot::Discretizations::MaterialPoints {
    * @f]
    * and stores them in #tangents together with the response in #response.
    *
+   * **Totals for the explicit scheme.** The material point also keeps the running sum of
+   * @f$ \nabla_X\Delta\bar{N}_K @f$ (state `<nonlocal> gradient`, i.e. @f$ \nabla_X\bar{N}_K @f$) and the rate
+   * @f$ \dot{\bar{N}}_K @f$ of the last explicit increment (state `<nonlocal> rate`): the explicit residual of the
+   * nonlocal balance is written in total form, and the momentum of a nonlocal field with a micro-inertia needs its
+   * rate. The gradient is accumulated by incrementDeformation() in the implicit and the explicit scheme alike, so
+   * that an explicit step may follow an implicit one.
+   *
    * In plane strain (@c nDim = 2) all tensors are stored in 3D, the material is evaluated through
    * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
    *
-   * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
+   * Registered as `GradientEnhancedFiniteStrain/PlaneStrain` and `GradientEnhancedFiniteStrain/3D` (one nonlocal
+   * variable) and as `GradientEnhanced6FiniteStrain/3D` (six).
+   *
+   * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
+   * @tparam nNonlocal Number of nonlocal variables (1: a scalar nonlocal damage driver, 6: a nonlocal strain).
    */
-  template < int nDim >
+  template < int nDim, int nNonlocal >
   class GradientEnhancedFiniteStrainMaterialPoint : public Marmot::Discretizations::MaterialPoints::MaterialPoint {
+
+  public:
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >; ///< the material interface
+    using NonlocalVector = typename Material::NonlocalVector;              ///< a value per nonlocal variable
+    using NonlocalMatrix = typename Material::NonlocalMatrix;              ///< a value per pair of nonlocal variables
+    using Names          = GradientEnhancedFiniteStrainNames< nNonlocal >; ///< names of the nonlocal fields
 
   protected:
     constexpr static int _nVertices = 1;                     ///< a material point is represented by a single vertex
@@ -92,22 +153,21 @@ namespace Marmot::Discretizations::MaterialPoints {
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >; ///< second-order tensor of size nDim
     using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >; ///< fourth-order tensor of size nDim
 
-    int _mpNumber;   ///< label of the material point, also passed to the material as its number
+    int _mpNumber;                        ///< label of the material point, also passed to the material as its number
 
-    TensorD _x0;     ///< coordinates @f$ \boldsymbol{X} @f$ in the undeformed configuration
+    TensorD _x0;                          ///< coordinates @f$ \boldsymbol{X} @f$ in the undeformed configuration
 
-    double _vol0;    ///< volume @f$ V_0 @f$ in the undeformed configuration
-    double _density; ///< mass density in the reference configuration, as reported by the material
+    double _vol0;                         ///< volume @f$ V_0 @f$ in the undeformed configuration
+    double _density;                      ///< mass density in the reference configuration, from initializeYourself()
 
-    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
-
-    std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
+    std::unique_ptr< Material > material; ///< the assigned material
 
     /**
      * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
      * @brief State variable layout of the material point, followed by the state of the material.
      *
-     * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain.
+     * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain. The entries
+     * are packed one after the other, without padding.
      */
     class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
@@ -121,12 +181,14 @@ namespace Marmot::Discretizations::MaterialPoints {
         { .name = "delta displacement", .length = 3 },
         { .name = "delta deformation gradient", .length = 9 },
         { .name = "deformation gradient", .length = 9 },
-        { .name = "nonlocal damage", .length = 1 },
-        { .name = "local damage", .length = 1 },
+        { .name = Names::nonlocalState(), .length = nNonlocal },
+        { .name = Names::localState(), .length = nNonlocal },
         { .name = "stress", .length = 9 },
         { .name = "F0 XX", .length = 1 },
         { .name = "F0 YY", .length = 1 },
         { .name = "F0 ZZ", .length = 1 },
+        { .name = Names::nonlocalState() + " gradient", .length = 3 * nNonlocal },
+        { .name = Names::nonlocalState() + " rate", .length = nNonlocal },
         { .name = "begin of material state", .length = 0 },
       } );
 
@@ -134,22 +196,27 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     public:
       Marmot::Math::Tensors::FastorTensors::TensorMap3d u;  ///< displacement of the last accepted state
-      Marmot::Math::Tensors::FastorTensors::TensorMap3d v;  ///< velocity (Newmark-beta, set by the particle)
-      Marmot::Math::Tensors::FastorTensors::TensorMap3d a;  ///< acceleration (Newmark-beta, set by the particle)
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d v;  ///< velocity (set by the particle)
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d a;  ///< acceleration (set by the particle)
       Marmot::Math::Tensors::FastorTensors::TensorMap3d du; ///< displacement increment of the current step
       Marmot::Math::Tensors::FastorTensors::TensorMap33d
-        dx_dY;                ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
+        dx_dY;                                    ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
       Marmot::Math::Tensors::FastorTensors::TensorMap33d
-              dY_dX;          ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
-      double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
-                              ///< the step to the committed value, see the state contract of
-                              ///< Marmot::Discretizations::MaterialPoints::MaterialPoint)
-      double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
+                                   dY_dX;         ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
+      Eigen::Map< NonlocalVector > nonlocalField; ///< nonlocal fields @f$ \bar{N}_K @f$ (totals; incrementDeformation()
+                                                  ///< adds the increment of the step to the committed values, see the
+                                                  ///< state contract of
+                                                  ///< Marmot::Discretizations::MaterialPoints::MaterialPoint)
+      Eigen::Map< NonlocalVector > localField;    ///< local driving forces @f$ L_K @f$ of the last material evaluation
       Marmot::Math::Tensors::FastorTensors::TensorMap33d stress; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
       double&                                            F0_XX;  ///< eigen deformation (geostatic stress), XX component
       double&                                            F0_YY;  ///< eigen deformation (geostatic stress), YY component
       double&                                            F0_ZZ;  ///< eigen deformation (geostatic stress), ZZ component
-      Eigen::Map< Eigen::VectorXd >                      materialState; ///< state variables of the material
+      /// @f$ \nabla_X\bar{N}_K @f$ in column K (3 rows, also in plane strain): the running sum of
+      /// @f$ \nabla_X\Delta\bar{N}_K @f$ added by incrementDeformation()
+      Eigen::Map< Eigen::Matrix< double, 3, nNonlocal > > nonlocalFieldGradient;
+      Eigen::Map< NonlocalVector >  nonlocalFieldRate; ///< @f$ \dot{\bar{N}}_K @f$ of the last explicit increment
+      Eigen::Map< Eigen::VectorXd > materialState;     ///< state variables of the material
 
       /**
        * @brief Number of state variables of the material point itself (without the material).
@@ -170,12 +237,14 @@ namespace Marmot::Discretizations::MaterialPoints {
           du( &find( "delta displacement" ) ),
           dx_dY( &find( "delta deformation gradient" ) ),
           dY_dX( &find( "deformation gradient" ) ),
-          nonLocalDamage( find( "nonlocal damage" ) ),
-          localDamage( find( "local damage" ) ),
+          nonlocalField( &find( Names::nonlocalState() ) ),
+          localField( &find( Names::localState() ) ),
           stress( &find( "stress" ) ),
           F0_XX( find( "F0 XX" ) ),
           F0_YY( find( "F0 YY" ) ),
           F0_ZZ( find( "F0 ZZ" ) ),
+          nonlocalFieldGradient( &find( Names::nonlocalState() + " gradient" ) ),
+          nonlocalFieldRate( &find( Names::nonlocalState() + " rate" ) ),
           materialState( &find( "begin of material state" ), nStateVars - getNumberOfRequiredStateVars() ){};
     };
 
@@ -222,10 +291,10 @@ namespace Marmot::Discretizations::MaterialPoints {
     std::string getMaterialPointShape() const override { return "point"; };
 
     /**
-     * @brief Create the material from the Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory.
+     * @brief Create the material from the Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory of
+     * @p nNonlocal nonlocal variables.
      * @param[in] property Material section (name and properties).
-     * @throws std::invalid_argument if the material does not implement
-     * Marmot::Materials::MaterialGradientEnhancedFiniteStrain.
+     * @throws std::invalid_argument if no such material is registered.
      */
     void assignMaterial( const Marmot::Discretizations::MaterialSection& property ) override;
 
@@ -318,7 +387,8 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     /**
      * @brief Mass density in the reference configuration.
-     * @return Density reported by the material at initializeYourself() and after each computeYourself().
+     * @return Density reported by the material at initializeYourself(), the mass of the material point over its
+     * reference volume: an evaluation does not change it.
      */
     double getDensityUndeformed() const override { return _density; };
 
@@ -332,7 +402,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Reset the increment of the current step: @f$ \Delta\boldsymbol{u} = \boldsymbol{0} @f$,
      * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} @f$.
      *
-     * The nonlocal field is not reset; incrementDeformation() adds to the stored total @f$ \bar{N} @f$.
+     * The nonlocal fields are not reset; incrementDeformation() adds to the stored totals @f$ \bar{N}_K @f$.
      *
      * @param[in] timeNew Time at the end of the increment (unused).
      * @param[in] dT      Time increment (unused).
@@ -341,17 +411,25 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     /**
      * @brief Evaluate the material at @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$ and
-     * @f$ \bar{N} @f$ and fill #response and #tangents.
+     * @f$ \bar{N}_K @f$ and fill #response and #tangents.
+     *
+     * In 3D through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress; in plane strain through
+     * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain with the 3D deformation gradient
+     * whose out-of-plane entries are those of the identity, and the response and tangents are reduced to their in-plane
+     * components. With the eigen deformation of a geostatic initial condition, if one is set.
+     *
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT      Time increment.
      */
-    void computeYourself( double timeNew, double dT ) override = 0;
+    void computeYourself( double timeNew, double dT ) override;
 
     /**
      * @brief Accept the current increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$,
      * @f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$.
      *
-     * The increment itself is not reset here; the next prepareYourself() does that.
+     * The increment itself is not reset here; the next prepareYourself() does that. A second accept before it would
+     * apply the increment twice: a particle, whose accept must be idempotent, calls prepareYourself() right after
+     * (GradientEnhancedFiniteStrainParticle::acceptStateAndPosition()).
      */
     void acceptStateAndPosition() override
     {
@@ -378,34 +456,39 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Add an interpolated increment to the state.
      *
      * @f$ \Delta\boldsymbol{u} \mathrel{+}= \delta\boldsymbol{u} @f$,
-     * @f$ \Delta\boldsymbol{F} \mathrel{+}= \partial\delta\boldsymbol{u}/\partial\boldsymbol{Y} @f$ and
-     * @f$ \bar{N} \mathrel{+}= \delta\bar{N} @f$; in plane strain the inputs are expanded to 3D.
+     * @f$ \Delta\boldsymbol{F} \mathrel{+}= \partial\delta\boldsymbol{u}/\partial\boldsymbol{Y} @f$,
+     * @f$ \bar{N}_K \mathrel{+}= \delta\bar{N}_K @f$ and
+     * @f$ \nabla_X\bar{N}_K \mathrel{+}= \boldsymbol{F}_n^T\,\partial\delta\bar{N}_K/\partial\boldsymbol{Y} @f$; in
+     * plane strain the inputs are expanded to 3D.
      *
      * @param[in] displacementIncrement         Displacement increment @f$ \delta\boldsymbol{u} @f$.
      * @param[in] displacementGradientIncrement Its gradient with respect to the intermediate reference
      *                                          configuration, @f$ \partial\delta u_i/\partial Y_j @f$.
-     * @param[in] nonLocalDamage                Increment @f$ \delta\bar{N} @f$ of the nonlocal field.
+     * @param[in] nonlocalFieldIncrement         Increments @f$ \delta\bar{N}_K @f$ of the nonlocal fields.
+     * @param[in] nonlocalFieldGradientIncrement Their gradients with respect to @f$ \boldsymbol{Y} @f$, one per
+     *                                           nonlocal variable.
      */
-    virtual void incrementDeformation( const TensorD&  displacementIncrement,
-                                       const TensorDD& displacementGradientIncrement,
-                                       double          nonLocalDamage ) = 0;
+    void incrementDeformation( const TensorD&                          displacementIncrement,
+                               const TensorDD&                         displacementGradientIncrement,
+                               const NonlocalVector&                   nonlocalFieldIncrement,
+                               const std::array< TensorD, nNonlocal >& nonlocalFieldGradientIncrement );
 
     /// @brief Response of the last computeYourself(), in nDim components.
     struct Response {
       Fastor::Tensor< double, nDim, nDim > S;  ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$
-      double                               dL; ///< @f$ \Delta L @f$: the local driving force of this evaluation
-                                               ///< minus the value stored in the state variable `local damage`
-                                               ///< (which is then overwritten by the new value)
-      double nonLocalRadius;                   ///< nonlocal radius @f$ R @f$ of the material, @f$ c = R^2 @f$
+      NonlocalVector                       dL; ///< @f$ \Delta L_K @f$: the local driving forces of this evaluation
+                                               ///< minus the values stored in the local state variable (which is
+                                               ///< then overwritten by the new values)
+      NonlocalVector nonLocalRadius;           ///< nonlocal radii @f$ R_K @f$ of the material, @f$ c_K = R_K^2 @f$
     } response;
 
     /// @brief Algorithmic tangents of the last computeYourself(), with respect to @f$ \Delta\boldsymbol{F} @f$ and
-    /// @f$ \bar{N} @f$, in nDim components.
+    /// @f$ \bar{N}_K @f$, in nDim components.
     struct Tangents {
-      Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF; ///< @f$ \partial\tau_{ij}/\partial\Delta F_{kL} @f$
-      Fastor::Tensor< double, nDim, nDim >             dS_dN;      ///< @f$ \partial\tau_{ij}/\partial\bar{N} @f$
-      Fastor::Tensor< double, nDim, nDim >             dL_dDeltaF; ///< @f$ \partial L/\partial\Delta F_{kL} @f$
-      double                                           dL_dN;      ///< @f$ \partial L/\partial\bar{N} @f$
+      TensorDDDD                        dS_dDeltaF; ///< @f$ \partial\tau_{ij}/\partial\Delta F_{kL} @f$
+      std::array< TensorDD, nNonlocal > dS_dN;      ///< @f$ \partial\tau_{ij}/\partial\bar{N}_K @f$, one per K
+      std::array< TensorDD, nNonlocal > dL_dDeltaF; ///< @f$ \partial L_K/\partial\Delta F_{kL} @f$, one per K
+      NonlocalMatrix                    dL_dN;      ///< @f$ \partial L_K/\partial\bar{N}_M @f$
     } tangents;
 
     /**
@@ -453,6 +536,61 @@ namespace Marmot::Discretizations::MaterialPoints {
     };
 
     /**
+     * @brief The nonlocal fields, totals.
+     * @return @f$ \bar{N}_K @f$, including the increment of the current step.
+     */
+    NonlocalVector getNonlocalField() const { return state->nonlocalField; };
+
+    /**
+     * @brief The local driving forces of the last computeYourself(), totals.
+     * @return @f$ L_K @f$.
+     */
+    NonlocalVector getLocalField() const { return state->localField; };
+
+    /**
+     * @brief Gradient of the nonlocal fields with respect to the undeformed configuration, totals.
+     * @return @f$ \nabla_X\bar{N}_K @f$, one vector of nDim components per nonlocal variable.
+     */
+    std::array< TensorD, nNonlocal > getNonlocalFieldGradient() const
+    {
+      std::array< TensorD, nNonlocal > gradient;
+      for ( int K = 0; K < nNonlocal; K++ )
+        for ( int i = 0; i < nDim; i++ )
+          gradient[K]( i ) = state->nonlocalFieldGradient( i, K );
+      return gradient;
+    };
+
+    /**
+     * @brief Rate of the nonlocal fields.
+     * @return @f$ \dot{\bar{N}}_K @f$ as stored by setNonlocalFieldRate().
+     */
+    NonlocalVector getNonlocalFieldRate() const { return state->nonlocalFieldRate; };
+
+    /**
+     * @brief Store the rate of the nonlocal fields.
+     * @param[in] rate @f$ \dot{\bar{N}}_K @f$.
+     */
+    void setNonlocalFieldRate( const NonlocalVector& rate ) { state->nonlocalFieldRate = rate; };
+
+    /**
+     * @brief Nonlocal viscosities of the assigned material at the current state.
+     * @return @f$ \eta_K @f$.
+     */
+    NonlocalVector getNonlocalViscosity() const
+    {
+      return material->getNonlocalViscosity( state->materialState.data() );
+    };
+
+    /**
+     * @brief Nonlocal micro-inertias of the assigned material at the current state.
+     * @return @f$ m_K @f$; zero for a nonlocal field that is first order in time.
+     */
+    NonlocalVector getNonlocalMicroInertia() const
+    {
+      return material->getNonlocalMicroInertia( state->materialState.data() );
+    };
+
+    /**
      * @brief Apply an initial condition.
      *
      * Only `geostaticstress` is supported: the eigen deformation that produces the hydrostatic stress
@@ -485,120 +623,17 @@ namespace Marmot::Discretizations::MaterialPoints {
                                      << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
+
+  protected:
+    /**
+     * @brief The total deformation gradient @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$ (3x3).
+     * @return The deformation gradient the material is evaluated at.
+     */
+    Marmot::Math::Tensors::FastorTensors::Tensor33d deformationGradient() const;
   };
 
-  template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
-  {
-    state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
-  }
-
-  template < int nDim >
-  Marmot::Utilities::StateView GradientEnhancedFiniteStrainMaterialPoint< nDim >::getStateView(
-    const std::string& stateName ) const
-  {
-    if ( state->contains( stateName ) )
-      return state->getStateView( stateName );
-    else
-      return material->getStateView( stateName, state->materialState.data() );
-  }
-
-  template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial(
-    const Marmot::Discretizations::MaterialSection& section )
-  {
-    material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain >(
-      dynamic_cast< Marmot::Materials::MaterialGradientEnhancedFiniteStrain* >(
-        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
-                                                                                       section.materialProperties,
-                                                                                       section.nMaterialProperties,
-                                                                                       _mpNumber ) ) );
-
-    if ( !material )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__
-                                   << ": invalid material assigned; cannot cast to "
-                                      "Marmot::Materials::MaterialGradientEnhancedFiniteStrain!" );
-  }
-
-  template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::initializeYourself()
-  {
-    state->dY_dX.eye();
-    state->F0_XX = 1.0;
-    state->F0_YY = 1.0;
-    state->F0_ZZ = 1.0;
-    this->prepareYourself( 0, 0 );
-    material->initializeYourself( state->materialState.data(), static_cast< int >( state->materialState.size() ) );
-    // known from the start, so that inertia can be assembled before the first computation
-    _density = material->getDensity( state->materialState.data() );
-  }
-
-  template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::prepareYourself( double timeNew, double dT )
-  {
-    state->du.zeros();
-    state->dx_dY.eye();
-  }
-
-  /**
-   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
-   * @brief Plane-strain gradient-enhanced finite-strain material point (registered as
-   *        `GradientEnhancedFiniteStrain/PlaneStrain`).
-   *
-   * The material is evaluated through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain with
-   * the 3D deformation gradient whose out-of-plane entries are those of the identity; the response and tangents are
-   * reduced to their in-plane components.
-   */
-  class GradientEnhancedFiniteStrainMaterialPoint2D : public GradientEnhancedFiniteStrainMaterialPoint< 2 > {
-
-  public:
-    using GradientEnhancedFiniteStrainMaterialPoint::GradientEnhancedFiniteStrainMaterialPoint;
-
-    /**
-     * @brief Evaluate the material in plane strain and fill #response and #tangents.
-     * @param[in] timeNew Time at the end of the increment.
-     * @param[in] dT      Time increment.
-     */
-    void computeYourself( double timeNew, double dT );
-
-    /**
-     * @brief Add an interpolated in-plane increment (expanded to 3D) to the state.
-     * @param[in] displacementIncrement         Displacement increment.
-     * @param[in] displacementGradientIncrement Its gradient with respect to @f$ \boldsymbol{Y} @f$.
-     * @param[in] nonLocalDamage                Increment of the nonlocal field.
-     */
-    void incrementDeformation( const TensorD&  displacementIncrement,
-                               const TensorDD& displacementGradientIncrement,
-                               double          nonLocalDamage );
-  };
-
-  /**
-   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
-   * @brief Three-dimensional gradient-enhanced finite-strain material point (registered as
-   *        `GradientEnhancedFiniteStrain/3D`).
-   */
-  class GradientEnhancedFiniteStrainMaterialPoint3D : public GradientEnhancedFiniteStrainMaterialPoint< 3 > {
-
-  public:
-    using GradientEnhancedFiniteStrainMaterialPoint::GradientEnhancedFiniteStrainMaterialPoint;
-
-    /**
-     * @brief Evaluate the material in 3D and fill #response and #tangents.
-     * @param[in] timeNew Time at the end of the increment.
-     * @param[in] dT      Time increment.
-     */
-    void computeYourself( double timeNew, double dT );
-
-    /**
-     * @brief Add an interpolated increment to the state.
-     * @param[in] displacementIncrement         Displacement increment.
-     * @param[in] displacementGradientIncrement Its gradient with respect to @f$ \boldsymbol{Y} @f$.
-     * @param[in] nonLocalDamage                Increment of the nonlocal field.
-     */
-    void incrementDeformation( const TensorD&  displacementIncrement,
-                               const TensorDD& displacementGradientIncrement,
-                               double          nonLocalDamage );
-  };
+  extern template class GradientEnhancedFiniteStrainMaterialPoint< 2, 1 >;
+  extern template class GradientEnhancedFiniteStrainMaterialPoint< 3, 1 >;
+  extern template class GradientEnhancedFiniteStrainMaterialPoint< 3, 6 >;
 
 } // namespace Marmot::Discretizations::MaterialPoints

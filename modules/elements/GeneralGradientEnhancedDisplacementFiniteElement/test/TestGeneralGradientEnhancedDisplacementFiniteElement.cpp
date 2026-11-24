@@ -2,6 +2,7 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotElementTesting.h"
 #include "Marmot/MarmotEnergyGradientProvider.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
@@ -1416,60 +1417,47 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 }
 
 // ---------------------------------------------------------------------------------------------
-// computeCriticalTimeStepForExplicitDynamics()
+// computeCriticalTimeStepForExplicitDynamics(): the element's own eigenvalue bound, safe and close
 // ---------------------------------------------------------------------------------------------
 
-void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
+void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
 {
-  constexpr int nDim          = 3;
-  constexpr int nNodes        = 8;
-  constexpr int nNonlocalVars = 1;
-  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
-  using Response = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVars >::response;
+  struct Case {
+    std::string           type;
+    int                   nDim;
+    int                   nNodes;
+    std::vector< double > properties;
+  };
+  const std::vector< Case > cases = { { "GCPE8", 2, 8, { 1.0 } },
+                                      { "GCAX8", 2, 8, { 1.0 } },
+                                      { "GC3D8", 3, 8, {} },
+                                      { "GC3D20R", 3, 20, {} } };
 
-  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
-                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  for ( const auto& c : cases )
+    for ( const double lengthOfLastAxis : { 1.0, 0.25 } ) {
+      Marmot::Testing::ElementUnderTest underTest( c.type,
+                                                   Marmot::Testing::unitElementCoordinates( c.nDim,
+                                                                                            c.nNodes,
+                                                                                            lengthOfLastAxis ),
+                                                   c.properties,
+                                                   "AT2PHASEFIELD",
+                                                   { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 } );
+      const std::vector< double >       QTotal( underTest.element->getNDofPerElement(), 0.0 );
+      double                            criticalTimeStep = 0.0;
+      underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-  const auto quadratureRule = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
-  auto       element        = std::make_unique< ElemType >( 1, quadratureRule, ElemType::SectionType::Solid );
-  element->assignNodeCoordinates( nodeCoordsVec.data() );
+      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
+                                                                                           c.nDim * c.nNodes );
 
-  const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
-                                                            matProps.data(),
-                                                            static_cast< int >( matProps.size() ) );
-  element->assignProperty( materialSection );
-
-  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
-  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
-  element->assignStateVars( stateVars.data(), nStateVarsTotal );
-  element->initializeYourself();
-
-  const int                   nDof = element->getNDofPerElement();
-  const std::vector< double > QTotal( nDof, 0.0 );
-
-  double criticalTimeStep = 0.0;
-  element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
-
-  const auto& qp0 = element->qps[0];
-
-  Response waveSpeedResponse;
-  waveSpeedResponse.stress = qp0.managedStateVars->stress;
-  waveSpeedResponse.KLocal.setZero();
-  waveSpeedResponse.c.setZero();
-  waveSpeedResponse.stateVars            = qp0.managedStateVars->materialStateVars.data();
-  waveSpeedResponse.elasticEnergyDensity = qp0.managedStateVars->elasticStrainEnergy / qp0.J0xW;
-  waveSpeedResponse.dissipation          = qp0.managedStateVars->dissipation / qp0.J0xW;
-
-  const double c = qp0.material->getMaximumWaveSpeed( waveSpeedResponse );
-
-  // Hexa8 is a regular, linear element, so the mass-distribution factor is exactly 1, and the
-  // characteristic length of the unit cube is 2 * 0.5 = 1.
-  const double expected = 1.0 / c;
-
-  throwExceptionOnFailure( checkIfEqual( criticalTimeStep, expected, 1e-8 ),
-                           "Hexa8 critical time step does not match the material wave speed for a unit mass "
-                           "distribution factor." );
+      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " exceeds the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                               c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
+                                 " is more than 30 % below the stable increment of the element " +
+                                 std::to_string( stableTimeIncrement ) + "." );
+    }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -2846,8 +2834,7 @@ void testCenterAndCharacteristicLengthOfLinearSimplices()
   const auto triCenter = tri.getCoordinatesAtCenter();
   throwExceptionOnFailure( std::abs( triCenter[0] - 2.5 / 3 ) < 1e-14 && std::abs( triCenter[1] - 1. / 3 ) < 1e-14,
                            "The center of a triangle must be its centroid." );
-  throwExceptionOnFailure( checkIfEqual( tri.localGeometryElement.characteristicLengthForCriticalTimeStepAt(
-                                           Tri3::XiSized::Zero() ),
+  throwExceptionOnFailure( checkIfEqual( tri.localGeometryElement.smallestElementExtentAt( Tri3::XiSized::Zero() ),
                                          1.0 / std::sqrt( 2.125 ),
                                          1e-14 ),
                            "The characteristic element length of a triangle must be 1 / sqrt( sum h^-2 )." );
@@ -4060,7 +4047,7 @@ void testAxisymmetricBulkViscosityDissipatesVolumetricWork()
 
       const auto& qp     = element->qps[0];
       referenceWaveSpeed = qp.referenceWaveSpeed.value_or( 0.0 );
-      length             = qp.characteristicLengthForCriticalTimeStep;
+      length             = qp.smallestElementExtent;
       return P;
     };
 
@@ -4138,7 +4125,7 @@ int main()
     testComputeConsistentInertiaConservesTotalMassAndMicroInertia,
     testConsistentInertiaHexa20IsIndependentOfTheElementRule,
     testComputeBodyForceConservesTotalForcePerDirection,
-    testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8,
+    testCriticalTimeStepBoundsTheStableIncrementOfTheElement,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
     testGetStateViewVariants,
     testComputeDistributedLoadThrowsForUnhandledLoadType,

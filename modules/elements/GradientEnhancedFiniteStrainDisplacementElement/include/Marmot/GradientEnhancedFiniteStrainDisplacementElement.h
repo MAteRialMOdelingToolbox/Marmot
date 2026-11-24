@@ -93,7 +93,8 @@ namespace Marmot::Discretizations::Elements {
     static constexpr int idxN = idxU + bsU;            ///< first index of the nonlocal block
 
     using ParentGeometryElement = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >;
-    using Material              = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
+    /// the consumed material interface: the element carries one nonlocal variable
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >;
 
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
     using NSized        = typename ParentGeometryElement::NSized;
@@ -333,14 +334,16 @@ namespace Marmot::Discretizations::Elements {
      */
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
+  protected:
     /**
      * @brief A view of a state of a quadrature point, of the element or of its material.
      * @param[in] stateName Name of the state.
      * @param[in] qpNumber Number of the quadrature point.
      * @return The view.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override;
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override;
 
+  public:
     /// @brief Coordinates of the element center in the reference configuration.
     std::vector< double > getCoordinatesAtCenter() override;
 
@@ -371,9 +374,8 @@ namespace Marmot::Discretizations::Elements {
   };
 
   template < int nDim, int nNodes >
-  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView(
-    const std::string& stateName,
-    int                qpNumber )
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::
+    getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber )
   {
     const auto& qp = qps[qpNumber];
     if ( qp.managedStateVars->contains( stateName ) ) {
@@ -474,10 +476,10 @@ namespace Marmot::Discretizations::Elements {
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
-        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
-                                                                                       section.materialProperties,
-                                                                                       section.nMaterialProperties,
-                                                                                       elLabel ) );
+        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory< 1 >::createMaterial( section.materialName,
+                                                                                            section.materialProperties,
+                                                                                            section.nMaterialProperties,
+                                                                                            elLabel ) );
     }
   }
 
@@ -529,7 +531,8 @@ namespace Marmot::Discretizations::Elements {
     using namespace Fastor;
     using namespace Marmot::Math::Tensors::FastorIndices;
 
-    const typename Material::Deformation< nDim > deformation = { F, nonlocalField };
+    const typename Material::Deformation< nDim > deformation = { F,
+                                                                 Material::NonlocalVector::Constant( nonlocalField ) };
 
     const typename Material::TimeIncrement timeIncrement{ time, dT };
 
@@ -539,8 +542,8 @@ namespace Marmot::Discretizations::Elements {
       typename Material::ConstitutiveResponse< 3 >
         response3D( Marmot::Math::Tensors::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(),
                                                                      Fastor::ColumnMajor ),
-                    0.0,
-                    0.0,
+                    Material::NonlocalVector::Zero(),
+                    Material::NonlocalVector::Zero(),
                     qp.managedStateVars->elasticEnergyDensity,
                     qp.managedStateVars->dissipationDensity,
                     qp.managedStateVars->materialStateVars.data() );
@@ -569,14 +572,14 @@ namespace Marmot::Discretizations::Elements {
       response.elasticEnergyDensity = response3D.elasticEnergyDensity;
       response.dissipation          = response3D.dissipation;
 
-      tangents.dTau_dF = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
+      tangents.dTau_dF    = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
                                                             Marmot::Math::Tensors::U,
                                                             Marmot::Math::Tensors::U,
                                                             Marmot::Math::Tensors::U >( algorithmicModuli3D.dTau_dF );
-      tangents.dTau_dN = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
-        algorithmicModuli3D.dTau_dN );
-      tangents.dL_dF = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
-        algorithmicModuli3D.dL_dF );
+      tangents.dTau_dN[0] = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+        algorithmicModuli3D.dTau_dN[0] );
+      tangents.dL_dF[0] = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+        algorithmicModuli3D.dL_dF[0] );
       tangents.dL_dN = algorithmicModuli3D.dL_dN;
 
       qp.managedStateVars->stress = Marmot::Math::Tensors::mapEigenToFastor( response3D.tau ).reshaped();
@@ -585,8 +588,8 @@ namespace Marmot::Discretizations::Elements {
       response = typename Material::ConstitutiveResponse< nDim >( Tensor< double, nDim, nDim >( qp.managedStateVars
                                                                                                   ->stress.data(),
                                                                                                 ColumnMajor ),
-                                                                  0.0,
-                                                                  0.0,
+                                                                  Material::NonlocalVector::Zero(),
+                                                                  Material::NonlocalVector::Zero(),
                                                                   qp.managedStateVars->elasticEnergyDensity,
                                                                   qp.managedStateVars->dissipationDensity,
                                                                   qp.managedStateVars->materialStateVars.data() );
@@ -657,15 +660,15 @@ namespace Marmot::Discretizations::Elements {
       const double& J0xW = qp.J0xW;
 
       const auto&  S          = response.tau;
-      const double localField = response.L;
-      const double c          = response.nonLocalRadius * response.nonLocalRadius;
+      const double localField = response.L( 0 );
+      const double c          = response.nonLocalRadius( 0 ) * response.nonLocalRadius( 0 );
 
       const auto& t = tangents;
 
       // aux stiffness tensors
       const auto dS_dqU = evaluate( +einsum< ijkl, lB >( t.dTau_dF, dNdX ) );
-      const auto dS_dqN = evaluate( +einsum< ij, B >( t.dTau_dN, N ) );
-      const auto dL_dqU = evaluate( +einsum< kl, lB >( t.dL_dF, dNdX ) );
+      const auto dS_dqN = evaluate( +einsum< ij, B >( t.dTau_dN[0], N ) );
+      const auto dL_dqU = evaluate( +einsum< kl, lB >( t.dL_dF[0], dNdX ) );
 
       // residuals (Pe = +internal force, matching DisplacementFiniteStrainULElement)
       r_U += ( +einsum< iA, ij >( dNdx, S ) ) * J0xW;
@@ -677,7 +680,7 @@ namespace Marmot::Discretizations::Elements {
       k_UN += ( +einsum< iA, ijB, to_jAB >( dNdx, dS_dqN ) ) * J0xW;
       k_NU += ( -einsum< A, kB >( N, dL_dqU ) ) * J0xW;
       k_NN += ( +einsum< A, B >( N, N ) + einsum< iA, iB >( dNdX, dNdX ) * c ) * J0xW;
-      k_NN += ( -einsum< A, B >( N, N ) * t.dL_dN ) * J0xW;
+      k_NN += ( -einsum< A, B >( N, N ) * t.dL_dN( 0, 0 ) ) * J0xW;
     }
 
     using namespace Eigen;
@@ -726,10 +729,10 @@ namespace Marmot::Discretizations::Elements {
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
-      const double c = response.nonLocalRadius * response.nonLocalRadius;
+      const double c = response.nonLocalRadius( 0 ) * response.nonLocalRadius( 0 );
 
       r_U += ( +einsum< iA, ij >( dNdx, response.tau ) ) * qp.J0xW;
-      r_N += ( N * nonlocalField + c * einsum< iA, iB, B >( dNdX, dNdX, qN_np ) - N * response.L ) * qp.J0xW;
+      r_N += ( N * nonlocalField + c * einsum< iA, iB, B >( dNdX, dNdX, qN_np ) - N * response.L( 0 ) ) * qp.J0xW;
     }
   }
 

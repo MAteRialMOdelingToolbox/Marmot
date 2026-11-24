@@ -781,8 +781,8 @@ namespace Marmot::Discretizations::Elements {
      */
     Eigen::VectorXd computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
     /**
-     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates.
-     * @throws std::invalid_argument for an axisymmetric boundary element.
+     * @brief Compute the derivative of the surface-normal load vector with respect to nodal coordinates; for an
+     * axisymmetric boundary element including the derivative of the ring \f$2\pi r\f$ with respect to the radius.
      */
     Eigen::MatrixXd computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 

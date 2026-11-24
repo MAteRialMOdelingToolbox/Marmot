@@ -60,6 +60,11 @@ namespace Marmot::Registry {
     return true;
   }
 
+  bool ParticleFactory::isRegistered( const std::string& particleName )
+  {
+    return particleFactoryFunctionByName().contains( makeStringUpperCase_( particleName ) );
+  }
+
   Marmot::Discretizations::Meshfree::Particle* ParticleFactory::createParticle(
     const std::string& particleName,
     int                particleNumber,

@@ -25,6 +25,7 @@
 #pragma once
 #include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotConsistentMass.h"
+#include "Marmot/MarmotCriticalTimeStep.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotEnergyGradientProvider.h"
@@ -130,14 +131,12 @@ namespace Marmot::Discretizations::Elements {
       BSized B;
 
       /**
-       * @brief The characteristic length for the critical time step at this quadrature point,
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt: the smallest physical extent of a quadrilateral or
-       * hexahedron, 1 / |grad N|_F of a linear simplex.
-       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
-       * whereas the stable time increment that shares the definition is asked for rarely. The
-       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       * @brief The smallest extent of the element at this quadrature point, GeometryElement::smallestElementExtentAt:
+       * the smallest physical extent of a quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment. The element's nodal
+       * coordinates do not change, so the cached value cannot go stale.
        */
-      double characteristicLengthForCriticalTimeStep = 0.0;
+      double smallestElementExtent = 0.0;
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
@@ -430,21 +429,10 @@ namespace Marmot::Discretizations::Elements {
      * @brief Compute the critical time step for explicit dynamics.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
-     * @details The estimate is \f$l / c\f$, scaled by the factor
-     * Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the
-     * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
-     * increment for an element whose mass is spread uniformly over its nodes, which lumping does
-     * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
-     * singular value of the Jacobian, i.e. the element's smallest physical extent, so a sliver is
-     * not mistaken for its volume-equivalent cube. The minimum over all quadrature points is
-     * returned.
-     *
-     * @warning This corrects the mass-distribution and element-distortion parts of the estimate
-     * only. It does NOT correct for polynomial order, and that residue is large: \f$l/c\f$ is a
-     * linear-element formula, while a quadratic element's highest free eigenfrequency lies well
-     * above what it predicts. A convergence study on a 20-node bar settles only around a courant
-     * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
-     * properly wants an eigenvalue-based estimate rather than another factor.
+     * @details The element's own eigenvalue bound \f$2 / \omega_{\max}\f$, from the strain operator the element
+     * integrates with (the axisymmetric one with its hoop row) and the lumped mass computeLumpedInertia() assembles,
+     * for an isotropic material with the largest P-wave modulus \f$\rho c^2\f$ of the quadrature points; see
+     * Marmot::Discretizations::Elements::CriticalTimeStep. It holds for every element order and quadrature rule.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
 
@@ -463,11 +451,12 @@ namespace Marmot::Discretizations::Elements {
      */
     void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
+  protected:
     /**
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
 
@@ -486,6 +475,7 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
+  public:
     /** @brief Get physical coordinates at the element center (the centroid of the reference domain). */
     std::vector< double > getCoordinatesAtCenter() override;
 
@@ -705,13 +695,11 @@ namespace Marmot::Discretizations::Elements {
           << __PRETTY_FUNCTION__
           << ": invalid material assigned; cannot cast to Marmot::Materials::MaterialHypoElastic!" );
 
-      /* Deliberately VOLUME based, and deliberately not the length
-       * computeCriticalTimeStepForExplicitDynamics uses. The material's characteristic length is a
-       * regularisation length -- it sets the width over which a softening law dissipates its
-       * fracture energy -- and the volume-equivalent length is the right measure for that. The
-       * stability estimate needs the opposite: the element's SMALLEST extent, because that is what
-       * bounds the highest frequency. The two definitions are not interchangeable; do not unify
-       * them.
+      /* Deliberately VOLUME based, and deliberately not the smallest extent the artificial bulk
+       * viscosity uses. The material's characteristic length is a regularisation length -- it sets
+       * the width over which a softening law dissipates its fracture energy -- and the
+       * volume-equivalent length is the right measure for that. The two definitions are not
+       * interchangeable; do not unify them.
        */
       material->setCharacteristicElementLength( ParentGeometryElement::volumeEquivalentLength( qp.detJ ) );
 
@@ -833,7 +821,7 @@ namespace Marmot::Discretizations::Elements {
       qp.detJ                   = J.determinant();
       qp.B                      = this->B( dNdX );
 
-      qp.characteristicLengthForCriticalTimeStep = this->characteristicLengthForCriticalTimeStepAt( qp.xi );
+      qp.smallestElementExtent = this->smallestElementExtentAt( qp.xi );
       qp.referenceWaveSpeed.reset();
 
       const double sectionFactor = sectionFactorAt( qp.xi );
@@ -1086,13 +1074,14 @@ namespace Marmot::Discretizations::Elements {
                                  : 1.0;
 
     return degradation *
-           Discretizations::Elements::BulkViscosity::
-             viscousStressFromIncrement( volumetricStrainIncrement,
-                                         dT,
-                                         qp.material->getDensity( qp.managedStateVars->materialStateVars.data() ),
-                                         referenceWaveSpeed,
-                                         qp.characteristicLengthForCriticalTimeStep,
-                                         bulkViscosityCoefficients );
+           Discretizations::Elements::BulkViscosity::viscousStressFromIncrement( volumetricStrainIncrement,
+                                                                                 dT,
+                                                                                 qp.material->getDensity(
+                                                                                   qp.managedStateVars
+                                                                                     ->materialStateVars.data() ),
+                                                                                 referenceWaveSpeed,
+                                                                                 qp.smallestElementExtent,
+                                                                                 bulkViscosityCoefficients );
   }
 
   template < int nDim, int nNodes >
@@ -1314,63 +1303,35 @@ namespace Marmot::Discretizations::Elements {
     double&                        criticalTimeStep,
     [[maybe_unused]] const double* QTotal )
   {
+    /* The element's own eigenvalue bound, from the strain operator it integrates its internal force with and the lumped
+     * mass it assembles; see Marmot::Discretizations::Elements::CriticalTimeStep. */
+    Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound( sizeLoadVector );
+    double                                                                      pWaveModulus = 0.0;
 
-    /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
-     * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
-     * under the manifold-based blend a hexa20 corner node carries less than the uniform share, and
-     * the lightest node sets the highest frequency (omega = sqrt( k / m )), so the stable increment
-     * scales with sqrt( m_min / m_uniform ).
-     *
-     * Ignoring it puts the default courant number of 0.8 ABOVE the true limit for every 20-node
-     * element. That does not present as a marginally noisy run but as violent exponential
-     * divergence -- and only where the material provides no damping, so a 20-node run on a
-     * viscously regularised material can sit just above the limit and look perfectly healthy. That
-     * is worse than a clean failure, because it makes the fault look model-specific.
-     *
-     * The fractions come from the same helper computeLumpedInertia uses, so the two cannot drift
-     * apart. Exactly 1 for a linear element on a regular mesh, so nothing changes there, and
-     * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
-     * tighter limit than its volume alone suggests.
-     */
-    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
-    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
-    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
-    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
-    for ( const auto& qp : qps ) {
-      rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
-      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
-    }
-    const double weight = Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
-                                                                                       rowSumsLinear );
-    const double lumpedMassTimeStepFactor = Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
-      Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
-
-    criticalTimeStep = std::numeric_limits< double >::max();
-    for ( const auto& qp : qps ) {
-      /* The characteristic element length of GeometryElement: the smallest physical extent of a
-       * quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
-       *
-       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
-       * bulk viscosity already needs this value on every explicit increment and caches it for that
-       * reason, and the nodal coordinates it depends on do not change, so a second computation here
-       * would only disagree with the cached one under floating-point noise, never under a real
-       * update.
-       */
-      const double characteristicLengthForCriticalTimeStep = qp.characteristicLengthForCriticalTimeStep;
+    for ( int i = 0; i < static_cast< int >( qps.size() ); i++ ) {
+      const auto& qp = qps[i];
+      if constexpr ( nDim == 2 ) {
+        if ( sectionType == SectionType::Axisymmetric )
+          stiffnessBound.addQuadraturePoint( axisymmetricB( qp ), 3, qp.J0xW );
+        else
+          stiffnessBound.addQuadraturePoint( qp.B, nDim, qp.J0xW );
+      }
+      else
+        stiffnessBound.addQuadraturePoint( qp.B, nDim, qp.J0xW );
 
       Marmot::Materials::MaterialHypoElastic::state3D state( qp.managedStateVars->stress,
                                                              qp.managedStateVars->elasticStrainEnergy / qp.J0xW,
                                                              qp.managedStateVars->dissipation / qp.J0xW,
                                                              qp.managedStateVars->materialStateVars.data() );
 
-      const double c = qp.material->getMaximumWaveSpeed( state );
-      if ( c <= 0.0 )
-        throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
-      const double dt = lumpedMassTimeStepFactor * characteristicLengthForCriticalTimeStep / c;
-      if ( dt < criticalTimeStep )
-        criticalTimeStep = dt;
+      const double c   = qp.material->getMaximumWaveSpeed( state );
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      pWaveModulus = std::max( pWaveModulus, CriticalTimeStep::pWaveModulusOfQuadraturePoint( rho, c, elLabel, i ) );
     }
+
+    RhsSized lumpedMass;
+    computeLumpedInertia( lumpedMass.data() );
+    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedMass, pWaveModulus );
   }
 
   template < int nDim, int nNodes >

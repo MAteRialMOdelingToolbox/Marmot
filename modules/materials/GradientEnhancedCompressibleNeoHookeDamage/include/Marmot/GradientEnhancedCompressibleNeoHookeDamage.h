@@ -66,7 +66,8 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy
    * released by the damage increment, @f$ \psi_0\,\Delta D @f$.
    */
-  class GradientEnhancedCompressibleNeoHookeDamage : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedCompressibleNeoHookeDamage
+    : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > {
   public:
     /**
      * @brief Construct the material and validate its properties.
@@ -79,7 +80,7 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialNumber );
 
-    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.
