@@ -320,8 +320,13 @@ All notable changes to Marmot are documented in this file. The format follows
   force were the plane ones, so force and mass referred to different measures and every dynamic analysis with these
   elements had the wrong inertia, by a factor 2 pi r that varies over the mesh; the critical time step, built from
   the mass the element assembles, changes with it. The stored elastic energy and dissipation, read back divided by
-  the plane weight, were off by the same factor. The thickness property is no longer used by them (distributed loads
-  are still integrated as on the plane element).
+  the plane weight, were off by the same factor. The thickness property is no longer used by them.
+- **Results** The distributed loads of `CX8UL` and `CX8RUL` (`DisplacementFiniteStrainULElement::computeDistributedLoad`)
+  are integrated over the ring 2 pi r of the face, as those of `CAX*` and `GCAX*`: a pressure on the current face,
+  with the derivative of 2 pi r in its stiffness, a surface traction on the reference face. They were integrated over
+  the face times the thickness property, so a surface load on these elements was off by the factor 2 pi r / thickness
+  against their internal force. `BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates` supports
+  axisymmetric boundary elements.
 - The critical time step of the continuum elements (`DisplacementFiniteElement`, `DisplacementFiniteStrainULElement`,
   `GeneralGradientEnhancedDisplacementFiniteElement`) refuses a wave speed or a density that is not a positive number
   at any quadrature point (`CriticalTimeStep::pWaveModulusOfQuadraturePoint`), with the element and the point in the

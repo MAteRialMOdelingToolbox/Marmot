@@ -228,10 +228,6 @@ namespace Marmot::Discretizations::Elements {
 
   MatrixXd BoundaryElement::computeDSurfaceNormalVectorialLoadVector_dCoordinates()
   {
-    if ( axisymmetric )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__ << ": not implemented for axisymmetric boundary elements." );
-
     MatrixXd K = MatrixXd::Zero( coordinates.size(), coordinates.size() );
 
     if ( nDim == 2 ) {
@@ -242,10 +238,16 @@ namespace Marmot::Discretizations::Elements {
                     -1, 0;
       // clang-format on
 
+      // the area vector a = R dx/dXi, times the ring 2 pi r of an axisymmetric face, whose radius r = N_J x_J1
+      // moves with the radial coordinates
       for ( const auto& qp : quadraturePoints )
         for ( int I = 0; I < nNodes; I++ )
-          for ( int J = 0; J < nNodes; J++ )
-            K.block< 2, 2 >( I * 2, J * 2 ) += qp.N( I ) * qp.dNdXi( J ) * R * qp.weight;
+          for ( int J = 0; J < nNodes; J++ ) {
+            K.block< 2, 2 >( I * 2, J * 2 ) += qp.N( I ) * qp.dNdXi( J ) * R * qp.weight * qp.ringFactor;
+            if ( axisymmetric )
+              K.block< 2, 1 >( I * 2, J * 2 ) += qp.N( I ) * qp.N( J ) * qp.areaVector * qp.weight * 2. *
+                                                 Marmot::Math::Constants::Pi;
+          }
     }
 
     else if ( nDim == 3 ) {
