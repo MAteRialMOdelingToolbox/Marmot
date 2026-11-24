@@ -101,6 +101,10 @@
   <section id="finite-elements">
 <h1>Finite elements<a class="headerlink" href="#finite-elements" title="Link to this heading"></a></h1>
 <p>This section contains the ready to use available Finite elements.</p>
+<p>Every element gives access to the states of its quadrature points by name, through <code class="docutils literal notranslate"><span class="pre">Element::getStateView(</span> <span class="pre">stateName,</span>
+<span class="pre">quadraturePoint</span> <span class="pre">)</span></code>. The index of the quadrature point is checked there, once for all elements: an index outside
+<code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">getNumberOfQuadraturePoints()</span> <span class="pre">-</span> <span class="pre">1</span></code> throws <code class="docutils literal notranslate"><span class="pre">std::invalid_argument</span></code>. An element provides the view itself
+in the protected <code class="docutils literal notranslate"><span class="pre">getStateViewAtQuadraturePoint</span></code>, which is only called with a valid index.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="displacementfiniteelement.html">Displacement Finite Element</a></li>

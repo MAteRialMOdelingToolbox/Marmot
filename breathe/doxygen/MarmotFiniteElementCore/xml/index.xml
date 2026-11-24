@@ -80,11 +80,12 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ae84ee04baeb50229586f722aa504a7b7" kind="function"><name>computeConsistentInertia</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ac40288c7385c42d103255fc8240de127" kind="function"><name>computeCriticalTimeStepForExplicitDynamics</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a61b2edabfd86134bf4b713aed93a181d" kind="function"><name>computeInternalEnergy</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa0d140252f5a10212ce7031cbcbf2eea" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" kind="function"><name>getStateView</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a3005393ec0463bac458b2e8df1cf784a" kind="function"><name>getCoordinatesAtCenter</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a6ed9e23e38098ed9ed5b8dd34ea1b62b" kind="function"><name>getCoordinatesAtQuadraturePoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1adf8e3df3922a0bc589b07379c2bc4383" kind="function"><name>getNumberOfQuadraturePoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a80dc7db8ea59796b187b752075019a0a" kind="function"><name>computeLumpedDamping</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a89c59216a3ee6b4805e31c8b2adf2eda" kind="function"><name>getStateViewAtQuadraturePoint</name></member>
   </compound>
   <compound refid="class_marmot_1_1_registry_1_1_element_factory" kind="class"><name>Marmot::Registry::ElementFactory</name>
     <member refid="class_marmot_1_1_registry_1_1_element_factory_1af0757f08b06762cbd64e7a371221ca6b" kind="typedef"><name>elementFactoryFunction</name></member>
@@ -131,10 +132,10 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a4126fe758e00375bf9ddb2a12cd32a7c" kind="function"><name>setInitialConditions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a094fa20776d6c155d75fb7c34e7bbe1d" kind="function"><name>computeDistributedLoad</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae1dc2869dff84e93a74d935961646513" kind="function"><name>computeBodyForce</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd" kind="function"><name>getStateView</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a8dd3b488be403d11e18743072917c394" kind="function"><name>getCoordinatesAtCenter</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" kind="function"><name>getCoordinatesAtQuadraturePoints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" kind="function"><name>getNumberOfQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1365ff1c3b624f9650c33da9360da45e" kind="function"><name>getStateViewAtQuadraturePoint</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_testing_1_1_element_under_test" kind="struct"><name>Marmot::Testing::ElementUnderTest</name>
     <member refid="struct_marmot_1_1_testing_1_1_element_under_test_1ae0c00cb05d7d5cf414cff6d12de57155" kind="variable"><name>element</name></member>

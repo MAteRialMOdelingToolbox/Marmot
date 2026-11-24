@@ -554,23 +554,6 @@ The element’s own eigenvalue bound <span class="math notranslate nohighlight">
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement12getStateViewERKNSt6stringEi">
-<span id="_CPPv3N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1af0850fdb374764ccbd0bbd704c962dd6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Get a view to a state variable at a specific quadrature point of the element. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable </p></li>
-<li><p><strong>qpNumber</strong> – <strong>[in]</strong> Number of the quadrature point where the state variable is stored </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>View to the requested state variable at the specified quadrature point </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement22getCoordinatesAtCenterEv">
 <span id="_CPPv3N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a386f84373ed5ad9e0516715bb58a38f8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the coordinates of the element center. </p>
@@ -667,6 +650,26 @@ The element’s own eigenvalue bound <span class="math notranslate nohighlight">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement4idxUE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement4idxUE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement4idxUE"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::idxU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1a8cf2d42be449fde5d0944b0cca0df15d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idxU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement4idxUE" title="Link to this definition"></a><br /></dt>
 <dd><p>Starting index of displacement field U in element stiffness matrix and load vector. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement29getStateViewAtQuadraturePointERKNSt6stringEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::DisplacementFiniteStrainULElement::getStateViewAtQuadraturePoint__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement_1afcc38a451d44704cbcbdf997d4540db1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateViewAtQuadraturePoint</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements33DisplacementFiniteStrainULElement29getStateViewAtQuadraturePointERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a view to a state variable at a specific quadrature point of the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable </p></li>
+<li><p><strong>qpNumber</strong> – <strong>[in]</strong> Number of the quadrature point where the state variable is stored </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>View to the requested state variable at the specified quadrature point </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

@@ -980,50 +980,6 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="167" column="10"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
-        <type>Marmot::Utilities::StateView</type>
-        <definition>Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView</definition>
-        <argsstring>(const std::string &amp;stateName, int quadraturePoint) override</argsstring>
-        <name>getStateView</name>
-        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView</qualifiedname>
-        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa0d140252f5a10212ce7031cbcbf2eea">getStateView</reimplements>
-        <param>
-          <type>const std::string &amp;</type>
-          <declname>stateName</declname>
-        </param>
-        <param>
-          <type>int</type>
-          <declname>quadraturePoint</declname>
-        </param>
-        <briefdescription>
-<para>Access element state at a quadrature point.    </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername direction="in">stateName</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Name of the state variable. </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername direction="in">quadraturePoint</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Index of quadrature point. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>View into state variable.    </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="171" column="34"/>
-      </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a8dd3b488be403d11e18743072917c394" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>std::vector&lt; double &gt;</type>
         <definition>std::vector&lt; double &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtCenter</definition>
@@ -1041,7 +997,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="174" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="177" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
@@ -1060,7 +1016,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="177" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="180" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>int</type>
@@ -1078,7 +1034,53 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="180" column="9"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="183" column="9"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1365ff1c3b624f9650c33da9360da45e" prot="protected" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateViewAtQuadraturePoint</definition>
+        <argsstring>(const std::string &amp;stateName, int quadraturePoint) override</argsstring>
+        <name>getStateViewAtQuadraturePoint</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateViewAtQuadraturePoint</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a89c59216a3ee6b4805e31c8b2adf2eda">getStateViewAtQuadraturePoint</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>quadraturePoint</declname>
+        </param>
+        <briefdescription>
+<para>The view of a state of a quadrature point, provided by the element.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">quadraturePoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the quadrature point, which <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" kindref="member">getStateView()</ref> has checked to be one of the element&apos;s. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View into state variable.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="172" column="34"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -1111,7 +1113,7 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="43" bodyend="181"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="43" bodyend="184"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a16e1959111fc52953d6835a5c6a3b334" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignNodeCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a591e56f952908b433ebb4120a47f8883" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignProperty</name></member>
@@ -1142,7 +1144,8 @@
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNumberOfQuadraturePoints</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a840d63fd8e949506b44b3f473ab868ce" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNumberOfRequiredStateVars</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a243b7919d7e23c3c27efb43fdd63abc1" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getPropertyNames</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1365ff1c3b624f9650c33da9360da45e" prot="protected" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getStateViewAtQuadraturePoint</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a9da2d46fa0fc7aab835895e604fa6125" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>HasEigenDeformation</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a36241e2982fcbeba6fb988034d59d480" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>HydrostaticStress</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a0e0d3b7415db93b509465e7a550f2feb" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>initializeYourself</name></member>

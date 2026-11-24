@@ -1042,13 +1042,12 @@ The coefficient of each field&apos;s SECOND time derivative: mass on the displac
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="264" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" bodystart="264" bodyend="267"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa0d140252f5a10212ce7031cbcbf2eea" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Marmot::Utilities::StateView</type>
-        <definition>virtual Marmot::Utilities::StateView Marmot::Discretizations::Elements::Element::getStateView</definition>
-        <argsstring>(const std::string &amp;stateName, int quadraturePoint)=0</argsstring>
+        <definition>Marmot::Utilities::StateView Marmot::Discretizations::Elements::Element::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, int quadraturePoint)</argsstring>
         <name>getStateView</name>
         <qualifiedname>Marmot::Discretizations::Elements::Element::getStateView</qualifiedname>
-        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd">getStateView</reimplementedby>
         <param>
           <type>const std::string &amp;</type>
           <declname>stateName</declname>
@@ -1074,17 +1073,26 @@ The coefficient of each field&apos;s SECOND time derivative: mass on the displac
 <parametername direction="in">quadraturePoint</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Index of quadrature point. </para>
+<para>Index of the quadrature point, from 0 to <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1adf8e3df3922a0bc589b07379c2bc4383" kindref="member">getNumberOfQuadraturePoints()</ref> - 1. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>View into state variable. </para>
 </simplesect>
-</para>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If the quadrature point is not one of the element&apos;s.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The one check of the index for all elements; the element itself provides the view in <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a89c59216a3ee6b4805e31c8b2adf2eda" kindref="member">getStateViewAtQuadraturePoint()</ref>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="275" column="42"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="278" column="34"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a3005393ec0463bac458b2e8df1cf784a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; double &gt;</type>
@@ -1103,7 +1111,7 @@ The coefficient of each field&apos;s SECOND time derivative: mass on the displac
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="281" column="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="296" column="25"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a6ed9e23e38098ed9ed5b8dd34ea1b62b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
@@ -1122,7 +1130,7 @@ The coefficient of each field&apos;s SECOND time derivative: mass on the displac
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="287" column="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="302" column="25"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1adf8e3df3922a0bc589b07379c2bc4383" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -1140,7 +1148,7 @@ The coefficient of each field&apos;s SECOND time derivative: mass on the displac
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="290" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="305" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a80dc7db8ea59796b187b752075019a0a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1172,7 +1180,53 @@ The coefficient of each field&apos;s FIRST time derivative: zero on the displace
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="307" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" bodystart="307" bodyend="307"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="322" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" bodystart="322" bodyend="322"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a89c59216a3ee6b4805e31c8b2adf2eda" prot="protected" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>virtual Marmot::Utilities::StateView Marmot::Discretizations::Elements::Element::getStateViewAtQuadraturePoint</definition>
+        <argsstring>(const std::string &amp;stateName, int quadraturePoint)=0</argsstring>
+        <name>getStateViewAtQuadraturePoint</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Element::getStateViewAtQuadraturePoint</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1365ff1c3b624f9650c33da9360da45e">getStateViewAtQuadraturePoint</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>quadraturePoint</declname>
+        </param>
+        <briefdescription>
+<para>The view of a state of a quadrature point, provided by the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">quadraturePoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the quadrature point, which <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" kindref="member">getStateView()</ref> has checked to be one of the element&apos;s. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View into state variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="288" column="42"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -1193,7 +1247,7 @@ The coefficient of each field&apos;s FIRST time derivative: zero on the displace
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="45" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" bodystart="45" bodyend="308"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" line="45" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElement.h" bodystart="45" bodyend="323"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a58691593fbdc3f791d4d45472f454928" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>assignNodeCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a19f4a8715f3b76d5024fa416876f038d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>assignProperty</name></member>
@@ -1222,7 +1276,8 @@ The coefficient of each field&apos;s FIRST time derivative: zero on the displace
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1adf8e3df3922a0bc589b07379c2bc4383" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getNumberOfQuadraturePoints</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a07a2925b44c1cf5d164d712e9f49b274" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getNumberOfRequiredStateVars</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a5d62201e058ad6df8f994c2a58a15e83" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getPropertyNames</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa0d140252f5a10212ce7031cbcbf2eea" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1af71e7c076187bbf2db6a641a7def0da8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a89c59216a3ee6b4805e31c8b2adf2eda" prot="protected" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>getStateViewAtQuadraturePoint</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a9da2d46fa0fc7aab835895e604fa6125" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>HasEigenDeformation</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a36241e2982fcbeba6fb988034d59d480" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>HydrostaticStress</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a10119ad937d8778cb58793dd1a1581f0" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Elements::Element</scope><name>initializeYourself</name></member>

@@ -471,23 +471,6 @@ The nodes of the element are the nodes of the reinforcement (truss) element, fol
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi">
-<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1abdb1e32cda0dc5ebc2d42dd450c9ff70"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Access element state at a quadrature point. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
-<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of quadrature point. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>View into state variable. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv">
 <span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a4e87f48f8b1f53e552f198eb0e6239fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get coordinates of element center. </p>
@@ -592,6 +575,26 @@ The nodes of the element are the nodes of the reinforcement (truss) element, fol
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::insideTolerance__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1ac00c1fe39e5411bd6be0bd9792cda60e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insideTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-6</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement15insideToleranceE" title="Link to this definition"></a><br /></dt>
 <dd><p>The tolerance of “inside the host element” in parent coordinates: looser than the one EdelweissFE uses to place the ends of the bond parts on host boundaries, so that such points are always accepted </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement29getStateViewAtQuadraturePointERKNSt6stringEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements19EmbeddedBondElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements19EmbeddedBondElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedBondElement::getStateViewAtQuadraturePoint__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedBondElement_1a93c70333f3a506b22921a704eeb522f2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateViewAtQuadraturePoint</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements19EmbeddedBondElement29getStateViewAtQuadraturePointERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>The view of a state of a quadrature point, provided by the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
+<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of the quadrature point, which getStateView() has checked to be one of the element’s. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>View into state variable. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -1299,23 +1302,6 @@ The coefficient of each field’s SECOND time derivative: mass on the displaceme
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12getStateViewERKNSt6stringEi">
-<span id="_CPPv3N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedLargeSlipBondElement_1ac8acb252ed5f2ce228772e0a5d0b3d1a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
-<dd><p>Access element state at a quadrature point. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
-<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of quadrature point. </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>View into state variable. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement22getCoordinatesAtCenterEv">
 <span id="_CPPv3N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedLargeSlipBondElement_1a8097d8d247fedd6001fd99efcf06139e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get coordinates of element center. </p>
@@ -1486,6 +1472,26 @@ The coefficient of each field’s SECOND time derivative: mass on the displaceme
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12etaToleranceE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12etaToleranceE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12etaToleranceE"></span><span id="Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement::etaTolerance__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedLargeSlipBondElement_1a639db34db7848af148d97be9516dbb00"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">etaTolerance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-9</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement12etaToleranceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Tolerance in the bar parameter for a partner to belong to a bar element (at a node shared with the next one). </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement29getStateViewAtQuadraturePointERKNSt6stringEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement29getStateViewAtQuadraturePointERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::EmbeddedLargeSlipBondElement::getStateViewAtQuadraturePoint__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1EmbeddedLargeSlipBondElement_1ade032625381213e0a1e73349dceb0a0c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateViewAtQuadraturePoint</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements28EmbeddedLargeSlipBondElement29getStateViewAtQuadraturePointERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>The view of a state of a quadrature point, provided by the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
+<li><p><strong>quadraturePoint</strong> – <strong>[in]</strong> Index of the quadrature point, which getStateView() has checked to be one of the element’s. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>View into state variable. </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
