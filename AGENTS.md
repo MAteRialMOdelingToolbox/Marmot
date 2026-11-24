@@ -21,7 +21,7 @@ ctest --output-on-failure                          # run all tests
 ctest -R TestLinearElastic                         # run specific test
 ```
 
-To build and install the optional Python bindings (nanobind is fetched automatically at configure time; requires a Python 3.8+ dev environment):
+To build and install the optional Python bindings (nanobind is fetched automatically at configure time; requires a Python 3.10+ dev environment, free-threaded ones included):
 ```bash
 cmake .. -DMARMOT_BUILD_PYTHON_BINDINGS=ON -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
 make install                                       # also installs the `marmot` python package
