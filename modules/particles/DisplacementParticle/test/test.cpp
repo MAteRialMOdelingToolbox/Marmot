@@ -748,7 +748,7 @@ namespace {
     }
   }
 
-  // The bound of |K| W of the particle for the stable time increment (addBoundOfAbsoluteStiffnessTimes), against
+  // The bound of |K| W of the particle for the critical time step (addBoundOfAbsoluteStiffnessTimes), against
   // the stiffness itself, the tangent of a zero increment, at a state off the reference: never below |K| W, and its
   // largest entry of each column (what the Collatz-Wielandt bound takes) at most maxOverestimate times the exact one
   // (the Cauchy-Schwarz inequality over the nodes overestimates the gradient terms by about 1.2 in 2D, 1.3 in 3D).

@@ -83,8 +83,8 @@ namespace Marmot::Materials {
      * @return The optional material property 16 for all six components, or zero if it is not given
      *
      * @details Optional, and absent means zero: the nonlocal strain is then first order in time and is integrated by
-     * its viscosity alone. Given, it makes the nonlocal field second order in time, so that the stable increment of an
-     * explicit analysis falls off with the element size rather than with its square; it is admissible up to
+     * its viscosity alone. Given, it makes the nonlocal field second order in time, so that the critical time step of
+     * an explicit analysis falls off with the element size rather than with its square; it is admissible up to
      * \f$\eta^2/4\f$, where the reaction mode of the nonlocal field is critically damped (above, it would be
      * underdamped; see Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia()).
      */

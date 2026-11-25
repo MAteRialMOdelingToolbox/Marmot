@@ -218,7 +218,7 @@ namespace Marmot::Discretizations::Elements {
 
     /**
      * @brief The smallest extent \f$L_e\f$ of the element at the natural coordinates @p xi, the length the artificial
-     * bulk viscosity of explicit dynamics scales with (see BulkViscosity). The stable time increment does not use it:
+     * bulk viscosity of explicit dynamics scales with (see BulkViscosity). The critical time step does not use it:
      * it is the element's own eigenvalue bound, see CriticalTimeStep.
      *
      * @details

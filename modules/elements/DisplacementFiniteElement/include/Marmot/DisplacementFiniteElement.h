@@ -141,7 +141,7 @@ namespace Marmot::Discretizations::Elements {
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
        * @details A current wave speed costs a full constitutive evaluation, affordable for the
-       * stable increment (asked for rarely) and not per quadrature point per explicit increment.
+       * critical time step (asked for rarely) and not per quadrature point per explicit increment.
        * What is cached is the UNDAMAGED speed: the term damps the highest frequency the MESH can
        * carry, which the undamaged material sets, and holding it fixed as the material softens
        * damps slightly harder -- the safe direction here. Empty means "not yet computed"; a
@@ -1331,7 +1331,7 @@ namespace Marmot::Discretizations::Elements {
 
     RhsSized lumpedMass;
     computeLumpedInertia( lumpedMass.data() );
-    criticalTimeStep = stiffnessBound.stableTimeIncrement( lumpedMass, pWaveModulus );
+    criticalTimeStep = stiffnessBound.criticalTimeStep( lumpedMass, pWaveModulus );
   }
 
   template < int nDim, int nNodes >

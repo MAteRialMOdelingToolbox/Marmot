@@ -525,9 +525,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Lumped momentum: @f$ \rho_0\,T_A\,V_0\,v_i @f$ on the displacement rows and
      * @f$ m_K\,T_A\,V_0\,\dot{\bar{N}}_K @f$ on the nonlocal rows, i.e. the lumped inertia times the rates of the last
      * explicit increment, so that a velocity projected from it keeps the rate of a second-order nonlocal field.
-     * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector, node by node; the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
@@ -1175,7 +1175,7 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim, int nNonlocal >
-  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeLumpedMomentum( double* mLumped ) const
+  void GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::computeLumpedMomentum( double* pLumped ) const
   {
     constexpr int nodeBlockSize = nDim + nNonlocal;
 
@@ -1188,9 +1188,9 @@ namespace Marmot::Discretizations::Meshfree {
     for ( int A = 0; A < _nNodes; A++ ) {
       const double T_A = _T( A );
       for ( int i = 0; i < nDim; i++ )
-        mLumped[nodeBlockSize * A + i] += density0 * T_A * V0 * v( i );
+        pLumped[nodeBlockSize * A + i] += density0 * T_A * V0 * v( i );
       for ( int kNl = 0; kNl < nNonlocal; kNl++ )
-        mLumped[nodeBlockSize * A + nDim + kNl] += m( kNl ) * T_A * V0 * dN_dt( kNl );
+        pLumped[nodeBlockSize * A + nDim + kNl] += m( kNl ) * T_A * V0 * dN_dt( kNl );
     }
   }
 

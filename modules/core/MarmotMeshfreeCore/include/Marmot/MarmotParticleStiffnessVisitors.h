@@ -33,7 +33,7 @@
 /**
  * @file
  * @brief The visitors of a particle's stiffness that a host applies (Particle::describeStiffness()): the bound of its
- * absolute value, for the stable time increment of an explicit scheme, and its assembly. The particles do not
+ * absolute value, for the critical time step of an explicit scheme, and its assembly. The particles do not
  * include this header; both visitors and their free functions are compiled in Marmot, for nDim 2 and 3 (a host that
  * compiled them with its own flags, e.g. with FMA contraction, would change the last bits of their results).
  */
@@ -48,7 +48,7 @@ namespace Marmot::Discretizations::Meshfree {
    * @brief Bounds the absolute value of a particle's stiffness times nonnegative weights,
    * @f$ |\boldsymbol{K}|\, \boldsymbol{W} @f$, from the stiffness it describes node by node, without forming it.
    *
-   * @details What a stable time increment needs from a stiffness is a bound of its spectral radius, e.g. the
+   * @details What a critical time step needs from a stiffness is a bound of its spectral radius, e.g. the
    * Collatz-Wielandt bound, @f$ \max_i (|\boldsymbol{K}|\boldsymbol{w})_i / w_i @f$ for positive weights
    * @f$ \boldsymbol{w} @f$. The stiffness of a particle with @f$ n @f$ nodes has @f$ n^2 @f$ blocks; this bound of
    * @f$ |\boldsymbol{K}|\boldsymbol{W} @f$ costs @f$ O(n) @f$: the rows of node @f$ A @f$ are linear in the shape
@@ -196,7 +196,7 @@ namespace Marmot::Discretizations::Meshfree {
    * describes its stiffness to; see Particle::describeStiffness() for the state it is of). The particle is left as it
    * was found.
    *
-   * @details The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt
+   * @details The bound a host needs for the critical time step of an explicit scheme, e.g. by the Collatz-Wielandt
    * bound of the mass-scaled stiffness, which needs @f$ |\boldsymbol{K}|\boldsymbol{w} @f$ only. It costs O(nodes)
    * instead of the O(nodes^2) of the stiffness.
    * @param[in,out] particle The particle (Particle::describeStiffness()).

@@ -141,15 +141,15 @@ namespace Marmot::Testing {
   };
 
   /**
-   * @brief The stable time increment \f$2 / \omega_{\max}\f$ of an element on its own, at rest: the largest
+   * @brief The critical time step \f$2 / \omega_{\max}\f$ of an element on its own, at rest: the largest
    * eigenvalue of \f$\mathbf{M}^{-1}\mathbf{K}\f$ of its displacement block, with the tangent computeKernels() returns
    * and the lumped mass computeLumpedInertia() assembles.
    * @param element The element; its state is evaluated at rest (its state variables change).
    * @param nDisplacementDof The size of the displacement block, the leading degrees of freedom of the element.
-   * @return The stable time increment.
+   * @return The critical time step.
    */
-  inline double stableTimeIncrementOfTheElement( Marmot::Discretizations::Elements::Element& element,
-                                                 int                                         nDisplacementDof )
+  inline double exactCriticalTimeStepOfTheElement( Marmot::Discretizations::Elements::Element& element,
+                                                   int                                         nDisplacementDof )
   {
     const int             nDof = element.getNDofPerElement();
     const Eigen::VectorXd zero = Eigen::VectorXd::Zero( nDof );

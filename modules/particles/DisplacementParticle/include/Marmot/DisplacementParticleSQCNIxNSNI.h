@@ -280,9 +280,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Lumped momentum, @f$ p_{Ai} \mathrel{+}= \rho_0\,T_A\,V_0\,v_i
      * + \rho_0\,(\partial v_i/\partial Y_J)\,M_{JK}\,(\partial T_A/\partial Y_K)/J_Y @f$, with the velocity gradient
      * of the last updatePhysicsExplicit().
-     * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Accepts the current state and position, updating internal variables.
@@ -565,7 +565,7 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim, int nVertices >
-  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* mLumped ) const
+  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* pLumped ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
@@ -592,8 +592,8 @@ namespace Marmot::Discretizations::Meshfree {
       const double detJIntermediate = determinant( this->_mp->dY_dX() );
 
       for ( int i = 0; i < this->nDofPerNodeU; i++ ) {
-        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
-        mLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
+        pLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        pLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
       }
     }
   }
