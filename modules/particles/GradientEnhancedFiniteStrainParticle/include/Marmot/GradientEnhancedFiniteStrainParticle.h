@@ -57,7 +57,7 @@ namespace Marmot::Discretizations::Meshfree {
    * **Kinematics.** The dofs are the increments of the current step. The trial shape functions @f$ N_B @f$ and
    * gradients @f$ \partial N_B/\partial\boldsymbol{Y} @f$ are those of the meshfree approximation at the particle
    * center in the intermediate reference configuration @f$ \boldsymbol{Y} @f$ (the last accepted configuration),
-   * evaluated in assignMeshfreeKernelFunctions(). They give
+   * evaluated in updateShapeFunctions(). They give
    * @f[
    *   \Delta\boldsymbol{u} = N_B\,\Delta\boldsymbol{q}^U_B,\quad
    *   \Delta F_{ij} = \delta_{ij} + \Delta q^U_{Bi}\,\frac{\partial N_B}{\partial Y_j},\quad
@@ -272,20 +272,30 @@ namespace Marmot::Discretizations::Meshfree {
     void assignStateVars( double* stateVars, int nStateVars ) override { _mp.assignStateVars( stateVars, nStateVars ); }
 
     /**
-     * @brief Assign the kernel functions of the nodes and evaluate the shape functions.
+     * @brief Assign the kernel functions of the nodes and evaluate the shape functions with them
+     * (updateShapeFunctions()).
+     *
+     * Final: a derived particle changes how its shape functions are evaluated in updateShapeFunctions(), so that
+     * assigning kernel functions and updating the shape functions always evaluate the same.
+     *
+     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
+     */
+    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) final
+    {
+      _assignedKernelFunctions = kernelFunctions;
+      _nNodes                  = static_cast< int >( _assignedKernelFunctions.size() );
+      updateShapeFunctions();
+    }
+
+    /**
+     * @brief Evaluate the shape functions with the assigned kernel functions.
      *
      * @f$ N_B @f$ and @f$ \partial N_B/\partial\boldsymbol{Y} @f$ are evaluated by the meshfree approximation at the
      * particle center of the last accepted state; the test functions are set equal to them (before any VCI
      * correction).
-     *
-     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      _assignedKernelFunctions = kernelFunctions;
-
-      _nNodes = static_cast< int >( _assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > coords;
       _mp.getCoordinatesAtCenter( coords.data() );
 
@@ -406,7 +416,8 @@ namespace Marmot::Discretizations::Meshfree {
      * Accepts the state of the material point (@f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n
      * @f$, @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$), resets its increment, updates
      * @f$ V_Y = V_0\det\boldsymbol{F}_n @f$ and the center @f$ \boldsymbol{Y} @f$, and re-evaluates the VCI basis
-     * there. The shape functions are re-evaluated only when the host calls assignMeshfreeKernelFunctions() again.
+     * there. The shape functions are re-evaluated only when the host calls updateShapeFunctions() (or assigns kernel
+     * functions anew).
      */
     void acceptStateAndPosition() override
     {
@@ -571,7 +582,7 @@ namespace Marmot::Discretizations::Meshfree {
     void getInterpolationVectorLinearizedAboutCenter( double* vec, const double* coordinates ) const override
     {
       std::array< double, nDim > center;
-      _mp.getCoordinatesAtCenter( center.data() ); // where assignMeshfreeKernelFunctions() evaluated _N and _dN_dY
+      _mp.getCoordinatesAtCenter( center.data() ); // where updateShapeFunctions() evaluated _N and _dN_dY
       interpolationVectorLinearizedAboutCenter( vec,
                                                 _N.data(),
                                                 _dN_dY.data(),

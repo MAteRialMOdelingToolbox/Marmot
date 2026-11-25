@@ -822,6 +822,25 @@ namespace {
       throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
                                name + ": the shape functions at the vertices do not move them" );
   }
+
+  // updateShapeFunctions() of a particle that has moved evaluates its shape functions anew, and the same as assigning
+  // its kernel functions again (Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain)
+  template < int nDim >
+  void checkUpdateShapeFunctions( const std::string& name, const std::string& shape )
+  {
+    Setup< nDim > s( name, vertices( shape ), volumeArgument( shape ) );
+    s.accept( increment( s.nDof(), 0.02 ) ); // a deformed, accepted state
+
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > kernelFunctions;
+    for ( const int g : s.assignedGridIndices )
+      kernelFunctions.push_back( s.grid.pointers[g] );
+    Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain( name,
+                                                                                           *s.particle,
+                                                                                           kernelFunctions,
+                                                                                           s.stateVars,
+                                                                                           increment( s.nDof(),
+                                                                                                      0.03 ) );
+  }
 } // namespace
 
 // the NSNI particles keep their former names ("Displacement/SQCNIxNSNI/..." etc.) as aliases of the names of the naming
@@ -900,6 +919,10 @@ int main()
   for ( const auto& [name, shape] : solid )
     testFunctions.push_back(
       [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 3 >( name, shape ); } );
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 3 >( name, shape ); } );
   for ( const auto& [name, formerName] :
         std::vector< std::pair< std::string, std::string > >{ { "DisplacementSQCNIxNSNI", "Displacement/SQCNIxNSNI" },
                                                               { "DisplacementSNNIxNSNI", "Displacement/SNNIxNSNI" },

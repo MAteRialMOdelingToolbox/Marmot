@@ -255,19 +255,13 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Assigns the meshfree kernel functions to the particle.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed gradients.
      *
-     * This method also computes and updates the shape functions (N, dN_dY) and
-     * their derivatives (T, dT_dY) based on the assigned kernel functions and
-     * the current smoothing volume.
-     *
-     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
+     * N at the particle center, dN_dY as the boundary integral over the current smoothing domain, and the test
+     * functions T = N, dT_dY = dN_dY.
      */
-    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      this->_assignedKernelFunctions = kernelFunctions;
-      this->_nNodes                  = static_cast< int >( this->_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > coords;
       this->getCenterCoordinates( coords.data() ); // Uses DisplacementParticleSQCNI's getCenterCoordinates
 

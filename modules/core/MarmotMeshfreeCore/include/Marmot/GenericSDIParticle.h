@@ -314,11 +314,18 @@ namespace Marmot::Discretizations::Meshfree {
                         const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
-     * @brief Assigns the meshfree kernel functions and evaluates, for every subdomain, N at its center, the
-     *        smoothed gradients dN_dY, the test functions (T = N, dT_dY = dN_dY) and the VCI basis at its center.
+     * @brief Store the kernel functions and evaluate the shape functions with them (updateShapeFunctions()).
+     * @details Final: a derived particle changes how its shape functions are evaluated in updateShapeFunctions(), so
+     *          that assigning kernel functions and updating the shape functions always evaluate the same.
      * @param[in] kernelFunctions A vector of pointers to the kernel functions.
      */
-    virtual void assignMeshfreeKernelFunctions( const KernelFunctionVector& kernelFunctions ) override;
+    void assignMeshfreeKernelFunctions( const KernelFunctionVector& kernelFunctions ) final;
+
+    /**
+     * @brief Evaluate, for every subdomain, N at its center, the smoothed gradients dN_dY, the test functions
+     *        (T = N, dT_dY = dN_dY) and the VCI basis at its center, with the assigned kernel functions.
+     */
+    void updateShapeFunctions() override;
 
     /**
      * @brief Accepts the current incremental state and updates the particle's position and deformation.
@@ -710,8 +717,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Sets the VCI order and updates the number of VCI constraints.
      * @details The number of constraints is @f$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} @f$ for the order
      *          @f$ k @f$. Unlike GenericParticle::setVCIOrder(), the basis is not evaluated here but in
-     *          assignMeshfreeKernelFunctions() (per subdomain), which must therefore be called after the order has
-     *          been set.
+     *          updateShapeFunctions() (per subdomain), which must therefore be called after the order has been set.
      * @param[in] order The desired VCI order.
      */
     void setVCIOrder( int order )
@@ -816,19 +822,22 @@ namespace Marmot::Discretizations::Meshfree {
 
   /*
    * (Definition; documented at the declaration.)
-   * @brief Assigns a vector of meshfree kernel functions to the particle.
-   * @tparam nDim The number of dimensions.
-   * @tparam nVertices The number of vertices.
-   * @param kernelFunctions A vector of pointers to the kernel functions.
    */
   template < int nDim, int nVertices >
   void GenericSDIParticle< nDim, nVertices >::assignMeshfreeKernelFunctions(
-    const KernelFunctionVector& kernelFunctions ) // Use alias
+    const KernelFunctionVector& kernelFunctions )
   {
-
     _assignedKernelFunctions = kernelFunctions;
-    _nNodes                  = static_cast< int >( kernelFunctions.size() ); // Cast to int
+    _nNodes                  = static_cast< int >( kernelFunctions.size() );
+    updateShapeFunctions();
+  }
 
+  /*
+   * (Definition; documented at the declaration.)
+   */
+  template < int nDim, int nVertices >
+  void GenericSDIParticle< nDim, nVertices >::updateShapeFunctions()
+  {
     for ( size_t mpNumber = 0; mpNumber < _subDomainShapeFunctions.size(); mpNumber++ ) {
 
       auto&       mpl = _subDomainShapeFunctions[mpNumber];
