@@ -34,7 +34,7 @@
         <name>_centerReferenceIntermediate</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_centerReferenceIntermediate</qualifiedname>
         <briefdescription>
-<para>Center coordinates <formula id="68">$ \boldsymbol{Y}_c $</formula> in the reference intermediate configuration. </para>
+<para>Center coordinates <formula id="70">$ \boldsymbol{Y}_c $</formula> in the reference intermediate configuration. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -49,7 +49,7 @@
         <name>_volReferenceIntermediate</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_volReferenceIntermediate</qualifiedname>
         <briefdescription>
-<para>Volume <formula id="295">$ V_Y $</formula> in the reference intermediate configuration (the integration weight of the VCI integrals). </para>
+<para>Volume <formula id="296">$ V_Y $</formula> in the reference intermediate configuration (the integration weight of the VCI integrals). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -109,7 +109,7 @@
         <name>_vciOrder</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_vciOrder</qualifiedname>
         <briefdescription>
-<para>Order <formula id="97">$ k $</formula> of the VCI polynomial basis. </para>
+<para>Order <formula id="99">$ k $</formula> of the VCI polynomial basis. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -139,7 +139,7 @@
         <name>_P</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_P</qualifiedname>
         <briefdescription>
-<para>VCI basis <formula id="299">$ P_C $</formula> at the particle center, size <formula id="51">$ n_C $</formula>. </para>
+<para>VCI basis <formula id="300">$ P_C $</formula> at the particle center, size <formula id="51">$ n_C $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -156,7 +156,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Gradient <formula id="300">$ \partial P_C / \partial Y_i $</formula> at the particle center, <formula id="301">$ n_C \times n_{\text{dim}} $</formula>. </para>
+<para>Gradient <formula id="301">$ \partial P_C / \partial Y_i $</formula> at the particle center, <formula id="302">$ n_C \times n_{\text{dim}} $</formula>. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -169,7 +169,7 @@
         <name>_N</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_N</qualifiedname>
         <briefdescription>
-<para>The vector of trial shape functions <formula id="34">$ N_A $</formula> ( <formula id="302">$ 1 \times n_{\text{nodes}} $</formula>). </para>
+<para>The vector of trial shape functions <formula id="34">$ N_A $</formula> ( <formula id="303">$ 1 \times n_{\text{nodes}} $</formula>). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -186,7 +186,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The matrix of trial shape functions gradients <formula id="288">$ \partial N_A / \partial Y_i $</formula> ( <formula id="303">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>) </para>
+<para>The matrix of trial shape functions gradients <formula id="67">$ \partial N_A / \partial Y_i $</formula> ( <formula id="304">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>) </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -199,7 +199,7 @@
         <name>_T</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::_T</qualifiedname>
         <briefdescription>
-<para>The vector of test shape functions <formula id="289">$ T_A $</formula> ( <formula id="302">$ 1 \times n_{\text{nodes}} $</formula>). </para>
+<para>The vector of test shape functions <formula id="290">$ T_A $</formula> ( <formula id="303">$ 1 \times n_{\text{nodes}} $</formula>). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -216,7 +216,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The matrix of test shape functions gradients <formula id="290">$ \partial T_A / \partial Y_i $</formula> ( <formula id="303">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>), including the VCI correction </para>
+<para>The matrix of test shape functions gradients <formula id="291">$ \partial T_A / \partial Y_i $</formula> ( <formula id="304">$ n_{\text{dim}} \times n_{\text{nodes}} $</formula>), including the VCI correction </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -258,12 +258,12 @@
 <para>Set the VCI order, resize the VCI basis and evaluate it at the current particle center. </para>
         </briefdescription>
         <detaileddescription>
-<para>The number of constraints is the number of monomials of degree <formula id="105">$ \le $</formula> <computeroutput>order</computeroutput> in nDim variables (Math::computeSizeOfMonomialBasisVector()). The basis is evaluated right away, since VCI may run before the first accepted increment updates it. <parameterlist kind="param"><parameteritem>
+<para>The number of constraints is the number of monomials of degree <formula id="107">$ \le $</formula> <computeroutput>order</computeroutput> in nDim variables (Math::computeSizeOfMonomialBasisVector()). The basis is evaluated right away, since VCI may run before the first accepted increment updates it. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The VCI order <formula id="97">$ k $</formula>. </para>
+<para>The VCI order <formula id="99">$ k $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -359,7 +359,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="146" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="413" bodyend="432"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="146" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="421" bodyend="440"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a373cd53965f7ccdce967e07094732867" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -482,10 +482,10 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="200" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="200" bodyend="200"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad946002e3ffb0f2e6c6a885195bf45d0" prot="public" static="no" const="no" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
-        <definition>virtual void Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;::assignMeshfreeKernelFunctions</definition>
-        <argsstring>(const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions) override</argsstring>
+        <definition>void Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;::assignMeshfreeKernelFunctions</definition>
+        <argsstring>(const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions) final</argsstring>
         <name>assignMeshfreeKernelFunctions</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::assignMeshfreeKernelFunctions</qualifiedname>
         <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a">assignMeshfreeKernelFunctions</reimplements>
@@ -494,10 +494,10 @@
           <declname>kernelFunctions</declname>
         </param>
         <briefdescription>
-<para>Store the kernel functions and evaluate <formula id="34">$ N_A $</formula> and <formula id="288">$ \partial N_A / \partial Y_i $</formula> at the particle center (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kindref="member">getCenterCoordinates()</ref>); the test functions are set equal to the trial functions, which resets any previous VCI correction. </para>
+<para>Store the kernel functions and evaluate the shape functions with them (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" kindref="member">updateShapeFunctions()</ref>). </para>
         </briefdescription>
         <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
+<para>Final: a derived particle changes how its shape functions are evaluated in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" kindref="member">updateShapeFunctions()</ref>, so that assigning kernel functions and updating the shape functions always evaluate the same. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
@@ -510,7 +510,23 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="208" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="208" bodyend="227"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="208" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="208" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;::updateShapeFunctions</definition>
+        <argsstring>() override</argsstring>
+        <name>updateShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericParticle::updateShapeFunctions</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa251cced6fef8cf7f8bca3ba8855b4aa">updateShapeFunctions</reimplements>
+        <briefdescription>
+<para>Evaluate <formula id="34">$ N_A $</formula> and <formula id="67">$ \partial N_A / \partial Y_i $</formula> at the particle center (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kindref="member">getCenterCoordinates()</ref>) with the assigned kernel functions; the test functions are set equal to the trial functions, which resets any previous VCI correction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="220" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="220" bodyend="235"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a70d9aec64aee65cff563850a7f0480e9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -540,7 +556,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="231" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="231" bodyend="236"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="239" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="239" bodyend="244"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aebb1f6f8f428bc423725742eb7c06279" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -591,7 +607,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="242" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="242" bodyend="245"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="250" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="250" bodyend="253"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -621,7 +637,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="249" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="249" bodyend="249"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="257" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="257" bodyend="257"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1778204a3ee3ea3512506ddfcbdd043e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -651,7 +667,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="253" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="253" bodyend="256"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="261" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="261" bodyend="264"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa981aea7009898cda963c186462e6b10" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -670,7 +686,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="260" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="260" bodyend="260"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="268" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="268" bodyend="268"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aeec7464e8d87a2f925eebfd9b6bfbec2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>std::string</type>
@@ -689,7 +705,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="264" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="264" bodyend="264"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="272" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="272" bodyend="272"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa3ed7cf4af833f966615ccda4a8c303d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -708,7 +724,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="268" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="268" bodyend="268"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="276" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="276" bodyend="276"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a66d1fabf95051bff30c3595cc2e0aecc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -750,7 +766,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="273" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="273" bodyend="276"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="281" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="281" bodyend="284"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abdfe23d4a60f5f0c409eb7c2dec062d3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -768,7 +784,7 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
-<para>The shape functions linearized about the center, from the trial functions <formula id="34">$ N_A $</formula> and gradients <formula id="288">$ \partial N_A / \partial Y_i $</formula> at the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kindref="member">Particle::getInterpolationVectorLinearizedAboutCenter()</ref>). </para>
+<para>The shape functions linearized about the center, from the trial functions <formula id="34">$ N_A $</formula> and gradients <formula id="67">$ \partial N_A / \partial Y_i $</formula> at the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kindref="member">Particle::getInterpolationVectorLinearizedAboutCenter()</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -792,7 +808,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="282" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="282" bodyend="293"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="290" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="290" bodyend="301"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1b6a63e40fcbbec2b64deb7d5f0eda92" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -822,7 +838,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="297" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="297" bodyend="297"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="305" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="305" bodyend="305"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a2fcab76d899065e56dacdf579636457b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -841,7 +857,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="301" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="301" bodyend="304"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="309" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="309" bodyend="312"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -860,7 +876,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="309" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="309" bodyend="309"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="317" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="317" bodyend="317"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a4849737164c12f16c82d3351aaf12d12" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -882,7 +898,7 @@
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Not available: the boundary integral needs the physics-specific kinematics ( <formula id="304">$ dY/dX $</formula>). </para>
+<para>Not available: the boundary integral needs the physics-specific kinematics ( <formula id="305">$ dY/dX $</formula>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -923,7 +939,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="318" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="318" bodyend="326"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="326" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="326" bodyend="334"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a8150f44feb4d2160f1d87ac4600710b6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -937,7 +953,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="305">$ R_{AiC} \mathrel{+}= \partial_i T_A\, P_C\, V_Y $</formula>. </para>
+<para>Accumulate <formula id="306">$ R_{AiC} \mathrel{+}= \partial_i T_A\, P_C\, V_Y $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -953,7 +969,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="332" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="332" bodyend="341"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="340" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="340" bodyend="349"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ac791911a6e9d21b9d30dcc40baef21c2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -967,7 +983,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="306">$ R_{AiC} \mathrel{+}= T_A\, \partial_i P_C\, V_Y $</formula>. </para>
+<para>Accumulate <formula id="307">$ R_{AiC} \mathrel{+}= T_A\, \partial_i P_C\, V_Y $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -983,7 +999,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="347" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="347" bodyend="356"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="355" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="355" bodyend="364"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab3589dd2ec5a93ebe4f73bde53b4963d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -997,7 +1013,7 @@
           <declname>mMatrix_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulate <formula id="307">$ M_{ACD} \mathrel{+}= \chi_A P_C P_D V_Y $</formula>, with <formula id="308">$ \chi_A = 1 $</formula> if the particle center is in the support of kernel function <formula id="16">$ A $</formula>, else 0. </para>
+<para>Accumulate <formula id="308">$ M_{ACD} \mathrel{+}= \chi_A P_C P_D V_Y $</formula>, with <formula id="309">$ \chi_A = 1 $</formula> if the particle center is in the support of kernel function <formula id="16">$ A $</formula>, else 0. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1013,7 +1029,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="363" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="363" bodyend="375"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="371" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="371" bodyend="383"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1027,10 +1043,10 @@
           <declname>eta_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Add the VCI correction to the test function gradients, <formula id="298">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. </para>
+<para>Add the VCI correction to the test function gradients, <formula id="299">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>The correction is added to the current test function gradients, so it is meant to be applied once after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kindref="member">assignMeshfreeKernelFunctions()</ref> (which resets them). <parameterlist kind="param"><parameteritem>
+<para>The correction is added to the current test function gradients, so it is meant to be applied once after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" kindref="member">updateShapeFunctions()</ref> (which resets them). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">eta_AiC_RowMajor</parametername>
 </parameternamelist>
@@ -1043,7 +1059,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="384" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="384" bodyend="396"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="392" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="392" bodyend="404"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab411ab07b9238c4e6b672f03d4d05fa9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -1096,7 +1112,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="405" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="405" bodyend="409"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="413" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="413" bodyend="417"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -1104,15 +1120,15 @@
     </briefdescription>
     <detaileddescription>
 <para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle" kindref="compound">GenericParticle</ref> implements the parts of the <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Particle</ref> interface that do not depend on the physics:<itemizedlist>
-<listitem><para>the geometry of a point particle: a single vertex at the center <formula id="68">$ \boldsymbol{Y}_c $</formula> in the reference intermediate configuration (the last accepted configuration), shape &quot;point&quot;;</para>
-</listitem><listitem><para>the shape functions: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kindref="member">assignMeshfreeKernelFunctions()</ref> evaluates the trial functions <formula id="34">$ N_A $</formula> and their gradients <formula id="288">$ \partial N_A / \partial Y_i $</formula> at the center (direct nodal integration); the test functions <formula id="289">$ T_A $</formula>, <formula id="290">$ \partial T_A / \partial Y_i $</formula> start as copies of them (Bubnov-Galerkin) and are changed only by the VCI correction (Petrov-Galerkin). Derived classes (e.g., the SQCNI particles) may replace the gradients by smoothed ones;</para>
+<listitem><para>the geometry of a point particle: a single vertex at the center <formula id="70">$ \boldsymbol{Y}_c $</formula> in the reference intermediate configuration (the last accepted configuration), shape &quot;point&quot;;</para>
+</listitem><listitem><para>the shape functions: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" kindref="member">updateShapeFunctions()</ref> evaluates the trial functions <formula id="34">$ N_A $</formula> and their gradients <formula id="67">$ \partial N_A / \partial Y_i $</formula> at the center (direct nodal integration); the test functions <formula id="290">$ T_A $</formula>, <formula id="291">$ \partial T_A / \partial Y_i $</formula> start as copies of them (Bubnov-Galerkin) and are changed only by the VCI correction (Petrov-Galerkin). Derived classes (e.g., the SQCNI particles) may replace the gradients by smoothed ones;</para>
 </listitem><listitem><para>the property &quot;VCI order&quot; and the particle contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013).</para>
 </listitem></itemizedlist>
 </para>
-<para><bold>VCI.</bold> For the VCI order <formula id="97">$ k $</formula>, the basis <formula id="291">$ \boldsymbol{P}(\boldsymbol{Y}) $</formula> is the complete monomial basis of degree <formula id="292">$ \le k $</formula> in <formula id="293">$ n_{\text{dim}} $</formula> variables (Math::computeMonomialBasis()), with <formula id="294">$ n_C = \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> entries, evaluated at the particle center. With the particle volume <formula id="295">$ V_Y $</formula> in the reference intermediate configuration as the integration weight, the particle contributes     <formula id="296">\[  \int \partial_i T_A\, P_C \,dV \approx \partial_i T_A\, P_C\, V_Y, \qquad
+<para><bold>VCI.</bold> For the VCI order <formula id="99">$ k $</formula>, the basis <formula id="292">$ \boldsymbol{P}(\boldsymbol{Y}) $</formula> is the complete monomial basis of degree <formula id="293">$ \le k $</formula> in <formula id="294">$ n_{\text{dim}} $</formula> variables (Math::computeMonomialBasis()), with <formula id="295">$ n_C = \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> entries, evaluated at the particle center. With the particle volume <formula id="296">$ V_Y $</formula> in the reference intermediate configuration as the integration weight, the particle contributes     <formula id="297">\[  \int \partial_i T_A\, P_C \,dV \approx \partial_i T_A\, P_C\, V_Y, \qquad
   \int T_A\, \partial_i P_C \,dV \approx T_A\, \partial_i P_C\, V_Y, \qquad
   M_{ACD} \approx \chi_A\, P_C\, P_D\, V_Y,
-\]</formula> where <formula id="297">$ \chi_A \in \{0, 1\} $</formula> indicates whether the particle center is in the support of kernel function <formula id="16">$ A $</formula>. The correction assigned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" kindref="member">vci_assignTestFunctionCorrectionTerms()</ref> is <formula id="298">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. The boundary integral depends on the kinematics of the physics and is left to the derived classes.</para>
+\]</formula> where <formula id="298">$ \chi_A \in \{0, 1\} $</formula> indicates whether the particle center is in the support of kernel function <formula id="16">$ A $</formula>. The correction assigned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" kindref="member">vci_assignTestFunctionCorrectionTerms()</ref> is <formula id="299">$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C $</formula>. The boundary integral depends on the kinematics of the physics and is left to the derived classes.</para>
 <para>Derived classes must keep <computeroutput>_centerReferenceIntermediate</computeroutput>, <computeroutput>_volReferenceIntermediate</computeroutput>, <computeroutput>_P</computeroutput> and <computeroutput>_P_Gradient</computeroutput> up to date in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -1156,7 +1172,7 @@
         <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle"/>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="76" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="76" bodyend="410"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" line="76" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericParticle.h" bodystart="76" bodyend="418"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a18b8a188152ce8ee494103dfcddb6356" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>_assignedKernelFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab6bb4066457261748480e7d7262cc13d" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>_centerCoordinatesUndeformed</name></member>
@@ -1174,7 +1190,7 @@
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab65b92846f1be0f4eed8be3cd8ff1bf9" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>_vciOrder</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a82ada1080de6d746c688896732f72539" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>_volReferenceIntermediate</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>acceptStateAndPosition</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>assignMeshfreeKernelFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad946002e3ffb0f2e6c6a885195bf45d0" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>assignMeshfreeKernelFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>assignStateVars</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>computeBodyLoad</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>computeBodyLoadExplicit</name></member>
@@ -1214,6 +1230,7 @@
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a834578ad98e8767909b63be9a2ef323f" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>setProperty</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>setVCIOrder</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>updatePhysicsExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>updateShapeFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>vci_assignTestFunctionCorrectionTerms</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab3589dd2ec5a93ebe4f73bde53b4963d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>vci_compute_MMatrix</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a4849737164c12f16c82d3351aaf12d12" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericParticle</scope><name>vci_compute_Test_P_BoundaryIntegral</name></member>

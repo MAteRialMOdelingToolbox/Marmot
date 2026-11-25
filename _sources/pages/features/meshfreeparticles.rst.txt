@@ -53,6 +53,10 @@ order:
    * - ``assignMeshfreeKernelFunctions``
      - assign the nodes (kernel functions) and evaluate the trial functions :math:`N_A`, their (possibly smoothed)
        gradients :math:`\partial N_A/\partial Y_i` and the test functions :math:`T_A` (initially :math:`T_A = N_A`)
+       with them, by ``updateShapeFunctions``
+   * - ``updateShapeFunctions``
+     - evaluate the same shape functions anew where the particle is now, with the kernel functions it holds: for a
+       particle whose kernel functions did not change since the last assignment
    * - ``vci_...``
      - optional: local contributions to the VCI correction of the test function gradients (see below)
    * - ``computePhysicsKernels``
@@ -76,6 +80,18 @@ order:
      - the shape functions linearized about the center, :math:`G_B`: the particle's own interpolation at its own points
        (its center, a vertex, a face center), for every field; ``getInterpolationVector`` gives the exact shape
        functions at an arbitrary location (see below)
+
+**Assigning the kernel functions, or only updating the shape functions.** The shape functions of a particle belong to
+its configuration :math:`\boldsymbol{Y}`, and ``acceptStateAndPosition`` moves the particle, so in every increment its
+shape functions have to be evaluated anew. Which kernel functions cover the particle, however, changes only now and
+then: most increments find the same ones as before. A host that has found the same kernel functions calls
+``updateShapeFunctions``; a host that has found others calls ``assignMeshfreeKernelFunctions``, which stores them and
+then calls ``updateShapeFunctions``. The two give the same shape functions to the last bit, because the evaluation is
+one method: the bases of the particles (``GenericParticle``, ``GenericSDIParticle``,
+``GradientEnhancedFiniteStrainParticle``) define ``assignMeshfreeKernelFunctions`` as ``final``, and a particle that
+evaluates its shape functions differently, e.g., with the smoothed gradients of SQCNI, overrides
+``updateShapeFunctions``. Only an assignment changes the nodes of the particle, and with them the layout of its
+residual and stiffness.
 
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
@@ -135,8 +151,8 @@ by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`
    is resumed. **An accept must be idempotent**: a second accept without an increment in between changes nothing.
    A particle whose material point does not reset its increment when it accepts resets it itself, as
    ``GradientEnhancedFiniteStrainParticle::acceptStateAndPosition`` does with ``prepareYourself``.
-#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed: the shape functions and
-   gradients of the new configuration.
+#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed, ``updateShapeFunctions`` for every
+   other particle: the shape functions and gradients of the new configuration.
 #. ``computePhysicsKernelsExplicit(fInt)`` and ``computeLumpedMomentum(p)``: the internal force of the state of call
    1, in total form, and the momentum, both on the new kernel functions. They read the state and the response the
    material point keeps, and change neither.
@@ -370,7 +386,7 @@ GenericParticle: point particles and VCI
 
 :cpp:class:`Marmot::Discretizations::Meshfree::GenericParticle` implements the physics-independent part of a point particle: a single
 vertex and evaluation point at the center :math:`\boldsymbol{Y}_c` (shape ``point``), the evaluation of
-:math:`N_A` and :math:`\partial N_A/\partial Y_i` at the center in ``assignMeshfreeKernelFunctions`` (which also resets
+:math:`N_A` and :math:`\partial N_A/\partial Y_i` at the center in ``updateShapeFunctions`` (which also resets
 the test functions to :math:`T_A = N_A`), and the property ``VCI order``. Derived classes (e.g., the displacement
 particles) keep the center, the volume :math:`V_Y` in the reference intermediate configuration and the VCI basis up to
 date in ``acceptStateAndPosition``; the SQCNI particles derived from it replace the gradient by the smoothed one.
@@ -416,14 +432,14 @@ All VCI arrays are row-major, of shape :math:`n_\text{nodes} \times n_\text{dim}
 :math:`n_\text{nodes} \times n_C \times n_C` (index :math:`ACD`). ``setVCIOrder`` computes :math:`n_C` for the given
 dimension and evaluates the basis at the current center right away, since the VCI may run before the first accepted
 increment updates it. In ``GenericParticle`` the correction is *added* to the current test function gradients, so it
-is meant to be applied once after ``assignMeshfreeKernelFunctions``.
+is meant to be applied once after ``updateShapeFunctions``.
 
 GenericSDIParticle: subdomain integration
 -----------------------------------------
 
 :cpp:class:`Marmot::Discretizations::Meshfree::GenericSDIParticle` is the physics-independent base of the subdomain-integration
 particles. It owns the main :cpp:class:`Marmot::Discretizations::Meshfree::ParticleDomain` and its :math:`2^{n_\text{dim}}`
-subdomains. For every subdomain :math:`s`, ``assignMeshfreeKernelFunctions`` evaluates :math:`N_A` at the subdomain
+subdomains. For every subdomain :math:`s`, ``updateShapeFunctions`` evaluates :math:`N_A` at the subdomain
 center, the smoothed gradient over the subdomain's smoothing domain (formula above), the test functions and the VCI
 basis at the subdomain center. The derived class attaches a material point to every subdomain and integrates the weak
 form as a sum over the subdomains (``computePhysicsKernelsOnSubdomains``).
@@ -447,7 +463,7 @@ The VCI contributions are sums over the subdomains, with the subdomain volume :m
 weight and the basis at the subdomain centers; :math:`\chi_A` is evaluated at the center of the main domain. Unlike in
 ``GenericParticle``, ``vci_assignTestFunctionCorrectionTerms`` sets
 :math:`\partial_i T_A|_s = \partial_i N_A|_s + \chi_A\sum_C\eta_{AiC}P_C|_s`, so repeated calls do not accumulate, and
-``setVCIOrder`` only sets :math:`n_C`; the basis is evaluated in ``assignMeshfreeKernelFunctions``, which must
+``setVCIOrder`` only sets :math:`n_C`; the basis is evaluated in ``updateShapeFunctions``, which must
 therefore follow the setting of the order.
 
 **State variable layout.** The block passed to ``assignStateVars`` is

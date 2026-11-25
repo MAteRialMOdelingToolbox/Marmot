@@ -157,7 +157,8 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a373cd53965f7ccdce967e07094732867" kind="function"><name>setProperties</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a834578ad98e8767909b63be9a2ef323f" kind="function"><name>setProperty</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3218b9b223ea1c67b0ecfd0076ca244f" kind="function"><name>getPropertyNames</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad946002e3ffb0f2e6c6a885195bf45d0" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a39e8d27ba2d021c46dbc91a2edfa963f" kind="function"><name>updateShapeFunctions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a70d9aec64aee65cff563850a7f0480e9" kind="function"><name>getVertexCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aebb1f6f8f428bc423725742eb7c06279" kind="function"><name>getFaceCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kind="function"><name>getCenterCoordinates</name></member>
@@ -216,7 +217,8 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a09b17e009a3c1d8f46f586a79e68b2c1" kind="function"><name>initializeYourselfOnSubdomains</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1a8686f24076310d00e85207fa9a6e9e" kind="function"><name>getParticleShape</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af500a633466f0edd590de61e9ee52e0b" kind="function"><name>GenericSDIParticle</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad390486161b4c6d7905785e97a102d6f" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7c3886a4cedcf59568c62aca39624835" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a88d8fd5f80029ecba647fb6d3e1e5553" kind="function"><name>updateShapeFunctions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kind="function"><name>acceptStateAndPosition</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kind="function"><name>acceptStateAndPositionOnSubdomains</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24d00d4c19dd6c03da3ff8c819d689a3" kind="function"><name>getNumberOfRequiredStateVars</name></member>
@@ -450,6 +452,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" kind="function"><name>computeLumpedDamping</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kind="function"><name>describeStiffness</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kind="function"><name>getInterpolationVectorLinearizedAboutCenter</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa251cced6fef8cf7f8bca3ba8855b4aa" kind="function"><name>updateShapeFunctions</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2446c83aae573d561a9b358641c9c605" kind="function"><name>interpolationVectorLinearizedAboutCenter</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
@@ -619,6 +622,7 @@
   <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
     <member refid="namespace_marmot_1_1_testing_1aada80ec024a9dbc01b7b9f2984799b1a" kind="function"><name>checkAbsoluteStiffnessBoundAgainstStiffness</name></member>
     <member refid="namespace_marmot_1_1_testing_1ab53dc9b566332842d48381549aa8090a" kind="function"><name>checkDescribingTheStiffnessLeavesTheParticleUnchanged</name></member>
+    <member refid="namespace_marmot_1_1_testing_1a0b08cdac780fdfcc7b2673706116c8cd" kind="function"><name>checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain</name></member>
   </compound>
   <compound refid="_generic_particle_8h" kind="file"><name>GenericParticle.h</name>
   </compound>

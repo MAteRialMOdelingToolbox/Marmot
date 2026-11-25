@@ -10,7 +10,7 @@
         <name>coordinate</name>
         <qualifiedname>Marmot::Math::MonomialBasis::Factor::coordinate</qualifiedname>
         <briefdescription>
-<para><formula id="107">$ j $</formula> </para>
+<para><formula id="109">$ j $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -25,7 +25,7 @@
         <name>exponent</name>
         <qualifiedname>Marmot::Math::MonomialBasis::Factor::exponent</qualifiedname>
         <briefdescription>
-<para><formula id="110">$ \alpha $</formula> </para>
+<para><formula id="112">$ \alpha $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -35,7 +35,7 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>A factor <formula id="108">$ x_j^\alpha $</formula>, <formula id="109">$ \alpha &gt; 0 $</formula>, of a monomial. </para>
+<para>A factor <formula id="110">$ x_j^\alpha $</formula>, <formula id="111">$ \alpha &gt; 0 $</formula>, of a monomial. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>

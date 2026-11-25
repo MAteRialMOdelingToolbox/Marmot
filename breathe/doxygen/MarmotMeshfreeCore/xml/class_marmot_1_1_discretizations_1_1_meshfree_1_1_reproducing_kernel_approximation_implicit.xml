@@ -33,7 +33,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="152">$ d \le $</formula> maxDim. </para>
+<para>Spatial dimension <formula id="154">$ d \le $</formula> maxDim. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -41,7 +41,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Desired completeness order <formula id="100">$ n \ge 0 $</formula>. </para>
+<para>Desired completeness order <formula id="102">$ n \ge 0 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -49,7 +49,7 @@
 <parametername direction="in">momentMatrixConditionLimit</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The limit <formula id="153">$ \kappa_\mathrm{max} \ge 1 $</formula> on the condition of the scaled moment matrix, above which the completeness order of a point is lowered; infinite (the default) for no limit (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>). </para>
+<para>The limit <formula id="155">$ \kappa_\mathrm{max} \ge 1 $</formula> on the condition of the scaled moment matrix, above which the completeness order of a point is lowered; infinite (the default) for no limit (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -107,7 +107,7 @@
           <declname>shapeFunctionValueGradients_ColMajor</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values <formula id="140">$ \Psi_A $</formula> and the implicit gradients <formula id="154">$ \Psi^{(i)}_A $</formula>. </para>
+<para>Compute the RK shape function values <formula id="142">$ \Psi_A $</formula> and the implicit gradients <formula id="156">$ \Psi^{(i)}_A $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -115,7 +115,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="95">$ \boldsymbol{x} $</formula> (length <formula id="78">$ d $</formula>). </para>
+<para>Evaluation point <formula id="97">$ \boldsymbol{x} $</formula> (length <formula id="80">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -123,7 +123,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="155">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="157">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -131,7 +131,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="155">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="95">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="157">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="97">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -139,7 +139,7 @@
 <parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Implicit gradients, column-major <formula id="156">$ d \times n_\mathrm{c} $</formula> (entry <formula id="157">$ i + d A $</formula> is <formula id="154">$ \Psi^{(i)}_A $</formula>; the Shepard gradients at a point of order 0); zero for non-covering candidates. </para>
+<para>Implicit gradients, column-major <formula id="158">$ d \times n_\mathrm{c} $</formula> (entry <formula id="159">$ i + d A $</formula> is <formula id="156">$ \Psi^{(i)}_A $</formula>; the Shepard gradients at a point of order 0); zero for non-covering candidates. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -163,14 +163,14 @@
 <para>Reproducing kernel approximation with implicit gradients. </para>
     </briefdescription>
     <detaileddescription>
-<para>The shape function values are those of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>. The gradients are not obtained by differentiating <formula id="140">$ \Psi_A $</formula> but are constructed directly as corrected kernels (implicit, or synchronized, gradients),     <formula id="141">\[  \Psi^{(i)}_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\,
+<para>The shape function values are those of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>. The gradients are not obtained by differentiating <formula id="142">$ \Psi_A $</formula> but are constructed directly as corrected kernels (implicit, or synchronized, gradients),     <formula id="143">\[  \Psi^{(i)}_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\,
   \boldsymbol{b}^{(i)}(\boldsymbol{x})\, \phi_A(\boldsymbol{x}),
   \qquad \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}^{(i)}(\boldsymbol{x}) = \boldsymbol{H}^{(i)}_0,
-\]</formula> with the same moment matrix <formula id="142">$ \boldsymbol{M} $</formula>. The right-hand side  <formula id="143">$ \boldsymbol{H}^{(i)}_0 =
--\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} $</formula> (the sign stems from the shifted argument <formula id="144">$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A $</formula>) is <formula id="145">$ -1 $</formula> at the position of the linear monomial <formula id="146">$ z_i $</formula> in <formula id="147">$ \boldsymbol{H} $</formula> and zero elsewhere (the position is found from the gradient of the basis at the origin, <ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>, so it is correct for any order). This enforces the gradient reproducing conditions    <formula id="148">\[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
+\]</formula> with the same moment matrix <formula id="144">$ \boldsymbol{M} $</formula>. The right-hand side  <formula id="145">$ \boldsymbol{H}^{(i)}_0 =
+-\partial \boldsymbol{H}(\boldsymbol{z}) / \partial z_i |_{\boldsymbol{z} = \boldsymbol{0}} $</formula> (the sign stems from the shifted argument <formula id="146">$ \boldsymbol{z} = \boldsymbol{x} - \boldsymbol{x}_A $</formula>) is <formula id="147">$ -1 $</formula> at the position of the linear monomial <formula id="148">$ z_i $</formula> in <formula id="149">$ \boldsymbol{H} $</formula> and zero elsewhere (the position is found from the gradient of the basis at the origin, <ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>, so it is correct for any order). This enforces the gradient reproducing conditions    <formula id="150">\[  \sum_A \Psi^{(i)}_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} =
   \frac{\partial \boldsymbol{x}^{\boldsymbol{\alpha}}}{\partial x_i}, \qquad |\boldsymbol{\alpha}| \le n,
-\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="140">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="149">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="150">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="142">$ \boldsymbol{M} $</formula>. The completeness order of a point is chosen as for <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>, including the optional limit on the condition of <formula id="142">$ \boldsymbol{M} $</formula>.</para>
-<para>At a point evaluated with the order 0 (too few covering kernels, or the limit on the condition), the implicit gradients would reproduce only the derivative of a constant and vanish identically: such a point would carry no strain. It gets the Shepard gradients instead, the derivatives of its values <formula id="151">$ \Psi_A = \phi_A / \sum_B \phi_B $</formula>, as with explicit gradients; only there are kernel gradients evaluated. </para>
+\]</formula> so the implicit gradients reproduce the derivatives of all polynomials up to the completeness order, but they are not the derivatives of the values <formula id="142">$ \Psi_A $</formula>. They require neither kernel gradients nor <formula id="151">$ \boldsymbol{M}_{,i} $</formula>: all <formula id="152">$ 1 + d $</formula> right-hand sides are solved with one QR decomposition of <formula id="144">$ \boldsymbol{M} $</formula>. The completeness order of a point is chosen as for <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>, including the optional limit on the condition of <formula id="144">$ \boldsymbol{M} $</formula>.</para>
+<para>At a point evaluated with the order 0 (too few covering kernels, or the limit on the condition), the implicit gradients would reproduce only the derivative of a constant and vanish identically: such a point would carry no strain. It gets the Shepard gradients instead, the derivatives of its values <formula id="153">$ \Psi_A = \phi_A / \sum_B \phi_B $</formula>, as with explicit gradients; only there are kernel gradients evaluated. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="3">

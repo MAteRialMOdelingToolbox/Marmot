@@ -30,8 +30,8 @@
           <declname>maxOverestimate</declname>
         </param>
         <briefdescription>
-<para>Check the bound of <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula> of a particle (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()</ref>) against its stiffness  <formula id="70">$ \boldsymbol{K}
-$</formula>: the bound never lies below <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, and the largest entry of each column (what the Collatz-Wielandt bound takes) is at most <computeroutput>maxOverestimate</computeroutput> times the exact one. The stiffness the particle describes, assembled (<ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">Marmot::Discretizations::Meshfree::assembleStiffness()</ref>), is <computeroutput>K</computeroutput>. </para>
+<para>Check the bound of <formula id="71">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula> of a particle (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">Marmot::Discretizations::Meshfree::addBoundOfAbsoluteStiffnessTimes()</ref>) against its stiffness  <formula id="72">$ \boldsymbol{K}
+$</formula>: the bound never lies below <formula id="71">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, and the largest entry of each column (what the Collatz-Wielandt bound takes) is at most <computeroutput>maxOverestimate</computeroutput> times the exact one. The stiffness the particle describes, assembled (<ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">Marmot::Discretizations::Meshfree::assembleStiffness()</ref>), is <computeroutput>K</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -175,6 +175,92 @@ $</formula>: the bound never lies below <formula id="69">$ |\boldsymbol{K}|\, \b
         <inbodydescription>
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" line="105" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" bodystart="105" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1a0b08cdac780fdfcc7b2673706116c8cd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain</definition>
+        <argsstring>(const std::string &amp;name, Marmot::Discretizations::Meshfree::Particle &amp;particle, const std::vector&lt; const Marmot::Discretizations::Meshfree::KernelFunction * &gt; &amp;kernelFunctions, std::vector&lt; double &gt; &amp;stateVars, const Eigen::VectorXd &amp;dQ)</argsstring>
+        <name>checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain</name>
+        <qualifiedname>Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>name</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref> &amp;</type>
+          <declname>particle</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">Marmot::Discretizations::Meshfree::KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; double &gt; &amp;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>dQ</declname>
+        </param>
+        <briefdescription>
+<para>Check updateShapeFunctions() of a particle that has moved: it evaluates the shape functions anew, and it evaluates the same as assigning the same kernel functions again. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The particle is advanced by the increment <computeroutput>dQ</computeroutput> and accepted (acceptStateAndPosition()), so that it moves, keeping its kernel functions. The residual and the tangent of the trial increment <computeroutput>dQ</computeroutput> (computePhysicsKernels()) are then compared, after updateShapeFunctions() and after assignMeshfreeKernelFunctions() with <computeroutput>kernelFunctions</computeroutput>, to the last bit; and with the residual before the update, which is of the shape functions of the old configuration and must differ. The state variables are restored after every trial. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>name</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The name of the particle, for the messages. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>particle</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The particle, with <computeroutput>kernelFunctions</computeroutput> assigned. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its state variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An increment of its nodes, node-wise. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(throwExceptionOnFailure()) if the update does not evaluate the shape functions anew, or evaluates other ones than the assignment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" line="187" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" bodystart="187" bodyend="222"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
