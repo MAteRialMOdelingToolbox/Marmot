@@ -200,22 +200,15 @@ namespace Marmot::Discretizations::Meshfree {
       ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
-     * @brief Assign the kernel functions and compute the smoothed first and second shape function derivatives.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
+     * derivatives.
      *
      * One boundary integration over the current smoothing domain (one point per face) gives both
      * @f$ \partial N_B/\partial\boldsymbol{Y} @f$ (from @f$ N_B @f$ at the face centers) and the second derivatives
      * (from @f$ \partial N_B/\partial\boldsymbol{Y} @f$ at the face centers).
-     *
-     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
-
-      ParentPointParticle::_nNodes = static_cast< int >(
-        GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 

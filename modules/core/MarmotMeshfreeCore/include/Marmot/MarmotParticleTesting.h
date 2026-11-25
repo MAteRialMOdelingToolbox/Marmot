@@ -168,4 +168,57 @@ namespace Marmot::Testing {
                              name + ": a description that throws does not leave the particle as it was" );
   }
 
+  /**
+   * @brief Check updateShapeFunctions() of a particle that has moved: it evaluates the shape functions anew, and it
+   * evaluates the same as assigning the same kernel functions again.
+   * @details The particle is advanced by the increment @p dQ and accepted (acceptStateAndPosition()), so that it moves,
+   * keeping its kernel functions. The residual and the tangent of the trial increment @p dQ (computePhysicsKernels())
+   * are then compared, after updateShapeFunctions() and after assignMeshfreeKernelFunctions() with @p kernelFunctions,
+   * to the last bit; and with the residual before the update, which is of the shape functions of the old configuration
+   * and must differ. The state variables are restored after every trial.
+   * @param name The name of the particle, for the messages.
+   * @param particle The particle, with @p kernelFunctions assigned.
+   * @param kernelFunctions Its kernel functions.
+   * @param stateVars Its state variables.
+   * @param dQ An increment of its nodes, node-wise.
+   * @throws std::runtime_error (throwExceptionOnFailure()) if the update does not evaluate the shape functions anew,
+   * or evaluates other ones than the assignment.
+   */
+  inline void checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain(
+    const std::string&                                                             name,
+    Marmot::Discretizations::Meshfree::Particle&                                   particle,
+    const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions,
+    std::vector< double >&                                                         stateVars,
+    const Eigen::VectorXd&                                                         dQ )
+  {
+    const auto nDof      = dQ.size();
+    const auto increment = [&]() {
+      Eigen::VectorXd residual = Eigen::VectorXd::Zero( nDof );
+      Eigen::MatrixXd tangent  = Eigen::MatrixXd::Zero( nDof, nDof );
+      particle.computePhysicsKernels( dQ.data(), residual.data(), tangent.data(), 1.0, 1.0 );
+      return std::make_pair( residual, tangent );
+    };
+    const auto residualAndTangent = [&]() {
+      const std::vector< double > accepted = stateVars;
+      const auto                  result   = increment();
+      stateVars                            = accepted;
+      return result;
+    };
+
+    increment();
+    particle.acceptStateAndPosition();
+
+    const Eigen::VectorXd residualOfTheOldConfiguration = residualAndTangent().first;
+    particle.updateShapeFunctions();
+    const auto [residualUpdated, tangentUpdated] = residualAndTangent();
+    particle.assignMeshfreeKernelFunctions( kernelFunctions );
+    const auto [residualAssigned, tangentAssigned] = residualAndTangent();
+
+    throwExceptionOnFailure( residualUpdated != residualOfTheOldConfiguration,
+                             name + ": updateShapeFunctions() does not evaluate the shape functions anew" );
+    throwExceptionOnFailure( residualUpdated == residualAssigned && tangentUpdated == tangentAssigned,
+                             name + ": updateShapeFunctions() evaluates other shape functions than assigning the same "
+                                    "kernel functions again" );
+  }
+
 } // namespace Marmot::Testing

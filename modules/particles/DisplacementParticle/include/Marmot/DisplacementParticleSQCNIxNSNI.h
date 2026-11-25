@@ -182,24 +182,16 @@ namespace Marmot::Discretizations::Meshfree {
                                     ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
-     * @brief Assigns and computes meshfree kernel functions and their derivatives.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
+     * derivatives.
      *
      * This method overrides the base class implementation to compute not only the
      * shape functions and their first derivatives but also the second derivatives
      * (`_d2N_dYdY`) required for the NSNI formulation. It uses a boundary integral
      * approach to compute the derivatives.
-     *
-     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions
-     *                        associated with the surrounding nodes.
      */
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
-
-      ParentPointParticle::_nNodes = static_cast< int >(
-        DisplacementParticle< nDim >::_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > centerCoordinates;
       this->getCenterCoordinates( centerCoordinates.data() );
 

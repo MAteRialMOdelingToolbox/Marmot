@@ -873,6 +873,27 @@ namespace {
                                name + ": the shape functions at the vertices do not move them" );
   }
 
+  // updateShapeFunctions() of a particle that has moved evaluates its shape functions anew, and the same as assigning
+  // its kernel functions again (Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain)
+  template < int nDim >
+  void checkUpdateShapeFunctions( const std::string& name, const std::string& shape )
+  {
+    Setup< nDim > s( name, vertices( shape ), volume( shape ) );
+    s.accept( increment< nDim >( s.nNodes(), 0.02, 3e-3 ) ); // a deformed, accepted state
+
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > kernelFunctions;
+    for ( const int g : s.assignedGridIndices )
+      kernelFunctions.push_back( s.grid.pointers[g] );
+    Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain( name,
+                                                                                           *s.particle,
+                                                                                           kernelFunctions,
+                                                                                           s.stateVars,
+                                                                                           increment<
+                                                                                             nDim >( s.nNodes(),
+                                                                                                     0.03,
+                                                                                                     1e-3 ) );
+  }
+
 } // namespace
 
 void testSQCNIxNSNIFirstIncrementIsDeterministic()
@@ -1209,6 +1230,10 @@ int main()
   for ( const auto& [name, shape] : solid )
     testFunctions.push_back(
       [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 3 >( name, shape ); } );
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 3 >( name, shape ); } );
   testFunctions.push_back( testSQCNIxNSNIFirstIncrementIsDeterministic );
 
   // the explicit scheme, with one nonlocal variable ...

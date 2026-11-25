@@ -175,6 +175,14 @@ All notable changes to Marmot are documented in this file. The format follows
   nonlocal field the value the particle carries there. `getInterpolationVector` stays the exact shape functions at an
   arbitrary location. A constraint that measures a field at a point of the particle and distributes its force there
   with `G_B` is symmetric and conservative.
+- `Particle::updateShapeFunctions`: evaluate the shape functions anew where the particle is now, with the kernel
+  functions it holds, for a host whose search found the same kernel functions as before (the particle has moved, so
+  its shape functions have to be evaluated anew in every increment). `assignMeshfreeKernelFunctions` stores the kernel
+  functions and calls it, so the two give the same shape functions, bitwise; it is `final` in `GenericParticle`,
+  `GenericSDIParticle` and `GradientEnhancedFiniteStrainParticle`, and the SQCNI and NSNI particles override
+  `updateShapeFunctions` instead. **Breaking** for implementers of `Particle` outside Marmot: it is pure virtual, and a
+  particle derived from one of the three bases that overrode `assignMeshfreeKernelFunctions` moves its evaluation into
+  `updateShapeFunctions`.
 - `ReproducingKernelApproximation` and `ReproducingKernelApproximationImplicit`: an optional limit on the condition of
   the moment matrix (constructor argument `momentMatrixConditionLimit`, default none). The completeness order of a
   point whose moment matrix, scaled to a unit diagonal, has a larger condition number (1-norm estimate,
