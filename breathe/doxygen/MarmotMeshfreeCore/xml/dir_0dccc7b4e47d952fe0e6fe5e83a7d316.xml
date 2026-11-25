@@ -24,6 +24,7 @@
     <innerfile refid="_marmot_particle_8h">MarmotParticle.h</innerfile>
     <innerfile refid="_marmot_particle_domain_8h">MarmotParticleDomain.h</innerfile>
     <innerfile refid="_marmot_particle_library_8h">MarmotParticleLibrary.h</innerfile>
+    <innerfile refid="_marmot_particle_section_integrals_8h">MarmotParticleSectionIntegrals.h</innerfile>
     <innerfile refid="_marmot_particle_stiffness_8h">MarmotParticleStiffness.h</innerfile>
     <innerfile refid="_marmot_particle_stiffness_visitors_8h">MarmotParticleStiffnessVisitors.h</innerfile>
     <innerfile refid="_marmot_particle_testing_8h">MarmotParticleTesting.h</innerfile>

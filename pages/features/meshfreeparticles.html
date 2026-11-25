@@ -486,6 +486,18 @@ dropped (the RK test functions do not vanish on the boundary). It is evaluated w
 </tr>
 </tbody>
 </table>
+<p><strong>Where the smoothing lives.</strong> The SQCNI, SNNI, NSNI and SDI particles of both families
+(<code class="docutils literal notranslate"><span class="pre">DisplacementParticleSQCNI</span></code>, <code class="docutils literal notranslate"><span class="pre">DisplacementParticleSQCNIxNSNI</span></code>, <code class="docutils literal notranslate"><span class="pre">DisplacementParticleSQCNIxSDI</span></code> and the
+gradient-enhanced finite-strain twins of the first two) differ only in how their smoothing domain follows the
+deformation, in whether second derivatives are needed and in how many smoothing domains a particle has (one, or one per
+subdomain). They compute the smoothed gradients with one function,
+<code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals::smoothShapeFunctionGradients()</span></code> (<code class="docutils literal notranslate"><span class="pre">MarmotParticleSectionIntegrals.h</span></code>), which also gives
+the smoothed second derivatives of NSNI. Their evaluation points, <code class="docutils literal notranslate"><span class="pre">getEvaluationCoordinates()</span></code>, are its quadrature
+points, <code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals::faceQuadraturePoints()</span></code>. This matters because the host assigns to a particle the
+kernel functions whose supports cover its evaluation points: a quadrature point that is not an evaluation point would be
+evaluated with an incomplete set of kernel functions. An SDI particle takes as evaluation points only the quadrature
+points of its subdomains on the faces of the particle, and assumes that the kernel functions which cover these also
+cover the points on the inner faces. To change the face quadrature, change <code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals</span></code> only.</p>
 <p>The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
 <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a> and <a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>. The names are case-insensitive. The former
 names of the displacement NSNI particles (<code class="docutils literal notranslate"><span class="pre">Displacement/SQCNIxNSNI/...</span></code> etc.) remain registered as aliases.</p>
@@ -618,35 +630,38 @@ which must outlive the particle.</p>
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree8ParticleE"></span><span id="Marmot::Discretizations::Meshfree::Particle"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Particle</span></span></span><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::Particle:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e527298e35eb2168c418518779a76fbdc3e9e0af.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-42ff19e6b8069184401dcb97c22b6dc59b2491ce.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;5&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim &gt;&quot;]
-    &quot;6&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI&lt; nDim, nVertices &gt;&quot;]
-    &quot;7&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot;]
-    &quot;9&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot;]
-    &quot;4&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;&quot;]
-    &quot;8&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim &gt;&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI&lt; nDim, nVertices &gt;&quot;]
+    &quot;8&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI&lt; nDim, nVertices &gt;&quot;]
+    &quot;10&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;&quot;]
+    &quot;9&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::Meshfree::SectionIntegrals&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::SectionIntegrals&lt; nDim, nVertices &gt;&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot;]
-    &quot;10&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot;]
-    &quot;11&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
-    &quot;12&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
+    &quot;11&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;&quot;]
+    &quot;12&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
+    &quot;13&quot; [label=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI&lt; nDim, nVertices, nNonlocal &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::Particle&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::Particle&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;7&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;9&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;8&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;10&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;9&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;4&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;8&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;4&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;2&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;2&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;3&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;3&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;template-instance&quot;]
-    &quot;10&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;11&quot; -&gt; &quot;10&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;9&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;11&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;12&quot; -&gt; &quot;11&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;13&quot; -&gt; &quot;12&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -668,7 +683,7 @@ which must outlive the particle.</p>
 <p>For the stiffness matrix, a column-major layout is used.</p>
 <p>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_… methods. The global assembly and solution of the VCI correction is done by the host framework.</p>
 <p>Methods added to this interface are appended at the end of the class, so that the vtable slots of the existing ones do not move: a library and a host built against different versions then fail on the one new call instead of silently calling the wrong method. This is why methods that belong together by subject may stand apart. </p>
-<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainparticle.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1GradientEnhancedFiniteStrainParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::SectionIntegrals&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</span></a>, <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainparticle.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1GradientEnhancedFiniteStrainParticle"><span class="std std-ref">Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle&lt; nDim, nNonlocal &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-variationally-consistent-integration-(vci)">Variationally consistent integration (VCI)</p>
 <p>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <span class="math notranslate nohighlight">\( \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C \)</span>, such that the integration by parts is exact under the numerical integration for a polynomial basis <span class="math notranslate nohighlight">\( P_C(Y) \)</span> (the complete monomials up to the VCI order); <span class="math notranslate nohighlight">\( \chi_A \)</span> is the indicator of the support of kernel function <span class="math notranslate nohighlight">\( A \)</span>,    <div class="math notranslate nohighlight">
@@ -1325,7 +1340,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <p>A particle domain is a Lagrangian cell (<a class="reference internal" href="meshfreecells.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1LagrangeCell"><span class="std std-ref">LagrangeCell</span></a>, e.g., a 4-node quadrilateral or an 8-node hexahedron) that is kept in three versions:<ul class="simple">
 <li><p>the <strong>undeformed geometry</strong> with the vertices <span class="math notranslate nohighlight">\( \boldsymbol{X}_v \)</span> and the centroid <span class="math notranslate nohighlight">\( \boldsymbol{X}_c \)</span> given at construction,</p></li>
 <li><p>the <strong>deformed geometry</strong> (the geometry in the reference intermediate configuration, i.e., the last accepted configuration), used for the particle position, the face centers, the boundary surface vectors of distributed loads and the second moments of the NSNI stabilization,</p></li>
-<li><p>the <strong>smoothing domain</strong>, over whose boundary the smoothed shape function gradients are integrated (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"><span class="std std-ref">GenericSDIParticle</span></a> and the SQCNI particles).</p></li>
+<li><p>the <strong>smoothing domain</strong>, over whose boundary the smoothed shape function gradients are integrated (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals"><span class="std std-ref">ParticleSectionIntegrals</span></a>).</p></li>
 </ul>
 </p>
 <p>Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the centroid plus the displacement of the center (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a20c534581d8d89f4a51294aa1d1f783c"><span class="std std-ref">acceptStateAndPosition()</span></a>),    <div class="math notranslate nohighlight">
@@ -1441,6 +1456,17 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain15smoothingDomainEv">
+<span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain15smoothingDomainEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain15smoothingDomainEv"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::smoothingDomainC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a9e65500129ca0dcccb51415a6ce4ae35"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree14ParticleDomain16LagrangeCellTypeE" title="Marmot::Discretizations::Meshfree::ParticleDomain::LagrangeCellType"><span class="n"><span class="pre">LagrangeCellType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">smoothingDomain</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The smoothing domain, for its integrals (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals"><span class="std std-ref">ParticleSectionIntegrals</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A const reference to the cell of the smoothing domain in the intermediate configuration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain19getNumberOfVerticesEv">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain19getNumberOfVerticesEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain19getNumberOfVerticesEv"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::getNumberOfVerticesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1acc39d7203da5d08e46e2b4a09aaa0880"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfVertices</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Gets the number of vertices defining the particle. </p>
@@ -1479,7 +1505,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain39getSmoothingDomainFaceCenterCoordinatesEi">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain39getSmoothingDomainFaceCenterCoordinatesEi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain39getSmoothingDomainFaceCenterCoordinatesEi"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::getSmoothingDomainFaceCenterCoordinates__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a8a4b3c9d121163e61b09e640b71c0fa3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree14ParticleDomain16CoordinatesSizedE" title="Marmot::Discretizations::Meshfree::ParticleDomain::CoordinatesSized"><span class="n"><span class="pre">CoordinatesSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSmoothingDomainFaceCenterCoordinates</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">faceID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Gets the coordinates of a specific evaluation point (face center of the smoothing domain). </p>
+<dd><p>Gets the coordinates of the center of a face of the smoothing domain. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>faceID</strong> – <strong>[in]</strong> The ID of the face (1-based index). </p>
@@ -1493,21 +1519,10 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain16getNumberOfFacesEv">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain16getNumberOfFacesEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain16getNumberOfFacesEv"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::getNumberOfFacesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a74a4a4d223b290bec002387e85ef3987"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfFaces</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Gets the number of faces of the cell (the same for all three geometries); this is also the number of evaluation points of the smoothing boundary integral. </p>
+<dd><p>Gets the number of faces of the cell (the same for all three geometries). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The number of faces. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain18getSmoothingVolumeEv">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain18getSmoothingVolumeEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain18getSmoothingVolumeEv"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::getSmoothingVolumeC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a5987ee628975082f1bf5532ea32fab14"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSmoothingVolume</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the volume of the smoothing domain in its current state. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The smoothing volume of the particle. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1582,20 +1597,6 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A vector of integers representing the sub-cell indices. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree14ParticleDomain33getSmoothingBoundarySurfaceVectorEi">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree14ParticleDomain33getSmoothingBoundarySurfaceVectorEi"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree14ParticleDomain33getSmoothingBoundarySurfaceVectorEi"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::getSmoothingBoundarySurfaceVector__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a02d68503065313bd3302c6dc7d8a59f7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree14ParticleDomain16CoordinatesSizedE" title="Marmot::Discretizations::Meshfree::ParticleDomain::CoordinatesSized"><span class="n"><span class="pre">CoordinatesSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSmoothingBoundarySurfaceVector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">faceID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Returns the boundary surface vector for a given face ID, from the <em>smoothing domain</em>. This is typically used for computing smoothed shape function gradients. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>faceID</strong> – <strong>[in]</strong> The ID of the face (1-based index). </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An Eigen vector representing the boundary surface vector. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1733,6 +1734,141 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree14ParticleDomain18_deformationCenterE">
 <span id="_CPPv3N6Marmot15Discretizations8Meshfree14ParticleDomain18_deformationCenterE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree14ParticleDomain18_deformationCenterE"></span><span id="Marmot::Discretizations::Meshfree::ParticleDomain::_deformationCenter__CoordinatesSized"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleDomain_1a20c0de406e8a46f291e6cc4dd90fcf98"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree14ParticleDomain16CoordinatesSizedE" title="Marmot::Discretizations::Meshfree::ParticleDomain::CoordinatesSized"><span class="n"><span class="pre">CoordinatesSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_deformationCenter</span></span></span><br /></dt>
 <dd><p>Fixed point <span class="math notranslate nohighlight">\( \boldsymbol{X}_c \)</span> of the homogeneous deformation. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE">
+<span id="_CPPv3I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE"></span><span id="_CPPv2I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nVertices</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ParticleSectionIntegrals</span></span></span><br /></dt>
+<dd><p>The integrals over the smoothing domain of a particle: its volume and the smoothed gradients of the shape functions (stabilized conforming nodal integration, Chen et al., 2001). </p>
+<p>The smoothed gradient is the average of the gradient over the smoothing domain <span class="math notranslate nohighlight">\( \Omega_s \)</span>, turned into a boundary integral by the divergence theorem and integrated with one point per face <span class="math notranslate nohighlight">\( f \)</span>, the face center <span class="math notranslate nohighlight">\( \boldsymbol{Y}_f \)</span> (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1aa6934f8efb3f0ccf494e4eb9dda18daa"><span class="std std-ref">faceQuadraturePoints()</span></a>),     <div class="math notranslate nohighlight">
+\[  \tilde N_{A,i} = \frac{1}{|\Omega_s|}\int_{\Omega_s} \frac{\partial N_A}{\partial Y_i}\,dV
+  = \frac{1}{|\Omega_s|}\oint_{\partial\Omega_s} N_A\,n_i\,dA
+  \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\, dA_f ,
+\]</div>
+ with the coordinates <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> of the intermediate configuration, the volume <span class="math notranslate nohighlight">\( |\Omega_s| \)</span> (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a2388a9797c28a71da7edbfa6f228fd51"><span class="std std-ref">volume()</span></a>) and the area vector <span class="math notranslate nohighlight">\( \boldsymbol{n}_f\,dA_f \)</span> of face <span class="math notranslate nohighlight">\( f \)</span> (<a class="reference internal" href="meshfreecells.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1LagrangeCell_1a4bc603c3140a1fd53d602a1e934f912e"><span class="std std-ref">LagrangeCell::boundarySurfaceVector()</span></a>). The face rule is the only approximation, and only the values of the shape functions at the face points are needed. NSNI smooths the second derivatives alike, from the (unsmoothed) gradients at the same points,    <div class="math notranslate nohighlight">
+\[  \hat N_{A,IJ} = \frac{1}{|\Omega_s|} \sum_f \frac{\partial N_A}{\partial Y_I}(\boldsymbol{Y}_f)\,
+  n_{f,J}\, dA_f ,
+\]</div>
+ stored unsymmetrized as <code class="docutils literal notranslate"><span class="pre">d2N_dYdY[J](I,</span> <span class="pre">A)</span></code>; NSNI::secondGradientOfNode() symmetrizes them.</p>
+<p>The particles take these integrals, and their evaluation points (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1aa6934f8efb3f0ccf494e4eb9dda18daa"><span class="std std-ref">faceQuadraturePoints()</span></a>), from here and not from the cell: the face rule of the smoothing is defined in this class only. <em>Section</em> is meant as for finite elements (plane strain, 3D): the form of the integrals depends on it. Here the section is Cartesian, and the integrals carry the weight 1. The class holds static functions only, so that a particle selects its integrals with its own template parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – The spatial dimension. </p></li>
+<li><p><strong>nVertices</strong> – The number of vertices of the cell (4: Quad, 8: Hexa). </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a17b7bf2c3373a610927f33b52aaf0fce"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cell</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree12LagrangeCellE" title="Marmot::Discretizations::Meshfree::LagrangeCell"><span class="n"><span class="pre">LagrangeCell</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nVertices"><span class="n"><span class="pre">nVertices</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>a smoothing domain (a Lagrange cell) </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals3VecE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals3VecE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals3VecE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1ae878a57b26e09467e1c1fb625061cf94"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Vec</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>a point or a vector </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals10FacePointsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals10FacePointsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals10FacePointsE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a111a13e816eac8dc42bffccad5589549"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FacePoints</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals14nPointsPerFaceE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nPointsPerFace"><span class="n"><span class="pre">nPointsPerFace</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>The quadrature points of one face, nDim x nPointsPerFace. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals6volumeERK4Cell">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals6volumeERK4Cell"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals6volumeERK4Cell"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::volume__CellCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a2388a9797c28a71da7edbfa6f228fd51"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">volume</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">cell</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The volume of a smoothing domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell</strong> – <strong>[in]</strong> The smoothing domain. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Its volume <span class="math notranslate nohighlight">\( |\Omega_s| \)</span> (area in plane strain). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28numberOfFaceQuadraturePointsERK4Cell">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28numberOfFaceQuadraturePointsERK4Cell"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28numberOfFaceQuadraturePointsERK4Cell"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::numberOfFaceQuadraturePoints__CellCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a4256784767e3f84dd27129c7ee7d3b93"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">numberOfFaceQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">cell</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The number of face quadrature points of a smoothing domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell</strong> – <strong>[in]</strong> The smoothing domain. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of face quadrature points, <code class="docutils literal notranslate"><span class="pre">faceQuadraturePoints(</span> <span class="pre">cell</span> <span class="pre">).cols()</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Celli">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Celli"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Celli"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::faceQuadraturePoints__CellCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1aa6934f8efb3f0ccf494e4eb9dda18daa"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals10FacePointsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FacePoints"><span class="n"><span class="pre">FacePoints</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">faceQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">cell</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">faceID</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The quadrature points of one face of a smoothing domain: its center. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell</strong> – <strong>[in]</strong> The smoothing domain. </p></li>
+<li><p><strong>faceID</strong> – <strong>[in]</strong> The face (1-based). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nDim x nPointsPerFace. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Cell">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Cell"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals20faceQuadraturePointsERK4Cell"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::faceQuadraturePoints__CellCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a3936b6f2bef19ea858b3b854bd3b5ebf"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Dynamic</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">faceQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">cell</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The quadrature points of all faces of a smoothing domain. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell</strong> – <strong>[in]</strong> The smoothing domain. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>nDim x <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a4256784767e3f84dd27129c7ee7d3b93"><span class="std std-ref">numberOfFaceQuadraturePoints()</span></a>, face by face. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28smoothShapeFunctionGradientsERK4CellRK13ApproximationRKNSt6vectorIPK14KernelFunctionEERKN5Eigen8MatrixXdERN5Eigen8MatrixXdEPNSt5arrayIN5Eigen8MatrixXdE4nDimEE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28smoothShapeFunctionGradientsERK4CellRK13ApproximationRKNSt6vectorIPK14KernelFunctionEERKN5Eigen8MatrixXdERN5Eigen8MatrixXdEPNSt5arrayIN5Eigen8MatrixXdE4nDimEE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals28smoothShapeFunctionGradientsERK4CellRK13ApproximationRKNSt6vectorIPK14KernelFunctionEERKN5Eigen8MatrixXdERN5Eigen8MatrixXdEPNSt5arrayIN5Eigen8MatrixXdE4nDimEE"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::smoothShapeFunctionGradients__CellCR.ApproximationCR.std::vector:KernelFunctionCP:CR.Eigen::MatrixXdCR.Eigen::MatrixXdR.std::array:Eigen::MatrixXd.nDim:P"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a27b2f76af46885f53063fec9688c103d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">smoothShapeFunctionGradients</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals4CellE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">smoothingDomain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree13ApproximationE" title="Marmot::Discretizations::Meshfree::Approximation"><span class="n"><span class="pre">Approximation</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">approximation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree14KernelFunctionE" title="Marmot::Discretizations::Meshfree::KernelFunction"><span class="n"><span class="pre">KernelFunction</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">kernelFunctions</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">N</span></span>, <a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dN_dY</span></span>, <a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">d2N_dYdY</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The smoothed gradients (and second derivatives) of the shape functions over a smoothing domain, see the class description. The points of a face share its area vector equally. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>smoothingDomain</strong> – <strong>[in]</strong> The smoothing domain. </p></li>
+<li><p><strong>approximation</strong> – <strong>[in]</strong> The meshfree approximation. </p></li>
+<li><p><strong>kernelFunctions</strong> – <strong>[in]</strong> The kernel functions of the nodes. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> The shape functions at the particle center, 1 x nNodes; the Cartesian smoothing uses only its size (the number of nodes). </p></li>
+<li><p><strong>dN_dY</strong> – <strong>[out]</strong> The smoothed gradients, nDim x nNodes. </p></li>
+<li><p><strong>d2N_dYdY</strong> – <strong>[out]</strong> The smoothed second derivatives, <code class="docutils literal notranslate"><span class="pre">d2N_dYdY[J](I,</span> <span class="pre">A)</span></code>; nullptr: first derivatives only (SQCNI, SNNI, SDI); NSNI passes its array. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals14nPointsPerFaceE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals14nPointsPerFaceE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree24ParticleSectionIntegrals14nPointsPerFaceE"></span><span id="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nPointsPerFace__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1ae3f784c003bfc71f3f183ea066f316f6"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nPointsPerFace</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><br /></dt>
+<dd><p>The number of quadrature points per face of a smoothing domain: one, the face center. </p>
 </dd></dl>
 
 </div>
@@ -2224,17 +2360,19 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <span id="_CPPv3I_i_iEN6Marmot15Discretizations8Meshfree18GenericSDIParticleE"></span><span id="_CPPv2I_i_iEN6Marmot15Discretizations8Meshfree18GenericSDIParticleE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nVertices</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GenericSDIParticle</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree8ParticleE" title="Marmot::Discretizations::Meshfree::Particle"><span class="n"><span class="pre">Particle</span></span></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Discretizations::Meshfree::GenericSDIParticle:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-28d762ab3086ea313856486a11a10cc7240c5b9c.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-986300aadc6509c68685e8964650be6b7c56530b.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI&lt; nDim, nVertices &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::Meshfree::SectionIntegrals&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::SectionIntegrals&lt; nDim, nVertices &gt;&quot;]
     &quot;4&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorD&lt; nDim, nVertices &gt;&quot;]
     &quot;5&quot; [label=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::TensorDD&lt; nDim, nVertices &gt;&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::Meshfree::Particle&quot; tooltip=&quot;Marmot::Discretizations::Meshfree::Particle&quot;]
     &quot;3&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;4&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;5&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
 }" class="graphviz" /></div>
@@ -2259,7 +2397,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 \[  \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
   n_{f,i}\, dA_f
 \]</div>
- (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1abbbe23074e669f37b85023ea8abe6420"><span class="std std-ref">_smoothDerivativeShapeFunctionsForParticleDomain()</span></a>). The test functions start as copies of the trial functions and are changed only by the VCI correction.</p>
+ (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a27b2f76af46885f53063fec9688c103d"><span class="std std-ref">ParticleSectionIntegrals::smoothShapeFunctionGradients()</span></a>). The test functions start as copies of the trial functions and are changed only by the VCI correction.</p>
 <p>The particle as a whole moves with its <strong>center</strong>: in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1ad8040a3eddfb94aa12cd33fd429272ec"><span class="std std-ref">computePhysicsKernels()</span></a>, the displacement increment and the deformation gradient increment of the center are computed from the shape functions of the main domain,     <div class="math notranslate nohighlight">
 \[  \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes
@@ -2845,6 +2983,12 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dd><p>Alias for the particle domain type. </p>
 </dd></dl>
 
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree18GenericSDIParticle16SectionIntegralsE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree18GenericSDIParticle16SectionIntegralsE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree18GenericSDIParticle16SectionIntegralsE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1a1358d4f2a5acd12c6b4ff68b870f4bad"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SectionIntegrals</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree24ParticleSectionIntegralsE" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals"><span class="n"><span class="pre">ParticleSectionIntegrals</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree18GenericSDIParticleE" title="Marmot::Discretizations::Meshfree::GenericSDIParticle::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree18GenericSDIParticleE" title="Marmot::Discretizations::Meshfree::GenericSDIParticle::nVertices"><span class="n"><span class="pre">nVertices</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
+<dd><p>the integrals over a smoothing domain </p>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
@@ -2852,7 +2996,7 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 <dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree18GenericSDIParticle53evaluateShapeFunctionsAndDerivativesForParticleDomainERK18ParticleDomainType">
 <span id="_CPPv3NK6Marmot15Discretizations8Meshfree18GenericSDIParticle53evaluateShapeFunctionsAndDerivativesForParticleDomainERK18ParticleDomainType"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree18GenericSDIParticle53evaluateShapeFunctionsAndDerivativesForParticleDomainERK18ParticleDomainType"></span><span id="Marmot::Discretizations::Meshfree::GenericSDIParticle::evaluateShapeFunctionsAndDerivativesForParticleDomain__ParticleDomainTypeCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1acb27f55392542bfb0b7e73e45bab3b9b"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">evaluateShapeFunctionsAndDerivativesForParticleDomain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree18GenericSDIParticle18ParticleDomainTypeE" title="Marmot::Discretizations::Meshfree::GenericSDIParticle::ParticleDomainType"><span class="n"><span class="pre">ParticleDomainType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleDomain</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Evaluates the shape functions and their derivatives for a given particle domain. </p>
-<p>N is evaluated at the center of the provided particle domain (the centroid of its deformed geometry), dN_dY is the smoothed gradient of <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1abbbe23074e669f37b85023ea8abe6420"><span class="std std-ref">_smoothDerivativeShapeFunctionsForParticleDomain()</span></a>. </p>
+<p>N is evaluated at the center of the provided particle domain (the centroid of its deformed geometry), dN_dY is the smoothed gradient over its smoothing domain (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals_1a27b2f76af46885f53063fec9688c103d"><span class="std std-ref">ParticleSectionIntegrals::smoothShapeFunctionGradients()</span></a>). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>particleDomain</strong> – <strong>[in]</strong> The particle domain for which to evaluate shape functions. </p>
@@ -2894,21 +3038,6 @@ N_B / \partial \boldsymbol{Y} \)</span>, with the shape functions and gradients 
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple containing the shape functions (N) and their gradients (dN_dY) as Eigen matrices. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Meshfree18GenericSDIParticle48_smoothDerivativeShapeFunctionsForParticleDomainERK18ParticleDomainType">
-<span id="_CPPv3NK6Marmot15Discretizations8Meshfree18GenericSDIParticle48_smoothDerivativeShapeFunctionsForParticleDomainERK18ParticleDomainType"></span><span id="_CPPv2NK6Marmot15Discretizations8Meshfree18GenericSDIParticle48_smoothDerivativeShapeFunctionsForParticleDomainERK18ParticleDomainType"></span><span id="Marmot::Discretizations::Meshfree::GenericSDIParticle::_smoothDerivativeShapeFunctionsForParticleDomain__ParticleDomainTypeCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Meshfree_1_1GenericSDIParticle_1abbbe23074e669f37b85023ea8abe6420"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MatrixXd</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_smoothDerivativeShapeFunctionsForParticleDomain</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8Meshfree18GenericSDIParticle18ParticleDomainTypeE" title="Marmot::Discretizations::Meshfree::GenericSDIParticle::ParticleDomainType"><span class="n"><span class="pre">ParticleDomainType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">particleDomain</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Computes the smoothed derivatives of shape functions for a particle domain. </p>
-<p>This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain to compute the derivatives of the shape functions, with one point per face, <span class="math notranslate nohighlight">\( \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f \)</span>, where <span class="math notranslate nohighlight">\( \boldsymbol{Y}_f \)</span> is the face center and <span class="math notranslate nohighlight">\( \boldsymbol{n}_f\,dA_f \)</span> the boundary surface vector of the smoothing domain and <span class="math notranslate nohighlight">\( |\Omega_s| \)</span> its volume. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>particleDomain</strong> – <strong>[in]</strong> The particle domain for which to compute smoothed derivatives. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An Eigen::MatrixXd containing the smoothed derivatives of shape functions (dN_dY). </p>
 </dd>
 </dl>
 </dd></dl>

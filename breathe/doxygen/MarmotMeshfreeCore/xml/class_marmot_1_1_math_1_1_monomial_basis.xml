@@ -57,7 +57,7 @@
         <name>_firstFactorOf</name>
         <qualifiedname>Marmot::Math::MonomialBasis::_firstFactorOf</qualifiedname>
         <briefdescription>
-<para>the factors of monomial <formula id="99">$ k $</formula> are the entries [_firstFactorOf[k], _firstFactorOf[k + 1]) of _factors </para>
+<para>the factors of monomial <formula id="106">$ k $</formula> are the entries [_firstFactorOf[k], _firstFactorOf[k + 1]) of _factors </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -90,7 +90,7 @@
 <parametername direction="in">order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="102">$ n \ge 0 $</formula>. </para>
+<para>Completeness order <formula id="109">$ n \ge 0 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -98,7 +98,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="83">$ d \ge 1 $</formula>. </para>
+<para>Spatial dimension <formula id="90">$ d \ge 1 $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -115,7 +115,7 @@
         <name>size</name>
         <qualifiedname>Marmot::Math::MonomialBasis::size</qualifiedname>
         <briefdescription>
-<para>The number of monomials, <formula id="81">$ \binom{d + n}{d} $</formula>. </para>
+<para>The number of monomials, <formula id="88">$ \binom{d + n}{d} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -146,7 +146,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="97">$ \boldsymbol{x} $</formula>, <formula id="80">$ d $</formula> of them. </para>
+<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula>, <formula id="87">$ d $</formula> of them. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -179,7 +179,7 @@
           <declname>dH_dx</declname>
         </param>
         <briefdescription>
-<para>Evaluate the gradient <formula id="98">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the basis. </para>
+<para>Evaluate the gradient <formula id="105">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the basis. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -187,7 +187,7 @@
 <parametername direction="in">x</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="97">$ \boldsymbol{x} $</formula>, <formula id="80">$ d $</formula> of them. </para>
+<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula>, <formula id="87">$ d $</formula> of them. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -195,7 +195,7 @@
 <parametername direction="out">dH_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The gradient, <ref refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kindref="member">size()</ref> <formula id="101">$ \times d $</formula>: row <formula id="99">$ k $</formula> is entry <formula id="99">$ k $</formula> of the basis, column <formula id="15">$ i $</formula> the derivative with respect to <formula id="103">$ x_i $</formula>. </para>
+<para>The gradient, <ref refid="class_marmot_1_1_math_1_1_monomial_basis_1ae861b043a29d1be808ab2d64334edd82" kindref="member">size()</ref> <formula id="108">$ \times d $</formula>: row <formula id="106">$ k $</formula> is entry <formula id="106">$ k $</formula> of the basis, column <formula id="23">$ i $</formula> the derivative with respect to <formula id="110">$ x_i $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -222,7 +222,7 @@
           <declname>alpha</declname>
         </param>
         <briefdescription>
-<para><formula id="104">$ x^\alpha $</formula>, <formula id="105">$ \alpha \ge 0 $</formula>, by multiplication. </para>
+<para><formula id="111">$ x^\alpha $</formula>, <formula id="112">$ \alpha \ge 0 $</formula>, by multiplication. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -255,7 +255,7 @@
           <declname>exponents</declname>
         </param>
         <briefdescription>
-<para>List the exponents of the coordinates <formula id="106">$ 1, \dots, $</formula> <computeroutput>dim</computeroutput> of all monomials of total degree <formula id="107">$ \le $</formula> <computeroutput>order</computeroutput>, from entry <computeroutput>entry</computeroutput> on: the exponent of coordinate <computeroutput>dim</computeroutput> varies slowest, the lower coordinates are listed recursively. </para>
+<para>List the exponents of the coordinates <formula id="113">$ 1, \dots, $</formula> <computeroutput>dim</computeroutput> of all monomials of total degree <formula id="114">$ \le $</formula> <computeroutput>order</computeroutput>, from entry <computeroutput>entry</computeroutput> on: the exponent of coordinate <computeroutput>dim</computeroutput> varies slowest, the lower coordinates are listed recursively. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -287,7 +287,7 @@
 <parametername direction="inout">exponents</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Entry <formula id="108">$ k\, d + j $</formula>: the exponent of coordinate <formula id="109">$ j $</formula> in monomial <formula id="99">$ k $</formula>. </para>
+<para>Entry <formula id="115">$ k\, d + j $</formula>: the exponent of coordinate <formula id="116">$ j $</formula> in monomial <formula id="106">$ k $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -299,12 +299,12 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The complete monomial basis <formula id="84">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="82">$ n $</formula> in <formula id="80">$ d $</formula> dimensions, as the list of the factors of its entries. </para>
+<para>The complete monomial basis <formula id="91">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="89">$ n $</formula> in <formula id="87">$ d $</formula> dimensions, as the list of the factors of its entries. </para>
     </briefdescription>
     <detaileddescription>
-<para>The entries are all monomials <formula id="85">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="86">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="87">$ n = 2 $</formula>: <formula id="88">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="89">$ n = 1 $</formula>: <formula id="90">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="91">$ 1 $</formula>.</para>
-<para>The exponents <formula id="92">$ \boldsymbol{\alpha} $</formula> of every entry are listed once, at construction, as the factors <formula id="93">$ x_j^{\alpha_{kj}} $</formula> of nonzero exponent of each entry; an evaluation is then the product of the powers,  <formula id="94">$H_k = \prod_j x_j^{\alpha_{kj}} $</formula>, and its gradient that product with the factor of coordinate <formula id="15">$ i $</formula> replaced by its derivative,  <formula id="95">$ \partial H_k / \partial x_i = \alpha_{ki}\, x_i^{\alpha_{ki} - 1} \prod_{j \neq i}
-x_j^{\alpha_{kj}} $</formula>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. Only the coordinates of nonzero exponent are factors of an entry: a factor <formula id="96">$ x_j^0 = 1 $</formula> would not change the product, and the derivative with respect to a coordinate that is not a factor is zero. Most exponents of a low-order basis are zero, e.g. all but three of the twelve of the linear basis in 3D. </para>
+<para>The entries are all monomials <formula id="92">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="93">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="94">$ n = 2 $</formula>: <formula id="95">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="96">$ n = 1 $</formula>: <formula id="97">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="98">$ 1 $</formula>.</para>
+<para>The exponents <formula id="99">$ \boldsymbol{\alpha} $</formula> of every entry are listed once, at construction, as the factors <formula id="100">$ x_j^{\alpha_{kj}} $</formula> of nonzero exponent of each entry; an evaluation is then the product of the powers,  <formula id="101">$H_k = \prod_j x_j^{\alpha_{kj}} $</formula>, and its gradient that product with the factor of coordinate <formula id="23">$ i $</formula> replaced by its derivative,  <formula id="102">$ \partial H_k / \partial x_i = \alpha_{ki}\, x_i^{\alpha_{ki} - 1} \prod_{j \neq i}
+x_j^{\alpha_{kj}} $</formula>. The powers are formed by multiplication, and the factors are multiplied in the order of the coordinates. Only the coordinates of nonzero exponent are factors of an entry: a factor <formula id="103">$ x_j^0 = 1 $</formula> would not change the product, and the derivative with respect to a coordinate that is not a factor is zero. Most exponents of a low-order basis are zero, e.g. all but three of the twelve of the linear basis in 3D. </para>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="78" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="78" bodyend="186"/>
     <listofallmembers>

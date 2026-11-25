@@ -186,6 +186,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" kind="typedef"><name>JacobianSized</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a980847ac1a6da1487b5bdb115c71adab" kind="typedef"><name>KernelFunctionVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kind="typedef"><name>ParticleDomainType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1358d4f2a5acd12c6b4ff68b870f4bad" kind="typedef"><name>SectionIntegrals</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aadd616997682dd5f2b21ec6d79d9eb50" kind="typedef"><name>SmoothingDomainUpdateType</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a66a4af427fd11bb6b39a5dd634f82185" kind="variable"><name>nStateVarsParticle</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab8f7ebfcf2f7840802160b24a03e5d28" kind="variable"><name>nStateVarsCenter</name></member>
@@ -243,7 +244,6 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1acb27f55392542bfb0b7e73e45bab3b9b" kind="function"><name>evaluateShapeFunctionsAndDerivativesForParticleDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ada9c09dcd8c0a9088e5128af8f462e29" kind="function"><name>evaluateShapeFunctionsOnFace</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3bf9dd14d8f7a5cb26896b61a8d62806" kind="function"><name>evaluateShapeFunctionsAndDerivativesOnFace</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" kind="function"><name>_smoothDerivativeShapeFunctionsForParticleDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6b91ba6c233f11fb8234b8de2b06f7ac" kind="function"><name>setVCIOrder</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kind="class"><name>Marmot::Discretizations::Meshfree::KernelFunction</name>
@@ -475,19 +475,18 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1af494f98633a393be0b5d3dc2b4f6c00c" kind="function"><name>ParticleDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9adde616a6bd86ae7ed3e8b8c31efe04" kind="function"><name>getGeometryDeformedVertexCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a73681fcb481269c576c18eaeb8412a0f" kind="function"><name>getSmoothingVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9e65500129ca0dcccb51415a6ce4ae35" kind="function"><name>smoothingDomain</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1acc39d7203da5d08e46e2b4a09aaa0880" kind="function"><name>getNumberOfVertices</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab72e7d6693191954f16f8658c3deb970" kind="function"><name>getParticleShape</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5794dce99d69eab5a7016ca51df70df7" kind="function"><name>getFaceCenterCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a8a4b3c9d121163e61b09e640b71c0fa3" kind="function"><name>getSmoothingDomainFaceCenterCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a74a4a4d223b290bec002387e85ef3987" kind="function"><name>getNumberOfFaces</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5987ee628975082f1bf5532ea32fab14" kind="function"><name>getSmoothingVolume</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a14858c6dab23dd461eb58723f51bb7" kind="function"><name>getCenterCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a53be18e16e1d7a7b8103f73a0a08d905" kind="function"><name>getVolumeUndeformed</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a38a0a8bc74d8b6ad89be4dc4eeb0060d" kind="function"><name>getSmoothingDomainVertexDisplacements</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3915f1ab2d891a109b219ae04e06c9d6" kind="function"><name>getGeometryDeformedVertexDisplacements</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a616d6ab223a63873cfc272279bc81d8c" kind="function"><name>getFaceBoundaryVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5c6056dacc3089441face971f4dc5bdf" kind="function"><name>getSubCellIndicesOnParentFace</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a02d68503065313bd3302c6dc7d8a59f7" kind="function"><name>getSmoothingBoundarySurfaceVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1aba1d9e7eecde2d2266d8372581938462" kind="function"><name>getGeometrySecondMoments</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kind="function"><name>acceptStateAndPosition</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kind="function"><name>uniformSubdivided</name></member>
@@ -502,6 +501,17 @@
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" kind="function"><name>registerParticle</name></member>
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a13e6d59d8eadc36d4fbdc83894fc6940" kind="function"><name>isRegistered</name></member>
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" kind="function"><name>particleFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kind="typedef"><name>Cell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" kind="typedef"><name>Vec</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kind="typedef"><name>FacePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kind="variable"><name>nPointsPerFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" kind="function"><name>volume</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" kind="function"><name>numberOfFaceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kind="function"><name>faceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" kind="function"><name>faceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kind="function"><name>smoothShapeFunctionGradients</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" kind="typedef"><name>BasisVector</name></member>
@@ -667,6 +677,8 @@
   <compound refid="_marmot_particle_domain_8h" kind="file"><name>MarmotParticleDomain.h</name>
   </compound>
   <compound refid="_marmot_particle_library_8h" kind="file"><name>MarmotParticleLibrary.h</name>
+  </compound>
+  <compound refid="_marmot_particle_section_integrals_8h" kind="file"><name>MarmotParticleSectionIntegrals.h</name>
   </compound>
   <compound refid="_marmot_particle_stiffness_8h" kind="file"><name>MarmotParticleStiffness.h</name>
   </compound>

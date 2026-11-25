@@ -31,7 +31,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="101" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="101" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="102" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="102" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aaf589ed0020eb77d9ccd4b593fd7b046" prot="protected" static="no">
         <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
@@ -46,7 +46,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="102" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="102" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="103" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="103" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a847e9493a1fee4d8ad6d0dec909445fc" prot="protected" static="no">
         <type>Eigen::Matrix&lt; double, nDim, nVertices &gt;</type>
@@ -61,7 +61,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="103" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="103" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="104" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="104" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a80f787ff2461c83f0bd2acc169a4f250" prot="protected" static="no">
         <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
@@ -76,7 +76,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="105" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="105" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="106" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="106" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" prot="protected" static="no">
         <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
@@ -91,7 +91,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="106" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="106" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="107" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="107" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a980847ac1a6da1487b5bdb115c71adab" prot="protected" static="no">
         <type>std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt;</type>
@@ -106,7 +106,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="108" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="108" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="109" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="109" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" prot="protected" static="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kindref="compound">ParticleDomain</ref>&lt; nDim, nVertices &gt;</type>
@@ -121,7 +121,22 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="110" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="110" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="111" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1358d4f2a5acd12c6b4ff68b870f4bad" prot="protected" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref>&lt; nDim, nVertices &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SectionIntegrals = ParticleSectionIntegrals&lt; nDim, nVertices &gt;</definition>
+        <argsstring></argsstring>
+        <name>SectionIntegrals</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SectionIntegrals</qualifiedname>
+        <briefdescription>
+<para>the integrals over a smoothing domain </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="112" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="112" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-type">
@@ -138,7 +153,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="163" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="163" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="165" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="165" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-static-attrib">
@@ -156,7 +171,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="130" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="130" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="132" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="132" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab8f7ebfcf2f7840802160b24a03e5d28" prot="protected" static="yes" constexpr="yes" mutable="no">
         <type>int</type>
@@ -172,7 +187,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="133" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="133" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="135" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="135" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aef92e238f539a9e51f841f7526cdf4bf" prot="protected" static="yes" mutable="no">
         <type>const std::vector&lt; std::string &gt;</type>
@@ -190,7 +205,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="158" column="37" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="158" bodyend="160"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="160" column="37" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="160" bodyend="162"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-attrib">
@@ -207,7 +222,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="135" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="135" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="137" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="137" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a85849e4b4add43cdf679dcbb5ed4a117" prot="protected" static="no" mutable="no">
         <type>int</type>
@@ -222,7 +237,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="136" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="136" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="138" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="138" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aa7fbc62438680b9a31a965b7e7299ca7" prot="protected" static="no" mutable="no">
         <type>int</type>
@@ -237,7 +252,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="137" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="137" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="139" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="139" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7cf3f2da3c51de0cb442f423afbcd7b9" prot="protected" static="no" mutable="no">
         <type>int</type>
@@ -252,7 +267,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="138" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="138" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="140" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="140" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99d628f04476feafcb38411e5f4ac9c0" prot="protected" static="no" mutable="no">
         <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref> &amp;</type>
@@ -267,7 +282,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="140" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="140" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="142" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="142" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5a44d8d6958ee10b1455197ec6cf6a3c" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kindref="member">ParticleDomainType</ref></type>
@@ -282,7 +297,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="142" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="142" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="144" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="144" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a731f9f726436f27d21b75e2e90c131b4" prot="protected" static="no" mutable="no">
         <type>std::vector&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions" kindref="compound">SubDomainShapeFunctions</ref> &gt;</type>
@@ -297,7 +312,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="143" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="143" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="145" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="145" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af60e1630976cd6088ec1126185c8a631" prot="protected" static="no" mutable="no">
         <type>std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kindref="member">ParticleDomainType</ref> &gt;</type>
@@ -312,7 +327,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="144" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="144" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="146" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="146" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae55f098f19c16364cd920775fcd8fe13" prot="protected" static="no" mutable="no">
         <type>Eigen::Map&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a80f787ff2461c83f0bd2acc169a4f250" kindref="member">CoordinatesSized</ref> &gt;</type>
@@ -321,13 +336,13 @@
         <name>_centerDisplacement</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::_centerDisplacement</qualifiedname>
         <briefdescription>
-<para>Total center displacement <formula id="236">$ \boldsymbol{u}_c $</formula> (mapped state variables). </para>
+<para>Total center displacement <formula id="239">$ \boldsymbol{u}_c $</formula> (mapped state variables). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="147" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="147" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="149" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="149" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7da09e1da2cd9a08fea4c037b364c71a" prot="protected" static="no" mutable="no">
         <type>Eigen::Map&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" kindref="member">JacobianSized</ref> &gt;</type>
@@ -338,11 +353,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Total central deformation gradient <formula id="237">$ \boldsymbol{F}_c $</formula> of the last accepted state (mapped state variables). </para>
+<para>Total central deformation gradient <formula id="240">$ \boldsymbol{F}_c $</formula> of the last accepted state (mapped state variables). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="150" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="150" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="152" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="152" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab56e2470491a476c053bb73fbe20a249" prot="protected" static="no" mutable="no">
         <type>Eigen::Map&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" kindref="member">JacobianSized</ref> &gt;</type>
@@ -353,11 +368,11 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Central deformation gradient increment <formula id="238">$ \Delta\boldsymbol{F}_c $</formula> with respect to the last accepted state (mapped state variables). </para>
+<para>Central deformation gradient increment <formula id="241">$ \Delta\boldsymbol{F}_c $</formula> with respect to the last accepted state (mapped state variables). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="153" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="153" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="155" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="155" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7a881d3367d36894d2a635a479fed951" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a980847ac1a6da1487b5bdb115c71adab" kindref="member">KernelFunctionVector</ref></type>
@@ -372,7 +387,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="155" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="155" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="157" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="157" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -425,7 +440,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="172" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="172" bodyend="183"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="174" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="174" bodyend="185"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4bd33f1e93ff3dff4dc14520c2c48dc6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -467,7 +482,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="190" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="190" bodyend="199"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="192" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="192" bodyend="201"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a87e4be110403d6ea379cd28fe1df063d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -508,7 +523,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="206" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="208" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aefa30271b0d75afc9fca47d8da24f6d6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>std::vector&lt; std::string &gt;</type>
@@ -527,7 +542,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="212" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="212" bodyend="218"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="214" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="214" bodyend="220"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6606bf608a756f005113bb00d6baea60" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>std::vector&lt; std::string &gt;</type>
@@ -545,7 +560,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="224" column="25"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="226" column="25"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0962f3e0aed0181887db0a86092740a6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -575,7 +590,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="230" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="817" bodyend="821"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="232" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="808" bodyend="812"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae8d5357fb52b23591d524a0c4b734d69" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
@@ -617,7 +632,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="237" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="237" bodyend="241"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="239" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="239" bodyend="243"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a58a9cb2416a29fef54e74dd63c2e7e58" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
@@ -647,7 +662,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="247" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="247" bodyend="251"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="249" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="249" bodyend="253"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a564c9b52e297c301f8021bca8f81096c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -677,7 +692,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="258" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="258" bodyend="261"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="260" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="260" bodyend="263"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24f2feaa08e0ae7443cf26f94afbf86a" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>int</type>
@@ -696,7 +711,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="267" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="267" bodyend="267"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="269" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="269" bodyend="269"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -727,7 +742,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="274" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="276" column="20"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a299cdd706ba8efa374d8da87d749265a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -743,7 +758,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="280" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="280" bodyend="287"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="282" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="282" bodyend="289"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a09b17e009a3c1d8f46f586a79e68b2c1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -758,7 +773,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="292" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="294" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1a8686f24076310d00e85207fa9a6e9e" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>std::string</type>
@@ -777,7 +792,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="298" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="298" bodyend="298"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="300" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="300" bodyend="300"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af500a633466f0edd590de61e9ee52e0b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -866,7 +881,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="309" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="749" bodyend="773"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="311" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="740" bodyend="764"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7c3886a4cedcf59568c62aca39624835" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="non-virtual">
         <type>void</type>
@@ -895,7 +910,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="322" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="827" bodyend="833"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="324" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="818" bodyend="824"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a88d8fd5f80029ecba647fb6d3e1e5553" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -911,7 +926,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="328" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="839" bodyend="862"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="330" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="830" bodyend="853"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -924,11 +939,11 @@
 <para>Accepts the current incremental state and updates the particle&apos;s position and deformation. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="239">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c \boldsymbol{F}_c $</formula>, the increment is reset to identity, the main domain and all subdomains are moved with <formula id="237">$ \boldsymbol{F}_c $</formula> and the center displacement, and finally <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kindref="member">acceptStateAndPositionOnSubdomains()</ref> is called. </para>
+<para><formula id="242">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c \boldsymbol{F}_c $</formula>, the increment is reset to identity, the main domain and all subdomains are moved with <formula id="240">$ \boldsymbol{F}_c $</formula> and the center displacement, and finally <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kindref="member">acceptStateAndPositionOnSubdomains()</ref> is called. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="336" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="336" bodyend="346"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="338" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="338" bodyend="348"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -943,7 +958,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="351" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="353" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24d00d4c19dd6c03da3ff8c819d689a3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>int</type>
@@ -962,7 +977,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="357" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="357" bodyend="360"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="359" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="359" bodyend="362"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3f5df14d0c9961a37df840b413174202" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>int</type>
@@ -980,7 +995,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="380" column="17"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="382" column="17"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac755a40084f1934d535d31e1b3bdc868" prot="public" static="no" const="no" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
@@ -1031,7 +1046,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="391" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="391" bodyend="409"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="393" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="393" bodyend="411"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a33cfc8a8b0db9ddded322f0e04726b6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1072,7 +1087,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="416" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="418" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6639cd17cee346754bff1970010e0144" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -1116,7 +1131,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="426" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="426" bodyend="439"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="428" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="428" bodyend="441"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7d11e5d6f23ad50c22460523fed0683e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>Marmot::Utilities::StateView</type>
@@ -1159,7 +1174,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="447" column="42"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="449" column="42"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" prot="public" static="no" const="no" explicit="no" inline="no" final="yes" virt="virtual">
         <type>void</type>
@@ -1192,7 +1207,7 @@
 <para>Computes the physics kernels (internal forces and their derivatives) for the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para>Updates the center kinematics from the main domain (the center displacement is incremented by <formula id="240">$ \sum_B N_B \Delta\boldsymbol{q}_B $</formula> and <formula id="238">$ \Delta\boldsymbol{F}_c $</formula> is set, see the class documentation), then calls <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" kindref="member">computePhysicsKernelsOnSubdomains()</ref>. As for all Marmot entities, the state variables are updated in place, and the host restores them to the last accepted state before each evaluation (EdelweissMeshfree does so in every computePhysicsKernels call): the center displacement thus stays the total one, which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> applies to the undeformed domain. <parameterlist kind="param"><parameteritem>
+<para>Updates the center kinematics from the main domain (the center displacement is incremented by <formula id="243">$ \sum_B N_B \Delta\boldsymbol{q}_B $</formula> and <formula id="241">$ \Delta\boldsymbol{F}_c $</formula> is set, see the class documentation), then calls <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" kindref="member">computePhysicsKernelsOnSubdomains()</ref>. As for all Marmot entities, the state variables are updated in place, and the host restores them to the last accepted state before each evaluation (EdelweissMeshfree does so in every computePhysicsKernels call): the center displacement thus stays the total one, which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> applies to the undeformed domain. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dQ</parametername>
 </parameternamelist>
@@ -1237,7 +1252,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="466" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="993" bodyend="1041"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="468" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="964" bodyend="1012"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -1314,7 +1329,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="481" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="483" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7544bef162dc7b093ba4a6fc88b6d601" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3ab2bd974b3cdd8ef8ada6114a58b3af" kindref="member">TensorD</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3ab2bd974b3cdd8ef8ada6114a58b3af" kindref="member">TensorD</ref> &gt;</type>
@@ -1334,7 +1349,7 @@
 <para>Retrieves the intermediate configuration boundary vector and evaluation point for a given face. </para>
         </briefdescription>
         <detaileddescription>
-<para>Both are taken from the deformed geometry of <computeroutput>particleDomain:</computeroutput> the boundary surface vector <formula id="241">$ \boldsymbol{N}\,dA_Y $</formula> and the face center. <parameterlist kind="param"><parameteritem>
+<para>Both are taken from the deformed geometry of <computeroutput>particleDomain:</computeroutput> the boundary surface vector <formula id="244">$ \boldsymbol{N}\,dA_Y $</formula> and the face center. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">boundaryFaceID</parametername>
 </parameternamelist>
@@ -1357,7 +1372,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="495" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="787" bodyend="807"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="497" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="778" bodyend="798"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a22c3e2a15f5b660ba54d9bb9b21c91c3" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>int</type>
@@ -1376,7 +1391,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="503" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="503" bodyend="503"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="505" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="505" bodyend="505"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6c6c4031f3b3d47942639fd8e03db290" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
@@ -1418,7 +1433,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="510" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="510" bodyend="513"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="512" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="512" bodyend="515"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac45ae9b4c1ac37a62c673ccc5dd0d384" prot="public" static="no" const="yes" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>void</type>
@@ -1444,7 +1459,7 @@
 <parametername direction="out">vec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Pointer to an array of <formula id="40">$ n_{\text{nodes}} $</formula> values. </para>
+<para>Pointer to an array of <formula id="48">$ n_{\text{nodes}} $</formula> values. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -1460,7 +1475,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="522" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="522" bodyend="534"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="524" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="524" bodyend="536"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e" prot="public" static="no" const="no" explicit="no" inline="yes" final="yes" virt="virtual">
         <type>int</type>
@@ -1479,7 +1494,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="540" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="540" bodyend="540"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="542" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="542" bodyend="542"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0b7dd7a486a66db04bb3344db8cc7633" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1501,7 +1516,7 @@
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Not available here: the VCI boundary integral <formula id="242">$ \int T_A P_C n_i\,dA $</formula> is physics-specific. </para>
+<para>Not available here: the VCI boundary integral <formula id="245">$ \int T_A P_C n_i\,dA $</formula> is physics-specific. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1542,7 +1557,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="549" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="549" bodyend="558"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="551" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="551" bodyend="560"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99bee7eecce18ead023d8b8605b8dbaf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1556,7 +1571,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI integral of the test function gradient times the basis over the subdomains, <formula id="243">$ R_{AiC} \mathrel{+}= \sum_s \partial_i T_A|_s\, P_C|_s\, V_s $</formula> ( <formula id="244">$ V_s $</formula>: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" kindref="member">getSubdomainVolume()</ref>). </para>
+<para>Accumulates the VCI integral of the test function gradient times the basis over the subdomains, <formula id="246">$ R_{AiC} \mathrel{+}= \sum_s \partial_i T_A|_s\, P_C|_s\, V_s $</formula> ( <formula id="247">$ V_s $</formula>: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" kindref="member">getSubdomainVolume()</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1572,7 +1587,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="565" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="565" bodyend="580"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="567" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="567" bodyend="582"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4603204624e60dc670790c7d6469cd3c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1586,7 +1601,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI integral of the test function times the basis gradient over the subdomains, <formula id="245">$ R_{AiC} \mathrel{+}= \sum_s T_A|_s\, \partial_i P_C|_s\, V_s $</formula>. </para>
+<para>Accumulates the VCI integral of the test function times the basis gradient over the subdomains, <formula id="248">$ R_{AiC} \mathrel{+}= \sum_s T_A|_s\, \partial_i P_C|_s\, V_s $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1602,7 +1617,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="587" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="587" bodyend="604"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="589" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="589" bodyend="606"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1616,10 +1631,10 @@
           <declname>mMatrix_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI moment matrix over the subdomains, <formula id="246">$ M_{ACD} \mathrel{+}= \sum_s \chi_A\, P_C|_s\, P_D|_s\, V_s $</formula>. </para>
+<para>Accumulates the VCI moment matrix over the subdomains, <formula id="249">$ M_{ACD} \mathrel{+}= \sum_s \chi_A\, P_C|_s\, P_D|_s\, V_s $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="43">$ \chi_A $</formula> is 1 if the center of the main domain (not of the subdomain) is in the support of kernel function <formula id="16">$ A $</formula>, else 0. <parameterlist kind="param"><parameteritem>
+<para><formula id="51">$ \chi_A $</formula> is 1 if the center of the main domain (not of the subdomain) is in the support of kernel function <formula id="24">$ A $</formula>, else 0. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">mMatrix_ACD_RowMajor</parametername>
 </parameternamelist>
@@ -1632,7 +1647,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="614" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="614" bodyend="634"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="616" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="616" bodyend="636"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af6703ceb8e3267430add331f237c5edc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
@@ -1646,10 +1661,10 @@
           <declname>eta_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Assigns test function correction terms for VCI, <formula id="247">$ \partial_i T_A|_s = \partial_i N_A|_s + \chi_A \sum_C \eta_{AiC} P_C|_s $</formula> for every subdomain. </para>
+<para>Assigns test function correction terms for VCI, <formula id="250">$ \partial_i T_A|_s = \partial_i N_A|_s + \chi_A \sum_C \eta_{AiC} P_C|_s $</formula> for every subdomain. </para>
         </briefdescription>
         <detaileddescription>
-<para>The correction is applied to the uncorrected gradients, so repeated calls do not accumulate; <formula id="43">$ \chi_A $</formula> as in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" kindref="member">vci_compute_MMatrix()</ref>. <parameterlist kind="param"><parameteritem>
+<para>The correction is applied to the uncorrected gradients, so repeated calls do not accumulate; <formula id="51">$ \chi_A $</formula> as in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" kindref="member">vci_compute_MMatrix()</ref>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">eta_AiC_RowMajor</parametername>
 </parameternamelist>
@@ -1662,7 +1677,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="644" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="644" bodyend="668"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="646" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="646" bodyend="670"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -1695,7 +1710,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="373" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="373" bodyend="373"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="375" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="375" bodyend="375"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -1713,7 +1728,7 @@
 <para>Evaluates the shape functions and their derivatives for a given particle domain. </para>
         </briefdescription>
         <detaileddescription>
-<para>N is evaluated at the center of the provided particle domain (the centroid of its deformed geometry), dN_dY is the smoothed gradient of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" kindref="member">_smoothDerivativeShapeFunctionsForParticleDomain()</ref>. <parameterlist kind="param"><parameteritem>
+<para>N is evaluated at the center of the provided particle domain (the centroid of its deformed geometry), dN_dY is the smoothed gradient over its smoothing domain (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kindref="member">ParticleSectionIntegrals::smoothShapeFunctionGradients()</ref>). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">particleDomain</parametername>
 </parameternamelist>
@@ -1728,7 +1743,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="678" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="874" bodyend="890"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="681" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="865" bodyend="887"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ada9c09dcd8c0a9088e5128af8f462e29" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::MatrixXd</type>
@@ -1771,7 +1786,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="691" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="902" bodyend="916"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="694" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="899" bodyend="913"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3bf9dd14d8f7a5cb26896b61a8d62806" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>std::tuple&lt; Eigen::MatrixXd, Eigen::MatrixXd &gt;</type>
@@ -1814,38 +1829,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="700" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="929" bodyend="948"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
-        <type>Eigen::MatrixXd</type>
-        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::_smoothDerivativeShapeFunctionsForParticleDomain</definition>
-        <argsstring>(const ParticleDomainType &amp;particleDomain) const</argsstring>
-        <name>_smoothDerivativeShapeFunctionsForParticleDomain</name>
-        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::_smoothDerivativeShapeFunctionsForParticleDomain</qualifiedname>
-        <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kindref="member">ParticleDomainType</ref> &amp;</type>
-          <declname>particleDomain</declname>
-        </param>
-        <briefdescription>
-<para>Computes the smoothed derivatives of shape functions for a particle domain. </para>
-        </briefdescription>
-        <detaileddescription>
-<para>This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain to compute the derivatives of the shape functions, with one point per face, <formula id="248">$ \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f $</formula>, where <formula id="230">$ \boldsymbol{Y}_f $</formula> is the face center and <formula id="232">$ \boldsymbol{n}_f\,dA_f $</formula> the boundary surface vector of the smoothing domain and <formula id="249">$ |\Omega_s| $</formula> its volume. <parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername direction="in">particleDomain</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>The particle domain for which to compute smoothed derivatives. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>An Eigen::MatrixXd containing the smoothed derivatives of shape functions (dN_dY). </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="714" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="959" bodyend="979"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="703" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="926" bodyend="950"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6b91ba6c233f11fb8234b8de2b06f7ac" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -1861,7 +1845,7 @@
 <para>Sets the VCI order and updates the number of VCI constraints. </para>
         </briefdescription>
         <detaileddescription>
-<para>The number of constraints is <formula id="250">$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> for the order <formula id="99">$ k $</formula>. Unlike <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" kindref="member">GenericParticle::setVCIOrder()</ref>, the basis is not evaluated here but in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a88d8fd5f80029ecba647fb6d3e1e5553" kindref="member">updateShapeFunctions()</ref> (per subdomain), which must therefore be called after the order has been set. <parameterlist kind="param"><parameteritem>
+<para>The number of constraints is <formula id="251">$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> for the order <formula id="106">$ k $</formula>. Unlike <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" kindref="member">GenericParticle::setVCIOrder()</ref>, the basis is not evaluated here but in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a88d8fd5f80029ecba647fb6d3e1e5553" kindref="member">updateShapeFunctions()</ref> (per subdomain), which must therefore be called after the order has been set. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
@@ -1874,20 +1858,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="723" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="723" bodyend="733"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="714" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="714" bodyend="724"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
 <para>A generic, physics-independent base class for particles with subdomain integration (SDI). </para>
     </briefdescription>
     <detaileddescription>
-<para>The particle domain (a <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kindref="compound">ParticleDomain</ref>, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into <formula id="227">$ 2^{n_{\text{dim}}} $</formula> subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">ParticleDomain::uniformSubdivided()</ref>). Each subdomain <formula id="228">$ s $</formula> is an integration point of its own: the derived class attaches a material point to it and integrates the weak form as a sum over the subdomains. The shape functions of a subdomain are evaluated at its center, and their gradients are smoothed over its smoothing domain <formula id="229">$ \Omega_s $</formula> by the divergence theorem, with one point (the face center <formula id="230">$ \boldsymbol{Y}_f $</formula>) per face <formula id="231">$ f $</formula> and the boundary surface vector <formula id="232">$ \boldsymbol{n}_f\,dA_f $</formula>,    <formula id="233">\[  \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
+<para>The particle domain (a <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kindref="compound">ParticleDomain</ref>, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into <formula id="234">$ 2^{n_{\text{dim}}} $</formula> subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">ParticleDomain::uniformSubdivided()</ref>). Each subdomain <formula id="235">$ s $</formula> is an integration point of its own: the derived class attaches a material point to it and integrates the weak form as a sum over the subdomains. The shape functions of a subdomain are evaluated at its center, and their gradients are smoothed over its smoothing domain <formula id="0">$ \Omega_s $</formula> by the divergence theorem, with one point (the face center <formula id="2">$ \boldsymbol{Y}_f $</formula>) per face <formula id="1">$ f $</formula> and the boundary surface vector <formula id="6">$ \boldsymbol{n}_f\,dA_f $</formula>,    <formula id="236">\[  \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
   n_{f,i}\, dA_f
-\]</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" kindref="member">_smoothDerivativeShapeFunctionsForParticleDomain()</ref>). The test functions start as copies of the trial functions and are changed only by the VCI correction.</para>
-<para>The particle as a whole moves with its <bold>center</bold>: in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" kindref="member">computePhysicsKernels()</ref>, the displacement increment and the deformation gradient increment of the center are computed from the shape functions of the main domain,     <formula id="234">\[  \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
+\]</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kindref="member">ParticleSectionIntegrals::smoothShapeFunctionGradients()</ref>). The test functions start as copies of the trial functions and are changed only by the VCI correction.</para>
+<para>The particle as a whole moves with its <bold>center</bold>: in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" kindref="member">computePhysicsKernels()</ref>, the displacement increment and the deformation gradient increment of the center are computed from the shape functions of the main domain,     <formula id="237">\[  \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes
   \frac{\partial N_B}{\partial \boldsymbol{Y}},
-\]</formula> and in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> the total central deformation gradient <formula id="235">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c\, \boldsymbol{F}_c $</formula> and the total center displacement <formula id="236">$ \boldsymbol{u}_c $</formula> move the main domain and all subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">ParticleDomain::acceptStateAndPosition()</ref>).</para>
+\]</formula> and in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> the total central deformation gradient <formula id="238">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c\, \boldsymbol{F}_c $</formula> and the total center displacement <formula id="239">$ \boldsymbol{u}_c $</formula> move the main domain and all subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">ParticleDomain::acceptStateAndPosition()</ref>).</para>
 <para><bold>State variable layout.</bold> The block given to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac755a40084f1934d535d31e1b3bdc868" kindref="member">assignStateVars()</ref> is <table rows="5" cols="3"><row>
 <entry thead="yes"><para>offset  </para>
 </entry><entry thead="yes"><para>size  </para>
@@ -1896,17 +1880,17 @@
 <row>
 <entry thead="no"><para>0  </para>
 </entry><entry thead="no"><para>nDim  </para>
-</entry><entry thead="no"><para>center displacement <formula id="236">$ \boldsymbol{u}_c $</formula>  </para>
+</entry><entry thead="no"><para>center displacement <formula id="239">$ \boldsymbol{u}_c $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>nDim  </para>
 </entry><entry thead="no"><para>nDim * nDim  </para>
-</entry><entry thead="no"><para>central deformation gradient <formula id="237">$ \boldsymbol{F}_c $</formula> (column-major)  </para>
+</entry><entry thead="no"><para>central deformation gradient <formula id="240">$ \boldsymbol{F}_c $</formula> (column-major)  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>nDim + nDim * nDim  </para>
 </entry><entry thead="no"><para>nDim * nDim  </para>
-</entry><entry thead="no"><para>its increment <formula id="238">$ \Delta\boldsymbol{F}_c $</formula> (column-major)  </para>
+</entry><entry thead="no"><para>its increment <formula id="241">$ \Delta\boldsymbol{F}_c $</formula> (column-major)  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>paddedStateVarSize(nStateVarsCenter)  </para>
@@ -1967,7 +1951,7 @@
         <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle"/>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="97" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="97" bodyend="734"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="98" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="98" bodyend="725"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7a881d3367d36894d2a635a479fed951" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_assignedKernelFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae55f098f19c16364cd920775fcd8fe13" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_centerDisplacement</name></member>
@@ -1978,7 +1962,6 @@
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a85849e4b4add43cdf679dcbb5ed4a117" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_nNodes</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7cf3f2da3c51de0cb442f423afbcd7b9" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_nVCIConstraints</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5a44d8d6958ee10b1455197ec6cf6a3c" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_particleDomainMain</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_smoothDerivativeShapeFunctionsForParticleDomain</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af60e1630976cd6088ec1126185c8a631" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_subDomains</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a731f9f726436f27d21b75e2e90c131b4" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_subDomainShapeFunctions</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aef92e238f539a9e51f841f7526cdf4bf" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>_validProperties</name></member>
@@ -2039,6 +2022,7 @@
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aa5502504cea55c412fd6694870b8e804" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>paddedStateVarSize</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a3e0a311f869ebad9df640e91a74c88a8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>Particle</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>ParticleDomainType</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1358d4f2a5acd12c6b4ff68b870f4bad" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>SectionIntegrals</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>setInitialCondition</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8155719104a1fd943d126d82804b65d3" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>setProperties</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4bd33f1e93ff3dff4dc14520c2c48dc6" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle</scope><name>setProperty</name></member>

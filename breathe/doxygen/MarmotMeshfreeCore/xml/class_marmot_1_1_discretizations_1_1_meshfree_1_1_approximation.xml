@@ -55,7 +55,7 @@
           <declname>shapeFunctionValues</declname>
         </param>
         <briefdescription>
-<para>Compute the shape function values <formula id="331">$ \Psi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Compute the shape function values <formula id="332">$ \Psi_A(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -63,7 +63,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="97">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="80">$ d $</formula>). </para>
+<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="87">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -71,7 +71,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="82">$ n $</formula> candidate kernel functions. </para>
+<para>The <formula id="89">$ n $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -79,7 +79,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="82">$ n $</formula>). </para>
+<para>Shape function values (length <formula id="89">$ n $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -122,7 +122,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="97">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
+<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -130,7 +130,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="82">$ n $</formula> candidate kernel functions. </para>
+<para>The <formula id="89">$ n $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -138,7 +138,7 @@
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="82">$ n $</formula>). </para>
+<para>Shape function values (length <formula id="89">$ n $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -146,7 +146,7 @@
 <parametername direction="out">shapeFunctionValueGradients</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function gradients, column-major <formula id="332">$ d \times n $</formula>. </para>
+<para>Shape function gradients, column-major <formula id="333">$ d \times n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -161,8 +161,8 @@
 <para>Abstract interface of a meshfree approximation, which evaluates shape functions from a set of kernels. </para>
     </briefdescription>
     <detaileddescription>
-<para>Given an evaluation point <formula id="97">$ \boldsymbol{x} $</formula> and a list of <formula id="82">$ n $</formula> candidate kernel functions <formula id="256">$ \phi_A $</formula>, <formula id="330">$ A = 0, \dots, n-1 $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), an approximation computes the shape functions <formula id="331">$ \Psi_A(\boldsymbol{x}) $</formula>, alone or with their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <formula id="97">$ \boldsymbol{x} $</formula> get zero entries.</para>
-<para>The gradient output is a column-major <formula id="332">$ d \times n $</formula> array, i.e., entry <formula id="333">$ i + d\,A $</formula> holds <formula id="334">$ \partial \Psi_A / \partial x_i $</formula>, where <formula id="80">$ d $</formula> is the spatial dimension. </para>
+<para>Given an evaluation point <formula id="104">$ \boldsymbol{x} $</formula> and a list of <formula id="89">$ n $</formula> candidate kernel functions <formula id="257">$ \phi_A $</formula>, <formula id="331">$ A = 0, \dots, n-1 $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), an approximation computes the shape functions <formula id="332">$ \Psi_A(\boldsymbol{x}) $</formula>, alone or with their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <formula id="104">$ \boldsymbol{x} $</formula> get zero entries.</para>
+<para>The gradient output is a column-major <formula id="333">$ d \times n $</formula> array, i.e., entry <formula id="334">$ i + d\,A $</formula> holds <formula id="335">$ \partial \Psi_A / \partial x_i $</formula>, where <formula id="87">$ d $</formula> is the spatial dimension. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">

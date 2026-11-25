@@ -1,0 +1,29 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/MarmotMeshfreeApproximation.h" alt="" coords="171,101,598,149"/>
+<area shape="rect" id="node2" title="Marmot/MarmotMeshfreeKernelFunction.h" alt="" coords="5,197,439,245"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="347,149,276,192,274,187,341,151"/>
+<area shape="rect" id="node12" title="vector" alt="" coords="547,197,628,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="436,147,535,195,530,195,435,153"/>
+<area shape="rect" id="node3" title="Marmot/MarmotMeshfreeQuadHexCell.h" alt="" coords="724,101,1136,149"/>
+<area shape="rect" id="node6" title="Eigen/Dense" alt="" coords="989,197,1130,245"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="963,147,1018,189,1012,187,961,152"/>
+<area shape="rect" id="node7" title="array" alt="" coords="652,197,725,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="864,149,740,199,739,194,859,150"/>
+<area shape="rect" id="node8" title="cmath" alt="" coords="1154,197,1234,245"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="1006,147,1142,197,1137,196,1005,153"/>
+<area shape="rect" id="node9" title="iostream" alt="" coords="1259,197,1364,245"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="1049,147,1141,168,1246,197,1241,197,1140,173,1049,153"/>
+<area shape="rect" id="node10" title="stdexcept" alt="" coords="749,197,863,245"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="902,149,850,190,848,185,897,151"/>
+<area shape="rect" id="node11" title="string" alt="" coords="887,197,965,245"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="931,148,930,184,926,180,927,152"/>
+<area shape="poly" id="edge9" title="include" alt="" coords="819,150,735,172,643,200,642,194,734,167,813,150"/>
+<area shape="rect" id="node4" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" alt="" coords="58,5,1263,53"/>
+<area shape="poly" id="edge10" title="include" alt="" coords="594,53,468,99,467,93,589,55"/>
+<area shape="poly" id="edge11" title="include" alt="" coords="269,55,204,76,179,89,161,103,153,122,157,143,169,164,186,186,181,186,165,167,152,145,148,121,157,100,176,84,202,71,273,53"/>
+<area shape="poly" id="edge12" title="include" alt="" coords="728,51,851,96,846,96,728,57"/>
+<area shape="rect" id="node5" title="Eigen/Core" alt="" coords="1160,101,1287,149"/>
+<area shape="poly" id="edge13" title="include" alt="" coords="870,51,1003,71,1147,101,1142,101,1002,76,870,57"/>
+<area shape="poly" id="edge14" title="include" alt="" coords="666,52,685,183,681,181,662,56"/>
+<area shape="poly" id="edge15" title="include" alt="" coords="654,53,604,185,600,181,649,55"/>
+</map>

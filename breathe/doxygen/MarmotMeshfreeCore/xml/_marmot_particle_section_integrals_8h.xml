@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_particle_section_integrals_8h" kind="file" language="C++">
+    <compoundname>MarmotParticleSectionIntegrals.h</compoundname>
+    <includes refid="_marmot_meshfree_approximation_8h" local="yes">Marmot/MarmotMeshfreeApproximation.h</includes>
+    <includes refid="_marmot_meshfree_kernel_function_8h" local="yes">Marmot/MarmotMeshfreeKernelFunction.h</includes>
+    <includes refid="_marmot_meshfree_quad_hex_cell_8h" local="yes">Marmot/MarmotMeshfreeQuadHexCell.h</includes>
+    <includes local="no">Eigen/Core</includes>
+    <includes local="no">array</includes>
+    <includes local="no">vector</includes>
+    <includedby refid="_generic_s_d_i_particle_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>Marmot/MarmotMeshfreeApproximation.h</label>
+        <link refid="_marmot_meshfree_approximation_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotMeshfreeKernelFunction.h</label>
+        <link refid="_marmot_meshfree_kernel_function_8h_source"/>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotMeshfreeQuadHexCell.h</label>
+        <link refid="_marmot_meshfree_quad_hex_cell_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h</label>
+        <link refid="_marmot_particle_section_integrals_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="6">
+        <label>Eigen/Dense</label>
+      </node>
+      <node id="7">
+        <label>array</label>
+      </node>
+      <node id="8">
+        <label>cmath</label>
+      </node>
+      <node id="9">
+        <label>iostream</label>
+      </node>
+      <node id="10">
+        <label>stdexcept</label>
+      </node>
+      <node id="11">
+        <label>string</label>
+      </node>
+      <node id="4">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h</label>
+        <link refid="_generic_s_d_i_particle_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h</label>
+        <link refid="_marmot_particle_section_integrals_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" prot="public">Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree">Marmot::Discretizations::Meshfree</innernamespace>
+    <briefdescription>
+<para>The integrals over the smoothing domain of a particle: its volume and the smoothed gradients of the shape functions, one implementation for the SQCNI, SNNI, NSNI and SDI particles of both families. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMeshfreeApproximation.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_meshfree_quad_hex_cell_8h" kindref="compound">Marmot/MarmotMeshfreeQuadHexCell.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;array&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::Meshfree<sp/>{</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nVertices<sp/>&gt;</highlight></codeline>
+<codeline lineno="75" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref><sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="78" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell&lt; nDim, nVertices &gt;</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="79" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" kindref="member">Vec</ref><sp/><sp/>=<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;;<sp/></highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref><sp/>=<sp/>1;</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kindref="member">FacePoints</ref><sp/>=<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nPointsPerFace<sp/>&gt;;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" kindref="member">volume</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/>cell<sp/>)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>cell.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1affe0c3f3b6da76a9557cad4b9fd9dc7e" kindref="member">volume</ref>();<sp/>}</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="99" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" kindref="member">numberOfFaceQuadraturePoints</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/>cell<sp/>)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>cell.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" kindref="member">getNumberOfFaces</ref>()<sp/>*<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref>;<sp/>}</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kindref="member">FacePoints</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kindref="member">faceQuadraturePoints</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/>cell,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>faceID<sp/>)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>cell.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aa26e24290a34c2495e9ec535037c4dad" kindref="member">getFaceCenterCoordinates</ref>(<sp/>faceID<sp/>);</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>Eigen::Dynamic<sp/>&gt;<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" kindref="member">faceQuadraturePoints</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/>cell<sp/>)</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>Eigen::Dynamic<sp/>&gt;<sp/>points(<sp/>nDim,<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" kindref="member">numberOfFaceQuadraturePoints</ref>(<sp/>cell<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>0;<sp/>f<sp/>&lt;<sp/>cell.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" kindref="member">getNumberOfFaces</ref>();<sp/>f++<sp/>)</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>points.middleCols(<sp/>f<sp/>*<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref>,<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref><sp/>)<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kindref="member">faceQuadraturePoints</ref>(<sp/>cell,<sp/>f<sp/>+<sp/>1<sp/>);</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>points;</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"></highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kindref="member">smoothShapeFunctionGradients</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>smoothingDomain,</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>approximation,</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;<sp/>const<sp/>KernelFunction*<sp/>&gt;&amp;<sp/>kernelFunctions,</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>N,</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::MatrixXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dN_dY,</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::array&lt;<sp/>Eigen::MatrixXd,<sp/>nDim<sp/>&gt;*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d2N_dYdY<sp/>);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nVertices<sp/>&gt;</highlight></codeline>
+<codeline lineno="146" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kindref="member">ParticleSectionIntegrals&lt; nDim, nVertices &gt;::smoothShapeFunctionGradients</ref>(</highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>smoothingDomain,</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>approximation,</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;<sp/>const<sp/>KernelFunction*<sp/>&gt;&amp;<sp/>kernelFunctions,</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::MatrixXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>N,</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dN_dY,</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/>std::array&lt;<sp/>Eigen::MatrixXd,<sp/>nDim<sp/>&gt;*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>d2N_dYdY<sp/>)</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>N.cols()<sp/>);</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/><sp/><sp/>dN_dY<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>Eigen::MatrixXd::Zero(<sp/>nDim,<sp/>nNodes<sp/>);</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>d2N_dYdY<sp/>)</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>J<sp/>=<sp/>0;<sp/>J<sp/>&lt;<sp/>nDim;<sp/>J++<sp/>)</highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<sp/>*d2N_dYdY<sp/>)[J]<sp/>=<sp/>Eigen::MatrixXd::Zero(<sp/>nDim,<sp/>nNodes<sp/>);</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>NBoundary(<sp/>1,<sp/>nNodes<sp/>);</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>dN_dY_Boundary<sp/>=<sp/>Eigen::MatrixXd::Zero(<sp/>nDim,<sp/>nNodes<sp/>);</highlight></codeline>
+<codeline lineno="162"><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>f<sp/>=<sp/>0;<sp/>f<sp/>&lt;<sp/>smoothingDomain.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" kindref="member">getNumberOfFaces</ref>();<sp/>f++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kindref="member">FacePoints</ref><sp/>points<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kindref="member">faceQuadraturePoints</ref>(<sp/>smoothingDomain,<sp/>f<sp/>+<sp/>1<sp/>);</highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" kindref="member">Vec</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>n_dA<sp/><sp/><sp/>=<sp/>smoothingDomain.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" kindref="member">boundarySurfaceVector</ref>(<sp/>f<sp/>+<sp/>1<sp/>)<sp/>/<sp/>double(<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref><sp/>);</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>g<sp/>=<sp/>0;<sp/>g<sp/>&lt;<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref>;<sp/>g++<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" kindref="member">Vec</ref><sp/>Y<sp/>=<sp/>points.col(<sp/>g<sp/>);</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>d2N_dYdY<sp/>)</highlight></codeline>
+<codeline lineno="171"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>approximation.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6" kindref="member">computeShapeFunctionsAndGradients</ref>(<sp/>Y.data(),</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>kernelFunctions,</highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>NBoundary.data(),</highlight></codeline>
+<codeline lineno="174"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dN_dY_Boundary.data()<sp/>);</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>approximation.<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4" kindref="member">computeShapeFunctions</ref>(<sp/>Y.data(),<sp/>kernelFunctions,<sp/>NBoundary.data()<sp/>);</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>dN_dY<sp/>+=<sp/>n_dA<sp/>*<sp/>NBoundary;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>d2N_dYdY<sp/>)</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>J<sp/>=<sp/>0;<sp/>J<sp/>&lt;<sp/>nDim;<sp/>J++<sp/>)</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<sp/>*d2N_dYdY<sp/>)[J]<sp/>+=<sp/>n_dA(<sp/>J<sp/>)<sp/>*<sp/>dN_dY_Boundary;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>V<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" kindref="member">volume</ref>(<sp/>smoothingDomain<sp/>);</highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/>dN_dY<sp/>/=<sp/>V;</highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>d2N_dYdY<sp/>)</highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>J<sp/>=<sp/>0;<sp/>J<sp/>&lt;<sp/>nDim;<sp/>J++<sp/>)</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<sp/>*d2N_dYdY<sp/>)[J]<sp/>/=<sp/>V;</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Meshfree</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h"/>
+  </compounddef>
+</doxygen>
