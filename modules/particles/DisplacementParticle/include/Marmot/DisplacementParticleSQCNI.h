@@ -82,6 +82,17 @@ namespace Marmot::Discretizations::Meshfree {
 
     ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
 
+    using SectionIntegrals = ParticleSection< nDim, nVertices >;   ///< the integrals over the particle domain
+
+    /**
+     * @brief The smoothing domain of the particle.
+     * @return The cell of the smoothing domain in the intermediate configuration.
+     */
+    typename ParticleDomainType::LagrangeCellType smoothingDomain() const
+    {
+      return typename ParticleDomainType::LagrangeCellType( _particleDomain.getSmoothingVertexCoordinates() );
+    }
+
   public:
     /// how the smoothing domain follows the deformation
     using SmoothingDomainUpdateType = ParticleDomainType::SmoothingDomainUpdateType;
@@ -156,18 +167,16 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Evaluation points of the shape functions: the face centers of the smoothing domain.
-     * @param[out] coordinates The coordinates (nDim x number of faces, column major).
+     * @brief Evaluation points of the shape functions: the quadrature points of the faces of the smoothing domain (the
+     * face centers, ParticleSection::faceQuadraturePoints()).
+     * @param[out] coordinates The coordinates (nDim x number of evaluation points, column major).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > coordinatesMap( coordinates,
                                                                                   nDim,
-                                                                                  _particleDomain.getNumberOfFaces() );
-
-      for ( int i = 0; i < _particleDomain.getNumberOfFaces(); i++ ) {
-        coordinatesMap.col( i ) = _particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-      }
+                                                                                  getNumberOfEvaluationPoints() );
+      coordinatesMap = SectionIntegrals::faceQuadraturePoints( smoothingDomain() );
     }
 
     /**
@@ -265,27 +274,20 @@ namespace Marmot::Discretizations::Meshfree {
       Eigen::Matrix< double, nDim, 1 > coords;
       this->getCenterCoordinates( coords.data() ); // Uses DisplacementParticleSQCNI's getCenterCoordinates
 
-      this->_N     = Eigen::MatrixXd::Zero( 1, this->_nNodes );
-      this->_dN_dY = Eigen::MatrixXd::Zero( nDim, this->_nNodes );
+      this->_N = Eigen::MatrixXd::Zero( 1, this->_nNodes );
 
       // Compute N at the particle center (from GenericParticle)
       this->_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                           this->_assignedKernelFunctions,
                                                           this->_N.data() );
 
-      // Compute dN_dY using the SQCNI approach (boundary integral over smoothing domain)
-      Eigen::MatrixXd smooth_NBoundary( 1, this->_nNodes );
-      for ( int i = 0; i < _particleDomain.getNumberOfFaces(); i++ ) {
-
-        auto smoothing_evaluation_point = _particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-        auto smoothing_n_dA             = _particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
-
-        this->_meshfreeApproximation.computeShapeFunctions( smoothing_evaluation_point.data(),
-                                                            this->_assignedKernelFunctions,
-                                                            smooth_NBoundary.data() );
-        this->_dN_dY += smoothing_n_dA * smooth_NBoundary;
-      }
-      this->_dN_dY /= _particleDomain.getSmoothingVolume();
+      // the smoothed gradients over the smoothing domain
+      SectionIntegrals::smoothShapeFunctionGradients( smoothingDomain(),
+                                                      this->_meshfreeApproximation,
+                                                      this->_assignedKernelFunctions,
+                                                      this->_N,
+                                                      this->_dN_dY,
+                                                      nullptr );
 
       this->_T     = this->_N;
       this->_dT_dY = this->_dN_dY;

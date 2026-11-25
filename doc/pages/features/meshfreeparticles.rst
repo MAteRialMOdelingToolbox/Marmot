@@ -345,7 +345,12 @@ pattern). The abbreviations denote what the code does:
 
        where the smoothing domain deforms with the deformation gradient of the particle (``DeformationGradient``),
        so that neighboring smoothing domains remain (approximately) conforming. The suffixes ``_R`` and ``_RU``
-       select the ``RotationOnly`` and ``RotationAndPrincipalStretch`` updates instead.
+       select the ``RotationOnly`` and ``RotationAndPrincipalStretch`` updates instead. The SQCNI, SNNI and NSNI
+       particles of both families (the classes ``DisplacementParticleSQCNI``, ``DisplacementParticleSQCNIxNSNI``
+       and their gradient-enhanced finite-strain twins) share one smoothing,
+       ``ParticleSection::smoothShapeFunctionGradients()`` (``MarmotParticleSection.h``), which also gives the
+       smoothed second derivatives of NSNI; their evaluation points are its quadrature points,
+       ``ParticleSection::faceQuadraturePoints()``.
    * - SNNI
      - **Stabilized non-conforming nodal integration**: the same smoothed gradient, but the smoothing domain keeps its
        undeformed shape and is only translated with the particle (``None``). The prefixes ``R-`` and ``RS-`` select
@@ -518,6 +523,9 @@ Implementation
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleDomain
+   :allow-dot-graphs:
+
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleSection
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::GenericParticle

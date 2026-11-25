@@ -95,9 +95,10 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
   protected:
-    using LagrangeCellType = LagrangeCell< nDim, nVertices >;   ///< geometry of the smoothing domain
+    using LagrangeCellType = LagrangeCell< nDim, nVertices >;    ///< geometry of the smoothing domain
+    using SectionIntegrals = ParticleSection< nDim, nVertices >; ///< the integrals over the particle domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;  ///< update type of the smoothing domain
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 
@@ -398,19 +399,18 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
     /**
-     * @brief Coordinates of the evaluation points: the face centers of the smoothing domain.
-     * @param[out] coordinates Coordinates, face by face (nDim x number of faces).
+     * @brief Coordinates of the evaluation points: the quadrature points of the faces of the smoothing domain (the face
+     * centers, ParticleSection::faceQuadraturePoints()).
+     * @param[out] coordinates Coordinates, face by face (nDim x number of evaluation points).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
     {
       const auto cell = _makeSmoothingDomainCell();
 
-      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > faceCenters( coordinates,
-                                                                               nDim,
-                                                                               cell.getNumberOfFaces() );
-
-      for ( int i = 0; i < cell.getNumberOfFaces(); i++ )
-        faceCenters.col( i ) = cell.getFaceCenterCoordinates( i + 1 );
+      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > points( coordinates,
+                                                                          nDim,
+                                                                          getNumberOfEvaluationPoints() );
+      points = SectionIntegrals::faceQuadraturePoints( cell );
     }
 
     /**
@@ -819,30 +819,18 @@ namespace Marmot::Discretizations::Meshfree {
     Eigen::Matrix< double, nDim, 1 > coords;
     ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
-    ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-    ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
+    ParentPointParticle::_N = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
     ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                                        ParentPointParticle::_assignedKernelFunctions,
                                                                        ParentPointParticle::_N.data() );
 
-    Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-
-    const auto cell = _makeSmoothingDomainCell();
-
-    for ( int i = 0; i < cell.getNumberOfFaces(); i++ ) {
-
-      const Eigen::Matrix< double, nDim, 1 > n_dA       = cell.boundarySurfaceVector( i + 1 );
-      const Eigen::Matrix< double, nDim, 1 > faceCenter = cell.getFaceCenterCoordinates( i + 1 );
-
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( faceCenter.data(),
-                                                                         ParentPointParticle::_assignedKernelFunctions,
-                                                                         NBoundary.data() );
-
-      ParentPointParticle::_dN_dY += n_dA * NBoundary;
-    }
-
-    ParentPointParticle::_dN_dY /= cell.volume();
+    SectionIntegrals::smoothShapeFunctionGradients( _makeSmoothingDomainCell(),
+                                                    ParentPointParticle::_meshfreeApproximation,
+                                                    ParentPointParticle::_assignedKernelFunctions,
+                                                    ParentPointParticle::_N,
+                                                    ParentPointParticle::_dN_dY,
+                                                    nullptr );
 
     ParentPointParticle::_T     = ParentPointParticle::_N;
     ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
