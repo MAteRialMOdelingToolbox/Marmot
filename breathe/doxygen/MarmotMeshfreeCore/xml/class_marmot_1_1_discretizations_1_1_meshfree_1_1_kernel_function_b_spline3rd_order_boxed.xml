@@ -87,7 +87,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="78">$ d $</formula>. </para>
+<para>Spatial dimension <formula id="78">$ d $</formula>, 1 to maxDim. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -99,11 +99,20 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the dimension is not supported. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="76" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="77" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a3401ff8c8d3dfa73aaa135e605d8ee86" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -118,7 +127,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="79" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="80" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afac6dc6a0fa3b73849e75aee5ee457fc" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>double</type>
@@ -150,15 +159,15 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="86" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="87" column="12"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac57ff8dedb6e456febd9c86454d0c5ac" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
-        <type>void</type>
-        <definition>void Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionGradient</definition>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afd9ea0c42f50b193796b2e5435ff44c8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionAndGradient</definition>
         <argsstring>(const double *coord, double *grad) const override</argsstring>
-        <name>computeKernelFunctionGradient</name>
-        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionGradient</qualifiedname>
-        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682">computeKernelFunctionGradient</reimplements>
+        <name>computeKernelFunctionAndGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeKernelFunctionAndGradient</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1acd0324e293b8095439676ba5e661a810">computeKernelFunctionAndGradient</reimplements>
         <param>
           <type>const double *</type>
           <declname>coord</declname>
@@ -168,10 +177,9 @@
           <declname>grad</declname>
         </param>
         <briefdescription>
-<para>Evaluate the kernel gradient by the product rule. </para>
+<para>Evaluate the kernel and its gradient (product rule) at once, from one evaluation of the one-dimensional factors <formula id="112">$ w $</formula> and <formula id="123">$ w&apos; $</formula> per direction: <formula id="124">$ \partial \phi_A / \partial x_i = w&apos;(x_i - x_{A,i}) \prod_{j \neq i} w(x_j - x_{A,j}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="123">$ \partial \phi_A / \partial x_i = w&apos;(x_i - x_{A,i}) \prod_{j \neq i} w(x_j - x_{A,j}) $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">coord</parametername>
@@ -185,79 +193,63 @@
 <parametername direction="out">grad</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient <formula id="124">$ \partial \phi_A / \partial x_i $</formula> (length <formula id="78">$ d $</formula>). </para>
+<para>Gradient <formula id="125">$ \partial \phi_A / \partial x_i $</formula> (length <formula id="78">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
+<simplesect kind="return"><para>The kernel value <formula id="126">$ \phi_A(\boldsymbol{x}) $</formula>, as <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afac6dc6a0fa3b73849e75aee5ee457fc" kindref="member">computeKernelFunction()</ref>. </para>
+</simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="96" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="98" column="12"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1af7a41cc190cd81d288465b24f3eb15d7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1aee4ec669cee46a323943cd888b15f051" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
         <definition>double Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrder</definition>
-        <argsstring>(double coord_minus_center) const</argsstring>
+        <argsstring>(double coord_minus_center, double *dw_dr=nullptr) const</argsstring>
         <name>computeBSpline3rdOrder</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrder</qualifiedname>
         <param>
           <type>double</type>
           <declname>coord_minus_center</declname>
         </param>
-        <briefdescription>
-<para>Evaluate the one-dimensional B-spline <formula id="125">$ w(r) $</formula>. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername direction="in">coord_minus_center</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Signed distance <formula id="126">$ r = x_i - x_{A,i} $</formula> in one coordinate direction. </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para><formula id="125">$ w(r) $</formula>. </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="103" column="12"/>
-      </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a852890c615e3b1b7eb7ecfd231e4ddf1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrderGradient</definition>
-        <argsstring>(double coord_minus_center) const</argsstring>
-        <name>computeBSpline3rdOrderGradient</name>
-        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed::computeBSpline3rdOrderGradient</qualifiedname>
         <param>
-          <type>double</type>
-          <declname>coord_minus_center</declname>
+          <type>double *</type>
+          <declname>dw_dr</declname>
+          <defval>nullptr</defval>
         </param>
         <briefdescription>
-<para>Evaluate the derivative <formula id="127">$ \mathrm{d}w / \mathrm{d}r $</formula> of the one-dimensional B-spline. </para>
+<para>Evaluate the one-dimensional B-spline <formula id="127">$ w(r) $</formula> and, if asked for, its derivative <formula id="128">$ \mathrm{d}w / \mathrm{d}r $</formula>, which shares <formula id="129">$ z $</formula> with it: </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="128">\[  \frac{\mathrm{d}w}{\mathrm{d}r} = \frac{\operatorname{sign}(r)}{a} \begin{cases} -8 z + 12 z^2, &amp;
+<para><formula id="130">\[  \frac{\mathrm{d}w}{\mathrm{d}r} = \frac{\operatorname{sign}(r)}{a} \begin{cases} -8 z + 12 z^2, &amp;
   z \le \tfrac{1}{2}, \\ -4 + 8 z - 4 z^2, &amp; \tfrac{1}{2} &lt; z \le 1, \\ 0, &amp; z &gt; 1. \end{cases}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">coord_minus_center</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Signed distance <formula id="126">$ r = x_i - x_{A,i} $</formula> in one coordinate direction. </para>
+<para>Signed distance <formula id="131">$ r = x_i - x_{A,i} $</formula> in one coordinate direction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">dw_dr</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The derivative <formula id="128">$ \mathrm{d}w / \mathrm{d}r $</formula>; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="127">$ \mathrm{d}w / \mathrm{d}r $</formula>. </para>
+<simplesect kind="return"><para><formula id="127">$ w(r) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="115" column="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="111" column="12"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a50c867fc0fe24af6a125b57fb8275168" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>const double *</type>
@@ -276,7 +268,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="121" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="117" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a2754f9384bb9eeecea4f94628b08739a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -306,7 +298,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="127" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="123" column="10"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a579e742a86fc79fb6452e26dc9d9a7c2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>bool</type>
@@ -320,7 +312,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Check whether a point lies within the support, i.e., whether <formula id="129">$ \phi_A(\boldsymbol{x}) &gt; 0 $</formula>. </para>
+<para>Check whether a point lies within the support, i.e., whether <formula id="132">$ \phi_A(\boldsymbol{x}) &gt; 0 $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -338,7 +330,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="134" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="130" column="10"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1acf1020d1bcd2b2df2a5c231c3e9ce7cd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
         <type>void</type>
@@ -364,7 +356,7 @@
 <parametername direction="out">min</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Lower corner <formula id="130">$ x_{A,i} - a $</formula> (length <formula id="78">$ d $</formula>). </para>
+<para>Lower corner <formula id="133">$ x_{A,i} - a $</formula> (length <formula id="78">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -372,7 +364,7 @@
 <parametername direction="out">max</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Upper corner <formula id="131">$ x_{A,i} + a $</formula> (length <formula id="78">$ d $</formula>). </para>
+<para>Upper corner <formula id="134">$ x_{A,i} + a $</formula> (length <formula id="78">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -380,7 +372,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="141" column="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="137" column="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -422,20 +414,20 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="61" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" bodystart="61" bodyend="142"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" line="61" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h" bodystart="61" bodyend="138"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ab76b18bb2d9bf956e7a04fd29d0e8596" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>_centerCoord</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a04060b01eec913797906006ad93097f4" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>_dim</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac41b6f5643ec8d4ff0a7e94912d37fd7" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>_supportRadius</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1af7a41cc190cd81d288465b24f3eb15d7" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeBSpline3rdOrder</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a852890c615e3b1b7eb7ecfd231e4ddf1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeBSpline3rdOrderGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1aee4ec669cee46a323943cd888b15f051" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeBSpline3rdOrder</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afac6dc6a0fa3b73849e75aee5ee457fc" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeKernelFunction</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac57ff8dedb6e456febd9c86454d0c5ac" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeKernelFunctionGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afd9ea0c42f50b193796b2e5435ff44c8" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>computeKernelFunctionAndGradient</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1acf1020d1bcd2b2df2a5c231c3e9ce7cd" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>getBoundingBox</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a50c867fc0fe24af6a125b57fb8275168" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>getCenterCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a579e742a86fc79fb6452e26dc9d9a7c2" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>isInSupport</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>KernelFunction</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a8c464c772b4f84dbb94b913165d79c90" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>KernelFunctionBSpline3rdOrderBoxed</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1abdd74176e4c3b31ddea48fe027f2348d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>maxDim</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a2754f9384bb9eeecea4f94628b08739a" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>moveTo</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>~KernelFunction</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a3401ff8c8d3dfa73aaa135e605d8ee86" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</scope><name>~KernelFunctionBSpline3rdOrderBoxed</name></member>

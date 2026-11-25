@@ -5,6 +5,24 @@
     <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</derivedcompoundref>
     <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</derivedcompoundref>
     <includes refid="_marmot_meshfree_kernel_function_8h" local="no">MarmotMeshfreeKernelFunction.h</includes>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1abdd74176e4c3b31ddea48fe027f2348d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::KernelFunction::maxDim</definition>
+        <argsstring></argsstring>
+        <name>maxDim</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::maxDim</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+<para>The largest spatial dimension <formula id="78">$ d $</formula> of a kernel. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="47" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="public-func">
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -19,7 +37,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="47" column="5"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="50" column="5"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
         <type></type>
@@ -34,7 +52,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="50" column="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="53" column="13"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>double</type>
@@ -49,7 +67,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Evaluate the kernel function <formula id="267">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Evaluate the kernel function <formula id="126">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -67,16 +85,16 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="57" column="20"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="60" column="20"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
-        <type>void</type>
-        <definition>virtual void Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionGradient</definition>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1acd0324e293b8095439676ba5e661a810" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionAndGradient</definition>
         <argsstring>(const double *coord, double *grad) const =0</argsstring>
-        <name>computeKernelFunctionGradient</name>
-        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionGradient</qualifiedname>
-        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a7e26183d8d3b7a31e939f98d478812a7">computeKernelFunctionGradient</reimplementedby>
-        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac57ff8dedb6e456febd9c86454d0c5ac">computeKernelFunctionGradient</reimplementedby>
+        <name>computeKernelFunctionAndGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionAndGradient</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a5c4eeb7bb41a68b03be4bd665e3fbbb4">computeKernelFunctionAndGradient</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afd9ea0c42f50b193796b2e5435ff44c8">computeKernelFunctionAndGradient</reimplementedby>
         <param>
           <type>const double *</type>
           <declname>coord</declname>
@@ -86,7 +104,7 @@
           <declname>grad</declname>
         </param>
         <briefdescription>
-<para>Evaluate the gradient <formula id="124">$ \partial \phi_A / \partial x_i $</formula> of the kernel function. </para>
+<para>Evaluate the kernel function <formula id="126">$ \phi_A(\boldsymbol{x}) $</formula> and its gradient <formula id="125">$ \partial \phi_A / \partial x_i $</formula> at once: the two share most of their work (for a tensor-product kernel, the one-dimensional factors). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -106,11 +124,13 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
+<simplesect kind="return"><para>The kernel value; zero outside the support (the value <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" kindref="member">computeKernelFunction()</ref> returns). </para>
+</simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="64" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="70" column="20"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a9f4792990bae39afc63d74e6388fbbd0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -153,7 +173,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="71" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="77" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a24a6624cb71c4213e5df546be25cc827" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>bool</type>
@@ -186,7 +206,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="78" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="84" column="18"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a5e591e8f215f7819d1f257f683787d73" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>const double *</type>
@@ -206,7 +226,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="84" column="26"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="90" column="26"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a210e3c2eb15d0619033d1c33c189a813" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -237,14 +257,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="90" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="96" column="18"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Abstract interface of a meshfree kernel (window) function <formula id="267">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Abstract interface of a meshfree kernel (window) function <formula id="126">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
     </briefdescription>
     <detaileddescription>
-<para>A kernel function is attached to a node (particle) <formula id="16">$ A $</formula> with center <formula id="111">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="137">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="137">$ \Psi_A $</formula> is inherited from the kernel.</para>
+<para>A kernel function is attached to a node (particle) <formula id="16">$ A $</formula> with center <formula id="111">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="140">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="140">$ \Psi_A $</formula> is inherited from the kernel.</para>
 <para>All coordinates are passed as raw arrays of length <formula id="78">$ d $</formula> (the spatial dimension of the kernel). The configuration in which the coordinates are given (reference or current) is decided by the caller; the kernel only compares them with its center coordinates. </para>
     </detaileddescription>
     <inheritancegraph>
@@ -265,14 +285,15 @@
         </childnode>
       </node>
     </inheritancegraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" bodystart="43" bodyend="91"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" bodystart="43" bodyend="97"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>computeKernelFunction</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>computeKernelFunctionGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1acd0324e293b8095439676ba5e661a810" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>computeKernelFunctionAndGradient</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a9f4792990bae39afc63d74e6388fbbd0" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>getBoundingBox</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a5e591e8f215f7819d1f257f683787d73" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>getCenterCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a24a6624cb71c4213e5df546be25cc827" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>isInSupport</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>KernelFunction</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1abdd74176e4c3b31ddea48fe027f2348d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>maxDim</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a210e3c2eb15d0619033d1c33c189a813" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>moveTo</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>~KernelFunction</name></member>
     </listofallmembers>

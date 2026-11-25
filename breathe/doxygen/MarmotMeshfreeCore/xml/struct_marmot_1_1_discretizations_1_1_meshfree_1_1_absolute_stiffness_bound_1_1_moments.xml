@@ -27,7 +27,7 @@
         <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::sumOfValues</qualifiedname>
         <initializer>= 0.0</initializer>
         <briefdescription>
-<para><formula id="219">$ \sum_B w_B |N_B| $</formula> </para>
+<para><formula id="222">$ \sum_B w_B |N_B| $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -45,7 +45,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para><formula id="220">$ \sum_B w_B \|\boldsymbol{g}_B\| $</formula> </para>
+<para><formula id="223">$ \sum_B w_B \|\boldsymbol{g}_B\| $</formula> </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -59,7 +59,7 @@
         <qualifiedname>Marmot::Discretizations::Meshfree::AbsoluteStiffnessBound::Moments::gradientMoments</qualifiedname>
         <initializer>= Eigen::Matrix&lt; double, nDim, nDim &gt;::Zero()</initializer>
         <briefdescription>
-<para><formula id="221">$ \sum_B w_B \boldsymbol{g}_B \boldsymbol{g}_B^T / \|\boldsymbol{g}_B\| $</formula> </para>
+<para><formula id="224">$ \sum_B w_B \boldsymbol{g}_B \boldsymbol{g}_B^T / \|\boldsymbol{g}_B\| $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

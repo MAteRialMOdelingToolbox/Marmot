@@ -181,18 +181,18 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the B-spline basis function <formula id="309">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
+<para>Evaluate the B-spline basis function <formula id="316">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="312">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+<para><formula id="319">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
              + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
-\]</formula> where a term is omitted ( <formula id="313">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="314">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
+\]</formula> where a term is omitted ( <formula id="320">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="321">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Degree <formula id="20">$ p $</formula> of the B-spline (order <formula id="315">$ p + 1 $</formula>). </para>
+<para>Degree <formula id="20">$ p $</formula> of the B-spline (order <formula id="322">$ p + 1 $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -201,7 +201,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="316">$ u $</formula>. </para>
+<para>Parameter value <formula id="323">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -209,7 +209,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="317">$ z $</formula>; entries <formula id="318">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="129">$ z $</formula>; entries <formula id="324">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -221,7 +221,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="309">$ N_{i,p}(u) $</formula>. </para>
+<simplesect kind="return"><para><formula id="316">$ N_{i,p}(u) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -255,12 +255,12 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Evaluate the derivative <formula id="311">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
+<para>Evaluate the derivative <formula id="318">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="319">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
+<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="325">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
   + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N&apos;_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
-\]</formula> omitting terms with a knot difference below <formula id="314">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="320">$ = 0 $</formula>.</para>
+\]</formula> omitting terms with a knot difference below <formula id="321">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="326">$ = 0 $</formula>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>p</parametername>
@@ -275,7 +275,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="316">$ u $</formula>. </para>
+<para>Parameter value <formula id="323">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -283,7 +283,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="317">$ z $</formula>; entries <formula id="318">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+<para>Knot vector <formula id="129">$ z $</formula>; entries <formula id="324">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -295,7 +295,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="311">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
+<simplesect kind="return"><para><formula id="318">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -324,7 +324,7 @@
           <declname>i</declname>
         </param>
         <briefdescription>
-<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="321">$ [z_i, z_{i+1}) $</formula>. </para>
+<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="327">$ [z_i, z_{i+1}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -332,7 +332,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="316">$ u $</formula>. </para>
+<para>Parameter value <formula id="323">$ u $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -340,7 +340,7 @@
 <parametername direction="in">knotVec</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Knot vector <formula id="317">$ z $</formula>. </para>
+<para>Knot vector <formula id="129">$ z $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -352,7 +352,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="89">$ 1 $</formula> if <formula id="322">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="261">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="89">$ 1 $</formula> if <formula id="328">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="265">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -389,7 +389,7 @@
 <parametername direction="in">u</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Parameter value <formula id="316">$ u $</formula> (unused). </para>
+<para>Parameter value <formula id="323">$ u $</formula> (unused). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -409,7 +409,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="261">$ 0 $</formula>. </para>
+<simplesect kind="return"><para><formula id="265">$ 0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
