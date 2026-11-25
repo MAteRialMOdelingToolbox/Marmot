@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
 #include "Marmot/MarmotParticleDomain.h"
+#include "Marmot/MarmotParticleSectionIntegrals.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 /* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
@@ -61,7 +62,7 @@ namespace Marmot::Discretizations::Meshfree {
    *   \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
    *   n_{f,i}\, dA_f
    * @f]
-   * (see _smoothDerivativeShapeFunctionsForParticleDomain()). The test functions start as copies of the trial
+   * (ParticleSectionIntegrals::smoothShapeFunctionGradients()). The test functions start as copies of the trial
    * functions and are changed only by the VCI correction.
    *
    * The particle as a whole moves with its **center**: in computePhysicsKernels(), the displacement increment and
@@ -105,9 +106,10 @@ namespace Marmot::Discretizations::Meshfree {
     using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >; ///< Alias for Eigen vector storing coordinates.
     using JacobianSized = Eigen::Matrix< double, nDim, nDim >; ///< Alias for Eigen matrix storing Jacobian/deformation
                                                                ///< gradient.
-    using KernelFunctionVector = std::vector< const KernelFunction* >; ///< Alias for a vector of kernel
-                                                                       ///< function pointers.
-    using ParticleDomainType = ParticleDomain< nDim, nVertices >;      ///< Alias for the particle domain type.
+    using KernelFunctionVector = std::vector< const KernelFunction* >;      ///< Alias for a vector of kernel
+                                                                            ///< function pointers.
+    using ParticleDomainType = ParticleDomain< nDim, nVertices >;           ///< Alias for the particle domain type.
+    using SectionIntegrals   = ParticleSectionIntegrals< nDim, nVertices >; ///< the integrals over a smoothing domain
 
     /**
      * @struct SubDomainShapeFunctions
@@ -671,7 +673,8 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Evaluates the shape functions and their derivatives for a given particle domain.
      * @details N is evaluated at the center of the provided particle domain (the centroid of its deformed
-     *          geometry), dN_dY is the smoothed gradient of _smoothDerivativeShapeFunctionsForParticleDomain().
+     *          geometry), dN_dY is the smoothed gradient over its smoothing domain
+     *          (ParticleSectionIntegrals::smoothShapeFunctionGradients()).
      * @param[in] particleDomain The particle domain for which to evaluate shape functions.
      * @return A tuple containing the shape functions (N) and their gradients (dN_dY) as Eigen matrices.
      */
@@ -700,18 +703,6 @@ namespace Marmot::Discretizations::Meshfree {
     std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsAndDerivativesOnFace(
       const ParticleDomainType& particleDomain,
       int                       faceID ) const;
-
-    /**
-     * @brief Computes the smoothed derivatives of shape functions for a particle domain.
-     * @details This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain
-     *          to compute the derivatives of the shape functions, with one point per face,
-     *          @f$ \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f @f$,
-     *          where @f$ \boldsymbol{Y}_f @f$ is the face center and @f$ \boldsymbol{n}_f\,dA_f @f$ the boundary
-     *          surface vector of the smoothing domain and @f$ |\Omega_s| @f$ its volume.
-     * @param[in] particleDomain The particle domain for which to compute smoothed derivatives.
-     * @return An Eigen::MatrixXd containing the smoothed derivatives of shape functions (dN_dY).
-     */
-    Eigen::MatrixXd _smoothDerivativeShapeFunctionsForParticleDomain( const ParticleDomainType& particleDomain ) const;
 
     /**
      * @brief Sets the VCI order and updates the number of VCI constraints.
@@ -884,7 +875,13 @@ namespace Marmot::Discretizations::Meshfree {
     // Compute N at the particle center (from GenericParticle)
     this->_meshfreeApproximation.computeShapeFunctions( coords.data(), this->_assignedKernelFunctions, N.data() );
 
-    Eigen::MatrixXd dN_dY = _smoothDerivativeShapeFunctionsForParticleDomain( particleDomain );
+    Eigen::MatrixXd dN_dY;
+    SectionIntegrals::smoothShapeFunctionGradients( particleDomain.smoothingDomain(),
+                                                    this->_meshfreeApproximation,
+                                                    this->_assignedKernelFunctions,
+                                                    N,
+                                                    dN_dY,
+                                                    nullptr ); // no second derivatives (not NSNI)
 
     return std::make_tuple( N, dN_dY );
   }
@@ -934,48 +931,22 @@ namespace Marmot::Discretizations::Meshfree {
     // Use the center of the provided particleDomain
     coordsFaceCenter = particleDomain.getSmoothingDomainFaceCenterCoordinates( faceID );
 
-    Eigen::MatrixXd N     = Eigen::MatrixXd::Zero( 1, this->_nNodes );
-    Eigen::MatrixXd dN_dY = Eigen::MatrixXd::Zero( nDim, this->_nNodes );
+    Eigen::MatrixXd N = Eigen::MatrixXd::Zero( 1, this->_nNodes );
 
     // Compute N at the particle center (from GenericParticle)
     this->_meshfreeApproximation.computeShapeFunctions( coordsFaceCenter.data(),
                                                         this->_assignedKernelFunctions,
                                                         N.data() );
 
-    dN_dY = _smoothDerivativeShapeFunctionsForParticleDomain( particleDomain );
+    Eigen::MatrixXd dN_dY;
+    SectionIntegrals::smoothShapeFunctionGradients( particleDomain.smoothingDomain(),
+                                                    this->_meshfreeApproximation,
+                                                    this->_assignedKernelFunctions,
+                                                    N,
+                                                    dN_dY,
+                                                    nullptr ); // no second derivatives (not NSNI)
 
     return std::make_tuple( N, dN_dY );
-  }
-
-  /*
-   * (Definition; documented at the declaration.)
-   * @brief Computes the smoothed derivatives of shape functions for a particle domain.
-   * @tparam nDim The number of dimensions.
-   * @tparam nVertices The number of vertices.
-   * @param particleDomain The particle domain for which to compute smoothed derivatives.
-   * @return An Eigen::MatrixXd containing the smoothed derivatives of shape functions (dN_dY).
-   */
-  template < int nDim, int nVertices >
-  Eigen::MatrixXd GenericSDIParticle< nDim, nVertices >::_smoothDerivativeShapeFunctionsForParticleDomain(
-    const ParticleDomainType& particleDomain ) const // Use alias
-  {
-    Eigen::MatrixXd dN_dY = Eigen::MatrixXd::Zero( nDim, this->_nNodes );
-
-    // Compute dN_dY using the SNNI/SCNI approach (boundary integral over smoothing domain)
-    Eigen::MatrixXd smooth_NBoundary( 1, this->_nNodes );
-    for ( int i = 0; i < particleDomain.getNumberOfFaces(); i++ ) {
-
-      auto smoothing_evaluation_point = particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-      auto smoothing_n_dA             = particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
-
-      this->_meshfreeApproximation.computeShapeFunctions( smoothing_evaluation_point.data(),
-                                                          this->_assignedKernelFunctions,
-                                                          smooth_NBoundary.data() );
-      dN_dY += smoothing_n_dA * smooth_NBoundary;
-    }
-    dN_dY /= particleDomain.getSmoothingVolume();
-
-    return dN_dY;
   }
 
   /*

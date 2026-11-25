@@ -43,7 +43,7 @@ namespace Marmot::Discretizations::Meshfree {
    *    configuration), used for the particle position, the face centers, the boundary surface vectors of
    *    distributed loads and the second moments of the NSNI stabilization,
    *  - the **smoothing domain**, over whose boundary the smoothed shape function gradients are integrated (see
-   *    GenericSDIParticle and the SQCNI particles).
+   *    ParticleSectionIntegrals).
    *
    * Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the
    * centroid plus the displacement of the center (see acceptStateAndPosition()),
@@ -121,6 +121,12 @@ namespace Marmot::Discretizations::Meshfree {
     const VertexCoordinatesSized& getSmoothingVertexCoordinates() const { return _cellForSmoothing.nodes(); }
 
     /**
+     * @brief The smoothing domain, for its integrals (ParticleSectionIntegrals).
+     * @return A const reference to the cell of the smoothing domain in the intermediate configuration.
+     */
+    const LagrangeCellType& smoothingDomain() const { return _cellForSmoothing; }
+
+    /**
      * @brief Gets the number of vertices defining the particle.
      * @return The number of vertices.
      */
@@ -144,7 +150,7 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Gets the coordinates of a specific evaluation point (face center of the smoothing domain).
+     * @brief Gets the coordinates of the center of a face of the smoothing domain.
      * @param[in] faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the evaluation point coordinate.
      */
@@ -154,17 +160,10 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Gets the number of faces of the cell (the same for all three geometries); this is also the number of
-     *        evaluation points of the smoothing boundary integral.
+     * @brief Gets the number of faces of the cell (the same for all three geometries).
      * @return The number of faces.
      */
     int getNumberOfFaces() const { return _cellForGeometryDeformed.getNumberOfFaces(); }
-
-    /**
-     * @brief Get the volume of the smoothing domain in its current state.
-     * @return The smoothing volume of the particle.
-     */
-    double getSmoothingVolume() const { return _cellForSmoothing.volume(); }
 
     /**
      * @brief Gets the center coordinates of the particle in the intermediate (deformed) configuration.
@@ -219,17 +218,6 @@ namespace Marmot::Discretizations::Meshfree {
     inline std::vector< int > getSubCellIndicesOnParentFace( int parentFaceId ) const
     {
       return _cellForGeometryUndeformed.getSubCellIndicesOnParentFace( parentFaceId );
-    }
-
-    /**
-     * @brief Returns the boundary surface vector for a given face ID, from the *smoothing domain*.
-     *        This is typically used for computing smoothed shape function gradients.
-     * @param[in] faceID The ID of the face (1-based index).
-     * @return An Eigen vector representing the boundary surface vector.
-     */
-    CoordinatesSized getSmoothingBoundarySurfaceVector( int faceID ) const
-    {
-      return _cellForSmoothing.boundarySurfaceVector( faceID );
     }
 
     /**

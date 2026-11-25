@@ -95,7 +95,6 @@ namespace Marmot::Discretizations::Meshfree {
 
     using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >; ///< point particle base
     using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >; ///< SQCNI base
-    using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;   ///< geometry of the smoothing domain
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor
@@ -203,7 +202,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
      * derivatives.
      *
-     * One boundary integration over the current smoothing domain (one point per face) gives both
+     * One boundary integration over the current smoothing domain (ParticleSectionIntegrals) gives both
      * @f$ \partial N_B/\partial\boldsymbol{Y} @f$ (from @f$ N_B @f$ at the face centers) and the second derivatives
      * (from @f$ \partial N_B/\partial\boldsymbol{Y} @f$ at the face centers).
      */
@@ -212,45 +211,19 @@ namespace Marmot::Discretizations::Meshfree {
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      this->getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
-
-      ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-      ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-      for ( int i = 0; i < nDim; i++ )
-        _d2N_dYdY[i] = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
+      ParentPointParticle::_N = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          ParentPointParticle::_N.data() );
 
-      Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-      Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-
-      const LagrangeCellType cell( vertexCoordinates.data(), nDim * nVertices );
-
-      for ( int i = 0; i < cell.getNumberOfFaces(); i++ ) {
-
-        const Eigen::Matrix< double, nDim, 1 > n_dA       = cell.boundarySurfaceVector( i + 1 );
-        const Eigen::Matrix< double, nDim, 1 > faceCenter = cell.getFaceCenterCoordinates( i + 1 );
-
-        ParentPointParticle::_meshfreeApproximation
-          .computeShapeFunctionsAndGradients( faceCenter.data(),
-                                              ParentPointParticle::_assignedKernelFunctions,
-                                              NBoundary.data(),
-                                              dN_dY_Boundary.data() );
-
-        ParentPointParticle::_dN_dY += n_dA * NBoundary;
-
-        for ( int j = 0; j < nDim; j++ )
-          _d2N_dYdY[j] += n_dA( j ) * dN_dY_Boundary;
-      }
-
-      const double VSmoothing = cell.volume();
-      ParentPointParticle::_dN_dY /= VSmoothing;
-      for ( int i = 0; i < nDim; i++ ) {
-        _d2N_dYdY[i] /= VSmoothing;
-      }
+      ParentSQCNIParticle::SectionIntegrals::
+        smoothShapeFunctionGradients( this->smoothingDomain(),
+                                      ParentPointParticle::_meshfreeApproximation,
+                                      ParentPointParticle::_assignedKernelFunctions,
+                                      ParentPointParticle::_N,
+                                      ParentPointParticle::_dN_dY,
+                                      &_d2N_dYdY );
 
       ParentPointParticle::_T     = ParentPointParticle::_N;
       ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
