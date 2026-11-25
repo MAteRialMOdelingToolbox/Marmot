@@ -52,6 +52,16 @@ namespace {
       GradientEnhancedFiniteStrainParticleSQCNIxNSNI< 2, 4, 1 >::SmoothingDomainUpdateType::
         RotationAndPrincipalStretch >( "GradientEnhancedFiniteStrainSQCNI_RUxNSNI/PlaneStrain/Quad" );
 
+  // the axisymmetric twin of the plane-strain particle, in the meridian half plane (r, z); with the update
+  // DeformationGradient only, whose smoothing domains tile the body (see ParticleSectionIntegrals)
+  using AxisymmetricSQCNIxNSNI = GradientEnhancedFiniteStrainParticleSQCNIxNSNI< 2, 4, 1, Section::Axisymmetric >;
+
+  const static bool
+    GradientEnhancedFiniteStrainSQCNIxNSNI_Axisymmetric_Quad_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
+      AxisymmetricSQCNIxNSNI,
+      AxisymmetricSQCNIxNSNI::SmoothingDomainUpdateType::DeformationGradient >(
+      "GradientEnhancedFiniteStrainSQCNIxNSNI/Axisymmetric/Quad" );
+
   const static bool
     GradientEnhancedFiniteStrainSQCNIxNSNI_3D_Hexa_isRegistered = registerGradientEnhancedFiniteStrainParticleWithDomain<
       GradientEnhancedFiniteStrainParticleSQCNIxNSNI< 3, 8, 1 >,

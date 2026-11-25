@@ -37,6 +37,16 @@ namespace Marmot::Discretizations::Meshfree {
   class StiffnessVisitor;
 
   /**
+   * @brief The section of a particle: the measure of the integrals over its domain (see Particle::getSection() and
+   * ParticleSectionIntegrals).
+   */
+  enum class Section {
+    Cartesian,    ///< the domain itself: plane strain (unit thickness) in 2D, the volume in 3D
+    Axisymmetric, ///< the ring the domain sweeps about the axis, @f$ dV = 2\pi r\,dA @f$ in the meridian half plane
+                  ///< @f$ (r, z) = (Y_1, Y_2) @f$
+  };
+
+  /**
    * @class Marmot::Discretizations::Meshfree::Particle
    * @brief Abstract interface of a particle of the reproducing kernel particle method (RKPM).
    *
@@ -534,6 +544,15 @@ namespace Marmot::Discretizations::Meshfree {
      * particle keeps its kernel functions, and with them its nodes and the layout of its residual and stiffness.
      */
     virtual void updateShapeFunctions() = 0;
+
+    /**
+     * @brief The section of the particle: what its integrals measure. A host that integrates other entities with the
+     * particles (finite elements, contact points on the faces of the particles) integrates them over the same
+     * measure: over the rings about the axis for Section::Axisymmetric, whose particles live in the meridian half
+     * plane @f$ (r, z) @f$.
+     * @return Section::Cartesian, unless a particle says otherwise.
+     */
+    virtual Section getSection() const { return Section::Cartesian; }
 
   protected:
     /**

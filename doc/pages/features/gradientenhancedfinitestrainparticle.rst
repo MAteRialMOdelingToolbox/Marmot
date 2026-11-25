@@ -308,6 +308,10 @@ The particles are registered in the ``Marmot::Registry::ParticleFactory``:
      - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad
      - SQCNI + NSNI (``DeformationGradient``)
+   * - ``GradientEnhancedFiniteStrainSQCNIxNSNI/Axisymmetric/Quad``
+     - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1,Section::Axisymmetric>``
+     - axisymmetric, Quad
+     - SQCNI + NSNI over the ring (``DeformationGradient``), see :doc:`axisymmetricparticles`
    * - ``GradientEnhancedFiniteStrainSNNIxNSNI/PlaneStrain/Quad``
      - ``GradientEnhancedFiniteStrainParticleSQCNIxNSNI<2,4,1>``
      - plane strain, Quad

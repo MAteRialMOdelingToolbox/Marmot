@@ -52,6 +52,33 @@ namespace {
                                DisplacementParticleSQCNI< 2, 4 >::SmoothingDomainUpdateType::DeformationGradient );
                       } );
 
+  // the axisymmetric twin of the plane-strain particle, in the meridian half plane (r, z); with the update
+  // DeformationGradient only, whose smoothing domains tile the body (see ParticleSectionIntegrals)
+  using AxisymmetricSQCNI = DisplacementParticleSQCNI< 2, 4, Section::Axisymmetric >;
+
+  const static bool DisplacementParticleSQCNI_Axisymmetric_Quad_isRegistered = Marmot::Registry::ParticleFactory::
+    registerParticle( "DisplacementSQCNI/Axisymmetric/Quad",
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
+                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
+                        -> Marmot::Discretizations::Meshfree::Particle* {
+                        return new AxisymmetricSQCNI( cellID,
+                                                      nodeCoordinates,
+                                                      sizeNodeCoordinates,
+                                                      volume,
+                                                      materialName,
+                                                      materialProperties,
+                                                      sizeMaterialProperties,
+                                                      approximation,
+                                                      AxisymmetricSQCNI::SmoothingDomainUpdateType::
+                                                        DeformationGradient );
+                      } );
+
   const static bool DisplacementParticleSQCNI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementSQCNI/3D/Hexa",
                       []( int                                                     cellID,

@@ -33,6 +33,7 @@
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotOutOfPlaneTangents.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -40,6 +41,7 @@
 
 #include <array>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -128,8 +130,13 @@ namespace Marmot::Discretizations::MaterialPoints {
    * rate. The gradient is accumulated by incrementDeformation() in the implicit and the explicit scheme alike, so
    * that an explicit step may follow an implicit one.
    *
-   * In plane strain (@c nDim = 2) all tensors are stored in 3D, the material is evaluated through
+   * In 2D (@c nDim = 2) all tensors are stored in 3D, the material is evaluated through
    * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
+   * The out-of-plane stretch @f$ \Delta F_{33} @f$ of the increment is 1 in plane strain; an axisymmetric particle sets
+   * it to the hoop stretch increment (addToOutOfPlaneStretchIncrement()), so that @f$ F_{33} @f$ is the hoop stretch,
+   * as for the axisymmetric elements. In 2D, the response and the tangents also hold the out-of-plane parts the hoop
+   * terms of an axisymmetric particle need (Response::tau33, Tangents::outOfPlane, Tangents::dTau33_dN and
+   * Tangents::dL_dDeltaF33).
    *
    * Registered as `GradientEnhancedFiniteStrain/PlaneStrain` and `GradientEnhancedFiniteStrain/3D` (one nonlocal
    * variable) and as `GradientEnhanced6FiniteStrain/3D` (six).
@@ -473,6 +480,35 @@ namespace Marmot::Discretizations::MaterialPoints {
                                const NonlocalVector&                   nonlocalFieldIncrement,
                                const std::array< TensorD, nNonlocal >& nonlocalFieldGradientIncrement );
 
+    /**
+     * @brief 2D: add to the out-of-plane stretch increment, @f$ \Delta F_{33} \mathrel{+}= \delta @f$ (@f$ \Delta
+     * F_{33} @f$ is 1 after prepareYourself(), and stays 1 in plane strain): the hoop stretch increment of an
+     * axisymmetric particle.
+     * @param[in] delta @f$ \delta @f$, e.g. @f$ \Delta u_r / \bar r @f$.
+     * @throws std::logic_error for a 3D material point.
+     */
+    void addToOutOfPlaneStretchIncrement( [[maybe_unused]] double delta )
+    {
+      if constexpr ( nDim == 2 )
+        state->dx_dY( 2, 2 ) += delta;
+      else
+        throw std::logic_error( "GradientEnhancedFiniteStrainMaterialPoint: the out-of-plane stretch is 2D only" );
+    };
+
+    /**
+     * @brief 2D: the out-of-plane stretch increment, the 33 component of @f$ \Delta\boldsymbol{F} @f$ (not of
+     * @f$ \boldsymbol{F} @f$).
+     * @return @f$ \Delta F_{33} @f$ (1 in plane strain, the hoop stretch increment of an axisymmetric particle).
+     * @throws std::logic_error for a 3D material point.
+     */
+    double outOfPlaneStretchIncrement() const
+    {
+      if constexpr ( nDim == 2 )
+        return state->dx_dY( 2, 2 );
+      else
+        throw std::logic_error( "GradientEnhancedFiniteStrainMaterialPoint: the out-of-plane stretch is 2D only" );
+    };
+
     /// @brief Response of the last computeYourself(), in nDim components.
     struct Response {
       Fastor::Tensor< double, nDim, nDim > S;  ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$
@@ -480,15 +516,20 @@ namespace Marmot::Discretizations::MaterialPoints {
                                                ///< minus the values stored in the local state variable (which is
                                                ///< then overwritten by the new values)
       NonlocalVector nonLocalRadius;           ///< nonlocal radii @f$ R_K @f$ of the material, @f$ c_K = R_K^2 @f$
+      double         tau33 = 0.0;              ///< 2D: the out-of-plane (hoop) Kirchhoff stress @f$ \tau_{33} @f$
     } response;
 
     /// @brief Algorithmic tangents of the last computeYourself(), with respect to @f$ \Delta\boldsymbol{F} @f$ and
     /// @f$ \bar{N}_K @f$, in nDim components.
     struct Tangents {
-      TensorDDDD                        dS_dDeltaF; ///< @f$ \partial\tau_{ij}/\partial\Delta F_{kL} @f$
-      std::array< TensorDD, nNonlocal > dS_dN;      ///< @f$ \partial\tau_{ij}/\partial\bar{N}_K @f$, one per K
-      std::array< TensorDD, nNonlocal > dL_dDeltaF; ///< @f$ \partial L_K/\partial\Delta F_{kL} @f$, one per K
-      NonlocalMatrix                    dL_dN;      ///< @f$ \partial L_K/\partial\bar{N}_M @f$
+      TensorDDDD                        dS_dDeltaF;         ///< @f$ \partial\tau_{ij}/\partial\Delta F_{kL} @f$
+      std::array< TensorDD, nNonlocal > dS_dN;              ///< @f$ \partial\tau_{ij}/\partial\bar{N}_K @f$, one per K
+      std::array< TensorDD, nNonlocal > dL_dDeltaF;         ///< @f$ \partial L_K/\partial\Delta F_{kL} @f$, one per K
+      NonlocalMatrix                    dL_dN;              ///< @f$ \partial L_K/\partial\bar{N}_M @f$
+      OutOfPlaneTangents                outOfPlane;         ///< 2D: the out-of-plane parts with respect to
+                                                            ///< @f$ \Delta\boldsymbol{F} @f$
+      NonlocalVector dTau33_dN    = NonlocalVector::Zero(); ///< 2D: @f$ \partial\tau_{33}/\partial\bar{N}_K @f$
+      NonlocalVector dL_dDeltaF33 = NonlocalVector::Zero(); ///< 2D: @f$ \partial L_K/\partial\Delta F_{33} @f$
     } tangents;
 
     /**

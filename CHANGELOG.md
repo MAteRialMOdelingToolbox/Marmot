@@ -194,6 +194,24 @@ All notable changes to Marmot are documented in this file. The format follows
 - `ReproducingKernelApproximationImplicit` returns the Shepard gradients (the derivatives of its values) at a point of
   order 0, as the explicit approximation does, instead of implicit gradients of order 0, which vanish identically. This
   also applies, without a limit, to a point covered by fewer kernels than the linear basis has entries.
+- Axisymmetric RKPM particles, `DisplacementSQCNI/Axisymmetric/Quad` and
+  `GradientEnhancedFiniteStrainSQCNIxNSNI/Axisymmetric/Quad`: the twins of the plane-strain SQCNI particles for a body
+  of revolution under a load of revolution, in the meridian half plane (r, z) (feature page "Axisymmetric Particles").
+  Every integral is taken over the ring the particle sweeps (weight 2πr, ring volume V_0), the hoop stretch
+  increment 1 + Δu_r / r of the center enters the material as ΔF_33, and the smoothed gradient gains the area term of
+  the ring (two Gauss points per face), so that the linear patch tests pass exactly; a `PRESSURE` is integrated with
+  the same two points per face, so that the patch test with a traction on the boundary passes exactly as well; NSNI
+  uses the ring's second moments. A particle may touch the axis with a vertex or a face (the ring weight vanishes
+  there); one with a vertex at r < 0 is refused. Only the update `DeformationGradient` is registered; VCI and
+  `CWFCORRECTION` are refused. The section is a template parameter of the particle classes, `Meshfree::Section`
+  (`Cartesian`, the default, or `Axisymmetric`), and of `ParticleSectionIntegrals< section, nDim, nVertices >`, which
+  also integrates the face loads (`faceQuadrature`, `addPressure`); the hoop terms of the weak form are
+  `Meshfree::Hoop`. `Particle::getSection()` (virtual, default `Section::Cartesian`) tells a host what the integrals of
+  a particle measure, e.g. to integrate contact points on the faces of the particles over the same rings. The 2D
+  material points (`DisplacementMaterialPoint2D`, `GradientEnhancedFiniteStrainMaterialPoint< 2, nNonlocal >`) take an
+  out-of-plane stretch increment ΔF_33 (`addToOutOfPlaneStretchIncrement`, `outOfPlaneStretchIncrement`) and return
+  the out-of-plane stress τ_33 and tangents (`OutOfPlaneTangents`, `MarmotOutOfPlaneTangents.h`); plane strain is
+  unchanged.
 
 ### Changed
 - Faster reproducing kernel shape functions, with bitwise identical results: the kernels give value and gradient from

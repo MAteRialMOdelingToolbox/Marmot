@@ -192,6 +192,20 @@ namespace Marmot::Discretizations::MaterialPoints {
       tangents.dL_dDeltaF[K] = einsum< mn, mnKL >( tangents.dL_dDeltaF[K], dF_dDeltaF );
     }
     tangents.dL_dN = algorithmicModuli3D.dL_dN;
+
+    // the out-of-plane parts in 2D, for the hoop terms of an axisymmetric particle (see OutOfPlaneTangents)
+    if constexpr ( nDim == 2 ) {
+      const auto& F_n = state->dY_dX;
+
+      this->response.tau33 = response3D.tau( 2, 2 );
+      tangents.outOfPlane  = computeOutOfPlaneTangents( algorithmicModuli3D.dTau_dF, F_n );
+      for ( int K = 0; K < nNonlocal; K++ ) {
+        tangents.dTau33_dN( K )    = algorithmicModuli3D.dTau_dN[K]( 2, 2 );
+        tangents.dL_dDeltaF33( K ) = 0.0;
+        for ( int I = 0; I < 3; I++ )
+          tangents.dL_dDeltaF33( K ) += algorithmicModuli3D.dL_dF[K]( 2, I ) * F_n( 2, I );
+      }
+    }
   }
 
   template class GradientEnhancedFiniteStrainMaterialPoint< 2, 1 >;

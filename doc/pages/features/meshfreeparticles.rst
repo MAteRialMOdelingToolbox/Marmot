@@ -388,7 +388,13 @@ points, ``ParticleSectionIntegrals::faceQuadraturePoints()``. This matters becau
 kernel functions whose supports cover its evaluation points: a quadrature point that is not an evaluation point would be
 evaluated with an incomplete set of kernel functions. An SDI particle takes as evaluation points only the quadrature
 points of its subdomains on the faces of the particle, and assumes that the kernel functions which cover these also
-cover the points on the inner faces. To change the face quadrature, change ``ParticleSectionIntegrals`` only.
+cover the points on the inner faces. A load on a face of a particle (``PRESSURE``) is integrated with the same rule,
+``ParticleSectionIntegrals::faceQuadrature()`` and ``ParticleSectionIntegrals::addPressure()``, so that it balances the
+internal force of a uniform stress exactly. To change the face quadrature, change ``ParticleSectionIntegrals`` only.
+The form of the integrals depends on the section of the particle, the template parameter of
+``ParticleSectionIntegrals``: the Cartesian section (plane strain, 3D) integrates with the face centers, as above; the
+axisymmetric section weights every integral with the ring and integrates with two Gauss points per face
+(:doc:`axisymmetricparticles`).
 
 The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
 :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. The former

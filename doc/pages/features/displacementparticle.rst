@@ -180,6 +180,10 @@ Registered particles
      - ``DisplacementParticleSQCNI<3, 8>``
      - 3D, hexahedron
      - SQCNI (deformation gradient)
+   * - ``DisplacementSQCNI/Axisymmetric/Quad``
+     - ``DisplacementParticleSQCNI<2, 4, Section::Axisymmetric>``
+     - axisymmetric, quadrilateral
+     - SQCNI over the ring (deformation gradient), see :doc:`axisymmetricparticles`
    * - ``DisplacementSNNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNI<2, 4>``
      - 2D, quadrilateral
