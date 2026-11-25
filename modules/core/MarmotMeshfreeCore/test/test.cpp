@@ -256,7 +256,9 @@ void checkKernel( const std::string& name )
       throwExceptionOnFailure( kernel.isInSupport( x.data() ), name + ": support inside" );
 
       Eigen::VectorXd grad( dim );
-      kernel.computeKernelFunctionGradient( x.data(), grad.data() );
+      throwExceptionOnFailure( kernel.computeKernelFunctionAndGradient( x.data(), grad.data() ) ==
+                                 kernel.computeKernelFunction( x.data() ),
+                               name + ": the value with the gradient is the value" );
       for ( int i = 0; i < dim; i++ ) {
         const double    h  = 1e-6;
         Eigen::VectorXd xp = x, xm = x;
@@ -383,7 +385,9 @@ struct MomentMatrixAccess : Marmot::Discretizations::Meshfree::ReproducingKernel
   {
     std::vector< double > phi( kernels.size() ), dPhi_dx( _dim * kernels.size() );
     evaluateKernelFunctions( x.data(), kernels, phi.data(), dPhi_dx.data() );
-    assembleMomentMatrix( x.data(), kernels, phi.data(), dPhi_dx.data(), order, M, dM_dx );
+    Eigen::MatrixXd H, dH_dx;
+    evaluateBasisOfKernels( x.data(), kernels, phi.data(), order, H, &dH_dx );
+    assembleMomentMatrix( H, &dH_dx, phi.data(), dPhi_dx.data(), M, dM_dx );
   }
 };
 

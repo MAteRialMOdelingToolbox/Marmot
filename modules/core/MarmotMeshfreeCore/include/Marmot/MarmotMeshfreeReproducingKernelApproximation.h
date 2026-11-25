@@ -79,12 +79,15 @@ namespace Marmot::Discretizations::Meshfree {
    * systems are solved with a column-pivoting Householder QR decomposition of @f$ \boldsymbol{M} @f$, which is
    * computed once per evaluation point.
    *
-   * **One evaluation, three passes over the kernels.** First, every candidate kernel is evaluated once, with its
+   * **One evaluation, four passes over the kernels.** First, every candidate kernel is evaluated once, with its
    * gradient if the gradients of the shape functions are asked for (evaluateKernelFunctions()); the values and
-   * gradients are kept in the output arrays, which have one entry per candidate. Second, @f$ \boldsymbol{M} @f$ (and
-   * @f$ \boldsymbol{M}_{,i} @f$) is assembled from them (assembleMomentMatrix()); third, the shape functions follow,
-   * overwriting the kernel values. Everything in between is of a fixed largest size (BasisVector, MomentMatrix):
-   * an evaluation allocates no memory.
+   * gradients are kept in the output arrays, which have one entry per candidate. Second, the basis
+   * @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$ of every covering kernel (and its gradient) is evaluated
+   * once and kept (evaluateBasisOfKernels()): the moment matrix and the shape functions both need it. Third,
+   * @f$ \boldsymbol{M} @f$ (and @f$ \boldsymbol{M}_{,i} @f$) is assembled (assembleMomentMatrix()); fourth, the shape
+   * functions follow, overwriting the kernel values. The moment matrix and the vectors of the basis are of a fixed
+   * largest size (BasisVector, MomentMatrix); the bases of the kernels, one column per candidate, are the one
+   * allocation of an evaluation.
    *
    * If fewer kernels cover @f$ \boldsymbol{x} @f$ than the basis has entries, @f$ \boldsymbol{M} @f$ is singular;
    * the completeness order is then reduced for this evaluation point (getCorrectedCompletenessOrder()).
@@ -110,8 +113,8 @@ namespace Marmot::Discretizations::Meshfree {
   class ReproducingKernelApproximation : public Approximation {
 
   public:
-    /// The largest spatial dimension.
-    static constexpr int maxDim = 3;
+    /// The largest spatial dimension, that of the kernels.
+    static constexpr int maxDim = KernelFunction::maxDim;
     /// The largest monomial basis: the complete cubic basis in 3D, @f$ \binom{3 + 3}{3} @f$.
     static constexpr int maxSizeOfBasis = 20;
 
@@ -154,21 +157,27 @@ namespace Marmot::Discretizations::Meshfree {
                                  double*                                     dPhi_dx ) const;
 
     /**
-     * @brief The monomial basis @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$ at the shifted
-     * coordinates of a kernel, and, if asked for, its gradient (Math::MonomialBasis). Since
-     * @f$ \boldsymbol{x}_A @f$ is fixed, the gradient with respect to the shifted coordinates is the one with respect
-     * to @f$ \boldsymbol{x} @f$.
+     * @brief The monomial basis @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$ of every covering kernel at
+     * its shifted coordinates, and, if asked for, its gradient (Math::MonomialBasis): evaluated once per kernel and
+     * point, for the moment matrix and the shape functions alike. Since @f$ \boldsymbol{x}_A @f$ is fixed, the gradient
+     * with respect to the shifted coordinates is the one with respect to @f$ \boldsymbol{x} @f$.
      * @param[in]  coord             Evaluation point @f$ \boldsymbol{x} @f$.
-     * @param[in]  kernelFunction    The kernel @f$ \phi_A @f$, whose center is @f$ \boldsymbol{x}_A @f$.
+     * @param[in]  kernelFunctions   The @f$ n_\mathrm{c} @f$ candidate kernel functions.
+     * @param[in]  phi               Their values, from evaluateKernelFunctions(); a kernel with zero value does not
+     *                               cover the point and is skipped (its columns are left as they are).
      * @param[in]  completenessOrder Completeness order @f$ n @f$.
-     * @param[out] H                 The basis, of size @f$ \binom{d + n}{d} @f$.
-     * @param[out] dH_dx             Its gradient, one column per dimension; nullptr if not needed.
+     * @param[out] H                 The bases, column @f$ A @f$ is @f$ \boldsymbol{H}(\boldsymbol{x} -
+     *                               \boldsymbol{x}_A) @f$; resized to the size of the basis times @f$ n_\mathrm{c} @f$.
+     * @param[out] dH_dx             Their gradients, column @f$ d A + i @f$ is @f$ \boldsymbol{H}_{,i} @f$ of kernel
+     *                               @f$ A @f$; resized to the size of the basis times @f$ d\, n_\mathrm{c} @f$; nullptr
+     *                               if not needed.
      */
-    void evaluateBasis( const double*         coord,
-                        const KernelFunction& kernelFunction,
-                        int                   completenessOrder,
-                        BasisVector&          H,
-                        BasisGradient*        dH_dx ) const;
+    void evaluateBasisOfKernels( const double*                               coord,
+                                 const std::vector< const KernelFunction* >& kernelFunctions,
+                                 const double*                               phi,
+                                 int                                         completenessOrder,
+                                 Eigen::MatrixXd&                            H,
+                                 Eigen::MatrixXd*                            dH_dx ) const;
 
     /**
      * @brief Assemble the moment matrix @f$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} -
@@ -176,22 +185,20 @@ namespace Marmot::Discretizations::Meshfree {
      * covering kernels and, if asked for, its gradients @f$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i}
      * \boldsymbol{H}^T + \boldsymbol{H} \boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T
      * \phi_{B,i} @f$: the one assembly of the moment matrix.
-     * @param[in]  coord             Evaluation point @f$ \boldsymbol{x} @f$.
-     * @param[in]  kernelFunctions   The candidate kernel functions.
-     * @param[in]  phi               Their values, from evaluateKernelFunctions(); zero for a kernel that does not
-     *                               cover the point, which is skipped.
-     * @param[in]  dPhi_dx           Their gradients, from evaluateKernelFunctions(); nullptr if @p dM_dx is.
-     * @param[in]  completenessOrder Completeness order @f$ n @f$.
-     * @param[out] M                 The symmetric moment matrix, of size @f$ \binom{d + n}{d} @f$ squared.
-     * @param[out] dM_dx             Its @f$ d @f$ gradients; nullptr if not needed.
+     * @param[in]  H       The basis of every candidate kernel, column @f$ B @f$ (evaluateBasisOfKernels()).
+     * @param[in]  dH_dx   Its gradients, columns @f$ d B + i @f$; nullptr if @p dM_dx is.
+     * @param[in]  phi     The kernel values, from evaluateKernelFunctions(); zero for a kernel that does not cover
+     *                     the point, which is skipped.
+     * @param[in]  dPhi_dx The kernel gradients, from evaluateKernelFunctions(); nullptr if @p dM_dx is.
+     * @param[out] M       The symmetric moment matrix, of the size of the basis squared.
+     * @param[out] dM_dx   Its @f$ d @f$ gradients; nullptr if not needed.
      */
-    void assembleMomentMatrix( const double*                               coord,
-                               const std::vector< const KernelFunction* >& kernelFunctions,
-                               const double*                               phi,
-                               const double*                               dPhi_dx,
-                               int                                         completenessOrder,
-                               MomentMatrix&                               M,
-                               MomentMatrixGradient*                       dM_dx ) const;
+    void assembleMomentMatrix( const Eigen::MatrixXd& H,
+                               const Eigen::MatrixXd* dH_dx,
+                               const double*          phi,
+                               const double*          dPhi_dx,
+                               MomentMatrix&          M,
+                               MomentMatrixGradient*  dM_dx ) const;
 
     /**
      * @brief Factorize the moment matrix @f$ \boldsymbol{M}(\boldsymbol{x}) @f$ and check that it is regular.
@@ -216,12 +223,15 @@ namespace Marmot::Discretizations::Meshfree {
      * order, reduced for few covering kernels (getCorrectedCompletenessOrder()), and lowered one order at a time while
      * the condition of the moment matrix exceeds the limit @f$ \kappa_\mathrm{max} @f$ (conditionOfMomentMatrix()),
      * down to the order 0, which is always accepted; the one choice of the order for both approximations. Without a
-     * limit, or below it, this is assembleMomentMatrix() at the order for the number of covering kernels.
+     * limit, or below it, this is evaluateBasisOfKernels() and assembleMomentMatrix() at the order for the number of
+     * covering kernels.
      * @param[in]  coord           Evaluation point @f$ \boldsymbol{x} @f$.
      * @param[in]  kernelFunctions The candidate kernel functions.
      * @param[in]  phi             Their values, from evaluateKernelFunctions().
      * @param[in]  dPhi_dx         Their gradients, from evaluateKernelFunctions(); nullptr if @p dM_dx is.
      * @param[in]  nCovering       The number of kernels that cover the point, from evaluateKernelFunctions().
+     * @param[out] H               The bases of the kernels at the chosen order (evaluateBasisOfKernels()).
+     * @param[out] dH_dx           Their gradients; nullptr if not needed.
      * @param[out] M               The moment matrix of the chosen order.
      * @param[out] dM_dx           Its @f$ d @f$ gradients; nullptr if not needed.
      * @return The completeness order the point is evaluated with.
@@ -231,6 +241,8 @@ namespace Marmot::Discretizations::Meshfree {
                                                         const double*                               phi,
                                                         const double*                               dPhi_dx,
                                                         int                                         nCovering,
+                                                        Eigen::MatrixXd&                            H,
+                                                        Eigen::MatrixXd*                            dH_dx,
                                                         MomentMatrix&                               M,
                                                         MomentMatrixGradient*                       dM_dx ) const;
 
