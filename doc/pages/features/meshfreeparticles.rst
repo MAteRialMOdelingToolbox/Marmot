@@ -345,12 +345,7 @@ pattern). The abbreviations denote what the code does:
 
        where the smoothing domain deforms with the deformation gradient of the particle (``DeformationGradient``),
        so that neighboring smoothing domains remain (approximately) conforming. The suffixes ``_R`` and ``_RU``
-       select the ``RotationOnly`` and ``RotationAndPrincipalStretch`` updates instead. The SQCNI, SNNI and NSNI
-       particles of both families (the classes ``DisplacementParticleSQCNI``, ``DisplacementParticleSQCNIxNSNI``
-       and their gradient-enhanced finite-strain twins) share one smoothing,
-       ``ParticleSection::smoothShapeFunctionGradients()`` (``MarmotParticleSection.h``), which also gives the
-       smoothed second derivatives of NSNI; their evaluation points are its quadrature points,
-       ``ParticleSection::faceQuadraturePoints()``.
+       select the ``RotationOnly`` and ``RotationAndPrincipalStretch`` updates instead.
    * - SNNI
      - **Stabilized non-conforming nodal integration**: the same smoothed gradient, but the smoothing domain keeps its
        undeformed shape and is only translated with the particle (``None``). The prefixes ``R-`` and ``RS-`` select
@@ -381,6 +376,19 @@ pattern). The abbreviations denote what the code does:
        :math:`\boldsymbol{\tau}`, the deformation gradient increment :math:`\Delta\boldsymbol{F}` and the Jacobian
        :math:`J_Y` of the reference intermediate configuration, including its linearization. See
        :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`.
+
+**Where the smoothing lives.** The SQCNI, SNNI, NSNI and SDI particles of both families
+(``DisplacementParticleSQCNI``, ``DisplacementParticleSQCNIxNSNI``, ``DisplacementParticleSQCNIxSDI`` and the
+gradient-enhanced finite-strain twins of the first two) differ only in how their smoothing domain follows the
+deformation, in whether second derivatives are needed and in how many smoothing domains a particle has (one, or one per
+subdomain). They compute the smoothed gradients with one function,
+``ParticleSectionIntegrals::smoothShapeFunctionGradients()`` (``MarmotParticleSectionIntegrals.h``), which also gives
+the smoothed second derivatives of NSNI. Their evaluation points, ``getEvaluationCoordinates()``, are its quadrature
+points, ``ParticleSectionIntegrals::faceQuadraturePoints()``. This matters because the host assigns to a particle the
+kernel functions whose supports cover its evaluation points: a quadrature point that is not an evaluation point would be
+evaluated with an incomplete set of kernel functions. An SDI particle takes as evaluation points only the quadrature
+points of its subdomains on the faces of the particle, and assumes that the kernel functions which cover these also
+cover the points on the inner faces. To change the face quadrature, change ``ParticleSectionIntegrals`` only.
 
 The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
 :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. The former
@@ -525,7 +533,7 @@ Implementation
 .. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleDomain
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleSection
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleSectionIntegrals
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::GenericParticle

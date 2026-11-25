@@ -29,7 +29,6 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
-#include "Marmot/MarmotParticleSection.h"
 #include "Marmot/MarmotParticleStiffness.h"
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotUtils.h"

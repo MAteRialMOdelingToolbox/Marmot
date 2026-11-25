@@ -27,6 +27,7 @@
 #include "Marmot/DisplacementParticle.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotParticleDomain.h" // Geometric component
+#include "Marmot/MarmotParticleSectionIntegrals.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/src/Core/util/Constants.h>
@@ -56,9 +57,10 @@ namespace Marmot::Discretizations::Meshfree {
    * particle (in the intermediate configuration @f$ \boldsymbol{Y} @f$), computed by a one-point rule at the face
    * centers @f$ \boldsymbol{Y}_f @f$ of the smoothing domain,
    * @f[
-   *   \frac{\partial N_B}{\partial Y_J} \approx \frac{1}{V_s} \int_{\partial\Omega_s} N_B\,N_J\,dA
-   *   \approx \frac{1}{V_s} \sum_f N_B(\boldsymbol{Y}_f)\,(N_J\,dA)_f .
+   *   \frac{\partial N_B}{\partial Y_i} \approx \frac{1}{|\Omega_s|} \oint_{\partial\Omega_s} N_B\,n_i\,dA
+   *   \approx \frac{1}{|\Omega_s|} \sum_f N_B(\boldsymbol{Y}_f)\, n_{f,i}\, dA_f
    * @f]
+   * (ParticleSectionIntegrals::smoothShapeFunctionGradients()).
    * The test functions are the trial functions (unless VCI corrects the test gradients). How the smoothing domain
    * follows the deformation is set by the SmoothingDomainUpdateType: with the deformation gradient (SQCNI, the
    * smoothing domain conforms to the deformed particle), not at all (SNNI, it is only translated), with the rotation
@@ -82,15 +84,15 @@ namespace Marmot::Discretizations::Meshfree {
 
     ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
 
-    using SectionIntegrals = ParticleSection< nDim, nVertices >;   ///< the integrals over the particle domain
+    using SectionIntegrals = ParticleSectionIntegrals< nDim, nVertices >; ///< the integrals over the smoothing domain
 
     /**
      * @brief The smoothing domain of the particle.
      * @return The cell of the smoothing domain in the intermediate configuration.
      */
-    typename ParticleDomainType::LagrangeCellType smoothingDomain() const
+    const typename ParticleDomainType::LagrangeCellType& smoothingDomain() const
     {
-      return typename ParticleDomainType::LagrangeCellType( _particleDomain.getSmoothingVertexCoordinates() );
+      return _particleDomain.smoothingDomain();
     }
 
   public:
@@ -168,7 +170,7 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Evaluation points of the shape functions: the quadrature points of the faces of the smoothing domain (the
-     * face centers, ParticleSection::faceQuadraturePoints()).
+     * face centers, ParticleSectionIntegrals::faceQuadraturePoints()).
      * @param[out] coordinates The coordinates (nDim x number of evaluation points, column major).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
@@ -181,9 +183,12 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Number of evaluation points.
-     * @return The number of faces of the smoothing domain.
+     * @return The number of face quadrature points of the smoothing domain.
      */
-    int getNumberOfEvaluationPoints() const override { return _particleDomain.getNumberOfFaces(); }
+    int getNumberOfEvaluationPoints() const override
+    {
+      return SectionIntegrals::numberOfFaceQuadraturePoints( smoothingDomain() );
+    }
 
     /**
      * @brief Center of the particle in the intermediate configuration, from the material point.
@@ -287,7 +292,7 @@ namespace Marmot::Discretizations::Meshfree {
                                                       this->_assignedKernelFunctions,
                                                       this->_N,
                                                       this->_dN_dY,
-                                                      nullptr );
+                                                      nullptr ); // no second derivatives (not NSNI)
 
       this->_T     = this->_N;
       this->_dT_dY = this->_dN_dY;

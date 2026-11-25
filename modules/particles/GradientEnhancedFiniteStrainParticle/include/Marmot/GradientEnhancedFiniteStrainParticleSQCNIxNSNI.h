@@ -95,7 +95,6 @@ namespace Marmot::Discretizations::Meshfree {
 
     using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >; ///< point particle base
     using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >; ///< SQCNI base
-    using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;   ///< geometry of the smoothing domain
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor
@@ -203,7 +202,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
      * derivatives.
      *
-     * One boundary integration over the current smoothing domain (ParticleSection) gives both
+     * One boundary integration over the current smoothing domain (ParticleSectionIntegrals) gives both
      * @f$ \partial N_B/\partial\boldsymbol{Y} @f$ (from @f$ N_B @f$ at the face centers) and the second derivatives
      * (from @f$ \partial N_B/\partial\boldsymbol{Y} @f$ at the face centers).
      */
@@ -219,7 +218,7 @@ namespace Marmot::Discretizations::Meshfree {
                                                                          ParentPointParticle::_N.data() );
 
       ParentSQCNIParticle::SectionIntegrals::
-        smoothShapeFunctionGradients( this->_makeSmoothingDomainCell(),
+        smoothShapeFunctionGradients( this->smoothingDomain(),
                                       ParentPointParticle::_meshfreeApproximation,
                                       ParentPointParticle::_assignedKernelFunctions,
                                       ParentPointParticle::_N,
