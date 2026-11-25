@@ -342,7 +342,7 @@
 <para>Add an upper bound of <formula id="69">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, the absolute value of a particle&apos;s stiffness times nonnegative weights, without forming the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>, which the particle describes its stiffness to; see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref> for the state it is of). The particle is left as it was found. </para>
         </briefdescription>
         <detaileddescription>
-<para>The bound a host needs for the stable time increment of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="209">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
+<para>The bound a host needs for the critical time step of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="209">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">particle</parametername>
 </parameternamelist>

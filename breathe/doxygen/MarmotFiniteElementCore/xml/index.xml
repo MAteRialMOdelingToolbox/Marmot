@@ -230,7 +230,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a95020610239325d64b6193a1cccc9834" kind="variable"><name>muOperator</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" kind="function"><name>IsotropicElasticStiffnessBound</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" kind="function"><name>addQuadraturePoint</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" kind="function"><name>stableTimeIncrement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ac18e8a47d57fd162e5a80bc12db44fb3" kind="function"><name>criticalTimeStep</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a6b9fffc346c79f5baad3551dc921daac" kind="function"><name>largestEigenvalue</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_material_section" kind="struct"><name>Marmot::Discretizations::MaterialSection</name>
@@ -471,7 +471,7 @@
   </compound>
   <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
     <member refid="namespace_marmot_1_1_testing_1ac5430213505583456a1421f6e56be398" kind="function"><name>unitElementCoordinates</name></member>
-    <member refid="namespace_marmot_1_1_testing_1a4a14a3a83f4c170f457e56d740c68741" kind="function"><name>stableTimeIncrementOfTheElement</name></member>
+    <member refid="namespace_marmot_1_1_testing_1a4495f0eaec44f17c05b0bd2e3aec3022" kind="function"><name>exactCriticalTimeStepOfTheElement</name></member>
   </compound>
   <compound refid="_marmot_bulk_viscosity_8h" kind="file"><name>MarmotBulkViscosity.h</name>
   </compound>

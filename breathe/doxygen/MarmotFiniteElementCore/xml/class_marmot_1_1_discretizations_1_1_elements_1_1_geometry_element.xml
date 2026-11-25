@@ -610,7 +610,7 @@
           <declname>xi</declname>
         </param>
         <briefdescription>
-<para>The smallest extent <formula id="58">$L_e$</formula> of the element at the natural coordinates <computeroutput>xi</computeroutput>, the length the artificial bulk viscosity of explicit dynamics scales with (see BulkViscosity). The stable time increment does not use it: it is the element&apos;s own eigenvalue bound, see <ref refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kindref="compound">CriticalTimeStep</ref>. </para>
+<para>The smallest extent <formula id="58">$L_e$</formula> of the element at the natural coordinates <computeroutput>xi</computeroutput>, the length the artificial bulk viscosity of explicit dynamics scales with (see BulkViscosity). The critical time step does not use it: it is the element&apos;s own eigenvalue bound, see <ref refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step" kindref="compound">CriticalTimeStep</ref>. </para>
         </briefdescription>
         <detaileddescription>
 <para><itemizedlist>

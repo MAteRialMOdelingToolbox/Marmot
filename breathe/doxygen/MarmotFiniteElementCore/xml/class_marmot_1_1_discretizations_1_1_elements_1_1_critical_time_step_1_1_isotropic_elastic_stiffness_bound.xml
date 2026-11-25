@@ -132,12 +132,12 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="125" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="125" bodyend="132"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ac18e8a47d57fd162e5a80bc12db44fb3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
-        <definition>double Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::stableTimeIncrement</definition>
+        <definition>double Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::criticalTimeStep</definition>
         <argsstring>(const Eigen::VectorXd &amp;lumpedMass, double pWaveModulus) const</argsstring>
-        <name>stableTimeIncrement</name>
-        <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::stableTimeIncrement</qualifiedname>
+        <name>criticalTimeStep</name>
+        <qualifiedname>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::criticalTimeStep</qualifiedname>
         <param>
           <type>const Eigen::VectorXd &amp;</type>
           <declname>lumpedMass</declname>
@@ -147,7 +147,7 @@
           <declname>pWaveModulus</declname>
         </param>
         <briefdescription>
-<para>The stable time increment <formula id="29">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
+<para>The critical time step <formula id="29">$2 / \sqrt{\rho c^2 \Lambda}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -167,7 +167,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The stable time increment. </para>
+<simplesect kind="return"><para>The critical time step. </para>
 </simplesect>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
@@ -239,18 +239,18 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The operators <formula id="27">$\mathbf{K}_\lambda$</formula> and <formula id="9">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element&apos;s lumped mass; see the namespace documentation. </para>
+<para>The operators <formula id="27">$\mathbf{K}_\lambda$</formula> and <formula id="9">$\mathbf{K}_\mu$</formula> of an element, accumulated quadrature point by quadrature point, and the critical time step they give with the element&apos;s lumped mass; see the namespace documentation. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" line="103" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotCriticalTimeStep.h" bodystart="103" bodyend="181"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ade1a8204633069751927360d79b653ad" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>addQuadraturePoint</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1ac18e8a47d57fd162e5a80bc12db44fb3" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>criticalTimeStep</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1adaf113b835f29dfbde76654408776b3e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>IsotropicElasticStiffnessBound</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a0650622679f19fe27e37b9290ab25c1b" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>lambdaOperator</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a6b9fffc346c79f5baad3551dc921daac" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>largestEigenvalue</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a95020610239325d64b6193a1cccc9834" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>muOperator</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_critical_time_step_1_1_isotropic_elastic_stiffness_bound_1a2b3abc41be40a419948b4b40d477bae6" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound</scope><name>stableTimeIncrement</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

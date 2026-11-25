@@ -1360,15 +1360,15 @@ particle&quot;. <parameterlist kind="param"><parameteritem>
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="348" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="348" bodyend="351"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a40998dc96a9fdb8d7a722d9359cedab5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
         <type>void</type>
         <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeLumpedMomentum</definition>
-        <argsstring>(double *mLumped) const</argsstring>
+        <argsstring>(double *pLumped) const</argsstring>
         <name>computeLumpedMomentum</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeLumpedMomentum</qualifiedname>
         <param>
           <type>double *</type>
-          <declname>mLumped</declname>
+          <declname>pLumped</declname>
         </param>
         <briefdescription>
 <para>Compute the lumped momentum contribution of the particle. </para>
@@ -1376,7 +1376,7 @@ particle&quot;. <parameterlist kind="param"><parameteritem>
         <detaileddescription>
 <para>Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and its contracts: the page &quot;Meshfree Particles&quot;, section &quot;The explicit life cycle of a particle&quot;. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
-<parametername direction="inout">mLumped</parametername>
+<parametername direction="inout">pLumped</parametername>
 </parameternamelist>
 <parameterdescription>
 <para>Lumped momentum vector (node-wise). </para>
@@ -1618,7 +1618,7 @@ particle&quot;. <parameterlist kind="param"><parameteritem>
 <para>Describe the stiffness of the particle to a visitor, node by node: the shape functions at its evaluation point, then for every node the derivatives of its force with respect to the increment the particle interpolates (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>). </para>
         </briefdescription>
         <detaileddescription>
-<para>The stiffness is the tangent of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> at a zero increment, without the inertia: the material point is evaluated with the configuration of the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> and the working copy of the state. It is the stiffness of an accepted state after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, where an explicit host asks for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">addBoundOfAbsoluteStiffnessTimes()</ref> in <ref refid="_marmot_particle_stiffness_visitors_8h" kindref="compound">MarmotParticleStiffnessVisitors.h</ref>). <parameterlist kind="param"><parameteritem>
+<para>The stiffness is the tangent of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> at a zero increment, without the inertia: the material point is evaluated with the configuration of the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> and the working copy of the state. It is the stiffness of an accepted state after <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, where an explicit host asks for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses a host that needs it, e.g. for the bound of the critical time step of an explicit scheme (<ref refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kindref="member">addBoundOfAbsoluteStiffnessTimes()</ref> in <ref refid="_marmot_particle_stiffness_visitors_8h" kindref="compound">MarmotParticleStiffnessVisitors.h</ref>). <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">visitor</parametername>
 </parameternamelist>
@@ -1851,7 +1851,7 @@ cycle of a particle&quot;. <ref refid="class_marmot_1_1_discretizations_1_1_mesh
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeDistributedLoadExplicit</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae9c16ebb511868904d2b537b21cbab97" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedDamping</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedInertia</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedMomentum</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a40998dc96a9fdb8d7a722d9359cedab5" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedMomentum</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernels</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernelsExplicit</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>describeStiffness</name></member>

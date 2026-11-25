@@ -91,7 +91,7 @@ and the lumped operators), in the order of :ref:`explicit-life-cycle-of-a-partic
 stabilization to the force and to the momentum, as :doc:`displacementparticle` does. The explicit advance of every
 particle evaluates the material with its tangents, not with the stress alone: the NSNI stabilization charges the stress
 gradient of the increment through the tangent :math:`\partial\tau/\partial\Delta\boldsymbol F`, and the bound of the
-stable increment needs the tangents for every particle. The stress-only path of the materials
+critical time step needs the tangents for every particle. The stress-only path of the materials
 (``computeStressExplicit``) serves the gradient-enhanced finite element. ``updatePhysicsExplicit`` advances the
 material point by the increment and stores the rates :math:`\boldsymbol v = \Delta\boldsymbol u/\Delta t` and
 :math:`\dot{\bar N}_K = \Delta\bar N_K/\Delta t`.
@@ -119,11 +119,11 @@ micro-inertia is first order in time and has no inertia (the convention of the e
 reads the order of a field off its inertia), and the momentum of a second-order one keeps its rate when the solver
 projects the velocity from it.
 
-The particles give no critical time step of their own. Measured on blocks of particles, the stable increment of the
+The particles give no critical time step of their own. Measured on blocks of particles, the critical time step of the
 explicit particle scheme depends on the support factor, the kernel order and the boundary in no regular way, and a
 particle's own bound, :math:`\lambda_\mathrm{max}(\boldsymbol M_p^{-1}\boldsymbol K_p)` as for a finite element, is
 unbounded: a particle's stiffness couples nodes at which its own lumped mass vanishes (the mass is taken at the
-centre, the smoothed gradients at the faces). The stable increment is therefore a property of the assembled system,
+centre, the smoothed gradients at the faces). The critical time step is therefore a property of the assembled system,
 which the explicit solver bounds from the assembled lumped mass and a bound of the absolute value of every particle's
 stiffness, ``addBoundOfAbsoluteStiffnessTimes``, computed node by node from the stiffness the particle describes
 (``describeStiffness``), without forming it (see :doc:`meshfreeparticles`; EdelweissMeshfree).

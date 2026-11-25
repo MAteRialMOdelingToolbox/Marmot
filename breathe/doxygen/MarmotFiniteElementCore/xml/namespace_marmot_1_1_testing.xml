@@ -59,12 +59,12 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" line="51" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementTesting.h" bodystart="51" bodyend="91"/>
       </memberdef>
-      <memberdef kind="function" id="namespace_marmot_1_1_testing_1a4a14a3a83f4c170f457e56d740c68741" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="namespace_marmot_1_1_testing_1a4495f0eaec44f17c05b0bd2e3aec3022" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
-        <definition>double Marmot::Testing::stableTimeIncrementOfTheElement</definition>
+        <definition>double Marmot::Testing::exactCriticalTimeStepOfTheElement</definition>
         <argsstring>(Marmot::Discretizations::Elements::Element &amp;element, int nDisplacementDof)</argsstring>
-        <name>stableTimeIncrementOfTheElement</name>
-        <qualifiedname>Marmot::Testing::stableTimeIncrementOfTheElement</qualifiedname>
+        <name>exactCriticalTimeStepOfTheElement</name>
+        <qualifiedname>Marmot::Testing::exactCriticalTimeStepOfTheElement</qualifiedname>
         <param>
           <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> &amp;</type>
           <declname>element</declname>
@@ -74,7 +74,7 @@
           <declname>nDisplacementDof</declname>
         </param>
         <briefdescription>
-<para>The stable time increment <formula id="41">$2 / \omega_{\max}$</formula> of an element on its own, at rest: the largest eigenvalue of <formula id="32">$\mathbf{M}^{-1}\mathbf{K}$</formula> of its displacement block, with the tangent computeKernels() returns and the lumped mass computeLumpedInertia() assembles. </para>
+<para>The critical time step <formula id="41">$2 / \omega_{\max}$</formula> of an element on its own, at rest: the largest eigenvalue of <formula id="32">$\mathbf{M}^{-1}\mathbf{K}$</formula> of its displacement block, with the tangent computeKernels() returns and the lumped mass computeLumpedInertia() assembles. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -94,7 +94,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The stable time increment. </para>
+<simplesect kind="return"><para>The critical time step. </para>
 </simplesect>
 </para>
         </detaileddescription>

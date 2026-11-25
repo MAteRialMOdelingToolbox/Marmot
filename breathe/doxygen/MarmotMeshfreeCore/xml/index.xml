@@ -441,7 +441,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" kind="function"><name>computeBodyLoadExplicit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" kind="function"><name>computeDistributedLoadExplicit</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" kind="function"><name>computeLumpedInertia</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" kind="function"><name>computeLumpedMomentum</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a40998dc96a9fdb8d7a722d9359cedab5" kind="function"><name>computeLumpedMomentum</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aff90338cf5e44ce344b9262920c25e1c" kind="function"><name>getInterpolationVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" kind="function"><name>getSupportedBodyLoadTypes</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" kind="function"><name>getSupportedDistributedLoadTypes</name></member>

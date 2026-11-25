@@ -82,7 +82,7 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The stable time increment of the central difference method for a continuum element, from the largest eigenfrequency of the element. </para>
+<para>The critical time step of the central difference method for a continuum element, from the largest eigenfrequency of the element. </para>
     </briefdescription>
     <detaileddescription>
 <para>The central difference method with a lumped mass <formula id="0">$\mathbf{M}$</formula> is stable for  <formula id="1">$\Delta t \leq 2 /

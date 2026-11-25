@@ -110,7 +110,7 @@
     <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree">Marmot::Discretizations::Meshfree</innernamespace>
     <briefdescription>
-<para>The visitors of a particle&apos;s stiffness that a host applies (Particle::describeStiffness()): the bound of its absolute value, for the stable time increment of an explicit scheme, and its assembly. The particles do not include this header; both visitors and their free functions are compiled in Marmot, for nDim 2 and 3 (a host that compiled them with its own flags, e.g. with FMA contraction, would change the last bits of their results). </para>
+<para>The visitors of a particle&apos;s stiffness that a host applies (Particle::describeStiffness()): the bound of its absolute value, for the critical time step of an explicit scheme, and its assembly. The particles do not include this header; both visitors and their free functions are compiled in Marmot, for nDim 2 and 3 (a host that compiled them with its own flags, e.g. with FMA contraction, would change the last bits of their results). </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>

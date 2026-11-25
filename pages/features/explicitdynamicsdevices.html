@@ -65,7 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="trusselement.html">Truss Element</a></li>
 <li class="toctree-l3"><a class="reference internal" href="embeddedbondelement.html">Embedded Bond Element</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Explicit dynamics devices</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#the-stable-time-increment">The stable time increment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-critical-time-step">The critical time step</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#artificial-bulk-viscosity">Artificial bulk viscosity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#non-local-micro-inertia-hyperbolic-gradient-damage">Non-local micro-inertia (hyperbolic gradient damage)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
@@ -111,15 +111,15 @@
 <h1>Explicit dynamics devices<a class="headerlink" href="#explicit-dynamics-devices" title="Link to this heading"></a></h1>
 <p>Two numerical devices for explicit dynamics, developed and calibrated together: artificial bulk
 viscosity, which damps volumetric ringing in the mechanical field, and non-local micro-inertia,
-which makes a gradient-enhanced field second order in time so its stable increment scales linearly
+which makes a gradient-enhanced field second order in time so its critical time step scales linearly
 rather than quadratically with the element size. Both are inert unless given a value.</p>
 <p>They are declared in different places, and deliberately so. The bulk viscosity is an <strong>element</strong>
 property: its useful value depends on the mesh, and two meshes of one material want different
 amounts of it. The micro-inertia is a <strong>material</strong> property, because it is inseparable from the
 non-local viscosity – itself always a material property – by the bound <span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span>,
 and because that bound can only be checked where both of its sides are visible.</p>
-<section id="the-stable-time-increment">
-<h2>The stable time increment<a class="headerlink" href="#the-stable-time-increment" title="Link to this heading"></a></h2>
+<section id="the-critical-time-step">
+<h2>The critical time step<a class="headerlink" href="#the-critical-time-step" title="Link to this heading"></a></h2>
 <p>The central difference method with a lumped mass is stable for <span class="math notranslate nohighlight">\(\Delta t \le 2/\omega_\mathrm{max}\)</span>, and the
 largest eigenfrequency of the assembled system is bounded by the largest of its elements,
 <span class="math notranslate nohighlight">\(\omega_\mathrm{max}^2 \le \max_e \lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_e)\)</span>. The continuum
@@ -127,7 +127,7 @@ elements (<code class="docutils literal notranslate"><span class="pre">Displacem
 <code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></code>) return this element bound, computed from the strain operator
 they integrate with and the lumped mass they assemble, so it holds for every element order, quadrature rule and
 distortion. A characteristic length over a wave speed does not: it is the exact limit of a linear bar, and it
-overestimates the stable increment of a quadratic element by a factor of 2.3 (8-node quadrilateral) to 3.4
+overestimates the critical time step of a quadratic element by a factor of 2.3 (8-node quadrilateral) to 3.4
 (20-node hexahedron), and that of a compact linear element in 3D by up to 1.7.</p>
 <p>A material tells only its largest wave speed <span class="math notranslate nohighlight">\(c\)</span>, i.e. the P-wave modulus <span class="math notranslate nohighlight">\(\rho c^2 = \lambda + 2\mu\)</span>.
 The element stiffness of an isotropic material splits along the two Lame constants,
@@ -142,7 +142,7 @@ affine in <span class="math notranslate nohighlight">\(\mu\)</span>, and its lar
 \Lambda = \max\Big(\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\lambda),\;
                     \tfrac{1}{2}\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\mu)\Big).\]</div>
 <p>It is exact for a material at the end whose term is the larger one and conservative everywhere else. For quadratic
-elements it is about 0.8 to 1 of the stable increment of the element; for a compact linear element, whose
+elements it is about 0.8 to 1 of the exact critical time step of the element; for a compact linear element, whose
 incompressible end governs, it can be as low as 0.6 of it at <span class="math notranslate nohighlight">\(\nu = 0\)</span>. A courant number below one is still
 needed for the nonlinearities the bound does not see.</p>
 <p>An element whose bound comes out too large makes the whole analysis unstable, so the numbers it is built from are
@@ -156,7 +156,7 @@ at their hoop stretch, the deformation they integrate.</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements16CriticalTimeStepE">
 <span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStepE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStepE"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CriticalTimeStep</span></span></span><br /></dt>
-<dd><p>The stable time increment of the central difference method for a continuum element, from the largest eigenfrequency of the element. </p>
+<dd><p>The critical time step of the central difference method for a continuum element, from the largest eigenfrequency of the element. </p>
 <p>The central difference method with a lumped mass <span class="math notranslate nohighlight">\(\mathbf{M}\)</span> is stable for  <span class="math notranslate nohighlight">\(\Delta t \leq 2 /
 \omega_{\max}\)</span>, with the largest eigenfrequency <span class="math notranslate nohighlight">\(\omega_{\max}\)</span> of the assembled system, and the largest eigenfrequency of the system is bounded by the largest of its elements:  <span class="math notranslate nohighlight">\(\omega_{\max}^2 \leq \max_e
 \lambda_{\max}(\mathbf{M}_e^{-1} \mathbf{K}_e)\)</span>. An element’s own eigenvalue is therefore a safe estimate, for every polynomial order, every quadrature rule and every distortion, since it is computed from the element’s own strain operator and its own lumped mass – where a characteristic length over a wave speed is the exact limit of a linear bar only.</p>
@@ -204,7 +204,7 @@ at their hoop stretch, the deformation they integrate.</p>
 <span id="_CPPv3N6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBoundE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBoundE"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep_1_1IsotropicElasticStiffnessBound"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsotropicElasticStiffnessBound</span></span></span><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;MarmotCriticalTimeStep.h&gt;</em></div>
-<p>The operators <span class="math notranslate nohighlight">\(\mathbf{K}_\lambda\)</span> and <span class="math notranslate nohighlight">\(\mathbf{K}_\mu\)</span> of an element, accumulated quadrature point by quadrature point, and the stable time increment they give with the element’s lumped mass; see the namespace documentation. </p>
+<p>The operators <span class="math notranslate nohighlight">\(\mathbf{K}_\lambda\)</span> and <span class="math notranslate nohighlight">\(\mathbf{K}_\mu\)</span> of an element, accumulated quadrature point by quadrature point, and the critical time step they give with the element’s lumped mass; see the namespace documentation. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -237,9 +237,9 @@ at their hoop stretch, the deformation they integrate.</p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound19stableTimeIncrementERKN5Eigen8VectorXdEd">
-<span id="_CPPv3NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound19stableTimeIncrementERKN5Eigen8VectorXdEd"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound19stableTimeIncrementERKN5Eigen8VectorXdEd"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::stableTimeIncrement__Eigen::VectorXdCR.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep_1_1IsotropicElasticStiffnessBound_1a2b3abc41be40a419948b4b40d477bae6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stableTimeIncrement</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lumpedMass</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pWaveModulus</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>The stable time increment <span class="math notranslate nohighlight">\(2 / \sqrt{\rho c^2 \Lambda}\)</span>. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound16criticalTimeStepERKN5Eigen8VectorXdEd">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound16criticalTimeStepERKN5Eigen8VectorXdEd"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements16CriticalTimeStep30IsotropicElasticStiffnessBound16criticalTimeStepERKN5Eigen8VectorXdEd"></span><span id="Marmot::Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound::criticalTimeStep__Eigen::VectorXdCR.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep_1_1IsotropicElasticStiffnessBound_1ac18e8a47d57fd162e5a80bc12db44fb3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">criticalTimeStep</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">lumpedMass</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pWaveModulus</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The critical time step <span class="math notranslate nohighlight">\(2 / \sqrt{\rho c^2 \Lambda}\)</span>. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -254,7 +254,7 @@ at their hoop stretch, the deformation they integrate.</p>
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The stable time increment. </p>
+<dd class="field-odd"><p>The critical time step. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -449,7 +449,7 @@ against. Only the degradation asks for the current wave speed, once per quadratu
 increment, and what that costs is the material’s business (see the note above).</p></li>
 <li><p><strong>The characteristic length is the element’s smallest physical extent</strong>, twice the smallest
 singular value of the Jacobian (<code class="docutils literal notranslate"><span class="pre">GeometryElement::smallestElementExtentAt</span></code>). It scales the
-viscosity to the shortest wave the element can carry; the stable time increment does not use it
+viscosity to the shortest wave the element can carry; the critical time step does not use it
 (it is the element’s eigenvalue bound, see above).</p></li>
 <li><p><strong>Plane stress is approximate.</strong> The out-of-plane strain is not carried by the element’s
 kinematics there, so the trace is taken over the in-plane components only.</p></li>
@@ -485,7 +485,7 @@ a viscosity <span class="math notranslate nohighlight">\(\eta\)</span>,</p>
 \[\eta\, \dot{\bar\varepsilon} + \bar\varepsilon - c\, \nabla^2 \bar\varepsilon
   = \tilde\varepsilon ,\]</div>
 <p>and integrated with forward Euler. That works, but the largest eigenvalue of the discrete operator
-is <span class="math notranslate nohighlight">\(\lambda_\mathrm{max} \approx \tfrac{1}{\eta}(1 + C l^2/h^2)\)</span>, so the stable increment</p>
+is <span class="math notranslate nohighlight">\(\lambda_\mathrm{max} \approx \tfrac{1}{\eta}(1 + C l^2/h^2)\)</span>, so the critical time step</p>
 <div class="math notranslate nohighlight">
 \[\Delta t \le \frac{2\eta}{1 + C\,l^2/h^2}
           \;\xrightarrow{\;h \ll l\;}\;
@@ -683,7 +683,7 @@ non-mechanical-inertia-fields="nonlocal damage"
 was not told about, and one the solver expects but the elements do not assemble, are both refused
 with a message rather than integrated. <strong>Unset, the feature is completely inert</strong>: a material that
 provides no micro-inertia – including every material that predates this interface, which inherits
-a zero – leaves its non-local field first order in time, and the stable increment is the
+a zero – leaves its non-local field first order in time, and the critical time step is the
 mechanical one exactly as before.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -769,7 +769,7 @@ A fully cracked element carries no real stress, but the linear term keeps transm
 <p>The quadratic term is restricted to compression, where in expansion it would resist a crack or void opening. The linear term is not: damping one sign of the volumetric rate only would rectify the ringing it exists to remove into a net volumetric drift.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span class="math notranslate nohighlight">\(L_e\)</span> is the element’s smallest extent (GeometryElement::smallestElementExtentAt), so that the term scales with the shortest wave the element can carry. The stable time increment does not use it: it is the element’s eigenvalue bound (<a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep"><span class="std std-ref">CriticalTimeStep</span></a>). </p>
+<p><span class="math notranslate nohighlight">\(L_e\)</span> is the element’s smallest extent (GeometryElement::smallestElementExtentAt), so that the term scales with the shortest wave the element can carry. The critical time step does not use it: it is the element’s eigenvalue bound (<a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Elements_1_1CriticalTimeStep"><span class="std std-ref">CriticalTimeStep</span></a>). </p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -887,7 +887,7 @@ Convenience overload for an explicit element, which has the strain increment at 
 <span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5f3163b7b689ad6a6441a75a0044dc0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedDamping</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">C</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the lumped (diagonal) damping of the non-local degrees of freedom. </p>
 <p>
-Zero on the displacement block; the non-local block carries the material’s non-local viscosity, weighted exactly as <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a66c1318342fa49df9635a3fe48235f85"><span class="std std-ref">computeLumpedInertia()</span></a> weights that block, since the stable increment is read off both distributions together. Reported unconditionally, with or without a micro-inertia: it integrates a first-order field on its own and damps a second-order one. </p>
+Zero on the displacement block; the non-local block carries the material’s non-local viscosity, weighted exactly as <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a66c1318342fa49df9635a3fe48235f85"><span class="std std-ref">computeLumpedInertia()</span></a> weights that block, since the critical time step is read off both distributions together. Reported unconditionally, with or without a micro-inertia: it integrates a first-order field on its own and damps a second-order one. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>C</strong> – <strong>[out]</strong> Diagonal of the lumped damping, in the element’s dof order.</p>
