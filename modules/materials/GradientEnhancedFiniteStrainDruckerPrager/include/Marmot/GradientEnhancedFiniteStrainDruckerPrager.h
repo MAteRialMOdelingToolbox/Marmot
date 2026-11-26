@@ -100,7 +100,8 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by
    * @f$ (1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^p + \psi_\mathrm{eff}\,\Delta\omega @f$.
    */
-  class GradientEnhancedFiniteStrainDruckerPrager : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedFiniteStrainDruckerPrager
+    : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > {
 
   public:
     template < typename T >
@@ -119,7 +120,7 @@ namespace Marmot::Materials {
                                                int           nMaterialProperties,
                                                int           materialNumber );
 
-    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.

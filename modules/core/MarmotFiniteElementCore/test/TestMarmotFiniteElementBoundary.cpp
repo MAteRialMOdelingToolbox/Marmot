@@ -373,17 +373,6 @@ void testAxisymmetricBoundaryElementIntegratesOverTheRing()
 
   bool threw = false;
   try {
-    ring.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
-  }
-  catch ( const std::invalid_argument& ) {
-    threw = true;
-  }
-  throwExceptionOnFailure( threw,
-                           "computeDSurfaceNormalVectorialLoadVector_dCoordinates() must throw for an axisymmetric "
-                           "boundary element." );
-
-  threw = false;
-  try {
     const Eigen::Map< const Eigen::VectorXd > cubeCoords( unitCubeCoords.data(), 24 );
     BoundaryElement                           invalid( Hexa8, 1, 3, cubeCoords, true );
   }
@@ -510,6 +499,62 @@ void testComputeDSurfaceNormalVectorialLoadVectorDCoordinatesReturnsFiniteMatrix
 }
 
 // ---------------------------------------------------------------------------------------------
+// computeDSurfaceNormalVectorialLoadVector_dCoordinates() against central differences of the
+// load vector, both assembled into the parent element (whose coordinates can be perturbed from
+// outside), on every face of a distorted Quad4 and Quad8, plane and axisymmetric: for the ring the
+// derivative of 2 pi r with respect to the radius is part of it. assembleIntoParentStiffnessVectorial()
+// negates, so the assembled derivative is the negative of the difference quotient.
+// ---------------------------------------------------------------------------------------------
+
+void testComputeDSurfaceNormalVectorialLoadVectorDCoordinatesMatchesNumericalDifferentiation()
+{
+  struct Parent {
+    ElementShapes         shape;
+    int                   nNodes;
+    std::vector< double > coordinates;
+  };
+  const std::vector< Parent > parents = {
+    { Quad4, 4, { 1.0, 0.1, 2.2, -0.2, 2.0, 1.1, 0.9, 0.8 } },
+    { Quad8, 8, { 1.0, 0.1, 2.2, -0.2, 2.0, 1.1, 0.9, 0.8, 1.6, -0.1, 2.15, 0.45, 1.45, 1.0, 0.95, 0.4 } },
+  };
+
+  const double h = 1e-6;
+  for ( const auto& parent : parents )
+    for ( const bool axisymmetric : { false, true } )
+      for ( int face = 1; face <= 4; face++ ) {
+        const int nParentDof = parent.nNodes * 2;
+
+        const auto assembledLoad = [&]( const Eigen::VectorXd& parentCoords ) {
+          BoundaryElement boundaryEl( parent.shape, face, 2, parentCoords, axisymmetric );
+          Eigen::VectorXd P = Eigen::VectorXd::Zero( nParentDof );
+          boundaryEl.assembleIntoParentVectorial( boundaryEl.computeSurfaceNormalVectorialLoadVector(), P );
+          return P;
+        };
+
+        const Eigen::VectorXd x = Eigen::Map< const Eigen::VectorXd >( parent.coordinates.data(), nParentDof );
+        BoundaryElement       boundaryEl( parent.shape, face, 2, x, axisymmetric );
+        Eigen::MatrixXd       K = Eigen::MatrixXd::Zero( nParentDof, nParentDof );
+        boundaryEl
+          .assembleIntoParentStiffnessVectorial( boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates(),
+                                                 K );
+
+        Eigen::MatrixXd dP_dx( nParentDof, nParentDof );
+        for ( int j = 0; j < nParentDof; j++ ) {
+          Eigen::VectorXd xPlus = x, xMinus = x;
+          xPlus( j ) += h;
+          xMinus( j ) -= h;
+          dP_dx.col( j ) = ( assembledLoad( xPlus ) - assembledLoad( xMinus ) ) / ( 2 * h );
+        }
+
+        throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( -K ), dP_dx, 1e-7 ),
+                                 std::string( "computeDSurfaceNormalVectorialLoadVector_dCoordinates() differs from "
+                                              "the difference quotient (" ) +
+                                   ( axisymmetric ? "axisymmetric" : "plane" ) + ", " +
+                                   std::to_string( parent.nNodes ) + " nodes, face " + std::to_string( face ) + ")." );
+      }
+}
+
+// ---------------------------------------------------------------------------------------------
 // condense*/assemble* round trips
 // ---------------------------------------------------------------------------------------------
 
@@ -595,6 +640,7 @@ int main()
     testComputeDScalarLoadVectorThrowsNotImplemented,
     testComputeDVectorialLoadVectorThrowsNotImplemented,
     testComputeDSurfaceNormalVectorialLoadVectorDCoordinatesReturnsFiniteMatrix,
+    testComputeDSurfaceNormalVectorialLoadVectorDCoordinatesMatchesNumericalDifferentiation,
     testCondenseAndAssembleVectorialRoundTrip,
     testCondenseAndAssembleScalarRoundTrip,
     testAssembleIntoParentStiffnessVectorialAppliesNegativeSign,

@@ -18,8 +18,8 @@ Kinematics and weak form
 The configurations are those of the material point: the undeformed configuration :math:`\boldsymbol{X}`, the
 intermediate configuration :math:`\boldsymbol{Y}` (the last accepted state) and the current configuration
 :math:`\boldsymbol{x}`, with :math:`\boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n`. The shape functions and
-their gradients are evaluated at the particle positions in the intermediate configuration when the host assigns the
-kernel functions (``assignMeshfreeKernelFunctions``), i.e., gradients are taken with respect to :math:`\boldsymbol{Y}`,
+their gradients are evaluated at the particle positions in the intermediate configuration (``updateShapeFunctions``,
+also when the host assigns the kernel functions), i.e., gradients are taken with respect to :math:`\boldsymbol{Y}`,
 and the dofs :math:`\Delta q_{Bk}` are the increments of
 the current step at the nodes (kernel functions) of the particle. With the trial functions :math:`N_B` and the test
 functions :math:`T_A` (identical, unless VCI corrects the test gradients),
@@ -56,6 +56,12 @@ is, and :math:`\partial \boldsymbol{a} / \partial \Delta\boldsymbol{u} = \boldsy
 unchanged acceleration stays in the residual. A host that integrates in time therefore does not solve a zero-length
 increment for a displacement (EdelweissFE's implicit dynamic solver skips it). The particles also provide a lumped mass :math:`\rho_0\,T_A\,V_0` and a lumped momentum
 :math:`\rho_0\,T_A\,V_0\,\boldsymbol{v}` for explicit schemes.
+
+The tangent is assembled node by node from the derivatives of the force of node :math:`A` with respect to the gradient
+of the interpolated increment (the bracket above without :math:`\partial N_B/\partial Y_L`, with
+:math:`\partial N_B/\partial x_i = \partial Y_L/\partial x_i\,\partial N_B/\partial Y_L`), which are also
+the stiffness the particle describes to a visitor (``describeStiffness``), e.g. for the bound of the absolute stiffness
+of explicit schemes (see :doc:`meshfreeparticles`).
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
@@ -174,6 +180,10 @@ Registered particles
      - ``DisplacementParticleSQCNI<3, 8>``
      - 3D, hexahedron
      - SQCNI (deformation gradient)
+   * - ``DisplacementSQCNI/Axisymmetric/Quad``
+     - ``DisplacementParticleSQCNI<2, 4, Section::Axisymmetric>``
+     - axisymmetric, quadrilateral
+     - SQCNI over the ring (deformation gradient), see :doc:`axisymmetricparticles`
    * - ``DisplacementSNNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNI<2, 4>``
      - 2D, quadrilateral

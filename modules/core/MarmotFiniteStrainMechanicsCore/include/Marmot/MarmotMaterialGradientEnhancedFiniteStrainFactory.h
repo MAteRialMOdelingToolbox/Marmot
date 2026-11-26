@@ -34,19 +34,21 @@ namespace Marmot::Registry {
   /**
    * @class MaterialGradientEnhancedFiniteStrainFactory
    * @brief Factory class for creating gradient-enhanced finite-strain material instances.
+   * @tparam nNonlocal Number of nonlocal variables of the materials it creates; one registry per number.
    *
    * This class provides a mechanism to register materials by their name, and to create material
    * instances based on their properties. It allows for dynamic material creation without hardcoding
    * specific material types.
    */
+  template < int nNonlocal >
   class MaterialGradientEnhancedFiniteStrainFactory {
   public:
-    /// Factory function type: creates a Marmot::Materials::MaterialGradientEnhancedFiniteStrain from properties and a
-    /// material number.
+    /// The created material interface.
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain< nNonlocal >;
+
+    /// Factory function type: creates a Material from properties and a material number.
     using materialFactoryFunction = std::function<
-      Marmot::Materials::MaterialGradientEnhancedFiniteStrain*( const double* materialProperties,
-                                                                int           nMaterialProperties,
-                                                                int           materialNumber ) >;
+      Material*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
     MaterialGradientEnhancedFiniteStrainFactory() = delete;
 
@@ -56,12 +58,13 @@ namespace Marmot::Registry {
      * @param[in] materialProperties  Array of material properties.
      * @param[in] nMaterialProperties Number of properties in the array.
      * @param[in] materialNumber      Unique identifier for the material instance.
-     * @return Pointer to the created Marmot::Materials::MaterialGradientEnhancedFiniteStrain instance.
+     * @return Pointer to the created material instance.
+     * @throws std::invalid_argument if no material of that name is registered for @p nNonlocal nonlocal variables.
      */
-    static Marmot::Materials::MaterialGradientEnhancedFiniteStrain* createMaterial( const std::string& materialName,
-                                                                                    const double* materialProperties,
-                                                                                    int           nMaterialProperties,
-                                                                                    int           materialNumber );
+    static Material* createMaterial( const std::string& materialName,
+                                     const double*      materialProperties,
+                                     int                nMaterialProperties,
+                                     int                materialNumber );
 
     /**
      * @brief Register a material type with its name.
@@ -77,9 +80,8 @@ namespace Marmot::Registry {
 
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
-      map[materialName] = []( const double* materialProperties,
-                              int           nMaterialProperties,
-                              int materialNumber ) -> Marmot::Materials::MaterialGradientEnhancedFiniteStrain* {
+      map[materialName] =
+        []( const double* materialProperties, int nMaterialProperties, int materialNumber ) -> Material* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
       return true;
@@ -89,4 +91,8 @@ namespace Marmot::Registry {
     using MaterialFactoryMap = std::unordered_map< std::string, materialFactoryFunction >;
     static MaterialFactoryMap& materialFactoryFunctionByName();
   };
+
+  extern template class MaterialGradientEnhancedFiniteStrainFactory< 1 >;
+  extern template class MaterialGradientEnhancedFiniteStrainFactory< 6 >;
+
 } // namespace Marmot::Registry

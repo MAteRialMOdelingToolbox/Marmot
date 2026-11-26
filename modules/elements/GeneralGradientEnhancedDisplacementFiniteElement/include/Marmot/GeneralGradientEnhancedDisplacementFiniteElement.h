@@ -25,6 +25,7 @@
 #pragma once
 #include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotConsistentMass.h"
+#include "Marmot/MarmotCriticalTimeStep.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotEnergyGradientProvider.h"
@@ -61,8 +62,8 @@ namespace Marmot::Discretizations::Elements {
    * @tparam nNonLocalNodes Number of nonlocal element nodes. Usually the order of the nonlocal interpolation is similar
    * or one order lower than the local interpolation, so nNonLocalNodes <= nNodes.
    * @brief General Gradient Enhanced Displacement-based finite element template.
-   * @details Uses linearized kinematics (small strains) and supports 1D, 2D, and 3D
-   * formulations via a section assumption. Holds quadrature-point state and
+   * @details Uses linearized kinematics (small strains) and supports 2D (plane stress, plane strain and
+   * axisymmetric) and 3D formulations via a section assumption. Holds quadrature-point state and
    * delegates constitutive updates to Marmot materials while assembling element
    * residuals and tangents, taking non-local effects into account.
    */
@@ -74,15 +75,19 @@ namespace Marmot::Discretizations::Elements {
   public:
     /**
      * @brief Kinematic section assumption used by the element.
-     * @details Controls which constitutive call is performed at quadrature points.
+     * @details Controls the kinematics and which constitutive call is performed at quadrature points.
      * - PlaneStress
      * - PlaneStrain
      * - Solid
+     * - Axisymmetric: 2D only, \f$r = x_1 \geq 0\f$ and \f$z = x_2\f$, with the hoop strain
+     *   \f$\varepsilon_{\theta\theta} = u_r / r\f$; integrated over the full ring, \f$\mathrm{d}V = 2\pi r\,
+     *   \mathrm{d}A\f$, also in the Helmholtz equation of the non-local fields.
      */
     enum SectionType {
       PlaneStress,
       PlaneStrain,
       Solid,
+      Axisymmetric,
     };
 
     static constexpr int nDofPerNodeU = nDim;
@@ -102,6 +107,7 @@ namespace Marmot::Discretizations::Elements {
     using NSized                = typename ParentGeometryElement::NSized;
     using dNdXiSized            = typename ParentGeometryElement::dNdXiSized;
     using BSized                = typename ParentGeometryElement::BSized;
+    using BSizedAxisymmetric    = typename ParentGeometryElement::BSizedAxisymmetric;
     using XiSized               = typename ParentGeometryElement::XiSized;
     using RhsSized              = Eigen::Matrix< double, sizeLoadVector, 1 >;
     using KeSizedMatrix         = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
@@ -169,7 +175,7 @@ namespace Marmot::Discretizations::Elements {
 
       /// @brief Determinant of the Jacobian of the geometry mapping.
       double detJ;
-      /// @brief Integration weight times detJ (times thickness or cross section in 2D and 1D).
+      /// @brief Integration weight times detJ times the section factor, see sectionFactorAt().
       double J0xW;
       /// @brief Gradients of the displacement shape functions with respect to the physical coordinates.
       dNdXiSized dNdX;
@@ -201,19 +207,17 @@ namespace Marmot::Discretizations::Elements {
       }
 
       /**
-       * @brief The characteristic length for the critical time step at this quadrature point,
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt: the smallest physical extent of a quadrilateral or
-       * hexahedron, 1 / |grad N|_F of a linear simplex.
-       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
-       * whereas the stable time increment that shares the definition is asked for rarely. The
-       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       * @brief The smallest extent of the element at this quadrature point, GeometryElement::smallestElementExtentAt:
+       * the smallest physical extent of a quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment. The element's nodal
+       * coordinates do not change, so the cached value cannot go stale.
        */
-      double characteristicLengthForCriticalTimeStep = 0.0;
+      double smallestElementExtent = 0.0;
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
        * @details A current wave speed costs a full constitutive evaluation, which is affordable
-       * for the stable increment (asked for rarely) and not per quadrature point per explicit
+       * for the critical time step (asked for rarely) and not per quadrature point per explicit
        * increment. What is cached is the UNDAMAGED speed: the term damps the highest frequency the
        * MESH can carry, which the undamaged material sets, and holding it fixed as the material
        * softens damps slightly harder -- the safe direction here. Empty means "not yet computed": a
@@ -343,7 +347,8 @@ namespace Marmot::Discretizations::Elements {
      * @brief Construct element with ID, quadrature rule and section assumption.
      * @param elementID Unique element label.
      * @param quadratureRule Quadrature rule: family and degree of exactness.
-     * @param sectionType Section assumption (1D/2D/3D).
+     * @param sectionType Section assumption (2D/3D).
+     * @throws std::invalid_argument for an axisymmetric section with nDim other than 2.
      */
     GeneralGradientEnhancedDisplacementFiniteElement(
       int                                                   elementID,
@@ -409,9 +414,22 @@ namespace Marmot::Discretizations::Elements {
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
     void assignNodeCoordinates( const double* coordinates ) override;
 
-    /** @brief Precompute geometry-related quantities at quadrature points (detJ, J0xW, N, dNdX, and N_K, dNdX_K if they
-     * differ). */
+    /**
+     * @brief Precompute geometry-related quantities at quadrature points (detJ, J0xW, N, dNdX, and N_K, dNdX_K if they
+     * differ).
+     * @details \f$J_0 w = w \det\mathbf{J}\, s(\boldsymbol{\xi})\f$ with the section factor of sectionFactorAt().
+     * @throws std::invalid_argument for an axisymmetric section with a node at \f$r < -10^{-12} h\f$, \f$h\f$ the
+     * diagonal of the element's bounding box, or a quadrature point at \f$r \leq 0\f$.
+     */
     void initializeYourself() override;
+
+    /**
+     * @brief Factor between the volume and the reference area or length of the element at @p xi.
+     * @param xi Parametric coordinates.
+     * @return The thickness (plane stress and plane strain), \f$2\pi r(\boldsymbol{\xi})\f$ (axisymmetric), or 1
+     * (solid).
+     */
+    double sectionFactorAt( const XiSized& xi ) const;
 
     /**
      * @brief Initialize state or materials.
@@ -426,7 +444,8 @@ namespace Marmot::Discretizations::Elements {
      * \f[
      * \mathbf{\fextp} = - \int_{\Gamma_e} p\, \mathbf{N}^\mathsf{T} \mathbf{n}\, \mathrm{d}\Gamma\, .
      * \f]
-     * @param loadType Pressure or SurfaceTraction.
+     * Axisymmetric elements integrate over the ring, \f$\mathrm{d}\Gamma = 2\pi r\, \mathrm{d}s\f$.
+     * @param loadType Pressure.
      * @param P Element RHS contribution (accumulated).
      * @param K Optional stiffness contribution (unused).
      * @param elementFace Boundary face index.
@@ -483,6 +502,8 @@ namespace Marmot::Discretizations::Elements {
      * \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
      * J_0\, w_{qp} \, .
      * \f]
+     * Axisymmetric elements use the 4-row operator (rr, zz, \f$\theta\theta\f$, rz) with the hoop row
+     * \f$N_i / r\f$, see Spatial2D::Axisymmetric::BFromPlanarB(), and \f$J_0 w\f$ includes \f$2\pi r\f$.
      * If pNewdT<1, the routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector in field-wise format: \f$\mathbf{q} = [\mathbf{\qu},
      * \mathbf{\qk}]^\mathsf{T}\f$.
@@ -497,9 +518,10 @@ namespace Marmot::Discretizations::Elements {
 
     /**
      * @brief Compute internal force without tangents.
-     * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$, which in 3D
-     * is evaluated as the symmetric part of the displacement gradient, without forming B (see
-     * Discretizations::Elements::SmallStrain::strainIncrement() and addInternalForce()), interpolates the non-local
+     * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$, which in the
+     * plane and solid sections is evaluated as the symmetric part of the displacement gradient, without forming B (see
+     * Discretizations::Elements::SmallStrain::strainIncrement() and addInternalForce()); the axisymmetric section forms
+     * its 4-row operator, see computeKernels(). Interpolates the non-local
      * variables as \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces are evaluated by Gauss quadrature: \f[
      * \mathbf{\fk} = \sum_{qp} \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x}
      * \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
@@ -549,9 +571,8 @@ namespace Marmot::Discretizations::Elements {
      * wherever that is safe -- every 2D serendipity element, and every linear element, where the
      * result does not depend on \f$w\f$ at all -- and \f$\tfrac{1}{3}\f$ for a hexa20. It
      * reproduces -- analytically, and to rounding in floating point -- the values a
-     * per-element-type special case would give, without needing one, and
-     * the critical time step reads its mass distribution from the same helper so the two cannot
-     * disagree.
+     * per-element-type special case would give, without needing one; the critical time step
+     * reads the lumped mass from this function, so the two cannot disagree.
      *
      * @note The element total is independent of \f$w\f$: the blend only moves mass between the
      * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
@@ -571,32 +592,21 @@ namespace Marmot::Discretizations::Elements {
      * @param[out] C Diagonal of the lumped damping, in the element's dof order.
      * @details Zero on the displacement block; the non-local block carries the material's
      * non-local viscosity, weighted exactly as computeLumpedInertia() weights that block, since
-     * the stable increment is read off both distributions together. Reported unconditionally,
+     * the critical time step is read off both distributions together. Reported unconditionally,
      * with or without a micro-inertia: it integrates a first-order field on its own and damps a
      * second-order one.
      */
     void computeLumpedDamping( double* C ) override;
 
     /**
-     * @brief Compute the critical time step for explicit dynamics based on
-     * the dilatational wave speed and the element size.
+     * @brief Compute the critical time step for explicit dynamics.
      * @param[out] criticalTimeStep Computed critical time step.
      * @param[in] QTotal Total (current) degrees of freedom of the element.
-     * @details The estimate is \f$l / c\f$, scaled by the factor
-     * Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the
-     * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
-     * increment for an element whose mass is spread uniformly over its nodes, which lumping does
-     * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
-     * singular value of the Jacobian, i.e. the element's smallest physical extent, so a sliver is
-     * not mistaken for its volume-equivalent cube. The minimum over all quadrature points is
-     * returned.
-     *
-     * @warning This corrects the mass-distribution and element-distortion parts of the estimate
-     * only. It does NOT correct for polynomial order, and that residue is large: \f$l/c\f$ is a
-     * linear-element formula, while a quadratic element's highest free eigenfrequency lies well
-     * above what it predicts. A convergence study on a 20-node bar settles only around a courant
-     * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
-     * properly wants an eigenvalue-based estimate rather than another factor.
+     * @details The displacement field's limit is the element's own eigenvalue bound \f$2 / \omega_{\max}\f$, from
+     * the strain operator the element integrates with (the axisymmetric one with its hoop row) and the displacement
+     * block of the lumped mass computeLumpedInertia() assembles, for an isotropic material with the largest P-wave
+     * modulus \f$\rho c^2\f$ of the quadrature points; see Marmot::Discretizations::Elements::CriticalTimeStep. It
+     * holds for every element order and quadrature rule.
      *
      * @details Where the non-local field carries a micro-inertia the returned increment is the
      * minimum of the mechanical estimate above and the non-local field's own limit. That one is
@@ -629,17 +639,18 @@ namespace Marmot::Discretizations::Elements {
      * @brief Assign the arrays computeKernels() writes the energy gradients to, see EnergyGradientProvider.
      * @param dElasticEnergy_dQ Gradient of the elastic energy; nullptr, together with @p dDissipation_dQ, stops it.
      * @param dDissipation_dQ Gradient of the dissipation.
-     * @details Supported for all sections with a material that is a
-     * Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider. In plane stress, the energy tangents are
-     * condensed with the out-of-plane strain.
+     * @details Supported for all sections (plane stress, plane strain, axisymmetric and solid) with a material that is
+     * a Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider. In plane stress, the energy tangents are
+     * condensed with the free strains (Marmot::ContinuumMechanics::ReducedStress).
      */
     void assignEnergyGradientOutput( double* dElasticEnergy_dQ, double* dDissipation_dQ ) override;
 
+  protected:
     /**
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
 
@@ -659,6 +670,7 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
+  public:
     /** @brief Get physical coordinates at the element center. */
     std::vector< double > getCoordinatesAtCenter() override;
 
@@ -678,6 +690,115 @@ namespace Marmot::Discretizations::Elements {
      * (Marmot::Materials::GradientEnhancedHypoElasticEnergyTangentProvider).
      */
     void checkEnergyGradientSupport() const;
+
+    /// @brief Response of the material at a quadrature point.
+    using MaterialResponse = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic<
+      nNonlocalVariables >::response;
+    /// @brief Algorithmic tangents of the material at a quadrature point.
+    using MaterialTangents = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic<
+      nNonlocalVariables >::tangents;
+    /// @brief Values of the non-local fields at a quadrature point.
+    using NonlocalValues = Eigen::Vector< double, nNonlocalVariables >;
+
+    /**
+     * @brief Internal force, and the tangent if requested, of all quadrature points; shared by computeKernels() and
+     * computeKernelsExplicit().
+     * @param QTotal Total degrees of freedom, field-wise.
+     * @param dQ Incremental degrees of freedom, field-wise.
+     * @param Pe Internal force vector (accumulated).
+     * @param Ke Tangent stiffness matrix (accumulated), nullptr for the explicit update.
+     * @param time Time data forwarded to materials.
+     * @param dT Time increment.
+     */
+    void integrateInternalForce( const double* QTotal,
+                                 const double* dQ,
+                                 double*       Pe,
+                                 double*       Ke,
+                                 double        time,
+                                 double        dT );
+
+    /**
+     * @brief Material update and integration at one quadrature point, for every section, implicit and explicit.
+     * @tparam nComponents Strain components of the section: 3 (plane), 4 (axisymmetric), 6 (solid).
+     * @param qp The quadrature point.
+     * @param B Strain operator of the section. The axisymmetric section always needs it; the plane and solid sections
+     * evaluate the strain and the internal force from dNdX and need it for the tangent only, so it may be nullptr in
+     * the explicit update.
+     * @param QTotal Total degrees of freedom, field-wise.
+     * @param dQ Incremental degrees of freedom, field-wise.
+     * @param Pe Internal force vector (accumulated).
+     * @param Ke Tangent stiffness matrix (accumulated), nullptr for the explicit update.
+     * @param energyGradients Whether the energy gradients are accumulated into the assigned outputs.
+     * @param time Time data forwarded to materials.
+     * @param dT Time increment.
+     */
+    template < ContinuumMechanics::Voigt::VoigtSize nComponents >
+    void integrateQuadraturePoint( QuadraturePoint&                                      qp,
+                                   const Eigen::Matrix< double, nComponents, sizeDoFU >* B,
+                                   const double*                                         QTotal,
+                                   const double*                                         dQ,
+                                   double*                                               Pe,
+                                   double*                                               Ke,
+                                   bool                                                  energyGradients,
+                                   double                                                time,
+                                   double                                                dT );
+
+    /**
+     * @brief Static condensation of the free strains in plane stress, see Marmot::ContinuumMechanics::ReducedStress:
+     * from \f$\Delta\sigma_f = 0\f$, \f$f = \{33, 13, 23\}\f$, \f$\Delta\varepsilon_f = \frac{\partial
+     * \varepsilon_f}{\partial \varepsilon_p} \Delta\varepsilon_p + \frac{\partial \varepsilon_f}{\partial \knl}
+     * \Delta\knl\f$ with the in-plane components \f$p = \{11, 22, 12\}\f$.
+     * @details Afterwards the derivatives with respect to the strain (stress, local driving variables and, if
+     * requested, energy densities) are the total derivatives with respect to the in-plane strain, stored at the
+     * in-plane components with zeros elsewhere; the derivatives with respect to the non-local fields include the
+     * free strains.
+     * @param tan The material tangents after the plane stress update.
+     * @param energyTan The energy tangents after the plane stress update.
+     * @param energyGradients Whether the energy tangents are condensed too.
+     */
+    static void condenseFreeStrains( MaterialTangents&                               tan,
+                                     typename EnergyTangentProvider::energyTangents& energyTan,
+                                     bool                                            energyGradients );
+
+    /**
+     * @brief Block of the 3D tangent carried by the section.
+     * @tparam nComponents Strain components of the section.
+     * @param C Tangent in 3D Voigt notation; in plane stress after condenseFreeStrains().
+     * @return The section block.
+     */
+    template < ContinuumMechanics::Voigt::VoigtSize nComponents >
+    static Eigen::Matrix< double, nComponents, nComponents > sectionTangent( const Marmot::Math::Matrix6d& C );
+
+    /**
+     * @brief Artificial bulk viscous stress at a quadrature point, see
+     * Marmot::Discretizations::Elements::BulkViscosity.
+     * @param qp The quadrature point, after its material update.
+     * @param res The updated material response.
+     * @param K The non-local fields at the quadrature point.
+     * @param volumetricStrainIncrement Trace of the strain increment.
+     * @param dT Time increment.
+     * @return The viscous stress added to the normal components.
+     */
+    double bulkViscousStress( QuadraturePoint&        qp,
+                              const MaterialResponse& res,
+                              const NonlocalValues&   K,
+                              double                  volumetricStrainIncrement,
+                              double                  dT );
+
+    /**
+     * @brief Radius \f$r = x_1\f$ of a point of the element.
+     * @param xi Parametric coordinates.
+     * @return The radius.
+     */
+    double radiusAt( const XiSized& xi ) const;
+
+    /**
+     * @brief Axisymmetric strain operator, rows (rr, zz, \f$\theta\theta\f$, rz): the planar operator with the hoop
+     * row \f$N_i / r\f$, see Spatial2D::Axisymmetric::BFromPlanarB().
+     * @param qp The quadrature point.
+     * @return The operator.
+     */
+    BSizedAxisymmetric axisymmetricB( const QuadraturePoint& qp ) const;
   };
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -688,6 +809,11 @@ namespace Marmot::Discretizations::Elements {
       SectionType                                           sectionType )
     : elementProperties( nullptr, 0 ), elLabel( elementID ), sectionType( sectionType )
   {
+    if constexpr ( nDim != 2 )
+      if ( sectionType == SectionType::Axisymmetric )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": the axisymmetric section is two-dimensional." );
+
     for ( const auto& qpInfo :
           Discretizations::Elements::Quadrature::getQuadraturePoints( localGeometryElement.referenceDomain,
                                                                       quadratureRule ) ) {
@@ -825,7 +951,7 @@ namespace Marmot::Discretizations::Elements {
        * while the two lived at different levels of the stack.
        *
        * A deck that still assigns it here must fail, not be ignored: ignoring it would leave the
-       * non-local field FIRST order in time -- integrated by its viscosity, with a stable increment
+       * non-local field FIRST order in time -- integrated by its viscosity, with a critical time step
        * falling off as h^2 and nothing checking it -- while the deck's author reads the property in
        * their own input file and believes the field is hyperbolic.
        */
@@ -913,6 +1039,15 @@ namespace Marmot::Discretizations::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     initializeYourself()
   {
+    const bool axisymmetric = sectionType == SectionType::Axisymmetric;
+
+    if constexpr ( nDim == 2 )
+      if ( axisymmetric )
+        Spatial2D::Axisymmetric::checkNodesAreInTheMeridianHalfPlane( Eigen::Map<
+                                                                        const Eigen::Matrix< double, nDim, nNodes > >(
+                                                                        localGeometryElement.coordinates.data() ),
+                                                                      elLabel );
+
     for ( QuadraturePoint& qp : qps ) {
       const auto          dNdXi = localGeometryElement.dNdXi( qp.xi );
       const JacobianSized J     = localGeometryElement.Jacobian( dNdXi );
@@ -921,8 +1056,7 @@ namespace Marmot::Discretizations::Elements {
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
 
-      qp.characteristicLengthForCriticalTimeStep = localGeometryElement.characteristicLengthForCriticalTimeStepAt(
-        qp.xi );
+      qp.smallestElementExtent = localGeometryElement.smallestElementExtentAt( qp.xi );
       qp.referenceWaveSpeed.reset();
 
       if constexpr ( !nonLocalSharesShapeFunctions ) {
@@ -933,396 +1067,399 @@ namespace Marmot::Discretizations::Elements {
         qp.dNdXK                     = nonLocalGeometryElement.dNdX( dNdXi_K, JInv_K );
       }
 
-      if constexpr ( nDim == 3 ) {
-        qp.J0xW = qp.weight * qp.detJ;
-      }
-      if constexpr ( nDim == 2 ) {
-        const double& thickness = elementProperties[0];
-        qp.J0xW                 = qp.weight * qp.detJ * thickness;
-      }
-      if constexpr ( nDim == 1 ) {
-        const double& crossSection = elementProperties[0];
-        qp.J0xW                    = qp.weight * qp.detJ * crossSection;
+      if ( axisymmetric )
+        Spatial2D::Axisymmetric::checkRadiusOfQuadraturePoint( radiusAt( qp.xi ), elLabel );
+
+      qp.J0xW = qp.weight * qp.detJ * sectionFactorAt( qp.xi );
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  double GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    sectionFactorAt( const XiSized& xi ) const
+  {
+    if constexpr ( nDim == 3 )
+      return 1.0;
+    else if constexpr ( nDim == 2 ) {
+      if ( sectionType == SectionType::Axisymmetric )
+        return 2.0 * Marmot::Math::Constants::Pi * radiusAt( xi );
+      return elementProperties[0]; // thickness
+    }
+    else
+      return elementProperties[0]; // cross section
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  double GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::radiusAt(
+    const XiSized& xi ) const
+  {
+    return ( localGeometryElement.NB( localGeometryElement.N( xi ) ) * localGeometryElement.coordinates )( 0 );
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  typename GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    BSizedAxisymmetric
+    GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::axisymmetricB(
+      const QuadraturePoint& qp ) const
+  {
+    return Spatial2D::Axisymmetric::BFromPlanarB< nNodes >( localGeometryElement.B( qp.dNdX ),
+                                                            qp.N,
+                                                            radiusAt( qp.xi ) );
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+  {
+    integrateInternalForce( QTotal, dQ, Pe, Ke, time, dT );
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT )
+  {
+    integrateInternalForce( QTotal, dQ, Pe, nullptr, time, dT );
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    integrateInternalForce( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+  {
+    bool sectionSupported = false;
+    if constexpr ( nDim == 2 )
+      sectionSupported = sectionType == SectionType::PlaneStress || sectionType == SectionType::PlaneStrain ||
+                         sectionType == SectionType::Axisymmetric;
+    else if constexpr ( nDim == 3 )
+      sectionSupported = sectionType == SectionType::Solid;
+
+    if ( !sectionSupported )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": element " << elLabel
+                                   << ": invalid section type; 2D elements are plane stress, plane strain or "
+                                      "axisymmetric, 3D elements are solid." );
+
+    // energy gradients, if assigned, in the implicit update only
+    const bool energyGradients = Ke != nullptr && dElasticEnergy_dQOutput != nullptr;
+    if ( energyGradients ) {
+      Eigen::Map< RhsSized >( dElasticEnergy_dQOutput ).setZero();
+      Eigen::Map< RhsSized >( dDissipation_dQOutput ).setZero();
+    }
+
+    for ( QuadraturePoint& qp : qps ) {
+      if constexpr ( nDim > 1 ) {
+        if constexpr ( nDim == 2 )
+          if ( sectionType == SectionType::Axisymmetric ) {
+            const BSizedAxisymmetric B = axisymmetricB( qp );
+            integrateQuadraturePoint< ContinuumMechanics::Voigt::Axial >( qp,
+                                                                          &B,
+                                                                          QTotal,
+                                                                          dQ,
+                                                                          Pe,
+                                                                          Ke,
+                                                                          energyGradients,
+                                                                          time,
+                                                                          dT );
+            continue;
+          }
+
+        /* B is not stored (see QuadraturePoint): the plane and solid sections evaluate the strain and the internal
+         * force from dNdX, and form B for the tangent blocks only. */
+        std::optional< BSized > B;
+        if ( Ke )
+          B = localGeometryElement.B( qp.dNdX );
+        integrateQuadraturePoint< ParentGeometryElement::voigtSize >( qp,
+                                                                      B ? &*B : nullptr,
+                                                                      QTotal,
+                                                                      dQ,
+                                                                      Pe,
+                                                                      Ke,
+                                                                      energyGradients,
+                                                                      time,
+                                                                      dT );
       }
     }
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  template < ContinuumMechanics::Voigt::VoigtSize nComponents >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    computeKernels( const double* QTotal_, const double* dQ_, double* Pe_, double* Ke_, double time, double dT )
+    integrateQuadraturePoint( QuadraturePoint&                                      qp,
+                              const Eigen::Matrix< double, nComponents, sizeDoFU >* B,
+                              const double*                                         QTotal_,
+                              const double*                                         dQ_,
+                              double*                                               Pe_,
+                              double*                                               Ke_,
+                              bool                                                  energyGradients,
+                              double                                                time,
+                              double                                                dT )
   {
+    using namespace ContinuumMechanics::Voigt;
+    using SectionVector = Eigen::Matrix< double, nComponents, 1 >;
+    using SectionMatrix = Eigen::Matrix< double, nComponents, nComponents >;
+    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
-    Eigen::Map< const RhsSized > QTotal( QTotal_ );
-    Eigen::Map< const RhsSized > dQ( dQ_ );
-    Eigen::Map< KeSizedMatrix >  Ke( Ke_ );
-    Eigen::Map< RhsSized >       Pe( Pe_ );
+    constexpr bool axisymmetric = nComponents == Axial;
 
-    // incremental nodal displacements Q and nodal internal parameters qK
+    const Eigen::Map< const RhsSized >     QTotal( QTotal_ );
+    const Eigen::Map< const RhsSized >     dQ( dQ_ );
+    Eigen::Map< RhsSized >                 Pe( Pe_ );
     const Eigen::Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
     const Eigen::Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
-    const Eigen::Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
     const Eigen::Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
+    Eigen::Ref< USizedVector >             fU( Pe.head( sizeDoFU ) );
+    Eigen::Ref< KSizedVector >             fK( Pe.tail( sizeDoFK ) );
 
-    // substiffness matrices
-    // [k_qq    k_qQK
-    //  k_QKQ   k_QKQK ]
-    Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFU > > kUU( Ke.topLeftCorner( sizeDoFU, sizeDoFU ) );
-    Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFK > > kUK( Ke.topRightCorner( sizeDoFU, sizeDoFK ) );
-    Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFU > > kKU( Ke.bottomLeftCorner( sizeDoFK, sizeDoFU ) );
-    Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFK > > kKK( Ke.bottomRightCorner( sizeDoFK, sizeDoFK ) );
+    const NSizedK&     N_K    = qp.N_K();
+    const dNdXiSizedK& dNdX_K = qp.dNdX_K();
 
-    // Righthandside
-    Eigen::Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
-    Eigen::Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
+    // 1. strain increment of the section: the axisymmetric one through its operator, which carries the hoop row
+    SectionVector dE;
+    if constexpr ( axisymmetric )
+      dE = *B * dQU;
+    else
+      dE = Discretizations::Elements::SmallStrain::strainIncrement< nDim, nNodes >( dQU, qp.dNdX );
 
-    using namespace Marmot;
-    using namespace ContinuumMechanics::Voigt;
-
-    using MaterialBase = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
-    using response     = typename MaterialBase::response;
-    using tangents     = typename MaterialBase::tangents;
-    using increment    = typename MaterialBase::increment;
-
-    // energy gradients, if assigned
-    const bool             energyGradients = dElasticEnergy_dQOutput != nullptr;
-    Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQOutput );
-    Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQOutput );
-    if ( energyGradients ) {
-      dElasticEnergy_dQ.setZero();
-      dDissipation_dQ.setZero();
+    // 2. the non-local fields and their increments at the quadrature point
+    NonlocalValues K;
+    NonlocalValues dK;
+    for ( int n = 0; n < nNonlocalVariables; n++ ) {
+      const Eigen::Index idx = static_cast< Eigen::Index >( n ) * nNonLocalNodes;
+      K( n )                 = N_K * qK.segment( idx, nNonLocalNodes );
+      dK( n )                = N_K * dQK.segment( idx, nNonLocalNodes );
     }
 
-    for ( size_t i = 0; i < this->qps.size(); i++ ) {
+    // 3. material update, through the 3D interface; plane stress iterates the out-of-plane strain
+    MaterialResponse res;
+    res.stress               = qp.managedStateVars->stress;
+    res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+    res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+    res.stateVars            = qp.managedStateVars->materialStateVars.data();
+    const increment inc      = { make3DVoigt< nComponents >( dE ), K, dK, time, dT };
 
-      QuadraturePoint& qp = this->qps[i];
+    MaterialTangents                               tan;
+    typename EnergyTangentProvider::energyTangents energyTan;
 
-      /* B is not stored (see QuadraturePoint) and needed here for the tangent blocks only: the strain and the internal
-       * force are evaluated from dNdX, exactly as in the explicit kernel. */
-      const BSized       B      = localGeometryElement.B( qp.dNdX );
-      const NSizedK&     N_K    = qp.N_K();
-      const dNdXiSizedK& dNdX_K = qp.dNdX_K();
+    bool planeStress = false;
+    if constexpr ( nComponents == TwoD )
+      planeStress = sectionType == SectionType::PlaneStress;
 
-      const Voigt dE = Discretizations::Elements::SmallStrain::strainIncrement< nDim, nNodes >( dQU, qp.dNdX );
+    if ( !Ke_ ) {
+      if ( planeStress )
+        qp.material->computePlaneStressExplicit( res, inc );
+      else
+        qp.material->computeStressExplicit( res, inc );
+    }
+    else if ( planeStress ) {
+      if ( energyGradients )
+        qp.energyTangentProvider->computePlaneStressWithEnergyTangents( res, tan, inc, energyTan );
+      else
+        qp.material->computePlaneStress( res, tan, inc );
+      condenseFreeStrains( tan, energyTan, energyGradients );
+    }
+    else {
+      if ( energyGradients )
+        qp.energyTangentProvider->computeStressWithEnergyTangents( res, tan, inc, energyTan );
+      else
+        qp.material->computeStress( res, tan, inc );
+    }
 
-      // delta of _K at Gausspoint
-      Eigen::Vector< double, nNonlocalVariables > K;
-      Eigen::Vector< double, nNonlocalVariables > dK;
+    /* 4. internal forces. The artificial bulk viscosity is added to the stress that is INTEGRATED, never to the one
+     * that is STORED: the constitutive law must not see it and it must leave no trace in the state. With inactive
+     * coefficients it is never evaluated, so a run that does not ask for it is bit-identical to one built before it
+     * existed. In plane stress the out-of-plane strain is not in the element's kinematics, so the trace is over the
+     * in-plane components only and the term is approximate there; in plane strain, axisymmetric and solid it is the
+     * volumetric strain increment.
+     */
+    SectionVector S = reduce3DVoigt< nComponents >( res.stress );
 
-      for ( size_t n = 0; n < nNonlocalVariables; n++ ) {
-        Eigen::Index idx = static_cast< Eigen::Index >( n ) * static_cast< Eigen::Index >( nNonLocalNodes );
-        K( n )           = N_K * qK.segment( idx, nNonLocalNodes );
-        dK( n )          = N_K * dQK.segment( idx, nNonLocalNodes );
-      }
+    if ( !Ke_ && bulkViscosityCoefficients.areActive() ) {
+      // normal components: 11, 22 (plane); rr, zz, tt (axisymmetric); 11, 22, 33 (solid)
+      constexpr int nNormalComponents = nComponents == TwoD ? 2 : 3;
+      S.template head< nNormalComponents >()
+        .array() += bulkViscousStress( qp, res, K, dE.template head< nNormalComponents >().sum(), dT );
+    }
 
-      response  res;
-      tangents  tan;
-      increment inc;
+    if constexpr ( axisymmetric )
+      fU += B->transpose() * S * qp.J0xW;
+    else
+      Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
 
-      // energy density tangents: wrt the strain in the element's Voigt notation, and wrt the nonlocal variables
-      typename EnergyTangentProvider::energyTangents energyTan;
-      Voigt                                          dElasticEnergyDensity_dStrain = Voigt::Zero();
-      Voigt                                          dDissipation_dStrain          = Voigt::Zero();
+    for ( int n = 0; n < nNonlocalVariables; n++ )
+      addNonLocalResidualAt( fK.segment( n * nNonLocalNodes, nNonLocalNodes ), qp, n, K( n ), res, qK );
 
-      if constexpr ( nDim == 2 ) {
-        Marmot::Math::Vector6d dE6 = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
-        res.stress                 = qp.managedStateVars->stress;
-        res.elasticEnergyDensity   = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
-        res.dissipation            = qp.managedStateVars->dissipation / qp.J0xW;
-        res.stateVars              = qp.managedStateVars->materialStateVars.data();
-        inc                        = { dE6, K, dK, time, dT };
-        CSized C                   = CSized::Zero();
-        Voigt  S                   = Voigt::Zero();
+    // 5. tangent blocks and energy gradients, implicit only
+    if ( Ke_ ) {
+      Eigen::Map< KeSizedMatrix >                               Ke( Ke_ );
+      Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFU > > kUU( Ke.topLeftCorner( sizeDoFU, sizeDoFU ) );
+      Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFK > > kUK( Ke.topRightCorner( sizeDoFU, sizeDoFK ) );
+      Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFU > > kKU( Ke.bottomLeftCorner( sizeDoFK, sizeDoFU ) );
+      Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFK > > kKK( Ke.bottomRightCorner( sizeDoFK, sizeDoFK ) );
 
-        if ( sectionType == SectionType::PlaneStress ) {
-          if ( energyGradients )
-            qp.energyTangentProvider->computePlaneStressWithEnergyTangents( res, tan, inc, energyTan );
-          else
-            qp.material->computePlaneStress( res, tan, inc );
-          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
-          C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
+      const SectionMatrix C = sectionTangent< nComponents >( tan.dStressddStrain );
+      kUU += B->transpose() * C * *B * qp.J0xW;
 
-          // static condensation of the out-of-plane strain from dS33 = 0: dE33 = dE33/dE dE + dE33/dK dK
-          using RowNonlocal                     = Eigen::Matrix< double, 1, nNonlocalVariables >;
-          const Marmot::Math::Vector6d  dSdE33  = tan.dStressddStrain.col( 2 );
-          Eigen::Matrix< double, 1, 6 > dE33_dE = -tan.dStressddStrain.row( 2 ) / dSdE33( 2 );
-          dE33_dE( 2 )                          = 0.;
-          const RowNonlocal dE33_dK             = -tan.dStressddK.row( 2 ) / dSdE33( 2 );
+      for ( int n = 0; n < nNonlocalVariables; n++ ) {
+        const Eigen::Index  idx        = static_cast< Eigen::Index >( n ) * nNonLocalNodes;
+        const SectionVector dS_dK      = reduce3DVoigt< nComponents >( tan.dStressddK.col( n ) );
+        const SectionVector dKLocal_dE = reduce3DVoigt< nComponents >( tan.dKLocalddStrain.row( n ).transpose() );
 
-          tan.dStressddK += dSdE33 * dE33_dK;
-          const Eigen::Vector< double, nNonlocalVariables > dKLocal_dE33 = tan.dKLocalddStrain.col( 2 );
-          tan.dKLocalddStrain += dKLocal_dE33 * dE33_dE;
-          tan.dKLocalddK += dKLocal_dE33 * dE33_dK;
-
-          // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
-          if ( energyGradients ) {
-            const double dPsi_dE33 = energyTan.dElasticEnergyDensity_dStrain( 2 );
-            const double dD_dE33   = energyTan.dDissipation_dStrain( 2 );
-            energyTan.dElasticEnergyDensity_dK += dPsi_dE33 * dE33_dK.transpose();
-            energyTan.dDissipation_dK += dD_dE33 * dE33_dK.transpose();
-            dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-              Marmot::Math::Vector6d( energyTan.dElasticEnergyDensity_dStrain + dPsi_dE33 * dE33_dE.transpose() ) );
-            dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-              Marmot::Math::Vector6d( energyTan.dDissipation_dStrain + dD_dE33 * dE33_dE.transpose() ) );
-          }
-        }
-        else if ( sectionType == SectionType::PlaneStrain ) {
-          if ( energyGradients ) {
-            qp.energyTangentProvider->computeStressWithEnergyTangents( res, tan, inc, energyTan );
-            dElasticEnergyDensity_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-              energyTan.dElasticEnergyDensity_dStrain );
-            dDissipation_dStrain = ContinuumMechanics::Voigt::voigtToPlaneVoigt( energyTan.dDissipation_dStrain );
-          }
-          else
-            qp.material->computeStress( res, tan, inc );
-          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
-          C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( tan.dStressddStrain );
-        }
-        else {
-          throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
-        }
-
-        Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
-        kUU += B.transpose() * C * B * qp.J0xW;
-
-        for ( int n = 0; n < nNonlocalVariables; n++ ) {
-          Eigen::Index idx = n * nNonLocalNodes;
-          addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
-          const auto dSdK         = ContinuumMechanics::Voigt::voigtToPlaneVoigt( tan.dStressddK.col( n ) );
-          const auto dK_Local_dDE = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
-            tan.dKLocalddStrain.row( n ).transpose() );
-
-          kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B.transpose() * dSdK * N_K * qp.J0xW;
-          kKU.block( idx, 0, nNonLocalNodes, sizeDoFU ) += N_K.transpose() * -dK_Local_dDE.transpose() * B * qp.J0xW;
-          kKK.block( idx,
-                     idx,
-                     nNonLocalNodes,
-                     nNonLocalNodes ) += ( N_K.transpose() * N_K + res.c( n ) * dNdX_K.transpose() * dNdX_K +
-                                           dNdX_K.transpose() *
-                                             ( tan.dcddK( n ) * nonLocalFieldGradientAt( qp, n, qK ) ) * N_K -
-                                           N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
-                                         qp.J0xW;
-        }
-      }
-
-      else if constexpr ( nDim == 3 ) {
-        if ( sectionType == Solid ) {
-
-          res.stress               = qp.managedStateVars->stress;
-          res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
-          res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
-          res.stateVars            = qp.managedStateVars->materialStateVars.data();
-          inc                      = { dE, K, dK, time, dT };
-          if ( energyGradients ) {
-            qp.energyTangentProvider->computeStressWithEnergyTangents( res, tan, inc, energyTan );
-            dElasticEnergyDensity_dStrain = energyTan.dElasticEnergyDensity_dStrain;
-            dDissipation_dStrain          = energyTan.dDissipation_dStrain;
-          }
-          else
-            qp.material->computeStress( res, tan, inc );
-
-          Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, res.stress, qp.J0xW );
-          kUU += B.transpose() * tan.dStressddStrain * B * qp.J0xW;
-
-          for ( int n = 0; n < nNonlocalVariables; n++ ) {
-            Eigen::Index idx = n * nNonLocalNodes;
-            addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
-
-            kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B.transpose() * tan.dStressddK.col( n ) * N_K * qp.J0xW;
-            kKU.block( idx, 0, nNonLocalNodes, sizeDoFU ) += N_K.transpose() * -tan.dKLocalddStrain.row( n ) * B *
-                                                             qp.J0xW;
-
-            kKK.block( idx,
-                       idx,
-                       nNonLocalNodes,
-                       nNonLocalNodes ) += ( N_K.transpose() * N_K + res.c( n ) * dNdX_K.transpose() * dNdX_K +
-                                             dNdX_K.transpose() *
-                                               ( tan.dcddK( n ) * nonLocalFieldGradientAt( qp, n, qK ) ) * N_K -
-                                             N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
-                                           qp.J0xW;
-          }
-        }
-        else
-          throw std::invalid_argument( "Invalid section type for 3D element! Must be Solid" );
+        kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B->transpose() * dS_dK * N_K * qp.J0xW;
+        kKU.block( idx, 0, nNonLocalNodes, sizeDoFU ) += N_K.transpose() * -dKLocal_dE.transpose() * *B * qp.J0xW;
+        kKK.block( idx,
+                   idx,
+                   nNonLocalNodes,
+                   nNonLocalNodes ) += ( N_K.transpose() * N_K + res.c( n ) * dNdX_K.transpose() * dNdX_K +
+                                         dNdX_K.transpose() *
+                                           ( tan.dcddK( n ) * nonLocalFieldGradientAt( qp, n, qK ) ) * N_K -
+                                         N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
+                                       qp.J0xW;
       }
 
       if ( energyGradients ) {
-        dElasticEnergy_dQ.head( sizeDoFU ) += B.transpose() * dElasticEnergyDensity_dStrain * qp.J0xW;
-        dDissipation_dQ.head( sizeDoFU ) += B.transpose() * dDissipation_dStrain * qp.J0xW;
+        Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQOutput );
+        Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQOutput );
+
+        dElasticEnergy_dQ.head( sizeDoFU ) += B->transpose() *
+                                              reduce3DVoigt< nComponents >( energyTan.dElasticEnergyDensity_dStrain ) *
+                                              qp.J0xW;
+        dDissipation_dQ.head( sizeDoFU ) += B->transpose() *
+                                            reduce3DVoigt< nComponents >( energyTan.dDissipation_dStrain ) * qp.J0xW;
         for ( int n = 0; n < nNonlocalVariables; n++ ) {
-          const Eigen::Index idx = sizeDoFU + n * nNonLocalNodes;
+          const Eigen::Index idx = sizeDoFU + static_cast< Eigen::Index >( n ) * nNonLocalNodes;
           dElasticEnergy_dQ.segment( idx, nNonLocalNodes ) += N_K.transpose() *
                                                               energyTan.dElasticEnergyDensity_dK( n ) * qp.J0xW;
           dDissipation_dQ.segment( idx, nNonLocalNodes ) += N_K.transpose() * energyTan.dDissipation_dK( n ) * qp.J0xW;
         }
       }
-
-      qp.managedStateVars->stress              = res.stress;
-      qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
-      qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
-      qp.managedStateVars->totalStrainEnergy   = ( res.elasticEnergyDensity + res.dissipation ) * qp.J0xW;
-      qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
     }
+
+    // 6. the updated state
+    qp.managedStateVars->stress              = res.stress;
+    qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
+    qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
+    qp.managedStateVars->totalStrainEnergy   = ( res.elasticEnergyDensity + res.dissipation ) * qp.J0xW;
+    qp.managedStateVars->strain += make3DVoigt< nComponents >( dE );
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    computeKernelsExplicit( const double* QTotal_, const double* dQ_, double* Pe_, double time, double dT )
+    condenseFreeStrains( MaterialTangents&                               tan,
+                         typename EnergyTangentProvider::energyTangents& energyTan,
+                         bool                                            energyGradients )
   {
+    using namespace ContinuumMechanics::ReducedStress;
+    using MatrixNonlocal6 = Eigen::Matrix< double, 6, nNonlocalVariables >;
 
-    Eigen::Map< const RhsSized > QTotal( QTotal_ );
-    Eigen::Map< const RhsSized > dQ( dQ_ );
-    Eigen::Map< RhsSized >       Pe( Pe_ );
+    const auto condensation = condense( tan.dStressddStrain, planeStressPrescribed, planeStressFree );
 
-    // incremental nodal displacements Q and nodal internal parameters qK
-    const Eigen::Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
-    const Eigen::Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
-    const Eigen::Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
-    const Eigen::Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
+    Eigen::Matrix< double, 3, nNonlocalVariables > dStressF_dK;
+    for ( int j = 0; j < 3; j++ )
+      dStressF_dK.row( j ) = tan.dStressddK.row( planeStressFree[j] );
+    const Eigen::Matrix< double, 3, nNonlocalVariables > dStrainF_dK = freeStrainSensitivity( condensation,
+                                                                                              dStressF_dK );
 
-    // Righthandside
-    Eigen::Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
-    Eigen::Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
-
-    using namespace Marmot;
-    using namespace ContinuumMechanics::Voigt;
-
-    using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
-
-    for ( size_t i = 0; i < this->qps.size(); i++ ) {
-
-      QuadraturePoint& qp = this->qps[i];
-
-      const NSizedK& N_K = qp.N_K();
-
-      const Voigt dE = Discretizations::Elements::SmallStrain::strainIncrement< nDim, nNodes >( dQU, qp.dNdX );
-
-      /* Added to the stress that is INTEGRATED, never to the one that is STORED: the constitutive
-       * law must not see it and it must leave no trace in the state. With inactive coefficients it
-       * is never evaluated, so a run that does not ask for it is bit-identical to one built before
-       * it existed. In plane stress the out-of-plane strain is not in the element's kinematics, so
-       * the trace is over the in-plane components only and the term is approximate there.
-       */
-      constexpr int nNormalComponents = nDim == 3 ? 3 : 2;
-
-      const auto bulkViscousStressAt = [&]( QuadraturePoint&                                   quadraturePoint,
-                                            const response&                                    currentResponse,
-                                            const Eigen::Vector< double, nNonlocalVariables >& currentK ) {
-        /* The reference is the speed at a ZERO non-local field -- what the default argument asks
-         * for -- not "the speed the first time this was called". The two queries then differ in
-         * the field alone, so their ratio measures damage and nothing else, on a restart and after
-         * a refinement alike.
-         */
-        if ( !quadraturePoint.referenceWaveSpeed )
-          quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
-        const double referenceWaveSpeed = *quadraturePoint.referenceWaveSpeed;
-
-        /* Evaluated here rather than inside the viscous stress because it is the only part that
-         * needs the CURRENT tangent -- a full constitutive evaluation per quadrature point per
-         * increment unless the material has a closed form for it, which is the material's
-         * business and not the element's. At the default exponent the material is
-         * never asked, so such a deck integrates exactly what it did before. The current field
-         * must be passed explicitly: it is an INPUT to the constitutive
-         * law, so a query without it asks for the response at a field of zero -- the undamaged
-         * tangent, wherever damage is driven by that field alone. Omitting it made this factor
-         * identically 1.0 and the property inert.
-         */
-        const double degradation = bulkViscosityCoefficients.isDegraded()
-                                     ? Discretizations::Elements::BulkViscosity::
-                                         degradationFactor( quadraturePoint.material
-                                                              ->getMaximumWaveSpeed( currentResponse, currentK ),
-                                                            referenceWaveSpeed,
-                                                            bulkViscosityCoefficients.degradation )
-                                     : 1.0;
-
-        return degradation *
-               Discretizations::Elements::BulkViscosity::
-                 viscousStressFromIncrement( dE.head( nNormalComponents ).sum(),
-                                             dT,
-                                             quadraturePoint.material->getDensity(
-                                               quadraturePoint.managedStateVars->materialStateVars.data() ),
-                                             referenceWaveSpeed,
-                                             quadraturePoint.characteristicLengthForCriticalTimeStep,
-                                             bulkViscosityCoefficients );
-      };
-
-      // delta of _K at Gausspoint
-      Eigen::Vector< double, nNonlocalVariables > K;
-      Eigen::Vector< double, nNonlocalVariables > dK;
-
-      for ( size_t n = 0; n < nNonlocalVariables; n++ ) {
-        Eigen::Index idx = static_cast< Eigen::Index >( n ) * static_cast< Eigen::Index >( nNonLocalNodes );
-        K( n )           = N_K * qK.segment( idx, nNonLocalNodes );
-        dK( n )          = N_K * dQK.segment( idx, nNonLocalNodes );
-      }
-
-      response  res;
-      increment inc;
-      if constexpr ( nDim == 2 ) {
-        Marmot::Math::Vector6d dE6 = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
-        res.stress                 = qp.managedStateVars->stress;
-        res.elasticEnergyDensity   = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
-        res.dissipation            = qp.managedStateVars->dissipation / qp.J0xW;
-        res.stateVars              = qp.managedStateVars->materialStateVars.data();
-        inc                        = { dE6, K, dK, time, dT };
-        Voigt S                    = Voigt::Zero();
-
-        if ( sectionType == SectionType::PlaneStress ) {
-          qp.material->computePlaneStressExplicit( res, inc );
-          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
-        }
-        else if ( sectionType == SectionType::PlaneStrain ) {
-          qp.material->computeStressExplicit( res, inc );
-          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
-        }
-        else {
-          throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
-        }
-
-        if ( bulkViscosityCoefficients.areActive() )
-          S.template head< nNormalComponents >().array() += bulkViscousStressAt( qp, res, K );
-
-        Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
-
-        for ( int n = 0; n < nNonlocalVariables; n++ ) {
-          Eigen::Index idx = n * nNonLocalNodes;
-          addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
-        }
-      }
-
-      else if constexpr ( nDim == 3 ) {
-        if ( sectionType == Solid ) {
-
-          res.stress               = qp.managedStateVars->stress;
-          res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
-          res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
-          res.stateVars            = qp.managedStateVars->materialStateVars.data();
-          inc                      = { dE, K, dK, time, dT };
-          qp.material->computeStressExplicit( res, inc );
-
-          Marmot::Math::Vector6d integratedStress = res.stress;
-          if ( bulkViscosityCoefficients.areActive() )
-            integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
-
-          Discretizations::Elements::SmallStrain::addInternalForce< nDim, nNodes >( fU,
-                                                                                    qp.dNdX,
-                                                                                    integratedStress,
-                                                                                    qp.J0xW );
-
-          for ( int n = 0; n < nNonlocalVariables; n++ ) {
-            Eigen::Index idx = n * nNonLocalNodes;
-            addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
-          }
-        }
-        else
-          throw std::invalid_argument( "Invalid section type for 3D element! Must be Solid" );
-      }
-      qp.managedStateVars->stress = res.stress;
-      qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
-      qp.managedStateVars->elasticStrainEnergy = res.elasticEnergyDensity * qp.J0xW;
-      qp.managedStateVars->dissipation         = res.dissipation * qp.J0xW;
-      qp.managedStateVars->totalStrainEnergy   = ( res.elasticEnergyDensity + res.dissipation ) * qp.J0xW;
+    // the 3D strain wrt the in-plane strain and wrt the nonlocal variables
+    Eigen::Matrix< double, 6, 3 > dStrain_dStrainP = Eigen::Matrix< double, 6, 3 >::Zero();
+    MatrixNonlocal6               dStrain_dK       = MatrixNonlocal6::Zero();
+    for ( int j = 0; j < 3; j++ ) {
+      dStrain_dStrainP( planeStressPrescribed[j], j ) = 1.;
+      dStrain_dStrainP.row( planeStressFree[j] )      = condensation.dStrainF_dStrainP.row( j );
+      dStrain_dK.row( planeStressFree[j] )            = dStrainF_dK.row( j );
     }
+
+    // the derivatives wrt the nonlocal variables include the free strains
+    tan.dStressddK += tan.dStressddStrain * dStrain_dK;
+    tan.dKLocalddK += tan.dKLocalddStrain * dStrain_dK;
+
+    // the derivatives wrt the strain become those wrt the in-plane strain, stored at the in-plane components
+    const Eigen::Matrix< double, nNonlocalVariables, 3 > dKLocal_dStrainP = tan.dKLocalddStrain * dStrain_dStrainP;
+    tan.dKLocalddStrain.setZero();
+    tan.dStressddStrain.setZero();
+    for ( int j = 0; j < 3; j++ ) {
+      tan.dKLocalddStrain.col( planeStressPrescribed[j] ) = dKLocal_dStrainP.col( j );
+      for ( int i = 0; i < 3; i++ )
+        tan.dStressddStrain( planeStressPrescribed[i], planeStressPrescribed[j] ) = condensation.dStressP_dStrainP( i,
+                                                                                                                    j );
+    }
+
+    // total derivatives of the energy densities wrt the in-plane strain and the nonlocal variables
+    if ( energyGradients ) {
+      energyTan.dElasticEnergyDensity_dK += dStrain_dK.transpose() * energyTan.dElasticEnergyDensity_dStrain;
+      energyTan.dDissipation_dK += dStrain_dK.transpose() * energyTan.dDissipation_dStrain;
+
+      const Eigen::Vector3d dElasticEnergyDensity_dStrainP = dStrain_dStrainP.transpose() *
+                                                             energyTan.dElasticEnergyDensity_dStrain;
+      const Eigen::Vector3d dDissipation_dStrainP = dStrain_dStrainP.transpose() * energyTan.dDissipation_dStrain;
+      energyTan.dElasticEnergyDensity_dStrain.setZero();
+      energyTan.dDissipation_dStrain.setZero();
+      for ( int j = 0; j < 3; j++ ) {
+        energyTan.dElasticEnergyDensity_dStrain( planeStressPrescribed[j] ) = dElasticEnergyDensity_dStrainP( j );
+        energyTan.dDissipation_dStrain( planeStressPrescribed[j] )          = dDissipation_dStrainP( j );
+      }
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  template < ContinuumMechanics::Voigt::VoigtSize nComponents >
+  Eigen::Matrix< double, nComponents, nComponents > GeneralGradientEnhancedDisplacementFiniteElement<
+    nDim,
+    nNodes,
+    nNonlocalVariables,
+    nNonLocalNodes >::sectionTangent( const Marmot::Math::Matrix6d& C )
+  {
+    // eps_33 = 0 (plane strain) and gamma_rt = gamma_zt = 0 (axisymmetric) are kinematic, so the block is exact; in
+    // plane stress, C carries the condensed in-plane tangent at the in-plane components
+    if constexpr ( nComponents == ContinuumMechanics::Voigt::TwoD )
+      return ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C );
+    else if constexpr ( nComponents == ContinuumMechanics::Voigt::Axial )
+      return Spatial2D::Axisymmetric::sectionTangent( C );
+    else
+      return C;
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  double GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    bulkViscousStress( QuadraturePoint&        qp,
+                       const MaterialResponse& res,
+                       const NonlocalValues&   K,
+                       double                  volumetricStrainIncrement,
+                       double                  dT )
+  {
+    /* The reference is the speed at a ZERO non-local field -- what the default argument asks
+     * for -- not "the speed the first time this was called". The two queries then differ in
+     * the field alone, so their ratio measures damage and nothing else, on a restart and after
+     * a refinement alike.
+     */
+    if ( !qp.referenceWaveSpeed )
+      qp.referenceWaveSpeed = qp.material->getMaximumWaveSpeed( res );
+    const double referenceWaveSpeed = *qp.referenceWaveSpeed;
+
+    /* Evaluated here rather than inside the viscous stress because it is the only part that
+     * needs the CURRENT tangent -- a full constitutive evaluation per quadrature point per
+     * increment unless the material has a closed form for it, which is the material's
+     * business and not the element's. At the default exponent the material is
+     * never asked, so such a deck integrates exactly what it did before. The current field
+     * must be passed explicitly: it is an INPUT to the constitutive
+     * law, so a query without it asks for the response at a field of zero -- the undamaged
+     * tangent, wherever damage is driven by that field alone. Omitting it made this factor
+     * identically 1.0 and the property inert.
+     */
+    const double degradation = bulkViscosityCoefficients.isDegraded()
+                                 ? Discretizations::Elements::BulkViscosity::
+                                     degradationFactor( qp.material->getMaximumWaveSpeed( res, K ),
+                                                        referenceWaveSpeed,
+                                                        bulkViscosityCoefficients.degradation )
+                                 : 1.0;
+
+    return degradation *
+           Discretizations::Elements::BulkViscosity::viscousStressFromIncrement( volumetricStrainIncrement,
+                                                                                 dT,
+                                                                                 qp.material->getDensity(
+                                                                                   qp.managedStateVars
+                                                                                     ->materialStateVars.data() ),
+                                                                                 referenceWaveSpeed,
+                                                                                 qp.smallestElementExtent,
+                                                                                 bulkViscosityCoefficients );
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -1343,8 +1480,8 @@ namespace Marmot::Discretizations::Elements {
           Discretizations::Elements::ConsistentMass::integrationRule( localGeometryElement.shape ) ) {
       const XiSized xi = point.xi;
       const auto&   qp = qps[Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
-      // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
-      const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
+      // at the point of the mass rule, not at the nearest quadrature point: 2 pi r varies over the element
+      const double sectionFactor = sectionFactorAt( xi );
       const double J0xW          = point.weight *
                           localGeometryElement.Jacobian( localGeometryElement.dNdXi( xi ) ).determinant() *
                           sectionFactor;
@@ -1449,7 +1586,7 @@ namespace Marmot::Discretizations::Elements {
      * block, and is now the same in every respect: since the micro-inertia became a material
      * property both coefficients are material responses read per quadrature point, so the two
      * blocks differ only in which of the two they multiply. The blend is still derived here rather
-     * than shared through a helper, because the stable increment is read off the RATIO of the two
+     * than shared through a helper, because the critical time step is read off the RATIO of the two
      * distributions and a helper that drifted would be invisible in either one alone -- but there
      * is no longer anything preventing that helper from existing.
      */
@@ -1505,55 +1642,26 @@ namespace Marmot::Discretizations::Elements {
     using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
     using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
-    /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
-     * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
-     * under the manifold-based blend a hexa20 corner node carries less than the uniform share, and
-     * the lightest node sets the highest frequency (omega = sqrt( k / m )), so the stable increment
-     * scales with sqrt( m_min / m_uniform ).
-     *
-     * Ignoring it puts the default courant number of 0.8 ABOVE the true limit for every 20-node
-     * element. That does not present as a marginally noisy run but as violent exponential
-     * divergence -- and only where the material provides no damping, so a 20-node run on a
-     * viscously regularised material can sit just above the limit and look perfectly healthy. That
-     * is worse than a clean failure, because it makes the fault look model-specific.
-     *
-     * The fractions come from the same helper computeLumpedInertia uses, so the two cannot drift
-     * apart. Exactly 1 for a linear element on a regular mesh, so nothing changes there, and
-     * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
-     * tighter limit than its volume alone suggests.
-     *
-     * Note this covers the DISPLACEMENT field only. The non-local field is handled separately
-     * below, and only where it has been made second order in time: a first-order non-local field
-     * has a forward-Euler limit set by its viscosity against the Helmholtz operator, which is a
-     * different formula, is not a wave speed, and is still not checked anywhere.
-     */
-    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
-    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
-    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
-    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
-    for ( const auto& qp : qps ) {
-      rowSumsHighOrder += Eigen::VectorXd( localGeometryElement.N( qp.xi ) ) * qp.J0xW;
-      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
-    }
-    const double weight = Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
-                                                                                       rowSumsLinear );
-    const double lumpedMassTimeStepFactor = Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
-      Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
+    /* The displacement field's limit: the element's own eigenvalue bound, from the strain operator it integrates its
+     * internal force with and the displacement block of the lumped mass it assembles; see
+     * Marmot::Discretizations::Elements::CriticalTimeStep. The non-local field is handled separately below, and only
+     * where it has been made second order in time: a first-order non-local field has a forward-Euler limit set by its
+     * viscosity against the Helmholtz operator, which is a different formula, is not a wave speed, and is still not
+     * checked anywhere. */
+    Discretizations::Elements::CriticalTimeStep::IsotropicElasticStiffnessBound stiffnessBound( sizeDoFU );
+    double                                                                      pWaveModulus = 0.0;
+    for ( int i = 0; i < static_cast< int >( qps.size() ); i++ ) {
+      const auto& qp = qps[i];
+      if constexpr ( nDim == 2 ) {
+        if ( sectionType == SectionType::Axisymmetric )
+          stiffnessBound.addQuadraturePoint( axisymmetricB( qp ), 3, qp.J0xW );
+        else
+          stiffnessBound.addQuadraturePoint( localGeometryElement.B( qp.dNdX ), nDim, qp.J0xW );
+      }
+      else
+        stiffnessBound.addQuadraturePoint( localGeometryElement.B( qp.dNdX ), nDim, qp.J0xW );
 
-    criticalTimeStep = std::numeric_limits< double >::max();
-    for ( const auto& qp : qps ) {
-      /* The characteristic element length of GeometryElement: the smallest physical extent of a
-       * quadrilateral or hexahedron, 1 / |grad N|_F of a linear simplex; see
-       * GeometryElement::characteristicLengthForCriticalTimeStepAt.
-       *
-       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
-       * bulk viscosity already needs this value on every explicit increment and caches it for that
-       * reason, and the nodal coordinates it depends on do not change, so a second computation here
-       * would only disagree with the cached one under floating-point noise, never under a real
-       * update.
-       */
-      const double characteristicLengthForCriticalTimeStep = qp.characteristicLengthForCriticalTimeStep;
-      response     waveSpeedResponse;
+      response waveSpeedResponse;
       waveSpeedResponse.stress = qp.managedStateVars->stress;
       waveSpeedResponse.KLocal.setZero();
       waveSpeedResponse.c.setZero();
@@ -1561,23 +1669,24 @@ namespace Marmot::Discretizations::Elements {
       waveSpeedResponse.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
       waveSpeedResponse.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
 
-      const double c = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
-      if ( c <= 0.0 )
-        throw std::runtime_error( "Material returned non-positive wave speed, cannot compute critical time step" );
-      const double& l  = characteristicLengthForCriticalTimeStep;
-      double        dt = lumpedMassTimeStepFactor * l / c;
-      if ( dt < criticalTimeStep )
-        criticalTimeStep = dt;
+      const double c   = qp.material->getMaximumWaveSpeed( waveSpeedResponse );
+      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      pWaveModulus = std::max( pWaveModulus, CriticalTimeStep::pWaveModulusOfQuadraturePoint( rho, c, elLabel, i ) );
     }
+
+    /* The inertia that is actually ASSEMBLED, read by calling the very function that assembles it rather than
+     * re-deriving the lumping here; the non-local part below reads its block as well. */
+    RhsSized lumpedInertia = RhsSized::Zero();
+    computeLumpedInertia( lumpedInertia.data() );
+    criticalTimeStep = stiffnessBound.criticalTimeStep( lumpedInertia.head( sizeDoFU ), pWaveModulus );
 
     /* The non-local field's own limit, where it has one. Without a micro-inertia that field is
      * first order in time and is not integrated by the central-difference update this function's
      * estimate belongs to, so there is nothing here to bound.
      *
      * Asked of the material, quadrature point by quadrature point, since that is where the
-     * micro-inertia lives -- and asked FIRST, before the two lumping assemblies below, so that the
-     * parabolic case, which is every deck that has not opted in, still leaves this function at the
-     * cost it had.
+     * micro-inertia lives -- and asked before the lumped damping is assembled below, so that the
+     * parabolic case, which is every deck that has not opted in, does not pay for it.
      */
     bool anyMicroInertia = false;
     for ( const auto& qp : qps ) {
@@ -1595,14 +1704,11 @@ namespace Marmot::Discretizations::Elements {
      */
     const double mechanicalTimeStep = criticalTimeStep;
 
-    /* Read off the inertia and the damping that are actually ASSEMBLED, by calling the very
-     * functions that assemble them rather than re-deriving the lumping here. Their non-local
-     * blocks are m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the
+    /* The damping that is actually ASSEMBLED, read like the inertia above. The non-local blocks of
+     * the two are m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the
      * field's damping rate whatever the lumping does.
      */
-    RhsSized lumpedInertia = RhsSized::Zero();
     RhsSized lumpedDamping = RhsSized::Zero();
-    computeLumpedInertia( lumpedInertia.data() );
     computeLumpedDamping( lumpedDamping.data() );
 
     Eigen::Map< const RhsSized >           Q( QTotal );
@@ -1707,7 +1813,7 @@ namespace Marmot::Discretizations::Elements {
     if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported.exchange( true ) ) {
       Marmot::Utilities::Journal::
         warningToMSG( Marmot::Utilities::MakeString()
-                      << "element " << elLabel << ": the stable increment is bounded by the NON-LOCAL "
+                      << "element " << elLabel << ": the critical time step is bounded by the NON-LOCAL "
                       << "field (" << criticalTimeStep << " s), not by the mesh (" << mechanicalTimeStep
                       << " s). Mass scaling cannot raise it -- no density enters "
                       << "that bound. Raise the micro-inertia m_k, which is the mass of this bound. It "
@@ -1775,6 +1881,9 @@ namespace Marmot::Discretizations::Elements {
     Eigen::Map< RhsSized >     P_( P );
     Eigen::Ref< USizedVector > fU( P_.head( sizeDoFU ) );
 
+    // the boundary element of an axisymmetric element integrates over the ring; plane elements multiply by thickness
+    const bool axisymmetric = sectionType == SectionType::Axisymmetric;
+
     switch ( loadType ) {
 
     case Marmot::Discretizations::Elements::Element::Pressure: {
@@ -1783,12 +1892,14 @@ namespace Marmot::Discretizations::Elements {
       Discretizations::Elements::BoundaryElement boundaryEl( localGeometryElement.shape,
                                                              elementFace,
                                                              nDim,
-                                                             localGeometryElement.coordinates );
+                                                             localGeometryElement.coordinates,
+                                                             axisymmetric );
 
       Eigen::VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
 
       if constexpr ( nDim == 2 )
-        Pk *= elementProperties[0]; // thickness
+        if ( !axisymmetric )
+          Pk *= elementProperties[0]; // thickness
 
       boundaryEl.assembleIntoParentVectorial( Pk, fU );
 

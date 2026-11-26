@@ -3,7 +3,7 @@ Explicit dynamics devices
 
 Two numerical devices for explicit dynamics, developed and calibrated together: artificial bulk
 viscosity, which damps volumetric ringing in the mechanical field, and non-local micro-inertia,
-which makes a gradient-enhanced field second order in time so its stable increment scales linearly
+which makes a gradient-enhanced field second order in time so its critical time step scales linearly
 rather than quadratically with the element size. Both are inert unless given a value.
 
 They are declared in different places, and deliberately so. The bulk viscosity is an **element**
@@ -11,6 +11,51 @@ property: its useful value depends on the mesh, and two meshes of one material w
 amounts of it. The micro-inertia is a **material** property, because it is inseparable from the
 non-local viscosity -- itself always a material property -- by the bound :math:`m_k \le \eta^2/4`,
 and because that bound can only be checked where both of its sides are visible.
+
+The critical time step
+-------------------------
+
+The central difference method with a lumped mass is stable for :math:`\Delta t \le 2/\omega_\mathrm{max}`, and the
+largest eigenfrequency of the assembled system is bounded by the largest of its elements,
+:math:`\omega_\mathrm{max}^2 \le \max_e \lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_e)`. The continuum
+elements (``DisplacementFiniteElement``, ``DisplacementFiniteStrainULElement`` and
+``GeneralGradientEnhancedDisplacementFiniteElement``) return this element bound, computed from the strain operator
+they integrate with and the lumped mass they assemble, so it holds for every element order, quadrature rule and
+distortion. A characteristic length over a wave speed does not: it is the exact limit of a linear bar, and it
+overestimates the critical time step of a quadratic element by a factor of 2.3 (8-node quadrilateral) to 3.4
+(20-node hexahedron), and that of a compact linear element in 3D by up to 1.7.
+
+A material tells only its largest wave speed :math:`c`, i.e. the P-wave modulus :math:`\rho c^2 = \lambda + 2\mu`.
+The element stiffness of an isotropic material splits along the two Lame constants,
+:math:`\lambda\mathbf{K}_\lambda + \mu\mathbf{K}_\mu`, with
+:math:`\mathbf{u}^T\mathbf{K}_\lambda\mathbf{u} = \int (\nabla\cdot\mathbf{u})^2\,\mathrm{d}V` and
+:math:`\mathbf{u}^T\mathbf{K}_\mu\mathbf{u} = \int 2\,\boldsymbol{\varepsilon}:\boldsymbol{\varepsilon}\,\mathrm{d}V`
+(not the deviatoric operator: it contains the volumetric strain too). At a fixed P-wave modulus the stiffness is
+affine in :math:`\mu`, and its largest eigenvalue is largest at one of the two ends :math:`\nu = 1/2` or
+:math:`\nu = 0`:
+
+.. math::
+
+   \Delta t = \frac{2}{\sqrt{\rho c^2\,\Lambda}}, \qquad
+   \Lambda = \max\Big(\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\lambda),\;
+                       \tfrac{1}{2}\lambda_\mathrm{max}(\mathbf{M}_e^{-1}\mathbf{K}_\mu)\Big).
+
+It is exact for a material at the end whose term is the larger one and conservative everywhere else. For quadratic
+elements it is about 0.8 to 1 of the exact critical time step of the element; for a compact linear element, whose
+incompressible end governs, it can be as low as 0.6 of it at :math:`\nu = 0`. A courant number below one is still
+needed for the nonlinearities the bound does not see.
+
+An element whose bound comes out too large makes the whole analysis unstable, so the numbers it is built from are
+checked, each such that a NaN fails the check: the wave speed and the density of every quadrature point
+(``pWaveModulusOfQuadraturePoint``) before the largest P-wave modulus is taken -- a NaN loses every comparison and
+would otherwise drop out of the maximum, leaving the bound of the other points --, every entry of the lumped mass,
+and the convergence of the eigenvalue solver. A failed check throws with the element and the quadrature point in the
+message. The default ``MaterialFiniteStrain::getMaximumWaveSpeed`` returns NaN if the finite-difference stiffness of
+one direction is NaN, so that the element refuses it. The axisymmetric finite strain elements evaluate the wave speed
+at their hoop stretch, the deformation they integrate.
+
+.. doxygennamespace:: Marmot::Discretizations::Elements::CriticalTimeStep
+   :members:
 
 Artificial bulk viscosity
 -------------------------
@@ -171,8 +216,9 @@ Notes and limitations
   against. Only the degradation asks for the current wave speed, once per quadrature point per
   increment, and what that costs is the material's business (see the note above).
 - **The characteristic length is the element's smallest physical extent**, twice the smallest
-  singular value of the Jacobian -- the same length the stable time increment is computed from,
-  shared through one function so the two cannot drift apart.
+  singular value of the Jacobian (``GeometryElement::smallestElementExtentAt``). It scales the
+  viscosity to the shortest wave the element can carry; the critical time step does not use it
+  (it is the element's eigenvalue bound, see above).
 - **Plane stress is approximate.** The out-of-plane strain is not carried by the element's
   kinematics there, so the trace is taken over the in-plane components only.
 - **Explicit only.** Evaluated in ``computeKernelsExplicit``, not part of the implicit kernels,
@@ -213,7 +259,7 @@ a viscosity :math:`\eta`,
      = \tilde\varepsilon ,
 
 and integrated with forward Euler. That works, but the largest eigenvalue of the discrete operator
-is :math:`\lambda_\mathrm{max} \approx \tfrac{1}{\eta}(1 + C l^2/h^2)`, so the stable increment
+is :math:`\lambda_\mathrm{max} \approx \tfrac{1}{\eta}(1 + C l^2/h^2)`, so the critical time step
 
 .. math::
 
@@ -438,7 +484,7 @@ Both directions of that declaration are checked: a micro-inertia the elements ca
 was not told about, and one the solver expects but the elements do not assemble, are both refused
 with a message rather than integrated. **Unset, the feature is completely inert**: a material that
 provides no micro-inertia -- including every material that predates this interface, which inherits
-a zero -- leaves its non-local field first order in time, and the stable increment is the
+a zero -- leaves its non-local field first order in time, and the critical time step is the
 mechanical one exactly as before.
 
 .. note::

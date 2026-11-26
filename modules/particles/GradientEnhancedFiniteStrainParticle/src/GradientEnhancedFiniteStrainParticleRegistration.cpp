@@ -22,55 +22,21 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
+#include "Marmot/GradientEnhancedFiniteStrainParticleRegistration.h"
 #include "Marmot/GradientEnhancedFiniteStrainParticle.h"
-#include "Marmot/MarmotMaterialPoint.h"
-#include "Marmot/MarmotParticleLibrary.h"
 
 namespace {
   using namespace Marmot::Discretizations::Meshfree;
 
-  const static bool GradientEnhancedFiniteStrainParticle_PlaneStrain_isRegistered = Marmot::Registry::ParticleFactory::
-    registerParticle( "GradientEnhancedFiniteStrain/PlaneStrain/Point",
-                      []( int           cellID,
-                          const double* nodeCoordinates,
-                          int           sizeNodeCoordinates,
-                          double        volume,
-                          // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
-                          const std::string&                                      materialName,
-                          const double*                                           materialProperties,
-                          int                                                     sizeMaterialProperties,
-                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                        -> Marmot::Discretizations::Meshfree::Particle* {
-                        return new GradientEnhancedFiniteStrainParticle< 2 >( cellID,
-                                                                              nodeCoordinates,
-                                                                              sizeNodeCoordinates,
-                                                                              volume,
-                                                                              // mp,
-                                                                              materialName,
-                                                                              materialProperties,
-                                                                              sizeMaterialProperties,
-                                                                              approximation );
-                      } );
+  const static bool
+    GradientEnhancedFiniteStrainParticle_PlaneStrain_isRegistered = registerGradientEnhancedFiniteStrainParticle<
+      GradientEnhancedFiniteStrainParticle< 2, 1 > >( "GradientEnhancedFiniteStrain/PlaneStrain/Point" );
 
-  const static bool GradientEnhancedFiniteStrainParticle_3D_isRegistered = Marmot::Registry::ParticleFactory::
-    registerParticle( "GradientEnhancedFiniteStrain/3D/Point",
-                      []( int                                                     cellID,
-                          const double*                                           nodeCoordinates,
-                          int                                                     sizeNodeCoordinates,
-                          double                                                  volume,
-                          const std::string&                                      materialName,
-                          const double*                                           materialProperties,
-                          int                                                     sizeMaterialProperties,
-                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
-                        -> Marmot::Discretizations::Meshfree::Particle* {
-                        return new GradientEnhancedFiniteStrainParticle< 3 >( cellID,
-                                                                              nodeCoordinates,
-                                                                              sizeNodeCoordinates,
-                                                                              volume,
-                                                                              materialName,
-                                                                              materialProperties,
-                                                                              sizeMaterialProperties,
-                                                                              approximation );
-                      } );
+  const static bool GradientEnhancedFiniteStrainParticle_3D_isRegistered = registerGradientEnhancedFiniteStrainParticle<
+    GradientEnhancedFiniteStrainParticle< 3, 1 > >( "GradientEnhancedFiniteStrain/3D/Point" );
+
+  const static bool
+    GradientEnhanced6FiniteStrainParticle_3D_isRegistered = registerGradientEnhancedFiniteStrainParticle<
+      GradientEnhancedFiniteStrainParticle< 3, 6 > >( "GradientEnhanced6FiniteStrain/3D/Point" );
 
 } // namespace

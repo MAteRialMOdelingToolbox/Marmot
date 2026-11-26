@@ -43,6 +43,9 @@ namespace Marmot::Discretizations::Meshfree {
   class KernelFunction {
 
   public:
+    /// The largest spatial dimension @f$ d @f$ of a kernel.
+    static constexpr int maxDim = 3;
+
     /// @brief Default constructor.
     KernelFunction() = default;
 
@@ -57,11 +60,14 @@ namespace Marmot::Discretizations::Meshfree {
     virtual double computeKernelFunction( const double* coord ) const = 0;
 
     /**
-     * @brief Evaluate the gradient @f$ \partial \phi_A / \partial x_i @f$ of the kernel function.
+     * @brief Evaluate the kernel function @f$ \phi_A(\boldsymbol{x}) @f$ and its gradient
+     * @f$ \partial \phi_A / \partial x_i @f$ at once: the two share most of their work (for a tensor-product kernel,
+     * the one-dimensional factors).
      * @param[in]  coord Coordinates @f$ \boldsymbol{x} @f$ of the evaluation point (length @f$ d @f$).
      * @param[out] grad  Gradient of the kernel with respect to @f$ \boldsymbol{x} @f$ (length @f$ d @f$).
+     * @return The kernel value; zero outside the support (the value computeKernelFunction() returns).
      */
-    virtual void computeKernelFunctionGradient( const double* coord, double* grad ) const = 0;
+    virtual double computeKernelFunctionAndGradient( const double* coord, double* grad ) const = 0;
 
     /**
      * @brief Get the axis-aligned bounding box of the support.

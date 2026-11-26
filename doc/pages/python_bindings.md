@@ -7,8 +7,9 @@ These bindings expose Marmot's material point solvers directly in Python, enabli
 
 ## Installation & Setup
 
-Building the Python bindings is optional and requires a Python 3.8+ development environment.
+Building the Python bindings is optional and requires a Python 3.10+ development environment.
 Nanobind is automatically fetched at CMake configuration time.
+A free-threaded Python (e.g. the Python 3.14 of the EdelweissFE environment) is supported with CMake 3.30 or newer: the module then runs without the GIL. A solver object is not meant to be shared between threads, so every call of a solver method locks that solver; different solvers run concurrently.
 
 To build and install Marmot with Python bindings:
 

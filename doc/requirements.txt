@@ -1,5 +1,8 @@
+autodiff==1.1.2
 breathe
 doxygen
+eigen>=5
+fastor
 graphviz
 myst-parser
 pydot

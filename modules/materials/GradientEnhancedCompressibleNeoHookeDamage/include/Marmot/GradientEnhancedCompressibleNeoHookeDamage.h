@@ -41,9 +41,10 @@ namespace Marmot::Materials {
    *   L = \sqrt{2\,\psi_0(\boldsymbol{F}) / E},
    * @f]
    * where @f$ \psi_0 @f$ and @f$ \boldsymbol{\tau}_0 @f$ are the energy density and Kirchhoff stress of the
-   * compressible neo-Hookean potential (PenceGouPotentialB, as in CompressibleNeoHooke), @f$ E = 9KG/(3K+G) @f$,
-   * so that @f$ L @f$ is an energy-equivalent strain which reduces to the axial strain in small-strain uniaxial
-   * stress. The nonlocal field @f$ \bar{N} @f$ solves @f$ \bar{N} - l^2\nabla^2\bar{N} = L @f$, and
+   * compressible neo-Hookean potential (PenceGouPotentialB, as in CompressibleHyperelasticity with NeoHooke and
+   * DollSchweizerhof), @f$ E = 9KG/(3K+G) @f$, so that @f$ L @f$ is an energy-equivalent strain which reduces to the
+   * axial strain in small-strain uniaxial stress. The nonlocal field @f$ \bar{N} @f$ solves @f$ \bar{N} -
+   * l^2\nabla^2\bar{N} = L @f$, and
    * @f[
    *   D(\kappa) = 1 - \frac{\kappa_0}{\kappa}\exp\!\left(-\frac{\kappa - \kappa_0}{\kappa_f - \kappa_0}\right)
    *   \quad \text{for} \quad \kappa > \kappa_0, \qquad D = 0 \quad \text{otherwise}.
@@ -66,7 +67,8 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy
    * released by the damage increment, @f$ \psi_0\,\Delta D @f$.
    */
-  class GradientEnhancedCompressibleNeoHookeDamage : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedCompressibleNeoHookeDamage
+    : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > {
   public:
     /**
      * @brief Construct the material and validate its properties.
@@ -79,7 +81,7 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialNumber );
 
-    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.

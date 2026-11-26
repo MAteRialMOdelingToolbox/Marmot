@@ -217,9 +217,9 @@ namespace Marmot::Discretizations::Elements {
     Eigen::Matrix< double, nDim, 1 > center() const { return NB( N( referenceCentroid() ) ) * coordinates; }
 
     /**
-     * @brief The characteristic element length \f$L_e\f$ at the natural coordinates @p xi, for the stable time
-     * increment \f$\Delta t = f\, L_e / c\f$ of explicit dynamics, with the wave speed \f$c\f$ and a factor \f$f\f$
-     * for the lumped mass distribution (see MassLumping::timeStepFactorFromMassDistribution).
+     * @brief The smallest extent \f$L_e\f$ of the element at the natural coordinates @p xi, the length the artificial
+     * bulk viscosity of explicit dynamics scales with (see BulkViscosity). The critical time step does not use it:
+     * it is the element's own eigenvalue bound, see CriticalTimeStep.
      *
      * @details
      * - Quadrilateral, hexahedron and line: \f$L_e = 2\,\sigma_\mathrm{min}(\mathbf{J})\f$, twice the smallest
@@ -233,7 +233,7 @@ namespace Marmot::Discretizations::Elements {
      *
      * @param[in] xi Natural coordinates; irrelevant for a linear simplex, whose gradients are constant.
      */
-    double characteristicLengthForCriticalTimeStepAt( const XiSized& xi ) const
+    double smallestElementExtentAt( const XiSized& xi ) const
     {
       static_assert( !isSimplex( referenceDomain ) || interpolationOrder == 1,
                      "The characteristic element length of a quadratic simplex is not derived." );
@@ -250,9 +250,8 @@ namespace Marmot::Discretizations::Elements {
         // (InvalidInput), so they are read only after a successful decomposition.
         const Eigen::JacobiSVD< JacobianSized > svd( J );
         if ( svd.info() != Eigen::Success )
-          throw std::invalid_argument(
-            "GeometryElement::characteristicLengthForCriticalTimeStepAt(): the Jacobian is not finite; "
-            "check the nodal coordinates." );
+          throw std::invalid_argument( "GeometryElement::smallestElementExtentAt(): the Jacobian is not finite; "
+                                       "check the nodal coordinates." );
         return 2.0 * svd.singularValues().minCoeff();
       }
     }

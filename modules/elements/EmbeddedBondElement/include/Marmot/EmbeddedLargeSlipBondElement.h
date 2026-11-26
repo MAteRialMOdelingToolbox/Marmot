@@ -885,7 +885,8 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber ) override
+  protected:
+    Marmot::Utilities::StateView getStateViewAtQuadraturePoint( const std::string& stateName, int qpNumber ) override
     {
       const int         nQp  = nStateVars_ / static_cast< int >( channelPoints.size() );
       double*           base = stateVars_ + qpNumber * nQp;
@@ -895,6 +896,7 @@ namespace Marmot::Discretizations::Elements {
       return channelPoints[qpNumber].bondSlipLaw->getStateView( stateName, sv.materialStateVars.data() );
     }
 
+  public:
     std::vector< double > getCoordinatesAtCenter() override
     {
       VectorDim X = VectorDim::Zero();

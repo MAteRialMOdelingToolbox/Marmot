@@ -49,6 +49,25 @@ namespace {
                                           Quadrature::gaussExactToDegree( 3 ),
                                           GeneralGradientEnhancedDisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
+  // axisymmetric: r = x_1, z = x_2, integrated over the full ring; rules as for GCPE4, GCPE8R and GCPE8
+  const static bool GCAX4_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "GCAX4",
+                     makeFactoryFunction< GeneralGradientEnhancedDisplacementFiniteElement< 2, 4 >,
+                                          Quadrature::gaussExactToDegree( 2 ),
+                                          GeneralGradientEnhancedDisplacementFiniteElement< 2, 4 >::Axisymmetric >() );
+
+  const static bool GCAX8R_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "GCAX8R",
+                     makeFactoryFunction< GeneralGradientEnhancedDisplacementFiniteElement< 2, 8 >,
+                                          Quadrature::gaussExactToDegree( 3 ),
+                                          GeneralGradientEnhancedDisplacementFiniteElement< 2, 8 >::Axisymmetric >() );
+
+  const static bool GCAX8_isRegistered = Marmot::Registry::ElementFactory::
+    registerElement( "GCAX8",
+                     makeFactoryFunction< GeneralGradientEnhancedDisplacementFiniteElement< 2, 8 >,
+                                          Quadrature::gaussExactToDegree( 4 ),
+                                          GeneralGradientEnhancedDisplacementFiniteElement< 2, 8 >::Axisymmetric >() );
+
   const static bool GC3D8_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "GC3D8",
                      makeFactoryFunction<

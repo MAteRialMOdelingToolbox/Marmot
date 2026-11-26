@@ -53,10 +53,15 @@ namespace {
                    double                       dissipationIn = 0.0 )
   {
     std::vector< double >          state = stateIn;
-    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., dissipationIn, state.data() );
+    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ),
+                                             Mat::NonlocalVector::Zero(),
+                                             Mat::NonlocalVector::Zero(),
+                                             0.,
+                                             dissipationIn,
+                                             state.data() );
     Mat::AlgorithmicModuli< 3 >    t;
-    mat.computeStress( response, t, { F, N }, { 0.0, 1.0 } );
-    return { response.tau, response.L, response.dissipation, state, t };
+    mat.computeStress( response, t, { F, Mat::NonlocalVector::Constant( N ) }, { 0.0, 1.0 } );
+    return { response.tau, response.L( 0 ), response.dissipation, state, t };
   }
 
   std::vector< double > freshState( Mat& mat )
@@ -163,7 +168,7 @@ void testConsistencyAndFlowRule()
     // the local damage variable is the dilatant plastic strain: without dilatancy, L and dL/dF vanish together
     double normdL_dF = 0.0;
     for ( int i = 0; i < 9; i++ )
-      normdL_dF += std::abs( res.t.dL_dF.data()[i] );
+      normdL_dF += std::abs( res.t.dL_dF[0].data()[i] );
     if ( psi == 0.0 )
       throwExceptionOnFailure( res.L == 0.0 && normdL_dF == 0.0, "without dilatancy, L and dL/dF must vanish" + where );
     else
@@ -249,9 +254,9 @@ void checkTangents( const Mat&                   mat,
                                      << ") = " << res.t.dTau_dF( i, j, k, l ) << " vs " << num << where );
         }
       const double numL = ( rp.L - rm.L ) / ( 2 * h );
-      throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < tol( numL, scaleL ),
+      throwExceptionOnFailure( std::abs( res.t.dL_dF[0]( k, l ) - numL ) < tol( numL, scaleL ),
                                Marmot::Utilities::MakeString() << branch << ": dL_dF(" << k << l << ") = "
-                                                               << res.t.dL_dF( k, l ) << " vs " << numL << where );
+                                                               << res.t.dL_dF[0]( k, l ) << " vs " << numL << where );
     }
 
   const double hN = 1e-7;
@@ -260,11 +265,11 @@ void checkTangents( const Mat&                   mat,
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
       const double num = ( rp.tau( i, j ) - rm.tau( i, j ) ) / ( 2 * hN );
-      throwExceptionOnFailure( std::abs( res.t.dTau_dN( i, j ) - num ) < tol( num, 1.0 ),
+      throwExceptionOnFailure( std::abs( res.t.dTau_dN[0]( i, j ) - num ) < tol( num, 1.0 ),
                                branch + ": dTau_dN inconsistent" + where );
     }
   const double numL = ( rp.L - rm.L ) / ( 2 * hN );
-  throwExceptionOnFailure( std::abs( res.t.dL_dN - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
+  throwExceptionOnFailure( std::abs( res.t.dL_dN( 0, 0 ) - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
                            branch + ": dL_dN inconsistent" + where );
 }
 
@@ -371,7 +376,7 @@ void testGradientEnhancedDamage()
                            "tau != (1 - omega) tau_eff" + where );
 
   // the nonlocal field drives the damage ...
-  throwExceptionOnFailure( norm( res.t.dTau_dN ) > 0.0, "tau must depend on the nonlocal field" + where );
+  throwExceptionOnFailure( norm( res.t.dTau_dN[0] ) > 0.0, "tau must depend on the nonlocal field" + where );
 
   // ... irreversibly: a smaller nonlocal field in the next increment does not heal the material
   const auto later = evaluate( mat, testF( 0.1 ), 0.0, res.state );
@@ -410,13 +415,13 @@ void testCumulativeDissipation()
 
 void testFactoryAndValidation()
 {
-  const auto                                                                 props = properties( 5., 30., 10. );
-  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
-    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
-      createMaterial( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER",
-                      props.data(),
-                      static_cast< int >( props.size() ),
-                      1 ) );
+  const auto                                                                      props = properties( 5., 30., 10. );
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 > > mat(
+    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+      1 >::createMaterial( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER",
+                           props.data(),
+                           static_cast< int >( props.size() ),
+                           1 ) );
   throwExceptionOnFailure( mat != nullptr, "factory" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 13,
                            "state layout: Fp, alphaP, alphaD, kappa, omega" + where );
@@ -606,7 +611,7 @@ void testConeWithAVanishingDeviator()
     normTangent += std::pow( res.t.dTau_dF.data()[i], 2 );
   double normdL = 0.0;
   for ( int i = 0; i < 9; i++ )
-    normdL += std::pow( res.t.dL_dF.data()[i], 2 );
+    normdL += std::pow( res.t.dL_dF[0].data()[i], 2 );
   checkTangents( mat,
                  F,
                  0.0,
