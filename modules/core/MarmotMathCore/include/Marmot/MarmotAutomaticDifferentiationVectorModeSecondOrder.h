@@ -820,7 +820,9 @@ namespace Marmot::Math::Differentiation::Automatic::VectorMode {
       const double p = std::pow( x, n_ ), d = n_ * p / x;
       return chain( a, p, d, ( n_ - 1.0 ) * d / x );
     }
-    return chain( a, std::pow( x, n_ ), n_ * std::pow( x, n_ - 1.0 ), n_ * ( n_ - 1.0 ) * std::pow( x, n_ - 2.0 ) );
+    // a vanishing base: the derivatives without dividing by the base; the second one of a linear function vanishes
+    const double c2 = n_ * ( n_ - 1.0 );
+    return chain( a, std::pow( x, n_ ), n_ * std::pow( x, n_ - 1.0 ), c2 == 0.0 ? 0.0 : c2 * std::pow( x, n_ - 2.0 ) );
   }
 
   /** @brief Power of a constant base

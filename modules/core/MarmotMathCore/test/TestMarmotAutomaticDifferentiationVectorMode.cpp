@@ -374,6 +374,11 @@ void testSecondOrderSpecialCases()
   checkClose( p.dx( 1 ), 0.0, "d x^2.5/dx at 0" );
   checkClose( p.dxx( 1, 1 ), 0.0, "d2 x^2.5/dx2 at 0" );
 
+  // the exponent 1 at a vanishing base: the second derivative vanishes
+  const H3 linear = pow( variable( 0.0, 1 ), 1 );
+  checkClose( linear.dx( 1 ), 1.0, "d x^1/dx at 0" );
+  checkClose( linear.dxx( 1, 1 ), 0.0, "d2 x^1/dx2 at 0" );
+
   // seeding a number again makes it the new variable alone
   H3 x = variable( 0.7, 0 ) * variable( 1.3, 1 );
   x.seed( 2 );
