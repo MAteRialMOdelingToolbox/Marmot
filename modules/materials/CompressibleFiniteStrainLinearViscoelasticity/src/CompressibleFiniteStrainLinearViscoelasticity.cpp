@@ -211,8 +211,7 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C,
-                dC_dF] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
     // compute energy density, first, second and third partial derivatives wrt Cauchy Green deformation
     const auto [psi_, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = computeEnergyDensityAndDerivatives( C );
@@ -256,16 +255,10 @@ namespace Marmot::Materials {
     // compute total PK2 stress
     const Tensor33d PK2 = evaluate( PK2vol + PK2dev );
 
-    // compute Kirchhoff stress from PK2 stress
-    const auto [tau,
-                dTau_dPK2,
-                dTau_dF] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
-    response.tau         = tau;
+    // compute Kirchhoff stress from PK2 stress and tangent operator dtau / dF, with dPK2/dC = 1/2 dPK2/dE
+    const Tensor3333d dPK2_dC                  = 0.5 * ( dPK2vol_dE + dPK2dev_dE );
+    std::tie( response.tau, tangents.dTau_dF ) = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::
+      KirchhoffStressAndTangentFromPK2( PK2, dPK2_dC, F );
     response.elasticEnergyDensity = psi_; // TODO: replace by actual elastic energy density
-
-    // compute tangent operator dtau / dF
-    tangents.dTau_dF = einsum< ijKL, KLMN >( einsum< ijKL, KLMN >( dTau_dPK2, evaluate( dPK2vol_dE + dPK2dev_dE ) ),
-                                             0.5 * dC_dF ) +
-                       dTau_dF;
   }
 } // namespace Marmot::Materials

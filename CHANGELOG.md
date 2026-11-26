@@ -253,6 +253,12 @@ All notable changes to Marmot are documented in this file. The format follows
   unchanged.
 
 ### Changed
+- `StressMeasures::FirstOrder::KirchhoffStressAndTangentFromPK2( PK2, dPK2_dC, F )`: the Kirchhoff stress and its
+  total derivative dτ/dF for a 2nd Piola-Kirchhoff stress that depends on F through C, evaluated without the
+  fourth-order tensors dτ/dS and dC/dF and their two double contractions. `CompressibleHyperelasticity`,
+  `CompressibleFiniteStrainLinearViscoelasticity` and `GradientEnhancedCompressibleNeoHookeDamage` use it for their
+  tangent, which roughly halves the cost of a `CompressibleHyperelasticity::computeStress` call (about 610 ns to
+  290 ns for NeoHooke + DollSchweizerhof). Results agree to round-off.
 - **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
   `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
   whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,

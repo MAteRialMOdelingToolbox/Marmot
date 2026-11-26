@@ -82,17 +82,14 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     // undamaged neo-Hookean response, as in CompressibleHyperelasticity (NeoHooke, DollSchweizerhof)
-    const auto [C,
-                dC_dF] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
     const auto [psi0, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::
       SecondOrder::PenceGouPotentialB( C, K, G );
 
-    const Tensor33d PK2    = 2. * dPsi_dC;
-    const auto [tau0,
-                dTau_dPK2,
-                dTau0_dFe] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
-    const Tensor3333d dTau0_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) +
-                                 dTau0_dFe;
+    const Tensor33d   PK2       = 2. * dPsi_dC;
+    const Tensor3333d dPK2_dC   = 2. * d2Psi_dCdC;
+    const auto [tau0, dTau0_dF] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::
+      KirchhoffStressAndTangentFromPK2( PK2, dPK2_dC, F );
 
     // local driving force: energy-equivalent strain
     const double E = 9. * K * G / ( 3. * K + G );

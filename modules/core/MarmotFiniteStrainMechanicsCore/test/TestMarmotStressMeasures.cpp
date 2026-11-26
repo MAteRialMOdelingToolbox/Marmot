@@ -2,6 +2,7 @@
 #include "Marmot/MarmotStressMeasures.h"     // Contains stress measure transformations like KirchhoffStressFromPK2
 #include "Marmot/MarmotTesting.h"            // Includes test utilities (e.g., assertions, test execution)
 #include <Fastor/tensor/Tensor.h>            // Fastor tensor library
+#include <cmath>
 
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::StressMeasures;
@@ -304,6 +305,94 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+namespace {
+  /* Deterministic, non-symmetric test data. */
+  Tensor33d testDeformationGradient()
+  {
+    return Tensor33d{ { 1.20, 0.10, -0.03 }, { 0.05, 0.90, 0.07 }, { -0.02, 0.04, 1.05 } };
+  }
+
+  Tensor33d testPK2()
+  {
+    return Tensor33d{ { 3.0, 0.4, -0.7 }, { 0.9, -2.0, 0.3 }, { 0.2, -0.5, 1.5 } };
+  }
+
+  Tensor3333d testdPK2_dC()
+  {
+    Tensor3333d D;
+    for ( int i = 0; i < 3; ++i )
+      for ( int j = 0; j < 3; ++j )
+        for ( int k = 0; k < 3; ++k )
+          for ( int l = 0; l < 3; ++l )
+            D( i, j, k, l ) = std::sin( 1. + 27. * i + 9. * j + 3. * k + l ) + 0.1 * ( i - 2. * j + 3. * k - l );
+    return D;
+  }
+} // namespace
+
+void testKirchhoffStressAndTangentFromPK2_matchesChainOfDerivatives()
+{
+  using namespace Fastor;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+
+  const Tensor33d   F = testDeformationGradient();
+  const Tensor3333d D = testdPK2_dC();
+  // the partial derivative dTau/dF of FirstOrder::KirchhoffStressFromPK2 holds for a symmetric PK2
+  const Tensor33d S = 0.5 * ( testPK2() + transpose( testPK2() ) );
+
+  const auto [tauRef, dTau_dPK2, dTau_dFPartial] = FirstOrder::KirchhoffStressFromPK2( S, F );
+  const Tensor3333d dC_dF = einsum< IK, kJ, to_IJkK >( Spatial3D::I, F ) + einsum< kI, JK, to_IJkK >( F, Spatial3D::I );
+  const Tensor3333d dTau_dFRef = einsum< ijKL, KLMN >( einsum< ijKL, KLMN >( dTau_dPK2, D ), dC_dF ) + dTau_dFPartial;
+
+  const auto [tau, dTau_dF] = FirstOrder::KirchhoffStressAndTangentFromPK2( S, D, F );
+
+  throwExceptionOnFailure( checkIfEqual( tau, tauRef, 1e-13 ),
+                           "tau mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( dTau_dF, dTau_dFRef, 1e-12 ),
+                           "dTau_dF mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testKirchhoffStressAndTangentFromPK2_matchesFiniteDifferences()
+{
+  // S( C ) = S0 + D : ( C - C0 ) with non-symmetric S0 and D: the tangent is the total derivative of
+  // tau( F ) = F S( F^T F ) F^T, checked by central differences
+  const Tensor33d   F0 = testDeformationGradient();
+  const Tensor33d   S0 = testPK2();
+  const Tensor3333d D  = testdPK2_dC();
+  const Tensor33d   C0 = Fastor::matmul( Fastor::transpose( F0 ), F0 );
+
+  const auto tauOf = [&]( const Tensor33d& F ) {
+    const Tensor33d dC = Fastor::matmul( Fastor::transpose( F ), F ) - C0;
+    Tensor33d       S  = S0;
+    for ( int i = 0; i < 3; ++i )
+      for ( int j = 0; j < 3; ++j )
+        for ( int k = 0; k < 3; ++k )
+          for ( int l = 0; l < 3; ++l )
+            S( i, j ) += D( i, j, k, l ) * dC( k, l );
+    return KirchhoffStressFromPK2( S, F );
+  };
+
+  const auto [tau, dTau_dF] = FirstOrder::KirchhoffStressAndTangentFromPK2( S0, D, F0 );
+
+  throwExceptionOnFailure( checkIfEqual( tau, tauOf( F0 ), 1e-13 ),
+                           "tau mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
+
+  const double h = 1e-6;
+  Tensor3333d  dTau_dFNumeric;
+  for ( int k = 0; k < 3; ++k )
+    for ( int M = 0; M < 3; ++M ) {
+      Tensor33d Fp = F0, Fm = F0;
+      Fp( k, M ) += h;
+      Fm( k, M ) -= h;
+      const Tensor33d dTau = ( tauOf( Fp ) - tauOf( Fm ) ) / ( 2. * h );
+      for ( int i = 0; i < 3; ++i )
+        for ( int j = 0; j < 3; ++j )
+          dTau_dFNumeric( i, j, k, M ) = dTau( i, j );
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dTau_dF, dTau_dFNumeric, 1e-7 ),
+                           "dTau_dF mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   // Register all test cases
@@ -311,7 +400,9 @@ int main()
                                                        testKirchhoffStressFromPK2_diagonalTensor,
                                                        testKirchhoffStressFromPK2_offDiagonalTensor,
                                                        testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor,
-                                                       testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor };
+                                                       testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor,
+                                                       testKirchhoffStressAndTangentFromPK2_matchesChainOfDerivatives,
+                                                       testKirchhoffStressAndTangentFromPK2_matchesFiniteDifferences };
 
   // Execute and report any exceptions from failed tests
   executeTestsAndCollectExceptions( tests );
