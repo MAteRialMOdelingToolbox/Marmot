@@ -136,6 +136,19 @@ All notable changes to Marmot are documented in this file. The format follows
   derivatives the same way (`freeStrainSensitivity( condensation, dStressF_dX )`, which checks that a singular `Cff`
   can compensate them); `condense( C, p, f )` is its algebra for a given tangent. The index sets of plane stress (`planeStressPrescribed`, `planeStressFree`) and uniaxial stress
   (`uniaxialStressPrescribed`, `uniaxialStressFree`) are defined there.
+- Transport (diffusion) problems: the core module `MarmotTransportCore` with the material interface
+  `Materials::TransportMaterial` (content, flux, source and their tangents for one or more scalar fields; backward
+  Euler in content form, so the balance is conservative) and its `Registry::TransportMaterialFactory`; the element
+  family `elements/TransportFiniteElement` (`DC2D3T`, `DC2D4T`, `DC2D8T`, `DCAX4T`, `DCAX8T`, `DC3D4T`, `DC3D8T`,
+  `DC3D20T`, "diffusive continuum" with the field `temperature`); the material `materials/HeatConduction`
+  (`HEATCONDUCTION`: anisotropic, temperature dependent conductivity and capacity; 3, 6 or 11 properties); the
+  distributed load types `HeatFlux`, `HeatFilm` (convection) and `HeatRadiation`. A zero time increment lets
+  nothing flow.
+- Moisture transport in concrete: the material `materials/MoistureDiffusion` (`MOISTUREDIFFUSION`: Bažant-Najjar
+  diffusivity, linear or BSB sorption isotherm, self-desiccation integrated exactly over the increment; 4 to 10
+  properties), the elements `DC*H` (field `relative humidity`) of `elements/TransportFiniteElement`, and the load
+  types `MoistureFlux` and `MoistureFilm`. `TransportMaterial::hasStorage( field )` tells the elements per field
+  whether a zero increment may change it.
 - `materials/MicroplaneM7`, `materials/GM7`: optional property `stressUnit`, the value of 1 MPa in the user's stress
   unit (default 1.0, e.g. 1e6 for Pa). It converts the dimensional fixed parameters of Caner and Bažant (2013)
   (`c18`, `c21`, the reference strength and modulus), the default values of `fc` and `transitionWidth` and the

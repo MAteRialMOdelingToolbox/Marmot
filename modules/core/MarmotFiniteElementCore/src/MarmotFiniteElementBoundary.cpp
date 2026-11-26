@@ -181,6 +181,31 @@ namespace Marmot::Discretizations::Elements {
     return Pk;
   }
 
+  void BoundaryElement::computeFieldDependentScalarLoadVector(
+    const VectorXd&                                          boundaryField,
+    const std::function< void( double, double&, double& ) >& loadDensity,
+    VectorXd&                                                P,
+    MatrixXd&                                                dP_dField ) const
+  {
+    if ( boundaryField.size() != nNodes )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": " << boundaryField.size()
+                                   << " nodal values given for a boundary element with " << nNodes << " nodes." );
+
+    P         = VectorXd::Zero( nNodes );
+    dP_dField = MatrixXd::Zero( nNodes, nNodes );
+
+    for ( const auto& qp : quadraturePoints ) {
+      const double u     = qp.N.dot( boundaryField );
+      double       f     = 0.0;
+      double       df_du = 0.0;
+      loadDensity( u, f, df_du );
+
+      P += qp.JxW * f * qp.N;
+      dP_dField += ( qp.JxW * df_du ) * qp.N * qp.N.transpose();
+    }
+  }
+
   MatrixXd BoundaryElement::computeDScalarLoadVector_dCoordinates()
   {
     throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );

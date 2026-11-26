@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
+#include <functional>
 #include <stdexcept>
 #include <vector>
 
@@ -769,6 +770,33 @@ namespace Marmot::Discretizations::Elements {
 
     /// @brief Compute the scalar (pressure) load vector for a unit pressure.
     Eigen::VectorXd computeScalarLoadVector();
+
+    /**
+     * @brief Integrate a scalar surface load density which depends on a scalar field on the face, e.g. a convective
+     * (film) or a radiative heat flux.
+     * @details With the field \f$u = \mathbf{N}\,\mathbf{u}_b\f$ interpolated from its values \f$\mathbf{u}_b\f$ at
+     * the boundary nodes and the load density \f$f(u)\f$ per unit area:
+     * \f[
+     *   \mathbf{P} = \int_{\Gamma} \mathbf{N}^\mathsf{T} f(u)\,\mathrm{d}\Gamma,\qquad
+     *   \frac{\partial\mathbf{P}}{\partial\mathbf{u}_b}
+     *     = \int_{\Gamma} \mathbf{N}^\mathsf{T} f'(u)\,\mathbf{N}\,\mathrm{d}\Gamma,
+     * \f]
+     * integrated over the ring for an axisymmetric boundary element. Both results are boundary-element-sized.
+     * @param[in] boundaryField The nodal values \f$\mathbf{u}_b\f$ at the boundary nodes, in boundary node order.
+     * @param[in] loadDensity Evaluates \f$f(u)\f$ and \f$f'(u)\f$: called as loadDensity( u, f, dF_du ).
+     * @param[out] P The load vector.
+     * @param[out] dP_dField Its derivative with respect to \f$\mathbf{u}_b\f$.
+     */
+    void computeFieldDependentScalarLoadVector( const Eigen::VectorXd&                                   boundaryField,
+                                                const std::function< void( double, double&, double& ) >& loadDensity,
+                                                Eigen::VectorXd&                                         P,
+                                                Eigen::MatrixXd& dP_dField ) const;
+
+    /**
+     * @brief The local node numbers in the parent element of the nodes of the boundary element.
+     * @return One zero based parent node number per boundary node, in boundary node order.
+     */
+    const Eigen::VectorXi& getBoundaryNodeIndicesInParent() const { return mapBoundaryToParentScalar; }
     /// @brief Compute the derivative of the scalar load vector with respect to nodal coordinates.
     Eigen::MatrixXd computeDScalarLoadVector_dCoordinates();
 
