@@ -18,8 +18,8 @@ Kinematics and weak form
 The configurations are those of the material point: the undeformed configuration :math:`\boldsymbol{X}`, the
 intermediate configuration :math:`\boldsymbol{Y}` (the last accepted state) and the current configuration
 :math:`\boldsymbol{x}`, with :math:`\boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n`. The shape functions and
-their gradients are evaluated at the particle positions in the intermediate configuration when the host assigns the
-kernel functions (``assignMeshfreeKernelFunctions``), i.e., gradients are taken with respect to :math:`\boldsymbol{Y}`,
+their gradients are evaluated at the particle positions in the intermediate configuration (``updateShapeFunctions``,
+also when the host assigns the kernel functions), i.e., gradients are taken with respect to :math:`\boldsymbol{Y}`,
 and the dofs :math:`\Delta q_{Bk}` are the increments of
 the current step at the nodes (kernel functions) of the particle. With the trial functions :math:`N_B` and the test
 functions :math:`T_A` (identical, unless VCI corrects the test gradients),

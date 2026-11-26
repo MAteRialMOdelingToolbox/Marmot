@@ -53,6 +53,10 @@ order:
    * - ``assignMeshfreeKernelFunctions``
      - assign the nodes (kernel functions) and evaluate the trial functions :math:`N_A`, their (possibly smoothed)
        gradients :math:`\partial N_A/\partial Y_i` and the test functions :math:`T_A` (initially :math:`T_A = N_A`)
+       with them, by ``updateShapeFunctions``
+   * - ``updateShapeFunctions``
+     - evaluate the same shape functions anew where the particle is now, with the kernel functions it holds: for a
+       particle whose kernel functions did not change since the last assignment
    * - ``vci_...``
      - optional: local contributions to the VCI correction of the test function gradients (see below)
    * - ``computePhysicsKernels``
@@ -77,6 +81,18 @@ order:
        (its center, a vertex, a face center), for every field; ``getInterpolationVector`` gives the exact shape
        functions at an arbitrary location (see below)
 
+**Assigning the kernel functions, or only updating the shape functions.** The shape functions of a particle belong to
+its configuration :math:`\boldsymbol{Y}`, and ``acceptStateAndPosition`` moves the particle, so in every increment its
+shape functions have to be evaluated anew. Which kernel functions cover the particle, however, changes only now and
+then: most increments find the same ones as before. A host that has found the same kernel functions calls
+``updateShapeFunctions``; a host that has found others calls ``assignMeshfreeKernelFunctions``, which stores them and
+then calls ``updateShapeFunctions``. The two give the same shape functions to the last bit, because the evaluation is
+one method: the bases of the particles (``GenericParticle``, ``GenericSDIParticle``,
+``GradientEnhancedFiniteStrainParticle``) define ``assignMeshfreeKernelFunctions`` as ``final``, and a particle that
+evaluates its shape functions differently, e.g., with the smoothed gradients of SQCNI, overrides
+``updateShapeFunctions``. Only an assignment changes the nodes of the particle, and with them the layout of its
+residual and stiffness.
+
 For explicit dynamics, ``updatePhysicsExplicit``, ``computePhysicsKernelsExplicit``, ``computeBodyLoadExplicit`` and
 ``computeDistributedLoadExplicit`` are provided, together with ``computeLumpedInertia`` (the coefficients of the second
 time derivatives), ``computeLumpedDamping`` (those of the first: the nonlocal viscosity of a gradient-enhanced field,
@@ -89,7 +105,7 @@ particles of the displacement family (``Displacement*xNSNI/...``) and all partic
 (``GradientEnhanced*FiniteStrain*/...``); the point, SQCNI, SNNI and SDI particles of the displacement family have
 none. EdelweissMeshfree loads the particles of an explicit analysis through ``computeBodyLoad`` and
 ``computeDistributedLoad`` and discards their tangent; it does not call the explicit loads. A particle gives no
-critical time step: the stable increment of a particle discretization is a property of the assembled system (see
+critical time step: the critical time step of a particle discretization is a property of the assembled system (see
 :doc:`gradientenhancedfinitestrainparticle`). What the host needs from a particle to bound it is its stiffness,
 which the particle describes node by node (``describeStiffness``, see below); the bound is a visitor of that
 description, ``addBoundOfAbsoluteStiffnessTimes``. A particle that does not describe its stiffness throws. The order in
@@ -135,23 +151,23 @@ by particle, in this order. Calls 1 to 3 advance the particle to :math:`t_{n+1}`
    is resumed. **An accept must be idempotent**: a second accept without an increment in between changes nothing.
    A particle whose material point does not reset its increment when it accepts resets it itself, as
    ``GradientEnhancedFiniteStrainParticle::acceptStateAndPosition`` does with ``prepareYourself``.
-#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed: the shape functions and
-   gradients of the new configuration.
+#. ``assignMeshfreeKernelFunctions``, for a particle whose kernel functions changed, ``updateShapeFunctions`` for every
+   other particle: the shape functions and gradients of the new configuration.
 #. ``computePhysicsKernelsExplicit(fInt)`` and ``computeLumpedMomentum(p)``: the internal force of the state of call
    1, in total form, and the momentum, both on the new kernel functions. They read the state and the response the
    material point keeps, and change neither.
 #. ``computeLumpedInertia(m)``: the coefficients of the second time derivatives, a mass on the displacement field.
 #. ``computeLumpedDamping(c)``: the coefficients of the first time derivatives.
 
-``describeStiffness``, through which the host bounds the stable increment (not every increment), is not part of this
+``describeStiffness``, through which the host bounds the critical time step (not every increment), is not part of this
 order: wherever it is called, it leaves the particle as it was found. What it describes is the stiffness of the
 configuration of the last accept with the working copy of the state, which is the stiffness of an accepted state after
 call 2 or 3, where ``NED`` asks for it; between calls 1 and 2 the working copy holds the advanced state.
 
 **The tangent is required in an explicit analysis.** The particles call the material with its tangent
 (``computeStress``), never ``computeStressExplicit``: the stiffness a particle describes, and with it the bound of the
-stable increment, and the NSNI stabilization are formed from the tangent. A material whose tangent is inconsistent
-gives a bound of the stable increment that is too large, with no message.
+critical time step, and the NSNI stabilization are formed from the tangent. A material whose tangent is inconsistent
+gives a bound of the critical time step that is too large, with no message.
 
 A particle without the explicit path refuses calls 1 and 5 (the defaults throw), so the host stops at the first
 increment instead of integrating a mass without a force.
@@ -201,7 +217,7 @@ particle knows nothing of what the visitor does with its stiffness. For an NSNI 
 stabilization that acts through the stress gradient of the increment vanishes at a zero increment; the stabilization
 itself is shared by the displacement and the gradient-enhanced particles (``Marmot::Discretizations::Meshfree::NSNI``).
 
-**The bound of the absolute stiffness.** An explicit host bounds the stable time increment of the particles by the
+**The bound of the absolute stiffness.** An explicit host bounds the critical time step of the particles by the
 Collatz-Wielandt bound of the mass-scaled stiffness, which needs the row sums :math:`|\boldsymbol{K}|\,\boldsymbol{w}`
 only. The stiffness of a particle with :math:`n` nodes has :math:`n^2` blocks; its rows are linear in the shape
 functions of the other node, so the sum over that node is taken from a few weighted moments of the shape functions,
@@ -361,6 +377,19 @@ pattern). The abbreviations denote what the code does:
        :math:`J_Y` of the reference intermediate configuration, including its linearization. See
        :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`.
 
+**Where the smoothing lives.** The SQCNI, SNNI, NSNI and SDI particles of both families
+(``DisplacementParticleSQCNI``, ``DisplacementParticleSQCNIxNSNI``, ``DisplacementParticleSQCNIxSDI`` and the
+gradient-enhanced finite-strain twins of the first two) differ only in how their smoothing domain follows the
+deformation, in whether second derivatives are needed and in how many smoothing domains a particle has (one, or one per
+subdomain). They compute the smoothed gradients with one function,
+``ParticleSectionIntegrals::smoothShapeFunctionGradients()`` (``MarmotParticleSectionIntegrals.h``), which also gives
+the smoothed second derivatives of NSNI. Their evaluation points, ``getEvaluationCoordinates()``, are its quadrature
+points, ``ParticleSectionIntegrals::faceQuadraturePoints()``. This matters because the host assigns to a particle the
+kernel functions whose supports cover its evaluation points: a quadrature point that is not an evaluation point would be
+evaluated with an incomplete set of kernel functions. An SDI particle takes as evaluation points only the quadrature
+points of its subdomains on the faces of the particle, and assumes that the kernel functions which cover these also
+cover the points on the inner faces. To change the face quadrature, change ``ParticleSectionIntegrals`` only.
+
 The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
 :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. The former
 names of the displacement NSNI particles (``Displacement/SQCNIxNSNI/...`` etc.) remain registered as aliases.
@@ -370,7 +399,7 @@ GenericParticle: point particles and VCI
 
 :cpp:class:`Marmot::Discretizations::Meshfree::GenericParticle` implements the physics-independent part of a point particle: a single
 vertex and evaluation point at the center :math:`\boldsymbol{Y}_c` (shape ``point``), the evaluation of
-:math:`N_A` and :math:`\partial N_A/\partial Y_i` at the center in ``assignMeshfreeKernelFunctions`` (which also resets
+:math:`N_A` and :math:`\partial N_A/\partial Y_i` at the center in ``updateShapeFunctions`` (which also resets
 the test functions to :math:`T_A = N_A`), and the property ``VCI order``. Derived classes (e.g., the displacement
 particles) keep the center, the volume :math:`V_Y` in the reference intermediate configuration and the VCI basis up to
 date in ``acceptStateAndPosition``; the SQCNI particles derived from it replace the gradient by the smoothed one.
@@ -416,14 +445,14 @@ All VCI arrays are row-major, of shape :math:`n_\text{nodes} \times n_\text{dim}
 :math:`n_\text{nodes} \times n_C \times n_C` (index :math:`ACD`). ``setVCIOrder`` computes :math:`n_C` for the given
 dimension and evaluates the basis at the current center right away, since the VCI may run before the first accepted
 increment updates it. In ``GenericParticle`` the correction is *added* to the current test function gradients, so it
-is meant to be applied once after ``assignMeshfreeKernelFunctions``.
+is meant to be applied once after ``updateShapeFunctions``.
 
 GenericSDIParticle: subdomain integration
 -----------------------------------------
 
 :cpp:class:`Marmot::Discretizations::Meshfree::GenericSDIParticle` is the physics-independent base of the subdomain-integration
 particles. It owns the main :cpp:class:`Marmot::Discretizations::Meshfree::ParticleDomain` and its :math:`2^{n_\text{dim}}`
-subdomains. For every subdomain :math:`s`, ``assignMeshfreeKernelFunctions`` evaluates :math:`N_A` at the subdomain
+subdomains. For every subdomain :math:`s`, ``updateShapeFunctions`` evaluates :math:`N_A` at the subdomain
 center, the smoothed gradient over the subdomain's smoothing domain (formula above), the test functions and the VCI
 basis at the subdomain center. The derived class attaches a material point to every subdomain and integrates the weak
 form as a sum over the subdomains (``computePhysicsKernelsOnSubdomains``).
@@ -447,7 +476,7 @@ The VCI contributions are sums over the subdomains, with the subdomain volume :m
 weight and the basis at the subdomain centers; :math:`\chi_A` is evaluated at the center of the main domain. Unlike in
 ``GenericParticle``, ``vci_assignTestFunctionCorrectionTerms`` sets
 :math:`\partial_i T_A|_s = \partial_i N_A|_s + \chi_A\sum_C\eta_{AiC}P_C|_s`, so repeated calls do not accumulate, and
-``setVCIOrder`` only sets :math:`n_C`; the basis is evaluated in ``assignMeshfreeKernelFunctions``, which must
+``setVCIOrder`` only sets :math:`n_C`; the basis is evaluated in ``updateShapeFunctions``, which must
 therefore follow the setting of the order.
 
 **State variable layout.** The block passed to ``assignStateVars`` is
@@ -502,6 +531,9 @@ Implementation
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleDomain
+   :allow-dot-graphs:
+
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleSectionIntegrals
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Meshfree::GenericParticle

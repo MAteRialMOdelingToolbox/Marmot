@@ -182,61 +182,32 @@ namespace Marmot::Discretizations::Meshfree {
                                     ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
-     * @brief Assigns and computes meshfree kernel functions and their derivatives.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
+     * derivatives.
      *
      * This method overrides the base class implementation to compute not only the
      * shape functions and their first derivatives but also the second derivatives
      * (`_d2N_dYdY`) required for the NSNI formulation. It uses a boundary integral
      * approach to compute the derivatives.
-     *
-     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions
-     *                        associated with the surrounding nodes.
      */
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
-
-      ParentPointParticle::_nNodes = static_cast< int >(
-        DisplacementParticle< nDim >::_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > centerCoordinates;
       this->getCenterCoordinates( centerCoordinates.data() );
 
-      ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-      ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-      for ( int i = 0; i < nDim; i++ )
-        _d2N_dYdY[i] = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
+      ParentPointParticle::_N = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( centerCoordinates.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          ParentPointParticle::_N.data() );
 
-      Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-      Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-
-      for ( int i = 0; i < this->_particleDomain.getNumberOfFaces(); i++ ) {
-
-        auto faceCenter = this->_particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-        auto n_x_dAt    = this->_particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
-
-        ParentPointParticle::_meshfreeApproximation
-          .computeShapeFunctionsAndGradients( faceCenter.data(),
-                                              ParentPointParticle::_assignedKernelFunctions,
-                                              NBoundary.data(),
-                                              dN_dY_Boundary.data() );
-
-        ParentPointParticle::_dN_dY += n_x_dAt * NBoundary;
-
-        for ( int j = 0; j < nDim; j++ )
-          _d2N_dYdY[j] += n_x_dAt( j ) * dN_dY_Boundary;
-      }
-
-      const double VSmoothing = this->_particleDomain.getSmoothingVolume();
-      ParentPointParticle::_dN_dY /= VSmoothing;
-      for ( int i = 0; i < nDim; i++ ) {
-        _d2N_dYdY[i] /= VSmoothing;
-      }
+      ParentSQCNIParticle::SectionIntegrals::
+        smoothShapeFunctionGradients( this->smoothingDomain(),
+                                      ParentPointParticle::_meshfreeApproximation,
+                                      ParentPointParticle::_assignedKernelFunctions,
+                                      ParentPointParticle::_N,
+                                      ParentPointParticle::_dN_dY,
+                                      &_d2N_dYdY );
 
       ParentPointParticle::_T     = ParentPointParticle::_N;
       ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
@@ -280,9 +251,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Lumped momentum, @f$ p_{Ai} \mathrel{+}= \rho_0\,T_A\,V_0\,v_i
      * + \rho_0\,(\partial v_i/\partial Y_J)\,M_{JK}\,(\partial T_A/\partial Y_K)/J_Y @f$, with the velocity gradient
      * of the last updatePhysicsExplicit().
-     * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Accepts the current state and position, updating internal variables.
@@ -565,7 +536,7 @@ namespace Marmot::Discretizations::Meshfree {
   }
 
   template < int nDim, int nVertices >
-  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* mLumped ) const
+  void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* pLumped ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
@@ -592,8 +563,8 @@ namespace Marmot::Discretizations::Meshfree {
       const double detJIntermediate = determinant( this->_mp->dY_dX() );
 
       for ( int i = 0; i < this->nDofPerNodeU; i++ ) {
-        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
-        mLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
+        pLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        pLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
       }
     }
   }

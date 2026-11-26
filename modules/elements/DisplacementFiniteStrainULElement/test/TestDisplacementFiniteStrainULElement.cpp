@@ -967,17 +967,17 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
       double                      criticalTimeStep = 0.0;
       underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
 
-      const double stableTimeIncrement = Marmot::Testing::stableTimeIncrementOfTheElement( *underTest.element,
-                                                                                           c.nDim * c.nNodes );
+      const double exactCriticalTimeStep = Marmot::Testing::exactCriticalTimeStepOfTheElement( *underTest.element,
+                                                                                               c.nDim * c.nNodes );
 
-      throwExceptionOnFailure( criticalTimeStep <= stableTimeIncrement * ( 1.0 + 1e-10 ),
+      throwExceptionOnFailure( criticalTimeStep <= exactCriticalTimeStep * ( 1.0 + 1e-10 ),
                                c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " exceeds the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
-      throwExceptionOnFailure( criticalTimeStep >= 0.7 * stableTimeIncrement,
+                                 " exceeds the exact critical time step of the element " +
+                                 std::to_string( exactCriticalTimeStep ) + "." );
+      throwExceptionOnFailure( criticalTimeStep >= 0.7 * exactCriticalTimeStep,
                                c.type + ": the critical time step " + std::to_string( criticalTimeStep ) +
-                                 " is more than 30 % below the stable increment of the element " +
-                                 std::to_string( stableTimeIncrement ) + "." );
+                                 " is more than 30 % below the exact critical time step of the element " +
+                                 std::to_string( exactCriticalTimeStep ) + "." );
     }
 }
 
@@ -1680,7 +1680,7 @@ void testStableTimeIncrementRefusesALumpedMassThatIsNotANumber()
   for ( const double entry : { notANumber, 0.0, -1.0 } ) {
     const Eigen::Vector2d lumpedMass( 1.0, entry );
     throwExceptionOnFailure( throwsNaming<
-                               std::invalid_argument >( [&]() { bound.stableTimeIncrement( lumpedMass, 1.0 ); },
+                               std::invalid_argument >( [&]() { bound.criticalTimeStep( lumpedMass, 1.0 ); },
                                                         { "lumped mass" } ),
                              "A lumped mass entry " + std::to_string( entry ) + " must be refused." );
   }

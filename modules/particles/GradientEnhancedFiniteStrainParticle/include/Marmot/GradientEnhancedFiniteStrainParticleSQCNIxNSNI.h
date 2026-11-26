@@ -95,7 +95,6 @@ namespace Marmot::Discretizations::Meshfree {
 
     using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >; ///< point particle base
     using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal >; ///< SQCNI base
-    using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;   ///< geometry of the smoothing domain
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor
@@ -200,64 +199,31 @@ namespace Marmot::Discretizations::Meshfree {
       ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
-     * @brief Assign the kernel functions and compute the smoothed first and second shape function derivatives.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed first and second
+     * derivatives.
      *
-     * One boundary integration over the current smoothing domain (one point per face) gives both
+     * One boundary integration over the current smoothing domain (ParticleSectionIntegrals) gives both
      * @f$ \partial N_B/\partial\boldsymbol{Y} @f$ (from @f$ N_B @f$ at the face centers) and the second derivatives
      * (from @f$ \partial N_B/\partial\boldsymbol{Y} @f$ at the face centers).
-     *
-     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
-
-      ParentPointParticle::_nNodes = static_cast< int >(
-        GradientEnhancedFiniteStrainParticle< nDim, nNonlocal >::_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
-      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
-      this->getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
-
-      ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-      ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-      for ( int i = 0; i < nDim; i++ )
-        _d2N_dYdY[i] = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
+      ParentPointParticle::_N = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
                                                                          ParentPointParticle::_N.data() );
 
-      Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-      Eigen::MatrixXd dN_dY_Boundary = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
-
-      const LagrangeCellType cell( vertexCoordinates.data(), nDim * nVertices );
-
-      for ( int i = 0; i < cell.getNumberOfFaces(); i++ ) {
-
-        const Eigen::Matrix< double, nDim, 1 > n_dA       = cell.boundarySurfaceVector( i + 1 );
-        const Eigen::Matrix< double, nDim, 1 > faceCenter = cell.getFaceCenterCoordinates( i + 1 );
-
-        ParentPointParticle::_meshfreeApproximation
-          .computeShapeFunctionsAndGradients( faceCenter.data(),
-                                              ParentPointParticle::_assignedKernelFunctions,
-                                              NBoundary.data(),
-                                              dN_dY_Boundary.data() );
-
-        ParentPointParticle::_dN_dY += n_dA * NBoundary;
-
-        for ( int j = 0; j < nDim; j++ )
-          _d2N_dYdY[j] += n_dA( j ) * dN_dY_Boundary;
-      }
-
-      const double VSmoothing = cell.volume();
-      ParentPointParticle::_dN_dY /= VSmoothing;
-      for ( int i = 0; i < nDim; i++ ) {
-        _d2N_dYdY[i] /= VSmoothing;
-      }
+      ParentSQCNIParticle::SectionIntegrals::
+        smoothShapeFunctionGradients( this->smoothingDomain(),
+                                      ParentPointParticle::_meshfreeApproximation,
+                                      ParentPointParticle::_assignedKernelFunctions,
+                                      ParentPointParticle::_N,
+                                      ParentPointParticle::_dN_dY,
+                                      &_d2N_dYdY );
 
       ParentPointParticle::_T     = ParentPointParticle::_N;
       ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
@@ -299,9 +265,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Lumped momentum of GradientEnhancedFiniteStrainParticle::computeLumpedMomentum plus the NSNI
      * stabilization of the displacement rows, @f$ \rho_0\,\partial\boldsymbol{v}/\partial\boldsymbol{Y}\,
      * \boldsymbol{M}^Y\,\partial T_A/\partial\boldsymbol{Y} / J_Y @f$.
-     * @param[in,out] mLumped Lumped momentum vector, node by node; the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector, node by node; the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
 
     /**
      * @brief Accept the increment (see GradientEnhancedFiniteStrainParticle::acceptStateAndPosition) and push the
@@ -571,12 +537,12 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices, int nNonlocal >
   void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices, nNonlocal >::computeLumpedMomentum(
-    double* mLumped ) const
+    double* pLumped ) const
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
-    ParentPointParticle::computeLumpedMomentum( mLumped );
+    ParentPointParticle::computeLumpedMomentum( pLumped );
 
     constexpr int nodeBlockSize = nDim + nNonlocal;
 
@@ -588,7 +554,7 @@ namespace Marmot::Discretizations::Meshfree {
       const TensorD dT_A_dY = TensorD( this->_dT_dY.col( A ).data() );
       const TensorD aux     = einsum< ij, j >( dv_dY_x_Y2, dT_A_dY );
       for ( int i = 0; i < nDim; i++ )
-        mLumped[nodeBlockSize * A + i] += density0 * aux( i ) / detJIntermediate;
+        pLumped[nodeBlockSize * A + i] += density0 * aux( i ) / detJIntermediate;
     }
   }
 

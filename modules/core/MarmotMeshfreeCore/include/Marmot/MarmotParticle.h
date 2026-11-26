@@ -60,8 +60,9 @@ namespace Marmot::Discretizations::Meshfree {
    * -# setProperties() (e.g., the order of the variationally consistent integration and time integration
    *    parameters),
    * -# assignStateVars() with a block of getNumberOfRequiredStateVars() doubles, initializeYourself(),
-   * -# per increment: assignMeshfreeKernelFunctions(), optionally the VCI methods (vci_...), then repeatedly
-   *    computePhysicsKernels() and the load methods, and after convergence acceptStateAndPosition().
+   * -# per increment: assignMeshfreeKernelFunctions(), or updateShapeFunctions() if the kernel functions that cover
+   *    the particle did not change, optionally the VCI methods (vci_...), then repeatedly computePhysicsKernels() and
+   *    the load methods, and after convergence acceptStateAndPosition().
    *
    * That is an implicit increment. The calls of an explicit increment, in their order, and the three contracts that
    * follow from it (a zero-length increment leaves the rates alone, an accept is idempotent, the material's tangent is
@@ -131,8 +132,8 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Assign the meshfree kernel functions (the nodes) that interact with this particle.
      * @details Implementations store the kernel functions and evaluate the shape functions and their gradients
-     * (trial and test functions) for the current configuration of the particle. The order of @p kernelFunctions
-     * defines the node order of the residual vector and the stiffness matrix.
+     * (trial and test functions) for the current configuration of the particle (updateShapeFunctions()). The order of
+     * @p kernelFunctions defines the node order of the residual vector and the stiffness matrix.
      * @param[in] kernelFunctions Kernel functions whose support covers the particle.
      */
     virtual void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) = 0;
@@ -354,10 +355,10 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Compute the lumped momentum contribution of the particle.
      * @details Call 5 of an explicit increment, with the internal force. The call order of an explicit increment and
      * its contracts: the page "Meshfree Particles", section "The explicit life cycle of a particle".
-     * @param[in,out] mLumped Lumped momentum vector (node-wise).
+     * @param[in,out] pLumped Lumped momentum vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
-    virtual void computeLumpedMomentum( [[maybe_unused]] double* mLumped ) const
+    virtual void computeLumpedMomentum( [[maybe_unused]] double* pLumped ) const
     {
       throw std::runtime_error( "Particle::computeLumpedMomentum: not implemented for this particle." );
     };
@@ -481,7 +482,7 @@ namespace Marmot::Discretizations::Meshfree {
      * for it (in the middle of an increment, the working copy holds the advanced state, and the stiffness describes
      * neither). Wherever it is called, the particle is left as it was found (state variables, and the response and the
      * tangents the material point keeps). The default throws: a particle that does not describe its stiffness refuses
-     * a host that needs it, e.g. for the bound of the stable time increment of an explicit scheme
+     * a host that needs it, e.g. for the bound of the critical time step of an explicit scheme
      * (addBoundOfAbsoluteStiffnessTimes() in MarmotParticleStiffnessVisitors.h).
      * @param[in,out] visitor The visitor.
      * @param[in] timeNew The time of the zero increment the material point is evaluated with.
@@ -521,6 +522,18 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] coordinates The point in the reference intermediate configuration (getDimension() values).
      */
     virtual void getInterpolationVectorLinearizedAboutCenter( double* vec, const double* coordinates ) const = 0;
+
+    /**
+     * @brief Evaluate the shape functions anew where the particle is now, with the kernel functions it holds.
+     * @details The shape functions of a particle are evaluated in its configuration (at its center, on its smoothing
+     * domain or on its subdomains): the trial functions @f$ N_A @f$, their (possibly smoothed) gradients
+     * @f$ \partial N_A / \partial Y_i @f$, and the test functions @f$ T_A = N_A @f$, which drops any VCI correction.
+     * acceptStateAndPosition() moves the particle, so they have to be evaluated anew in every increment. If the kernel
+     * functions that cover the particle changed, the host hands over the new ones with assignMeshfreeKernelFunctions(),
+     * which stores them and then calls this method. If they did not change, the host calls this method alone: the
+     * particle keeps its kernel functions, and with them its nodes and the layout of its residual and stiffness.
+     */
+    virtual void updateShapeFunctions() = 0;
 
   protected:
     /**

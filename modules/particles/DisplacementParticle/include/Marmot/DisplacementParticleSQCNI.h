@@ -27,6 +27,7 @@
 #include "Marmot/DisplacementParticle.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotParticleDomain.h" // Geometric component
+#include "Marmot/MarmotParticleSectionIntegrals.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/src/Core/util/Constants.h>
@@ -56,9 +57,10 @@ namespace Marmot::Discretizations::Meshfree {
    * particle (in the intermediate configuration @f$ \boldsymbol{Y} @f$), computed by a one-point rule at the face
    * centers @f$ \boldsymbol{Y}_f @f$ of the smoothing domain,
    * @f[
-   *   \frac{\partial N_B}{\partial Y_J} \approx \frac{1}{V_s} \int_{\partial\Omega_s} N_B\,N_J\,dA
-   *   \approx \frac{1}{V_s} \sum_f N_B(\boldsymbol{Y}_f)\,(N_J\,dA)_f .
+   *   \frac{\partial N_B}{\partial Y_i} \approx \frac{1}{|\Omega_s|} \oint_{\partial\Omega_s} N_B\,n_i\,dA
+   *   \approx \frac{1}{|\Omega_s|} \sum_f N_B(\boldsymbol{Y}_f)\, n_{f,i}\, dA_f
    * @f]
+   * (ParticleSectionIntegrals::smoothShapeFunctionGradients()).
    * The test functions are the trial functions (unless VCI corrects the test gradients). How the smoothing domain
    * follows the deformation is set by the SmoothingDomainUpdateType: with the deformation gradient (SQCNI, the
    * smoothing domain conforms to the deformed particle), not at all (SNNI, it is only translated), with the rotation
@@ -81,6 +83,17 @@ namespace Marmot::Discretizations::Meshfree {
     using ParticleDomainType  = ParticleDomain< nDim, nVertices >; ///< the particle geometry type
 
     ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
+
+    using SectionIntegrals = ParticleSectionIntegrals< nDim, nVertices >; ///< the integrals over the smoothing domain
+
+    /**
+     * @brief The smoothing domain of the particle.
+     * @return The cell of the smoothing domain in the intermediate configuration.
+     */
+    const typename ParticleDomainType::LagrangeCellType& smoothingDomain() const
+    {
+      return _particleDomain.smoothingDomain();
+    }
 
   public:
     /// how the smoothing domain follows the deformation
@@ -156,25 +169,26 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Evaluation points of the shape functions: the face centers of the smoothing domain.
-     * @param[out] coordinates The coordinates (nDim x number of faces, column major).
+     * @brief Evaluation points of the shape functions: the quadrature points of the faces of the smoothing domain (the
+     * face centers, ParticleSectionIntegrals::faceQuadraturePoints()).
+     * @param[out] coordinates The coordinates (nDim x number of evaluation points, column major).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > coordinatesMap( coordinates,
                                                                                   nDim,
-                                                                                  _particleDomain.getNumberOfFaces() );
-
-      for ( int i = 0; i < _particleDomain.getNumberOfFaces(); i++ ) {
-        coordinatesMap.col( i ) = _particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-      }
+                                                                                  getNumberOfEvaluationPoints() );
+      coordinatesMap = SectionIntegrals::faceQuadraturePoints( smoothingDomain() );
     }
 
     /**
      * @brief Number of evaluation points.
-     * @return The number of faces of the smoothing domain.
+     * @return The number of face quadrature points of the smoothing domain.
      */
-    int getNumberOfEvaluationPoints() const override { return _particleDomain.getNumberOfFaces(); }
+    int getNumberOfEvaluationPoints() const override
+    {
+      return SectionIntegrals::numberOfFaceQuadraturePoints( smoothingDomain() );
+    }
 
     /**
      * @brief Center of the particle in the intermediate configuration, from the material point.
@@ -255,43 +269,30 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Assigns the meshfree kernel functions to the particle.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed gradients.
      *
-     * This method also computes and updates the shape functions (N, dN_dY) and
-     * their derivatives (T, dT_dY) based on the assigned kernel functions and
-     * the current smoothing volume.
-     *
-     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
+     * N at the particle center, dN_dY as the boundary integral over the current smoothing domain, and the test
+     * functions T = N, dT_dY = dN_dY.
      */
-    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
+    void updateShapeFunctions() override
     {
-      this->_assignedKernelFunctions = kernelFunctions;
-      this->_nNodes                  = static_cast< int >( this->_assignedKernelFunctions.size() );
-
       Eigen::Matrix< double, nDim, 1 > coords;
       this->getCenterCoordinates( coords.data() ); // Uses DisplacementParticleSQCNI's getCenterCoordinates
 
-      this->_N     = Eigen::MatrixXd::Zero( 1, this->_nNodes );
-      this->_dN_dY = Eigen::MatrixXd::Zero( nDim, this->_nNodes );
+      this->_N = Eigen::MatrixXd::Zero( 1, this->_nNodes );
 
       // Compute N at the particle center (from GenericParticle)
       this->_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                           this->_assignedKernelFunctions,
                                                           this->_N.data() );
 
-      // Compute dN_dY using the SQCNI approach (boundary integral over smoothing domain)
-      Eigen::MatrixXd smooth_NBoundary( 1, this->_nNodes );
-      for ( int i = 0; i < _particleDomain.getNumberOfFaces(); i++ ) {
-
-        auto smoothing_evaluation_point = _particleDomain.getSmoothingDomainFaceCenterCoordinates( i + 1 );
-        auto smoothing_n_dA             = _particleDomain.getSmoothingBoundarySurfaceVector( i + 1 );
-
-        this->_meshfreeApproximation.computeShapeFunctions( smoothing_evaluation_point.data(),
-                                                            this->_assignedKernelFunctions,
-                                                            smooth_NBoundary.data() );
-        this->_dN_dY += smoothing_n_dA * smooth_NBoundary;
-      }
-      this->_dN_dY /= _particleDomain.getSmoothingVolume();
+      // the smoothed gradients over the smoothing domain
+      SectionIntegrals::smoothShapeFunctionGradients( smoothingDomain(),
+                                                      this->_meshfreeApproximation,
+                                                      this->_assignedKernelFunctions,
+                                                      this->_N,
+                                                      this->_dN_dY,
+                                                      nullptr ); // no second derivatives (not NSNI)
 
       this->_T     = this->_N;
       this->_dT_dY = this->_dN_dY;

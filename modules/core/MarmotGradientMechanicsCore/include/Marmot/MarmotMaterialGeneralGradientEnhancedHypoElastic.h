@@ -395,13 +395,13 @@ namespace Marmot::Materials {
      * \f$ \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$
      * into the damped hyperbolic one
      * \f$ m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
-     * c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$, whose stable increment falls off with \f$h\f$ rather than
+     * c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$, whose critical time step falls off with \f$h\f$ rather than
      * with \f$h^2\f$. The nonlocal viscosity keeps its meaning exactly: what was the coefficient of the highest time
      * derivative becomes the damping.
      *
      * It sits here, next to getNonlocalViscosity(), because the two are **one parameter and not two**: the zeroth-order
      * reaction mode does not ring only while \f$m_k \le \eta^2/4\f$, and the largest admissible value is the best one
-     * because the stable increment grows with \f$\sqrt{m_k}\f$. Nothing could check that while the two lived at
+     * because the critical time step grows with \f$\sqrt{m_k}\f$. Nothing could check that while the two lived at
      * different levels of the stack, and the deck author computed \f$\eta^2/4\f$ by hand; see
      * validatedNonlocalMicroInertia(), which derived classes should return through.
      *
@@ -469,7 +469,7 @@ namespace Marmot::Materials {
             << ". Above it the zeroth-order reaction mode is underdamped and the regularisation rings, "
                "which looks like the mesh-scale oscillation the gradient enhancement exists to remove. "
                "Take exactly eta^2/4: it is the largest admissible value and hence the best one, since "
-               "the stable increment grows with sqrt(m_k)." );
+               "the critical time step grows with sqrt(m_k)." );
       }
 
       return microInertia;

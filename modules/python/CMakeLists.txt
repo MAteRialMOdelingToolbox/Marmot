@@ -1,34 +1,37 @@
-# Prefer active virtualenv / Conda environment
+# Prefer the active virtualenv / Conda environment over a system Python
 set(Python_FIND_VIRTUALENV FIRST)
 set(Python_FIND_STRATEGY LOCATION)
 
-# Find Python first, so that the very same interpreter is used to patch nanobind
-find_package(Python 3.8 COMPONENTS Interpreter Development.Module REQUIRED)
+# Accept a free-threaded interpreter (e.g. the Python 3.14t of the EdelweissFE environment) as well: FindPython
+# skips those by default and would fall back to some other Python of the system. The four entries are
+# <pydebug>;<pymalloc>;<unicode>;<gil_disabled>, the last of which requires CMake 3.30.
+if(NOT DEFINED Python_FIND_ABI AND NOT CMAKE_VERSION VERSION_LESS 3.30)
+  set(Python_FIND_ABI "OFF" "ANY" "ANY" "ANY")
+endif()
+
+find_package(Python 3.10 COMPONENTS Interpreter Development.Module REQUIRED)
 
 # Fetch nanobind
 include(FetchContent)
 FetchContent_Declare(
   nanobind
   GIT_REPOSITORY https://github.com/wjakob/nanobind.git
-  GIT_TAG        v1.9.2
+  GIT_TAG        v3.1.0
   GIT_SHALLOW    TRUE
   EXCLUDE_FROM_ALL TRUE
-  PATCH_COMMAND "${Python_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/patch_nanobind.py" "include/nanobind/nb_attr.h"
 )
 FetchContent_MakeAvailable(nanobind)
 
-# Define the python extension module
+# Define the python extension module.
+# FREE_THREADED: with a free-threaded Python, the module runs without the GIL (importing it would otherwise switch
+# the GIL back on for the whole process); ignored for any other Python. The solvers' methods lock their object,
+# see src/bind_solver_*.cpp.
 nanobind_add_module(_marmot
+    FREE_THREADED
     src/bind_main.cpp
     src/bind_solver_finite_strain.cpp
     src/bind_solver_hypo_elastic.cpp
 )
-
-# nanobind v1.9.2 and the arg_data[1] size clamp of patch_nanobind.py make GCC/Clang report -Warray-bounds inside
-# nanobind's own sources, which are not under our control.
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND TARGET nanobind-static)
-  target_compile_options(nanobind-static PRIVATE -Wno-array-bounds)
-endif()
 
 # Link against the Marmot C++ library
 target_link_libraries(_marmot PRIVATE Marmot)

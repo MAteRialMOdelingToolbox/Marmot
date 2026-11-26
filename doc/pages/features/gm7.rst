@@ -105,7 +105,7 @@ these moved up by one.
      - ``nonlocalMicroInertia``
      - Optional micro-inertia of the nonlocal fields in time squared, applied to all six components (requires all
        preceding properties; default 0, i.e. first-order nonlocal fields). It makes the nonlocal fields second order
-       in time, so that the stable increment of an explicit analysis falls off with the element size rather than
+       in time, so that the critical time step of an explicit analysis falls off with the element size rather than
        with its square. Admissible up to :math:`\eta^2/4` (with :math:`\eta` the ``nonlocalViscosity``), where the
        reaction mode of the nonlocal fields is critically damped; a larger (underdamped), negative or non-finite value
        is rejected.

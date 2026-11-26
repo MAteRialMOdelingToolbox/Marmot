@@ -18,13 +18,14 @@ jobs:
       # The compilers, CMake, Eigen, Fastor and Python of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
 
-      # Without the Python bindings until they build with the free-threaded Python of the stack (#154).
+      # With the Python bindings (their tests are the Python_* tests of ctest).
       - name: Build, install and test Marmot
         shell: bash -leo pipefail {0}
         run: |
           # Fail on compiler warnings (-Werror, /WX); local builds keep warnings non-fatal.
           cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
-            -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_COMPILE_WARNING_AS_ERROR=ON
+            -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_COMPILE_WARNING_AS_ERROR=ON \
+            -DMARMOT_BUILD_PYTHON_BINDINGS=ON
           cmake --build build --parallel 4
           cmake --install build
           # --no-tests=error: ctest exits 0 on an empty test set, which would

@@ -66,18 +66,15 @@ namespace Marmot::Discretizations::Meshfree {
   {
     int nCovering = 0;
     for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
-      phi[A]              = kernelFunctions[A]->computeKernelFunction( coord );
-      const bool covering = std::abs( phi[A] ) > 1e-14;
-      if ( !covering )
-        phi[A] = 0.0;
-      else
-        nCovering++;
+      double* dPhi_A_dx = dPhi_dx ? dPhi_dx + _dim * A : nullptr;
+      phi[A]            = dPhi_A_dx ? kernelFunctions[A]->computeKernelFunctionAndGradient( coord, dPhi_A_dx )
+                                    : kernelFunctions[A]->computeKernelFunction( coord );
 
-      if ( dPhi_dx ) {
-        double* dPhi_A_dx = dPhi_dx + _dim * A;
-        if ( covering )
-          kernelFunctions[A]->computeKernelFunctionGradient( coord, dPhi_A_dx );
-        else
+      if ( std::abs( phi[A] ) > 1e-14 )
+        nCovering++;
+      else {
+        phi[A] = 0.0;
+        if ( dPhi_A_dx )
           for ( int i = 0; i < _dim; i++ )
             dPhi_A_dx[i] = 0.0;
       }
@@ -85,63 +82,76 @@ namespace Marmot::Discretizations::Meshfree {
     return nCovering;
   }
 
-  void ReproducingKernelApproximation::evaluateBasis( const double*         coord,
-                                                      const KernelFunction& kernelFunction,
-                                                      int                   completenessOrder,
-                                                      BasisVector&          H,
-                                                      BasisGradient*        dH_dx ) const
-  {
-    const Math::MonomialBasis& basis = _basisOfOrder[completenessOrder];
-    Coordinates                x_minus_xA( _dim );
-    for ( int i = 0; i < _dim; i++ )
-      x_minus_xA( i ) = coord[i] - kernelFunction.getCenterCoordinates()[i];
-
-    H.resize( basis.size() );
-    basis.evaluate( x_minus_xA, H );
-    if ( dH_dx ) {
-      dH_dx->resize( basis.size(), _dim );
-      basis.evaluateGradient( x_minus_xA, *dH_dx );
-    }
-  }
-
-  void ReproducingKernelApproximation::assembleMomentMatrix(
+  void ReproducingKernelApproximation::evaluateBasisOfKernels(
     const double*                               coord,
     const std::vector< const KernelFunction* >& kernelFunctions,
     const double*                               phi,
-    const double*                               dPhi_dx,
     int                                         completenessOrder,
-    MomentMatrix&                               M,
-    MomentMatrixGradient*                       dM_dx ) const
+    Eigen::MatrixXd&                            H,
+    Eigen::MatrixXd*                            dH_dx ) const
   {
-    const int sizeH = _basisOfOrder[completenessOrder].size();
-    M.setZero( sizeH, sizeH );
+    const Math::MonomialBasis& basis = _basisOfOrder[completenessOrder];
+    const Eigen::Index         nC    = static_cast< Eigen::Index >( kernelFunctions.size() );
+    H.resize( basis.size(), nC );
+    if ( dH_dx )
+      dH_dx->resize( basis.size(), _dim * nC );
+
+    Coordinates x_minus_xA( _dim );
+    for ( Eigen::Index A = 0; A < nC; A++ ) {
+      if ( phi[A] == 0.0 )
+        continue;
+      const double* xA = kernelFunctions[A]->getCenterCoordinates();
+      for ( int i = 0; i < _dim; i++ )
+        x_minus_xA( i ) = coord[i] - xA[i];
+
+      basis.evaluate( x_minus_xA, H.col( A ) );
+      if ( dH_dx )
+        basis.evaluateGradient( x_minus_xA, dH_dx->middleCols( _dim * A, _dim ) );
+    }
+  }
+
+  void ReproducingKernelApproximation::assembleMomentMatrix( const Eigen::MatrixXd& H,
+                                                             const Eigen::MatrixXd* dH_dx,
+                                                             const double*          phi,
+                                                             const double*          dPhi_dx,
+                                                             MomentMatrix&          M,
+                                                             MomentMatrixGradient*  dM_dx ) const
+  {
+    // the sums are formed in local matrices: the compiler then knows that adding to them does not change the bases,
+    // and keeps the entries of a basis in registers
+    const Eigen::Index   sizeH = H.rows();
+    MomentMatrix         sumM  = MomentMatrix::Zero( sizeH, sizeH );
+    MomentMatrixGradient sumdM_dx;
     if ( dM_dx )
       for ( int i = 0; i < _dim; i++ )
-        ( *dM_dx )[i].setZero( sizeH, sizeH );
+        sumdM_dx[i].setZero( sizeH, sizeH );
 
-    BasisVector   H;
-    BasisGradient dH_dx;
-    for ( size_t B = 0; B < kernelFunctions.size(); B++ ) {
+    for ( Eigen::Index B = 0; B < H.cols(); B++ ) {
       if ( phi[B] == 0.0 )
         continue;
-      evaluateBasis( coord, *kernelFunctions[B], completenessOrder, H, dM_dx ? &dH_dx : nullptr );
 
       // M += H H^T phi_B, and M_,i += ( H_,i H^T + H H_,i^T ) phi_B + H H^T phi_B,i, entry by entry: for the small
       // matrices of a basis, plain loops are faster than products of matrices of a runtime size
       const double phi_B = phi[B];
-      for ( int b = 0; b < sizeH; b++ )
-        for ( int a = 0; a < sizeH; a++ )
-          M( a, b ) += H( a ) * H( b ) * phi_B;
+      const auto   H_B   = H.col( B );
+      for ( Eigen::Index b = 0; b < sizeH; b++ )
+        for ( Eigen::Index a = 0; a < sizeH; a++ )
+          sumM( a, b ) += H_B( a ) * H_B( b ) * phi_B;
       if ( dM_dx )
         for ( int i = 0; i < _dim; i++ ) {
           const double  dPhi_B_dxi = dPhi_dx[_dim * B + i];
-          MomentMatrix& dM_dxi     = ( *dM_dx )[i];
-          for ( int b = 0; b < sizeH; b++ )
-            for ( int a = 0; a < sizeH; a++ )
-              dM_dxi( a, b ) += ( dH_dx( a, i ) * H( b ) + H( a ) * dH_dx( b, i ) ) * phi_B +
-                                H( a ) * H( b ) * dPhi_B_dxi;
+          const auto    dH_B_dxi   = dH_dx->col( _dim * B + i );
+          MomentMatrix& sumdM_dxi  = sumdM_dx[i];
+          for ( Eigen::Index b = 0; b < sizeH; b++ )
+            for ( Eigen::Index a = 0; a < sizeH; a++ )
+              sumdM_dxi( a, b ) += ( dH_B_dxi( a ) * H_B( b ) + H_B( a ) * dH_B_dxi( b ) ) * phi_B +
+                                   H_B( a ) * H_B( b ) * dPhi_B_dxi;
         }
     }
+
+    M = sumM;
+    if ( dM_dx )
+      *dM_dx = sumdM_dx;
   }
 
   Eigen::ColPivHouseholderQR< ReproducingKernelApproximation::MomentMatrix > ReproducingKernelApproximation::
@@ -167,18 +177,22 @@ namespace Marmot::Discretizations::Meshfree {
     const double*                               phi,
     const double*                               dPhi_dx,
     int                                         nCovering,
+    Eigen::MatrixXd&                            H,
+    Eigen::MatrixXd*                            dH_dx,
     MomentMatrix&                               M,
     MomentMatrixGradient*                       dM_dx ) const
   {
     int completenessOrder = getCorrectedCompletenessOrder( nCovering );
-    assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, completenessOrder, M, dM_dx );
+    evaluateBasisOfKernels( coord, kernelFunctions, phi, completenessOrder, H, dH_dx );
+    assembleMomentMatrix( H, dH_dx, phi, dPhi_dx, M, dM_dx );
     if ( std::isinf( _momentMatrixConditionLimit ) )
       return completenessOrder;
 
     // nearly singular: one order lower, down to the Shepard functions of the covering kernels (order 0)
     while ( completenessOrder > 0 && conditionOfMomentMatrix( M ) > _momentMatrixConditionLimit ) {
       completenessOrder--;
-      assembleMomentMatrix( coord, kernelFunctions, phi, dPhi_dx, completenessOrder, M, dM_dx );
+      evaluateBasisOfKernels( coord, kernelFunctions, phi, completenessOrder, H, dH_dx );
+      assembleMomentMatrix( H, dH_dx, phi, dPhi_dx, M, dM_dx );
     }
     return completenessOrder;
   }
@@ -233,6 +247,7 @@ namespace Marmot::Discretizations::Meshfree {
     double*   dPhi_dx   = dPsi_dx;
     const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, dPhi_dx );
 
+    Eigen::MatrixXd      H, dH_dx;
     MomentMatrix         M;
     MomentMatrixGradient dM_dx;
     const int            completenessOrder = chooseCompletenessOrderAndAssembleMomentMatrix( coord,
@@ -240,6 +255,8 @@ namespace Marmot::Discretizations::Meshfree {
                                                                                   phi,
                                                                                   dPhi_dx,
                                                                                   nCovering,
+                                                                                  H,
+                                                                                  dPsi_dx ? &dH_dx : nullptr,
                                                                                   M,
                                                                                   dPsi_dx ? &dM_dx : nullptr );
     const int            sizeH             = _basisOfOrder[completenessOrder].size();
@@ -255,20 +272,19 @@ namespace Marmot::Discretizations::Meshfree {
         db_dx.col( i ) = -MQr.solve( dM_dx[i] * b );
 
     // Psi_A = b^T H phi_A, and Psi_A,i = ( b_,i^T H + b^T H_,i ) phi_A + b^T H phi_A,i
-    BasisVector   H;
-    BasisGradient dH_dx;
     for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
       const double phi_A = phi[A];
       if ( phi_A == 0.0 )
         continue; // not covering: zero value and gradient, already written
-      evaluateBasis( coord, *kernelFunctions[A], completenessOrder, H, dPsi_dx ? &dH_dx : nullptr );
+      const auto H_A = H.col( A );
 
-      const double bH = b.dot( H );
+      const double bH = b.dot( H_A );
       Psi[A]          = bH * phi_A;
       if ( dPsi_dx )
         for ( int i = 0; i < _dim; i++ ) {
           const double dPhi_A_dxi = dPhi_dx[_dim * A + i];
-          dPsi_dx[_dim * A + i]   = ( db_dx.col( i ).dot( H ) + b.dot( dH_dx.col( i ) ) ) * phi_A + bH * dPhi_A_dxi;
+          dPsi_dx[_dim * A + i]   = ( db_dx.col( i ).dot( H_A ) + b.dot( dH_dx.col( _dim * A + i ) ) ) * phi_A +
+                                  bH * dPhi_A_dxi;
         }
     }
   }

@@ -19,7 +19,7 @@ jobs:
       - name: Check out Marmot
         uses: actions/checkout@v7
 
-      # The compilers, CMake, Eigen and Fastor of the stack: see .github/actions/setup-stack.
+      # The compilers, CMake, Eigen, Fastor and Python of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
 
       - name: Build Marmot with coverage instrumentation
@@ -28,8 +28,10 @@ jobs:
           # -O0 without -g: line coverage only needs the gcov notes, not DWARF. Since every test executable links the
           # objects of all modules, the debug info made each one ~480 MB, ~37 GB in total, more than the runner's disk.
           # Fail on compiler warnings (-Werror, /WX); local builds keep warnings non-fatal.
+          # With the Python bindings: their tests (Python_* in ctest) run the material point solvers.
           cmake -S . -B build -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF \
-            -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG=-O0 -DMARMOT_ENABLE_COVERAGE=ON
+            -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG=-O0 -DMARMOT_ENABLE_COVERAGE=ON \
+            -DMARMOT_BUILD_PYTHON_BINDINGS=ON
           cmake --build build --parallel $(nproc)
 
       - name: Run tests

@@ -44,7 +44,7 @@ namespace Marmot::Discretizations::Meshfree {
    * GenericParticle implements the parts of the Particle interface that do not depend on the physics:
    *  - the geometry of a point particle: a single vertex at the center @f$ \boldsymbol{Y}_c @f$ in the reference
    *    intermediate configuration (the last accepted configuration), shape "point";
-   *  - the shape functions: assignMeshfreeKernelFunctions() evaluates the trial functions @f$ N_A @f$ and their
+   *  - the shape functions: updateShapeFunctions() evaluates the trial functions @f$ N_A @f$ and their
    *    gradients @f$ \partial N_A / \partial Y_i @f$ at the center (direct nodal integration); the test functions
    *    @f$ T_A @f$, @f$ \partial T_A / \partial Y_i @f$ start as copies of them (Bubnov-Galerkin) and are changed
    *    only by the VCI correction (Petrov-Galerkin). Derived classes (e.g., the SQCNI particles) may replace the
@@ -200,17 +200,25 @@ namespace Marmot::Discretizations::Meshfree {
     virtual std::vector< std::string > getPropertyNames() const override { return _validProperties; };
 
     /**
-     * @brief Store the kernel functions and evaluate @f$ N_A @f$ and @f$ \partial N_A / \partial Y_i @f$ at the
-     * particle center (getCenterCoordinates()); the test functions are set equal to the trial functions, which
-     * resets any previous VCI correction.
+     * @brief Store the kernel functions and evaluate the shape functions with them (updateShapeFunctions()).
+     * @details Final: a derived particle changes how its shape functions are evaluated in updateShapeFunctions(), so
+     * that assigning kernel functions and updating the shape functions always evaluate the same.
      * @param[in] kernelFunctions The kernel functions (nodes) covering the particle.
      */
-    virtual void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
+    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) final
     {
       _assignedKernelFunctions = kernelFunctions;
+      _nNodes                  = static_cast< int >( _assignedKernelFunctions.size() );
+      updateShapeFunctions();
+    }
 
-      _nNodes = static_cast< int >( _assignedKernelFunctions.size() );
-
+    /**
+     * @brief Evaluate @f$ N_A @f$ and @f$ \partial N_A / \partial Y_i @f$ at the particle center
+     * (getCenterCoordinates()) with the assigned kernel functions; the test functions are set equal to the trial
+     * functions, which resets any previous VCI correction.
+     */
+    void updateShapeFunctions() override
+    {
       Eigen::Matrix< double, nDim, 1 > coords;
       getCenterCoordinates( coords.data() );
 
@@ -378,7 +386,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Add the VCI correction to the test function gradients,
      * @f$ \partial_i T_A \mathrel{+}= \chi_A \sum_C \eta_{AiC} P_C @f$.
      * @details The correction is added to the current test function gradients, so it is meant to be applied once
-     * after assignMeshfreeKernelFunctions() (which resets them).
+     * after updateShapeFunctions() (which resets them).
      * @param[in] eta_AiC_RowMajor Row-major array @f$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C @f$.
      */
     virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) override

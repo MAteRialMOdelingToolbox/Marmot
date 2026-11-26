@@ -149,7 +149,7 @@ namespace Marmot::Discretizations::Elements::BulkViscosity {
    * rectify the ringing it exists to remove into a net volumetric drift.
    *
    * @note \f$L_e\f$ is the element's smallest extent (GeometryElement::smallestElementExtentAt), so that
-   * the term scales with the shortest wave the element can carry. The stable time increment does not
+   * the term scales with the shortest wave the element can carry. The critical time step does not
    * use it: it is the element's eigenvalue bound (CriticalTimeStep).
    */
   inline double viscousStress( double              volumetricStrainRate,
