@@ -1,0 +1,32 @@
+name: Compiler cache
+description: >-
+  Restore a compiler cache (ccache; sccache on Windows, where it is the one that handles MSVC) and route CMake's
+  compilations through it via CMAKE_<LANG>_COMPILER_LAUNCHER. Only master saves the cache, so that every pull request
+  starts from master's objects and recompiles only what it changes, and the repository's cache stays bounded.
+  Takes effect with the Makefile and Ninja generators only (not with Visual Studio).
+
+inputs:
+  key:
+    description: The cache's name, one per job (each job compiles with different options).
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ inputs.key }}
+        variant: ${{ runner.os == 'Windows' && 'sccache' || 'ccache' }}
+        max-size: 1G
+        save: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+    - name: Use the compiler cache
+      shell: bash
+      env:
+        LAUNCHER: ${{ runner.os == 'Windows' && 'sccache' || 'ccache' }}
+      run: |
+        echo "CMAKE_C_COMPILER_LAUNCHER=$LAUNCHER" >> "$GITHUB_ENV"
+        echo "CMAKE_CXX_COMPILER_LAUNCHER=$LAUNCHER" >> "$GITHUB_ENV"
+        # The compilers come from a restored conda environment whose files may carry new timestamps: identify
+        # them by content, not by mtime, or every restore would miss the whole cache.
+        echo "CCACHE_COMPILERCHECK=content" >> "$GITHUB_ENV"

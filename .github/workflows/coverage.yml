@@ -22,6 +22,10 @@ jobs:
       # The compilers, CMake, Eigen, autodiff, Fastor and Python of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
 
+      - uses: ./.github/actions/compiler-cache
+        with:
+          key: coverage
+
       - name: Build Marmot with coverage instrumentation
         shell: bash -leo pipefail {0}
         run: |
