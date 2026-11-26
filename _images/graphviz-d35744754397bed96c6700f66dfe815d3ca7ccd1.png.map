@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" alt="" coords="67,197,1148,245"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" alt="" coords="5,101,1210,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="609,163,610,199,605,195,606,167"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h" alt="" coords="656,5,1786,53"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="1050,57,761,103,760,98,1055,56"/>
+<area shape="rect" id="node4" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h" alt="" coords="1234,101,2437,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="1390,54,1685,101,1680,101,1389,59"/>
+<area shape="rect" id="node5" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h" alt="" coords="1277,197,2394,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="1837,163,1837,199,1834,195,1834,167"/>
+</map>

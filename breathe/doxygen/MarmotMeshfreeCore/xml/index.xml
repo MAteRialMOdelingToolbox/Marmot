@@ -118,6 +118,10 @@
     <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" kind="function"><name>dNdX</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" kind="function"><name>detJ</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature" kind="struct"><name>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1aaaab141a90a8c4c22d6c7cb1b0efec49" kind="variable"><name>points</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1a044fc6eaf1146160f54a2d707a41fcdb" kind="variable"><name>n_dA</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor" kind="struct"><name>Marmot::Math::MonomialBasis::Factor</name>
     <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a82bdd122e621dda22b37382a2648b521" kind="variable"><name>coordinate</name></member>
     <member refid="struct_marmot_1_1_math_1_1_monomial_basis_1_1_factor_1a7272197bc2092fb965a0e643180785ac" kind="variable"><name>exponent</name></member>
@@ -186,7 +190,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" kind="typedef"><name>JacobianSized</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a980847ac1a6da1487b5bdb115c71adab" kind="typedef"><name>KernelFunctionVector</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kind="typedef"><name>ParticleDomainType</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1358d4f2a5acd12c6b4ff68b870f4bad" kind="typedef"><name>SectionIntegrals</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a178bb34b9609db7352dc664c52195e7d" kind="typedef"><name>SectionIntegrals</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aadd616997682dd5f2b21ec6d79d9eb50" kind="typedef"><name>SmoothingDomainUpdateType</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a66a4af427fd11bb6b39a5dd634f82185" kind="variable"><name>nStateVarsParticle</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab8f7ebfcf2f7840802160b24a03e5d28" kind="variable"><name>nStateVarsCenter</name></member>
@@ -406,6 +410,11 @@
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1a255fce83f361a52a940ffa926b429795" kind="function"><name>power</name></member>
     <member refid="class_marmot_1_1_math_1_1_monomial_basis_1ab2550b06a62cd3519940b820800a26f6" kind="function"><name>listExponents</name></member>
   </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents" kind="struct"><name>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1adb341cdd060c40a8a9b4149b4e1fb0fe" kind="variable"><name>dTau_dDeltaF33</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a86ee4b30183c6a5ffefe5b840ef8bd0e" kind="variable"><name>dTau33_dDeltaF</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a4cab953069da57835741a7672209535a" kind="variable"><name>dTau33_dDeltaF33</name></member>
+  </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class"><name>Marmot::Discretizations::Meshfree::Particle</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" kind="function"><name>vci_getNumberOfConstraints</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
@@ -453,6 +462,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kind="function"><name>describeStiffness</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a82f97f4f249f05b54cdf68abc63f8069" kind="function"><name>getInterpolationVectorLinearizedAboutCenter</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa251cced6fef8cf7f8bca3ba8855b4aa" kind="function"><name>updateShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab571efd7aa10c0db5a065fd089f1b38c" kind="function"><name>getSection</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2446c83aae573d561a9b358641c9c605" kind="function"><name>interpolationVectorLinearizedAboutCenter</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
@@ -476,6 +486,7 @@
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9adde616a6bd86ae7ed3e8b8c31efe04" kind="function"><name>getGeometryDeformedVertexCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a73681fcb481269c576c18eaeb8412a0f" kind="function"><name>getSmoothingVertexCoordinates</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9e65500129ca0dcccb51415a6ce4ae35" kind="function"><name>smoothingDomain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ae1e81c2c94cb367fc0c82204638f1319" kind="function"><name>geometryDeformed</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1acc39d7203da5d08e46e2b4a09aaa0880" kind="function"><name>getNumberOfVertices</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab72e7d6693191954f16f8658c3deb970" kind="function"><name>getParticleShape</name></member>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5794dce99d69eab5a7016ca51df70df7" kind="function"><name>getFaceCenterCoordinates</name></member>
@@ -503,15 +514,23 @@
     <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" kind="function"><name>particleFactoryFunctionByName</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</name>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kind="typedef"><name>Cell</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" kind="typedef"><name>Vec</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kind="typedef"><name>FacePoints</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kind="variable"><name>nPointsPerFace</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" kind="function"><name>volume</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" kind="function"><name>numberOfFaceQuadraturePoints</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kind="function"><name>faceQuadraturePoints</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" kind="function"><name>faceQuadraturePoints</name></member>
-    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" kind="function"><name>smoothShapeFunctionGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kind="typedef"><name>Cell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aedfd263b688f8707db8a5d0477140def" kind="typedef"><name>Vec</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a59432d68e10b350d964418679b3ac72c" kind="typedef"><name>FacePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad32564d9f320f38e873e4a7a1a306196" kind="variable"><name>isAxisymmetric</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a12af5ee3f2713a9c890f85e625449d0f" kind="variable"><name>nPointsPerFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab42a2c85024e68878762174de0f0845b" kind="function"><name>volume</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae01fa8e68af02c472f50df0ff2ba99af" kind="function"><name>weight</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ade121860baf3556e872f4d5802e54217" kind="function"><name>numberOfFaceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab775da807a831f5d6ba588c8732e3c8d" kind="function"><name>faceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a0dad2c459b1977180238b0f54ab10aef" kind="function"><name>faceQuadraturePoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab4c530b9999f0f1a339349d56c86b8a9" kind="function"><name>faceQuadrature</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a503ca4dcf480f157155fb6da5f9d5082" kind="function"><name>smoothShapeFunctionGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab21c110a082ac79e80dd9d552388259f" kind="function"><name>secondMoments</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa8df8d656c86e4fe6737456cc567a749" kind="function"><name>checkParticle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4b9808a21d8a397d593c97a948daaa24" kind="function"><name>supportedFaceLoads</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6b99c7ab724a0e79d4131f641ed3d87" kind="function"><name>checkFaceLoadIsAvailable</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad5b66556c15b503a13369d7e817b2121" kind="function"><name>addPressure</name></member>
   </compound>
   <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</name>
     <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" kind="typedef"><name>BasisVector</name></member>
@@ -601,15 +620,29 @@
   <compound refid="namespace_marmot_1_1_discretizations_1_1_elements" kind="namespace"><name>Marmot::Discretizations::Elements</name>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_material_points" kind="namespace"><name>Marmot::Discretizations::MaterialPoints</name>
+    <member refid="_marmot_out_of_plane_tangents_8h_1af96287604f89236127ae7b3233b13ef5" kind="function"><name>computeOutOfPlaneTangents</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree" kind="namespace"><name>Marmot::Discretizations::Meshfree</name>
+    <member refid="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0" kind="enum"><name>Section</name></member>
+    <member refid="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0ac62cd6a7dfc8d04ae078b2b3d6293b9c" kind="enumvalue"><name>Cartesian</name></member>
+    <member refid="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0a5e8fb1a50b1464b66d2d010fba521b10" kind="enumvalue"><name>Axisymmetric</name></member>
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kind="typedef"><name>Quad4</name></member>
     <member refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kind="typedef"><name>Hex8</name></member>
     <member refid="_marmot_particle_stiffness_visitors_8h_1a882210e8d6ace186579151d9004cbe51" kind="variable"><name>maxDofsPerNode</name></member>
+    <member refid="_marmot_particle_section_integrals_8h_1aba49883bedf19f11012564b2b16f434a" kind="function"><name>checkVCIIsAvailable</name></member>
     <member refid="_marmot_particle_stiffness_8h_1a837f4a950e82657c633fe12de814885c" kind="function"><name>addRowsOfNode</name></member>
     <member refid="_marmot_particle_stiffness_8h_1ae4af54c9858a1b24e669c154a96c4ff7" kind="function"><name>describeStiffnessNodeByNode</name></member>
     <member refid="_marmot_particle_stiffness_visitors_8h_1a3d65119bd6c2ee382e8727acb4941ebe" kind="function"><name>addBoundOfAbsoluteStiffnessTimes</name></member>
     <member refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kind="function"><name>assembleStiffness</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop" kind="namespace"><name>Marmot::Discretizations::Meshfree::Hoop</name>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1ac255103c5e4065e492ceee386ca172d2" kind="function"><name>radiusOfCenter</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1af20b0c13c95457f292bcb44483384b75" kind="function"><name>checkStretchIncrement</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1aeb709778399bafaebd399046f9061fb6" kind="function"><name>addStretchIncrement</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a118bff48eb01a8a330e6930fefa691c2" kind="function"><name>force</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a605f9f947a0223521109f798e9da6dbd" kind="function"><name>addStiffnessOfNode</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a2c3bba2015b259961062d36733b18c00" kind="function"><name>ringOfFacePoint</name></member>
+    <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1add75c65bef81c67619a2122b6bf7c7e5" kind="function"><name>dRingOfFacePoint_dDeltaq_Br</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kind="namespace"><name>Marmot::Discretizations::Meshfree::NSNI</name>
     <member refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1ae076b82f54fbecb8d1a85e6a1b9ede7e" kind="function"><name>secondGradientOfNode</name></member>
@@ -671,6 +704,8 @@
   <compound refid="_marmot_monomial_basis_functions_8h" kind="file"><name>MarmotMonomialBasisFunctions.h</name>
   </compound>
   <compound refid="_marmot_m_p_m_library_8h" kind="file"><name>MarmotMPMLibrary.h</name>
+  </compound>
+  <compound refid="_marmot_out_of_plane_tangents_8h" kind="file"><name>MarmotOutOfPlaneTangents.h</name>
   </compound>
   <compound refid="_marmot_particle_8h" kind="file"><name>MarmotParticle.h</name>
   </compound>

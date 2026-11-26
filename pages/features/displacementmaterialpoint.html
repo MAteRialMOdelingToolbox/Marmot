@@ -69,6 +69,7 @@
 <li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="axisymmetricparticles.html">Axisymmetric Particles</a></li>
 </ul>
 </li>
 </ul>
@@ -245,7 +246,7 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-456fa3f3d0d2432e8ea122326e93aff7f602d9b4.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-beae9fba61816574107f19b82c100f34276cd91e.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -253,7 +254,9 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
     &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
     &quot;3&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
@@ -842,19 +845,43 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 <dd><p>Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> (in-plane part in 2D). </p>
 </dd></dl>
 
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response5tau33E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response5tau33E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response5tau33E"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Response::tau33__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Response_1adeccb9ace4b724abd8d192f8808503aa"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tau33</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response5tau33E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: the out-of-plane (hoop) Kirchhoff stress <span class="math notranslate nohighlight">\( \tau_{33} \)</span></p>
+</dd></dl>
+
 </div>
 </dd></dl>
 
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Tangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE" title="Link to this definition"></a><br /></dt>
-<dd><p>algorithmic tangents of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a></p>
+<dd><p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-61d3d2311d2bb2656f13223320d646431b07d840.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>algorithmic tangents of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents::dS_dDeltaF__Fastor::Tensor:double.nDim.nDim.nDim.nDim:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Tangents_1acb522aab6b804e0f24ea7854d8f30d21"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dS_dDeltaF</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE" title="Link to this definition"></a><br /></dt>
 <dd><p><span class="math notranslate nohighlight">\( \partial \tau_{ij} / \partial \Delta F_{kL} \)</span> (in-plane part in 2D) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10outOfPlaneE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10outOfPlaneE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10outOfPlaneE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents::outOfPlane__OutOfPlaneTangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Tangents_1a44c7fc9ea7911cda0ee10b9e8bc36f9b"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE" title="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents"><span class="n"><span class="pre">OutOfPlaneTangents</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outOfPlane</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10outOfPlaneE" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: the out-of-plane parts with respect to <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span></p>
 </dd></dl>
 
 </div>
@@ -884,31 +911,33 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7ae8bcddb81a2e98447f1f13e52389be1205e7ed.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7328e1a79a885694aa29e9c6e662152c2cd9cd3c.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;8&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
     &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
     &quot;4&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
-    &quot;7&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;7&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;7&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;8&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;8&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;8&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
 <p>Plane-strain displacement material point (registered as “Displacement/PlaneStrain”). </p>
-<p>The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane parts of <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> and <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} \)</span> are kept. The full 3D Kirchhoff stress is also written to the state “stress”. </p>
+<p>The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane parts of <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> and <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} \)</span> are kept. The full 3D Kirchhoff stress is also written to the state “stress”. The out-of-plane stretch <span class="math notranslate nohighlight">\( \Delta F_{33} \)</span> of the increment is 1 in plane strain; an axisymmetric particle sets it to the hoop stretch increment (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1a01a1be3edfa1b63f6be4c560ce01229f"><span class="std std-ref">addToOutOfPlaneStretchIncrement()</span></a>), as for the axisymmetric elements, and uses the out-of-plane parts of the response and the tangents (Response::tau33, Tangents::outOfPlane). </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -935,6 +964,29 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 <li><p><strong>displacementIncrement</strong> – <strong>[in]</strong> In-plane contribution to the displacement increment. </p></li>
 <li><p><strong>displacementGradientIncrement</strong> – <strong>[in]</strong> Its in-plane gradient with respect to <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span>. </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D31addToOutOfPlaneStretchIncrementEd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D31addToOutOfPlaneStretchIncrementEd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D31addToOutOfPlaneStretchIncrementEd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D::addToOutOfPlaneStretchIncrement__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1a01a1be3edfa1b63f6be4c560ce01229f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addToOutOfPlaneStretchIncrement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">delta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D31addToOutOfPlaneStretchIncrementEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Add to the out-of-plane stretch increment, <span class="math notranslate nohighlight">\( \Delta F_{33} \mathrel{+}= \delta \)</span> (  <span class="math notranslate nohighlight">\( \Delta F_{33}
+\)</span> is 1 after <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a119741f4e08e806c1c74bb81a9caf2c8"><span class="std std-ref">prepareYourself()</span></a>, and stays 1 in plane strain): the hoop stretch increment of an axisymmetric particle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delta</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \delta \)</span>, e.g. <span class="math notranslate nohighlight">\( \Delta u_r / \bar r \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D26outOfPlaneStretchIncrementEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D26outOfPlaneStretchIncrementEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D26outOfPlaneStretchIncrementEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D::outOfPlaneStretchIncrementC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1aade8f9ebc367080e3f3b0d2a6ca4b39f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outOfPlaneStretchIncrement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D26outOfPlaneStretchIncrementEv" title="Link to this definition"></a><br /></dt>
+<dd><p>The out-of-plane stretch increment, the 33 component of <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> (not of <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \Delta F_{33} \)</span> (1 in plane strain, the hoop stretch increment of an axisymmetric particle). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -980,25 +1032,27 @@ material; <code class="docutils literal notranslate"><span class="pre">getStateV
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-22cd39e463f7038e2f1b038c802b6f8fb4093114.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e2573b6f41f47d08f983747d534dbb6a845452cc.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
-    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;8&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
     &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot;]
     &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
     &quot;4&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
-    &quot;7&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;7&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;7&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;8&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;8&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;8&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;2&quot; -&gt; &quot;8&quot; [dir=forward tooltip=&quot;template-instance&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
 }" class="graphviz" /></div>
 </div>

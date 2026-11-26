@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature</compoundname>
+    <includes refid="_marmot_particle_section_integrals_8h" local="no">MarmotParticleSectionIntegrals.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1aaaab141a90a8c4c22d6c7cb1b0efec49" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a59432d68e10b350d964418679b3ac72c" kindref="member">FacePoints</ref></type>
+        <definition>FacePoints Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::FaceQuadrature::points</definition>
+        <argsstring></argsstring>
+        <name>points</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature::points</qualifiedname>
+        <briefdescription>
+<para>the points <formula id="18">$ \boldsymbol{Y}_g $</formula>, nDim x nPointsPerFace </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="152" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1a044fc6eaf1146160f54a2d707a41fcdb" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aedfd263b688f8707db8a5d0477140def" kindref="member">Vec</ref></type>
+        <definition>Vec Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::FaceQuadrature::n_dA</definition>
+        <argsstring></argsstring>
+        <name>n_dA</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature::n_dA</qualifiedname>
+        <briefdescription>
+<para>the share of each point, <formula id="4">$ n_{f,i}\,dA_f $</formula> / nPointsPerFace (without the weight) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="153" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="153" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The quadrature of one face: its points and the share of each point in the area vector of the face. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A face integral <formula id="37">$ \int_f g\, w\, n_i\, dA $</formula> is  <formula id="38">$ \sum_g g(\boldsymbol{Y}_g)\,
+w(\boldsymbol{Y}_g)\, $</formula> <computeroutput><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1a044fc6eaf1146160f54a2d707a41fcdb" kindref="member">n_dA( i )</ref></computeroutput>, with the weight <formula id="39">$ w $</formula> of the section (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae01fa8e68af02c472f50df0ff2ba99af" kindref="member">weight()</ref>). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="151" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="151" bodyend="154"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1a044fc6eaf1146160f54a2d707a41fcdb" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature</scope><name>n_dA</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature_1aaaab141a90a8c4c22d6c7cb1b0efec49" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature</scope><name>points</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

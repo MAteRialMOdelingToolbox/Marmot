@@ -242,7 +242,7 @@
           <declname>df_dIncrementSecondGradient</declname>
         </param>
         <briefdescription>
-<para>Add the rows of node <computeroutput>A:</computeroutput> <formula id="181">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="170">$ B $</formula>. </para>
+<para>Add the rows of node <computeroutput>A:</computeroutput> <formula id="260">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="74">$ B $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -369,7 +369,7 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Assembles the stiffness of a particle from the stiffness it describes node by node: the blocks <formula id="181">$ \boldsymbol{K}_{AB} $</formula> of all nodes (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), with addRowsOfNode(), as the particle&apos;s computePhysicsKernels() forms its tangent, without the inertia. </para>
+<para>Assembles the stiffness of a particle from the stiffness it describes node by node: the blocks <formula id="260">$ \boldsymbol{K}_{AB} $</formula> of all nodes (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" kindref="compound">StiffnessVisitor</ref>), with addRowsOfNode(), as the particle&apos;s computePhysicsKernels() forms its tangent, without the inertia. </para>
     </briefdescription>
     <detaileddescription>
 <para>A host uses it through <ref refid="_marmot_particle_stiffness_visitors_8h_1ad37467af1b4bb17a958c394b9b7652e5" kindref="member">assembleStiffness()</ref>.</para>

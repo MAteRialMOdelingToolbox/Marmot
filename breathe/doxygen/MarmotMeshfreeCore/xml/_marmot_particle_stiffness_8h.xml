@@ -10,6 +10,7 @@
     <includes local="no">algorithm</includes>
     <includes local="no">array</includes>
     <includes local="no">vector</includes>
+    <includedby refid="_marmot_particle_section_integrals_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h</includedby>
     <includedby refid="_marmot_particle_stiffness_visitors_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h</includedby>
     <incdepgraph>
       <node id="4">
@@ -84,19 +85,31 @@
       </node>
     </incdepgraph>
     <invincdepgraph>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h</label>
+        <link refid="_generic_s_d_i_particle_8h_source"/>
+      </node>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h</label>
+        <link refid="_marmot_particle_section_integrals_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h</label>
         <link refid="_marmot_particle_stiffness_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-      </node>
-      <node id="2">
-        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h</label>
-        <link refid="_marmot_particle_stiffness_visitors_8h"/>
-        <childnode refid="3" relation="include">
+        <childnode refid="4" relation="include">
         </childnode>
       </node>
-      <node id="3">
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffnessVisitors.h</label>
+        <link refid="_marmot_particle_stiffness_visitors_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleTesting.h</label>
         <link refid="_marmot_particle_testing_8h_source"/>
       </node>

@@ -22,7 +22,39 @@
     <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_assembler" prot="public">Marmot::Discretizations::Meshfree::StiffnessAssembler</innerclass>
     <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" prot="public">Marmot::Discretizations::Meshfree::StiffnessOfNode</innerclass>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_visitor" prot="public">Marmot::Discretizations::Meshfree::StiffnessVisitor</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop">Marmot::Discretizations::Meshfree::Hoop</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i">Marmot::Discretizations::Meshfree::NSNI</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>Section</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Section</qualifiedname>
+        <enumvalue id="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0ac62cd6a7dfc8d04ae078b2b3d6293b9c" prot="public">
+          <name>Cartesian</name>
+          <briefdescription>
+<para>the domain itself: plane strain (unit thickness) in 2D, the volume in 3D </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_particle_8h_1a96949e01f3666572278a9419831740e0a5e8fb1a50b1464b66d2d010fba521b10" prot="public">
+          <name>Axisymmetric</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>the ring the domain sweeps about the axis, <formula id="118">$ dV = 2\pi r\,dA $</formula> in the meridian half plane <formula id="10">$ (r, z) = (Y_1, Y_2) $</formula> </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>The section of a particle: the measure of the integrals over its domain (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab571efd7aa10c0db5a065fd089f1b38c" kindref="member">Particle::getSection()</ref> and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="43" bodyend="47"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="typedef">
       <memberdef kind="typedef" id="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" prot="public" static="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>&lt; 2, 4 &gt;</type>
@@ -74,6 +106,60 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_particle_section_integrals_8h_1aba49883bedf19f11012564b2b16f434a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Section</type>
+            <declname>section</declname>
+            <defname>section</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::checkVCIIsAvailable</definition>
+        <argsstring>(const std::string &amp;caller)</argsstring>
+        <name>checkVCIIsAvailable</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::checkVCIIsAvailable</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>caller</declname>
+        </param>
+        <briefdescription>
+<para>Refuse VCI for a section it is not derived for. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>VCI (Chen, Hillman and Rüter, 2013) is derived for the Cartesian section; for the ring it would have to be derived again, with the ring measure and the hoop term, and the ring-weighted SQCNI satisfies the linear integration constraint by itself. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>section</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The section of the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">caller</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The caller, for the message. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>for the axisymmetric section. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="365" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="365" bodyend="371"/>
+      </memberdef>
       <memberdef kind="function" id="_marmot_particle_stiffness_8h_1a837f4a950e82657c633fe12de814885c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
@@ -117,7 +203,7 @@
           <declname>K</declname>
         </param>
         <briefdescription>
-<para>Add the rows of node <computeroutput>A</computeroutput> to a matrix of a particle: <formula id="181">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="170">$ B $</formula>, from the derivatives of the force of the node (<ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>) and the trial shape functions at the evaluation point. computePhysicsKernels() of a particle forms its tangent this way, from the stiffness of each node and its inertia. </para>
+<para>Add the rows of node <computeroutput>A</computeroutput> to a matrix of a particle: <formula id="260">$ \boldsymbol{K}_{AB} $</formula> for all nodes <formula id="74">$ B $</formula>, from the derivatives of the force of the node (<ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>) and the trial shape functions at the evaluation point. computePhysicsKernels() of a particle forms its tangent this way, from the stiffness of each node and its inertia. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -158,7 +244,7 @@
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The trial shape functions <formula id="71">$ N_B $</formula>, 1 x nNodes. </para>
+<para>The trial shape functions <formula id="143">$ N_B $</formula>, 1 x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -166,7 +252,7 @@
 <parametername direction="in">dN_dY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their gradients <formula id="182">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
+<para>Their gradients <formula id="261">$ \partial N_B / \partial Y_l $</formula>, nDim x nNodes. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -174,7 +260,7 @@
 <parametername direction="in">d2N_dYdY</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their second gradients, nDim^2 x nNodes, entry <formula id="183">$ (l\, n_{\text{dim}} + m, B) $</formula> is <formula id="176">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>; empty for a particle without second gradients. </para>
+<para>Their second gradients, nDim^2 x nNodes, entry <formula id="262">$ (l\, n_{\text{dim}} + m, B) $</formula> is <formula id="255">$ \partial^2 N_B / \partial Y_l \partial Y_m $</formula>; empty for a particle without second gradients. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -340,10 +426,10 @@
           <declname>dT</declname>
         </param>
         <briefdescription>
-<para>Add an upper bound of <formula id="78">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, the absolute value of a particle&apos;s stiffness times nonnegative weights, without forming the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>, which the particle describes its stiffness to; see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref> for the state it is of). The particle is left as it was found. </para>
+<para>Add an upper bound of <formula id="151">$ |\boldsymbol{K}|\, \boldsymbol{W} $</formula>, the absolute value of a particle&apos;s stiffness times nonnegative weights, without forming the stiffness (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_absolute_stiffness_bound" kindref="compound">AbsoluteStiffnessBound</ref>, which the particle describes its stiffness to; see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aab0d22df342729365537585c8b3a6517" kindref="member">Particle::describeStiffness()</ref> for the state it is of). The particle is left as it was found. </para>
         </briefdescription>
         <detaileddescription>
-<para>The bound a host needs for the critical time step of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="221">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
+<para>The bound a host needs for the critical time step of an explicit scheme, e.g. by the Collatz-Wielandt bound of the mass-scaled stiffness, which needs <formula id="300">$ |\boldsymbol{K}|\boldsymbol{w} $</formula> only. It costs O(nodes) instead of the O(nodes^2) of the stiffness. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">particle</parametername>
 </parameternamelist>
@@ -356,7 +442,7 @@
 <parametername direction="in">columnWeights</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The nonnegative weights <formula id="222">$ \boldsymbol{W} $</formula>, column-major, nDof x nColumns, in the dof order of the particle. </para>
+<para>The nonnegative weights <formula id="301">$ \boldsymbol{W} $</formula>, column-major, nDof x nColumns, in the dof order of the particle. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -486,6 +572,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="40" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="52" column="1"/>
   </compounddef>
 </doxygen>

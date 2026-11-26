@@ -25,7 +25,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="344">$ \boldsymbol{F}_s = \boldsymbol{I} $</formula>: the smoothing domain keeps its undeformed shape and is only translated. </para>
+<para><formula id="423">$ \boldsymbol{F}_s = \boldsymbol{I} $</formula>: the smoothing domain keeps its undeformed shape and is only translated. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a1dbd11277d9b8f323785b95820886f11" prot="public">
@@ -33,7 +33,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="345">$ \boldsymbol{F}_s = \boldsymbol{F} $</formula>: the smoothing domain deforms with the particle (it coincides with the deformed geometry). </para>
+<para><formula id="424">$ \boldsymbol{F}_s = \boldsymbol{F} $</formula>: the smoothing domain deforms with the particle (it coincides with the deformed geometry). </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a79cd9054614bf9e1a0d189e93101ad1d" prot="public">
@@ -41,7 +41,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="346">$ \boldsymbol{F}_s = \boldsymbol{R} $</formula>, the rotation of the polar decomposition <formula id="347">$ \boldsymbol{F} = \boldsymbol{R}\boldsymbol{U} $</formula> (from an SVD). </para>
+<para><formula id="425">$ \boldsymbol{F}_s = \boldsymbol{R} $</formula>, the rotation of the polar decomposition <formula id="426">$ \boldsymbol{F} = \boldsymbol{R}\boldsymbol{U} $</formula> (from an SVD). </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a9bd8a9db7a0f98c29b4e93598bd292c9" prot="public">
@@ -49,15 +49,15 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para><formula id="348">$ \boldsymbol{F}_s = \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T
-                               &lt; \boldsymbol{F}) $</formula>: the rotation and the diagonal entries of <formula id="349">$ \boldsymbol{U} $</formula> in the global basis. </para>
+<para><formula id="427">$ \boldsymbol{F}_s = \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T
+                               &lt; \boldsymbol{F}) $</formula>: the rotation and the diagonal entries of <formula id="428">$ \boldsymbol{U} $</formula> in the global basis. </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
 <para>Defines how the smoothing domain follows the deformation of the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para>The smoothing domain is mapped with the tensor <formula id="340">$ \boldsymbol{F}_s $</formula> computed by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a003c549ec08c0aa23af1d25e6b762328" kindref="member">_computeSmoothingDomainDeformationTensorTotal()</ref>; in all cases it is translated by the center displacement. The registered particle names encode the choice (e.g., SQCNI: DeformationGradient, SNNI: None, suffix _R or prefix R-: RotationOnly, suffix _RU or prefix RS-: RotationAndPrincipalStretch). </para>
+<para>The smoothing domain is mapped with the tensor <formula id="419">$ \boldsymbol{F}_s $</formula> computed by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a003c549ec08c0aa23af1d25e6b762328" kindref="member">_computeSmoothingDomainDeformationTensorTotal()</ref>; in all cases it is translated by the center displacement. The registered particle names encode the choice (e.g., SQCNI: DeformationGradient, SNNI: None, suffix _R or prefix R-: RotationOnly, suffix _RU or prefix RS-: RotationAndPrincipalStretch). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -155,7 +155,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="307" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="307" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="314" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="314" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a04597567b6329f37349aca8bf02e89a4" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9fb8b51970e2b6982383e7c3a217fb31" kindref="member">LagrangeCellType</ref></type>
@@ -170,7 +170,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="308" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="308" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="315" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="315" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1aa18c434708839f1ff32f5fa2fcbec3bd" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9fb8b51970e2b6982383e7c3a217fb31" kindref="member">LagrangeCellType</ref></type>
@@ -185,7 +185,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="309" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="309" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="316" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="316" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3d2846cefb2b5a6ba11296f34c25b580" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kindref="member">VertexCoordinatesSized</ref></type>
@@ -200,7 +200,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="312" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="312" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="319" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="319" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2b58d7a2dbcac5df3c5805c002d3dff8" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kindref="member">VertexCoordinatesSized</ref></type>
@@ -215,7 +215,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="313" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="313" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="320" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="320" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c0de406e8a46f291e6cc4dd90fcf98" prot="protected" static="no" mutable="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kindref="member">CoordinatesSized</ref></type>
@@ -224,13 +224,13 @@
         <name>_deformationCenter</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleDomain::_deformationCenter</qualifiedname>
         <briefdescription>
-<para>Fixed point <formula id="337">$ \boldsymbol{X}_c $</formula> of the homogeneous deformation. </para>
+<para>Fixed point <formula id="416">$ \boldsymbol{X}_c $</formula> of the homogeneous deformation. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="314" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="314" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="321" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="321" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -285,7 +285,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="102" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="359" bodyend="371"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="102" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="366" bodyend="378"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9adde616a6bd86ae7ed3e8b8c31efe04" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kindref="member">VertexCoordinatesSized</ref> &amp;</type>
@@ -341,6 +341,24 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="127" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="127" bodyend="127"/>
       </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ae1e81c2c94cb367fc0c82204638f1319" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9fb8b51970e2b6982383e7c3a217fb31" kindref="member">LagrangeCellType</ref> &amp;</type>
+        <definition>const LagrangeCellType &amp; Marmot::Discretizations::Meshfree::ParticleDomain&lt; nDim, nVertices &gt;::geometryDeformed</definition>
+        <argsstring>() const</argsstring>
+        <name>geometryDeformed</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleDomain::geometryDeformed</qualifiedname>
+        <briefdescription>
+<para>The deformed geometry, for its faces and its volume in the section (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A const reference to the cell of the geometry in the intermediate configuration; for the update type DeformationGradient it coincides with the smoothing domain. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="134" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="134" bodyend="134"/>
+      </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1acc39d7203da5d08e46e2b4a09aaa0880" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
         <definition>int Marmot::Discretizations::Meshfree::ParticleDomain&lt; nDim, nVertices &gt;::getNumberOfVertices</definition>
@@ -357,7 +375,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="133" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="133" bodyend="133"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="140" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="140" bodyend="140"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab72e7d6693191954f16f8658c3deb970" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>std::string</type>
@@ -375,7 +393,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="139" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="139" bodyend="139"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="146" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="146" bodyend="146"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5794dce99d69eab5a7016ca51df70df7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kindref="member">CoordinatesSized</ref></type>
@@ -406,7 +424,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="147" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="147" bodyend="150"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="154" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="154" bodyend="157"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a8a4b3c9d121163e61b09e640b71c0fa3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kindref="member">CoordinatesSized</ref></type>
@@ -437,7 +455,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="157" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="157" bodyend="160"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="164" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="164" bodyend="167"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a74a4a4d223b290bec002387e85ef3987" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
@@ -455,7 +473,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="166" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="166" bodyend="166"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="173" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="173" bodyend="173"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a14858c6dab23dd461eb58723f51bb7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kindref="member">CoordinatesSized</ref></type>
@@ -473,7 +491,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="172" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="172" bodyend="172"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="179" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="179" bodyend="179"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a53be18e16e1d7a7b8103f73a0a08d905" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -491,7 +509,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="178" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="178" bodyend="178"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="185" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="185" bodyend="185"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a38a0a8bc74d8b6ad89be4dc4eeb0060d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kindref="member">VertexCoordinatesSized</ref> &amp;</type>
@@ -509,7 +527,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="185" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="185" bodyend="188"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="192" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="192" bodyend="195"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3915f1ab2d891a109b219ae04e06c9d6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kindref="member">VertexCoordinatesSized</ref> &amp;</type>
@@ -527,7 +545,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="195" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="195" bodyend="198"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="202" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="202" bodyend="205"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a616d6ab223a63873cfc272279bc81d8c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kindref="member">CoordinatesSized</ref></type>
@@ -543,7 +561,7 @@
 <para>Returns the boundary surface vector for a given face ID, from the <emphasis>deformed geometry</emphasis>. This is typically used for distributed loads. </para>
         </briefdescription>
         <detaileddescription>
-<para>The vector is the outward normal scaled by the face area (edge length in 2D),  <formula id="341">$ \boldsymbol{n}\,dA
+<para>The vector is the outward normal scaled by the face area (edge length in 2D),  <formula id="420">$ \boldsymbol{n}\,dA
 $</formula>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">faceID</parametername>
@@ -559,7 +577,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="208" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="208" bodyend="211"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="215" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="215" bodyend="218"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5c6056dacc3089441face971f4dc5bdf" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>std::vector&lt; int &gt;</type>
@@ -590,7 +608,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="218" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="218" bodyend="221"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="225" column="24" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="225" bodyend="228"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1aba1d9e7eecde2d2266d8372581938462" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab3d22e6812f212a5141bb84943fe292f" kindref="member">DeformationGradientSized</ref></type>
@@ -599,7 +617,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         <name>getGeometrySecondMoments</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleDomain::getGeometrySecondMoments</qualifiedname>
         <briefdescription>
-<para>Returns the second moments of area/volume for the deformed geometry, <formula id="342">$ \int (\boldsymbol{x} - \boldsymbol{x}_c) \otimes (\boldsymbol{x} - \boldsymbol{x}_c)\, dV $</formula> about the centroid (Gauss quadrature on the cell). </para>
+<para>Returns the second moments of area/volume for the deformed geometry, <formula id="421">$ \int (\boldsymbol{x} - \boldsymbol{x}_c) \otimes (\boldsymbol{x} - \boldsymbol{x}_c)\, dV $</formula> about the centroid (Gauss quadrature on the cell). </para>
         </briefdescription>
         <detaileddescription>
 <para><simplesect kind="return"><para>An Eigen matrix representing the second moments. </para>
@@ -608,7 +626,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="229" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="229" bodyend="229"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="236" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="236" bodyend="236"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>void</type>
@@ -628,8 +646,8 @@ $</formula>. <parameterlist kind="param"><parameteritem>
 <para>Updates the particle&apos;s position and volume to the reference intermediate configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para>The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,  <formula id="343">$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
-         \boldsymbol{u}_c $</formula> ( <formula id="337">$ \boldsymbol{X}_c $</formula>: the centroid, of the parent domain for a subdomain), with <formula id="339">$ \boldsymbol{F} $</formula> = <computeroutput>F_physics</computeroutput> for the geometry and <formula id="340">$ \boldsymbol{F}_s $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>) for the smoothing domain. The vertex displacements are updated accordingly. <parameterlist kind="param"><parameteritem>
+<para>The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,  <formula id="422">$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+         \boldsymbol{u}_c $</formula> ( <formula id="416">$ \boldsymbol{X}_c $</formula>: the centroid, of the parent domain for a subdomain), with <formula id="418">$ \boldsymbol{F} $</formula> = <computeroutput>F_physics</computeroutput> for the geometry and <formula id="419">$ \boldsymbol{F}_s $</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>) for the smoothing domain. The vertex displacements are updated accordingly. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">F_physics</parametername>
 </parameternamelist>
@@ -650,7 +668,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="243" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="243" bodyend="258"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="250" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="250" bodyend="265"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
         <type>std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1af494f98633a393be0b5d3dc2b4f6c00c" kindref="member">ParticleDomain</ref> &gt;</type>
@@ -668,7 +686,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="269" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="269" bodyend="282"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="276" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="276" bodyend="289"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
@@ -701,7 +719,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="289" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="289" bodyend="293"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="296" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="296" bodyend="300"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1afc0fe71c53afe45f83b903ecebe6986b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
@@ -732,7 +750,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="300" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="300" bodyend="304"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="307" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="307" bodyend="311"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="protected-func">
@@ -747,7 +765,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
           <declname>F_physics</declname>
         </param>
         <briefdescription>
-<para>Computes the total deformation tensor <formula id="340">$ \boldsymbol{F}_s $</formula> for the smoothing domain based on the configured update type (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>). </para>
+<para>Computes the total deformation tensor <formula id="419">$ \boldsymbol{F}_s $</formula> for the smoothing domain based on the configured update type (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -765,7 +783,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="322" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="322" bodyend="345"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="329" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="329" bodyend="352"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -773,14 +791,14 @@ $</formula>. <parameterlist kind="param"><parameteritem>
     </briefdescription>
     <detaileddescription>
 <para>A particle domain is a Lagrangian cell (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>, e.g., a 4-node quadrilateral or an 8-node hexahedron) that is kept in three versions:<itemizedlist>
-<listitem><para>the <bold>undeformed geometry</bold> with the vertices <formula id="336">$ \boldsymbol{X}_v $</formula> and the centroid <formula id="337">$ \boldsymbol{X}_c $</formula> given at construction,</para>
+<listitem><para>the <bold>undeformed geometry</bold> with the vertices <formula id="415">$ \boldsymbol{X}_v $</formula> and the centroid <formula id="416">$ \boldsymbol{X}_c $</formula> given at construction,</para>
 </listitem><listitem><para>the <bold>deformed geometry</bold> (the geometry in the reference intermediate configuration, i.e., the last accepted configuration), used for the particle position, the face centers, the boundary surface vectors of distributed loads and the second moments of the <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> stabilization,</para>
 </listitem><listitem><para>the <bold>smoothing domain</bold>, over whose boundary the smoothed shape function gradients are integrated (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref>).</para>
 </listitem></itemizedlist>
 </para>
-<para>Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the centroid plus the displacement of the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">acceptStateAndPosition()</ref>),    <formula id="338">\[  \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
+<para>Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the centroid plus the displacement of the center (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">acceptStateAndPosition()</ref>),    <formula id="417">\[  \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
   + \boldsymbol{u}_c ,
-\]</formula> where <formula id="337">$ \boldsymbol{X}_c $</formula> is the centroid of the particle; for the subdomains of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">uniformSubdivided()</ref> it is the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent. with the total deformation gradient <formula id="339">$ \boldsymbol{F} $</formula> of the particle for the deformed geometry, and a tensor <formula id="340">$ \boldsymbol{F}_s $</formula> derived from it according to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref> for the smoothing domain. Face IDs are 1-based and follow the Abaqus convention of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>.</para>
+\]</formula> where <formula id="416">$ \boldsymbol{X}_c $</formula> is the centroid of the particle; for the subdomains of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">uniformSubdivided()</ref> it is the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent. with the total deformation gradient <formula id="418">$ \boldsymbol{F} $</formula> of the particle for the deformed geometry, and a tensor <formula id="419">$ \boldsymbol{F}_s $</formula> derived from it according to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kindref="member">SmoothingDomainUpdateType</ref> for the smoothing domain. Face IDs are 1-based and follow the Abaqus convention of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
@@ -815,7 +833,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="64" bodyend="346"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" bodystart="64" bodyend="353"/>
     <listofallmembers>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a04597567b6329f37349aca8bf02e89a4" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>_cellForGeometryDeformed</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9f7538b0a28c3d23092674d245c5ce2b" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>_cellForGeometryUndeformed</name></member>
@@ -828,6 +846,7 @@ $</formula>. <parameterlist kind="param"><parameteritem>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>CoordinatesSized</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a1dbd11277d9b8f323785b95820886f11" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>DeformationGradient</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab3d22e6812f212a5141bb84943fe292f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>DeformationGradientSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ae1e81c2c94cb367fc0c82204638f1319" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>geometryDeformed</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a14858c6dab23dd461eb58723f51bb7" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>getCenterCoordinates</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a95bd04713d1bcf08645116f2fe3975" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>getCenterFromVertices</name></member>
       <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a616d6ab223a63873cfc272279bc81d8c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleDomain</scope><name>getFaceBoundaryVector</name></member>

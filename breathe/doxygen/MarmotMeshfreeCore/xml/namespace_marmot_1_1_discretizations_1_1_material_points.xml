@@ -3,10 +3,70 @@
   <compounddef id="namespace_marmot_1_1_discretizations_1_1_material_points" kind="namespace" language="C++">
     <compoundname>Marmot::Discretizations::MaterialPoints</compoundname>
     <innerclass refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" prot="public">Marmot::Discretizations::MaterialPoints::MaterialPoint</innerclass>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents" prot="public">Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_out_of_plane_tangents_8h_1af96287604f89236127ae7b3233b13ef5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename DeformationGradient</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents" kindref="compound">OutOfPlaneTangents</ref></type>
+        <definition>OutOfPlaneTangents Marmot::Discretizations::MaterialPoints::computeOutOfPlaneTangents</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;dTau_dF, const DeformationGradient &amp;F_n)</argsstring>
+        <name>computeOutOfPlaneTangents</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::computeOutOfPlaneTangents</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;</type>
+          <declname>dTau_dF</declname>
+        </param>
+        <param>
+          <type>const DeformationGradient &amp;</type>
+          <declname>F_n</declname>
+        </param>
+        <briefdescription>
+<para>The out-of-plane parts of the tangent of a 2D material point, see <ref refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents" kindref="compound">OutOfPlaneTangents</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>DeformationGradient</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A 3 x 3 tensor or a map of one (e.g. on the state variables). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau_dF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The 3D tangent <formula id="242">$ \partial \tau_{ij} / \partial F_{kL} $</formula> of the material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">F_n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The 3D deformation gradient of the last accepted state. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The out-of-plane parts. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="61" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" bodystart="61" bodyend="74"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="30" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="29" column="1"/>
   </compounddef>
 </doxygen>

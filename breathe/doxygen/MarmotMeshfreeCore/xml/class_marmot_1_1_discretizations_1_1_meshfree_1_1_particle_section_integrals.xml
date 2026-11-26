@@ -3,7 +3,13 @@
   <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kind="class" language="C++" prot="public">
     <compoundname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</compoundname>
     <includes refid="_marmot_particle_section_integrals_8h" local="no">MarmotParticleSectionIntegrals.h</includes>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature" prot="public">Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FaceQuadrature</innerclass>
     <templateparamlist>
+      <param>
+        <type>Section</type>
+        <declname>section</declname>
+        <defname>section</defname>
+      </param>
       <param>
         <type>int</type>
         <declname>nDim</declname>
@@ -16,9 +22,9 @@
       </param>
     </templateparamlist>
     <sectiondef kind="public-type">
-      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" prot="public" static="no">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" prot="public" static="no">
         <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>&lt; nDim, nVertices &gt;</type>
-        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::Cell = LagrangeCell&lt; nDim, nVertices &gt;</definition>
+        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::Cell = LagrangeCell&lt; nDim, nVertices &gt;</definition>
         <argsstring></argsstring>
         <name>Cell</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Cell</qualifiedname>
@@ -29,11 +35,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="78" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="78" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="133" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="133" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" prot="public" static="no">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aedfd263b688f8707db8a5d0477140def" prot="public" static="no">
         <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
-        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::Vec = Eigen::Matrix&lt; double, nDim, 1 &gt;</definition>
+        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::Vec = Eigen::Matrix&lt; double, nDim, 1 &gt;</definition>
         <argsstring></argsstring>
         <name>Vec</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::Vec</qualifiedname>
@@ -44,11 +50,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="79" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="134" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="134" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" prot="public" static="no">
-        <type>Eigen::Matrix&lt; double, nDim, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" kindref="member">nPointsPerFace</ref> &gt;</type>
-        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::FacePoints = Eigen::Matrix&lt; double, nDim, nPointsPerFace &gt;</definition>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a59432d68e10b350d964418679b3ac72c" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a12af5ee3f2713a9c890f85e625449d0f" kindref="member">nPointsPerFace</ref> &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::FacePoints = Eigen::Matrix&lt; double, nDim, nPointsPerFace &gt;</definition>
         <argsstring></argsstring>
         <name>FacePoints</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::FacePoints</qualifiedname>
@@ -59,36 +65,52 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="85" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="85" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="144" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="144" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-attrib">
-      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" prot="public" static="yes" constexpr="yes" mutable="no">
-        <type>int</type>
-        <definition>int Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::nPointsPerFace</definition>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad32564d9f320f38e873e4a7a1a306196" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::isAxisymmetric</definition>
         <argsstring></argsstring>
-        <name>nPointsPerFace</name>
-        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nPointsPerFace</qualifiedname>
-        <initializer>= 1</initializer>
+        <name>isAxisymmetric</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::isAxisymmetric</qualifiedname>
+        <initializer>= section == Section::Axisymmetric</initializer>
         <briefdescription>
-<para>The number of quadrature points per face of a smoothing domain: one, the face center. </para>
+<para>The section is axisymmetric. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="82" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="82" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="137" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a12af5ee3f2713a9c890f85e625449d0f" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::nPointsPerFace</definition>
+        <argsstring></argsstring>
+        <name>nPointsPerFace</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::nPointsPerFace</qualifiedname>
+        <initializer>= <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad32564d9f320f38e873e4a7a1a306196" kindref="member">isAxisymmetric</ref> ? 2 : 1</initializer>
+        <briefdescription>
+<para>The number of quadrature points per face of a smoothing domain: one, the face center (Cartesian), or two Gauss points (axisymmetric). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="141" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="141" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-static-func">
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab42a2c85024e68878762174de0f0845b" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>double</type>
-        <definition>static double Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::volume</definition>
+        <definition>static double Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::volume</definition>
         <argsstring>(const Cell &amp;cell)</argsstring>
         <name>volume</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::volume</qualifiedname>
         <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref> &amp;</type>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
           <declname>cell</declname>
         </param>
         <briefdescription>
@@ -104,22 +126,53 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Its volume <formula id="5">$ |\Omega_s| $</formula> (area in plane strain). </para>
+<simplesect kind="return"><para>Its volume <formula id="2">$ |\Omega_s| $</formula> (area in plane strain), or its ring volume <formula id="40">$ 2\pi A_s \bar r $</formula> (Pappus). </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="92" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="92" bodyend="92"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="162" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="162" bodyend="168"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae01fa8e68af02c472f50df0ff2ba99af" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>static double Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::weight</definition>
+        <argsstring>(const Vec &amp;Y)</argsstring>
+        <name>weight</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::weight</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aedfd263b688f8707db8a5d0477140def" kindref="member">Vec</ref> &amp;</type>
+          <declname>Y</declname>
+        </param>
+        <briefdescription>
+<para>The weight of the section at a point, the factor of the area element of a face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>1, or the ring <formula id="12">$ 2\pi r $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="175" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="175" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ade121860baf3556e872f4d5802e54217" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>int</type>
-        <definition>static int Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::numberOfFaceQuadraturePoints</definition>
+        <definition>static int Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::numberOfFaceQuadraturePoints</definition>
         <argsstring>(const Cell &amp;cell)</argsstring>
         <name>numberOfFaceQuadraturePoints</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::numberOfFaceQuadraturePoints</qualifiedname>
         <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref> &amp;</type>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
           <declname>cell</declname>
         </param>
         <briefdescription>
@@ -141,16 +194,16 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="99" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="99" bodyend="99"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="188" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="188" bodyend="188"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
-        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" kindref="member">FacePoints</ref></type>
-        <definition>static FacePoints Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::faceQuadraturePoints</definition>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab775da807a831f5d6ba588c8732e3c8d" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a59432d68e10b350d964418679b3ac72c" kindref="member">FacePoints</ref></type>
+        <definition>static FacePoints Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::faceQuadraturePoints</definition>
         <argsstring>(const Cell &amp;cell, int faceID)</argsstring>
         <name>faceQuadraturePoints</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::faceQuadraturePoints</qualifiedname>
         <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref> &amp;</type>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
           <declname>cell</declname>
         </param>
         <param>
@@ -158,7 +211,7 @@
           <declname>faceID</declname>
         </param>
         <briefdescription>
-<para>The quadrature points of one face of a smoothing domain: its center. </para>
+<para>The quadrature points of one face of a smoothing domain: its center, or its two Gauss points. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -178,22 +231,23 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>nDim x nPointsPerFace. </para>
+<simplesect kind="return"><para>nDim x nPointsPerFace: the face center (Cartesian), or the Gauss points  <formula id="41">$ \boldsymbol{Y}_f \mp
+\boldsymbol{e}_f / (2\sqrt{3}) $</formula> of the straight edge <formula id="42">$ \boldsymbol{e}_f $</formula> (axisymmetric). </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="107" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="107" bodyend="110"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="197" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="197" bodyend="211"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a0dad2c459b1977180238b0f54ab10aef" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type>Eigen::Matrix&lt; double, nDim, Eigen::Dynamic &gt;</type>
-        <definition>static Eigen::Matrix&lt; double, nDim, Eigen::Dynamic &gt; Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::faceQuadraturePoints</definition>
+        <definition>static Eigen::Matrix&lt; double, nDim, Eigen::Dynamic &gt; Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::faceQuadraturePoints</definition>
         <argsstring>(const Cell &amp;cell)</argsstring>
         <name>faceQuadraturePoints</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::faceQuadraturePoints</qualifiedname>
         <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref> &amp;</type>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
           <declname>cell</declname>
         </param>
         <briefdescription>
@@ -209,22 +263,65 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>nDim x <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" kindref="member">numberOfFaceQuadraturePoints()</ref>, face by face. </para>
+<simplesect kind="return"><para>nDim x <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ade121860baf3556e872f4d5802e54217" kindref="member">numberOfFaceQuadraturePoints()</ref>, face by face. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="117" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="117" bodyend="123"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="218" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="218" bodyend="224"/>
       </memberdef>
-      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab4c530b9999f0f1a339349d56c86b8a9" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature" kindref="compound">FaceQuadrature</ref></type>
+        <definition>static FaceQuadrature Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::faceQuadrature</definition>
+        <argsstring>(const Cell &amp;cell, int faceID)</argsstring>
+        <name>faceQuadrature</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::faceQuadrature</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
+          <declname>cell</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>faceID</declname>
+        </param>
+        <briefdescription>
+<para>The quadrature of one face of a cell: the rule of the smoothing, for the smoothing itself and for the loads on the face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">faceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The face (1-based). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The points (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab775da807a831f5d6ba588c8732e3c8d" kindref="member">faceQuadraturePoints()</ref>) and the share of each in the area vector of the face. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="233" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="233" bodyend="236"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a503ca4dcf480f157155fb6da5f9d5082" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
-        <definition>void Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; nDim, nVertices &gt;::smoothShapeFunctionGradients</definition>
+        <definition>void Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::smoothShapeFunctionGradients</definition>
         <argsstring>(const Cell &amp;smoothingDomain, const Approximation &amp;approximation, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, const Eigen::MatrixXd &amp;N, Eigen::MatrixXd &amp;dN_dY, std::array&lt; Eigen::MatrixXd, nDim &gt; *d2N_dYdY)</argsstring>
         <name>smoothShapeFunctionGradients</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::smoothShapeFunctionGradients</qualifiedname>
         <param>
-          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" kindref="member">Cell</ref> &amp;</type>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
           <declname>smoothingDomain</declname>
         </param>
         <param>
@@ -248,7 +345,7 @@
           <declname>d2N_dYdY</declname>
         </param>
         <briefdescription>
-<para>The smoothed gradients (and second derivatives) of the shape functions over a smoothing domain, see the class description. The points of a face share its area vector equally. </para>
+<para>The smoothed gradients (and second derivatives) of the shape functions over a smoothing domain, see the class description. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -256,7 +353,7 @@
 <parametername direction="in">smoothingDomain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The smoothing domain. </para>
+<para>The smoothing domain; its area centroid is the particle center. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -280,7 +377,7 @@
 <parametername direction="in">N</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The shape functions at the particle center, 1 x nNodes; the Cartesian smoothing uses only its size (the number of nodes). </para>
+<para>The shape functions at the particle center, 1 x nNodes: the area term of the ring (axisymmetric); the Cartesian smoothing uses only its size (the number of nodes). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -304,26 +401,390 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="137" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="146" bodyend="190"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="250" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="374" bodyend="429"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab21c110a082ac79e80dd9d552388259f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, nDim &gt; Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::secondMoments</definition>
+        <argsstring>(const Cell &amp;cell)</argsstring>
+        <name>secondMoments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::secondMoments</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
+          <declname>cell</declname>
+        </param>
+        <briefdescription>
+<para>The second moments of a domain about its area centroid in the section,  <formula id="43">$ \int \boldsymbol{\xi} \otimes
+\boldsymbol{\xi}\, dV $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The domain. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The second moments of the cell, or of its ring (a 3 x 3 Gauss rule, exact for a quadrilateral). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="263" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="432" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa8df8d656c86e4fe6737456cc567a749" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::checkParticle</definition>
+        <argsstring>(const Cell &amp;cell, bool smoothingDomainsTileTheBody, int particleLabel)</argsstring>
+        <name>checkParticle</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::checkParticle</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" kindref="member">Cell</ref> &amp;</type>
+          <declname>cell</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>smoothingDomainsTileTheBody</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>particleLabel</declname>
+        </param>
+        <briefdescription>
+<para>Refuse a particle the section cannot integrate; nothing to check for the Cartesian section. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>An axisymmetric particle is refused with a vertex at <formula id="44">$ r &lt; 0 $</formula> (beyond the round-off of a mesher, relative to the diagonal of the bounding box), or with smoothing domains that do not tile the body (any update of the smoothing domain but <computeroutput>DeformationGradient</computeroutput>): the integration constraint needs them. It may touch the axis with a vertex or a face: the ring weight vanishes there, and its center has <formula id="45">$ \bar r &gt; 0 $</formula>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cell</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The undeformed domain of the particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">smoothingDomainsTileTheBody</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The smoothing domains follow the deformation of the particles (<computeroutput>DeformationGradient</computeroutput>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">particleLabel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The label of the particle, for the message. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>for such a particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="277" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="455" bodyend="478"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4b9808a21d8a397d593c97a948daaa24" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>pressure</declname>
+            <defname>pressure</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>cwfCorrection</declname>
+            <defname>cwfCorrection</defname>
+          </param>
+        </templateparamlist>
+        <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
+        <definition>static const std::unordered_map&lt; std::string, int &gt; &amp; Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::supportedFaceLoads</definition>
+        <argsstring>()</argsstring>
+        <name>supportedFaceLoads</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::supportedFaceLoads</qualifiedname>
+        <briefdescription>
+<para>The distributed loads on the faces of an SQCNI particle in the section. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>pressure</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The load type of <computeroutput>PRESSURE</computeroutput> of the particle family. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>cwfCorrection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The load type of <computeroutput>CWFCORRECTION</computeroutput> of the particle family. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>PRESSURE</computeroutput> and <computeroutput>CWFCORRECTION</computeroutput>; <computeroutput>PRESSURE</computeroutput> only for the axisymmetric section, for which the CWF correction is not derived. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="287" column="37" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="287" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6b99c7ab724a0e79d4131f641ed3d87" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::checkFaceLoadIsAvailable</definition>
+        <argsstring>(bool isCWFCorrection, const char *caller)</argsstring>
+        <name>checkFaceLoadIsAvailable</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::checkFaceLoadIsAvailable</qualifiedname>
+        <param>
+          <type>bool</type>
+          <declname>isCWFCorrection</declname>
+        </param>
+        <param>
+          <type>const char *</type>
+          <declname>caller</declname>
+        </param>
+        <briefdescription>
+<para>Refuse a distributed load on a face that an SQCNI particle in the section does not support (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4b9808a21d8a397d593c97a948daaa24" kindref="member">supportedFaceLoads()</ref>): the CWF correction of the axisymmetric section. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">isCWFCorrection</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The load is the CWF correction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">caller</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function that applies the load, for the message. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>for the CWF correction of an axisymmetric particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="303" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="303" bodyend="310"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad5b66556c15b503a13369d7e817b2121" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nodeBlockSize</declname>
+            <defname>nodeBlockSize</defname>
+          </param>
+          <param>
+            <type>class MaterialPoint</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;::addPressure</definition>
+        <argsstring>(const FaceQuadrature &amp;face, double p, const MaterialPoint &amp;materialPoint, const Eigen::MatrixXd &amp;N, const Eigen::MatrixXd &amp;dN_dY, const Approximation &amp;approximation, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *fExt, double *dFExt_ddQ)</argsstring>
+        <name>addPressure</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals::addPressure</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1_1_face_quadrature" kindref="compound">FaceQuadrature</ref> &amp;</type>
+          <declname>face</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>p</declname>
+        </param>
+        <param>
+          <type>const MaterialPoint &amp;</type>
+          <declname>materialPoint</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>dN_dY</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref> &amp;</type>
+          <declname>approximation</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dFExt_ddQ</declname>
+        </param>
+        <briefdescription>
+<para>Add the follower pressure on one face of a particle to its external force, and its tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>With the face rule of the smoothing (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab4c530b9999f0f1a339349d56c86b8a9" kindref="member">faceQuadrature()</ref>), each point <formula id="18">$ \boldsymbol{Y}_g $</formula> of the face carries the force of Nanson&apos;s formula in the plane of the section, from <formula id="1">$ \boldsymbol{Y} $</formula> to <formula id="46">$ \boldsymbol{x} $</formula>, times the weight of the section after the increment,    <formula id="47">\[  \boldsymbol{f}_g = -\Delta J\, \Delta\boldsymbol{F}^{-\mathsf{T}}\, p\, \frac{\boldsymbol{n}_f\,dA_f}{n_g}\;
+  w_g , \qquad f_{Ai} \mathrel{-}= \sum_g T_A(\boldsymbol{Y}_g)\, f_{g,i} ,
+\]</formula> with <formula id="48">$ w_g = 1 $</formula> (Cartesian) or the ring of the point after the increment,   <formula id="49">$ w_g = 2\pi
+x_r(\boldsymbol{Y}_g)
+$</formula> (<ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a2c3bba2015b259961062d36733b18c00" kindref="member">Hoop::ringOfFacePoint()</ref>): the face moves with the motion of the particle, and its ring grows with the hoop stretch of the point. As for the elements, a positive pressure pushes on the face (against the outward normal). The tangent differentiates <formula id="50">$ \Delta\boldsymbol{F} $</formula> (through <formula id="51">$ \tilde N_{B,L} $</formula>) and, axisymmetric, <formula id="52">$ w_g $</formula> (<ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1add75c65bef81c67619a2122b6bf7c7e5" kindref="member">Hoop::dRingOfFacePoint_dDeltaq_Br()</ref>). For a uniform stress, the pressure <formula id="53">$ -\sigma_{nn} $</formula> on the boundary balances the internal force of a linear field exactly, because the face rule is that of the integration constraint. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nodeBlockSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of dofs per node; the displacement comes first. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>MaterialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point of the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">face</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The face in the intermediate configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The pressure. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point at the center, evaluated for the increment: its <formula id="50">$ \Delta\boldsymbol{F} $</formula> in the plane of the section, and (axisymmetric) its <formula id="54">$ \Delta F_{\theta\theta} $</formula> and its position, the particle center <formula id="16">$ \bar{\boldsymbol{Y}} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The trial functions at the center, 1 x nNodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dN_dY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Their smoothed gradients, nDim x nNodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">approximation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The meshfree approximation, for the test functions at the points. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The kernel functions of the nodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The external force, node-wise. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dFExt_ddQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its tangent, column-major; nullptr for none (explicit). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="344" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="663" bodyend="747"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>The integrals over the smoothing domain of a particle: its volume and the smoothed gradients of the shape functions (stabilized conforming nodal integration, Chen et al., 2001). </para>
+<para>The integrals over the smoothing domain of a particle in its section: its volume, the smoothed gradients of the shape functions (stabilized conforming nodal integration, Chen et al., 2001), its second moments and the face loads. </para>
     </briefdescription>
     <detaileddescription>
-<para>The smoothed gradient is the average of the gradient over the smoothing domain <formula id="0">$ \Omega_s $</formula>, turned into a boundary integral by the divergence theorem and integrated with one point per face <formula id="1">$ f $</formula>, the face center <formula id="2">$ \boldsymbol{Y}_f $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kindref="member">faceQuadraturePoints()</ref>),     <formula id="3">\[  \tilde N_{A,i} = \frac{1}{|\Omega_s|}\int_{\Omega_s} \frac{\partial N_A}{\partial Y_i}\,dV
+<para>The notation is that of the page &quot;Meshfree Particles&quot;: <formula id="0">$ N_{A,i} = \partial N_A / \partial Y_i $</formula> with the coordinates <formula id="1">$ \boldsymbol{Y} $</formula> of the intermediate configuration, the volume <formula id="2">$ |\Omega_s| $</formula> of the smoothing domain <formula id="3">$ \Omega_s $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab42a2c85024e68878762174de0f0845b" kindref="member">volume()</ref>), and the area vector <formula id="4">$ n_{f,i}\,dA_f $</formula> of its face <formula id="5">$ f $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" kindref="member">LagrangeCell::boundarySurfaceVector()</ref>). In 2D, <formula id="6">$ dA_f $</formula> is the length of the face (the area of unit thickness in plane strain).</para>
+<para>The smoothed gradient is the average of the gradient over <formula id="3">$ \Omega_s $</formula>, turned into a boundary integral by the divergence theorem and integrated with a rule on each face (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab4c530b9999f0f1a339349d56c86b8a9" kindref="member">faceQuadrature()</ref>). In the Cartesian section (plane strain, 3D) the rule is one point per face, the face center <formula id="7">$ \boldsymbol{Y}_f $</formula>,     <formula id="8">\[  \tilde N_{A,i} = \frac{1}{|\Omega_s|}\int_{\Omega_s} N_{A,i}\,dV
   = \frac{1}{|\Omega_s|}\oint_{\partial\Omega_s} N_A\,n_i\,dA
-  \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\, dA_f ,
-\]</formula> with the coordinates <formula id="4">$ \boldsymbol{Y} $</formula> of the intermediate configuration, the volume <formula id="5">$ |\Omega_s| $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" kindref="member">volume()</ref>) and the area vector <formula id="6">$ \boldsymbol{n}_f\,dA_f $</formula> of face <formula id="1">$ f $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" kindref="member">LagrangeCell::boundarySurfaceVector()</ref>). The face rule is the only approximation, and only the values of the shape functions at the face points are needed. <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> smooths the second derivatives alike, from the (unsmoothed) gradients at the same points,    <formula id="7">\[  \hat N_{A,IJ} = \frac{1}{|\Omega_s|} \sum_f \frac{\partial N_A}{\partial Y_I}(\boldsymbol{Y}_f)\,
-  n_{f,J}\, dA_f ,
+  \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\, dA_f .
+\]</formula> Here the face rule is the only approximation, and only the values of the shape functions at the face points are needed. <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> smooths the second derivatives alike, from the (unsmoothed) gradients at the same points,   <formula id="9">\[  \hat N_{A,IJ} = \frac{1}{|\Omega_s|} \sum_f N_{A,I}(\boldsymbol{Y}_f)\, n_{f,J}\, dA_f ,
 \]</formula> stored unsymmetrized as <computeroutput>d2N_dYdY[J](I, A)</computeroutput>; <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i_1ae076b82f54fbecb8d1a85e6a1b9ede7e" kindref="member">NSNI::secondGradientOfNode()</ref> symmetrizes them.</para>
-<para>The particles take these integrals, and their evaluation points (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" kindref="member">faceQuadraturePoints()</ref>), from here and not from the cell: the face rule of the smoothing is defined in this class only. <emphasis>Section</emphasis> is meant as for finite elements (plane strain, 3D): the form of the integrals depends on it. Here the section is Cartesian, and the integrals carry the weight 1. The class holds static functions only, so that a particle selects its integrals with its own template parameters.</para>
+<para>In the axisymmetric section, <formula id="3">$ \Omega_s $</formula> is the ring swept by the smoothing domain of the meridian half plane <formula id="10">$ (r, z) = (Y_1, Y_2) $</formula> (<computeroutput>Y( 0 )</computeroutput> is <formula id="11">$ r $</formula> in the code), and every integral carries the ring weight <formula id="12">$ 2\pi r $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae01fa8e68af02c472f50df0ff2ba99af" kindref="member">weight()</ref>): <formula id="13">$ |\Omega_s| = 2\pi A_s \bar r $</formula>, with the area <formula id="14">$ A_s $</formula> and the radius <formula id="15">$ \bar r $</formula> of the area centroid <formula id="16">$ \bar{\boldsymbol{Y}} $</formula> of the smoothing domain (the particle center). The divergence theorem of the weighted gradient gains an area term, <formula id="17">$ r N_{A,r} = (r N_A)_{,r} - N_A $</formula>, which is integrated with the centroid; the faces are integrated with two Gauss points <formula id="18">$ \boldsymbol{Y}_g $</formula> each, which share <formula id="4">$ n_{f,i}\,dA_f $</formula> equally:    <formula id="19">\[  \tilde N_{A,i} = \frac{1}{|\Omega_s|} \sum_f \sum_{g=1}^{2} 2\pi r_g\, N_A(\boldsymbol{Y}_g)\,
+  \frac{n_{f,i}\, dA_f}{2} - \delta_{ir}\, \frac{N_A(\bar{\boldsymbol{Y}})}{\bar r} .
+\]</formula> The hoop operator <formula id="20">$ \tilde H_A = N_A(\bar{\boldsymbol{Y}}) / \bar r $</formula> (in <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a118bff48eb01a8a330e6930fefa691c2" kindref="member">Hoop::force()</ref> and <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a605f9f947a0223521109f798e9da6dbd" kindref="member">Hoop::addStiffnessOfNode()</ref>) is the ring average of <formula id="21">$ N_A / r $</formula> with the same area integral. Together they satisfy the integration constraint of the ring, the discrete divergence theorem of the 3D field <formula id="22">$ N_A \boldsymbol{e}_r $</formula>, whose divergence is <formula id="23">$ N_{A,r} + N_A / r $</formula>: for every smoothing domain,     <formula id="24">\[  |\Omega_s| \bigl(\tilde N_{A,r} + \tilde H_A\bigr) = \sum_f \sum_{g=1}^{2} 2\pi r_g\, N_A(\boldsymbol{Y}_g)\,
+  \frac{n_{f,r}\, dA_f}{2} , \qquad
+  |\Omega_s|\, \tilde N_{A,z} = \sum_f \sum_{g=1}^{2} 2\pi r_g\, N_A(\boldsymbol{Y}_g)\, \frac{n_{f,z}\, dA_f}{2} ,
+\]</formula> the area terms cancelling within the smoothing domain. Summed over smoothing domains that tile the body, the face sums of the shared faces cancel, and what remains is the face sum over the boundary of the body. A face on the axis has <formula id="25">$ r_g = 0 $</formula> and drops out: the axis is no boundary of the body of revolution. A face load is integrated with the same rule (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad5b66556c15b503a13369d7e817b2121" kindref="member">addPressure()</ref>), so that the load <formula id="26">$ \boldsymbol{\sigma}\,\boldsymbol{n} $</formula> of a uniform stress balances the internal force of a linear field exactly. The second derivatives of <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> are smoothed alike,    <formula id="27">\[  \hat N_{A,IJ} = \frac{1}{|\Omega_s|} \sum_f \sum_{g=1}^{2} 2\pi \Big( r_g\, N_{A,I}(\boldsymbol{Y}_g)\, n_{f,J}
+  - \delta_{Jr}\, N_A(\boldsymbol{Y}_g)\, n_{f,I} \Big) \frac{dA_f}{2} ,
+\]</formula> and the second moments are those of the ring about the area centroid,  <formula id="28">$ 2\pi \int \boldsymbol{\xi} \otimes
+\boldsymbol{\xi}\, r\, dA $</formula>.</para>
+<para>The particles take these integrals and their evaluation points (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab775da807a831f5d6ba588c8732e3c8d" kindref="member">faceQuadraturePoints()</ref>) from here and not from the cell: the face rule of the smoothing is defined in this class only. So do the SQCNI and <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_n_s_n_i" kindref="compound">NSNI</ref> particles whose smoothing domain follows the deformation gradient (the update <computeroutput>DeformationGradient</computeroutput>, with which the smoothing domain is the particle) take their face loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad5b66556c15b503a13369d7e817b2121" kindref="member">addPressure()</ref>). The SDI particle (DisplacementParticleSQCNIxSDI::computeDistributedLoad()) and the gradient-enhanced particle with another update of its smoothing domain (GradientEnhancedFiniteStrainParticleSQCNI::faceQuadratureIntermediate()) integrate a pressure at a face center of their own, which does not balance a uniform stress exactly. <emphasis>Section</emphasis> is meant as for finite elements (plane strain, 3D, axisymmetric): the form of the integrals depends on it; in the Cartesian section the integrals carry the weight 1. The class holds static functions only, so that a particle selects its integrals with its own template parameters.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>section</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The section. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
 <parameternamelist>
 <parametername>nDim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The spatial dimension. </para>
+<para>The spatial dimension; 2 for the axisymmetric section. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -337,17 +798,25 @@
 </parameterlist>
 </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="75" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="75" bodyend="143"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="128" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="128" bodyend="353"/>
     <listofallmembers>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a17b7bf2c3373a610927f33b52aaf0fce" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>Cell</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a111a13e816eac8dc42bffccad5589549" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>FacePoints</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6934f8efb3f0ccf494e4eb9dda18daa" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>faceQuadraturePoints</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a3936b6f2bef19ea858b3b854bd3b5ebf" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>faceQuadraturePoints</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae3f784c003bfc71f3f183ea066f316f6" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>nPointsPerFace</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4256784767e3f84dd27129c7ee7d3b93" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>numberOfFaceQuadraturePoints</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a27b2f76af46885f53063fec9688c103d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>smoothShapeFunctionGradients</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae878a57b26e09467e1c1fb625061cf94" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>Vec</name></member>
-      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a2388a9797c28a71da7edbfa6f228fd51" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>volume</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad5b66556c15b503a13369d7e817b2121" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>addPressure</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a6be398afa0f02b3509ca1f8c9cc824e5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>Cell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa6b99c7ab724a0e79d4131f641ed3d87" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>checkFaceLoadIsAvailable</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aa8df8d656c86e4fe6737456cc567a749" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>checkParticle</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a59432d68e10b350d964418679b3ac72c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>FacePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab4c530b9999f0f1a339349d56c86b8a9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>faceQuadrature</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab775da807a831f5d6ba588c8732e3c8d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>faceQuadraturePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a0dad2c459b1977180238b0f54ab10aef" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>faceQuadraturePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ad32564d9f320f38e873e4a7a1a306196" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>isAxisymmetric</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a12af5ee3f2713a9c890f85e625449d0f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>nPointsPerFace</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ade121860baf3556e872f4d5802e54217" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>numberOfFaceQuadraturePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab21c110a082ac79e80dd9d552388259f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>secondMoments</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a503ca4dcf480f157155fb6da5f9d5082" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>smoothShapeFunctionGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1a4b9808a21d8a397d593c97a948daaa24" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>supportedFaceLoads</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1aedfd263b688f8707db8a5d0477140def" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>Vec</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ab42a2c85024e68878762174de0f0845b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>volume</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals_1ae01fa8e68af02c472f50df0ff2ba99af" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ParticleSectionIntegrals</scope><name>weight</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

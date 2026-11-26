@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</compoundname>
+    <includes refid="_marmot_out_of_plane_tangents_8h" local="no">MarmotOutOfPlaneTangents.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1adb341cdd060c40a8a9b4149b4e1fb0fe" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, 2, 2 &gt;</type>
+        <definition>Fastor::Tensor&lt; double, 2, 2 &gt; Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau_dDeltaF33</definition>
+        <argsstring></argsstring>
+        <name>dTau_dDeltaF33</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau_dDeltaF33</qualifiedname>
+        <initializer>= Fastor::Tensor&lt; double, 2, 2 &gt;( 0.0 )</initializer>
+        <briefdescription>
+<para><formula id="243">$ \partial \tau_{ij} / \partial \Delta F_{33} $</formula>, in-plane <formula id="64">$ ij $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="46" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a86ee4b30183c6a5ffefe5b840ef8bd0e" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, 2, 2 &gt;</type>
+        <definition>Fastor::Tensor&lt; double, 2, 2 &gt; Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF</definition>
+        <argsstring></argsstring>
+        <name>dTau33_dDeltaF</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF</qualifiedname>
+        <initializer>= Fastor::Tensor&lt; double, 2, 2 &gt;( 0.0 )</initializer>
+        <briefdescription>
+<para><formula id="244">$ \partial \tau_{33} / \partial \Delta F_{kL} $</formula>, in-plane <formula id="245">$ kL $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="48" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a4cab953069da57835741a7672209535a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF33</definition>
+        <argsstring></argsstring>
+        <name>dTau33_dDeltaF33</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF33</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="246">$ \partial \tau_{33} / \partial \Delta F_{33} $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="50" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The out-of-plane parts of the tangent of a 2D material point with respect to the increment of the deformation gradient, which the hoop terms of an axisymmetric particle need (the out-of-plane stretch <formula id="238">$ F_{33} $</formula> is the hoop stretch there). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>With <formula id="239">$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n $</formula>,  <formula id="240">$ \partial F_{iI} / \partial
+\Delta F_{jJ} = \delta_{ij}\, F_{n,JI} $</formula>, and a block-diagonal 2D state (no out-of-plane shear),     <formula id="241">\[  \frac{\partial \tau_{ij}}{\partial \Delta F_{33}} = \frac{\partial \tau_{ij}}{\partial F_{3I}}\, F_{n,3I},
+  \qquad
+  \frac{\partial \tau_{33}}{\partial \Delta F_{kL}} = \frac{\partial \tau_{33}}{\partial F_{kI}}\, F_{n,LI} .
+\]</formula> </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" line="44" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotOutOfPlaneTangents.h" bodystart="44" bodyend="51"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a86ee4b30183c6a5ffefe5b840ef8bd0e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</scope><name>dTau33_dDeltaF</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1a4cab953069da57835741a7672209535a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</scope><name>dTau33_dDeltaF33</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_material_points_1_1_out_of_plane_tangents_1adb341cdd060c40a8a9b4149b4e1fb0fe" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents</scope><name>dTau_dDeltaF33</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

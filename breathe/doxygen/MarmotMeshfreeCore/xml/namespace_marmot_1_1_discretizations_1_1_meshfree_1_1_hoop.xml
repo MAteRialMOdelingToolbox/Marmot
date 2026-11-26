@@ -1,0 +1,566 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Meshfree::Hoop</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1ac255103c5e4065e492ceee386ca172d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class MaterialPoint</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::Hoop::radiusOfCenter</definition>
+        <argsstring>(const MaterialPoint &amp;materialPoint)</argsstring>
+        <name>radiusOfCenter</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::radiusOfCenter</qualifiedname>
+        <param>
+          <type>const MaterialPoint &amp;</type>
+          <declname>materialPoint</declname>
+        </param>
+        <briefdescription>
+<para>The radius of the particle center in the intermediate configuration, where the shape functions are evaluated. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>MaterialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point of the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point at the center. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="55">$ \bar r = \bar Y_1 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="505" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="505" bodyend="510"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1af20b0c13c95457f292bcb44483384b75" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::Hoop::checkStretchIncrement</definition>
+        <argsstring>(double deltaF33, double r, int particleLabel)</argsstring>
+        <name>checkStretchIncrement</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::checkStretchIncrement</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>deltaF33</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>particleLabel</declname>
+        </param>
+        <briefdescription>
+<para>Refuse an increment that pulls the ring of a particle through the axis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">deltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The increment of the hoop stretch,  <formula id="56">$ \Delta F_{\theta\theta} = 1 + \Delta u_r / \bar r
+$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The radius <formula id="15">$ \bar r $</formula> of the center in the intermediate configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">particleLabel</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The label of the particle, for the message. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>deltaF33</computeroutput> is not positive: the increment cannot be integrated, which a solver may answer with a smaller increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="521" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="521" bodyend="528"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1aeb709778399bafaebd399046f9061fb6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class MaterialPoint</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::Hoop::addStretchIncrement</definition>
+        <argsstring>(MaterialPoint &amp;materialPoint, double du_r)</argsstring>
+        <name>addStretchIncrement</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::addStretchIncrement</qualifiedname>
+        <param>
+          <type>MaterialPoint &amp;</type>
+          <declname>materialPoint</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>du_r</declname>
+        </param>
+        <briefdescription>
+<para>Add the hoop stretch increment of the center, <formula id="57">$ \Delta u_r / \bar r $</formula>, to the out-of-plane stretch increment <formula id="58">$ \Delta F_{33} $</formula> of the material point (1 after its prepareYourself()), as the axisymmetric elements do, and refuse it if it pulls the ring through the axis (<ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1af20b0c13c95457f292bcb44483384b75" kindref="member">checkStretchIncrement()</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>MaterialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The 2D material point of the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">materialPoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material point at the center, with the in-plane increment added. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">du_r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The radial displacement increment <formula id="59">$ \Delta u_r $</formula> at the center. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>see <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1af20b0c13c95457f292bcb44483384b75" kindref="member">checkStretchIncrement()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="540" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="540" bodyend="545"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a118bff48eb01a8a330e6930fefa691c2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::Hoop::force</definition>
+        <argsstring>(double T_A, double r, double deltaF33, double tau33, double V0)</argsstring>
+        <name>force</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::force</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>T_A</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>deltaF33</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau33</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>V0</declname>
+        </param>
+        <briefdescription>
+<para>The hoop part of the radial residual of node <formula id="33">$ A $</formula>,  <formula id="60">$ T_A\, \tau_{\theta\theta} / (\bar r\, \Delta
+F_{\theta\theta})\, V_0 $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">T_A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The test function of the node at the center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The radius <formula id="15">$ \bar r $</formula> of the center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The increment of the hoop stretch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The hoop Kirchhoff stress. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">V0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The undeformed ring volume of the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The force. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="557" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="557" bodyend="560"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a605f9f947a0223521109f798e9da6dbd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDofPerNode</declname>
+            <defname>nDofPerNode</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::Hoop::addStiffnessOfNode</definition>
+        <argsstring>(double T_A, const Fastor::Tensor&lt; double, 2 &gt; &amp;dT_A_dx, double r, double deltaF33, double V0, double tau33, const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;dTau_dDeltaF33, const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;dTau33_dDeltaF, double dTau33_dDeltaF33, StiffnessOfNode&lt; 2, nDofPerNode &gt; &amp;ofNode)</argsstring>
+        <name>addStiffnessOfNode</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::addStiffnessOfNode</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>T_A</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, 2 &gt; &amp;</type>
+          <declname>dT_A_dx</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>r</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>deltaF33</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>V0</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau33</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;</type>
+          <declname>dTau_dDeltaF33</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;</type>
+          <declname>dTau33_dDeltaF</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dTau33_dDeltaF33</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>&lt; 2, nDofPerNode &gt; &amp;</type>
+          <declname>ofNode</declname>
+        </param>
+        <briefdescription>
+<para>Add the hoop terms of the displacement rows to the stiffness of node <formula id="33">$ A $</formula> (see <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_stiffness_of_node" kindref="compound">StiffnessOfNode</ref>; the displacement comes first among the dofs of a node): the hoop row through the in-plane gradient and through the radial displacement increment, and every displacement row through the hoop stretch in the stress,. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="61">\[  \frac{\partial r^U_{Ar}}{\partial (\partial \Delta u_k / \partial Y_l)} \mathrel{+}= c\,
+  \frac{\partial \tau_{\theta\theta}}{\partial \Delta F_{kl}}, \qquad
+  \frac{\partial r^U_{Ar}}{\partial \Delta u_r} \mathrel{+}= \frac{c}{\bar r} \Big( \frac{\partial
+  \tau_{\theta\theta}}{\partial \Delta F_{\theta\theta}} - \frac{\tau_{\theta\theta}}{\Delta F_{\theta\theta}}
+  \Big), \qquad
+  \frac{\partial r^U_{Aj}}{\partial \Delta u_r} \mathrel{+}= \frac{V_0}{\bar r} \frac{\partial T_A}{\partial
+  x_i} \frac{\partial \tau_{ij}}{\partial \Delta F_{\theta\theta}},
+\]</formula> with <formula id="62">$ c = T_A V_0 / (\bar r\, \Delta F_{\theta\theta}) $</formula>. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDofPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of dofs per node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">T_A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The test function of the node at the center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT_A_dx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its spatial gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">r</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The radius <formula id="15">$ \bar r $</formula> of the center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The increment of the hoop stretch. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">V0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The undeformed ring volume of the particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The hoop Kirchhoff stress. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau_dDeltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="63">$ \partial \tau_{ij} / \partial \Delta F_{\theta\theta} $</formula>, in-plane <formula id="64">$ ij $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau33_dDeltaF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="65">$ \partial \tau_{\theta\theta} / \partial \Delta F_{kl} $</formula>, in-plane <formula id="66">$ kl $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTau33_dDeltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="67">$ \partial \tau_{\theta\theta} / \partial \Delta F_{\theta\theta} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">ofNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stiffness of the node; the hoop terms are added. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="589" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="589" bodyend="611"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a2c3bba2015b259961062d36733b18c00" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::Hoop::ringOfFacePoint</definition>
+        <argsstring>(const Eigen::Vector2d &amp;Y, const Eigen::Vector2d &amp;center, double deltaF33, const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;deltaF)</argsstring>
+        <name>ringOfFacePoint</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::ringOfFacePoint</qualifiedname>
+        <param>
+          <type>const Eigen::Vector2d &amp;</type>
+          <declname>Y</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector2d &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>deltaF33</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, 2, 2 &gt; &amp;</type>
+          <declname>deltaF</declname>
+        </param>
+        <briefdescription>
+<para>The ring of a point of a face of the particle after the increment, <formula id="68">$ 2\pi x_r(\boldsymbol{Y}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The face moves with the motion of the particle,   <formula id="69">$ \boldsymbol{x}(\boldsymbol{Y}) =
+\bar{\boldsymbol{x}}
++ \Delta\boldsymbol{F}\,(\boldsymbol{Y} - \bar{\boldsymbol{Y}}) $</formula>, the motion Nanson&apos;s formula of the face assumes, with the center at <formula id="70">$ \bar x_r = \bar r\,\Delta F_{\theta\theta} $</formula>. The ring <formula id="71">$ 2\pi x_r $</formula> is the ring weight <formula id="12">$ 2\pi r $</formula> of the point times its hoop stretch increment <formula id="72">$ x_r / r $</formula>, by which the area of the face grows beyond that of the half plane. For a linear increment it is exact; at the center it is  <formula id="73">$ 2\pi
+\bar r\,\Delta F_{\theta\theta} $</formula>. It needs no division by <formula id="11">$ r $</formula>. A point on the axis has the ring 0 for an increment that keeps the axis in place; the axis is no boundary and carries no load. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point, in the intermediate configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The particle center <formula id="16">$ \bar{\boldsymbol{Y}} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deltaF33</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="54">$ \Delta F_{\theta\theta} $</formula> of the particle. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deltaF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="50">$ \Delta\boldsymbol{F} $</formula> of the particle, in the half plane. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="68">$ 2\pi x_r(\boldsymbol{Y}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="629" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="629" bodyend="637"/>
+      </memberdef>
+      <memberdef kind="function" id="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1add75c65bef81c67619a2122b6bf7c7e5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Meshfree::Hoop::dRingOfFacePoint_dDeltaq_Br</definition>
+        <argsstring>(const Eigen::Vector2d &amp;Y, const Eigen::Vector2d &amp;center, double N_B, const double *dN_B_dY)</argsstring>
+        <name>dRingOfFacePoint_dDeltaq_Br</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hoop::dRingOfFacePoint_dDeltaq_Br</qualifiedname>
+        <param>
+          <type>const Eigen::Vector2d &amp;</type>
+          <declname>Y</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector2d &amp;</type>
+          <declname>center</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>N_B</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>dN_B_dY</declname>
+        </param>
+        <briefdescription>
+<para>The derivative of <ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a2c3bba2015b259961062d36733b18c00" kindref="member">ringOfFacePoint()</ref> with respect to the radial dof of node <formula id="74">$ B $</formula>, <formula id="75">$ 2\pi \bigl(N_B(\bar{\boldsymbol{Y}}) + \tilde N_{B,j}\,(Y_j - \bar Y_j)\bigr) $</formula>: through the center <formula id="76">$ \bar x_r = \bar r + N_B\,\Delta q_{Br} $</formula> and through  <formula id="77">$ \Delta F_{rj} = \delta_{rj} + \Delta q_{Br}\,
+\tilde N_{B,j} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">Y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point, in the intermediate configuration. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">center</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The particle center <formula id="16">$ \bar{\boldsymbol{Y}} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N_B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The trial function of node <formula id="74">$ B $</formula> at the center. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dN_B_dY</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its smoothed gradient <formula id="78">$ \tilde N_{B,j} $</formula> (2 values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="79">$ \partial (2\pi x_r) / \partial \Delta q_{Br} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="650" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" bodystart="650" bodyend="657"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>The hoop terms of the weak form of an axisymmetric particle, shared by its formulations. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The increment of the hoop stretch is <formula id="29">$ \Delta F_{\theta\theta} = x_r / r = 1 + \Delta u_r / \bar r $</formula> at the particle center, with the radial displacement increment <formula id="30">$ \Delta u_r = N_B\, \Delta q_{Br} $</formula> there and its radius <formula id="15">$ \bar r $</formula> in the intermediate configuration. The virtual hoop strain is  <formula id="31">$ \delta d_{\theta\theta}
+= \delta x_r / x_r = \delta u_r / (\bar r\, \Delta F_{\theta\theta}) $</formula>, so that the virtual work of the hoop stress over the undeformed ring, <formula id="32">$ \tau_{\theta\theta}\, \delta d_{\theta\theta}\, V_0 $</formula>, adds to the radial residual of node <formula id="33">$ A $</formula> the term <formula id="34">$ T_A\, \tau_{\theta\theta} / (\bar r\, \Delta F_{\theta\theta})\, V_0 $</formula>, with the test function <formula id="35">$ T_A $</formula> of the node at the center: the term <formula id="36">$ T_A / \bar r $</formula> is the hoop operator <formula id="20">$ \tilde H_A = N_A(\bar{\boldsymbol{Y}}) / \bar r $</formula> of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_section_integrals" kindref="compound">ParticleSectionIntegrals</ref> with the test function (see there for why it is the point value). The faces of a particle carry the ring of their points (<ref refid="namespace_marmot_1_1_discretizations_1_1_meshfree_1_1_hoop_1a2c3bba2015b259961062d36733b18c00" kindref="member">ringOfFacePoint()</ref>). The derivation is on the page &quot;Axisymmetric Particles&quot; of the documentation. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleSectionIntegrals.h" line="495" column="3"/>
+  </compounddef>
+</doxygen>

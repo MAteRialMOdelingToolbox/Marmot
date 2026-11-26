@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; Section::Cartesian, nDim, nVertices &gt;" alt="" coords="5,5,985,53"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::ParticleSectionIntegrals&lt; section, nDim, nVertices &gt;" alt="" coords="59,101,931,149"/>
+<area shape="poly" id="edge1" title="template&#45;instance" alt="" coords="497,52,497,88,493,84,493,56"/>
+</map>

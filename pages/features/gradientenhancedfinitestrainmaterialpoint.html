@@ -69,6 +69,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Gradient-Enhanced Finite-Strain Material Point</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="axisymmetricparticles.html">Axisymmetric Particles</a></li>
 </ul>
 </li>
 </ul>
@@ -301,7 +302,7 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 </figure>
 <p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-31ecc3b58517161a5a337aa3af7caa20144e09bf.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-782bec679dc91b95f01459aa492d21b3e8ef8895.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
@@ -309,7 +310,9 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
     &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot;]
     &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
     &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
     &quot;3&quot; [label=&quot;Marmot::Utilities::StateView&quot; tooltip=&quot;Marmot::Utilities::StateView&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
@@ -328,7 +331,7 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 \]</div>
  and stores them in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1af513bc4c2a720c82b22bff1c98d5cc3a"><span class="std std-ref">tangents</span></a> together with the response in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a48822e5a6fe81205dfed755e76a78b75"><span class="std std-ref">response</span></a>.</p>
 <p><strong>Totals for the explicit scheme.</strong> The material point also keeps the running sum of <span class="math notranslate nohighlight">\( \nabla_X\Delta\bar{N}_K \)</span> (state <code class="docutils literal notranslate"><span class="pre">&lt;nonlocal&gt;</span> <span class="pre">gradient</span></code>, i.e. <span class="math notranslate nohighlight">\( \nabla_X\bar{N}_K \)</span>) and the rate <span class="math notranslate nohighlight">\( \dot{\bar{N}}_K \)</span> of the last explicit increment (state <code class="docutils literal notranslate"><span class="pre">&lt;nonlocal&gt;</span> <span class="pre">rate</span></code>): the explicit residual of the nonlocal balance is written in total form, and the momentum of a nonlocal field with a micro-inertia needs its rate. The gradient is accumulated by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a82d71aec27d23537d3d5a2c8a5de59b1"><span class="std std-ref">incrementDeformation()</span></a> in the implicit and the explicit scheme alike, so that an explicit step may follow an implicit one.</p>
-<p>In plane strain (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> = 2) all tensors are stored in 3D, the material is evaluated through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.</p>
+<p>In 2D (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> = 2) all tensors are stored in 3D, the material is evaluated through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out. The out-of-plane stretch <span class="math notranslate nohighlight">\( \Delta F_{33} \)</span> of the increment is 1 in plane strain; an axisymmetric particle sets it to the hoop stretch increment (<a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a9ce0f3ac722ab3bf84e1e8e9e5fb573b"><span class="std std-ref">addToOutOfPlaneStretchIncrement()</span></a>), so that <span class="math notranslate nohighlight">\( F_{33} \)</span> is the hoop stretch, as for the axisymmetric elements. In 2D, the response and the tangents also hold the out-of-plane parts the hoop terms of an axisymmetric particle need (<a class="reference internal" href="#structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Response_1a148db9ef283978ab900a6b9f274ac624"><span class="std std-ref">Response::tau33</span></a>, <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1ac12e5e52db805e8d7c4ba4f471fe937a"><span class="std std-ref">Tangents::outOfPlane</span></a>, <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1ac3274094f99b28fa67e0efbb94c7f76b"><span class="std std-ref">Tangents::dTau33_dN</span></a> and <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1a94f81e44b8dfa6fcaf4e45618bb1524a"><span class="std std-ref">Tangents::dL_dDeltaF33</span></a>).</p>
 <p>Registered as <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/PlaneStrain</span></code> and <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/3D</span></code> (one nonlocal variable) and as <code class="docutils literal notranslate"><span class="pre">GradientEnhanced6FiniteStrain/3D</span></code> (six).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
@@ -626,6 +629,35 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <li><p><strong>nonlocalFieldIncrement</strong> – <strong>[in]</strong> Increments <span class="math notranslate nohighlight">\( \delta\bar{N}_K \)</span> of the nonlocal fields. </p></li>
 <li><p><strong>nonlocalFieldGradientIncrement</strong> – <strong>[in]</strong> Their gradients with respect to <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span>, one per nonlocal variable. </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint31addToOutOfPlaneStretchIncrementEd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint31addToOutOfPlaneStretchIncrementEd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint31addToOutOfPlaneStretchIncrementEd"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::addToOutOfPlaneStretchIncrement__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a9ce0f3ac722ab3bf84e1e8e9e5fb573b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addToOutOfPlaneStretchIncrement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">delta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint31addToOutOfPlaneStretchIncrementEd" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: add to the out-of-plane stretch increment, <span class="math notranslate nohighlight">\( \Delta F_{33} \mathrel{+}= \delta \)</span> (  <span class="math notranslate nohighlight">\( \Delta
+F_{33} \)</span> is 1 after <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ad4b74577884018c7f45a1ecb14e1c7fe"><span class="std std-ref">prepareYourself()</span></a>, and stays 1 in plane strain): the hoop stretch increment of an axisymmetric particle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delta</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \delta \)</span>, e.g. <span class="math notranslate nohighlight">\( \Delta u_r / \bar r \)</span>. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">logic_error</span></span></span> – for a 3D material point. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint26outOfPlaneStretchIncrementEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint26outOfPlaneStretchIncrementEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint26outOfPlaneStretchIncrementEv"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::outOfPlaneStretchIncrementC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1a6e4be5eda3d35f4ec855c7963a0cedc6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outOfPlaneStretchIncrement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint26outOfPlaneStretchIncrementEv" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: the out-of-plane stretch increment, the 33 component of <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> (not of <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">logic_error</span></span></span> – for a 3D material point. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( \Delta F_{33} \)</span> (1 in plane strain, the hoop stretch increment of an axisymmetric particle). </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1075,13 +1107,31 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <dd><p>nonlocal radii <span class="math notranslate nohighlight">\( R_K \)</span> of the material, <span class="math notranslate nohighlight">\( c_K = R_K^2 \)</span></p>
 </dd></dl>
 
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Response5tau33E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Response5tau33E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Response5tau33E"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Response::tau33__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Response_1a148db9ef283978ab900a6b9f274ac624"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tau33</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Response5tau33E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: the out-of-plane (hoop) Kirchhoff stress <span class="math notranslate nohighlight">\( \tau_{33} \)</span></p>
+</dd></dl>
+
 </div>
 </dd></dl>
 
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8TangentsE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8TangentsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8TangentsE"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8TangentsE" title="Link to this definition"></a><br /></dt>
-<dd><p>Algorithmic tangents of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ae5fefa88d3f8be38f5d6d8e97bef101f"><span class="std std-ref">computeYourself()</span></a>, with respect to <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> and <span class="math notranslate nohighlight">\( \bar{N}_K \)</span>, in nDim components. </p>
+<dd><p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-26101ac641e2835b9ebe12f2a57a1aa3e261eb0c.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim, nNonlocal &gt;::Tangents&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Algorithmic tangents of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1ae5fefa88d3f8be38f5d6d8e97bef101f"><span class="std std-ref">computeYourself()</span></a>, with respect to <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> and <span class="math notranslate nohighlight">\( \bar{N}_K \)</span>, in nDim components. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
@@ -1106,6 +1156,24 @@ the nonlocal states depend on the number of nonlocal variables: <code class="doc
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents5dL_dNE">
 <span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents5dL_dNE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents5dL_dNE"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents::dL_dN__NonlocalMatrix"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1a7bb35da8a6cd7db05a6142db03768438"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint14NonlocalMatrixE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::NonlocalMatrix"><span class="n"><span class="pre">NonlocalMatrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dL_dN</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents5dL_dNE" title="Link to this definition"></a><br /></dt>
 <dd><p><span class="math notranslate nohighlight">\( \partial L_K/\partial\bar{N}_M \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents10outOfPlaneE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents10outOfPlaneE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents10outOfPlaneE"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents::outOfPlane__OutOfPlaneTangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1ac12e5e52db805e8d7c4ba4f471fe937a"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE" title="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents"><span class="n"><span class="pre">OutOfPlaneTangents</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outOfPlane</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents10outOfPlaneE" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: the out-of-plane parts with respect to <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents9dTau33_dNE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents9dTau33_dNE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents9dTau33_dNE"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents::dTau33_dN__NonlocalVector"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1ac3274094f99b28fa67e0efbb94c7f76b"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint14NonlocalVectorE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau33_dN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint14NonlocalVectorE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents9dTau33_dNE" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: <span class="math notranslate nohighlight">\( \partial\tau_{33}/\partial\bar{N}_K \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents12dL_dDeltaF33E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents12dL_dDeltaF33E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents12dL_dDeltaF33E"></span><span id="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::Tangents::dL_dDeltaF33__NonlocalVector"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint_1_1Tangents_1a94f81e44b8dfa6fcaf4e45618bb1524a"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint14NonlocalVectorE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dL_dDeltaF33</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint14NonlocalVectorE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::NonlocalVector"><span class="n"><span class="pre">NonlocalVector</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPoint8Tangents12dL_dDeltaF33E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D: <span class="math notranslate nohighlight">\( \partial L_K/\partial\Delta F_{33} \)</span></p>
 </dd></dl>
 
 </div>

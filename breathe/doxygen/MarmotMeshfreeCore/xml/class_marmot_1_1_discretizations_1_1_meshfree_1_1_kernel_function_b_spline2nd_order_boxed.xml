@@ -12,7 +12,7 @@
         <name>_centerCoord</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed::_centerCoord</qualifiedname>
         <briefdescription>
-<para>non-owning pointer to the center coordinates <formula id="120">$ \boldsymbol{x}_A $</formula> </para>
+<para>non-owning pointer to the center coordinates <formula id="192">$ \boldsymbol{x}_A $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -27,7 +27,7 @@
         <name>_supportRadius</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed::_supportRadius</qualifiedname>
         <briefdescription>
-<para>support radius <formula id="39">$ a $</formula> (half edge length of the support box) </para>
+<para>support radius <formula id="110">$ a $</formula> (half edge length of the support box) </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -42,7 +42,7 @@
         <name>_dim</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed::_dim</qualifiedname>
         <briefdescription>
-<para>spatial dimension <formula id="87">$ d $</formula> </para>
+<para>spatial dimension <formula id="160">$ d $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -79,7 +79,7 @@
 <parametername direction="in">centerCoord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Pointer to the center coordinates <formula id="120">$ \boldsymbol{x}_A $</formula> (length <formula id="87">$ d $</formula>); the kernel keeps (and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" kindref="member">moveTo()</ref> modifies) this storage, it is not copied. </para>
+<para>Pointer to the center coordinates <formula id="192">$ \boldsymbol{x}_A $</formula> (length <formula id="160">$ d $</formula>); the kernel keeps (and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" kindref="member">moveTo()</ref> modifies) this storage, it is not copied. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -87,7 +87,7 @@
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="87">$ d $</formula>, 1 to maxDim. </para>
+<para>Spatial dimension <formula id="160">$ d $</formula>, 1 to maxDim. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -95,7 +95,7 @@
 <parametername direction="in">supportRadius</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Support radius <formula id="39">$ a $</formula>. </para>
+<para>Support radius <formula id="110">$ a $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -141,7 +141,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Evaluate the tensor-product kernel <formula id="131">$ \phi_A(\boldsymbol{x}) = \prod_i w(x_i - x_{A,i}) $</formula>. </para>
+<para>Evaluate the tensor-product kernel <formula id="202">$ \phi_A(\boldsymbol{x}) = \prod_i w(x_i - x_{A,i}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -149,7 +149,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="87">$ d $</formula>). </para>
+<para>Coordinates <formula id="46">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -177,7 +177,7 @@
           <declname>grad</declname>
         </param>
         <briefdescription>
-<para>Evaluate the kernel and its gradient (product rule) at once, from one evaluation of the one-dimensional factors <formula id="121">$ w $</formula> and <formula id="132">$ w&apos; $</formula> per direction: <formula id="133">$ \partial \phi_A / \partial x_i = w&apos;(x_i - x_{A,i}) \prod_{j \neq i} w(x_j - x_{A,j}) $</formula>. </para>
+<para>Evaluate the kernel and its gradient (product rule) at once, from one evaluation of the one-dimensional factors <formula id="39">$ w $</formula> and <formula id="203">$ w&apos; $</formula> per direction: <formula id="204">$ \partial \phi_A / \partial x_i = w&apos;(x_i - x_{A,i}) \prod_{j \neq i} w(x_j - x_{A,j}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -185,7 +185,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="104">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="87">$ d $</formula>). </para>
+<para>Coordinates <formula id="46">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -193,11 +193,11 @@
 <parametername direction="out">grad</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient <formula id="134">$ \partial \phi_A / \partial x_i $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Gradient <formula id="205">$ \partial \phi_A / \partial x_i $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The kernel value <formula id="135">$ \phi_A(\boldsymbol{x}) $</formula>, as <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4" kindref="member">computeKernelFunction()</ref>. </para>
+<simplesect kind="return"><para>The kernel value <formula id="206">$ \phi_A(\boldsymbol{x}) $</formula>, as <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4" kindref="member">computeKernelFunction()</ref>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -221,17 +221,17 @@
           <defval>nullptr</defval>
         </param>
         <briefdescription>
-<para>Evaluate the one-dimensional B-spline <formula id="136">$ w(r) $</formula> and, if asked for, its derivative <formula id="137">$ \mathrm{d}w / \mathrm{d}r $</formula>, which shares <formula id="138">$ z $</formula> with it: </para>
+<para>Evaluate the one-dimensional B-spline <formula id="207">$ w(r) $</formula> and, if asked for, its derivative <formula id="208">$ \mathrm{d}w / \mathrm{d}r $</formula>, which shares <formula id="209">$ z $</formula> with it: </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="148">\[  \frac{\mathrm{d}w}{\mathrm{d}r} = \frac{\operatorname{sign}(r)}{a} \begin{cases} -4 z, &amp; z \le \tfrac{1}{2},
+<para><formula id="219">\[  \frac{\mathrm{d}w}{\mathrm{d}r} = \frac{\operatorname{sign}(r)}{a} \begin{cases} -4 z, &amp; z \le \tfrac{1}{2},
   \\ -4 + 4 z, &amp; \tfrac{1}{2} &lt; z \le 1, \\ 0, &amp; z &gt; 1. \end{cases}
 \]</formula> <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">coord_minus_center</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Signed distance <formula id="140">$ r = x_i - x_{A,i} $</formula> in one coordinate direction. </para>
+<para>Signed distance <formula id="211">$ r = x_i - x_{A,i} $</formula> in one coordinate direction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -239,11 +239,11 @@
 <parametername direction="out">dw_dr</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The derivative <formula id="137">$ \mathrm{d}w / \mathrm{d}r $</formula>; nullptr if not needed. </para>
+<para>The derivative <formula id="208">$ \mathrm{d}w / \mathrm{d}r $</formula>; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="136">$ w(r) $</formula>. </para>
+<simplesect kind="return"><para><formula id="207">$ w(r) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -290,7 +290,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>New center coordinates (length <formula id="87">$ d $</formula>). </para>
+<para>New center coordinates (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -312,7 +312,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Check whether a point lies within the support, i.e., whether <formula id="141">$ \phi_A(\boldsymbol{x}) &gt; 0 $</formula>. </para>
+<para>Check whether a point lies within the support, i.e., whether <formula id="212">$ \phi_A(\boldsymbol{x}) &gt; 0 $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -320,7 +320,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates of the point (length <formula id="87">$ d $</formula>). </para>
+<para>Coordinates of the point (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -348,7 +348,7 @@
           <declname>max</declname>
         </param>
         <briefdescription>
-<para>Get the bounding box <formula id="130">$ [\boldsymbol{x}_A - a, \boldsymbol{x}_A + a] $</formula> of the support. </para>
+<para>Get the bounding box <formula id="201">$ [\boldsymbol{x}_A - a, \boldsymbol{x}_A + a] $</formula> of the support. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -356,7 +356,7 @@
 <parametername direction="out">min</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Lower corner <formula id="142">$ x_{A,i} - a $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Lower corner <formula id="213">$ x_{A,i} - a $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -364,7 +364,7 @@
 <parametername direction="out">max</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Upper corner <formula id="143">$ x_{A,i} + a $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Upper corner <formula id="214">$ x_{A,i} + a $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -379,13 +379,13 @@
 <para>Boxed tensor-product kernel from 2nd order (quadratic) B-splines. </para>
     </briefdescription>
     <detaileddescription>
-<para>The kernel of node <formula id="24">$ A $</formula> with center <formula id="120">$ \boldsymbol{x}_A $</formula> and support radius <formula id="39">$ a $</formula> is the tensor product of one-dimensional 2nd order (quadratic) B-splines <formula id="121">$ w $</formula> in each coordinate direction,   <formula id="122">\[  \phi_A(\boldsymbol{x}) = \prod_{i=1}^{d} w\left( x_i - x_{A,i} \right),
-\]</formula> with      <formula id="144">\[  w(r) = \begin{cases} 1 - 2 z^2, &amp; 0 \le z \le \tfrac{1}{2}, \\
+<para>The kernel of node <formula id="33">$ A $</formula> with center <formula id="192">$ \boldsymbol{x}_A $</formula> and support radius <formula id="110">$ a $</formula> is the tensor product of one-dimensional 2nd order (quadratic) B-splines <formula id="39">$ w $</formula> in each coordinate direction,   <formula id="193">\[  \phi_A(\boldsymbol{x}) = \prod_{i=1}^{d} w\left( x_i - x_{A,i} \right),
+\]</formula> with      <formula id="215">\[  w(r) = \begin{cases} 1 - 2 z^2, &amp; 0 \le z \le \tfrac{1}{2}, \\
                        2 (1 - z)^2, &amp; \tfrac{1}{2} &lt; z \le 1, \\
                        0, &amp; z &gt; 1, \end{cases}
   \qquad z = \frac{|r|}{a}.
-\]</formula> <formula id="121">$ w $</formula> is the quadratic B-spline on the knots <formula id="145">$ \{-a, -a/2, a/2, a\} $</formula>, scaled to <formula id="146">$ w(0) = 1 $</formula>; it is <formula id="147">$ C^1 $</formula>-continuous, so the kernel and the resulting reproducing kernel shape functions are <formula id="147">$ C^1 $</formula>.</para>
-<para>The support is the open box <formula id="128">$ |x_i - x_{A,i}| &lt; a $</formula>, <formula id="129">$ i = 1, \dots, d $</formula> (hence &quot;boxed&quot;); its bounding box is <formula id="130">$ [\boldsymbol{x}_A - a, \boldsymbol{x}_A + a] $</formula>. The support radius <formula id="39">$ a $</formula> is the half edge length of the box, identical in all directions, and the kernel is not normalized (the reproducing kernel correction removes any constant scaling of the kernel).</para>
+\]</formula> <formula id="39">$ w $</formula> is the quadratic B-spline on the knots <formula id="216">$ \{-a, -a/2, a/2, a\} $</formula>, scaled to <formula id="217">$ w(0) = 1 $</formula>; it is <formula id="218">$ C^1 $</formula>-continuous, so the kernel and the resulting reproducing kernel shape functions are <formula id="218">$ C^1 $</formula>.</para>
+<para>The support is the open box <formula id="199">$ |x_i - x_{A,i}| &lt; a $</formula>, <formula id="200">$ i = 1, \dots, d $</formula> (hence &quot;boxed&quot;); its bounding box is <formula id="201">$ [\boldsymbol{x}_A - a, \boldsymbol{x}_A + a] $</formula>. The support radius <formula id="110">$ a $</formula> is the half edge length of the box, identical in all directions, and the kernel is not normalized (the reproducing kernel correction removes any constant scaling of the kernel).</para>
 <para><simplesect kind="note"><para>The kernel does not own its center coordinates: it stores the pointer passed to the constructor, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" kindref="member">moveTo()</ref> writes the new center through this pointer. The pointed-to storage must outlive the kernel. </para>
 </simplesect>
 </para>

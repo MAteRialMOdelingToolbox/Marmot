@@ -21,6 +21,7 @@
     <innerfile refid="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h">MarmotMeshfreeReproducingKernelApproximationImplicit.h</innerfile>
     <innerfile refid="_marmot_monomial_basis_functions_8h">MarmotMonomialBasisFunctions.h</innerfile>
     <innerfile refid="_marmot_m_p_m_library_8h">MarmotMPMLibrary.h</innerfile>
+    <innerfile refid="_marmot_out_of_plane_tangents_8h">MarmotOutOfPlaneTangents.h</innerfile>
     <innerfile refid="_marmot_particle_8h">MarmotParticle.h</innerfile>
     <innerfile refid="_marmot_particle_domain_8h">MarmotParticleDomain.h</innerfile>
     <innerfile refid="_marmot_particle_library_8h">MarmotParticleLibrary.h</innerfile>

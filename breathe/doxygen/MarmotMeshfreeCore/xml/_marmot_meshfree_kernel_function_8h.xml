@@ -77,6 +77,8 @@
         </childnode>
         <childnode refid="7" relation="include">
         </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
         <childnode refid="12" relation="include">
         </childnode>
         <childnode refid="13" relation="include">
@@ -97,6 +99,8 @@
       <node id="12">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleStiffness.h</label>
         <link refid="_marmot_particle_stiffness_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
         <childnode refid="13" relation="include">
         </childnode>
       </node>

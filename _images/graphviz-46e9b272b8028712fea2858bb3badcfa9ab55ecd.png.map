@@ -1,0 +1,14 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::Approximation" alt="" coords="80,389,587,437"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim, section &gt;" alt="" coords="5,197,750,245"/>
+<area shape="rect" id="node5" title="Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;" alt="" coords="277,293,886,341"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="429,243,520,286,515,287,428,249"/>
+<area shape="rect" id="node3" title="Marmot::Discretizations::Meshfree::DisplacementParticle&lt; nDim, Section::Cartesian &gt;" alt="" coords="156,101,1007,149"/>
+<area shape="poly" id="edge3" title="template&#45;instance" alt="" coords="528,151,443,193,441,188,533,149"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="699,147,736,167,764,196,771,209,773,221,771,234,764,247,742,271,714,289,712,284,738,267,759,244,766,232,768,221,766,211,759,199,732,171,699,153"/>
+<area shape="rect" id="node4" title="Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI&lt; nDim, nVertices, section &gt;" alt="" coords="126,5,1037,53"/>
+<area shape="poly" id="edge4" title="public&#45;inheritance" alt="" coords="583,51,584,87,579,85,580,56"/>
+<area shape="poly" id="edge6" title="usage" alt="" coords="522,341,410,386,409,381,517,343"/>
+<area shape="rect" id="node6" title="Marmot::Discretizations::Meshfree::Particle" alt="" coords="611,389,1050,437"/>
+<area shape="poly" id="edge5" title="public&#45;inheritance" alt="" coords="644,339,757,384,752,383,643,345"/>
+</map>

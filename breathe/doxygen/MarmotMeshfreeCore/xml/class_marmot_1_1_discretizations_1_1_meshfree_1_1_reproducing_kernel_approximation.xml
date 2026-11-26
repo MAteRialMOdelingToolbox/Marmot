@@ -13,7 +13,7 @@
         <name>BasisVector</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::BasisVector</qualifiedname>
         <briefdescription>
-<para>The monomial basis <formula id="156">$ \boldsymbol{H} $</formula> (and vectors of its size), of a size up to maxSizeOfBasis. </para>
+<para>The monomial basis <formula id="227">$ \boldsymbol{H} $</formula> (and vectors of its size), of a size up to maxSizeOfBasis. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -29,7 +29,7 @@
         <name>BasisGradient</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::BasisGradient</qualifiedname>
         <briefdescription>
-<para>The gradient <formula id="105">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula>, one column per dimension. </para>
+<para>The gradient <formula id="177">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula>, one column per dimension. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -45,7 +45,7 @@
         <name>MomentMatrix</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrix</qualifiedname>
         <briefdescription>
-<para>The moment matrix <formula id="151">$ \boldsymbol{M} $</formula> (and matrices of its size). </para>
+<para>The moment matrix <formula id="222">$ \boldsymbol{M} $</formula> (and matrices of its size). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -60,7 +60,7 @@
         <name>MomentMatrixGradient</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::MomentMatrixGradient</qualifiedname>
         <briefdescription>
-<para>The gradients <formula id="158">$ \boldsymbol{M}_{,i} $</formula> of the moment matrix, entry <formula id="23">$ i $</formula>. </para>
+<para>The gradients <formula id="229">$ \boldsymbol{M}_{,i} $</formula> of the moment matrix, entry <formula id="95">$ i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -109,7 +109,7 @@
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::maxSizeOfBasis</qualifiedname>
         <initializer>= 20</initializer>
         <briefdescription>
-<para>The largest monomial basis: the complete cubic basis in 3D, <formula id="273">$ \binom{3 + 3}{3} $</formula>. </para>
+<para>The largest monomial basis: the complete cubic basis in 3D, <formula id="353">$ \binom{3 + 3}{3} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -126,7 +126,7 @@
         <name>_dim</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_dim</qualifiedname>
         <briefdescription>
-<para>spatial dimension <formula id="87">$ d $</formula> </para>
+<para>spatial dimension <formula id="160">$ d $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -143,7 +143,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>requested completeness order <formula id="89">$ n $</formula> (may be reduced per point) </para>
+<para>requested completeness order <formula id="162">$ n $</formula> (may be reduced per point) </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -158,7 +158,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>The limit <formula id="267">$ \kappa_\mathrm{max} $</formula> on the condition of the scaled moment matrix, above which a point is evaluated with the completeness order 0; infinite for no limit. </para>
+<para>The limit <formula id="347">$ \kappa_\mathrm{max} $</formula> on the condition of the scaled moment matrix, above which a point is evaluated with the completeness order 0; infinite for no limit. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -171,7 +171,7 @@
         <name>_basisOfOrder</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_basisOfOrder</qualifiedname>
         <briefdescription>
-<para>The monomial basis of every order up to the desired one, entry <formula id="89">$ n $</formula> (an order may be reduced per point). </para>
+<para>The monomial basis of every order up to the desired one, entry <formula id="162">$ n $</formula> (an order may be reduced per point). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -204,7 +204,7 @@
           <declname>dPhi_dx</declname>
         </param>
         <briefdescription>
-<para>Evaluate every candidate kernel at a point, once: its value <formula id="135">$ \phi_A(\boldsymbol{x}) $</formula> and, if asked for, its gradient. A kernel with <formula id="274">$ |\phi_A(\boldsymbol{x})| \le 10^{-14} $</formula> does not cover the point: its value (and gradient) is set to zero, and it takes no further part. </para>
+<para>Evaluate every candidate kernel at a point, once: its value <formula id="206">$ \phi_A(\boldsymbol{x}) $</formula> and, if asked for, its gradient. A kernel with <formula id="354">$ |\phi_A(\boldsymbol{x})| \le 10^{-14} $</formula> does not cover the point: its value (and gradient) is set to zero, and it takes no further part. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -212,7 +212,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -220,7 +220,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="164">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="235">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -228,7 +228,7 @@
 <parametername direction="out">phi</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The kernel values, length <formula id="164">$ n_\mathrm{c} $</formula>. </para>
+<para>The kernel values, length <formula id="235">$ n_\mathrm{c} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -236,7 +236,7 @@
 <parametername direction="out">dPhi_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The kernel gradients, column-major <formula id="165">$ d \times n_\mathrm{c} $</formula>; nullptr if not needed. </para>
+<para>The kernel gradients, column-major <formula id="236">$ d \times n_\mathrm{c} $</formula>; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -279,7 +279,7 @@
           <declname>dH_dx</declname>
         </param>
         <briefdescription>
-<para>The monomial basis <formula id="266">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula> of every covering kernel at its shifted coordinates, and, if asked for, its gradient (<ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>): evaluated once per kernel and point, for the moment matrix and the shape functions alike. Since <formula id="120">$ \boldsymbol{x}_A $</formula> is fixed, the gradient with respect to the shifted coordinates is the one with respect to <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>The monomial basis <formula id="346">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula> of every covering kernel at its shifted coordinates, and, if asked for, its gradient (<ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>): evaluated once per kernel and point, for the moment matrix and the shape functions alike. Since <formula id="192">$ \boldsymbol{x}_A $</formula> is fixed, the gradient with respect to the shifted coordinates is the one with respect to <formula id="46">$ \boldsymbol{x} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -287,7 +287,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -295,7 +295,7 @@
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="164">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="235">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -311,7 +311,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="89">$ n $</formula>. </para>
+<para>Completeness order <formula id="162">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -319,8 +319,8 @@
 <parametername direction="out">H</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The bases, column <formula id="24">$ A $</formula> is  <formula id="275">$ \boldsymbol{H}(\boldsymbol{x} -
-                              \boldsymbol{x}_A) $</formula>; resized to the size of the basis times <formula id="164">$ n_\mathrm{c} $</formula>. </para>
+<para>The bases, column <formula id="33">$ A $</formula> is  <formula id="355">$ \boldsymbol{H}(\boldsymbol{x} -
+                              \boldsymbol{x}_A) $</formula>; resized to the size of the basis times <formula id="235">$ n_\mathrm{c} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -328,7 +328,7 @@
 <parametername direction="out">dH_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their gradients, column <formula id="276">$ d A + i $</formula> is <formula id="277">$ \boldsymbol{H}_{,i} $</formula> of kernel <formula id="24">$ A $</formula>; resized to the size of the basis times <formula id="278">$ d\, n_\mathrm{c} $</formula>; nullptr if not needed. </para>
+<para>Their gradients, column <formula id="356">$ d A + i $</formula> is <formula id="357">$ \boldsymbol{H}_{,i} $</formula> of kernel <formula id="33">$ A $</formula>; resized to the size of the basis times <formula id="358">$ d\, n_\mathrm{c} $</formula>; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -369,8 +369,8 @@
           <declname>dM_dx</declname>
         </param>
         <briefdescription>
-<para>Assemble the moment matrix  <formula id="279">$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} -
-\boldsymbol{x}_B) \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) $</formula> over the covering kernels and, if asked for, its gradients   <formula id="280">$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i}
+<para>Assemble the moment matrix  <formula id="359">$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} -
+\boldsymbol{x}_B) \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) $</formula> over the covering kernels and, if asked for, its gradients   <formula id="360">$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i}
 \boldsymbol{H}^T + \boldsymbol{H} \boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T
 \phi_{B,i} $</formula>: the one assembly of the moment matrix. </para>
         </briefdescription>
@@ -380,7 +380,7 @@
 <parametername direction="in">H</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The basis of every candidate kernel, column <formula id="170">$ B $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref>). </para>
+<para>The basis of every candidate kernel, column <formula id="74">$ B $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -388,7 +388,7 @@
 <parametername direction="in">dH_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Its gradients, columns <formula id="281">$ d B + i $</formula>; nullptr if <computeroutput>dM_dx</computeroutput> is. </para>
+<para>Its gradients, columns <formula id="361">$ d B + i $</formula>; nullptr if <computeroutput>dM_dx</computeroutput> is. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -420,7 +420,7 @@
 <parametername direction="out">dM_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Its <formula id="87">$ d $</formula> gradients; nullptr if not needed. </para>
+<para>Its <formula id="160">$ d $</formula> gradients; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -449,10 +449,10 @@
           <declname>nCoveringKernels</declname>
         </param>
         <briefdescription>
-<para>Factorize the moment matrix <formula id="282">$ \boldsymbol{M}(\boldsymbol{x}) $</formula> and check that it is regular. </para>
+<para>Factorize the moment matrix <formula id="362">$ \boldsymbol{M}(\boldsymbol{x}) $</formula> and check that it is regular. </para>
         </briefdescription>
         <detaileddescription>
-<para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <formula id="151">$ \boldsymbol{M} $</formula> is singular, and solving it would silently give shape functions without partition of unity. <parameterlist kind="param"><parameteritem>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <formula id="222">$ \boldsymbol{M} $</formula> is singular, and solving it would silently give shape functions without partition of unity. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">M</parametername>
 </parameternamelist>
@@ -537,7 +537,7 @@
           <declname>dM_dx</declname>
         </param>
         <briefdescription>
-<para>Choose the completeness order of a point, and assemble its moment matrix of that order: the desired order, reduced for few covering kernels (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>), and lowered one order at a time while the condition of the moment matrix exceeds the limit <formula id="267">$ \kappa_\mathrm{max} $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" kindref="member">conditionOfMomentMatrix()</ref>), down to the order 0, which is always accepted; the one choice of the order for both approximations. Without a limit, or below it, this is <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref> and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad0fb0722591b010057f4d57075f77900" kindref="member">assembleMomentMatrix()</ref> at the order for the number of covering kernels. </para>
+<para>Choose the completeness order of a point, and assemble its moment matrix of that order: the desired order, reduced for few covering kernels (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>), and lowered one order at a time while the condition of the moment matrix exceeds the limit <formula id="347">$ \kappa_\mathrm{max} $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" kindref="member">conditionOfMomentMatrix()</ref>), down to the order 0, which is always accepted; the one choice of the order for both approximations. Without a limit, or below it, this is <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref> and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad0fb0722591b010057f4d57075f77900" kindref="member">assembleMomentMatrix()</ref> at the order for the number of covering kernels. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -545,7 +545,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -609,7 +609,7 @@
 <parametername direction="out">dM_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Its <formula id="87">$ d $</formula> gradients; nullptr if not needed. </para>
+<para>Its <formula id="160">$ d $</formula> gradients; nullptr if not needed. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -639,7 +639,7 @@
 <para>Check if the completeness order leads to a non-singular equation system. </para>
         </briefdescription>
         <detaileddescription>
-<para>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <formula id="287">$ n_\mathrm{nodes} \ge \binom{d + n}{d} $</formula>, the size of the basis. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <formula id="288">$ n \le 0 $</formula>.</para>
+<para>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <formula id="367">$ n_\mathrm{nodes} \ge \binom{d + n}{d} $</formula>, the size of the basis. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <formula id="368">$ n \le 0 $</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">nNodes</parametername>
@@ -653,7 +653,7 @@
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Completeness order <formula id="89">$ n $</formula>. </para>
+<para>Completeness order <formula id="162">$ n $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -689,7 +689,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>The highest order <formula id="114">$ \le $</formula> the desired one for which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds. </para>
+<simplesect kind="return"><para>The highest order <formula id="186">$ \le $</formula> the desired one for which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -710,11 +710,11 @@
           <declname>M</declname>
         </param>
         <briefdescription>
-<para>The condition of the moment matrix, scaled to a unit diagonal: the estimate of the condition number in the 1-norm, <formula id="283">$ \kappa_1(\boldsymbol{D} \boldsymbol{M} \boldsymbol{D}) $</formula> with  <formula id="284">$ D_{kk} = M_{kk}^{-1/2}
+<para>The condition of the moment matrix, scaled to a unit diagonal: the estimate of the condition number in the 1-norm, <formula id="363">$ \kappa_1(\boldsymbol{D} \boldsymbol{M} \boldsymbol{D}) $</formula> with  <formula id="364">$ D_{kk} = M_{kk}^{-1/2}
 $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its reciprocal condition estimate. </para>
         </briefdescription>
         <detaileddescription>
-<para>The monomials of <formula id="156">$ \boldsymbol{H} $</formula> carry the unit of length to their degree, so the condition of <formula id="151">$ \boldsymbol{M} $</formula> itself would depend on the unit; scaling to a unit diagonal removes this, and a constant factor of the kernels. In the 2-norm, the scaling to a unit diagonal gives a condition within a factor of the basis size <formula id="285">$ \binom{d+n}{d} $</formula> of the best diagonal scaling (van der Sluis); the 1-norm condition differs from the 2-norm one by at most that factor as well. For the small, symmetric moment matrices the factorization costs less than the QR factorization of the evaluation. <parameterlist kind="param"><parameteritem>
+<para>The monomials of <formula id="227">$ \boldsymbol{H} $</formula> carry the unit of length to their degree, so the condition of <formula id="222">$ \boldsymbol{M} $</formula> itself would depend on the unit; scaling to a unit diagonal removes this, and a constant factor of the kernels. In the 2-norm, the scaling to a unit diagonal gives a condition within a factor of the basis size <formula id="365">$ \binom{d+n}{d} $</formula> of the best diagonal scaling (van der Sluis); the 1-norm condition differs from the 2-norm one by at most that factor as well. For the small, symmetric moment matrices the factorization costs less than the QR factorization of the evaluation. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">M</parametername>
 </parameternamelist>
@@ -723,7 +723,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="286">$ \kappa_1 \ge 1 $</formula>; infinite for a singular matrix (a pivot of the scaled matrix at the rounding level) or a zero entry on its diagonal. </para>
+<simplesect kind="return"><para><formula id="366">$ \kappa_1 \ge 1 $</formula>; infinite for a singular matrix (a pivot of the scaled matrix at the rounding level) or a zero entry on its diagonal. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -761,7 +761,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">dim</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Spatial dimension <formula id="161">$ d \le $</formula> maxDim. </para>
+<para>Spatial dimension <formula id="232">$ d \le $</formula> maxDim. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -769,7 +769,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">completenessOrder</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Desired completeness order <formula id="109">$ n \ge 0 $</formula> (order of the reproduced polynomials). </para>
+<para>Desired completeness order <formula id="181">$ n \ge 0 $</formula> (order of the reproduced polynomials). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -777,7 +777,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">momentMatrixConditionLimit</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The limit <formula id="162">$ \kappa_\mathrm{max} \ge 1 $</formula> on the condition of the scaled moment matrix, above which the completeness order of a point is lowered; infinite (the default) for no limit. </para>
+<para>The limit <formula id="233">$ \kappa_\mathrm{max} \ge 1 $</formula> on the condition of the scaled moment matrix, above which the completeness order of a point is lowered; infinite (the default) for no limit. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -831,7 +831,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
           <declname>shapeFunctionValues</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values <formula id="289">$ \Psi_A = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A) \boldsymbol{b} \phi_A $</formula>. </para>
+<para>Compute the RK shape function values <formula id="369">$ \Psi_A = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A) \boldsymbol{b} \phi_A $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -839,7 +839,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -847,7 +847,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="164">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="235">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -855,7 +855,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="164">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="235">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="46">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -899,7 +899,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
           <declname>shapeFunctionValueGradients_ColMajor</declname>
         </param>
         <briefdescription>
-<para>Compute the RK shape function values and their explicit (exact) gradients <formula id="290">$ \Psi_{A,i} $</formula>. </para>
+<para>Compute the RK shape function values and their explicit (exact) gradients <formula id="370">$ \Psi_{A,i} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -907,7 +907,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula> (length <formula id="87">$ d $</formula>). </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula> (length <formula id="160">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -915,7 +915,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">kernelFunctions</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <formula id="164">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+<para>The <formula id="235">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -923,7 +923,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="out">shapeFunctionValues</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Shape function values (length <formula id="164">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>Shape function values (length <formula id="235">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="46">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -931,7 +931,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradients, column-major <formula id="165">$ d \times n_\mathrm{c} $</formula> (entry <formula id="166">$ i + d A $</formula> is <formula id="290">$ \Psi_{A,i} $</formula>); zero for non-covering candidates. </para>
+<para>Gradients, column-major <formula id="236">$ d \times n_\mathrm{c} $</formula> (entry <formula id="237">$ i + d A $</formula> is <formula id="370">$ \Psi_{A,i} $</formula>); zero for non-covering candidates. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -983,7 +983,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Evaluation point <formula id="104">$ \boldsymbol{x} $</formula>. </para>
+<para>Evaluation point <formula id="46">$ \boldsymbol{x} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -1007,7 +1007,7 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <parametername direction="out">dPsi_dx</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Their gradients, column-major <formula id="165">$ d \times n_\mathrm{c} $</formula>; nullptr for the values alone. </para>
+<para>Their gradients, column-major <formula id="236">$ d \times n_\mathrm{c} $</formula>; nullptr for the values alone. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -1022,24 +1022,24 @@ $</formula>, from a Cholesky (LDLT) factorization of the scaled matrix and its r
 <para>Reproducing kernel (RK) approximation with explicit (direct) shape function gradients. </para>
     </briefdescription>
     <detaileddescription>
-<para>The shape function of node <formula id="24">$ A $</formula> is the kernel <formula id="257">$ \phi_A $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>) multiplied by a correction function,    <formula id="258">\[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
+<para>The shape function of node <formula id="33">$ A $</formula> is the kernel <formula id="337">$ \phi_A $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>) multiplied by a correction function,    <formula id="338">\[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
   \phi_A(\boldsymbol{x}),
-\]</formula> where <formula id="156">$ \boldsymbol{H} $</formula> is the vector of all monomials up to the completeness order <formula id="89">$ n $</formula> (<ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>, first entry <formula id="98">$ 1 $</formula>) evaluated at the shifted coordinates <formula id="259">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. The coefficient vector <formula id="214">$ \boldsymbol{b} $</formula> solves      <formula id="260">\[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
+\]</formula> where <formula id="227">$ \boldsymbol{H} $</formula> is the vector of all monomials up to the completeness order <formula id="162">$ n $</formula> (<ref refid="class_marmot_1_1_math_1_1_monomial_basis" kindref="compound">Math::MonomialBasis</ref>, first entry <formula id="171">$ 1 $</formula>) evaluated at the shifted coordinates <formula id="339">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. The coefficient vector <formula id="293">$ \boldsymbol{b} $</formula> solves      <formula id="340">\[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
   \qquad \boldsymbol{M}(\boldsymbol{x}) = \sum_{B} \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)\,
   \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B)\, \phi_B(\boldsymbol{x}),
   \qquad \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T,
-\]</formula> with the moment matrix <formula id="151">$ \boldsymbol{M} $</formula> summed over the kernels covering <formula id="104">$ \boldsymbol{x} $</formula>. This enforces the reproducing conditions  <formula id="261">$ \sum_A \Psi_A(\boldsymbol{x})\, (\boldsymbol{x} - \boldsymbol{x}_A)^{\boldsymbol{\alpha}} =
-\delta_{\boldsymbol{\alpha}\boldsymbol{0}} $</formula>, or equivalently  <formula id="262">$ \sum_A \Psi_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} = \boldsymbol{x}^{\boldsymbol{\alpha}}
-$</formula>, for all multi-indices <formula id="86">$ |\boldsymbol{\alpha}| \le n $</formula>; in particular, the shape functions form a partition of unity. The continuity of <formula id="149">$ \Psi_A $</formula> is that of the kernels.</para>
-<para>The gradients are the exact derivatives of <formula id="149">$ \Psi_A $</formula> (product rule),       <formula id="263">\[  \Psi_{A,i} = \left( \boldsymbol{b}_{,i}^T \boldsymbol{H} + \boldsymbol{b}^T \boldsymbol{H}_{,i} \right)
+\]</formula> with the moment matrix <formula id="222">$ \boldsymbol{M} $</formula> summed over the kernels covering <formula id="46">$ \boldsymbol{x} $</formula>. This enforces the reproducing conditions  <formula id="341">$ \sum_A \Psi_A(\boldsymbol{x})\, (\boldsymbol{x} - \boldsymbol{x}_A)^{\boldsymbol{\alpha}} =
+\delta_{\boldsymbol{\alpha}\boldsymbol{0}} $</formula>, or equivalently  <formula id="342">$ \sum_A \Psi_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} = \boldsymbol{x}^{\boldsymbol{\alpha}}
+$</formula>, for all multi-indices <formula id="159">$ |\boldsymbol{\alpha}| \le n $</formula>; in particular, the shape functions form a partition of unity. The continuity of <formula id="220">$ \Psi_A $</formula> is that of the kernels.</para>
+<para>The gradients are the exact derivatives of <formula id="220">$ \Psi_A $</formula> (product rule),       <formula id="343">\[  \Psi_{A,i} = \left( \boldsymbol{b}_{,i}^T \boldsymbol{H} + \boldsymbol{b}^T \boldsymbol{H}_{,i} \right)
   \phi_A + \boldsymbol{b}^T \boldsymbol{H}\, \phi_{A,i},
   \qquad \boldsymbol{b}_{,i} = -\boldsymbol{M}^{-1} \boldsymbol{M}_{,i}\, \boldsymbol{b},
   \qquad \boldsymbol{M}_{,i} = \sum_B \left( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
   \boldsymbol{H}_{,i}^T \right) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i},
-\]</formula> with <formula id="264">$ (\bullet)_{,i} = \partial (\bullet) / \partial x_i $</formula> and <formula id="156">$ \boldsymbol{H} $</formula> evaluated at <formula id="259">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (resp. <formula id="265">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>). The linear systems are solved with a column-pivoting Householder QR decomposition of <formula id="151">$ \boldsymbol{M} $</formula>, which is computed once per evaluation point.</para>
-<para><bold>One evaluation, four passes over the kernels.</bold> First, every candidate kernel is evaluated once, with its gradient if the gradients of the shape functions are asked for (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216" kindref="member">evaluateKernelFunctions()</ref>); the values and gradients are kept in the output arrays, which have one entry per candidate. Second, the basis <formula id="266">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula> of every covering kernel (and its gradient) is evaluated once and kept (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref>): the moment matrix and the shape functions both need it. Third, <formula id="151">$ \boldsymbol{M} $</formula> (and <formula id="158">$ \boldsymbol{M}_{,i} $</formula>) is assembled (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad0fb0722591b010057f4d57075f77900" kindref="member">assembleMomentMatrix()</ref>); fourth, the shape functions follow, overwriting the kernel values. The moment matrix and the vectors of the basis are of a fixed largest size (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" kindref="member">BasisVector</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832" kindref="member">MomentMatrix</ref>); the bases of the kernels, one column per candidate, are the one allocation of an evaluation.</para>
-<para>If fewer kernels cover <formula id="104">$ \boldsymbol{x} $</formula> than the basis has entries, <formula id="151">$ \boldsymbol{M} $</formula> is singular; the completeness order is then reduced for this evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>).</para>
-<para><bold>Limit on the condition of the moment matrix (optional).</bold> Enough kernels may cover <formula id="104">$ \boldsymbol{x} $</formula> and still leave <formula id="151">$ \boldsymbol{M} $</formula> nearly singular: at a point on one side of all covering kernels, each at the edge of its support (e.g. the corner of a strongly stretched particle reaching into a void), the corrected kernels extrapolate and <formula id="149">$ \Psi_A $</formula> and its gradients become arbitrarily large. With a limit <formula id="267">$ \kappa_\mathrm{max} $</formula> on the condition of <formula id="151">$ \boldsymbol{M} $</formula>, the completeness order of such a point is lowered one order at a time until the condition is below the limit, down to the order <formula id="268">$ 0 $</formula> (Shepard functions, <formula id="160">$ \Psi_A = \phi_A / \sum_B \phi_B $</formula>, bounded by 1), which is always accepted. The condition is that of the diagonally scaled matrix <formula id="269">$ \boldsymbol{D} \boldsymbol{M} \boldsymbol{D} $</formula>, <formula id="270">$ D_{kk} = M_{kk}^{-1/2} $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" kindref="member">conditionOfMomentMatrix()</ref>): the scaling makes it independent of the unit of length and of a constant factor of the kernels. Without a limit (the default, <formula id="271">$ \kappa_\mathrm{max} = \infty $</formula>) the condition is not computed; with a limit, a point below it is evaluated exactly as without one, and a moment matrix of order <formula id="272">$ n \ge 1 $</formula> that is singular is evaluated with a lower order as well (only a point that no kernel covers still throws). The lower order costs the point its polynomial completeness: the shape functions jump where the condition crosses the limit, in space and in time, and a particle integrated with such a point no longer passes the patch test of that order.</para>
+\]</formula> with <formula id="344">$ (\bullet)_{,i} = \partial (\bullet) / \partial x_i $</formula> and <formula id="227">$ \boldsymbol{H} $</formula> evaluated at <formula id="339">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (resp. <formula id="345">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>). The linear systems are solved with a column-pivoting Householder QR decomposition of <formula id="222">$ \boldsymbol{M} $</formula>, which is computed once per evaluation point.</para>
+<para><bold>One evaluation, four passes over the kernels.</bold> First, every candidate kernel is evaluated once, with its gradient if the gradients of the shape functions are asked for (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a5918355b6e3eaabdce691cb643b6c216" kindref="member">evaluateKernelFunctions()</ref>); the values and gradients are kept in the output arrays, which have one entry per candidate. Second, the basis <formula id="346">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula> of every covering kernel (and its gradient) is evaluated once and kept (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abd3e5c7067429b4c2e82d9c7350010d7" kindref="member">evaluateBasisOfKernels()</ref>): the moment matrix and the shape functions both need it. Third, <formula id="222">$ \boldsymbol{M} $</formula> (and <formula id="229">$ \boldsymbol{M}_{,i} $</formula>) is assembled (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad0fb0722591b010057f4d57075f77900" kindref="member">assembleMomentMatrix()</ref>); fourth, the shape functions follow, overwriting the kernel values. The moment matrix and the vectors of the basis are of a fixed largest size (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1afdeacd40fa8bce1536be2b04af69e988" kindref="member">BasisVector</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a581d30b0273e6ebcd8f1932cecad7832" kindref="member">MomentMatrix</ref>); the bases of the kernels, one column per candidate, are the one allocation of an evaluation.</para>
+<para>If fewer kernels cover <formula id="46">$ \boldsymbol{x} $</formula> than the basis has entries, <formula id="222">$ \boldsymbol{M} $</formula> is singular; the completeness order is then reduced for this evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>).</para>
+<para><bold>Limit on the condition of the moment matrix (optional).</bold> Enough kernels may cover <formula id="46">$ \boldsymbol{x} $</formula> and still leave <formula id="222">$ \boldsymbol{M} $</formula> nearly singular: at a point on one side of all covering kernels, each at the edge of its support (e.g. the corner of a strongly stretched particle reaching into a void), the corrected kernels extrapolate and <formula id="220">$ \Psi_A $</formula> and its gradients become arbitrarily large. With a limit <formula id="347">$ \kappa_\mathrm{max} $</formula> on the condition of <formula id="222">$ \boldsymbol{M} $</formula>, the completeness order of such a point is lowered one order at a time until the condition is below the limit, down to the order <formula id="348">$ 0 $</formula> (Shepard functions, <formula id="231">$ \Psi_A = \phi_A / \sum_B \phi_B $</formula>, bounded by 1), which is always accepted. The condition is that of the diagonally scaled matrix <formula id="349">$ \boldsymbol{D} \boldsymbol{M} \boldsymbol{D} $</formula>, <formula id="350">$ D_{kk} = M_{kk}^{-1/2} $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ad564b9cd4ca478ee425ad6e33a632f54" kindref="member">conditionOfMomentMatrix()</ref>): the scaling makes it independent of the unit of length and of a constant factor of the kernels. Without a limit (the default, <formula id="351">$ \kappa_\mathrm{max} = \infty $</formula>) the condition is not computed; with a limit, a point below it is evaluated exactly as without one, and a moment matrix of order <formula id="352">$ n \ge 1 $</formula> that is singular is evaluated with a lower order as well (only a point that no kernel covers still throws). The lower order costs the point its polynomial completeness: the shape functions jump where the condition crosses the limit, in space and in time, and a particle integrated with such a point no longer passes the patch test of that order.</para>
 <para>See <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kindref="compound">ReproducingKernelApproximationImplicit</ref> for the variant with implicit gradients. </para>
     </detaileddescription>
     <inheritancegraph>

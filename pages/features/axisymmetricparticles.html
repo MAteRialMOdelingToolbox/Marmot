@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Axisymmetric Particles &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Code documentation" href="../documentation.html" />
+    <link rel="prev" title="Gradient-Enhanced Finite-Strain Particles" href="gradientenhancedfinitestrainparticle.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="meshfree.html">Meshfree methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#registration-and-naming">Registration and naming</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="meshfree.html#usage-with-edelweissmeshfree">Usage with EdelweissMeshfree</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="meshfreeapproximation.html">Meshfree Approximation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreecells.html">MPM Cells and Material Points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreeparticles.html">Meshfree Particles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementmaterialpoint.html">Displacement Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementcell.html">Displacement Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementparticle.html">Displacement Particle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Axisymmetric Particles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="meshfree.html">Meshfree methods</a></li>
+      <li class="breadcrumb-item active">Axisymmetric Particles</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/axisymmetricparticles.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="axisymmetric-particles">
+<h1>Axisymmetric Particles<a class="headerlink" href="#axisymmetric-particles" title="Link to this heading"></a></h1>
+<p>The axisymmetric particles are the RKPM particles of a body of revolution under a load of revolution. They live in
+the meridian half plane <span class="math notranslate nohighlight">\((r, z)\)</span>, <span class="math notranslate nohighlight">\(r = Y_1 \ge 0\)</span>, <span class="math notranslate nohighlight">\(z = Y_2\)</span>, and every integral over a particle is an
+integral over the <em>ring</em> the particle sweeps about the axis. They are the axisymmetric twins of the plane-strain
+particles,</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Axisymmetric particle</p></th>
+<th class="head"><p>Plane-strain twin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrainSQCNIxNSNI/Axisymmetric/Quad</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrainSQCNIxNSNI/PlaneStrain/Quad</span></code> (<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DisplacementSQCNI/Axisymmetric/Quad</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DisplacementSQCNI/PlaneStrain/Quad</span></code> (<a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a>)</p></td>
+</tr>
+</tbody>
+</table>
+<p>and they are the same classes: the section of the particle, <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Section</span></code>
+(<code class="docutils literal notranslate"><span class="pre">Cartesian</span></code> or <code class="docutils literal notranslate"><span class="pre">Axisymmetric</span></code>), is a template parameter, and what it changes is collected in
+<code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals</span></code> (the integrals over the smoothing domain) and <code class="docutils literal notranslate"><span class="pre">Hoop</span></code> (the hoop terms of the weak form),
+both in <code class="docutils literal notranslate"><span class="pre">MarmotParticleSectionIntegrals.h</span></code>. A host learns the section of a particle from <code class="docutils literal notranslate"><span class="pre">Particle::getSection()</span></code>, e.g. to
+integrate the contact points on the faces of the particles over the same rings. This page derives what the
+axisymmetric section changes; everything else – the updated-Lagrangian kinematics, the material point, the nonlocal
+balance, the explicit life cycle – is that of the plane-strain particles. The conventions follow the axisymmetric finite elements <code class="docutils literal notranslate"><span class="pre">CX8UL</span></code> / <code class="docutils literal notranslate"><span class="pre">CX8RUL</span></code>
+(<a class="reference internal" href="displacementfinitestrainelement.html"><span class="doc">Displacement Finite Strain Element</span></a>): the material sees the 3D state with the hoop stretch as its
+<span class="math notranslate nohighlight">\(F_{33}\)</span>, and every integral carries the ring weight <span class="math notranslate nohighlight">\(2\pi r\)</span>.</p>
+<p>A particle may touch the axis with a vertex or a face, as the particles of a solid cylinder do: the ring weight
+<span class="math notranslate nohighlight">\(2\pi r\)</span> vanishes there, so that a face on the axis contributes nothing (the axis is no boundary of the body of
+revolution), and the center of the particle has <span class="math notranslate nohighlight">\(\bar r &gt; 0\)</span>, so that its hoop operator
+<span class="math notranslate nohighlight">\(N_A/\bar r\)</span> stays finite. A particle with a vertex at <span class="math notranslate nohighlight">\(r &lt; 0\)</span> is refused when it is created, and an
+increment that pulls a particle through the axis (a hoop stretch <span class="math notranslate nohighlight">\(\le 0\)</span>) throws, which a solver may answer with
+a smaller increment.</p>
+<section id="the-ring-measure">
+<h2>The ring measure<a class="headerlink" href="#the-ring-measure" title="Link to this heading"></a></h2>
+<p>With the volume element <span class="math notranslate nohighlight">\(dV = 2\pi r\,dA\)</span> of the ring, the volume of a particle with the domain
+<span class="math notranslate nohighlight">\(\Omega\)</span> in the meridian half plane is, by Pappus’ theorem,</p>
+<div class="math notranslate nohighlight">
+\[V = 2\pi \int_\Omega r\,dA = 2\pi\,A\,\bar r ,\]</div>
+<p>with its area <span class="math notranslate nohighlight">\(A\)</span> and the radius <span class="math notranslate nohighlight">\(\bar r\)</span> of its area centroid, where its material point sits. <span class="math notranslate nohighlight">\(V_0\)</span>,
+the volume of the undeformed particle, is the integration weight of every term of the particle (the internal force,
+the nonlocal balance, the lumped inertia, damping and momentum, the body force), as the undeformed area is in plane
+strain. The lumped mass of node <span class="math notranslate nohighlight">\(A\)</span> is <span class="math notranslate nohighlight">\(\rho_0\,T_A\,V_0 = \rho_0\,T_A\,2\pi\int_{\Omega_0} R\,dA\)</span>.</p>
+</section>
+<section id="kinematics-the-hoop-stretch">
+<h2>Kinematics: the hoop stretch<a class="headerlink" href="#kinematics-the-hoop-stretch" title="Link to this heading"></a></h2>
+<p>The increment of the deformation gradient is block diagonal: the in-plane block of the plane particle and the
+increment of the hoop stretch,</p>
+<div class="math notranslate nohighlight">
+\[\Delta F_{ij} = \delta_{ij} + \Delta q_{Bi}\,\frac{\partial N_B}{\partial Y_j}\quad (i, j \in \{r, z\}), \qquad
+\Delta F_{\theta\theta} = \frac{\bar x_r}{\bar r} = 1 + \frac{\Delta u_r}{\bar r}
+= 1 + \Delta q_{Br}\,\frac{N_B}{\bar r},\]</div>
+<p>with the radial displacement increment <span class="math notranslate nohighlight">\(\Delta u_r = N_B\,\Delta q_{Br}\)</span> at the particle center, its radius
+<span class="math notranslate nohighlight">\(\bar r\)</span> in the intermediate configuration <span class="math notranslate nohighlight">\(\boldsymbol Y\)</span> and <span class="math notranslate nohighlight">\(\bar x_r\)</span> after the increment. The
+material point composes <span class="math notranslate nohighlight">\(\boldsymbol F = \Delta\boldsymbol F\,\boldsymbol F_n\)</span> in 3D, so that its
+<span class="math notranslate nohighlight">\(F_{\theta\theta}\)</span> is the product of the hoop stretch increments, the current over the undeformed radius
+<span class="math notranslate nohighlight">\(x_r/R\)</span>, and the material is evaluated at this 3D deformation gradient through
+<code class="docutils literal notranslate"><span class="pre">computePlaneStrain</span></code> (as <code class="docutils literal notranslate"><span class="pre">CX8UL</span></code>). Why the hoop operator is the point value <span class="math notranslate nohighlight">\(N_B/\bar r\)</span> is shown below with
+the smoothed gradient.</p>
+</section>
+<section id="the-weak-form">
+<h2>The weak form<a class="headerlink" href="#the-weak-form" title="Link to this heading"></a></h2>
+<p>The virtual work of the Kirchhoff stress over the undeformed ring, <span class="math notranslate nohighlight">\(\int \boldsymbol\tau : \delta\boldsymbol d\,
+dV_0\)</span>, gains the hoop term <span class="math notranslate nohighlight">\(\tau_{\theta\theta}\,\delta d_{\theta\theta}\)</span> with <span class="math notranslate nohighlight">\(\delta d_{\theta\theta} =
+\delta x_r / x_r = \delta u_r / (\bar r\,\Delta F_{\theta\theta})\)</span>. The displacement residual of node <span class="math notranslate nohighlight">\(A\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[r^U_{Aj} = \frac{\partial T_A}{\partial x_i}\,\tau_{ij}\,V_0
++ \delta_{jr}\,\frac{T_A}{\bar r\,\Delta F_{\theta\theta}}\,\tau_{\theta\theta}\,V_0
++ \rho_0\,a_j\,T_A\,V_0 ,\]</div>
+<p>the hoop term of <code class="docutils literal notranslate"><span class="pre">CX8UL</span></code>, <span class="math notranslate nohighlight">\(N_A\,\tau_{33} / (F_{33}\,r)\,J_0 w\)</span>. The Helmholtz balance of a nonlocal field is a
+balance of a scalar of revolution: its gradient has no hoop component, and only its weight changes to <span class="math notranslate nohighlight">\(V_0\)</span>.
+The tangent gains, through <span class="math notranslate nohighlight">\(\partial\Delta F_{\theta\theta}/\partial\Delta u_r = 1/\bar r\)</span>, the derivatives of
+the hoop row with respect to the in-plane gradient and to the radial displacement increment, and those of all rows
+with respect to <span class="math notranslate nohighlight">\(\Delta F_{\theta\theta}\)</span> through the material
+(<span class="math notranslate nohighlight">\(\partial\tau_{ij}/\partial\Delta F_{\theta\theta}\)</span>, <span class="math notranslate nohighlight">\(\partial L_K/\partial\Delta F_{\theta\theta}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial r^U_{Ar}}{\partial(\partial\Delta u_k/\partial Y_l)} \mathrel{+}=
+  \frac{T_A V_0}{\bar r\,\Delta F_{\theta\theta}}\,\frac{\partial\tau_{\theta\theta}}{\partial\Delta F_{kl}}, \qquad
+\frac{\partial r^U_{Ar}}{\partial\Delta u_r} \mathrel{+}= \frac{T_A V_0}{\bar r^2\,\Delta F_{\theta\theta}}
+  \Bigl(\frac{\partial\tau_{\theta\theta}}{\partial\Delta F_{\theta\theta}}
+  - \frac{\tau_{\theta\theta}}{\Delta F_{\theta\theta}}\Bigr),\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial r^U_{Aj}}{\partial\Delta u_r} \mathrel{+}= \frac{V_0}{\bar r}\,\frac{\partial T_A}{\partial x_i}\,
+  \frac{\partial\tau_{ij}}{\partial\Delta F_{\theta\theta}}, \qquad
+\frac{\partial r^U_{Ar}}{\partial\Delta\bar N_K} \mathrel{+}= \frac{T_A V_0}{\bar r\,\Delta F_{\theta\theta}}\,
+  \frac{\partial\tau_{\theta\theta}}{\partial\bar N_K}, \qquad
+\frac{\partial r^N_{AK}}{\partial\Delta u_r} \mathrel{+}= -\frac{T_A V_0}{\bar r}\,
+  \frac{\partial L_K}{\partial\Delta F_{\theta\theta}} .\]</div>
+<p>All of them depend on the nodes <span class="math notranslate nohighlight">\(B\)</span> only through <span class="math notranslate nohighlight">\(N_B\)</span> and <span class="math notranslate nohighlight">\(\partial N_B/\partial\boldsymbol Y\)</span>: the
+particle describes its stiffness node by node (<code class="docutils literal notranslate"><span class="pre">Particle::describeStiffness</span></code>) exactly as in plane strain, with the
+hoop terms in the derivatives with respect to the interpolated increment. The bound of the absolute stiffness for the
+critical time step (<code class="docutils literal notranslate"><span class="pre">AbsoluteStiffnessBound</span></code>, <code class="docutils literal notranslate"><span class="pre">addBoundOfAbsoluteStiffnessTimes</span></code>) therefore holds unchanged, with
+the ring weight in the stiffness and in the lumped mass alike.</p>
+</section>
+<section id="the-smoothed-gradient-of-the-ring">
+<h2>The smoothed gradient of the ring<a class="headerlink" href="#the-smoothed-gradient-of-the-ring" title="Link to this heading"></a></h2>
+<p>SQCNI replaces the gradient at the particle center by its average over the smoothing domain <span class="math notranslate nohighlight">\(\Omega_s\)</span>, written
+as a boundary integral by the divergence theorem (Chen, Wu, Yoon and You, 2001), see <a class="reference internal" href="meshfreeparticles.html"><span class="doc">Meshfree Particles</span></a>; the
+notation is that page’s, <span class="math notranslate nohighlight">\(N_{A,i} = \partial N_A/\partial Y_i\)</span>. Over the ring, the average is weighted with
+<span class="math notranslate nohighlight">\(2\pi r\)</span>, and the divergence theorem of the weighted integrand gains an area term,
+<span class="math notranslate nohighlight">\(r\,N_{A,r} = (r N_A)_{,r} - N_A\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\tilde N_{A,i} = \frac{1}{|\Omega_s|}\int_{\Omega_s} N_{A,i}\,2\pi r\,dA
+= \frac{2\pi}{|\Omega_s|}\Bigl(\oint_{\partial\Omega_s} r\,N_A\,n_i\,ds - \delta_{ir}\int_{\Omega_s} N_A\,dA\Bigr),
+\qquad |\Omega_s| = 2\pi\int_{\Omega_s} r\,dA ,\]</div>
+<p>with the area element <span class="math notranslate nohighlight">\(dA\)</span> and the line element <span class="math notranslate nohighlight">\(ds\)</span> of the meridian half plane, and the ring volume
+<span class="math notranslate nohighlight">\(|\Omega_s|\)</span> of the smoothing domain. On a face <span class="math notranslate nohighlight">\(f\)</span>, <span class="math notranslate nohighlight">\(ds\)</span> integrates to <span class="math notranslate nohighlight">\(dA_f\)</span>, the length of
+the face (the area of unit thickness in plane strain), and <span class="math notranslate nohighlight">\(n_{f,i}\,dA_f\)</span> is its area vector
+(<code class="docutils literal notranslate"><span class="pre">LagrangeCell::boundarySurfaceVector</span></code>). The hoop strain is averaged alike, and its area integral is the same one:</p>
+<div class="math notranslate nohighlight">
+\[\tilde H_A = \frac{1}{|\Omega_s|}\int_{\Omega_s}\frac{N_A}{r}\,2\pi r\,dA
+= \frac{2\pi}{|\Omega_s|}\int_{\Omega_s} N_A\,dA .\]</div>
+<p><strong>What is adopted.</strong> The face integrals are evaluated with two Gauss points <span class="math notranslate nohighlight">\(\boldsymbol Y_g\)</span> per face, at the
+radius <span class="math notranslate nohighlight">\(r_g\)</span>, which share the area vector <span class="math notranslate nohighlight">\(n_{f,i}\,dA_f\)</span> equally; the area integral with one point, the
+area centroid of <span class="math notranslate nohighlight">\(\Omega_s\)</span>, which is the particle center: <span class="math notranslate nohighlight">\(\int_{\Omega_s} N_A\,dA \approx
+A_s\,N_A(\bar{\boldsymbol Y})\)</span>. With <span class="math notranslate nohighlight">\(|\Omega_s| = 2\pi A_s\bar r\)</span>, the hoop operator becomes the point value,
+<span class="math notranslate nohighlight">\(\tilde H_A = N_A(\bar{\boldsymbol Y})/\bar r\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[\tilde N_{A,i} = \frac{1}{|\Omega_s|}\sum_f\sum_{g=1}^{2} 2\pi r_g\,N_A(\boldsymbol Y_g)\,
+\frac{n_{f,i}\,dA_f}{2} - \delta_{ir}\,\frac{N_A(\bar{\boldsymbol Y})}{\bar r} .\]</div>
+<p>For <span class="math notranslate nohighlight">\(2\pi r_g = 1\)</span>, one point per face (the face center) and without the area term, this is the smoothed
+gradient of the plane particles.</p>
+<p>Both properties of SQCNI carry over exactly:</p>
+<ul>
+<li><p><strong>The integration constraint</strong> (the linear patch test). It is the discrete divergence theorem of the 3D field
+<span class="math notranslate nohighlight">\(N_A\boldsymbol e_r\)</span>, whose divergence is <span class="math notranslate nohighlight">\(N_{A,r} + N_A/r\)</span>, and of <span class="math notranslate nohighlight">\(N_A\boldsymbol e_z\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum_L V_L\,\bigl(\tilde N_{A,r} + \tilde H_A\bigr)
+= \sum_{f\in\Gamma}\sum_{g=1}^{2} 2\pi r_g\,N_A(\boldsymbol Y_g)\,\frac{n_{f,r}\,dA_f}{2} , \qquad
+\sum_L V_L\,\tilde N_{A,z}
+= \sum_{f\in\Gamma}\sum_{g=1}^{2} 2\pi r_g\,N_A(\boldsymbol Y_g)\,\frac{n_{f,z}\,dA_f}{2} ,\]</div>
+<p>summed over the particles <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(V_L = |\Omega_s|\)</span>, and over the faces <span class="math notranslate nohighlight">\(f\)</span> on the boundary
+<span class="math notranslate nohighlight">\(\Gamma\)</span> of the body. It holds because, for each particle, <span class="math notranslate nohighlight">\(V_L\,\tilde N_{A,r}\)</span> is its face sum minus
+<span class="math notranslate nohighlight">\(2\pi A_L N_A(\bar{\boldsymbol Y}_L)\)</span>, and <span class="math notranslate nohighlight">\(V_L\,\tilde H_A\)</span> is exactly
+<span class="math notranslate nohighlight">\(+2\pi A_L N_A(\bar{\boldsymbol Y}_L)\)</span>: the area terms cancel within each particle, whatever quadrature
+evaluates <span class="math notranslate nohighlight">\(\int N_A\,dA\)</span>, as long as both operators use the same value. The face sums of the faces two
+particles share cancel between them (the same Gauss points, opposite normals), and what remains is the face sum
+over <span class="math notranslate nohighlight">\(\Gamma\)</span>. A face on the axis has <span class="math notranslate nohighlight">\(r_g = 0\)</span> and is no part of <span class="math notranslate nohighlight">\(\Gamma\)</span>. The cancellation
+between neighbours needs smoothing domains that tile the body, i.e. the update <code class="docutils literal notranslate"><span class="pre">DeformationGradient</span></code> (SQCNI); the
+axisymmetric particles are registered with it only.</p>
+<p>In the patch test, the stress of a linear displacement field that is in equilibrium without a body force is
+uniform with <span class="math notranslate nohighlight">\(\sigma_{rr} = \sigma_{\theta\theta}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{rz} = 0\)</span> (e.g. <span class="math notranslate nohighlight">\(u_r = a\,r\)</span>,
+<span class="math notranslate nohighlight">\(u_z = b\,z\)</span>). The radial internal force of node <span class="math notranslate nohighlight">\(A\)</span>,
+<span class="math notranslate nohighlight">\(\sum_L V_L(\tilde N_{A,r}\,\sigma_{rr} + \tilde H_A\,\sigma_{\theta\theta})\)</span>, is then <span class="math notranslate nohighlight">\(\sigma_{rr}\)</span>
+times the first sum, and the axial one <span class="math notranslate nohighlight">\(\sigma_{zz}\)</span> times the second: zero for an interior node, and for a
+node on <span class="math notranslate nohighlight">\(\Gamma\)</span> the force of the traction <span class="math notranslate nohighlight">\(\boldsymbol\sigma\boldsymbol n\)</span> integrated with the same
+face rule. A load on <span class="math notranslate nohighlight">\(\Gamma\)</span> is therefore integrated with this rule (<code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals::addPressure</span></code>),
+so that the patch test with a traction on the boundary passes exactly as well.</p>
+</li>
+<li><p><strong>Exactness for linear fields.</strong> For a displacement the approximation reproduces, <span class="math notranslate nohighlight">\(u = a + b\,r + c\,z\)</span>, the
+smoothed gradient and hoop strain are the exact ring averages of the exact ones: the face integrands
+<span class="math notranslate nohighlight">\(r\,u\)</span> are quadratic along a straight face (two Gauss points integrate them exactly; the one-point rule of the
+plane particles would not), and the area integrand <span class="math notranslate nohighlight">\(u\)</span> is linear (the centroid rule integrates it exactly).
+E.g., for <span class="math notranslate nohighlight">\(u_r = a\,r\)</span> both <span class="math notranslate nohighlight">\(\tilde N_{A,r}\,q_{Ar}\)</span> and <span class="math notranslate nohighlight">\(\tilde H_A\,q_{Ar}\)</span> give <span class="math notranslate nohighlight">\(a\)</span>, so
+that the particle sees the uniform state the patch test prescribes. The hoop stretch <span class="math notranslate nohighlight">\(1 + \Delta u_r(\bar{\boldsymbol Y})/\bar r\)</span>
+of a linear increment is the ratio of the moved and the old radius of the centroid, so that the ring volume of the
+moved smoothing domain is <span class="math notranslate nohighlight">\(J\,|\Omega_s|\)</span> with the 3D Jacobian.</p></li>
+</ul>
+<p>The gradient of a nonlocal field is smoothed with the same <span class="math notranslate nohighlight">\(\tilde N_{A,i}\)</span>; it enters the Helmholtz balance in
+<span class="math notranslate nohighlight">\((r, z)\)</span> only. These are the “axisymmetric patch tests” of the module tests: a uniform radial expansion
+<span class="math notranslate nohighlight">\(u_r = a\,r\)</span>, an axial strain <span class="math notranslate nohighlight">\(u_z = b\,z\)</span> and their combination leave interior particles without force
+to round-off, and with the traction <span class="math notranslate nohighlight">\(\boldsymbol\sigma\boldsymbol n\)</span> as a pressure on the boundary every
+particle; a shear <span class="math notranslate nohighlight">\(u_z = c\,r\)</span> is reproduced exactly (its stress needs the body force
+<span class="math notranslate nohighlight">\(b_z = -\sigma_{rz}/r\)</span>, so its internal force is checked against the smoothed operators, not against zero).</p>
+<p>References. The divergence-theorem smoothing and its integration constraint are those of SCNI (Chen, Wu, Yoon and
+You, <em>A stabilized conforming nodal integration for Galerkin mesh-free methods</em>, IJNME 50, 2001); the integration
+constraint as the condition of linear exactness is that of VCI (Chen, Hillman and Rüter, <em>An arbitrary order
+variationally consistent integration for Galerkin meshfree methods</em>, IJNME 96, 2013). Their ring-weighted form, with
+the area term and its cancellation against the smoothed hoop strain, is derived here, for the quadrature written
+above.</p>
+</section>
+<section id="the-stabilization-nsni">
+<h2>The stabilization (NSNI)<a class="headerlink" href="#the-stabilization-nsni" title="Link to this heading"></a></h2>
+<p>NSNI (Hillman and Chen, <em>An accelerated, convergent, and stable nodal integration in Galerkin meshfree methods for
+linear and nonlinear mechanics</em>, IJNME 107, 2016) adds the second-order term of the Taylor expansion of the integrand
+about the particle center: for two factors <span class="math notranslate nohighlight">\(a\)</span>, <span class="math notranslate nohighlight">\(b\)</span> of the integrand,</p>
+<div class="math notranslate nohighlight">
+\[\int_\Omega (a + \nabla a\cdot\boldsymbol\xi)(b + \nabla b\cdot\boldsymbol\xi)\,2\pi r\,dA
+= a\,b\,V + (a\,\nabla b + b\,\nabla a)\cdot\boldsymbol m + \nabla a\cdot\boldsymbol M\,\nabla b ,
+\qquad \boldsymbol M = 2\pi\int_\Omega \boldsymbol\xi\otimes\boldsymbol\xi\,r\,dA ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\boldsymbol\xi = \boldsymbol Y - \bar{\boldsymbol Y}\)</span> and the ring’s first moment
+<span class="math notranslate nohighlight">\(\boldsymbol m = 2\pi\int\boldsymbol\xi\,r\,dA\)</span>, which does not vanish about the area centroid. The first term is
+what the smoothed gradients integrate; the second is a first-order (consistency) term, which the smoothed gradients
+already account for – adding it would break the integration constraint, since it does not vanish for the uniform
+stress of a linear field. The stabilization keeps the third term, the one of the plane particles, with the <strong>ring
+second moments</strong> <span class="math notranslate nohighlight">\(\boldsymbol M_0\)</span> of the undeformed particle about its area centroid (integrated with a
+<span class="math notranslate nohighlight">\(3\times 3\)</span> Gauss rule, exact for a quadrilateral), pushed forward with <span class="math notranslate nohighlight">\(\boldsymbol F_n\)</span> as in plane
+strain. Its second gradients of the shape functions are smoothed over the ring like the first ones,</p>
+<div class="math notranslate nohighlight">
+\[\hat N_{A,IJ} = \frac{2\pi}{|\Omega_s|}\Bigl(\oint r\,N_{A,I}\,n_J\,ds - \delta_{Jr}\oint N_A\,n_I\,ds\Bigr)\]</div>
+<p>(symmetrized; <span class="math notranslate nohighlight">\(\int N_{A,I}\,dA = \oint N_A\,n_I\,ds\)</span>), with the Gauss points of the faces. For
+a linear field both terms cancel (<span class="math notranslate nohighlight">\(\oint r\,n_J\,ds = \delta_{Jr}A\)</span>), so that the stabilization vanishes in the
+patch test, as in plane strain. As there, the stress gradient of the stabilization is linearized in the in-plane
+deformation gradient only; its parts through the nonlocal field and through the hoop stretch are left out (the
+stabilization acts on the in-plane gradient, which carries every oscillating mode of the nodal integration).</p>
+</section>
+<section id="loads-and-corrections">
+<h2>Loads and corrections<a class="headerlink" href="#loads-and-corrections" title="Link to this heading"></a></h2>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">BODYFORCE</span></code>: <span class="math notranslate nohighlight">\(\boldsymbol f_A \mathrel{-}= T_A\,\boldsymbol b\,V_0\)</span> with the ring volume.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code> on a face: integrated with the face rule of the smoothing, the two Gauss points <span class="math notranslate nohighlight">\(\boldsymbol Y_g\)</span>,
+as the integration constraint requires (see above). Each point carries its share of the area vector of the face,
+pushed to the current configuration by Nanson’s formula in the half plane, times its ring after the increment:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol f_g = -\Delta J\,\Delta\boldsymbol F^{-T} p\,\frac{\boldsymbol n_f\,dA_f}{2}\;2\pi x_r(\boldsymbol Y_g),
+\qquad \boldsymbol x(\boldsymbol Y) = \bar{\boldsymbol x} + \Delta\boldsymbol F\,(\boldsymbol Y - \bar{\boldsymbol Y}),
+\qquad f_{Ai} \mathrel{-}= \sum_g T_A(\boldsymbol Y_g)\,f_{g,i} .\]</div>
+<p>The face moves with the motion of the particle (the motion Nanson’s formula assumes), with the center at
+<span class="math notranslate nohighlight">\(\bar x_r = \bar r\,\Delta F_{\theta\theta}\)</span>, so that <span class="math notranslate nohighlight">\(2\pi x_r(\boldsymbol Y_g) = 2\pi r_g\,
+\Delta F_{\theta\theta}(\boldsymbol Y_g)\)</span> is the ring of the point with its own hoop stretch increment. It is exact
+for a linear increment; its tangent differentiates <span class="math notranslate nohighlight">\(\Delta\boldsymbol F\)</span> and <span class="math notranslate nohighlight">\(x_r(\boldsymbol Y_g)\)</span>,
+<span class="math notranslate nohighlight">\(\partial x_r(\boldsymbol Y_g)/\partial\Delta q_{Br} = N_B(\bar{\boldsymbol Y}) + \tilde N_{B,j}\,(Y_{g,j} -
+\bar Y_j)\)</span>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CWFCORRECTION</span></code> and VCI are not available for the axisymmetric particles: a request throws. VCI (Chen, Hillman
+and Rüter, 2013) would have to be rederived for the ring measure and the hoop term; the ring-weighted SQCNI already
+satisfies the linear integration constraint by itself.</p></li>
+</ul>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TestAxisymmetricParticles</span></code> (module <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrainParticle</span></code>) checks both particles, on a patch away
+from the axis and on one at the axis, whose particles touch it with a face: the axisymmetric patch tests (interior
+forces vanish to round-off for <span class="math notranslate nohighlight">\(u_r = a r\)</span>, <span class="math notranslate nohighlight">\(u_z = b z\)</span> and their combination; the smoothed operators
+reproduce <span class="math notranslate nohighlight">\(u_z = c\,r\)</span>, <span class="math notranslate nohighlight">\(u_r = c\,z\)</span> exactly), the patch test with the traction
+<span class="math notranslate nohighlight">\(\boldsymbol\sigma\boldsymbol n\)</span> as a <code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code> on the boundary (every node is balanced to round-off) and the
+tangent of the pressure; the tangent against finite differences, the lumped mass against
+<span class="math notranslate nohighlight">\(\rho_0\,2\pi\int R\,dA\)</span>, a thick-walled cylinder under internal pressure against Lamé’s solution and against a
+mesh of <code class="docutils literal notranslate"><span class="pre">CX8RUL</span></code> elements, and the bound of the absolute stiffness against the largest eigenvalue of an assembled
+patch.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The particle classes are documented on the pages of their formulations, <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a> and
+<a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a>, and <code class="docutils literal notranslate"><span class="pre">ParticleSectionIntegrals</span></code> on <a class="reference internal" href="meshfreeparticles.html"><span class="doc">Meshfree Particles</span></a>. The section,
+the hoop terms and the out-of-plane parts of the 2D material points:</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree7SectionE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree7SectionE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree7SectionE"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1a96949e01f3666572278a9419831740e0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations8MeshfreeE" title="Marmot::Discretizations::Meshfree"><span class="n"><span class="pre">Meshfree</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">Section</span></span></span><br /></dt>
+<dd><p>The section of a particle: the measure of the integrals over its domain (see <a class="reference internal" href="meshfreeparticles.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1Particle_1ab571efd7aa10c0db5a065fd089f1b38c"><span class="std std-ref">Particle::getSection()</span></a> and <a class="reference internal" href="meshfreeparticles.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals"><span class="std std-ref">ParticleSectionIntegrals</span></a>). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree7Section9CartesianE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree7Section9CartesianE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree7Section9CartesianE"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1a96949e01f3666572278a9419831740e0ac62cd6a7dfc8d04ae078b2b3d6293b9c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cartesian</span></span></span><br /></dt>
+<dd><p>the domain itself: plane strain (unit thickness) in 2D, the volume in 3D </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree7Section12AxisymmetricE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree7Section12AxisymmetricE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree7Section12AxisymmetricE"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1a96949e01f3666572278a9419831740e0a5e8fb1a50b1464b66d2d010fba521b10"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Axisymmetric</span></span></span><br /></dt>
+<dd><p>the ring the domain sweeps about the axis, <span class="math notranslate nohighlight">\( dV = 2\pi r\,dA \)</span> in the meridian half plane <span class="math notranslate nohighlight">\( (r, z) = (Y_1, Y_2) \)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree4HoopE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree4HoopE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree4HoopE"></span><span id="Marmot::Discretizations::Meshfree::Hoop"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hoop</span></span></span><br /></dt>
+<dd><p>The hoop terms of the weak form of an axisymmetric particle, shared by its formulations. </p>
+<p>The increment of the hoop stretch is <span class="math notranslate nohighlight">\( \Delta F_{\theta\theta} = x_r / r = 1 + \Delta u_r / \bar r \)</span> at the particle center, with the radial displacement increment <span class="math notranslate nohighlight">\( \Delta u_r = N_B\, \Delta q_{Br} \)</span> there and its radius <span class="math notranslate nohighlight">\( \bar r \)</span> in the intermediate configuration. The virtual hoop strain is  <span class="math notranslate nohighlight">\( \delta d_{\theta\theta}
+= \delta x_r / x_r = \delta u_r / (\bar r\, \Delta F_{\theta\theta}) \)</span>, so that the virtual work of the hoop stress over the undeformed ring, <span class="math notranslate nohighlight">\( \tau_{\theta\theta}\, \delta d_{\theta\theta}\, V_0 \)</span>, adds to the radial residual of node <span class="math notranslate nohighlight">\( A \)</span> the term <span class="math notranslate nohighlight">\( T_A\, \tau_{\theta\theta} / (\bar r\, \Delta F_{\theta\theta})\, V_0 \)</span>, with the test function <span class="math notranslate nohighlight">\( T_A \)</span> of the node at the center: the term <span class="math notranslate nohighlight">\( T_A / \bar r \)</span> is the hoop operator <span class="math notranslate nohighlight">\( \tilde H_A = N_A(\bar{\boldsymbol{Y}}) / \bar r \)</span> of <a class="reference internal" href="meshfreeparticles.html#classMarmot_1_1Discretizations_1_1Meshfree_1_1ParticleSectionIntegrals"><span class="std std-ref">ParticleSectionIntegrals</span></a> with the test function (see there for why it is the point value). The faces of a particle carry the ring of their points (<a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1a2c3bba2015b259961062d36733b18c00"><span class="std std-ref">ringOfFacePoint()</span></a>). The derivation is on the page “Axisymmetric Particles” of the documentation. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot15Discretizations8Meshfree4Hoop14radiusOfCenterEdRK13MaterialPoint">
+<span id="_CPPv3I0EN6Marmot15Discretizations8Meshfree4Hoop14radiusOfCenterERK13MaterialPoint"></span><span id="_CPPv2I0EN6Marmot15Discretizations8Meshfree4Hoop14radiusOfCenterERK13MaterialPoint"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialPoint</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1ac255103c5e4065e492ceee386ca172d2"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">radiusOfCenter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree4Hoop14radiusOfCenterEdRK13MaterialPoint" title="Marmot::Discretizations::Meshfree::Hoop::radiusOfCenter::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialPoint</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The radius of the particle center in the intermediate configuration, where the shape functions are evaluated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MaterialPoint</strong> – The material point of the particle. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>materialPoint</strong> – <strong>[in]</strong> The material point at the center. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \bar r = \bar Y_1 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree4Hoop21checkStretchIncrementEddi">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree4Hoop21checkStretchIncrementEddi"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree4Hoop21checkStretchIncrementEddi"></span><span id="Marmot::Discretizations::Meshfree::Hoop::checkStretchIncrement__double.double.i"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1af20b0c13c95457f292bcb44483384b75"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">checkStretchIncrement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaF33</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">particleLabel</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Refuse an increment that pulls the ring of a particle through the axis. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deltaF33</strong> – <strong>[in]</strong> The increment of the hoop stretch,  <span class="math notranslate nohighlight">\( \Delta F_{\theta\theta} = 1 + \Delta u_r / \bar r
+\)</span>. </p></li>
+<li><p><strong>r</strong> – <strong>[in]</strong> The radius <span class="math notranslate nohighlight">\( \bar r \)</span> of the center in the intermediate configuration. </p></li>
+<li><p><strong>particleLabel</strong> – <strong>[in]</strong> The label of the particle, for the message. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if <code class="docutils literal notranslate"><span class="pre">deltaF33</span></code> is not positive: the increment cannot be integrated, which a solver may answer with a smaller increment. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot15Discretizations8Meshfree4Hoop19addStretchIncrementEvR13MaterialPointd">
+<span id="_CPPv3I0EN6Marmot15Discretizations8Meshfree4Hoop19addStretchIncrementER13MaterialPointd"></span><span id="_CPPv2I0EN6Marmot15Discretizations8Meshfree4Hoop19addStretchIncrementER13MaterialPointd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialPoint</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1aeb709778399bafaebd399046f9061fb6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addStretchIncrement</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations8Meshfree4Hoop19addStretchIncrementEvR13MaterialPointd" title="Marmot::Discretizations::Meshfree::Hoop::addStretchIncrement::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialPoint</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">du_r</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the hoop stretch increment of the center, <span class="math notranslate nohighlight">\( \Delta u_r / \bar r \)</span>, to the out-of-plane stretch increment <span class="math notranslate nohighlight">\( \Delta F_{33} \)</span> of the material point (1 after its prepareYourself()), as the axisymmetric elements do, and refuse it if it pulls the ring through the axis (<a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1af20b0c13c95457f292bcb44483384b75"><span class="std std-ref">checkStretchIncrement()</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MaterialPoint</strong> – The 2D material point of the particle. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>materialPoint</strong> – <strong>[inout]</strong> The material point at the center, with the in-plane increment added. </p></li>
+<li><p><strong>du_r</strong> – <strong>[in]</strong> The radial displacement increment <span class="math notranslate nohighlight">\( \Delta u_r \)</span> at the center. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – see <a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1af20b0c13c95457f292bcb44483384b75"><span class="std std-ref">checkStretchIncrement()</span></a>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree4Hoop5forceEddddd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree4Hoop5forceEddddd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree4Hoop5forceEddddd"></span><span id="Marmot::Discretizations::Meshfree::Hoop::force__double.double.double.double.double"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1a118bff48eb01a8a330e6930fefa691c2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">force</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">T_A</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaF33</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tau33</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">V0</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The hoop part of the radial residual of node <span class="math notranslate nohighlight">\( A \)</span>,  <span class="math notranslate nohighlight">\( T_A\, \tau_{\theta\theta} / (\bar r\, \Delta
+F_{\theta\theta})\, V_0 \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T_A</strong> – <strong>[in]</strong> The test function of the node at the center. </p></li>
+<li><p><strong>r</strong> – <strong>[in]</strong> The radius <span class="math notranslate nohighlight">\( \bar r \)</span> of the center. </p></li>
+<li><p><strong>deltaF33</strong> – <strong>[in]</strong> The increment of the hoop stretch. </p></li>
+<li><p><strong>tau33</strong> – <strong>[in]</strong> The hoop Kirchhoff stress. </p></li>
+<li><p><strong>V0</strong> – <strong>[in]</strong> The undeformed ring volume of the particle. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The force. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations8Meshfree4Hoop18addStiffnessOfNodeEvdRKN6Fastor6TensorIdXL2EEEEddddRKN6Fastor6TensorIdXL2EEXL2EEEERKN6Fastor6TensorIdXL2EEXL2EEEEdR15StiffnessOfNodeIXL2EE11nDofPerNodeE">
+<span id="_CPPv3I_iEN6Marmot15Discretizations8Meshfree4Hoop18addStiffnessOfNodeEdRKN6Fastor6TensorIdXL2EEEEddddRKN6Fastor6TensorIdXL2EEXL2EEEERKN6Fastor6TensorIdXL2EEXL2EEEEdR15StiffnessOfNodeIXL2EE11nDofPerNodeE"></span><span id="_CPPv2I_iEN6Marmot15Discretizations8Meshfree4Hoop18addStiffnessOfNodeEdRKN6Fastor6TensorIdX2EEEddddRKN6Fastor6TensorIdX2EX2EEERKN6Fastor6TensorIdX2EX2EEEdR15StiffnessOfNodeIX2E11nDofPerNodeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNode</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1a605f9f947a0223521109f798e9da6dbd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addStiffnessOfNode</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">T_A</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dT_A_dx</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaF33</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">V0</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tau33</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dTau_dDeltaF33</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dTau33_dDeltaF</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dTau33_dDeltaF33</span></span>, <a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Meshfree15StiffnessOfNodeE" title="Marmot::Discretizations::Meshfree::StiffnessOfNode"><span class="n"><span class="pre">StiffnessOfNode</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_iEN6Marmot15Discretizations8Meshfree4Hoop18addStiffnessOfNodeEvdRKN6Fastor6TensorIdXL2EEEEddddRKN6Fastor6TensorIdXL2EEXL2EEEERKN6Fastor6TensorIdXL2EEXL2EEEEdR15StiffnessOfNodeIXL2EE11nDofPerNodeE" title="Marmot::Discretizations::Meshfree::Hoop::addStiffnessOfNode::nDofPerNode"><span class="n"><span class="pre">nDofPerNode</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ofNode</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Add the hoop terms of the displacement rows to the stiffness of node <span class="math notranslate nohighlight">\( A \)</span> (see <a class="reference internal" href="meshfreeparticles.html#structMarmot_1_1Discretizations_1_1Meshfree_1_1StiffnessOfNode"><span class="std std-ref">StiffnessOfNode</span></a>; the displacement comes first among the dofs of a node): the hoop row through the in-plane gradient and through the radial displacement increment, and every displacement row through the hoop stretch in the stress,. </p>
+<p><div class="math notranslate nohighlight">
+\[  \frac{\partial r^U_{Ar}}{\partial (\partial \Delta u_k / \partial Y_l)} \mathrel{+}= c\,
+  \frac{\partial \tau_{\theta\theta}}{\partial \Delta F_{kl}}, \qquad
+  \frac{\partial r^U_{Ar}}{\partial \Delta u_r} \mathrel{+}= \frac{c}{\bar r} \Big( \frac{\partial
+  \tau_{\theta\theta}}{\partial \Delta F_{\theta\theta}} - \frac{\tau_{\theta\theta}}{\Delta F_{\theta\theta}}
+  \Big), \qquad
+  \frac{\partial r^U_{Aj}}{\partial \Delta u_r} \mathrel{+}= \frac{V_0}{\bar r} \frac{\partial T_A}{\partial
+  x_i} \frac{\partial \tau_{ij}}{\partial \Delta F_{\theta\theta}},
+\]</div>
+ with <span class="math notranslate nohighlight">\( c = T_A V_0 / (\bar r\, \Delta F_{\theta\theta}) \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDofPerNode</strong> – The number of dofs per node. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>T_A</strong> – <strong>[in]</strong> The test function of the node at the center. </p></li>
+<li><p><strong>dT_A_dx</strong> – <strong>[in]</strong> Its spatial gradient. </p></li>
+<li><p><strong>r</strong> – <strong>[in]</strong> The radius <span class="math notranslate nohighlight">\( \bar r \)</span> of the center. </p></li>
+<li><p><strong>deltaF33</strong> – <strong>[in]</strong> The increment of the hoop stretch. </p></li>
+<li><p><strong>V0</strong> – <strong>[in]</strong> The undeformed ring volume of the particle. </p></li>
+<li><p><strong>tau33</strong> – <strong>[in]</strong> The hoop Kirchhoff stress. </p></li>
+<li><p><strong>dTau_dDeltaF33</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \tau_{ij} / \partial \Delta F_{\theta\theta} \)</span>, in-plane <span class="math notranslate nohighlight">\( ij \)</span>. </p></li>
+<li><p><strong>dTau33_dDeltaF</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \tau_{\theta\theta} / \partial \Delta F_{kl} \)</span>, in-plane <span class="math notranslate nohighlight">\( kl \)</span>. </p></li>
+<li><p><strong>dTau33_dDeltaF33</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \partial \tau_{\theta\theta} / \partial \Delta F_{\theta\theta} \)</span>. </p></li>
+<li><p><strong>ofNode</strong> – <strong>[inout]</strong> The stiffness of the node; the hoop terms are added. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree4Hoop15ringOfFacePointERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdRKN6Fastor6TensorIdXL2EEXL2EEEE">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree4Hoop15ringOfFacePointERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdRKN6Fastor6TensorIdXL2EEXL2EEEE"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree4Hoop15ringOfFacePointERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdRKN6Fastor6TensorIdX2EX2EEE"></span><span id="Marmot::Discretizations::Meshfree::Hoop::ringOfFacePoint__Eigen::Vector2dCR.Eigen::Vector2dCR.double.Fastor::Tensor:double.2.2:CR"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1a2c3bba2015b259961062d36733b18c00"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ringOfFacePoint</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector2d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector2d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">center</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaF33</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deltaF</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The ring of a point of a face of the particle after the increment, <span class="math notranslate nohighlight">\( 2\pi x_r(\boldsymbol{Y}) \)</span>. </p>
+<p>The face moves with the motion of the particle,   <span class="math notranslate nohighlight">\( \boldsymbol{x}(\boldsymbol{Y}) =
+\bar{\boldsymbol{x}}
++ \Delta\boldsymbol{F}\,(\boldsymbol{Y} - \bar{\boldsymbol{Y}}) \)</span>, the motion Nanson’s formula of the face assumes, with the center at <span class="math notranslate nohighlight">\( \bar x_r = \bar r\,\Delta F_{\theta\theta} \)</span>. The ring <span class="math notranslate nohighlight">\( 2\pi x_r \)</span> is the ring weight <span class="math notranslate nohighlight">\( 2\pi r \)</span> of the point times its hoop stretch increment <span class="math notranslate nohighlight">\( x_r / r \)</span>, by which the area of the face grows beyond that of the half plane. For a linear increment it is exact; at the center it is  <span class="math notranslate nohighlight">\( 2\pi
+\bar r\,\Delta F_{\theta\theta} \)</span>. It needs no division by <span class="math notranslate nohighlight">\( r \)</span>. A point on the axis has the ring 0 for an increment that keeps the axis in place; the axis is no boundary and carries no load. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Y</strong> – <strong>[in]</strong> The point, in the intermediate configuration. </p></li>
+<li><p><strong>center</strong> – <strong>[in]</strong> The particle center <span class="math notranslate nohighlight">\( \bar{\boldsymbol{Y}} \)</span>. </p></li>
+<li><p><strong>deltaF33</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \Delta F_{\theta\theta} \)</span> of the particle. </p></li>
+<li><p><strong>deltaF</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> of the particle, in the half plane. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( 2\pi x_r(\boldsymbol{Y}) \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Meshfree4Hoop27dRingOfFacePoint_dDeltaq_BrERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Meshfree4Hoop27dRingOfFacePoint_dDeltaq_BrERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Meshfree4Hoop27dRingOfFacePoint_dDeltaq_BrERKN5Eigen8Vector2dERKN5Eigen8Vector2dEdPKd"></span><span id="Marmot::Discretizations::Meshfree::Hoop::dRingOfFacePoint_dDeltaq_Br__Eigen::Vector2dCR.Eigen::Vector2dCR.double.doubleCP"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1add75c65bef81c67619a2122b6bf7c7e5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dRingOfFacePoint_dDeltaq_Br</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector2d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Y</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector2d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">center</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N_B</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dN_B_dY</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The derivative of <a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Meshfree_1_1Hoop_1a2c3bba2015b259961062d36733b18c00"><span class="std std-ref">ringOfFacePoint()</span></a> with respect to the radial dof of node <span class="math notranslate nohighlight">\( B \)</span>, <span class="math notranslate nohighlight">\( 2\pi \bigl(N_B(\bar{\boldsymbol{Y}}) + \tilde N_{B,j}\,(Y_j - \bar Y_j)\bigr) \)</span>: through the center <span class="math notranslate nohighlight">\( \bar x_r = \bar r + N_B\,\Delta q_{Br} \)</span> and through  <span class="math notranslate nohighlight">\( \Delta F_{rj} = \delta_{rj} + \Delta q_{Br}\,
+\tilde N_{B,j} \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Y</strong> – <strong>[in]</strong> The point, in the intermediate configuration. </p></li>
+<li><p><strong>center</strong> – <strong>[in]</strong> The particle center <span class="math notranslate nohighlight">\( \bar{\boldsymbol{Y}} \)</span>. </p></li>
+<li><p><strong>N_B</strong> – <strong>[in]</strong> The trial function of node <span class="math notranslate nohighlight">\( B \)</span> at the center. </p></li>
+<li><p><strong>dN_B_dY</strong> – <strong>[in]</strong> Its smoothed gradient <span class="math notranslate nohighlight">\( \tilde N_{B,j} \)</span> (2 values). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( \partial (2\pi x_r) / \partial \Delta q_{Br} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE"></span><span id="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1OutOfPlaneTangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OutOfPlaneTangents</span></span></span><br /></dt>
+<dd><p>The out-of-plane parts of the tangent of a 2D material point with respect to the increment of the deformation gradient, which the hoop terms of an axisymmetric particle need (the out-of-plane stretch <span class="math notranslate nohighlight">\( F_{33} \)</span> is the hoop stretch there). </p>
+<p>With <span class="math notranslate nohighlight">\( \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span>,  <span class="math notranslate nohighlight">\( \partial F_{iI} / \partial
+\Delta F_{jJ} = \delta_{ij}\, F_{n,JI} \)</span>, and a block-diagonal 2D state (no out-of-plane shear),     <div class="math notranslate nohighlight">
+\[  \frac{\partial \tau_{ij}}{\partial \Delta F_{33}} = \frac{\partial \tau_{ij}}{\partial F_{3I}}\, F_{n,3I},
+  \qquad
+  \frac{\partial \tau_{33}}{\partial \Delta F_{kL}} = \frac{\partial \tau_{33}}{\partial F_{kI}}\, F_{n,LI} .
+\]</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau_dDeltaF33E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau_dDeltaF33E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau_dDeltaF33E"></span><span id="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau_dDeltaF33__Fastor::Tensor:double.2.2:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1OutOfPlaneTangents_1adb341cdd060c40a8a9b4149b4e1fb0fe"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau_dDeltaF33</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \partial \tau_{ij} / \partial \Delta F_{33} \)</span>, in-plane <span class="math notranslate nohighlight">\( ij \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau33_dDeltaFE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau33_dDeltaFE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents14dTau33_dDeltaFE"></span><span id="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF__Fastor::Tensor:double.2.2:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1OutOfPlaneTangents_1a86ee4b30183c6a5ffefe5b840ef8bd0e"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau33_dDeltaF</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><span class="m"><span class="pre">0.0</span></span><span class="p"><span class="pre">)</span></span><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \partial \tau_{33} / \partial \Delta F_{kL} \)</span>, in-plane <span class="math notranslate nohighlight">\( kL \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents16dTau33_dDeltaF33E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents16dTau33_dDeltaF33E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangents16dTau33_dDeltaF33E"></span><span id="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents::dTau33_dDeltaF33__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1OutOfPlaneTangents_1a4cab953069da57835741a7672209535a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dTau33_dDeltaF33</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \partial \tau_{33} / \partial \Delta F_{33} \)</span></p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot15Discretizations14MaterialPoints25computeOutOfPlaneTangentsE18OutOfPlaneTangentsRKN6Marmot4Math7Tensors13FastorTensors11Tensor3333dERK19DeformationGradient">
+<span id="_CPPv3I0EN6Marmot15Discretizations14MaterialPoints25computeOutOfPlaneTangentsERKN6Marmot4Math7Tensors13FastorTensors11Tensor3333dERK19DeformationGradient"></span><span id="_CPPv2I0EN6Marmot15Discretizations14MaterialPoints25computeOutOfPlaneTangentsERKN6Marmot4Math7Tensors13FastorTensors11Tensor3333dERK19DeformationGradient"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeformationGradient</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespaceMarmot_1_1Discretizations_1_1MaterialPoints_1af96287604f89236127ae7b3233b13ef5"></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPoints18OutOfPlaneTangentsE" title="Marmot::Discretizations::MaterialPoints::OutOfPlaneTangents"><span class="n"><span class="pre">OutOfPlaneTangents</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">computeOutOfPlaneTangents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11Tensor3333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dTau_dF</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0EN6Marmot15Discretizations14MaterialPoints25computeOutOfPlaneTangentsE18OutOfPlaneTangentsRKN6Marmot4Math7Tensors13FastorTensors11Tensor3333dERK19DeformationGradient" title="Marmot::Discretizations::MaterialPoints::computeOutOfPlaneTangents::DeformationGradient"><span class="n"><span class="pre">DeformationGradient</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F_n</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The out-of-plane parts of the tangent of a 2D material point, see <a class="reference internal" href="#structMarmot_1_1Discretizations_1_1MaterialPoints_1_1OutOfPlaneTangents"><span class="std std-ref">OutOfPlaneTangents</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DeformationGradient</strong> – A 3 x 3 tensor or a map of one (e.g. on the state variables). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>dTau_dF</strong> – <strong>[in]</strong> The 3D tangent <span class="math notranslate nohighlight">\( \partial \tau_{ij} / \partial F_{kL} \)</span> of the material. </p></li>
+<li><p><strong>F_n</strong> – <strong>[in]</strong> The 3D deformation gradient of the last accepted state. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The out-of-plane parts. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gradientenhancedfinitestrainparticle.html" class="btn btn-neutral float-left" title="Gradient-Enhanced Finite-Strain Particles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../documentation.html" class="btn btn-neutral float-right" title="Code documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
