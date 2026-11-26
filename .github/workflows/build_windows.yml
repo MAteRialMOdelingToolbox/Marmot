@@ -23,9 +23,8 @@ jobs:
         with:
           init-shell: cmd.exe bash
 
-      # Ninja instead of the Visual Studio generator, which ignores compiler launchers: the MSVC environment
-      # (cl on PATH) and Ninja itself.
-      - uses: ilammy/msvc-dev-cmd@v1
+      # Ninja instead of the Visual Studio generator, which ignores compiler launchers. The MSVC environment
+      # (cl on PATH) comes from the environment's activation (vs2022_win-64 runs vcvars64 in every step).
       - uses: seanmiddleditch/gha-setup-ninja@v6
 
       - uses: ./.github/actions/compiler-cache
@@ -35,6 +34,10 @@ jobs:
       - name: Build Marmot
         run: |
           cmake --version
+          rem The activation also presets the Visual Studio generator, its platform and toolset, which Ninja rejects.
+          set "CMAKE_GENERATOR="
+          set "CMAKE_GENERATOR_PLATFORM="
+          set "CMAKE_GENERATOR_TOOLSET="
           rem Fail on compiler warnings (/WX); local builds keep warnings non-fatal.
           cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_INSTALL_PREFIX="%GITHUB_WORKSPACE%\marmot-install" || exit /b 1
           cmake --build build --parallel || exit /b 1
