@@ -45,8 +45,8 @@ namespace Marmot::Materials {
      * increment.
      *
      * Derived classes must use this type, not Marmot::Math::Differentiation::Automatic::dual, for all quantities that
-     * depend on the strain increment, so that they work with every AD backend (see
-     * MarmotAutomaticDifferentiationTypes.h).
+     * depend on the strain increment: computeStress() evaluates computeStressAD() once with numbers of this type, which
+     * carry all 6 derivatives (see MarmotAutomaticDifferentiationTypes.h).
      */
     using ADScalar = Marmot::Math::Differentiation::Automatic::JacobianDual< 6 >;
 

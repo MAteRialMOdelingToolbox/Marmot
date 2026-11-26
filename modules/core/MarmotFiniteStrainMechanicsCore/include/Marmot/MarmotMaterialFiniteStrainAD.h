@@ -57,8 +57,8 @@ namespace Marmot::Materials {
      * the deformation gradient.
      *
      * Derived classes must use this type, not Marmot::Math::Differentiation::Automatic::dual, for all quantities that
-     * depend on the deformation gradient, so that they work with every AD backend (see
-     * MarmotAutomaticDifferentiationTypes.h).
+     * depend on the deformation gradient: computeStress() evaluates computeStressAD() once with numbers of this type,
+     * which carry all nDim x nDim derivatives (see MarmotAutomaticDifferentiationTypes.h).
      * @tparam nDim Number of spatial dimensions (2 or 3).
      */
     template < int nDim >
@@ -128,8 +128,8 @@ namespace Marmot::Materials {
      *  - compute the Kirchhoff stress \f$\boldsymbol{\tau}\f$ for the given deformation, and
      *  - compute the consistent algorithmic tangent \f$\partial \boldsymbol{\tau} / \partial \boldsymbol{F}\f$.
      *
-     * @note Automatic differentiation requires multiple seeded evaluations of computeStressAD().
-     *       Therefore, the state variables are reset to their "old" values before each seeded call.
+     * @note computeStressAD() is evaluated once, with numbers that carry the derivatives with respect to
+     *       all components of the deformation gradient, starting from the "old" values of the state variables.
      *       Implementations of computeStressAD() must update state based only on primal values of
      *       the dual inputs and must not branch or accumulate history based on derivative components.
      *
@@ -149,7 +149,7 @@ namespace Marmot::Materials {
 
       Eigen::Map< Eigen::VectorXd > stateVars( response.stateVars, this->getNumberOfRequiredStateVars() );
 
-      // Remember old state to reset during potential multiple AD evaluations
+      // Remember the old state, from which computeStressAD() starts
       const Eigen::VectorXd stateVarsOld = stateVars;
       const Tensor33d       tauOld       = response.tau;
 
@@ -178,7 +178,7 @@ namespace Marmot::Materials {
           return res;
         };
 
-      // Compute Kirchhoff stress (tau) and algorithmic tangent (dTau_dF) with autodiff
+      // Compute Kirchhoff stress (tau) and algorithmic tangent (dTau_dF) with automatic differentiation
       std::tie( response.tau, tangents.dTau_dF ) = Marmot::Math::Differentiation::Automatic::dF_dT( computeTauAD,
                                                                                                     deformation.F );
       response.elasticEnergyDensity              = responseAD.elasticEnergyDensity;

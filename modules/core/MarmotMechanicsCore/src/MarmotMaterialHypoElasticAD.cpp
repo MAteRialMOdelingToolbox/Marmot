@@ -27,9 +27,9 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
 
   Marmot::Math::mMatrix6d C( dStressDDStrain.data() );
   // ----------------------------------------
-  // autodiff part
+  // automatic differentiation part
   // ----------------------------------------
-  // compute stress and tangent with autodiff
+  // compute stress and tangent with automatic differentiation
   std::tie( S, C ) = dF_dX< 6 >(
     [&]( const Vector6AD& dE_ ) {
       // reset stateVars to old state
