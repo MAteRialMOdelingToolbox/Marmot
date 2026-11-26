@@ -63,6 +63,11 @@ namespace Marmot::Discretizations::Elements {
       Pressure,        ///< Pressure load (normal to surface)
       SurfaceTorsion,  ///< Surface torsional load
       SurfaceTraction, ///< Surface traction vector
+      HeatFlux,        ///< Prescribed heat flux into the body per unit area: load = [q]
+      HeatFilm,        ///< Convective (film) heat flux out of the body, q = h (T - T_inf): load = [h, T_inf]
+      HeatRadiation,   ///< Radiative heat flux out of the body, q = c ((T - T_0)^4 - (T_inf - T_0)^4), c the product
+                       ///< of the emissivity and the Stefan-Boltzmann constant, T_0 the absolute zero of the
+                       ///< temperature scale (0 for K, -273.15 for degrees Celsius): load = [c, T_inf, T_0]
     };
 
     /** @brief Virtual destructor for safe polymorphic cleanup. */

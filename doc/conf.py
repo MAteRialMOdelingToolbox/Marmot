@@ -113,6 +113,10 @@ breathe_projects_source = {
         "../modules/core/MarmotGradientMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotGradientMechanicsCore/include/Marmot/"),
     ),
+    "MarmotTransportCore": (
+        "../modules/core/MarmotTransportCore/include/Marmot",
+        getAllHeadersInFolder("../modules/core/MarmotTransportCore/include/Marmot/"),
+    ),
 }
 
 # Options for the Doxygen runs Breathe starts for breathe_projects_source: MARMOT_API (symbol export marker, see

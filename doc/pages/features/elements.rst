@@ -19,5 +19,6 @@ in the protected ``getStateViewAtQuadraturePoint``, which is only called with a 
   beamelement
   trusselement
   embeddedbondelement
+  transportfiniteelement
   explicitdynamicsdevices
   energygradients
