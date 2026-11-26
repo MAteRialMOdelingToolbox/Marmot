@@ -302,9 +302,11 @@ namespace Marmot::Discretizations::Meshfree {
      */
     static void checkFaceLoadIsAvailable( bool isCWFCorrection, const char* caller )
     {
-      if ( isAxisymmetric && isCWFCorrection )
-        throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                     << caller << ": CWFCORRECTION is not available for an axisymmetric particle" );
+      if constexpr ( isAxisymmetric ) {
+        if ( isCWFCorrection )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << caller << ": CWFCORRECTION is not available for an axisymmetric particle" );
+      }
     }
 
     /**

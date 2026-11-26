@@ -202,8 +202,8 @@ namespace Marmot::Discretizations::MaterialPoints {
       for ( int K = 0; K < nNonlocal; K++ ) {
         tangents.dTau33_dN( K )    = algorithmicModuli3D.dTau_dN[K]( 2, 2 );
         tangents.dL_dDeltaF33( K ) = 0.0;
-        for ( int I = 0; I < 3; I++ )
-          tangents.dL_dDeltaF33( K ) += algorithmicModuli3D.dL_dF[K]( 2, I ) * F_n( 2, I );
+        for ( int j = 0; j < 3; j++ )
+          tangents.dL_dDeltaF33( K ) += algorithmicModuli3D.dL_dF[K]( 2, j ) * F_n( 2, j );
       }
     }
   }
