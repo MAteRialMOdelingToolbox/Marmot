@@ -106,10 +106,11 @@ namespace Marmot::Discretizations::Meshfree {
     using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >; ///< Alias for Eigen vector storing coordinates.
     using JacobianSized = Eigen::Matrix< double, nDim, nDim >; ///< Alias for Eigen matrix storing Jacobian/deformation
                                                                ///< gradient.
-    using KernelFunctionVector = std::vector< const KernelFunction* >;      ///< Alias for a vector of kernel
-                                                                            ///< function pointers.
-    using ParticleDomainType = ParticleDomain< nDim, nVertices >;           ///< Alias for the particle domain type.
-    using SectionIntegrals   = ParticleSectionIntegrals< nDim, nVertices >; ///< the integrals over a smoothing domain
+    using KernelFunctionVector = std::vector< const KernelFunction* >; ///< Alias for a vector of kernel
+                                                                       ///< function pointers.
+    using ParticleDomainType = ParticleDomain< nDim, nVertices >;      ///< Alias for the particle domain type.
+    /// the integrals over a smoothing domain
+    using SectionIntegrals = ParticleSectionIntegrals< Section::Cartesian, nDim, nVertices >;
 
     /**
      * @struct SubDomainShapeFunctions

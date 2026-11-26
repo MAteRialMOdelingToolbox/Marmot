@@ -388,7 +388,19 @@ points, ``ParticleSectionIntegrals::faceQuadraturePoints()``. This matters becau
 kernel functions whose supports cover its evaluation points: a quadrature point that is not an evaluation point would be
 evaluated with an incomplete set of kernel functions. An SDI particle takes as evaluation points only the quadrature
 points of its subdomains on the faces of the particle, and assumes that the kernel functions which cover these also
-cover the points on the inner faces. To change the face quadrature, change ``ParticleSectionIntegrals`` only.
+cover the points on the inner faces. For the SQCNI and NSNI particles whose smoothing domain follows the deformation
+gradient (the update ``DeformationGradient``, with which the smoothing domain is the particle), a load on a face of the
+particle (``PRESSURE``) is integrated with the same rule, ``ParticleSectionIntegrals::faceQuadrature()`` and
+``ParticleSectionIntegrals::addPressure()``, so that it balances the internal force of a uniform stress exactly. Two
+keep a pressure rule of their own, which does not: the SDI particle (``DisplacementParticleSQCNIxSDI``) integrates a
+pressure at the center of the face of the particle, while its smoothing integrates on the faces of its subdomains; and
+the gradient-enhanced particle with another update of its smoothing domain (SNNI, ``None``, and the two rotations) maps
+the undeformed face by Nanson's formula and integrates at its center. To change the face quadrature of the smoothing,
+change ``ParticleSectionIntegrals`` only.
+The form of the integrals depends on the section of the particle, the template parameter of
+``ParticleSectionIntegrals``: the Cartesian section (plane strain, 3D) integrates with the face centers, as above; the
+axisymmetric section weights every integral with the ring and integrates with two Gauss points per face
+(:doc:`axisymmetricparticles`).
 
 The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
 :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. The former

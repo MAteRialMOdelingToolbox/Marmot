@@ -37,7 +37,7 @@ The meshfree layer consists of a core module and of formulation modules in the d
      - :doc:`displacementcell`, :doc:`gradientenhancedfinitestraincell`
    * - ``particles/``
      - RKPM particles of a formulation, with their integration schemes
-     - :doc:`displacementparticle`, :doc:`gradientenhancedfinitestrainparticle`
+     - :doc:`displacementparticle`, :doc:`gradientenhancedfinitestrainparticle`, :doc:`axisymmetricparticles`
 
 Two formulations are available, each for MPM (material point and cell) and RKPM (particle):
 
@@ -74,7 +74,7 @@ As materials and elements, all meshfree types register themselves by name with a
    * - particle
      - ``<Formulation><IntegrationScheme>/<Dimension>/<Shape>``
      - ``GradientEnhancedFiniteStrainSQCNIxNSNI/PlaneStrain/Quad``, ``DisplacementSQCNI/3D/Hexa``,
-       ``Displacement/PlaneStrain/Point``
+       ``Displacement/PlaneStrain/Point``, ``DisplacementSQCNI/Axisymmetric/Quad``
 
 The integration schemes of the particles (SQCNI, SNNI, NSNI, SDI) and the corrections VCI and CWF are defined in
 :doc:`meshfreeparticles`; the registered names of each formulation are listed on its pages.
@@ -112,3 +112,4 @@ The EdelweissMeshfree examples ``160_gradient_enhanced_finite_strain_mpm_test`` 
   gradientenhancedfinitestrainmaterialpoint
   gradientenhancedfinitestraincell
   gradientenhancedfinitestrainparticle
+  axisymmetricparticles

@@ -127,6 +127,13 @@ namespace Marmot::Discretizations::Meshfree {
     const LagrangeCellType& smoothingDomain() const { return _cellForSmoothing; }
 
     /**
+     * @brief The deformed geometry, for its faces and its volume in the section (ParticleSectionIntegrals).
+     * @return A const reference to the cell of the geometry in the intermediate configuration; for the update type
+     * DeformationGradient it coincides with the smoothing domain.
+     */
+    const LagrangeCellType& geometryDeformed() const { return _cellForGeometryDeformed; }
+
+    /**
      * @brief Gets the number of vertices defining the particle.
      * @return The number of vertices.
      */
