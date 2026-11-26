@@ -473,10 +473,8 @@ namespace Marmot::Discretizations::Meshfree {
                                                                                       double        dT ) const
   {
 
-    if ( SectionIntegrals::isAxisymmetric && type == DisplacementParticle< nDim, section >::CWFCorrection )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__
-                                   << ": CWFCORRECTION is not available for an axisymmetric particle" );
+    SectionIntegrals::checkFaceLoadIsAvailable( type == DisplacementParticle< nDim, section >::CWFCorrection,
+                                                __PRETTY_FUNCTION__ );
 
     switch ( type ) {
 
@@ -502,99 +500,98 @@ namespace Marmot::Discretizations::Meshfree {
 
       using namespace Fastor;
 
-      const auto face = faceQuadratureIntermediate( boundaryFaceID );
-      for ( int g = 0; g < SectionIntegrals::nPointsPerFace; g++ ) {
-        const Eigen::Matrix< double, nDim, 1 > Y_N = face.points.col( g );
-        const TensorD N_dAY( Eigen::Matrix< double, nDim, 1 >( SectionIntegrals::weight( Y_N ) * face.n_dA ).data() );
+      // one point with the weight 1, the Cartesian rule of the face: an axisymmetric particle has no CWF correction
+      const auto                             face = faceQuadratureIntermediate( boundaryFaceID );
+      const Eigen::Matrix< double, nDim, 1 > Y_N  = face.points.col( 0 );
+      const TensorD                          N_dAY( face.n_dA.data() );
 
-        const auto& S = _mp->response.S;
-        const auto& t = _mp->tangents;
+      const auto& S = _mp->response.S;
+      const auto& t = _mp->tangents;
 
-        const auto                         deltaF    = this->dx_dY();
-        const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
+      const auto                         deltaF    = this->dx_dY();
+      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
 
-        // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
-        // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
-        const double  JY       = determinant( this->dY_dX() );
-        const TensorD v        = transpose( deltaFInv ) % N_dAY / JY; // F^-T * N * dA / J_Y
-        TensorD       traction = S % v;                               // tau * v
+      // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
+      // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
+      const double  JY       = determinant( this->dY_dX() );
+      const TensorD v        = transpose( deltaFInv ) % N_dAY / JY; // F^-T * N * dA / J_Y
+      TensorD       traction = S % v;                               // tau * v
 
-        Tensor< double, nDim, nDim, nDim > df_dDeltaF;
-        df_dDeltaF.zeros();
+      Tensor< double, nDim, nDim, nDim > df_dDeltaF;
+      df_dDeltaF.zeros();
 
-        for ( int i = 0; i < nDim; ++i ) {
-          for ( int m = 0; m < nDim; ++m ) {
-            for ( int M = 0; M < nDim; ++M ) {
+      for ( int i = 0; i < nDim; ++i ) {
+        for ( int m = 0; m < nDim; ++m ) {
+          for ( int M = 0; M < nDim; ++M ) {
 
-              double geo = 0.0;
-              double mat = 0.0;
+            double geo = 0.0;
+            double mat = 0.0;
 
-              for ( int j = 0; j < nDim; ++j ) {
-                // Geometric stiffness part: derived from delta(F^-T)
-                geo -= S( i, j ) * v( m ) * deltaFInv( M, j );
+            for ( int j = 0; j < nDim; ++j ) {
+              // Geometric stiffness part: derived from delta(F^-T)
+              geo -= S( i, j ) * v( m ) * deltaFInv( M, j );
 
-                // Material stiffness part: derived from delta(tau)
-                mat += t.dS_dDeltaF( i, j, m, M ) * v( j );
-              }
-
-              df_dDeltaF( i, m, M ) = geo + mat;
+              // Material stiffness part: derived from delta(tau)
+              mat += t.dS_dDeltaF( i, j, m, M ) * v( j );
             }
+
+            df_dDeltaF( i, m, M ) = geo + mat;
           }
         }
+      }
 
-        // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
-        // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
-        // the traction is a reaction, the tangential one is a natural (zero) condition
-        const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
-        TensorD   sel;
-        for ( int i = 0; i < nDim; ++i )
-          sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
-        for ( int i = 0; i < nDim; ++i ) {
-          traction( i ) *= sel( i );
-          for ( int m = 0; m < nDim; ++m )
-            for ( int M = 0; M < nDim; ++M )
-              df_dDeltaF( i, m, M ) *= sel( i );
+      // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
+      // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
+      // the traction is a reaction, the tangential one is a natural (zero) condition
+      const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
+      TensorD   sel;
+      for ( int i = 0; i < nDim; ++i )
+        sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
+      for ( int i = 0; i < nDim; ++i ) {
+        traction( i ) *= sel( i );
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            df_dDeltaF( i, m, M ) *= sel( i );
+      }
+
+      Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( this->_nNodes );
+
+      this->_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
+                                                          this->_assignedKernelFunctions,
+                                                          testBoundary.data() );
+
+      for ( int A = 0; A < _nNodes; A++ ) {
+        const int idxA_u = nodeBlockSize * A;
+
+        TensorD r_U = testBoundary( A ) * traction;
+
+        {
+          using namespace Eigen;
+          P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
         }
 
-        Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( this->_nNodes );
+        for ( int B = 0; B < _nNodes; B++ ) {
+          const int  idxB_u  = nodeBlockSize * B;
+          const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col( B ).data() );
 
-        this->_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
-                                                            this->_assignedKernelFunctions,
-                                                            testBoundary.data() );
+          Tensor< double, nDim, nDim > df_ddQU_B;
+          df_ddQU_B.zeros();
 
-        for ( int A = 0; A < _nNodes; A++ ) {
-          const int idxA_u = nodeBlockSize * A;
+          // Contract df_dF with the reference shape function gradient
+          for ( int i = 0; i < nDim; ++i ) {
+            for ( int m = 0; m < nDim; ++m ) {
+              for ( int M = 0; M < nDim; ++M ) {
+                df_ddQU_B( i, m ) += df_dDeltaF( i, m, M ) * dN_B_dY( M );
+              }
+            }
+          }
 
-          TensorD r_U = testBoundary( A ) * traction;
+          df_ddQU_B *= testBoundary( A );
 
           {
             using namespace Eigen;
-            P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
-          }
-
-          for ( int B = 0; B < _nNodes; B++ ) {
-            const int  idxB_u  = nodeBlockSize * B;
-            const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col( B ).data() );
-
-            Tensor< double, nDim, nDim > df_ddQU_B;
-            df_ddQU_B.zeros();
-
-            // Contract df_dF with the reference shape function gradient
-            for ( int i = 0; i < nDim; ++i ) {
-              for ( int m = 0; m < nDim; ++m ) {
-                for ( int M = 0; M < nDim; ++M ) {
-                  df_ddQU_B( i, m ) += df_dDeltaF( i, m, M ) * dN_B_dY( M );
-                }
-              }
-            }
-
-            df_ddQU_B *= testBoundary( A );
-
-            {
-              using namespace Eigen;
-              K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
-                torowmajor( df_ddQU_B ).data() );
-            }
+            K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
+              torowmajor( df_ddQU_B ).data() );
           }
         }
       }

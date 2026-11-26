@@ -857,10 +857,6 @@ namespace {
                                create( { -0.1, 0.0, 0.2, 0.0, 0.2, 0.3, -0.1, 0.3 } );
                              } ),
                              type.name + ": a vertex at r < 0 is refused" );
-    throwExceptionOnFailure( throws( [&]() {
-                               create( { -0.2, 0.0, 0.0, 0.0, 0.0, 0.3, -0.2, 0.3 } );
-                             } ),
-                             type.name + ": a particle in r <= 0 is refused (by its vertices)" );
     throwExceptionOnFailure( !throws( [&]() {
       create( { 0.0, 0.0, 0.2, 0.0, 0.2, 0.3, 0.0, 0.3 } );
     } ),

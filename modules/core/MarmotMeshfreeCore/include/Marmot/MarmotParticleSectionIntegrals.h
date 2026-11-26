@@ -109,11 +109,16 @@ namespace Marmot::Discretizations::Meshfree {
    * and the second moments are those of the ring about the area centroid, @f$ 2\pi \int \boldsymbol{\xi} \otimes
    * \boldsymbol{\xi}\, r\, dA @f$.
    *
-   * The particles take these integrals, their evaluation points (faceQuadraturePoints()) and their face loads from
-   * here and not from the cell: the face rule is defined in this class only. *Section* is meant as for finite elements
-   * (plane strain, 3D, axisymmetric): the form of the integrals depends on it; in the Cartesian section the integrals
-   * carry the weight 1. The class holds static functions only, so that a particle selects its integrals with its own
-   * template parameters.
+   * The particles take these integrals and their evaluation points (faceQuadraturePoints()) from here and not from the
+   * cell: the face rule of the smoothing is defined in this class only. So do the SQCNI and NSNI particles whose
+   * smoothing domain follows the deformation gradient (the update `DeformationGradient`, with which the smoothing
+   * domain is the particle) take their face loads (addPressure()). The SDI particle
+   * (DisplacementParticleSQCNIxSDI::computeDistributedLoad()) and the gradient-enhanced particle with another update of
+   * its smoothing domain (GradientEnhancedFiniteStrainParticleSQCNI::faceQuadratureIntermediate()) integrate a
+   * pressure at a face center of their own, which does not balance a uniform stress exactly. *Section* is meant as for
+   * finite elements (plane strain, 3D, axisymmetric): the form of the integrals depends on it; in the Cartesian
+   * section the integrals carry the weight 1. The class holds static functions only, so that a particle selects its
+   * integrals with its own template parameters.
    *
    * @tparam section   The section.
    * @tparam nDim      The spatial dimension; 2 for the axisymmetric section.
@@ -286,6 +291,20 @@ namespace Marmot::Discretizations::Meshfree {
                                    : std::unordered_map< std::string, int >{ { "PRESSURE", pressure },
                                                                              { "CWFCORRECTION", cwfCorrection } };
       return faceLoads;
+    }
+
+    /**
+     * @brief Refuse a distributed load on a face that an SQCNI particle in the section does not support
+     * (supportedFaceLoads()): the CWF correction of the axisymmetric section.
+     * @param[in] isCWFCorrection The load is the CWF correction.
+     * @param[in] caller The function that applies the load, for the message.
+     * @throws std::invalid_argument for the CWF correction of an axisymmetric particle.
+     */
+    static void checkFaceLoadIsAvailable( bool isCWFCorrection, const char* caller )
+    {
+      if ( isAxisymmetric && isCWFCorrection )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << caller << ": CWFCORRECTION is not available for an axisymmetric particle" );
     }
 
     /**
@@ -464,8 +483,10 @@ namespace Marmot::Discretizations::Meshfree {
    * its radius @f$ \bar r @f$ in the intermediate configuration. The virtual hoop strain is @f$ \delta d_{\theta\theta}
    * = \delta x_r / x_r = \delta u_r / (\bar r\, \Delta F_{\theta\theta}) @f$, so that the virtual work of the hoop
    * stress over the undeformed ring, @f$ \tau_{\theta\theta}\, \delta d_{\theta\theta}\, V_0 @f$, adds to the radial
-   * residual of node @f$ A @f$ the term @f$ T_A\, \tau_{\theta\theta} / (\bar r\, \Delta F_{\theta\theta})\, V_0 @f$:
-   * the hoop operator @f$ \tilde H_A = T_A / \bar r @f$ (see ParticleSectionIntegrals for why it is the point value).
+   * residual of node @f$ A @f$ the term @f$ T_A\, \tau_{\theta\theta} / (\bar r\, \Delta F_{\theta\theta})\, V_0 @f$,
+   * with the test function @f$ T_A @f$ of the node at the center: the term @f$ T_A / \bar r @f$ is the hoop operator
+   * @f$ \tilde H_A = N_A(\bar{\boldsymbol{Y}}) / \bar r @f$ of ParticleSectionIntegrals with the test function (see
+   * there for why it is the point value).
    * The faces of a particle carry the ring of their points (ringOfFacePoint()). The derivation is on the page
    * "Axisymmetric Particles" of the documentation.
    */
@@ -595,7 +616,8 @@ namespace Marmot::Discretizations::Meshfree {
      * assumes, with the center at @f$ \bar x_r = \bar r\,\Delta F_{\theta\theta} @f$. The ring @f$ 2\pi x_r @f$ is the
      * ring weight @f$ 2\pi r @f$ of the point times its hoop stretch increment @f$ x_r / r @f$, by which the area of
      * the face grows beyond that of the half plane. For a linear increment it is exact; at the center it is @f$ 2\pi
-     * \bar r\,\Delta F_{\theta\theta} @f$. It needs no division by @f$ r @f$, so a face on the axis carries the ring 0.
+     * \bar r\,\Delta F_{\theta\theta} @f$. It needs no division by @f$ r @f$. A point on the axis has the ring 0 for an
+     * increment that keeps the axis in place; the axis is no boundary and carries no load.
      * @param[in] Y The point, in the intermediate configuration.
      * @param[in] center The particle center @f$ \bar{\boldsymbol{Y}} @f$.
      * @param[in] deltaF33 @f$ \Delta F_{\theta\theta} @f$ of the particle.

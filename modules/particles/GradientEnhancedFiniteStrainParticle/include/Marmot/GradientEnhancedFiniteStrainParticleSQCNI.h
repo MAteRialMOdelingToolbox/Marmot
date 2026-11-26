@@ -130,10 +130,13 @@ namespace Marmot::Discretizations::Meshfree {
       return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices );
     }
 
-    /// \brief The geometry of the particle, built from its current vertex coordinates (getVertexCoordinates())
-    /// \return The cell of the particle in the intermediate configuration; for the update type DeformationGradient it
-    /// coincides with the smoothing domain.
-    LagrangeCellType geometry() const
+    /**
+     * @brief The deformed geometry of the particle, built from its current vertex coordinates (getVertexCoordinates()),
+     * as ParticleDomain::geometryDeformed() of the displacement family.
+     * @return The cell of the particle in the intermediate configuration; for the update type DeformationGradient it
+     * coincides with the smoothing domain.
+     */
+    LagrangeCellType geometryDeformed() const
     {
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
       getVertexCoordinates( vertexCoordinates.data() );
@@ -283,13 +286,13 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Volume of the last accepted state, @f$ V_0\det\boldsymbol{F}_n @f$; for an axisymmetric particle the ring
-     * volume of its geometry (geometry()).
+     * volume of its geometry (geometryDeformed()).
      * @return The volume in the intermediate reference configuration (the current increment is not included).
      */
     virtual double getVolumeDeformed() const
     {
       if constexpr ( SectionIntegrals::isAxisymmetric )
-        return SectionIntegrals::volume( geometry() );
+        return SectionIntegrals::volume( geometryDeformed() );
       else
         return this->getVolumeUndeformed() * Fastor::determinant( this->_mp.dY_dX() );
     }
@@ -448,14 +451,14 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Center of a face of the particle geometry (geometry()).
+     * @brief Center of a face of the particle geometry (geometryDeformed()).
      * @param[in]  faceID      Face id (1-based).
      * @param[out] coordinates Face center (nDim values).
      */
     void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
-      faceCenter = geometry().getFaceCenterCoordinates( faceID );
+      faceCenter = geometryDeformed().getFaceCenterCoordinates( faceID );
     }
 
     /**
@@ -530,11 +533,9 @@ namespace Marmot::Discretizations::Meshfree {
     double        dT ) const
   {
 
-    if ( SectionIntegrals::isAxisymmetric &&
-         type == GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::CWFCorrection )
-      throw std::invalid_argument( Marmot::Utilities::MakeString()
-                                   << __PRETTY_FUNCTION__
-                                   << ": CWFCORRECTION is not available for an axisymmetric particle" );
+    SectionIntegrals::
+      checkFaceLoadIsAvailable( type == GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::CWFCorrection,
+                                __PRETTY_FUNCTION__ );
 
     switch ( type ) {
 
@@ -560,88 +561,88 @@ namespace Marmot::Discretizations::Meshfree {
 
       using namespace Fastor;
 
-      const auto face = faceQuadratureIntermediate( boundaryFaceID );
-      for ( int g = 0; g < SectionIntegrals::nPointsPerFace; g++ ) {
-        const CoordinatesSized Y_N = face.points.col( g );
-        const TensorD          N_dAY( CoordinatesSized( SectionIntegrals::weight( Y_N ) * face.n_dA ).data() );
+      // one point with the weight 1, the Cartesian rule of the face: an axisymmetric particle has no CWF correction
+      const auto             face = faceQuadratureIntermediate( boundaryFaceID );
+      const CoordinatesSized Y_N  = face.points.col( 0 );
+      const TensorD          N_dAY( face.n_dA.data() );
 
-        const auto& S = _mp.response.S;
-        const auto& t = _mp.tangents;
+      const auto& S = _mp.response.S;
+      const auto& t = _mp.tangents;
 
-        // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
-        // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
-        const auto                         deltaF    = _mp.dx_dY();
-        const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-        const double                       JY        = determinant( _mp.dY_dX() );
+      // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
+      // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
+      const auto                         deltaF    = _mp.dx_dY();
+      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
+      const double                       JY        = determinant( _mp.dY_dX() );
 
-        const TensorD v        = transpose( deltaFInv ) % N_dAY / JY;
-        TensorD       traction = S % v;
+      const TensorD v        = transpose( deltaFInv ) % N_dAY / JY;
+      TensorD       traction = S % v;
 
-        // d traction_i / d deltaF_mM: the geometric part from d(deltaF^-T), the material part from d tau
-        Tensor< double, nDim, nDim, nDim > dTraction_dDeltaF( 0.0 );
-        for ( int i = 0; i < nDim; ++i )
-          for ( int m = 0; m < nDim; ++m )
-            for ( int M = 0; M < nDim; ++M )
-              for ( int j = 0; j < nDim; ++j )
-                dTraction_dDeltaF( i, m, M ) += -S( i, j ) * v( m ) * deltaFInv( M, j ) +
-                                                t.dS_dDeltaF( i, j, m, M ) * v( j );
+      // d traction_i / d deltaF_mM: the geometric part from d(deltaF^-T), the material part from d tau
+      Tensor< double, nDim, nDim, nDim > dTraction_dDeltaF( 0.0 );
+      for ( int i = 0; i < nDim; ++i )
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            for ( int j = 0; j < nDim; ++j )
+              dTraction_dDeltaF( i, m, M ) += -S( i, j ) * v( m ) * deltaFInv( M, j ) +
+                                              t.dS_dDeltaF( i, j, m, M ) * v( j );
 
-        std::array< TensorD, nNonlocal > dTraction_dN;
+      std::array< TensorD, nNonlocal > dTraction_dN;
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+        dTraction_dN[kNl] = t.dS_dN[kNl] % v;
+
+      // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
+      // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
+      // the traction is a reaction, the tangential one is a natural (zero) condition
+      const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
+      TensorD   sel;
+      for ( int i = 0; i < nDim; ++i )
+        sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
+      for ( int i = 0; i < nDim; ++i ) {
+        traction( i ) *= sel( i );
         for ( int kNl = 0; kNl < nNonlocal; kNl++ )
-          dTraction_dN[kNl] = t.dS_dN[kNl] % v;
+          dTraction_dN[kNl]( i ) *= sel( i );
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            dTraction_dDeltaF( i, m, M ) *= sel( i );
+      }
 
-        // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
-        // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
-        // the traction is a reaction, the tangential one is a natural (zero) condition
-        const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
-        TensorD   sel;
-        for ( int i = 0; i < nDim; ++i )
-          sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
-        for ( int i = 0; i < nDim; ++i ) {
-          traction( i ) *= sel( i );
-          for ( int kNl = 0; kNl < nNonlocal; kNl++ )
-            dTraction_dN[kNl]( i ) *= sel( i );
-          for ( int m = 0; m < nDim; ++m )
-            for ( int M = 0; M < nDim; ++M )
-              dTraction_dDeltaF( i, m, M ) *= sel( i );
+      Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( ParentPointParticle::_nNodes );
+
+      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
+                                                                         ParentPointParticle::_assignedKernelFunctions,
+                                                                         testBoundary.data() );
+
+      for ( int A = 0; A < _nNodes; A++ ) {
+        const int idxA_u = nodeBlockSize * A;
+
+        const TensorD r_U = testBoundary( A ) * traction;
+        {
+          using namespace Eigen;
+          P.template segment< nDim >( idxA_u ) -= Map< const Matrix< double, nDim, 1 > >( r_U.data() );
         }
 
-        Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( ParentPointParticle::_nNodes );
+        for ( int B = 0; B < _nNodes; B++ ) {
+          const int  idxB_u  = nodeBlockSize * B;
+          const int  idxB_n  = nodeBlockSize * B + nDim;
+          const auto dN_B_dY = TensorMap< const double, nDim >(
+            GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_dN_dY.col( B ).data() );
+          const double N_B = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_N( B );
 
-        ParentPointParticle::_meshfreeApproximation
-          .computeShapeFunctions( Y_N.data(), ParentPointParticle::_assignedKernelFunctions, testBoundary.data() );
+          Tensor< double, nDim, nDim > k_UU( 0.0 );
+          for ( int i = 0; i < nDim; ++i )
+            for ( int m = 0; m < nDim; ++m )
+              for ( int M = 0; M < nDim; ++M )
+                k_UU( i, m ) += testBoundary( A ) * dTraction_dDeltaF( i, m, M ) * dN_B_dY( M );
 
-        for ( int A = 0; A < _nNodes; A++ ) {
-          const int idxA_u = nodeBlockSize * A;
-
-          const TensorD r_U = testBoundary( A ) * traction;
           {
             using namespace Eigen;
-            P.template segment< nDim >( idxA_u ) -= Map< const Matrix< double, nDim, 1 > >( r_U.data() );
-          }
-
-          for ( int B = 0; B < _nNodes; B++ ) {
-            const int  idxB_u  = nodeBlockSize * B;
-            const int  idxB_n  = nodeBlockSize * B + nDim;
-            const auto dN_B_dY = TensorMap< const double, nDim >(
-              GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_dN_dY.col( B ).data() );
-            const double N_B = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_N( B );
-
-            Tensor< double, nDim, nDim > k_UU( 0.0 );
-            for ( int i = 0; i < nDim; ++i )
-              for ( int m = 0; m < nDim; ++m )
-                for ( int M = 0; M < nDim; ++M )
-                  k_UU( i, m ) += testBoundary( A ) * dTraction_dDeltaF( i, m, M ) * dN_B_dY( M );
-
-            {
-              using namespace Eigen;
-              K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< const Matrix< double, nDim, nDim > >(
-                torowmajor( k_UU ).data() );
-              for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
-                const TensorD k_UN = testBoundary( A ) * N_B * dTraction_dN[kNl];
-                K.template block< nDim, 1 >( idxA_u,
-                                             idxB_n + kNl ) -= Map< const Matrix< double, nDim, 1 > >( k_UN.data() );
-              }
+            K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< const Matrix< double, nDim, nDim > >(
+              torowmajor( k_UU ).data() );
+            for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+              const TensorD k_UN = testBoundary( A ) * N_B * dTraction_dN[kNl];
+              K.template block< nDim, 1 >( idxA_u,
+                                           idxB_n + kNl ) -= Map< const Matrix< double, nDim, 1 > >( k_UN.data() );
             }
           }
         }
