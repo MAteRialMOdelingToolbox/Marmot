@@ -34,7 +34,7 @@ The meshfree layer consists of a core module and of formulation modules in the d
      - :doc:`displacementmaterialpoint`, :doc:`gradientenhancedfinitestrainmaterialpoint`
    * - ``cells/``
      - MPM cells of a formulation, which assemble the contributions of their material points
-     - :doc:`displacementcell`, :doc:`gradientenhancedfinitestraincell`
+     - :doc:`displacementcell`, :doc:`displacementfbarcell`, :doc:`gradientenhancedfinitestraincell`
    * - ``particles/``
      - RKPM particles of a formulation, with their integration schemes
      - :doc:`displacementparticle`, :doc:`gradientenhancedfinitestrainparticle`, :doc:`axisymmetricparticles`
@@ -108,6 +108,7 @@ The EdelweissMeshfree examples ``160_gradient_enhanced_finite_strain_mpm_test`` 
   meshfreeparticles
   displacementmaterialpoint
   displacementcell
+  displacementfbarcell
   displacementparticle
   gradientenhancedfinitestrainmaterialpoint
   gradientenhancedfinitestraincell

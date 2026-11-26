@@ -130,6 +130,93 @@ namespace Marmot::Discretizations::Cells {
       const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints ) = 0;
 
     /**
+     * @brief Optional: sets the point at which a cell-level projection of the cell (e.g. the volume change of an
+     * F-bar cell) is evaluated, instead of the cell's own choice, until the next assignMaterialPoints().
+     * @details Meant for cells that share one interpolation, e.g. the cells of an aggregate in the aggregated material
+     * point method, whose boundary cells carry the extension of the field of an interior cell: evaluating the
+     * projection of all of them at one common point imposes one constraint per aggregate instead of one per cell. The
+     * point may lie outside the cell (the cell's basis is then extended). A cell without such a projection ignores
+     * the point and returns false (the default).
+     * @param[in] coordinates The point, in physical coordinates (nDim values).
+     * @return Whether the cell uses the point.
+     */
+    virtual bool setProjectionPoint( [[maybe_unused]] const double* coordinates ) { return false; }
+
+    /**
+     * @name Optional: a projection over a patch of cells
+     * @brief A scalar that the cells of a patch share, e.g. the volume change of an F-bar-patch formulation, computed
+     * by the host in two passes.
+     *
+     * @details The patch value is the weighted mean of the contributions of the material points of all cells of the
+     * patch,
+     * @f[
+     *   \bar{v} = \frac{\sum_c v_c(\boldsymbol{Q}_c)}{\sum_c w_c}, \qquad v_c = \sum_{p \in c} w_p\, v_p, \quad
+     *   w_c = \sum_{p \in c} w_p ,
+     * @f]
+     * which couples the degrees of freedom of all cells of the patch. Per evaluation, the host
+     *  1. calls computeProjectionContribution() on every cell of the patch (before
+     *     interpolateFieldsToMaterialPoints(); it changes no material point), forms @f$ \bar{v} @f$,
+     *  2. passes it to every cell with setProjectedValue(), then interpolates, computes the material points and the
+     *     kernels as usual: computeMaterialPointKernels() (and the loads) return the residual of the cell and its
+     *     tangent at fixed @f$ \bar{v} @f$,
+     *  3. assembles the coupling of the patch, the outer products
+     *     @f$ \partial \boldsymbol{R}_c/\partial \bar{v} \otimes \partial v_d/\partial \boldsymbol{Q}_d / \sum w @f$
+     *     for all cells @f$ c, d @f$ of the patch, with getProjectionSensitivity().
+     *
+     * A cell on its own is a patch of one cell. The default implementations decline (hasPatchProjection() is false)
+     * or throw.
+     * @{
+     */
+
+    /**
+     * @brief Whether the cell supports a projection over a patch of cells.
+     * @return false (the default).
+     */
+    virtual bool hasPatchProjection() const { return false; }
+
+    /**
+     * @brief The contribution of the cell's material points to the patch value at the dof vector @p Q, and its
+     * derivative; changes no material point.
+     * @param[in]  Q         Cell dof vector (getNDofPerCell() values, the same as for
+     *                       interpolateFieldsToMaterialPoints()).
+     * @param[out] value     @f$ v_c = \sum_p w_p v_p @f$.
+     * @param[out] weight    @f$ w_c = \sum_p w_p @f$ (independent of @p Q).
+     * @param[out] dValue_dQ @f$ \partial v_c/\partial \boldsymbol{Q} @f$ (getNDofPerCell() values), overwritten.
+     * @throws std::invalid_argument if not supported (default).
+     */
+    virtual void computeProjectionContribution( [[maybe_unused]] const double* Q,
+                                                [[maybe_unused]] double*       value,
+                                                [[maybe_unused]] double*       weight,
+                                                [[maybe_unused]] double*       dValue_dQ ) const
+    {
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": not supported" );
+    }
+
+    /**
+     * @brief Sets the patch value @f$ \bar{v} @f$ the following evaluations use, and switches the cell to the patch
+     * projection until the next assignMaterialPoints().
+     * @param[in] value The patch value.
+     * @throws std::invalid_argument if not supported (default).
+     */
+    virtual void setProjectedValue( [[maybe_unused]] double value )
+    {
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": not supported" );
+    }
+
+    /**
+     * @brief The derivative of the residual contributions of the cell (computeMaterialPointKernels() and
+     * computeDistributedLoad(), as evaluated since the last interpolateFieldsToMaterialPoints()) w.r.t. the patch
+     * value, in the sign convention of the tangents.
+     * @param[out] dR_dValue getNDofPerCell() values, overwritten.
+     * @throws std::invalid_argument if not supported (default).
+     */
+    virtual void getProjectionSensitivity( [[maybe_unused]] double* dR_dValue ) const
+    {
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": not supported" );
+    }
+    /** @} */
+
+    /**
      * @brief Integrates the internal force vector and its tangent over the assigned material points.
      * @details Uses the material point responses computed in the preceding
      * Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself(). Results are added to the output
@@ -217,6 +304,21 @@ namespace Marmot::Discretizations::Cells {
      * @param[in]  coordinates Point coordinates (nDim values), inside the cell.
      */
     virtual void getInterpolationVector( double* vec, const double* coordinates ) const = 0;
+
+    /**
+     * @brief Evaluates the gradients @f$ \partial N_A/\partial X_i @f$ of the cell interpolation at a point, e.g. for
+     * the normal derivatives on the faces of a ghost penalty stabilization. Optional: cells deriving from
+     * CellWithGeometry implement it from their geometry (also outside of the cell, the gradients of the polynomial
+     * extension of getInterpolationVector()); the default throws.
+     * @param[out] dNdX        Gradients, nDim x getNNodes(), column-major (the nDim derivatives of node 0 first).
+     * @param[in]  coordinates Point coordinates (nDim values).
+     * @throws std::runtime_error if the cell does not provide its interpolation gradients.
+     */
+    virtual void getInterpolationGradient( [[maybe_unused]] double*       dNdX,
+                                           [[maybe_unused]] const double* coordinates ) const
+    {
+      throw std::runtime_error( "Cell::getInterpolationGradient is not implemented for cell shape " + getCellShape() );
+    }
 
     /**
      * @brief Body load types supported by the cell.

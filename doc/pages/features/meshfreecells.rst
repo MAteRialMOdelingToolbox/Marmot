@@ -90,7 +90,8 @@ Cell geometries
 
 The formulation cells are templates over a *geometry policy*, a class that satisfies the concept
 ``GeometryCellPolicy``: it provides the types ``XiSized``, ``NSized``, ``dNdXSized`` and the methods
-``findReferenceCoordinate`` (inverse map), ``N``, ``dNdX`` and ``detJ``; the cells additionally use
+``findReferenceCoordinate`` (inverse map), ``N``, ``dNdX``, ``detJ`` and ``NAtCoordinates`` (see *Basis
+extrapolation* below); the cells additionally use
 ``isCoordinateInCell``, ``getBoundingBox`` and ``getElementShape``. (The virtual interface ``Marmot::Discretizations::Cells::CellGeometry``
 describing the same contract is deprecated and unused.) Two policies are available.
 
@@ -119,6 +120,18 @@ The knot vectors are given in physical coordinates, and the parametric coordinat
 background grid whose B-spline geometry map is the identity (e.g. a uniform, axis-aligned grid). The cell's bounding
 box is the knot span. Compared to Lagrangian cells, B-spline cells of degree :math:`p \ge 2` have
 :math:`C^{p-1}`-continuous shape functions across cell boundaries, which mitigates the cell-crossing error of MPM.
+
+**Basis extrapolation.** ``NAtCoordinates`` evaluates the shape functions of a cell at a point given in physical
+coordinates, inside *and outside* of the cell: outside, it returns the polynomial extension of the cell's basis, without
+clamping. For a Lagrangian cell, this is :math:`N_A(\boldsymbol{\xi})` at the unclamped result of the inverse map (a node
+at :math:`\xi = 3` of a linear edge gets the values :math:`-1` and :math:`2`); for a B-spline cell, it is the polynomial
+piece of the basis on the cell's knot span (``Marmot::Math::BOnKnotSpan``), not the global B-splines, which vanish
+outside of their supports. Both are partitions of unity with linear precision for every point. The aggregated MPM
+(Coombs, Bird and Pretti, CMAME 442 (2025) 118012) uses this extrapolation to tie the nodes of a poorly filled cell to
+the basis of a neighbouring interior cell. The cells reach it through the base class
+``Marmot::Discretizations::Cells::CellWithGeometry``, from which the formulation cells derive (instead of deriving from
+``Cell`` and the geometry policy directly): it implements ``Cell::getInterpolationVector`` with ``NAtCoordinates`` of the
+geometry, so every cell built on it, whatever its physics, provides the same (extrapolated) interpolation vector.
 
 ``Marmot::Discretizations::Meshfree::LagrangeCell`` (aliases ``Marmot::Discretizations::Meshfree::Quad4`` and ``Hex8``, header ``MarmotMeshfreeQuadHexCell.h``) is a
 self-contained Quad4/Hexa8 geometry with centroid, volume, second moments, face centers, boundary surface vectors and
@@ -220,10 +233,10 @@ A cell must be combined with a material point of the same formulation and dimens
 Limitations
 -----------
 
-- The inverse map of the Lagrangian cells (``Marmot::Discretizations::Cells::LagrangianCellGeometry::findReferenceCoordinate``) uses the affine
-  map of the cell's bounding box and has no Newton update yet; together with the bounding-box point location test, the
-  Lagrangian cells are therefore only valid for **axis-aligned, box-shaped** cells. For a distorted cell the inverse
-  map throws ``std::runtime_error``.
+- The inverse map of the Lagrangian cells (``Marmot::Discretizations::Cells::LagrangianCellGeometry::findReferenceCoordinate``) is Newton's
+  method started from the affine map of the cell's bounding box (exact for box-shaped cells). For a point far outside of
+  a strongly distorted cell it may not converge and throws ``std::runtime_error``; this also limits the basis
+  extrapolation of such cells.
 - The B-spline cells assume an identity geometry map (see above); the control point coordinates enter only ``detJ``.
 - Cubic B-spline cells have no output shape name: ``getCellShape()`` returns an empty string for
   ``.../BSpline/3`` and ``.../BSpline/3D/3`` (``Quad16`` and ``Hexa64`` are missing in the shape table of
@@ -241,6 +254,9 @@ Implementation
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::MaterialPoints::MaterialPoint
+   :allow-dot-graphs:
+
+.. doxygenclass:: Marmot::Discretizations::Cells::CellWithGeometry
    :allow-dot-graphs:
 
 .. doxygenclass:: Marmot::Discretizations::Cells::LagrangianCellGeometry

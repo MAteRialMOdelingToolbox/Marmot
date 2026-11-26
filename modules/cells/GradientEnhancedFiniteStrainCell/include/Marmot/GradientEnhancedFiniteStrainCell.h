@@ -27,6 +27,7 @@
 #include "Marmot/MarmotBSplineCellGeometry.h"
 #include "Marmot/MarmotCell.h"
 #include "Marmot/MarmotCellGeometry.h"
+#include "Marmot/MarmotCellWithGeometry.h"
 #include "Marmot/MarmotDofLayoutTools.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotLagrangianCellGeometry.h"
@@ -107,7 +108,7 @@ namespace Marmot::Discretizations::Cells {
    * @tparam GeometryCell Geometry policy, Lagrangian or B-spline.
    */
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
-  class GradientEnhancedFiniteStrainCell : public CellBase, public GeometryCell {
+  class GradientEnhancedFiniteStrainCell : public CellWithGeometry< CellBase, GeometryCell > {
 
   protected:
     /// @brief Supported body loads.
@@ -178,7 +179,7 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] geometry  Geometry of the cell.
      */
     GradientEnhancedFiniteStrainCell( int cellLabel, const GeometryCell& geometry )
-      : GeometryCell( geometry ), _cellLabel( cellLabel ){};
+      : CellWithGeometry< CellBase, GeometryCell >( geometry ), _cellLabel( cellLabel ){};
 
     /**
      * @brief Fields per node.
@@ -345,13 +346,6 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] dQ Increment of the cell dofs (field-by-field layout).
      */
     void interpolateFieldsToMaterialPoints( const double* dQ ) const;
-
-    /**
-     * @brief Cell shape functions at a point.
-     * @param[out] vec         Shape functions @f$ N_A @f$ (nNodes values).
-     * @param[in]  coordinates Coordinates of the point.
-     */
-    void getInterpolationVector( double* vec, const double* coordinates ) const;
   };
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
@@ -644,17 +638,6 @@ namespace Marmot::Discretizations::Cells {
                                    << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
-  }
-
-  template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
-  void GradientEnhancedFiniteStrainCell< nDim, nNodes, CellBase, GeometryCell >::getInterpolationVector(
-    double*       N,
-    const double* coordinates ) const
-  {
-    const auto refCoord = GeometryCell::findReferenceCoordinate( XiSized( coordinates ) );
-
-    Eigen::Map< Eigen::Matrix< double, nNodes, 1 > > interpolationVector( N );
-    interpolationVector = GeometryCell::N( refCoord ).transpose();
   }
 
   /**

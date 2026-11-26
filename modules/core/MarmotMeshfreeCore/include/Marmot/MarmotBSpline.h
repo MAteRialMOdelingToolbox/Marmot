@@ -130,4 +130,68 @@ namespace Marmot::Math {
     return 0;
   }
 
+  /**
+   * @brief Evaluate the polynomial piece of the B-spline basis function @f$ N_{i,p} @f$ on the knot span
+   * @f$ [z_s, z_{s+1}) @f$, extended to all @f$ u @f$.
+   *
+   * @details The Cox--de Boor recursion of B() with the degree-0 functions pinned to the span,
+   * @f$ N_{j,0} := \delta_{js} @f$, instead of the indicator functions of @f$ u @f$. For @f$ u @f$ in the span it
+   * equals B(); outside, it is the polynomial extension of that piece (no clamping to zero), as needed to extrapolate
+   * the basis of a cell to points outside of it, e.g. for the aggregated MPM (Coombs et al., CMAME 442 (2025) 118012).
+   * The @f$ p+1 @f$ functions @f$ N_{s-p,p}, \dots, N_{s,p} @f$ form a partition of unity and reproduce polynomials up
+   * to degree @f$ p @f$ for every @f$ u @f$.
+   *
+   * @tparam p Degree @f$ p @f$ of the B-spline.
+   * @param[in] u       Parameter value @f$ u @f$.
+   * @param[in] knotVec Knot vector @f$ z @f$; entries @f$ z_i, \dots, z_{i+p+1} @f$ are accessed.
+   * @param[in] i       Index @f$ i @f$ of the basis function.
+   * @param[in] span    Index @f$ s @f$ of the knot span.
+   * @return The polynomial piece of @f$ N_{i,p} @f$ on span @f$ s @f$, at @f$ u @f$.
+   */
+  template < int p >
+  double BOnKnotSpan( double u, const double* knotVec, int i, int span )
+  {
+    if constexpr ( p == 0 )
+      return i == span ? 1.0 : 0.0;
+    else {
+      const auto& z      = knotVec;
+      double      result = 0;
+      if ( z[p + i] - z[i] >= 1e-14 )
+        result += ( u - z[i] ) / ( z[p + i] - z[i] ) * BOnKnotSpan< p - 1 >( u, z, i, span );
+      if ( z[p + i + 1] - z[i + 1] >= 1e-14 )
+        result += ( z[i + p + 1] - u ) / ( z[p + i + 1] - z[i + 1] ) * BOnKnotSpan< p - 1 >( u, z, i + 1, span );
+      return result;
+    }
+  }
+
+  /**
+   * @brief Derivative @f$ \mathrm{d}N_{i,p}/\mathrm{d}u @f$ of the polynomial piece of the B-spline basis function on
+   * the knot span @f$ [z_s, z_{s+1}) @f$, extended to all @f$ u @f$, see BOnKnotSpan().
+   *
+   * @details @f$ N'_{i,p} = \frac{p}{z_{i+p} - z_i} N_{i,p-1} - \frac{p}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1} @f$ with
+   * the pieces of degree @f$ p-1 @f$ on the same span (terms with a vanishing knot difference are left out).
+   *
+   * @tparam p Degree @f$ p @f$ of the B-spline.
+   * @param[in] u       Parameter value @f$ u @f$.
+   * @param[in] knotVec Knot vector @f$ z @f$; entries @f$ z_i, \dots, z_{i+p+1} @f$ are accessed.
+   * @param[in] i       Index @f$ i @f$ of the basis function.
+   * @param[in] span    Index @f$ s @f$ of the knot span.
+   * @return The derivative of the polynomial piece of @f$ N_{i,p} @f$ on span @f$ s @f$, at @f$ u @f$.
+   */
+  template < int p >
+  double dBOnKnotSpan( double u, const double* knotVec, int i, int span )
+  {
+    if constexpr ( p == 0 )
+      return 0.0;
+    else {
+      const auto& z      = knotVec;
+      double      result = 0;
+      if ( z[p + i] - z[i] >= 1e-14 )
+        result += p / ( z[p + i] - z[i] ) * BOnKnotSpan< p - 1 >( u, z, i, span );
+      if ( z[p + i + 1] - z[i + 1] >= 1e-14 )
+        result -= p / ( z[p + i + 1] - z[i + 1] ) * BOnKnotSpan< p - 1 >( u, z, i + 1, span );
+      return result;
+    }
+  }
+
 } // namespace Marmot::Math
