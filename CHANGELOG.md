@@ -29,6 +29,8 @@ All notable changes to Marmot are documented in this file. The format follows
   depend on the order of differentiation: the Yeoh energy's third derivative, which
   `CompressibleFiniteStrainLinearViscoelasticity` computes in every stress update, takes 11.7 us instead of 55 us.
   Results are unchanged.
+- Documentation: the page "Automatic Differentiation" (Features) on the number types, the functions for derivatives
+  with respect to scalars, Eigen vectors and Fastor tensors, the AD material base classes and the pitfalls.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
