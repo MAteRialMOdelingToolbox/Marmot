@@ -257,8 +257,10 @@ All notable changes to Marmot are documented in this file. The format follows
   total derivative dτ/dF for a 2nd Piola-Kirchhoff stress that depends on F through C, evaluated without the
   fourth-order tensors dτ/dS and dC/dF and their two double contractions. `CompressibleHyperelasticity`,
   `CompressibleFiniteStrainLinearViscoelasticity` and `GradientEnhancedCompressibleNeoHookeDamage` use it for their
-  tangent, which roughly halves the cost of a `CompressibleHyperelasticity::computeStress` call (about 610 ns to
-  290 ns for NeoHooke + DollSchweizerhof). Results agree to round-off.
+  tangent: a `computeStress` call of `CompressibleHyperelasticity` is about 1.7 times as fast (about 630 ns to
+  375 ns for NeoHooke + DollSchweizerhof) and one of `GradientEnhancedCompressibleNeoHookeDamage` about 1.9 times
+  (about 740 ns to 390 ns); for `CompressibleFiniteStrainLinearViscoelasticity` the third derivative of the
+  potential dominates, so the gain is below 10 %. Results agree to round-off.
 - **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
   `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
   whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,
