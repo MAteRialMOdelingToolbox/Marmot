@@ -74,7 +74,7 @@ namespace {
 void testNeoHookeUniaxialStressAndTangent()
 {
   const double          K = 3000., G = 1000.;
-  auto                  material = createMaterial( "COMPRESSIBLENEOHOOKE", { K, G, 1.0 } );
+  auto                  material = createMaterial( "COMPRESSIBLEHYPERELASTICITY", { 0., 6., G, K, 1., 3., 1.0 } );
   std::vector< double > stateVars( std::max( 1, material->getNumberOfRequiredStateVars() ), 0.0 );
 
   for ( const double lambda : { 0.7, 0.95, 1.0, 1.05, 1.6 } ) {
@@ -144,7 +144,7 @@ void testJ2PlasticityUniaxialStress()
 /// a wrong initial guess must still converge, and a non-positive lateral stretch must never be tried
 void testRobustInitialGuess()
 {
-  auto                  material = createMaterial( "COMPRESSIBLENEOHOOKE", { 3000., 1000., 1.0 } );
+  auto material = createMaterial( "COMPRESSIBLEHYPERELASTICITY", { 0., 6., 1000., 3000., 1., 3., 1.0 } );
   std::vector< double > stateVars( std::max( 1, material->getNumberOfRequiredStateVars() ), 0.0 );
   auto [tauGood, CGood, defGood] = uniaxialUpdate( *material, 1.3, stateVars, Tensor33d( 0.0 ), 1.0 );
   auto [tauBad, CBad, defBad]    = uniaxialUpdate( *material, 1.3, stateVars, Tensor33d( 0.0 ), 3.0 );

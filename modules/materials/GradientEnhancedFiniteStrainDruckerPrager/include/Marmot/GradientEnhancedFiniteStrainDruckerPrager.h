@@ -43,7 +43,8 @@ namespace Marmot::Materials {
    *
    * The plasticity follows FiniteStrainJ2Plasticity: multiplicative split @f$ \boldsymbol{F} =
    * \boldsymbol{F}^e\boldsymbol{F}^p @f$ with the plastic deformation gradient as state, elasticity of
-   * CompressibleNeoHooke (PenceGouPotentialB) in @f$ \boldsymbol{C}^e @f$, a yield function on the Mandel stress
+   * the compressible Neo-Hooke model of Pence & Gou (PenceGouPotentialB) in @f$ \boldsymbol{C}^e @f$, a yield function
+   * on the Mandel stress
    * @f$ \boldsymbol{M} = \boldsymbol{C}^e\boldsymbol{S} @f$, and the flow integrated with the exponential map,
    * @f$ \boldsymbol{F}^{e,\mathrm{trial}} = \boldsymbol{F}^e \exp( \Delta\lambda\,\partial g/\partial\boldsymbol{M} )
    * @f$. The return mapping solves this equation together with the hardening law and the consistency condition for

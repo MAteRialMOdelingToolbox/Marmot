@@ -1,4 +1,4 @@
-#include "Marmot/CompressibleNeoHooke.h"
+#include "Marmot/CompressibleHyperelasticity.h"
 #include "Marmot/GradientEnhancedCompressibleNeoHookeDamage.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
@@ -60,17 +60,20 @@ namespace {
 
 void testNoDamageBelowThresholdIsNeoHooke()
 {
-  CompressibleNeoHooke                            reference( props.data(), 2, 1 );
-  CompressibleNeoHooke::ConstitutiveResponse< 3 > r( Tensor33d( 0.0 ), 0., 0., nullptr );
-  CompressibleNeoHooke::AlgorithmicModuli< 3 >    t;
+  // the compressible Neo-Hooke model of Pence & Gou (variant B) with K = props[0], G = props[1]: isochoric NeoHooke
+  // (0) with mu = G and volumetric DollSchweizerhof (6) with kappa = K, alpha = 1, beta = 3
+  const std::array< double, 6 >                          referenceProps = { 0., 6., props[1], props[0], 1., 3. };
+  CompressibleHyperelasticity                            reference( referenceProps.data(), 6, 1 );
+  CompressibleHyperelasticity::ConstitutiveResponse< 3 > r( Tensor33d( 0.0 ), 0., 0., nullptr );
+  CompressibleHyperelasticity::AlgorithmicModuli< 3 >    t;
   reference.computeStress( r, t, { testF() }, { 0.0, 1.0 } );
 
   const auto res = evaluate( testF(), 0.5 * props[2], 0.0 );
 
   throwExceptionOnFailure( checkIfEqual( res.tau, r.tau, 1e-10 ),
-                           "tau below threshold != CompressibleNeoHooke" + where );
+                           "tau below threshold != compressible Neo-Hooke" + where );
   throwExceptionOnFailure( checkIfEqual( res.t.dTau_dF, t.dTau_dF, 1e-8 ),
-                           "dTau_dF below threshold != CompressibleNeoHooke" + where );
+                           "dTau_dF below threshold != compressible Neo-Hooke" + where );
   throwExceptionOnFailure( checkIfEqual( res.t.dTau_dN[0], Tensor33d( 0.0 ), 1e-14 ), "dTau_dN must vanish" + where );
 }
 

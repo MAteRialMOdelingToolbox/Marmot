@@ -9,7 +9,7 @@ if(TEST "TestGradientEnhancedFiniteStrainParticle") # not defined if a required 
 endif()
 
 # the axisymmetric particles, of both formulations, against patch tests, Lame's thick-walled cylinder and CX8RUL
-add_marmot_test("TestAxisymmetricParticles" "${CURR_TEST_SOURCE_DIR}/testAxisymmetric.cpp" REQUIRES DisplacementParticle CompressibleNeoHooke GradientEnhancedCompressibleNeoHookeDamage DisplacementFiniteStrainULElement)
+add_marmot_test("TestAxisymmetricParticles" "${CURR_TEST_SOURCE_DIR}/testAxisymmetric.cpp" REQUIRES DisplacementParticle CompressibleHyperelasticity GradientEnhancedCompressibleNeoHookeDamage DisplacementFiniteStrainULElement)
 if(TEST "TestAxisymmetricParticles")
   set_tests_properties("TestAxisymmetricParticles" PROPERTIES ENVIRONMENT "MALLOC_PERTURB_=165")
 endif()

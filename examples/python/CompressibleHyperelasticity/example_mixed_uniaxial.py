@@ -2,14 +2,15 @@ import marmot
 import marmot.testing
 import numpy as np
 
-print("Running example for FiniteStrain material: COMPRESSIBLENEOHOOKE")
+print("Running example for FiniteStrain material: COMPRESSIBLEHYPERELASTICITY")
 
 # Material properties extracted from C++ tests
-properties = np.array([1.0, 0.3], dtype=np.float64)
+# isochoric base 0 (NeoHooke), volumetric base 6 (DollSchweizerhof), mu, kappa, alpha, beta
+properties = np.array([0.0, 6.0, 0.3, 1.0, 1.0, 3.0], dtype=np.float64)
 
 # Setup solver
 options = marmot.solvers.FiniteStrainSolver.SolverOptions()
-solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLENEOHOOKE", properties, options)
+solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEHYPERELASTICITY", properties, options)
 
 # Setup a loading step
 step = marmot.solvers.FiniteStrainSolver.Step()
