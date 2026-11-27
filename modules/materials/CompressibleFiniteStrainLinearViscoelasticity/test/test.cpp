@@ -332,6 +332,64 @@ void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// Kirchhoff stress of an elastic hyperelastic base at F, against PK2 = 2 dPsi/dC by central differences of the
+// potential in double precision
+static void checkTriaxialResponseAgainstFiniteDifferences( std::vector< double >                       matProps,
+                                                           const std::function< double( Tensor33d ) >& psi,
+                                                           const std::string&                          what )
+{
+  auto solver = makeSolver( "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY", matProps );
+
+  Tensor33d gradU( 0.0 );
+  gradU( 0, 0 ) = 0.1;
+  gradU( 1, 1 ) = -0.05;
+  gradU( 2, 2 ) = 0.02;
+  gradU( 0, 1 ) = 0.03;
+  solver.addStep( makeStep( gradU, 0.0, 1.0, 1.0 ) );
+  solver.solve();
+
+  const Tensor33d F = gradU + Spatial3D::I;
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d       PK2( 0.0 );
+  const double    h = 1e-6;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33d Cp = C, Cm = C;
+      Cp( i, j ) += h;
+      Cm( i, j ) -= h;
+      PK2( i, j ) = 2. * ( psi( Cp ) - psi( Cm ) ) / ( 2 * h );
+    }
+  const Tensor33d stressTarget = Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2( PK2, F );
+
+  throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress, stressTarget, 1e-4 ),
+                           what + " response doesn't match the finite difference reference in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// Test I-10: Yeoh base (C1, C2, C3, D1) against finite differences of its potential
+void testTriaxialResponseYeoh()
+{
+  const double C1 = 500, C2 = -20, C3 = 5, D1 = 1. / 3500;
+  checkTriaxialResponseAgainstFiniteDifferences(
+    { 1.0, 0.0, C1, C2, C3, D1, 0.0 },
+    [&]( const Tensor33d& C ) {
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential( C, C1, C2, C3, D1 );
+    },
+    "I-10: Yeoh" );
+}
+
+// Test I-11: Mooney-Rivlin base (C1, C2, D1) against finite differences of its potential
+void testTriaxialResponseMooneyRivlin()
+{
+  const double C1 = 400, C2 = 100, D1 = 1. / 3500;
+  checkTriaxialResponseAgainstFiniteDifferences(
+    { 2.0, 0.0, C1, C2, D1, 0.0 },
+    [&]( const Tensor33d& C ) {
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential( C, C1, C2, D1 );
+    },
+    "I-11: Mooney-Rivlin" );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -344,6 +402,8 @@ int main()
     testSubsteppedConsistency,                             // I-7: Substepped == regular
     testUndeformedResponsePenceGouNeoHooke,                // I-8: F=I gives zero stress (PenceGouNeoHooke)
     testTriaxialResponsePenceGouNeoHookeMatchesAnalytical, // I-9: PenceGouNeoHooke matches analytical reference
+    testTriaxialResponseYeoh,                              // I-10: Yeoh matches finite differences
+    testTriaxialResponseMooneyRivlin,                      // I-11: Mooney-Rivlin matches finite differences
   };
 
   executeTestsAndCollectExceptions( tests );

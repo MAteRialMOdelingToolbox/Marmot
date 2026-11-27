@@ -1,9 +1,9 @@
 name: Set up the stack
 description: >-
   Install EdelweissFE's locked conda environment (conda-lock.yml of EdelweissFE master, conda packages, no solving):
-  the compilers, CMake, Eigen, autodiff, Fastor and Python with which Marmot is shipped, and with which EdelweissFE
-  and EdelweissMeshfree are tested. Patches of the dependencies (autodiff's Eigen 5 support, Fastor on arm64) live
-  only in the recipes of the conda channel matthiasneuner/edelweiss.
+  the compilers, CMake, Eigen, Fastor and Python with which Marmot is shipped, and with which EdelweissFE and
+  EdelweissMeshfree are tested. Patches of the dependencies (Fastor on arm64) live only in the recipes of the conda
+  channel matthiasneuner/edelweiss.
 
 inputs:
   init-shell:

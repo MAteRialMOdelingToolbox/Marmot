@@ -169,7 +169,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    *  where \f$\bar{I}_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol{C})\f$, and
    *  \f$J = \sqrt{\det(\boldsymbol{C})}\f$.
    *
-   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param C1 Yeoh material parameter.
    * @param C2 Yeoh material parameter.
@@ -197,7 +197,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
 
   /** @brief Standard compressible Neo-Hooke energy density function in terms of \f$\boldsymbol{C}\f$.
    *
-   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param K Bulk modulus.
    * @param G Shear modulus.
@@ -362,7 +362,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     /** @brief Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t.
      * \f$\boldsymbol{C}\f$.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param K Bulk modulus.
      * @param G Shear modulus.
@@ -428,7 +428,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * @details Internally evaluates the standard Neo-Hooke potential in terms of
      * \f$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}\f$ and applies chain-rule transformations.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param U Right stretch tensor.
      * @param K Bulk modulus.
      * @param G Shear modulus.

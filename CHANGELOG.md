@@ -7,6 +7,30 @@ All notable changes to Marmot are documented in this file. The format follows
 ## [Unreleased]
 
 ### Added
+- Marmot's own automatic differentiation types, without dependencies (`Math::Differentiation::Automatic`):
+  - `ScalarMode::Dual< T >` / `ScalarMode::HyperDual< order >` (`MarmotAutomaticDifferentiationScalarMode.h`):
+    nested hyper-dual numbers of any order, and `ScalarMode::Taylor< order >`, univariate truncated Taylor numbers.
+    They back `dual`, `dual2nd`, `dual3rd`, `HyperDual` and `Taylor`. As fast as or faster than autodiff (GCC 14,
+    relative to autodiff: energy Hessian 1.0, third derivative 1.07, phase-field degradation 0.58, B4 and power-law
+    Kelvin moduli (Taylor order 5 and 7) 0.92 and 0.53).
+  - `VectorMode::Dual< nDirections >` (`MarmotAutomaticDifferentiationVectorMode.h`): vector-mode numbers with
+    expression templates that compute values and local partial derivatives once, when the expression is formed, and
+    all partial derivatives in one vectorizable loop on assignment. It is the `JacobianDual` of the first-derivative
+    drivers `df_dT`, `dF_dT` and `dF_dX< n >`, which therefore compute all directions in one evaluation: tangents of
+    `ADVonMises` 3.1x, `FiniteStrainOrthotropicBiotViscoelasticity` 2.6x and `ADCompressibleNeoHooke` 1.9x faster
+    than before (one direction per evaluation with autodiff).
+- `VectorMode::Dual2nd< nDirections >` (`MarmotAutomaticDifferentiationVectorModeSecondOrder.h`): second-order
+  vector-mode numbers carrying value, gradient and Hessian, tracking the directions each number depends on so that
+  operations on the seeded inputs only update their Hessian rows. It is the new `HessianDual` of
+  `SecondOrder::d2f_dT2`, which therefore evaluates the function once instead of once per pair of directions: the
+  Pence-Gou energy Hessian takes 0.65 us instead of 2.4 us (symmetric) or 3.6 us (full), 4x the analytical one.
+- `ThirdOrder::d3f_dT3` evaluates the function once per unordered triple of directions (165 instead of 729 for a
+  3x3 tensor; with `isSymmetric`, transposed triples are skipped as well), since mixed partial derivatives do not
+  depend on the order of differentiation: the Yeoh energy's third derivative, which
+  `CompressibleFiniteStrainLinearViscoelasticity` computes in every stress update, takes 11.7 us instead of 55 us.
+  Results are unchanged.
+- Documentation: the page "Automatic Differentiation" (Features) on the number types, the functions for derivatives
+  with respect to scalars, Eigen vectors and Fastor tensors, the AD material base classes and the pitfalls.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
   materials in uniaxial stress) and `T2D2CR`, `T2D3CR`, `T3D2CR`, `T3D3CR` (total Lagrangian, finite strain
   materials evaluated in the frame co-rotated with the bar's tangent: rigid rotations are stress free, consistent
@@ -217,12 +241,36 @@ All notable changes to Marmot are documented in this file. The format follows
 - Faster reproducing kernel shape functions, with bitwise identical results: the kernels give value and gradient from
   one evaluation, the basis of every covering kernel is evaluated once per point (it was evaluated for the moment
   matrix and again for the shape functions), and the moment matrix is summed in local matrices.
+- **Breaking:** Automatic differentiation no longer uses autodiff. Marmot code uses the vocabulary of
+  `Marmot/MarmotAutomaticDifferentiationTypes.h` in `Math::Differentiation::Automatic`:
+  `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >` (was `autodiff::HigherOrderDual< order, double >`),
+  `Taylor< order >` (was `autodiff::Real< order, double >`), `VectorXdual`, `VectorXdual2nd`, `MatrixXdual`, and
+  `seed< level >`, `derivative< level >`, `value`, `taylorDerivatives< order >` (was `autodiff::derivatives( f,
+  along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
+  namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
+  `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
+- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers instead of `dual2nd`.
+  `isSymmetric` of `d2f_dT2`, `df_dT` and `dF_dT` has no effect any more, since all directions are computed in one
+  evaluation.
+- **Breaking:** autodiff is no longer a dependency: all automatic differentiation uses Marmot's own types (see
+  Added), and the conda package no longer depends on autodiff. Results agree with autodiff to about 1e-15
+  (relative).
+- **Breaking:** The first-derivative drivers `df_dT` and `dF_dT` take functions of `JacobianDual< nDirections >`
+  numbers, and `MaterialFiniteStrainAD` and `MaterialHypoElasticAD` pass `ADScalar` numbers
+  (`JacobianDual< nDim * nDim >`, `JacobianDual< 6 >`; `Vector6AD`) to `computeStressAD`. These are vector-mode
+  numbers, so code differentiated by these drivers must use the new names instead of `dual`.
+  `ADLinearElastic::C` is a `Matrix6d`. New: `dF_dX< n >` for fixed-size Eigen vectors (used by
+  `MaterialHypoElasticAD`). `df_dT` and `SecondOrder::d2f_dT2` deduce the dimensions from the tensor argument only, so
+  they also accept lambdas; `dF_dT` takes the number type as its first template parameter. (Deducing the dimensions
+  through the number type of the function crashes MSVC 19.44.)
+- All of Marmot's automatic differentiation numbers convert explicitly to `double` (their value), so Fastor's
+  `Tensor::cast` converts tensors of them in both directions; `makeReal`, `makeDual`, `makeHigherOrderDual`,
+  `makeOtherScalarType` and `fastorTensorFromDoubleTensor` use it.
 - **Breaking:** `Element::getStateView` is no longer virtual: it checks the quadrature point index and calls the
   protected `Element::getStateViewAtQuadraturePoint`, which an element implements instead (rename the override).
   Callers are unchanged.
 - **Breaking:** Marmot requires Eigen 5; Eigen 3.4 is no longer supported (CMake rejects Eigen < 5.0, the conda package
-  requires `eigen >=5`). CI builds and tests with Eigen 5.0.1 and autodiff 1.1.2 with the Eigen 5 patch
-  (autodiff#397).
+  requires `eigen >=5`). CI builds and tests with Eigen 5.0.1.
 - **Breaking:** `T2D2` is now the 2D 2-node element of the `TrussElement` module instead of the spatial wrapper of
   the 1D `DisplacementFiniteElement` (uniaxial stress). Same property (the cross section area), same small strain
   response for hypoelastic materials; but 1 quadrature point instead of 2 (a deck selecting `quadraturePoint=1`

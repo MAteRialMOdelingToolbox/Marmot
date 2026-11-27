@@ -4,7 +4,7 @@
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::Invariants::HaighWestergaard;
 using namespace Marmot::ContinuumMechanics::Invariants;
-using namespace autodiff;
+using namespace Marmot::Math::Differentiation::Automatic;
 
 void testHaighWestergaardDouble()
 {
@@ -83,9 +83,9 @@ void testHaighWestergaardDual()
 
   // first test: hydrostatic stress state
   stress << dual( -10. ), dual( -10. ), dual( -10. ), dual( 0. ), dual( 0. ), dual( 0. );
-  stress( 0 ).grad = 1.0;
-  stress( 1 ).grad = 1.0;
-  stress( 2 ).grad = 1.0;
+  seed< 1 >( stress( 0 ), 1.0 );
+  seed< 1 >( stress( 1 ), 1.0 );
+  seed< 1 >( stress( 2 ), 1.0 );
 
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = stress( 0 ) * sqrt( 3. );
@@ -128,8 +128,8 @@ void testHaighWestergaardDual()
 
   // fourth test: general stress state
   stress << dual( 10. ), dual( -12. ), dual( -23. ), dual( 1.3 ), dual( -6.8 ), dual( 10.3 );
-  stress( 1 ).grad = 1.0; // set imaginary part of the seconde component of the stress tensor to 1.0 (to calculate
-                          // derivative with regard to that component)
+  seed< 1 >( stress( 1 ), 1.0 ); // set imaginary part of the seconde component of the stress tensor to 1.0 (to
+                                 // calculate derivative with regard to that component)
   hwoutput = haighWestergaard( stress );
   dual p   = stress.head< 3 >().sum() / 3.;
   smean.setZero();

@@ -33,9 +33,9 @@
 #ifdef _MSC_VER
 #  pragma warning( pop )
 #endif
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTensor.h"
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Math::Tensors {
 
@@ -636,7 +636,7 @@ namespace Marmot::Math::Tensors {
    * \f$ C = A_{ij} B_{ij} \f$
    *
    * @note This function is a workaround for cases in which Fastor::to_scalar does not work.
-   * This is the case for example when T is autodiff::dual.
+   * This is the case for example when T is Marmot::Math::Differentiation::Automatic::dual.
    */
   template < typename T >
   T einsum_ij_ij_hardcoded( const FastorTensors::Tensor33t< T >& A, const FastorTensors::Tensor33t< T >& B )
@@ -658,21 +658,11 @@ namespace Marmot::Math::Tensors {
    * @tparam Rest a pack of sizes specifying the dimensions of the tensor
    * @param in a Fastor tensor of type double
    * @return a Fastor tensor of type T
-   *
-   * @note This function is a workaround for lack of casting of pointer types
-   * e.g. no cast available for autodiff::dual* and double*
    */
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensor( const Fastor::Tensor< double, Rest... >& in )
   {
-    Fastor::Tensor< T, Rest... > out;
-    T*                           out_data = out.data();
-    double*                      in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
-    }
-    return out;
+    return in.template cast< T >();
   }
 
   /**
@@ -682,19 +672,16 @@ namespace Marmot::Math::Tensors {
    * @param in a Fastor tensor map of type double
    * @return a Fastor tensor of type T
    *
-   * @note This function is a workaround for lack of casting of pointer types
-   * e.g. no cast available for autodiff::dual* and double*
+   * @note Not Fastor's TensorMap::cast, which calls a get_mem_index that TensorMap does not have (Fastor 0.6).
    */
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > fastorTensorFromDoubleTensorMap( const Fastor::TensorMap< double, Rest... >& in )
   {
     Fastor::Tensor< T, Rest... > out;
     T*                           out_data = out.data();
-    double*                      in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
-    }
+    const double*                in_data  = in.data();
+    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i )
+      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[i] );
     return out;
   }
 
@@ -709,60 +696,38 @@ namespace Marmot::Math::Tensors {
   template < typename T, size_t... Rest >
   Fastor::Tensor< double, Rest... > makeReal( const Fastor::Tensor< T, Rest... >& in )
   {
-
-    Fastor::Tensor< double, Rest... > out;
-    double*                           out_data = out.data();
-    T*                                in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = static_cast< double >( in_data[in.get_mem_index( i )] );
-    }
-    return out;
+    return in.template cast< double >();
   }
 
   /**
-   * @brief Construct a Fastor tensor of autodiff::dual from a Fastor tensor of arbitrary type
+   * @brief Construct a Fastor tensor of Marmot::Math::Differentiation::Automatic::dual from a Fastor tensor of
+   * arbitrary type
    * @tparam T source scalar type
    * @tparam Rest a pack of sizes specifying the dimensions of the tensor
    * @param in a Fastor tensor of type T
-   * @return a Fastor tensor of type autodiff::dual
+   * @return a Fastor tensor of type Marmot::Math::Differentiation::Automatic::dual
    *
    */
   template < typename T, size_t... Rest >
-  Fastor::Tensor< autodiff::dual, Rest... > makeDual( const Fastor::Tensor< T, Rest... >& in )
+  Fastor::Tensor< Marmot::Math::Differentiation::Automatic::dual, Rest... > makeDual(
+    const Fastor::Tensor< T, Rest... >& in )
   {
-
-    Fastor::Tensor< autodiff::dual, Rest... > out;
-    autodiff::dual*                           out_data = out.data();
-    T*                                        in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = autodiff::dual( in_data[in.get_mem_index( i )] );
-    }
-    return out;
+    return in.template cast< Marmot::Math::Differentiation::Automatic::dual >();
   }
 
   /**
-   * @brief Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor
-   * @tparam order order of the HigherOrderDual
+   * @brief Construct a Fastor tensor of hyper-dual numbers (HyperDual) from a Fastor double tensor
+   * @tparam order order of the hyper-dual numbers
    * @tparam Rest a pack of sizes specifying the dimensions of the tensor
    * @param in a Fastor tensor of type double
-   * @return a Fastor tensor of type autodiff::HigherOrderDual
+   * @return a Fastor tensor of hyper-dual numbers
    *
    */
   template < size_t order, size_t... Rest >
-  Fastor::Tensor< autodiff::HigherOrderDual< order, double >, Rest... > makeHigherOrderDual(
+  Fastor::Tensor< Marmot::Math::Differentiation::Automatic::HyperDual< order >, Rest... > makeHigherOrderDual(
     const Fastor::Tensor< double, Rest... >& in )
   {
-
-    Fastor::Tensor< autodiff::HigherOrderDual< order, double >, Rest... > out;
-    autodiff::HigherOrderDual< order, double >*                           out_data = out.data();
-    double*                                                               in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = autodiff::HigherOrderDual< order, double >( in_data[in.get_mem_index( i )] );
-    }
-    return out;
+    return in.template cast< Marmot::Math::Differentiation::Automatic::HyperDual< order > >();
   }
 
   /**
@@ -775,14 +740,7 @@ namespace Marmot::Math::Tensors {
   template < typename T, size_t... Rest >
   Fastor::Tensor< T, Rest... > makeOtherScalarType( const Fastor::Tensor< double, Rest... >& in )
   {
-    Fastor::Tensor< T, Rest... > out;
-    T*                           out_data = out.data();
-    double*                      in_data  = in.data();
-
-    for ( Fastor::FASTOR_INDEX i = 0; i < in.size(); ++i ) {
-      out_data[out.get_mem_index( i )] = static_cast< T >( in_data[in.get_mem_index( i )] );
-    }
-    return out;
+    return in.template cast< T >();
   }
 
   /**

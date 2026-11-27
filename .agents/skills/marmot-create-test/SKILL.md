@@ -13,7 +13,7 @@ All unit and regression tests are standalone C++ executables registered in CMake
 
 ## 1. Testing Rules
 1. **Analytical Validation**: Validate constitutive responses and element modes against closed-form analytical solutions.
-2. **Tangent Verification**: Validate consistent tangents against `MarmotMathCore` numerical differentiation (`MarmotNumericalDifferentiation.h`) or automatic differentiation (`autodiff` / `MarmotAutomaticDifferentiation.h`).
+2. **Tangent Verification**: Validate consistent tangents against `MarmotMathCore` numerical differentiation (`MarmotNumericalDifferentiation.h`) or automatic differentiation (`MarmotAutomaticDifferentiation.h`).
 3. **Complex-Step Method**: Use `Marmot::Math::Differentiation::Numerical::Complex::forwardDifference` for machine-precision derivatives ($h \sim 10^{-20}$) without subtractive cancellation.
 4. **Performance & Hygiene**: Tests must run fast (< 0.1s), remain deterministic, and update `stateVars` in place.
 

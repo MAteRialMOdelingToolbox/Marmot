@@ -1,4 +1,5 @@
 #include "Marmot/ADVonMises.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotExceptions.h"
@@ -6,13 +7,11 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
-#include <autodiff/forward/dual.hpp>
-#include <autodiff/forward/dual/eigen.hpp>
 
 namespace Marmot::Materials {
 
   using namespace Marmot;
-  using namespace autodiff;
+  using namespace Marmot::Math::Differentiation::Automatic;
   using namespace Eigen;
   using namespace ContinuumMechanics::Elasticity;
 
@@ -43,12 +42,10 @@ namespace Marmot::Materials {
     stateLayout.finalize();
   }
 
-  void ADVonMises::computeStressAD( state3DAD&                       state,
-                                    const Marmot::Math::Vector6dual& dStrain,
-                                    const timeInfo&                  timeInfo ) const
+  void ADVonMises::computeStressAD( state3DAD& state, const Vector6AD& dStrain, const timeInfo& timeInfo ) const
   {
-    Marmot::Math::mVector6dual            S( state.stress.data() );
-    const Marmot::Math::mVector6dualConst dE( dStrain.data() );
+    Eigen::Map< Vector6AD >       S( state.stress.data() );
+    Eigen::Map< const Vector6AD > dE( dStrain.data() );
 
     // compute elastic stiffness
     const Marmot::Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -57,20 +54,20 @@ namespace Marmot::Materials {
     double& kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
     // compute elastic predictor
-    const Marmot::Math::Vector6dual trialStress = S + Cel * dE;
+    const Vector6AD trialStress = S + Cel * dE;
 
     using namespace ContinuumMechanics::Voigt;
-    const dual rhoTrial = sqrt( 2. * ContinuumMechanics::Invariants::J2( trialStress ) );
+    const ADScalar rhoTrial = sqrt( 2. * ContinuumMechanics::Invariants::J2( trialStress ) );
 
     if ( Math::Tensors::makeReal( f( rhoTrial, kappa ) ) >= 0.0 ) {
 
       // variables for return mapping
-      size_t counter = 0;
-      dual   dKappa( 0.0 );
-      dual   dLambda( 0.0 );
-      double dg_ddKappa( 0.0 );
+      size_t   counter = 0;
+      ADScalar dKappa( 0.0 );
+      ADScalar dLambda( 0.0 );
+      double   dg_ddKappa( 0.0 );
 
-      while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > Constants::innerNewtonTol * (double)rhoTrial ) {
+      while ( abs( g( value( rhoTrial ), kappa, value( dKappa ) ) ) > Constants::innerNewtonTol * value( rhoTrial ) ) {
 
         if ( counter == Constants::nMaxInnerNewtonCycles ) {
           throw Marmot::Utilities::StressUpdateFailed(
@@ -79,9 +76,9 @@ namespace Marmot::Materials {
         }
 
         // compute derivative of g wrt kappa at constant rhoTrial
-        dual dKappa_( dKappa );
+        dual dKappa_( value( dKappa ) );
         seed< 1 >( dKappa_, 1.0 );
-        dg_ddKappa = derivative< 1 >( g( dual( rhoTrial.val ), kappa, dKappa_ ) );
+        dg_ddKappa = derivative< 1 >( g( dual( value( rhoTrial ) ), kappa, dKappa_ ) );
 
         // update dKappa and iteration counter
         dKappa -= g( rhoTrial, kappa, dKappa ) / dg_ddKappa;
@@ -92,14 +89,14 @@ namespace Marmot::Materials {
       dLambda = Marmot::Math::Constants::sqrt3_2 * dKappa;
 
       // compute return mapping direction
-      const Marmot::Math::Vector6dual n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
+      const Vector6AD n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
       // update stress and hardening variable
       S          = trialStress - 2. * G * dLambda * n;
       auto dEpsP = dLambda * n;
       auto dEpsE = dE - dEpsP;
       auto dS    = Cel * dEpsE;
-      kappa += dKappa.val;
+      kappa += value( dKappa );
       auto stressAvg = S - 0.5 * Cel * dEpsE;
       state.elasticEnergyDensity += Math::Tensors::makeReal( dEpsE.dot( stressAvg ) );
       state.dissipation += Math::Tensors::makeReal( dEpsP.dot( dS ) );

@@ -68,9 +68,7 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   protected:
-    void computeStressAD( state3DAD&                       state,
-                          const Marmot::Math::Vector6dual& dStrain,
-                          const timeInfo&                  timeInfo ) const override;
+    void computeStressAD( state3DAD& state, const Vector6AD& dStrain, const timeInfo& timeInfo ) const override;
 
     /**
      * @brief Hardening function.
