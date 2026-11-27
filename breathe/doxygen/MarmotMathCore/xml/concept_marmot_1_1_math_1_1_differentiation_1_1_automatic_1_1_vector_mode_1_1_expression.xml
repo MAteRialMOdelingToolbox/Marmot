@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kind="concept">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Expression</compoundname>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename E</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename E&gt;
+concept <ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kindref="compound">Marmot::Math::Differentiation::Automatic::VectorMode::Expression</ref> =  std::is_base_of_v&lt; <ref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" kindref="compound">ExpressionBase</ref>, std::remove_cvref_t&lt; E &gt; &gt;</initializer>
+    <conceptparts>
+      <codepart line="71">    <programlisting>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>E<sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">Expression<sp/>=<sp/>std::is_base_of_v&lt;<sp/>ExpressionBase,<sp/>std::remove_cvref_t&lt;<sp/>E<sp/>&gt;<sp/>&gt;</highlight></codeline>
+    </programlisting>
+</codepart>
+    </conceptparts>
+    <briefdescription>
+<para>A vector-mode expression: a Dual or an expression node. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type to check; references and cv-qualifiers are ignored</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Every expression provides <computeroutput>nDirections</computeroutput>, <computeroutput>val()</computeroutput> and <computeroutput>dx( i )</computeroutput>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="71" column="3"/>
+  </compounddef>
+</doxygen>

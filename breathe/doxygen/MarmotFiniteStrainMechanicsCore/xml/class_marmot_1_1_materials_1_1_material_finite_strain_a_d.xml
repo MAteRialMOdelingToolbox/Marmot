@@ -6,6 +6,40 @@
     <includes refid="_marmot_material_finite_strain_a_d_8h" local="no">MarmotMaterialFiniteStrainAD.h</includes>
     <innerclass refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</innerclass>
     <innerclass refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1ae5dec47e042b5cbc9c0cedf7a5d0bb6c" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Marmot::Math::Differentiation::Automatic::JacobianDual&lt; nDim *nDim &gt;</type>
+        <definition>using Marmot::Materials::MaterialFiniteStrainAD::ADScalar = Marmot::Math::Differentiation::Automatic::JacobianDual&lt; nDim * nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>ADScalar</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::ADScalar</qualifiedname>
+        <briefdescription>
+<para>Number type of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref>, carrying the derivatives with respect to the nDim x nDim components of the deformation gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Derived classes must use this type, not Marmot::Math::Differentiation::Automatic::dual, for all quantities that depend on the deformation gradient: <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a37382eee90c677698043712cdde0aa3b" kindref="member">computeStress()</ref> evaluates <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> once with numbers of this type, which carry all nDim x nDim derivatives (see MarmotAutomaticDifferentiationTypes.h). <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="65" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="public-func">
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a42e8d9177586bfd4453ab8b3cd8d4fbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -93,7 +127,7 @@
 </listitem><listitem><para>compute the consistent algorithmic tangent <formula id="87">$\partial \boldsymbol{\tau} / \partial \boldsymbol{F}$</formula>.</para>
 </listitem></itemizedlist>
 </para>
-<para><simplesect kind="note"><para>Automatic differentiation requires multiple seeded evaluations of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref>. Therefore, the state variables are reset to their &quot;old&quot; values before each seeded call. Implementations of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> must update state based only on primal values of the dual inputs and must not branch or accumulate history based on derivative components.</para>
+<para><simplesect kind="note"><para><ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> is evaluated once, with numbers that carry the derivatives with respect to all components of the deformation gradient, starting from the &quot;old&quot; values of the state variables. Implementations of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> must update state based only on primal values of the dual inputs and must not branch or accumulate history based on derivative components.</para>
 </simplesect>
 <parameterlist kind="param"><parameteritem>
 <parameternamelist>
@@ -132,7 +166,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="129" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="129" bodyend="173"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="141" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="141" bodyend="186"/>
       </memberdef>
       <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
         <type>void</type>
@@ -187,7 +221,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="193" column="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="206" column="18"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -220,8 +254,9 @@
         </childnode>
       </node>
     </collaborationgraph>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="42" bodyend="196"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="42" bodyend="209"/>
     <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1ae5dec47e042b5cbc9c0cedf7a5d0bb6c" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>ADScalar</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrain</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrain</name></member>
       <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3bf3cf62925f7d455ec4c90174a45bd8" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrainExplicit</name></member>

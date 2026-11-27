@@ -3,7 +3,7 @@
   <compounddef id="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_second_order" kind="namespace" language="C++">
     <compoundname>Marmot::Math::Differentiation::Automatic::SecondOrder</compoundname>
     <sectiondef kind="typedef">
-      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a8ceb3ccbc5c389be12b6481ac5735d18" prot="public" static="no">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a33a7ed231d39ced48216fe3560c5ff05" prot="public" static="no">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -11,13 +11,14 @@
             <defname>dim</defname>
           </param>
         </templateparamlist>
-        <type>std::function&lt; dual2nd(const Fastor::Tensor&lt; dual2nd, dim, dim &gt; &amp;T) &gt;</type>
-        <definition>using Marmot::Math::Differentiation::Automatic::SecondOrder::tensor_to_scalar_function_type = std::function&lt; dual2nd( const Fastor::Tensor&lt; dual2nd, dim, dim &gt;&amp; T ) &gt;</definition>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" kindref="member">HessianDual</ref>&lt; dim *dim &gt;( const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" kindref="member">HessianDual</ref>&lt; dim *dim &gt;, dim, dim &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::SecondOrder::tensor_to_scalar_function_type = std::function&lt; HessianDual&lt; dim * dim &gt;(
+     const Fastor::Tensor&lt; HessianDual&lt; dim * dim &gt;, dim, dim &gt;&amp; T ) &gt;</definition>
         <argsstring></argsstring>
         <name>tensor_to_scalar_function_type</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::SecondOrder::tensor_to_scalar_function_type</qualifiedname>
         <briefdescription>
-<para>Alias for a function mapping a tensor to a scalar with second order dual numbers. </para>
+<para>Alias for a function mapping a tensor to a scalar with <ref refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" kindref="member">HessianDual</ref> numbers, whose dim * dim directions are the components of the tensor. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -35,7 +36,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="299" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="299" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="240" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="240" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1ac2394d944d58c0005d02a7e67c22c43b" prot="public" static="no">
         <templateparamlist>
@@ -45,7 +46,7 @@
             <defname>dim</defname>
           </param>
         </templateparamlist>
-        <type>std::function&lt; dual2nd(const Fastor::Tensor&lt; dual2nd, dim, dim &gt; &amp;T, const dual2nd scalar) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref>(const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref>, dim, dim &gt; &amp;T, const <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref> scalar) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::SecondOrder::tensor_and_scalar_to_scalar_function_type = std::function&lt;
      dual2nd( const Fastor::Tensor&lt; dual2nd, dim, dim &gt;&amp; T, const dual2nd scalar ) &gt;</definition>
         <argsstring></argsstring>
@@ -70,11 +71,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="367" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="367" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="294" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="294" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a0ef20b0bd7157f94f87376407c467f9e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a2256c294365d3e41f4ba17aa6076b264" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -84,11 +85,11 @@
         </templateparamlist>
         <type>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt; &gt;</type>
         <definition>std::tuple&lt; double, Fastor::Tensor&lt; double, dim, dim &gt;, Fastor::Tensor&lt; double, dim, dim, dim, dim &gt; &gt; Marmot::Math::Differentiation::Automatic::SecondOrder::d2f_dT2</definition>
-        <argsstring>(const tensor_to_scalar_function_type&lt; dim &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T, bool isSymmetric=false)</argsstring>
+        <argsstring>(const std::type_identity_t&lt; tensor_to_scalar_function_type&lt; dim &gt; &gt; &amp;F, const Fastor::Tensor&lt; double, dim, dim &gt; &amp;T, bool isSymmetric=false)</argsstring>
         <name>d2f_dT2</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::SecondOrder::d2f_dT2</qualifiedname>
         <param>
-          <type>const tensor_to_scalar_function_type&lt; dim &gt; &amp;</type>
+          <type>const std::type_identity_t&lt; tensor_to_scalar_function_type&lt; dim &gt; &gt; &amp;</type>
           <declname>F</declname>
         </param>
         <param>
@@ -139,15 +140,15 @@
 <parametername>isSymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by exploiting the identity <formula id="81">$ \partial^2 F / \partial T_{ij}\partial T_{kl} = \partial^2 F/\partial T_{ji}\partial T_{lk} $</formula>, which holds at a symmetric T for such functions (note: this mirrors both index pairs simultaneously; mirroring either pair independently is in general NOT valid) </para>
+<para>has no effect: the gradient and the Hessian are computed in one evaluation of F; kept for source compatibility</para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>
+dim is deduced from T only: F is a non-deduced parameter, like in df_dT. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="320" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="320" bodyend="358"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="258" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="258" bodyend="285"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a3f4a8564055a975200c22ddd95d849a5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -234,13 +235,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="385" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="385" bodyend="411"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="312" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="312" bodyend="338"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="290" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="230" column="3"/>
   </compounddef>
 </doxygen>

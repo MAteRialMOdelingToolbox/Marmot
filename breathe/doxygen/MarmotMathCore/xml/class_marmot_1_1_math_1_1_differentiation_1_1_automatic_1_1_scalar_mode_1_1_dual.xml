@@ -1,0 +1,603 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="no">MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1af89934f531ac5a3f43ddc94f24e9c5c0" prot="public" static="no">
+        <type>T</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::Inner = T</definition>
+        <argsstring></argsstring>
+        <name>Inner</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::Inner</qualifiedname>
+        <briefdescription>
+<para>Type of the value and the derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="152" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="152" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ac735a5640b607f206b8a5ac47f829555" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::val_</qualifiedname>
+        <briefdescription>
+<para>Value node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="291" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="291" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a551052df3e86adc10bf4cbd516545137" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::grad_</definition>
+        <argsstring></argsstring>
+        <name>grad_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::grad_</qualifiedname>
+        <briefdescription>
+<para>Derivative node. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="293" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="293" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::Dual</definition>
+        <argsstring>()</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::Dual</qualifiedname>
+        <briefdescription>
+<para>Creates a zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="155" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="155" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ada470b6811c2d1ca98c2e62bd9f5a326" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::Dual</definition>
+        <argsstring>(S value)</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::Dual</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Creates a constant, with zero derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="162" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="162" bodyend="164"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a38c95574f8c639c97c2496d8931c50dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::Dual</definition>
+        <argsstring>(const T &amp;value, const T &amp;grad)</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::Dual</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>const T &amp;</type>
+          <declname>grad</declname>
+        </param>
+        <briefdescription>
+<para>Creates a dual number from its value and derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value node </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>grad</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derivative node </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="170" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="170" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad863de941d0bc74574cddbf1dbd38a16" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator double</definition>
+        <argsstring>() const</argsstring>
+        <name>operator double</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator double</qualifiedname>
+        <briefdescription>
+<para>Primal value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the innermost value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="175" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="175" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad9ac49c1da2f3a715784f2d60d43409f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::val</qualifiedname>
+        <briefdescription>
+<para>Value node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value node </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="180" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="180" bodyend="180"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a20dd496483367c539dfa806c1372fbe9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::val</definition>
+        <argsstring>()</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::val</qualifiedname>
+        <briefdescription>
+<para>Value node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the value node </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="185" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="185" bodyend="185"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1c54a0aa6378bdb75091b3d9d7f39f6c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const T &amp;</type>
+        <definition>const T &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::grad</definition>
+        <argsstring>() const</argsstring>
+        <name>grad</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::grad</qualifiedname>
+        <briefdescription>
+<para>Derivative node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>derivative node </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="190" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="190" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a0eef84079c1579e2f535b96ea79d0f4e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T &amp;</type>
+        <definition>T &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::grad</definition>
+        <argsstring>()</argsstring>
+        <name>grad</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::grad</qualifiedname>
+        <briefdescription>
+<para>Derivative node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the derivative node </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="195" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="195" bodyend="195"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1b8312976665bef4d9ba1869d8c55539" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator+=</definition>
+        <argsstring>(const Dual &amp;b)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator+=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Adds a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>summand </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="201" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="201" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ae8ac94789fd965b87f49abc9eb293e21" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator-=</definition>
+        <argsstring>(const Dual &amp;b)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator-=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>subtrahend </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="212" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="212" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a9ebf49bd6a0c51fabd6c0e20a0a269b0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator*=</definition>
+        <argsstring>(const Dual &amp;b)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator*=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>factor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="223" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="223" bodyend="231"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad57abe1e0fd4a62e7e3dc1c7dfee5498" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator/=</definition>
+        <argsstring>(const Dual &amp;b)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator/=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>divisor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="237" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="237" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a774974938d9e352525758194ae894d0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator+=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator+=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Adds a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="245" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="245" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1aa2c378b77c3349efaa579b54aa2afe92" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator-=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator-=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="257" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="257" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a5fa841d9840f5bcecbf2af0121054859" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator*=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator*=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="269" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="269" bodyend="274"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3fd2c5bbbeadf57bc27d6a8b9d97c65c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;::operator/=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual::operator/=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="282" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="282" bodyend="287"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual" kindref="compound">Dual</ref> number with value and derivative of type T. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>double, or a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual" kindref="compound">Dual</ref> for hyper-dual numbers </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="149" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="149" bodyend="294"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ada470b6811c2d1ca98c2e62bd9f5a326" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a38c95574f8c639c97c2496d8931c50dc" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1c54a0aa6378bdb75091b3d9d7f39f6c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>grad</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a0eef84079c1579e2f535b96ea79d0f4e" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>grad</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a551052df3e86adc10bf4cbd516545137" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>grad_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1af89934f531ac5a3f43ddc94f24e9c5c0" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>Inner</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad863de941d0bc74574cddbf1dbd38a16" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator double</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a9ebf49bd6a0c51fabd6c0e20a0a269b0" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a5fa841d9840f5bcecbf2af0121054859" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1b8312976665bef4d9ba1869d8c55539" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a774974938d9e352525758194ae894d0d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ae8ac94789fd965b87f49abc9eb293e21" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1aa2c378b77c3349efaa579b54aa2afe92" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad57abe1e0fd4a62e7e3dc1c7dfee5498" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3fd2c5bbbeadf57bc27d6a8b9d97c65c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad9ac49c1da2f3a715784f2d60d43409f" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a20dd496483367c539dfa806c1372fbe9" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ac735a5640b607f206b8a5ac47f829555" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

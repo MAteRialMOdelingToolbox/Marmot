@@ -3,13 +3,92 @@
   <compounddef id="_marmot_typedefs_8h" kind="file" language="C++">
     <compoundname>MarmotTypedefs.h</compoundname>
     <includes local="yes">Eigen/Dense</includes>
-    <includes local="yes">autodiff/forward/dual/dual.hpp</includes>
-    <includes local="yes">autodiff/forward/dual/eigen.hpp</includes>
+    <includes refid="_marmot_automatic_differentiation_types_8h" local="yes">Marmot/MarmotAutomaticDifferentiationTypes.h</includes>
     <includes local="yes">unsupported/Eigen/CXX11/Tensor</includes>
     <includedby refid="_marmot_math_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h</includedby>
     <includedby refid="_marmot_numerical_differentiation_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h</includedby>
     <includedby refid="_marmot_tensor_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h</includedby>
     <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotAutomaticDifferentiationScalarMode.h</label>
+        <link refid="_marmot_automatic_differentiation_scalar_mode_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotAutomaticDifferentiationTypes.h</label>
+        <link refid="_marmot_automatic_differentiation_types_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorMode.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="14">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_second_order_8h"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h</label>
         <link refid="_marmot_typedefs_8h"/>
@@ -17,22 +96,44 @@
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="4" relation="include">
+        <childnode refid="17" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
+      </node>
+      <node id="5">
+        <label>Eigen/Core</label>
       </node>
       <node id="2">
         <label>Eigen/Dense</label>
       </node>
-      <node id="3">
-        <label>autodiff/forward/dual/dual.hpp</label>
+      <node id="6">
+        <label>array</label>
       </node>
-      <node id="4">
-        <label>autodiff/forward/dual/eigen.hpp</label>
+      <node id="15">
+        <label>bit</label>
       </node>
-      <node id="5">
+      <node id="7">
+        <label>cmath</label>
+      </node>
+      <node id="8">
+        <label>cstddef</label>
+      </node>
+      <node id="16">
+        <label>cstdint</label>
+      </node>
+      <node id="9">
+        <label>numbers</label>
+      </node>
+      <node id="10">
+        <label>ostream</label>
+      </node>
+      <node id="11">
+        <label>type_traits</label>
+      </node>
+      <node id="17">
         <label>unsupported/Eigen/CXX11/Tensor</label>
+      </node>
+      <node id="13">
+        <label>utility</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
@@ -110,7 +211,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="42" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="42" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="41" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="41" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -147,48 +248,48 @@
 <codeline lineno="25"><highlight class="normal"></highlight></codeline>
 <codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Eigen/Dense&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;autodiff/forward/dual/dual.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;autodiff/forward/dual/eigen.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;unsupported/Eigen/CXX11/Tensor&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42" refid="_marmot_typedefs_8h_1ab05a2676268f62bf9214105a0fe8e614" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>VOIGTFROMDIM(<sp/>x<sp/>)<sp/>(<sp/>(<sp/>(<sp/>x<sp/>*<sp/>x<sp/>)<sp/>+<sp/>x<sp/>)<sp/>&gt;&gt;<sp/>1<sp/>)</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="44"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Math<sp/>{</highlight></codeline>
-<codeline lineno="45" refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" kindref="member">Matrix6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="46" refid="_marmot_typedefs_8h_1aa0da05b8a4e17d7ea6ae46af8a99309b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1aa0da05b8a4e17d7ea6ae46af8a99309b" kindref="member">Matrix69d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="47" refid="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" kindref="member">Matrix99d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="48" refid="_marmot_typedefs_8h_1a58f93bad204fbdb327edf2293130b1a8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>4<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a58f93bad204fbdb327edf2293130b1a8" kindref="member">Matrix34d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="49" refid="_marmot_typedefs_8h_1aa954e2846f191ba50fb2a3bb4a398a4c" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Matrix6d<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1aa954e2846f191ba50fb2a3bb4a398a4c" kindref="member">mMatrix6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="50" refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Matrix3d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="51"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52" refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" kindref="member">Vector3d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="53" refid="_marmot_typedefs_8h_1a25301c27923b9a826866690d4e2dba31" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>4,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a25301c27923b9a826866690d4e2dba31" kindref="member">Vector4d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="54" refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="55" refid="_marmot_typedefs_8h_1abbab86d1810ed0047849bc4f78acbc61" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>7,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1abbab86d1810ed0047849bc4f78acbc61" kindref="member">Vector7d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="56" refid="_marmot_typedefs_8h_1ae333fe9560ef6422fc12a1b97dbbe31f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>8,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae333fe9560ef6422fc12a1b97dbbe31f" kindref="member">Vector8d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="57" refid="_marmot_typedefs_8h_1aa2500529a6cddabb9caf58e8b723aa26" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1aa2500529a6cddabb9caf58e8b723aa26" kindref="member">Vector9d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="58" refid="_marmot_typedefs_8h_1ae5ff5554bd2ed633eb88b2c971562571" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>int,<sp/>8,<sp/>1<sp/>&gt;<sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ae5ff5554bd2ed633eb88b2c971562571" kindref="member">Vector8i</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="59" refid="_marmot_typedefs_8h_1af2556c8af3038393cd0aa4d1c0425ba8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1af2556c8af3038393cd0aa4d1c0425ba8" kindref="member">RowVector6d</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="60" refid="_marmot_typedefs_8h_1aafb0a0de59e2b95e30b6dce50115400d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Vector6d<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1aafb0a0de59e2b95e30b6dce50115400d" kindref="member">mVector6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="61" refid="_marmot_typedefs_8h_1afd664a8e540e422bb2b3ef46f4b97ab1" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Eigen::VectorXd<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1afd664a8e540e422bb2b3ef46f4b97ab1" kindref="member">mVectorXd</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="62" refid="_marmot_typedefs_8h_1a00af37f17d63d977f349424567cce0ed" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>const<sp/>Vector6d<sp/>&gt;<sp/><sp/><ref refid="_marmot_typedefs_8h_1a00af37f17d63d977f349424567cce0ed" kindref="member">mConstVector6d</ref>;<sp/></highlight></codeline>
-<codeline lineno="63"><highlight class="normal"></highlight></codeline>
-<codeline lineno="64" refid="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" kindref="member">Matrix36d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="65" refid="_marmot_typedefs_8h_1ad84ddba47d5e06d6b530648cefcd2625" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ad84ddba47d5e06d6b530648cefcd2625" kindref="member">Matrix36</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="66" refid="_marmot_typedefs_8h_1a368c50368448d4c2da1955e006e7ed1f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a368c50368448d4c2da1955e006e7ed1f" kindref="member">Matrix63d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="67" refid="_marmot_typedefs_8h_1a24c36a13826ab818dc0649e9e73534cc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a24c36a13826ab818dc0649e9e73534cc" kindref="member">Matrix93d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="68" refid="_marmot_typedefs_8h_1a6a53e934721f486b3329c228cf4cf0c4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a6a53e934721f486b3329c228cf4cf0c4" kindref="member">Matrix39d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="69" refid="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" kindref="member">Matrix9d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>complex<sp/>matrix<sp/>definitions</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="72" refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">complexDouble</ref>;<sp/></highlight></codeline>
-<codeline lineno="73" refid="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>complexDouble,<sp/>6,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" kindref="member">Vector6cd</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="74"><highlight class="normal"></highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>autodiff<sp/>dual<sp/>matrix<sp/>definitions</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="76" refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>autodiff::dual,<sp/>6,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kindref="member">Vector6dual</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="77" refid="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Vector6dual<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" kindref="member">mVector6dual</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
-<codeline lineno="78" refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>const<sp/>Vector6dual<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" kindref="member">mVector6dualConst</ref>;<sp/></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_automatic_differentiation_types_8h" kindref="compound">Marmot/MarmotAutomaticDifferentiationTypes.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;unsupported/Eigen/CXX11/Tensor&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41" refid="_marmot_typedefs_8h_1ab05a2676268f62bf9214105a0fe8e614" refkind="member"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>VOIGTFROMDIM(<sp/>x<sp/>)<sp/>(<sp/>(<sp/>(<sp/>x<sp/>*<sp/>x<sp/>)<sp/>+<sp/>x<sp/>)<sp/>&gt;&gt;<sp/>1<sp/>)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Math<sp/>{</highlight></codeline>
+<codeline lineno="44" refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" kindref="member">Matrix6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="45" refid="_marmot_typedefs_8h_1aa0da05b8a4e17d7ea6ae46af8a99309b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1aa0da05b8a4e17d7ea6ae46af8a99309b" kindref="member">Matrix69d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="46" refid="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" kindref="member">Matrix99d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="47" refid="_marmot_typedefs_8h_1a58f93bad204fbdb327edf2293130b1a8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>4<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a58f93bad204fbdb327edf2293130b1a8" kindref="member">Matrix34d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="48" refid="_marmot_typedefs_8h_1aa954e2846f191ba50fb2a3bb4a398a4c" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Matrix6d<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1aa954e2846f191ba50fb2a3bb4a398a4c" kindref="member">mMatrix6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="49" refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Matrix3d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51" refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" kindref="member">Vector3d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="52" refid="_marmot_typedefs_8h_1a25301c27923b9a826866690d4e2dba31" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>4,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a25301c27923b9a826866690d4e2dba31" kindref="member">Vector4d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="53" refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="_marmot_typedefs_8h_1abbab86d1810ed0047849bc4f78acbc61" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>7,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1abbab86d1810ed0047849bc4f78acbc61" kindref="member">Vector7d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="55" refid="_marmot_typedefs_8h_1ae333fe9560ef6422fc12a1b97dbbe31f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>8,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae333fe9560ef6422fc12a1b97dbbe31f" kindref="member">Vector8d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="56" refid="_marmot_typedefs_8h_1aa2500529a6cddabb9caf58e8b723aa26" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1aa2500529a6cddabb9caf58e8b723aa26" kindref="member">Vector9d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="57" refid="_marmot_typedefs_8h_1ae5ff5554bd2ed633eb88b2c971562571" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>int,<sp/>8,<sp/>1<sp/>&gt;<sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ae5ff5554bd2ed633eb88b2c971562571" kindref="member">Vector8i</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="58" refid="_marmot_typedefs_8h_1af2556c8af3038393cd0aa4d1c0425ba8" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1af2556c8af3038393cd0aa4d1c0425ba8" kindref="member">RowVector6d</ref>;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="59" refid="_marmot_typedefs_8h_1aafb0a0de59e2b95e30b6dce50115400d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Vector6d<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1aafb0a0de59e2b95e30b6dce50115400d" kindref="member">mVector6d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="60" refid="_marmot_typedefs_8h_1afd664a8e540e422bb2b3ef46f4b97ab1" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Eigen::VectorXd<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1afd664a8e540e422bb2b3ef46f4b97ab1" kindref="member">mVectorXd</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="61" refid="_marmot_typedefs_8h_1a00af37f17d63d977f349424567cce0ed" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>const<sp/>Vector6d<sp/>&gt;<sp/><sp/><ref refid="_marmot_typedefs_8h_1a00af37f17d63d977f349424567cce0ed" kindref="member">mConstVector6d</ref>;<sp/></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" kindref="member">Matrix36d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64" refid="_marmot_typedefs_8h_1ad84ddba47d5e06d6b530648cefcd2625" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ad84ddba47d5e06d6b530648cefcd2625" kindref="member">Matrix36</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="65" refid="_marmot_typedefs_8h_1a368c50368448d4c2da1955e006e7ed1f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a368c50368448d4c2da1955e006e7ed1f" kindref="member">Matrix63d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="66" refid="_marmot_typedefs_8h_1a24c36a13826ab818dc0649e9e73534cc" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>3<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a24c36a13826ab818dc0649e9e73534cc" kindref="member">Matrix93d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="67" refid="_marmot_typedefs_8h_1a6a53e934721f486b3329c228cf4cf0c4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a6a53e934721f486b3329c228cf4cf0c4" kindref="member">Matrix39d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="68" refid="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>9,<sp/>9<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" kindref="member">Matrix9d</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="69"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>complex<sp/>matrix<sp/>definitions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="71" refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">complexDouble</ref>;<sp/></highlight></codeline>
+<codeline lineno="72" refid="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>complexDouble,<sp/>6,<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" kindref="member">Vector6cd</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="73"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>dual<sp/>number<sp/>matrix<sp/>definitions</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>Marmot::Math::Differentiation::Automatic::dual,<sp/>6,<sp/>1<sp/>&gt;</highlight></codeline>
+<codeline lineno="76" refid="_marmot_typedefs_8h_1ad948a3b12f4f12e081d6c14fdb017ab8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1ad948a3b12f4f12e081d6c14fdb017ab8" kindref="member">Vector6dual</ref>;<sp/></highlight></codeline>
+<codeline lineno="77" refid="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>Vector6dual<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" kindref="member">mVector6dual</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="78" refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Map&lt;<sp/>const<sp/>Vector6dual<sp/>&gt;<sp/><ref refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" kindref="member">mVector6dualConst</ref>;<sp/></highlight></codeline>
 <codeline lineno="79"><highlight class="normal"></highlight></codeline>
 <codeline lineno="80"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>definitions<sp/>for<sp/>templated<sp/>scalar<sp/>type</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="81"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>&gt;</highlight></codeline>

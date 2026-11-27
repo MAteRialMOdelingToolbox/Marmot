@@ -1,0 +1,867 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</compoundname>
+    <basecompoundref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</basecompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>std::size_t</type>
+        <declname>nDirections_</declname>
+        <defname>nDirections_</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5e8d34394e19ae5eac899d08e87b751d" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::nDirections</definition>
+        <argsstring></argsstring>
+        <name>nDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::nDirections</qualifiedname>
+        <initializer>= nDirections_</initializer>
+        <briefdescription>
+<para>Number of directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="314" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="314" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5ac30b83a9abee614f9f80e19f46d326" prot="private" static="no" mutable="no">
+        <type>std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5e8d34394e19ae5eac899d08e87b751d" kindref="member">nDirections</ref> &gt;</type>
+        <definition>std::array&lt; double, nDirections &gt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::dx_</definition>
+        <argsstring></argsstring>
+        <name>dx_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::dx_</qualifiedname>
+        <briefdescription>
+<para>Partial derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="509" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="509" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6e51b2b7f74f460dc98c39f52925d72f" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::val_</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="511" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="511" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::Dual</definition>
+        <argsstring>()</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::Dual</qualifiedname>
+        <briefdescription>
+<para>Creates a zero with zero derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="317" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="317" bodyend="317"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab7bfc63dd85ac7eac64b1ef4de0d0916" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::Dual</definition>
+        <argsstring>(S value)</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::Dual</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Creates a constant, with zero derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="324" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="324" bodyend="326"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ac8743b88ae798e1de28c0dcd3e4e6403" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::Dual</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>Dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::Dual</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates an expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="333" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="333" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a71284d5f791ae87b6540c861a30aa7a5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator=</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator=</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates an expression into this number; the expression may refer to this number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="344" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="344" bodyend="348"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a48a2af1f4bc2d0c72f8631eb369f56db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator=</definition>
+        <argsstring>(S value)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets this number to a constant, with zero derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="356" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="356" bodyend="361"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a9596319c4e05130c026d3aaaf3af82c5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::val</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="366" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="366" bodyend="366"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab6dc4547a09cb9b79f8ede66851546a3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::val</definition>
+        <argsstring>()</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::val</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="371" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="371" bodyend="371"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8270a784a35896bbc2b69745139f1069" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::dx</definition>
+        <argsstring>(std::size_t i) const</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Partial derivative with respect to one independent variable. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="377" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="377" bodyend="377"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a80409e3725498c742b5519811d4962ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::dx</definition>
+        <argsstring>(std::size_t i)</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Partial derivative with respect to one independent variable. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>reference to the partial derivative </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="383" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="383" bodyend="383"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a0d6e765d884fa511e6cf2aa635ccce00" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator double</definition>
+        <argsstring>() const</argsstring>
+        <name>operator double</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator double</qualifiedname>
+        <briefdescription>
+<para>Primal value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="388" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="388" bodyend="388"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1af7e2aa508b2eb77469a3311e2de87fc8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator+=</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator+=</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Adds an expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="396" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="396" bodyend="399"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ad20759ffd5a09b54788d14665f2cd26b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator-=</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator-=</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts an expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="407" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="407" bodyend="410"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ae986dbdd680e1bd98766d1d76ad309b2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator*=</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator*=</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by an expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="418" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="418" bodyend="421"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a893efc76c151a6fb016d77a40bb30ffd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Expression</type>
+            <declname>E</declname>
+            <defname>E</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator/=</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator/=</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Divides by an expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="429" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="429" bodyend="432"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3fa80771360eb2c1cb77493dae23839e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator+=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator+=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Adds a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="440" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="440" bodyend="444"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a1306e7d6076023a52aecdae837a8860c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator-=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator-=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="452" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="452" bodyend="456"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6d06f3fe57f91c7d8fccb682ba67a0ba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator*=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator*=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="464" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="464" bodyend="471"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8a8653d333c73da0c62dbb3bb110b90d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kindref="member">Dual</ref> &amp;</type>
+        <definition>Dual &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::operator/=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::operator/=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="479" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="479" bodyend="486"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a118b73422288a877ea04e1fc0b02d6b6" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename E</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;::assign</definition>
+        <argsstring>(const E &amp;e)</argsstring>
+        <name>assign</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual::assign</qualifiedname>
+        <param>
+          <type>const E &amp;</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates an expression into this number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>expression</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The derivatives are collected in a local array first: the compiler then knows that writing them cannot change the operands of e, which lets it keep the partial derivatives cached in e in registers and vectorize the loop. This also makes it safe for e to refer to this number. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="498" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="498" bodyend="506"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Vector-mode dual number: a value and its partial derivatives with respect to nDirections_ variables. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDirections_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of independent variables (directions)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Arithmetic on <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">Dual</ref> numbers yields expression nodes, which are evaluated when assigned to a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">Dual</ref> (see the file documentation). A <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">Dual</ref> converts implicitly from arithmetic constants (with zero derivatives) and from expressions. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="311" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="311" bodyend="512"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a118b73422288a877ea04e1fc0b02d6b6" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>assign</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab7bfc63dd85ac7eac64b1ef4de0d0916" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ac8743b88ae798e1de28c0dcd3e4e6403" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>Dual</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8270a784a35896bbc2b69745139f1069" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a80409e3725498c742b5519811d4962ad" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5ac30b83a9abee614f9f80e19f46d326" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>dx_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5e8d34394e19ae5eac899d08e87b751d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>nDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a0d6e765d884fa511e6cf2aa635ccce00" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator double</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ae986dbdd680e1bd98766d1d76ad309b2" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6d06f3fe57f91c7d8fccb682ba67a0ba" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1af7e2aa508b2eb77469a3311e2de87fc8" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3fa80771360eb2c1cb77493dae23839e" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ad20759ffd5a09b54788d14665f2cd26b" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a1306e7d6076023a52aecdae837a8860c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a893efc76c151a6fb016d77a40bb30ffd" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8a8653d333c73da0c62dbb3bb110b90d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a71284d5f791ae87b6540c861a30aa7a5" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a48a2af1f4bc2d0c72f8631eb369f56db" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>operator=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a9596319c4e05130c026d3aaaf3af82c5" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab6dc4547a09cb9b79f8ede66851546a3" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6e51b2b7f74f460dc98c39f52925d72f" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

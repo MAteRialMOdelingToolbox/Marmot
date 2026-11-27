@@ -70,7 +70,7 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a721ba7e5f9564c4c3cbcadc0512f01c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1ae18f80c42d0189ba69901ad667dd066a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -80,11 +80,11 @@
         </templateparamlist>
         <type>double</type>
         <definition>double Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluatePostWidderFormula</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; phi, double tau)</argsstring>
         <name>evaluatePostWidderFormula</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluatePostWidderFormula</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>phi</declname>
         </param>
         <param>
@@ -129,9 +129,9 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="86" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="86" bodyend="92"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="86" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="86" bodyend="93"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a7f1993c99a33ecb172e5aa5c300d6534" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1aff5d31272797f9c3eba78f697b13aced" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -141,11 +141,11 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </templateparamlist>
         <type>double</type>
         <definition>double Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::approximateZerothCompliance</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin, double spacing=10.)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; phi, double tauMin, double spacing=10.)</argsstring>
         <name>approximateZerothCompliance</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::approximateZerothCompliance</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>phi</declname>
         </param>
         <param>
@@ -204,9 +204,9 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="118" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="118" bodyend="134"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="119" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="119" bodyend="135"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1ad99d730bb5bebbbb29b17a4b5e3b5594" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a98a572be4317f383fc9a7cf56fd25bb3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -216,11 +216,11 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </templateparamlist>
         <type>Properties</type>
         <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, Properties retardationTimes, bool gaussQuadrature=false)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; phi, Properties retardationTimes, bool gaussQuadrature=false)</argsstring>
         <name>computeElasticModuli</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>phi</declname>
         </param>
         <param>
@@ -277,7 +277,7 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="152" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="152" bodyend="172"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="153" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="153" bodyend="174"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a346d4645273cbeca4695f8b94214ff9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Properties</type>
@@ -332,7 +332,7 @@ L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="183" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="183" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="185" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="185" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a2969c1a3f2a3e325717ef4e5962513ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -423,7 +423,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="201" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="201" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="203" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="203" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_kelvin_chain_8h_1ae3592e2410b7e002f60ecd0c6af5f338" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -525,7 +525,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="224" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="224" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="226" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="226" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a5c50db5fbcf64c828c3ec9380773fba7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -590,7 +590,7 @@ k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{i
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="241" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="241" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="243" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="243" declcolumn="8"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

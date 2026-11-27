@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45" kind="struct" language="C++" prot="public">
+    <compoundname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">NumTraits&lt; double &gt;</basecompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>std::size_t</type>
+        <declname>nDirections</declname>
+        <defname>nDirections</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5a" prot="public" static="no" strong="no">
+        <type></type>
+        <name>@236367275306251067265141200033042377101077304321</name>
+        <qualifiedname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::@236367275306251067265141200033042377101077304321</qualifiedname>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa8f4a81eef40c9c2ae62bdc049bca8324" prot="public">
+          <name>IsComplex</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aad87ad8de8576bac6ad1f7eec17fcfa61" prot="public">
+          <name>IsInteger</name>
+          <initializer>= 0</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5e7c03ef21e17ae004968aa07236dac6" prot="public">
+          <name>IsSigned</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa0bdb5f793398b931acac65fa6aa93521" prot="public">
+          <name>RequireInitialization</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa9f63a3306c8a0ca8d985061d51e0c767" prot="public">
+          <name>ReadCost</name>
+          <initializer>= 1</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa76eed35bff7d49f362d28b7de77f1887" prot="public">
+          <name>AddCost</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5341b07d3703a316863f8570a53e1ed0" prot="public">
+          <name>MulCost</name>
+          <initializer>= 3</initializer>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1215" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1215" bodyend="1223"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">Marmot::Math::Differentiation::Automatic::VectorMode::Dual</ref>&lt; nDirections &gt;</type>
+        <definition>using Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Real = Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;</definition>
+        <argsstring></argsstring>
+        <name>Real</name>
+        <qualifiedname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Real</qualifiedname>
+        <briefdescription>
+<para><ref refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" kindref="member">Real</ref> type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1207" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1207" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a54b4cf66ce7e734e6bef641463f13064" prot="public" static="no">
+        <type><ref refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" kindref="member">Real</ref></type>
+        <definition>using Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::NonInteger = Real</definition>
+        <argsstring></argsstring>
+        <name>NonInteger</name>
+        <qualifiedname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::NonInteger</qualifiedname>
+        <briefdescription>
+<para>Non-integer type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1209" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1209" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1aec2732d68e22527c09f59d0d3be2ea42" prot="public" static="no">
+        <type>double</type>
+        <definition>using Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Literal = double</definition>
+        <argsstring></argsstring>
+        <name>Literal</name>
+        <qualifiedname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Literal</qualifiedname>
+        <briefdescription>
+<para><ref refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1aec2732d68e22527c09f59d0d3be2ea42" kindref="member">Literal</ref> type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1211" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1211" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1af93409c32a93c20e2b4684b0789b6404" prot="public" static="no">
+        <type><ref refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" kindref="member">Real</ref></type>
+        <definition>using Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Nested = Real</definition>
+        <argsstring></argsstring>
+        <name>Nested</name>
+        <qualifiedname>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;::Nested</qualifiedname>
+        <briefdescription>
+<para><ref refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1af93409c32a93c20e2b4684b0789b6404" kindref="member">Nested</ref> type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1213" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1213" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Eigen support for vector-mode dual numbers. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDirections</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of directions </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</label>
+        <link refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>NumTraits&lt; double &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</label>
+        <link refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>NumTraits&lt; double &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="1205" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="1205" bodyend="1224"/>
+    <listofallmembers>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa76eed35bff7d49f362d28b7de77f1887" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>AddCost</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa8f4a81eef40c9c2ae62bdc049bca8324" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>IsComplex</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aad87ad8de8576bac6ad1f7eec17fcfa61" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>IsInteger</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5e7c03ef21e17ae004968aa07236dac6" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>IsSigned</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1aec2732d68e22527c09f59d0d3be2ea42" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>Literal</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5341b07d3703a316863f8570a53e1ed0" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>MulCost</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1af93409c32a93c20e2b4684b0789b6404" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>Nested</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a54b4cf66ce7e734e6bef641463f13064" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>NonInteger</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa9f63a3306c8a0ca8d985061d51e0c767" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>ReadCost</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>Real</name></member>
+      <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa0bdb5f793398b931acac65fa6aa93521" prot="public" virt="non-virtual"><scope>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</scope><name>RequireInitialization</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

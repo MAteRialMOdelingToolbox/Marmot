@@ -143,10 +143,14 @@
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalIntegration.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/NewtonConvergenceChecker.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h]]></value>
   </option>
   <option  id='INPUT_ENCODING' default='yes' type='string'><value><![CDATA[UTF-8]]></value></option>
   <option  id='INPUT_FILE_ENCODING' default='yes' type='stringlist'>

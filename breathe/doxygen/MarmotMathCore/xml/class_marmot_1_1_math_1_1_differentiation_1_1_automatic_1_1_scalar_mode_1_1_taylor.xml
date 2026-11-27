@@ -1,0 +1,517 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="no">MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>std::size_t</type>
+        <declname>order</declname>
+        <defname>order</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add4fa9687980cb0d24120f49bd43522a" prot="private" static="no" mutable="no">
+        <type>std::array&lt; double, order+1 &gt;</type>
+        <definition>std::array&lt; double, order + 1 &gt; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::c_</definition>
+        <argsstring></argsstring>
+        <name>c_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::c_</qualifiedname>
+        <briefdescription>
+<para>Normalized derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="868" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="868" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::Taylor</definition>
+        <argsstring>()</argsstring>
+        <name>Taylor</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::Taylor</qualifiedname>
+        <briefdescription>
+<para>Creates a zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="753" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="753" bodyend="753"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8407161a5e9ca820e4f02a3a4a9713c4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::Taylor</definition>
+        <argsstring>(S value)</argsstring>
+        <name>Taylor</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::Taylor</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Creates a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="760" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="760" bodyend="763"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add40c0bfa63aca4403c3b5a6041da511" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator double</definition>
+        <argsstring>() const</argsstring>
+        <name>operator double</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator double</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>c_0 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="768" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="768" bodyend="768"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab333dfde975fa5b13e15b87ddfab83c8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator[]</definition>
+        <argsstring>(std::size_t k) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator[]</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+<para>Normalized derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>c_k = x^(k) / k! </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="774" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="774" bodyend="774"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aeab775d83060ecac38c4cd5057be0604" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator[]</definition>
+        <argsstring>(std::size_t k)</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator[]</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>k</declname>
+        </param>
+        <briefdescription>
+<para>Normalized derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>reference to c_k = x^(k) / k! </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="780" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="780" bodyend="780"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaab297c088c0d5579728ea9265a0d54b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator+=</definition>
+        <argsstring>(const Taylor &amp;b)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator+=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Adds a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">Taylor</ref> number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>summand </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="786" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="786" bodyend="791"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab9e0c35eb9f339e0971508326bd7035f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator-=</definition>
+        <argsstring>(const Taylor &amp;b)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator-=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">Taylor</ref> number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>subtrahend </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="797" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="797" bodyend="802"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ac9761b7fa29dfe8dea9377bc2526fe0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator*=</definition>
+        <argsstring>(const Taylor &amp;b)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator*=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">Taylor</ref> number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>factor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="808" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="808" bodyend="808"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad9193147bac550212dd5cd420cd7151c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator/=</definition>
+        <argsstring>(const Taylor &amp;b)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator/=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">Taylor</ref> number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>divisor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="814" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="814" bodyend="814"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a44b7f8db81abe5b5f9c50830dee118fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator+=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator+=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Adds a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="822" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="822" bodyend="826"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaafda504abe279499fec82283e85c455" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator-=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator-=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="834" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="834" bodyend="838"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a438ab5542c9bda11aaf901c1a75a069f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator*=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator*=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="846" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="846" bodyend="851"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8dc7ba284a4fa327b592eab99d77571d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kindref="member">Taylor</ref> &amp;</type>
+        <definition>Taylor &amp; Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor&lt; order &gt;::operator/=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor::operator/=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="859" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="859" bodyend="864"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Univariate truncated <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">Taylor</ref> polynomial x( t ) = sum_k c_k t^k, k = 0..order. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>highest derivative order</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The coefficients are the normalized derivatives c_k = x^(k) / k!. A variable x0 is <ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor( x0 )</ref> with c_1 = 1. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="750" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="750" bodyend="869"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add4fa9687980cb0d24120f49bd43522a" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>c_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add40c0bfa63aca4403c3b5a6041da511" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator double</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ac9761b7fa29dfe8dea9377bc2526fe0d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a438ab5542c9bda11aaf901c1a75a069f" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaab297c088c0d5579728ea9265a0d54b" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a44b7f8db81abe5b5f9c50830dee118fe" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab9e0c35eb9f339e0971508326bd7035f" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaafda504abe279499fec82283e85c455" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad9193147bac550212dd5cd420cd7151c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8dc7ba284a4fa327b592eab99d77571d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab333dfde975fa5b13e15b87ddfab83c8" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator[]</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aeab775d83060ecac38c4cd5057be0604" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>operator[]</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>Taylor</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8407161a5e9ca820e4f02a3a4a9713c4" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</scope><name>Taylor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

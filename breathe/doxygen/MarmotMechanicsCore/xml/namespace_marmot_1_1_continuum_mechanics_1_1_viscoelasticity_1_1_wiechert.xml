@@ -61,7 +61,7 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_wiechert_8h_1aac135485ad2879bdc4c1da97fba5cd2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a6954c1b289cd8c8ebba55321922e79b8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -71,11 +71,11 @@
         </templateparamlist>
         <type>double</type>
         <definition>double Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluatePostWidderFormula</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; psi, double tau)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; psi, double tau)</argsstring>
         <name>evaluatePostWidderFormula</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluatePostWidderFormula</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>psi</declname>
         </param>
         <param>
@@ -119,9 +119,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="53" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="53" bodyend="59"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="53" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="53" bodyend="60"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_wiechert_8h_1a31e07d2c5576be3efa1ed7a4233b4f9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a2aac5893127d1592843e526f5c01d37f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -131,11 +131,11 @@
         </templateparamlist>
         <type>Properties</type>
         <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; psi, const Properties &amp;relaxationTimes, double spacing, bool gaussQuadrature=false)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; psi, const Properties &amp;relaxationTimes, double spacing, bool gaussQuadrature=false)</argsstring>
         <name>computeElasticModuli</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>psi</declname>
         </param>
         <param>
@@ -204,7 +204,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="77" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="77" bodyend="95"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="78" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="78" bodyend="97"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_wiechert_8h_1a4b0ac5c4236dcf66bf761a55bd2a2023" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Properties</type>
@@ -260,7 +260,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="107" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="107" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="109" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="109" declcolumn="14"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_wiechert_8h_1a4c1b978973063aaa7658911f5dcd7b87" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -350,7 +350,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="124" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="124" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="126" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="126" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_wiechert_8h_1a4091dc204de492104c927d30402ea717" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -452,7 +452,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="146" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="146" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="148" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="148" declcolumn="8"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

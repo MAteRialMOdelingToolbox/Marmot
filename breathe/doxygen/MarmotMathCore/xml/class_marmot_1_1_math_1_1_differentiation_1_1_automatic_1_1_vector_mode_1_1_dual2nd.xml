@@ -1,0 +1,1111 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</compoundname>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" local="no">MarmotAutomaticDifferentiationVectorModeSecondOrder.h</includes>
+    <innerclass refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1_1_uninitialized" prot="public">Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Uninitialized</innerclass>
+    <templateparamlist>
+      <param>
+        <type>std::size_t</type>
+        <declname>nDirections_</declname>
+        <defname>nDirections_</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::nDirections</definition>
+        <argsstring></argsstring>
+        <name>nDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::nDirections</qualifiedname>
+        <initializer>= nDirections_</initializer>
+        <briefdescription>
+<para>Number of directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="90" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::nHessian</definition>
+        <argsstring></argsstring>
+        <name>nHessian</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::nHessian</qualifiedname>
+        <initializer>= <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> * ( <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> + 1 ) / 2</initializer>
+        <briefdescription>
+<para>Number of stored Hessian entries. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="92" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0c956fd10066469278f0cef8ffcabb4c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::uint64_t</type>
+        <definition>std::uint64_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::allDirections</definition>
+        <argsstring></argsstring>
+        <name>allDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::allDirections</qualifiedname>
+        <initializer>= <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> == 64 ? ~std::uint64_t( 0 )
+                    : ( std::uint64_t( 1 ) &lt;&lt; <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> ) - 1</initializer>
+        <briefdescription>
+<para>Mask of all directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="95" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a870ec25c301db436f7fa9a49c9369573" prot="private" static="no" mutable="no">
+        <type>std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> &gt;</type>
+        <definition>std::array&lt; double, nDirections &gt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::g_</definition>
+        <argsstring></argsstring>
+        <name>g_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::g_</qualifiedname>
+        <briefdescription>
+<para>Gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="354" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="354" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0d7dece3d07ea547a81e3bae278e7da9" prot="private" static="no" mutable="no">
+        <type>std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" kindref="member">nHessian</ref> &gt;</type>
+        <definition>std::array&lt; double, nHessian &gt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::h_</definition>
+        <argsstring></argsstring>
+        <name>h_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::h_</qualifiedname>
+        <briefdescription>
+<para>Upper triangle of the Hessian, row by row. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="356" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="356" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af7433bea69939a524e97883abc341a0c" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::val_</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="358" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="358" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acf32f505c42e2f3b16b6806573d152f5" prot="private" static="no" mutable="no">
+        <type>std::uint64_t</type>
+        <definition>std::uint64_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::mask_</definition>
+        <argsstring></argsstring>
+        <name>mask_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::mask_</qualifiedname>
+        <briefdescription>
+<para>Directions this number depends on. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="360" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="360" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a97c7a425dd41123ecf3e443cc5fa3706" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>static constexpr std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::hessianIndex</definition>
+        <argsstring>(std::size_t i, std::size_t j)</argsstring>
+        <name>hessianIndex</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::hessianIndex</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+<para>Position of the Hessian entry ( i, j ) in the stored upper triangle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first direction </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>j</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>index into <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a8a2b3a1bb62d24edb543d97a473eaa13" kindref="member">hessian()</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="103" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="103" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0e64d6b1a9d9ceef31b6ae90d805943c" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::forEachDirection</definition>
+        <argsstring>(std::uint64_t mask, F &amp;&amp;f)</argsstring>
+        <name>forEachDirection</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::forEachDirection</qualifiedname>
+        <param>
+          <type>std::uint64_t</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+<para>Calls f( i ) for every direction i in a mask. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>callable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>directions </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function of the direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="116" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="116" bodyend="124"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a94bb42be8f52fc66781f4c9f98c0c925" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>static constexpr std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::rowStart</definition>
+        <argsstring>(std::size_t i)</argsstring>
+        <name>rowStart</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::rowStart</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Index of the diagonal entry ( i, i ) in the stored upper triangle, where row i starts. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>index into <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a8a2b3a1bb62d24edb543d97a473eaa13" kindref="member">hessian()</ref> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="130" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="130" bodyend="130"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aabbd6f4e0bad820d15137a0919599e02" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::forEachRow</definition>
+        <argsstring>(std::uint64_t mask, F &amp;&amp;f)</argsstring>
+        <name>forEachRow</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::forEachRow</qualifiedname>
+        <param>
+          <type>std::uint64_t</type>
+          <declname>mask</declname>
+        </param>
+        <param>
+          <type>F &amp;&amp;</type>
+          <declname>f</declname>
+        </param>
+        <briefdescription>
+<para>Calls f( i, k ) for every k of row i of the stored upper triangle, i.e., the entries ( i, j ), j &gt;= i, for all directions i in a mask; the rows of the other directions do not change in the operations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>callable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>directions </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function of the row direction and the Hessian index; the column is j = i + k - rowStart( i ) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="139" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="139" bodyend="146"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a7d57960b69ce979e8960e218f859f035" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref></type>
+        <definition>static Dual2nd Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::resultFor</definition>
+        <argsstring>(std::uint64_t mask)</argsstring>
+        <name>resultFor</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::resultFor</qualifiedname>
+        <param>
+          <type>std::uint64_t</type>
+          <declname>mask</declname>
+        </param>
+        <briefdescription>
+<para>Creates the result of an operation that depends on the directions in a mask: uninitialized if all directions, since the operation writes all entries then, and zero otherwise, since it writes only the entries of the rows in the mask. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>directions of the result </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the number, with the mask set </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="165" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="165" bodyend="172"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::Dual2nd</definition>
+        <argsstring>()</argsstring>
+        <name>Dual2nd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Dual2nd</qualifiedname>
+        <briefdescription>
+<para>Creates a zero. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="152" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="152" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a55f64453829ea3cf24aa35e8928be0c6" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::Dual2nd</definition>
+        <argsstring>(Uninitialized)</argsstring>
+        <name>Dual2nd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Dual2nd</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1_1_uninitialized" kindref="compound">Uninitialized</ref></type>
+        </param>
+        <briefdescription>
+<para>Creates a number with uninitialized gradient and Hessian, for the implementation of the operations, which must write all entries. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="157" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="157" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a383a64194bf5359b10c07dd9a116dfcf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ScalarMode::Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::Dual2nd</definition>
+        <argsstring>(S value)</argsstring>
+        <name>Dual2nd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Dual2nd</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Creates a constant, with zero derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="179" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="179" bodyend="181"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acfb3919e7b5f83d7d00b801840154101" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::seed</definition>
+        <argsstring>(std::size_t direction)</argsstring>
+        <name>seed</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::seed</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+<para>Makes this number the independent variable <computeroutput>direction</computeroutput> (gradient = unit vector, zero Hessian). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>direction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of the variable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="186" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="186" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae8656152194f071dbde9f19ebc0c53ac" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::uint64_t</type>
+        <definition>std::uint64_t Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::mask</definition>
+        <argsstring>() const</argsstring>
+        <name>mask</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::mask</qualifiedname>
+        <briefdescription>
+<para>Directions this number depends on. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>bit mask </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="199" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="199" bodyend="199"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa0d2797af9e5aaecba6f9415a13b2a62" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::setMask</definition>
+        <argsstring>(std::uint64_t mask)</argsstring>
+        <name>setMask</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::setMask</qualifiedname>
+        <param>
+          <type>std::uint64_t</type>
+          <declname>mask</declname>
+        </param>
+        <briefdescription>
+<para>Sets the directions this number depends on, for the implementation of the operations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mask</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>bit mask </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="204" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="204" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0aa2d4a174ec371238be722cad19307c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::val</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="209" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="209" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad0f5de2613e35cd0f14f2f77240266a6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double &amp;</type>
+        <definition>double &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::val</definition>
+        <argsstring>()</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::val</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="214" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="214" bodyend="214"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a935e6b0be8ec719c06bdce75803b0d40" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::dx</definition>
+        <argsstring>(std::size_t i) const</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>First partial derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative with respect to variable i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="220" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="220" bodyend="220"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae6511494d53274c8841fa5c3e2372432" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::dxx</definition>
+        <argsstring>(std::size_t i, std::size_t j) const</argsstring>
+        <name>dxx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::dxx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+<para>Second partial derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first direction </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>j</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>second partial derivative with respect to variables i and j </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="227" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="227" bodyend="227"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4087166ae8f3cc4ae60c32e790c833f9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> &gt; &amp;</type>
+        <definition>const std::array&lt; double, nDirections &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::gradient</definition>
+        <argsstring>() const</argsstring>
+        <name>gradient</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::gradient</qualifiedname>
+        <briefdescription>
+<para>Gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the first partial derivatives </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="232" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="232" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a245abd5118e3f53e4466e7cb70966b2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kindref="member">nDirections</ref> &gt; &amp;</type>
+        <definition>std::array&lt; double, nDirections &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::gradient</definition>
+        <argsstring>()</argsstring>
+        <name>gradient</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::gradient</qualifiedname>
+        <briefdescription>
+<para>Gradient, for the implementation of the operations, which keep the mask consistent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the first partial derivatives </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="237" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="237" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af5ba1f85b45e7d390887e93d8d89ffd0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" kindref="member">nHessian</ref> &gt; &amp;</type>
+        <definition>const std::array&lt; double, nHessian &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::hessian</definition>
+        <argsstring>() const</argsstring>
+        <name>hessian</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::hessian</qualifiedname>
+        <briefdescription>
+<para>Hessian. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the upper triangle of the second partial derivatives, row by row </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="242" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="242" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a8a2b3a1bb62d24edb543d97a473eaa13" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; double, <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" kindref="member">nHessian</ref> &gt; &amp;</type>
+        <definition>std::array&lt; double, nHessian &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::hessian</definition>
+        <argsstring>()</argsstring>
+        <name>hessian</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::hessian</qualifiedname>
+        <briefdescription>
+<para>Hessian, for the implementation of the operations, which keep the mask consistent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>reference to the upper triangle of the second partial derivatives, row by row </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="247" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="247" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad7283863b28ceeb575ba192e93be14c6" prot="public" static="no" const="yes" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator double</definition>
+        <argsstring>() const</argsstring>
+        <name>operator double</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator double</qualifiedname>
+        <briefdescription>
+<para>Primal value. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="252" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="252" bodyend="252"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa219ac2687a29ab3881d1094703aaddf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator+=</definition>
+        <argsstring>(const Dual2nd &amp;b)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator+=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Adds a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>summand </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="258" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="258" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a58f90583f2abb290c3b9cdfc0e88abd6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator-=</definition>
+        <argsstring>(const Dual2nd &amp;b)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator-=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>subtrahend </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="268" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="268" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae0cfcb7bb749922eb19cdf6d1b35c9ce" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd&lt; nDirections_ &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator*=</definition>
+        <argsstring>(const Dual2nd &amp;b)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator*=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>factor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="278" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="416" bodyend="419"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa2bdab607192d1e13c57442c753be132" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd&lt; nDirections_ &gt; &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator/=</definition>
+        <argsstring>(const Dual2nd &amp;b)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator/=</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>divisor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="284" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="446" bodyend="449"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a08dcb5c2afbbdb03793de2fde2e34515" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ScalarMode::Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator+=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator+=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Adds a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="292" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="292" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a64c520e98bc7300b57b9c1fb1066d254" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ScalarMode::Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator-=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator-=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Subtracts a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="304" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="304" bodyend="308"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a75ead210a8c956a158dbaeaee634c7dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ScalarMode::Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator*=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator*=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator*=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Multiplies by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="316" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="316" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a10ebe79e1938758873fe00591b73f19d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>ScalarMode::Constant</type>
+            <declname>S</declname>
+            <defname>S</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+        <definition>Dual2nd &amp; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::operator/=</definition>
+        <argsstring>(S c)</argsstring>
+        <name>operator/=</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::operator/=</qualifiedname>
+        <param>
+          <type>S</type>
+          <declname>c</declname>
+        </param>
+        <briefdescription>
+<para>Divides by a constant. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>arithmetic type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>c</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>constant </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>this number </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="331" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="331" bodyend="338"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a82a9c62b47c90fd6ffc37be1022e8121" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; nDirections_ &gt;::combine</definition>
+        <argsstring>(const Dual2nd &amp;b, double sign)</argsstring>
+        <name>combine</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::combine</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kindref="member">Dual2nd</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>sign</declname>
+        </param>
+        <briefdescription>
+<para>this += sign b </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sign</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>+1 or -1 </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="345" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="345" bodyend="351"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Second-order vector-mode number: value, gradient and Hessian with respect to nDirections_ variables. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDirections_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of independent variables (directions)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The Hessian is stored as its upper triangle, row by row. The gradient and the Hessian precede the value, so that pairs of them are 16-byte aligned for SIMD.</para>
+<para>The mask holds the directions the number depends on; the gradient and Hessian entries of all other directions are zero. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="87" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="87" bodyend="361"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0c956fd10066469278f0cef8ffcabb4c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>allDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a82a9c62b47c90fd6ffc37be1022e8121" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>combine</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>Dual2nd</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a55f64453829ea3cf24aa35e8928be0c6" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>Dual2nd</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a383a64194bf5359b10c07dd9a116dfcf" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>Dual2nd</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a935e6b0be8ec719c06bdce75803b0d40" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae6511494d53274c8841fa5c3e2372432" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>dxx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0e64d6b1a9d9ceef31b6ae90d805943c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>forEachDirection</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aabbd6f4e0bad820d15137a0919599e02" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>forEachRow</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a870ec25c301db436f7fa9a49c9369573" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>g_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4087166ae8f3cc4ae60c32e790c833f9" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>gradient</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a245abd5118e3f53e4466e7cb70966b2e" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>gradient</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0d7dece3d07ea547a81e3bae278e7da9" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>h_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af5ba1f85b45e7d390887e93d8d89ffd0" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>hessian</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a8a2b3a1bb62d24edb543d97a473eaa13" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>hessian</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a97c7a425dd41123ecf3e443cc5fa3706" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>hessianIndex</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae8656152194f071dbde9f19ebc0c53ac" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>mask</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acf32f505c42e2f3b16b6806573d152f5" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>mask_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>nDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>nHessian</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad7283863b28ceeb575ba192e93be14c6" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator double</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae0cfcb7bb749922eb19cdf6d1b35c9ce" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a75ead210a8c956a158dbaeaee634c7dc" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator*=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa219ac2687a29ab3881d1094703aaddf" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a08dcb5c2afbbdb03793de2fde2e34515" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator+=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a58f90583f2abb290c3b9cdfc0e88abd6" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a64c520e98bc7300b57b9c1fb1066d254" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator-=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa2bdab607192d1e13c57442c753be132" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a10ebe79e1938758873fe00591b73f19d" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>operator/=</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a7d57960b69ce979e8960e218f859f035" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>resultFor</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a94bb42be8f52fc66781f4c9f98c0c925" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>rowStart</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acfb3919e7b5f83d7d00b801840154101" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>seed</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa0d2797af9e5aaecba6f9415a13b2a62" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>setMask</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0aa2d4a174ec371238be722cad19307c" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad0f5de2613e35cd0f14f2f77240266a6" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af7433bea69939a524e97883abc341a0c" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_3_010_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder&lt; 0 &gt;</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="no">MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_3_010_01_4_1ad1a52183e4ddc47ffed17f17d88303af" prot="public" static="no">
+        <type>double</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder&lt; 0 &gt;::type = double</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder&lt; 0 &gt;::type</qualifiedname>
+        <briefdescription>
+<para>The number type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="122" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Implementation of <ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ada8aafc4bdd73e372276dcb99e730594" kindref="member">HyperDual</ref>: order 0 is double. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="120" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="120" bodyend="123"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_3_010_01_4_1ad1a52183e4ddc47ffed17f17d88303af" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder&lt; 0 &gt;</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

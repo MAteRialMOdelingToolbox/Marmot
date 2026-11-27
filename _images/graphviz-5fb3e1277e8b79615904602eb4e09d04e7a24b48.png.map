@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;" alt="" coords="5,5,974,53"/>
+<area shape="rect" id="node2" title="NumTraits&lt; double &gt;" alt="" coords="374,101,605,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="491,52,492,88,487,84,488,56"/>
+</map>

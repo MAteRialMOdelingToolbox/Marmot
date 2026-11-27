@@ -129,7 +129,7 @@
 <parametername>T</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar type of the per-microplane stresses, e.g. <computeroutput>double</computeroutput> or <computeroutput>autodiff::dual</computeroutput>; the projection tensors <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> stay <computeroutput>double</computeroutput> (they are geometric constants, never differentiated), so <computeroutput>T</computeroutput> may differ from <computeroutput>double</computeroutput>. </para>
+<para>Scalar type of the per-microplane stresses, e.g. <computeroutput>double</computeroutput> or <computeroutput>Marmot::Math::Differentiation::Automatic::dual</computeroutput>; the projection tensors <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> stay <computeroutput>double</computeroutput> (they are geometric constants, never differentiated), so <computeroutput>T</computeroutput> may differ from <computeroutput>double</computeroutput>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

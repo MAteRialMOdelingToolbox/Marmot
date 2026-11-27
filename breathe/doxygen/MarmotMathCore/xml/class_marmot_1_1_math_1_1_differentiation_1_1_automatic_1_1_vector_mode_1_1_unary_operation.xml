@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</compoundname>
+    <basecompoundref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</basecompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename A</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1adfa8ff27f84e0cc03095c841d205126b" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::nDirections</definition>
+        <argsstring></argsstring>
+        <name>nDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::nDirections</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a41d1f93636490b32311846e260105bc4" kindref="member">directionsOf</ref>&lt; A &gt;</initializer>
+        <briefdescription>
+<para>Number of directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="119" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a5099137b8a3e00f4be00e1ea5d8bd859" prot="private" static="no" mutable="no">
+        <type>A</type>
+        <definition>A Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::a_</definition>
+        <argsstring></argsstring>
+        <name>a_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::a_</qualifiedname>
+        <briefdescription>
+<para><ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="146" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a38855b39fa2c35a5e190f46aa4c04698" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::val_</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="148" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a719ba341f6f2a10f711b1bea30d9a9e5" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::partial_</definition>
+        <argsstring></argsstring>
+        <name>partial_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::partial_</qualifiedname>
+        <briefdescription>
+<para>Derivative with respect to the operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="150" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a91909ebe12ccbeb35c1b4eb5ac56db25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename E</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::UnaryOperation</definition>
+        <argsstring>(E &amp;&amp;a, double value, double partial)</argsstring>
+        <name>UnaryOperation</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::UnaryOperation</qualifiedname>
+        <param>
+          <type>E &amp;&amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>partial</declname>
+        </param>
+        <briefdescription>
+<para>Creates the node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>E</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>operand type, as deduced by the creating function </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>operand </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value of the operation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>partial</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derivative of the operation with respect to a </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="128" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="128" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1ab5ad3440f6b2d95df789cbe75c16eafb" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::val</qualifiedname>
+        <briefdescription>
+<para>Value of the expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="136" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="136" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1afe6a802a5c2d1783025f362b5a88ab5f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;::dx</definition>
+        <argsstring>(std::size_t i) const</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Derivative of the expression in one direction. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative with respect to independent variable i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="142" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="142" bodyend="142"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kindref="compound">Expression</ref> node of a unary operation f( a ), or of a binary operation with a constant operand. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stored operand type (see <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The derivatives are partial * a.dx( i ), with partial = f&apos;( a ) evaluated once at construction. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="116" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="116" bodyend="151"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a5099137b8a3e00f4be00e1ea5d8bd859" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>a_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1afe6a802a5c2d1783025f362b5a88ab5f" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1adfa8ff27f84e0cc03095c841d205126b" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>nDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a719ba341f6f2a10f711b1bea30d9a9e5" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>partial_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a91909ebe12ccbeb35c1b4eb5ac56db25" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>UnaryOperation</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1ab5ad3440f6b2d95df789cbe75c16eafb" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a38855b39fa2c35a5e190f46aa4c04698" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

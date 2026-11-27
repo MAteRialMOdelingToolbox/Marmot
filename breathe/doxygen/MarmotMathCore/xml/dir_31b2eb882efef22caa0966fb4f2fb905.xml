@@ -4,6 +4,10 @@
     <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot</compoundname>
     <innerfile refid="_marmot_automatic_differentiation_8h">MarmotAutomaticDifferentiation.h</innerfile>
     <innerfile refid="_marmot_automatic_differentiation_for_fastor_8h">MarmotAutomaticDifferentiationForFastor.h</innerfile>
+    <innerfile refid="_marmot_automatic_differentiation_scalar_mode_8h">MarmotAutomaticDifferentiationScalarMode.h</innerfile>
+    <innerfile refid="_marmot_automatic_differentiation_types_8h">MarmotAutomaticDifferentiationTypes.h</innerfile>
+    <innerfile refid="_marmot_automatic_differentiation_vector_mode_8h">MarmotAutomaticDifferentiationVectorMode.h</innerfile>
+    <innerfile refid="_marmot_automatic_differentiation_vector_mode_second_order_8h">MarmotAutomaticDifferentiationVectorModeSecondOrder.h</innerfile>
     <innerfile refid="_marmot_constants_8h">MarmotConstants.h</innerfile>
     <innerfile refid="_marmot_eigen_systems_8h">MarmotEigenSystems.h</innerfile>
     <innerfile refid="_marmot_fastor_tensor_basics_8h">MarmotFastorTensorBasics.h</innerfile>

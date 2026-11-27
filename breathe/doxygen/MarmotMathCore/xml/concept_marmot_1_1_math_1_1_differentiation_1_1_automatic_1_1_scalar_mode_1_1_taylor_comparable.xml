@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_comparable" kind="concept">
+    <compoundname>Marmot::Math::Differentiation::Automatic::ScalarMode::TaylorComparable</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="no">MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename A</type>
+      </param>
+      <param>
+        <type>typename B</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename A, typename B&gt;
+concept <ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_comparable" kindref="compound">Marmot::Math::Differentiation::Automatic::ScalarMode::TaylorComparable</ref> =  ( <ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac7c076c0a266410dea85ba2f312d281e" kindref="member">isTaylor</ref>&lt; A &gt; &amp;&amp; (<ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac7c076c0a266410dea85ba2f312d281e" kindref="member">isTaylor</ref>&lt; B &gt; || Constant&lt; B &gt;)) || ( Constant&lt; A &gt; &amp;&amp; <ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac7c076c0a266410dea85ba2f312d281e" kindref="member">isTaylor</ref>&lt; B &gt; )</initializer>
+    <conceptparts>
+      <codepart line="1085">    <programlisting>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>B<sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">TaylorComparable<sp/>=<sp/>(<sp/>isTaylor&lt;<sp/>A<sp/>&gt;<sp/>&amp;&amp;<sp/>(isTaylor&lt;<sp/>B<sp/>&gt;<sp/>||<sp/>Constant&lt;<sp/>B<sp/>&gt;))<sp/>||<sp/>(<sp/>Constant&lt;<sp/>A<sp/>&gt;<sp/>&amp;&amp;<sp/>isTaylor&lt;<sp/>B<sp/>&gt;<sp/>)</highlight></codeline>
+    </programlisting>
+</codepart>
+    </conceptparts>
+    <briefdescription>
+<para>An operand pair of a comparison involving at least one Taylor number. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="1085" column="3"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</compoundname>
+    <basecompoundref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</basecompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename A</type>
+      </param>
+      <param>
+        <type>typename B</type>
+      </param>
+      <param>
+        <type>bool</type>
+        <declname>isDifference</declname>
+        <defname>isDifference</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a418fbddbe4fbc2b14eca96580c33329e" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::nDirections</definition>
+        <argsstring></argsstring>
+        <name>nDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::nDirections</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a41d1f93636490b32311846e260105bc4" kindref="member">directionsOf</ref>&lt; A &gt;</initializer>
+        <briefdescription>
+<para>Number of directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="219" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="219" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a2081b344d4f72493ed67abcc419a2aee" prot="private" static="no" mutable="no">
+        <type>A</type>
+        <definition>A Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::a_</definition>
+        <argsstring></argsstring>
+        <name>a_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::a_</qualifiedname>
+        <briefdescription>
+<para>First operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="253" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="253" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1aec378fbc6d9cbb82f9cdcdf856a7dfab" prot="private" static="no" mutable="no">
+        <type>B</type>
+        <definition>B Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::b_</definition>
+        <argsstring></argsstring>
+        <name>b_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::b_</qualifiedname>
+        <briefdescription>
+<para>Second operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="255" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="255" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a65d81f22a4aa1788d03b147fb6a384af" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::val_</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="257" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="257" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a37ef7f68f7fe41788569a53c18b607b2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EA</type>
+          </param>
+          <param>
+            <type>typename EB</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::Sum</definition>
+        <argsstring>(EA &amp;&amp;a, EB &amp;&amp;b, double value)</argsstring>
+        <name>Sum</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::Sum</qualifiedname>
+        <param>
+          <type>EA &amp;&amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>EB &amp;&amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Creates the node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>EA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand type, as deduced by the creating function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>EB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand type, as deduced by the creating function </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a + b, or a - b </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="230" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="230" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a721bd0de85d24ded1e7e9c90f6271e4b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::val</qualifiedname>
+        <briefdescription>
+<para>Value of the expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="237" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="237" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a1a8b6f5aae25ef20a8e6e0e3a6b53ff0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;::dx</definition>
+        <argsstring>(std::size_t i) const</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::Sum::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Derivative of the expression in one direction. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative with respect to independent variable i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="243" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="243" bodyend="249"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kindref="compound">Expression</ref> node of a + b or a - b, without multiplications in the derivatives. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stored type of the first operand (see <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stored type of the second operand (see <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>isDifference</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>true for a - b, false for a + b </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="216" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="216" bodyend="258"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a2081b344d4f72493ed67abcc419a2aee" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>a_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1aec378fbc6d9cbb82f9cdcdf856a7dfab" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>b_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a1a8b6f5aae25ef20a8e6e0e3a6b53ff0" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a418fbddbe4fbc2b14eca96580c33329e" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>nDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a37ef7f68f7fe41788569a53c18b607b2" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>Sum</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a721bd0de85d24ded1e7e9c90f6271e4b" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a65d81f22a4aa1788d03b147fb6a384af" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -8,6 +8,86 @@
     <includes local="no">utility</includes>
     <includedby refid="_marmot_fastor_tensor_basics_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h</includedby>
     <incdepgraph>
+      <node id="7">
+        <label>Marmot/MarmotAutomaticDifferentiationScalarMode.h</label>
+        <link refid="_marmot_automatic_differentiation_scalar_mode_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotAutomaticDifferentiationTypes.h</label>
+        <link refid="_marmot_automatic_differentiation_types_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="15" relation="include">
+        </childnode>
+        <childnode refid="17" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="15">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorMode.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_8h"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
+      <node id="17">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_second_order_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="18" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="16" relation="include">
+        </childnode>
+      </node>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h</label>
         <link refid="_marmot_tensor_8h"/>
@@ -17,7 +97,7 @@
         </childnode>
         <childnode refid="4" relation="include">
         </childnode>
-        <childnode refid="9" relation="include">
+        <childnode refid="16" relation="include">
         </childnode>
       </node>
       <node id="4">
@@ -27,10 +107,11 @@
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="20" relation="include">
         </childnode>
-        <childnode refid="8" relation="include">
-        </childnode>
+      </node>
+      <node id="8">
+        <label>Eigen/Core</label>
       </node>
       <node id="5">
         <label>Eigen/Dense</label>
@@ -41,16 +122,34 @@
       <node id="3">
         <label>Marmot/MarmotJournal.h</label>
       </node>
-      <node id="6">
-        <label>autodiff/forward/dual/dual.hpp</label>
+      <node id="9">
+        <label>array</label>
       </node>
-      <node id="7">
-        <label>autodiff/forward/dual/eigen.hpp</label>
+      <node id="18">
+        <label>bit</label>
       </node>
-      <node id="8">
+      <node id="10">
+        <label>cmath</label>
+      </node>
+      <node id="11">
+        <label>cstddef</label>
+      </node>
+      <node id="19">
+        <label>cstdint</label>
+      </node>
+      <node id="12">
+        <label>numbers</label>
+      </node>
+      <node id="13">
+        <label>ostream</label>
+      </node>
+      <node id="14">
+        <label>type_traits</label>
+      </node>
+      <node id="20">
         <label>unsupported/Eigen/CXX11/Tensor</label>
       </node>
-      <node id="9">
+      <node id="16">
         <label>utility</label>
       </node>
     </incdepgraph>

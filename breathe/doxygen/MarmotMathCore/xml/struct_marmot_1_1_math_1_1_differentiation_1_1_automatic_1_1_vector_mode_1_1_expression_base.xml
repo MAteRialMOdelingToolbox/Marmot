@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::Shift&lt; A, isNegated &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;</derivedcompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <briefdescription>
+<para>Common base of <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">Dual</ref> and all expression nodes, which identifies them as vector-mode expressions. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+      <node id="5">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Shift&lt; A, isNegated &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="63" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="63" bodyend="63"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

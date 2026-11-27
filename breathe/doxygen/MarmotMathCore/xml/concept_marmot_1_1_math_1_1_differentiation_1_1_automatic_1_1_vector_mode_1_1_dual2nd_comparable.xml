@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_comparable" kind="concept">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2ndComparable</compoundname>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" local="no">MarmotAutomaticDifferentiationVectorModeSecondOrder.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename A</type>
+      </param>
+      <param>
+        <type>typename B</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename A, typename B&gt;
+concept <ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_comparable" kindref="compound">Marmot::Math::Differentiation::Automatic::VectorMode::Dual2ndComparable</ref> =  ( <ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kindref="member">isDual2nd</ref>&lt; A &gt; &amp;&amp; (<ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kindref="member">isDual2nd</ref>&lt; B &gt; || ScalarMode::Constant&lt; B &gt;)) ||
+                              ( ScalarMode::Constant&lt; A &gt; &amp;&amp; <ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kindref="member">isDual2nd</ref>&lt; B &gt; )</initializer>
+    <conceptparts>
+      <codepart line="657">    <programlisting>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>B<sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">Dual2ndComparable<sp/>=<sp/>(<sp/>isDual2nd&lt;<sp/>A<sp/>&gt;<sp/>&amp;&amp;<sp/>(isDual2nd&lt;<sp/>B<sp/>&gt;<sp/>||<sp/>ScalarMode::Constant&lt;<sp/>B<sp/>&gt;))<sp/>||</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(<sp/>ScalarMode::Constant&lt;<sp/>A<sp/>&gt;<sp/>&amp;&amp;<sp/>isDual2nd&lt;<sp/>B<sp/>&gt;<sp/>)</highlight></codeline>
+    </programlisting>
+</codepart>
+    </conceptparts>
+    <briefdescription>
+<para>An operand pair of a comparison involving at least one second-order vector-mode number. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="657" column="3"/>
+  </compounddef>
+</doxygen>

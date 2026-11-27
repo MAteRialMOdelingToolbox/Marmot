@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0" kind="struct" language="C++" prot="public">
+    <compoundname>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="no">MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>typename BinaryOp</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0_1a532b3be953c082a37c8c5e4609476900" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual" kindref="compound">Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</ref>&lt; T &gt;</type>
+        <definition>using Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;::ReturnType = Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;</definition>
+        <argsstring></argsstring>
+        <name>ReturnType</name>
+        <qualifiedname>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;::ReturnType</qualifiedname>
+        <briefdescription>
+<para>Result type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="1941" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="1941" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Lets Eigen mix (hyper-)dual numbers with double. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>inner type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>BinaryOp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen binary functor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="1939" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" bodystart="1939" bodyend="1942"/>
+    <listofallmembers>
+      <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0_1a532b3be953c082a37c8c5e4609476900" prot="public" virt="non-virtual"><scope>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;</scope><name>ReturnType</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

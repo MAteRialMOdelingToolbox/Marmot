@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatic Differentiation &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Solvers" href="solvers.html" />
+    <link rel="prev" title="Voigt Notation" href="voigtnotation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic Differentiation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#number-types">Number types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#differentiating-by-hand">Differentiating by hand</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hyper-dual-numbers">Hyper-dual numbers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vector-mode-numbers">Vector mode numbers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#taylor-numbers">Taylor numbers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#derivatives-of-functions">Derivatives of functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scalars-and-vectors">Scalars and vectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tensors">Tensors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#materials">Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elementary-functions">Elementary functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+      <li class="breadcrumb-item active">Automatic Differentiation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/automaticdifferentiation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="automatic-differentiation">
+<span id="automaticdifferentiation"></span><h1>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Link to this heading"></a></h1>
+<p>Marmot computes many derivatives by forward mode automatic differentiation (AD): the consistent tangent of a
+material from its stress update, the Jacobian of a residual vector, the gradient and the Hessian of an energy
+density. A function is evaluated with a number type that carries derivatives next to its value, and every
+arithmetic operation and elementary function applies the chain rule to them. The derivatives are exact up to
+round-off; there is no step size to choose as with finite differences.</p>
+<p>The number types are Marmot’s own and need no further library. Everything on this page lives in the namespace
+<code class="docutils literal notranslate"><span class="pre">Marmot::Math::Differentiation::Automatic</span></code>, in three headers of <code class="docutils literal notranslate"><span class="pre">MarmotMathCore</span></code>:</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Header</strong></p></th>
+<th class="head"><p><strong>Content</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MarmotAutomaticDifferentiationTypes.h</span></code></p></td>
+<td><p>number types, seeding, reading derivatives</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MarmotAutomaticDifferentiation.h</span></code></p></td>
+<td><p>derivatives of functions of scalars and of Eigen vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MarmotAutomaticDifferentiationForFastor.h</span></code></p></td>
+<td><p>derivatives of functions of Fastor tensors</p></td>
+</tr>
+</tbody>
+</table>
+<p>The code examples below assume</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Marmot</span><span class="o">::</span><span class="nn">Math</span><span class="o">::</span><span class="nn">Differentiation</span><span class="o">::</span><span class="nn">Automatic</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">Marmot</span><span class="o">::</span><span class="nn">Math</span><span class="o">::</span><span class="nn">Tensors</span><span class="o">::</span><span class="nn">FastorTensors</span><span class="p">;</span><span class="w"> </span><span class="c1">// Tensor33d, Tensor33t&lt; T &gt;</span>
+</pre></div>
+</div>
+<section id="number-types">
+<h2>Number types<a class="headerlink" href="#number-types" title="Link to this heading"></a></h2>
+<p>A dual number <span class="math notranslate nohighlight">\(x + x'\,\varepsilon\)</span> extends a real number by a derivative part, with
+<span class="math notranslate nohighlight">\(\varepsilon^2 = 0\)</span>. Evaluating a function with it yields the value and the derivative at once,</p>
+<div class="math notranslate nohighlight">
+\[f(x + \varepsilon) = f(x) + f'(x)\,\varepsilon .\]</div>
+<p>A hyper-dual number nests this idea: both parts of a dual number are dual numbers again. With two levels there
+are two units, <span class="math notranslate nohighlight">\(\varepsilon_1^2 = \varepsilon_2^2 = 0\)</span> and <span class="math notranslate nohighlight">\(\varepsilon_1\varepsilon_2 \neq 0\)</span>, and</p>
+<div class="math notranslate nohighlight">
+\[f(x + \varepsilon_1 + \varepsilon_2) = f(x) + f'(x)\,(\varepsilon_1 + \varepsilon_2)
++ f''(x)\,\varepsilon_1\varepsilon_2 ,\]</div>
+<p>so that the second derivative is exact as well. Each nesting level is one direction of differentiation. A
+hyper-dual number therefore gives one directional derivative per evaluation of the function. The vector mode
+numbers carry the partial derivatives with respect to all <span class="math notranslate nohighlight">\(n\)</span> variables instead, and give a whole gradient
+or Hessian in one evaluation.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Type</strong></p></th>
+<th class="head"><p><strong>Carries</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HyperDual&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>value and all mixed derivatives along <code class="docutils literal notranslate"><span class="pre">order</span></code> directions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Taylor&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>Taylor coefficients <span class="math notranslate nohighlight">\(f^{(k)}/k!\)</span>, <span class="math notranslate nohighlight">\(k = 0 \dots \mathrm{order}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>value and <span class="math notranslate nohighlight">\(n\)</span> partial derivatives</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">HessianDual&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>value, <span class="math notranslate nohighlight">\(n\)</span> first and <span class="math notranslate nohighlight">\(n(n+1)/2\)</span> second partial derivatives</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">HyperDual&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code> is a hyper-dual number with <code class="docutils literal notranslate"><span class="pre">order</span></code> nesting levels, <span class="math notranslate nohighlight">\(2^\mathrm{order}\)</span> numbers
+in total; <code class="docutils literal notranslate"><span class="pre">dual</span></code>, <code class="docutils literal notranslate"><span class="pre">dual2nd</span></code> and <code class="docutils literal notranslate"><span class="pre">dual3rd</span></code> are the orders 1, 2 and 3. Use it for a derivative with respect
+to one variable, for mixed and higher derivatives, and for functions whose arguments carry derivatives already.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Taylor&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code> is a truncated Taylor polynomial of a function of one variable. Use it for derivatives of
+high order, for which a hyper-dual number becomes expensive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code> gives gradients and Jacobians, <code class="docutils literal notranslate"><span class="pre">HessianDual&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code> Hessians, in one evaluation.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">VectorXdual</span></code>, <code class="docutils literal notranslate"><span class="pre">MatrixXdual</span></code> and <code class="docutils literal notranslate"><span class="pre">VectorXdual2nd</span></code> are the Eigen vectors and matrices of <code class="docutils literal notranslate"><span class="pre">dual</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dual2nd</span></code>. All types except <code class="docutils literal notranslate"><span class="pre">Taylor</span></code> can be used as the scalar type of Eigen and Fastor objects, also in
+expressions that mix them with <code class="docutils literal notranslate"><span class="pre">double</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>An expression of <code class="docutils literal notranslate"><span class="pre">JacobianDual</span></code> numbers is not a number yet: it is evaluated when it is assigned to a
+<code class="docutils literal notranslate"><span class="pre">JacobianDual</span></code>, and until then it refers to the numbers it was built from. Never store such an expression in
+<code class="docutils literal notranslate"><span class="pre">auto</span></code>, and never return one from a function or lambda with deduced return type — name the type instead.
+The other number types are plain values, for which <code class="docutils literal notranslate"><span class="pre">auto</span></code> is fine.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">JacobianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"> </span><span class="c1">// correct</span>
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w">              </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"> </span><span class="c1">// wrong: g refers to temporaries</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="differentiating-by-hand">
+<h2>Differentiating by hand<a class="headerlink" href="#differentiating-by-hand" title="Link to this heading"></a></h2>
+<p>The derivatives of a number are set and read by free functions; the numbers have no public members to rely on.</p>
+<section id="hyper-dual-numbers">
+<h3>Hyper-dual numbers<a class="headerlink" href="#hyper-dual-numbers" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">seed&lt;</span> <span class="pre">level</span> <span class="pre">&gt;(</span> <span class="pre">x,</span> <span class="pre">1.0</span> <span class="pre">)</span></code> makes <code class="docutils literal notranslate"><span class="pre">x</span></code> the variable that nesting level <code class="docutils literal notranslate"><span class="pre">level</span></code> differentiates with respect to,
+<code class="docutils literal notranslate"><span class="pre">value(</span> <span class="pre">y</span> <span class="pre">)</span></code> returns the value of a result and <code class="docutils literal notranslate"><span class="pre">derivative&lt;</span> <span class="pre">level</span> <span class="pre">&gt;(</span> <span class="pre">y</span> <span class="pre">)</span></code> its mixed derivative along the
+levels 1 to <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dual</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="w"> </span><span class="mf">2.5</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seed</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// x is the independent variable</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">dual</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">);</span><span class="w">           </span><span class="c1">// x^2 exp( x )</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">df_dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">derivative</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// ( 2 x + x^2 ) exp( x )</span>
+</pre></div>
+</div>
+<p>With two levels, seeding two different variables gives their mixed derivative, and seeding one variable on both
+levels gives its second derivative:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">dual2nd</span><span class="w"> </span><span class="nf">a</span><span class="p">(</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">b</span><span class="p">(</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seed</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// level 1 differentiates with respect to a</span>
+<span class="n">seed</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// level 2 differentiates with respect to b</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">dual2nd</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dy_da</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">derivative</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 2 a sin( b )</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d2y_dadb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">derivative</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 2 a cos( b )</span>
+
+<span class="n">dual2nd</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seed</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seed</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// both levels differentiate with respect to x</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">dual2nd</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dz_dx</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">derivative</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 3 x^2</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d2z_dx2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">derivative</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 6 x</span>
+</pre></div>
+</div>
+<p>A number constructed from a <code class="docutils literal notranslate"><span class="pre">double</span></code> is a constant. <code class="docutils literal notranslate"><span class="pre">seed&lt;</span> <span class="pre">level</span> <span class="pre">&gt;(</span> <span class="pre">x,</span> <span class="pre">0.0</span> <span class="pre">)</span></code> makes a seeded number a
+constant again, which is how the functions below differentiate with respect to one tensor component after the
+other.</p>
+</section>
+<section id="vector-mode-numbers">
+<h3>Vector mode numbers<a class="headerlink" href="#vector-mode-numbers" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">seedDirection(</span> <span class="pre">x,</span> <span class="pre">i</span> <span class="pre">)</span></code> makes <code class="docutils literal notranslate"><span class="pre">x</span></code> the variable number <code class="docutils literal notranslate"><span class="pre">i</span></code>; <code class="docutils literal notranslate"><span class="pre">partialDerivative(</span> <span class="pre">f,</span> <span class="pre">i</span> <span class="pre">)</span></code> and, for
+<code class="docutils literal notranslate"><span class="pre">HessianDual</span></code>, <code class="docutils literal notranslate"><span class="pre">secondPartialDerivative(</span> <span class="pre">f,</span> <span class="pre">i,</span> <span class="pre">j</span> <span class="pre">)</span></code> read the derivatives of a result.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JacobianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="n">scalar</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seedDirection</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// x is variable 0</span>
+<span class="n">seedDirection</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// y is variable 1</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="c1">// name the type: not auto</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">df_dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">partialDerivative</span><span class="p">(</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 2 x sin( y )</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">df_dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">partialDerivative</span><span class="p">(</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// x^2 cos( y ) + 1</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HessianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="n">scalar</span><span class="w"> </span><span class="nf">x</span><span class="p">(</span><span class="w"> </span><span class="mf">1.5</span><span class="w"> </span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seedDirection</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">);</span>
+<span class="n">seedDirection</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// a plain number type: auto is fine</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">df_dx</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">partialDerivative</span><span class="p">(</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">);</span><span class="w">          </span><span class="c1">// 2 x sin( y )</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">d2f_dxdy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">secondPartialDerivative</span><span class="p">(</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// 2 x cos( y )</span>
+</pre></div>
+</div>
+<p>The three-dimensional co-rotational beam element (<a class="reference internal" href="beamelement.html#beamelement"><span class="std std-ref">Beam Element</span></a>) differentiates its local map this way,
+with <code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">12</span> <span class="pre">&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">HessianDual&lt;</span> <span class="pre">12</span> <span class="pre">&gt;</span></code>.</p>
+</section>
+<section id="taylor-numbers">
+<h3>Taylor numbers<a class="headerlink" href="#taylor-numbers" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">taylorDerivatives&lt;</span> <span class="pre">order</span> <span class="pre">&gt;(</span> <span class="pre">f,</span> <span class="pre">x</span> <span class="pre">)</span></code> returns the value and the first <code class="docutils literal notranslate"><span class="pre">order</span></code> derivatives of a function of one
+variable from one evaluation:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">df</span><span class="p">,</span><span class="w"> </span><span class="n">d2f</span><span class="p">,</span><span class="w"> </span><span class="n">d3f</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">taylorDerivatives</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Taylor</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">Taylor</span></code> number can also be used directly. Its coefficients are read and written with <code class="docutils literal notranslate"><span class="pre">operator[]</span></code>;
+coefficient <span class="math notranslate nohighlight">\(k\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>-th derivative divided by <span class="math notranslate nohighlight">\(k!\)</span>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Taylor</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// the constant 0.5</span>
+<span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span><span class="w">           </span><span class="c1">// the variable itself: dt/dt = 1</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Taylor</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t</span><span class="p">;</span><span class="w"> </span><span class="c1">// g[0] = t^3, g[1] = 3 t^2, g[2] = 6 t / 2!</span>
+</pre></div>
+</div>
+<p>Marmot uses Taylor numbers for the derivatives of high order of the compliance functions in the Post-Widder
+formula of the Kelvin chain models (<a class="reference internal" href="b4.html"><span class="doc">B4 model</span></a>, <a class="reference internal" href="linearviscoelasticpowerlaw.html"><span class="doc">Linear Viscoelastic Power Law model</span></a>).</p>
+</section>
+</section>
+<section id="derivatives-of-functions">
+<h2>Derivatives of functions<a class="headerlink" href="#derivatives-of-functions" title="Link to this heading"></a></h2>
+<p>For the common cases the seeding is already written. Each of the following functions takes the function to
+differentiate and the point of evaluation; the number type of the function to differentiate is fixed by the
+function chosen.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Function</strong></p></th>
+<th class="head"><p><strong>Returns</strong></p></th>
+<th class="head"><p><strong>Number type</strong></p></th>
+<th class="head"><p><strong>Evaluations</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df_dx</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(f'(x)\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dual</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taylorDerivatives&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(f(x),\ f'(x),\ \dots,\ f^{(\mathrm{order})}(x)\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Taylor&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dF_dX&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{F},\ \partial\boldsymbol{F}/\partial\boldsymbol{X}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dF_dX</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{F},\ \partial\boldsymbol{F}/\partial\boldsymbol{X}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dual</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">df_dT</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\partial f/\partial\boldsymbol{T}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">nComponents</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dF_dT</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\boldsymbol{F},\ \partial\boldsymbol{F}/\partial\boldsymbol{T}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">nComponents</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SecondOrder::d2f_dT2</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(f,\ \partial f/\partial\boldsymbol{T},\ \partial^2 f/\partial\boldsymbol{T}^2\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HessianDual&lt;</span> <span class="pre">dim</span> <span class="pre">*</span> <span class="pre">dim</span> <span class="pre">&gt;</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SecondOrder::d2f_dTensor_dScalar&lt;</span> <span class="pre">dim</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\partial^2 f/\partial\boldsymbol{T}\partial s\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dual2nd</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{dim}^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ThirdOrder::d3f_dT3&lt;</span> <span class="pre">dim</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(f,\ \partial f/\partial\boldsymbol{T},\ \partial^2 f/\partial\boldsymbol{T}^2,\
+\partial^3 f/\partial\boldsymbol{T}^3\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dual3rd</span></code></p></td>
+<td><p>165</p></td>
+</tr>
+</tbody>
+</table>
+<p>Lower case <span class="math notranslate nohighlight">\(f\)</span> is a scalar function, <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(s\)</span> are scalars, <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span> is an Eigen
+vector with <span class="math notranslate nohighlight">\(n\)</span> entries and <span class="math notranslate nohighlight">\(\boldsymbol{T}\)</span> a Fastor tensor with <code class="docutils literal notranslate"><span class="pre">nComponents</span></code> components, e.g. 9 for
+a <span class="math notranslate nohighlight">\(3\times3\)</span> tensor. <code class="docutils literal notranslate"><span class="pre">dF_dX&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code> takes vectors of fixed size, <code class="docutils literal notranslate"><span class="pre">dF_dX</span></code> vectors of dynamic size. The three
+last functions are limited to tensors of second order, of size <code class="docutils literal notranslate"><span class="pre">dim</span></code> <span class="math notranslate nohighlight">\(\times\)</span> <code class="docutils literal notranslate"><span class="pre">dim</span></code>; the 165 evaluations
+of <code class="docutils literal notranslate"><span class="pre">d3f_dT3</span></code> are those for <code class="docutils literal notranslate"><span class="pre">dim</span></code> = 3. A derivative with respect to a tensor carries the indices of the tensor
+last: <code class="docutils literal notranslate"><span class="pre">dF_dT</span></code> of two second order tensors returns <span class="math notranslate nohighlight">\(\partial F_{ij} / \partial T_{kl}\)</span> as component
+<code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">i,</span> <span class="pre">j,</span> <span class="pre">k,</span> <span class="pre">l</span> <span class="pre">)</span></code>.</p>
+<p>Three more functions differentiate a function at a point that carries derivatives itself, so that the result
+can be differentiated further, e.g. with respect to time or to the variables of an enclosing computation:
+<code class="docutils literal notranslate"><span class="pre">df_dx</span></code> at a <code class="docutils literal notranslate"><span class="pre">dual</span></code> with a function of <code class="docutils literal notranslate"><span class="pre">dual2nd</span></code>, <code class="docutils literal notranslate"><span class="pre">dF_dX_2nd</span></code> at a <code class="docutils literal notranslate"><span class="pre">VectorXdual</span></code> with a function of
+<code class="docutils literal notranslate"><span class="pre">VectorXdual2nd</span></code>, and <code class="docutils literal notranslate"><span class="pre">df_dT&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code> at a tensor of <code class="docutils literal notranslate"><span class="pre">HyperDual&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code> with a function of
+<code class="docutils literal notranslate"><span class="pre">HyperDual&lt;</span> <span class="pre">order</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">&gt;</span></code>. They evaluate the function once per variable, <code class="docutils literal notranslate"><span class="pre">df_dT&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code>
+once more for the value.</p>
+<section id="scalars-and-vectors">
+<h3>Scalars and vectors<a class="headerlink" href="#scalars-and-vectors" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dfdx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_dx</span><span class="p">(</span><span class="w"> </span><span class="p">[](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dual</span><span class="o">&amp;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="mf">2.5</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The Jacobian of a residual vector, as it is needed for a Newton iteration:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JacobianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector2d</span><span class="w"> </span><span class="nf">X</span><span class="p">(</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="p">);</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="n">dR_dX</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dF_dX</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">X_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Vector</span><span class="w"> </span><span class="n">R_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">R_</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X_</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">X_</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">X_</span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">3.</span><span class="p">;</span>
+<span class="w">    </span><span class="n">R_</span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X_</span><span class="p">(</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">X_</span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">R_</span><span class="p">;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="n">X</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the number of unknowns is known only at run time, write the function with <code class="docutils literal notranslate"><span class="pre">VectorXdual</span></code> and call
+<code class="docutils literal notranslate"><span class="pre">dF_dX(</span> <span class="pre">F,</span> <span class="pre">X</span> <span class="pre">)</span></code> with an <code class="docutils literal notranslate"><span class="pre">Eigen::VectorXd</span></code>. It evaluates the function once per unknown; prefer <code class="docutils literal notranslate"><span class="pre">dF_dX&lt;</span> <span class="pre">n</span> <span class="pre">&gt;</span></code>
+whenever the size is fixed.</p>
+</section>
+<section id="tensors">
+<h3>Tensors<a class="headerlink" href="#tensors" title="Link to this heading"></a></h3>
+<p>A function is best written once as a template of the number type. It can then be evaluated with <code class="docutils literal notranslate"><span class="pre">double</span></code>
+and differentiated to any order:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="w"> </span><span class="o">&gt;</span>
+<span class="n">T</span><span class="w"> </span><span class="n">strainEnergyDensity</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">J</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="w"> </span><span class="n">Fastor</span><span class="o">::</span><span class="n">determinant</span><span class="p">(</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">I1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Fastor</span><span class="o">::</span><span class="n">trace</span><span class="p">(</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">psi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">K</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">8.</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">J</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">J</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">J</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">J</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2.</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">I1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="w"> </span><span class="n">J</span><span class="p">,</span><span class="w"> </span><span class="mf">-2.</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">3.</span><span class="w"> </span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">psi</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The gradient, with respect to a <code class="docutils literal notranslate"><span class="pre">Tensor33d</span> <span class="pre">C</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JacobianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">Tensor33d</span><span class="w"> </span><span class="n">dPsi_dC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">df_dT</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">C_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">strainEnergyDensity</span><span class="p">(</span><span class="w"> </span><span class="n">C_</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="n">C</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Value, gradient and Hessian:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HessianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">psi</span><span class="p">,</span><span class="w"> </span><span class="n">dPsi_dC</span><span class="p">,</span><span class="w"> </span><span class="n">d2Psi_dCdC</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SecondOrder</span><span class="o">::</span><span class="n">d2f_dT2</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">C_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">strainEnergyDensity</span><span class="p">(</span><span class="w"> </span><span class="n">C_</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="n">C</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Up to the third derivative, which
+<a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html"><span class="doc">Compressible Finite-Strain Linear Viscoelasticity</span></a> needs in every stress update:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">psi</span><span class="p">,</span><span class="w"> </span><span class="n">dPsi_dC</span><span class="p">,</span><span class="w"> </span><span class="n">d2Psi_dCdC</span><span class="p">,</span><span class="w"> </span><span class="n">d3Psi_dCdCdC</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ThirdOrder</span><span class="o">::</span><span class="n">d3f_dT3</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">  </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">dual3rd</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">C_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">strainEnergyDensity</span><span class="p">(</span><span class="w"> </span><span class="n">C_</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">,</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="n">C</span><span class="p">,</span>
+<span class="w">  </span><span class="nb">true</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">d3f_dT3</span></code> evaluates the function once for every unordered triple of tensor components, since mixed partial
+derivatives do not depend on the order of differentiation: 165 times for a <span class="math notranslate nohighlight">\(3\times3\)</span> tensor. The last
+argument, <code class="docutils literal notranslate"><span class="pre">isSymmetric</span></code>, reduces this to 92. It may only be set if the tensor is symmetric and the function does
+not change when its argument is transposed, as is the case for every function of the invariants of the right
+Cauchy-Green tensor. <code class="docutils literal notranslate"><span class="pre">df_dT&lt;</span> <span class="pre">order</span> <span class="pre">&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">d2f_dTensor_dScalar</span></code> accept the flag under the same condition; it has
+no effect in the functions that evaluate once.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dF_dT</span></code> differentiates a tensor valued function. In contrast to the other functions, which accept a lambda
+directly, it needs the function as a named <code class="docutils literal notranslate"><span class="pre">std::function</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JacobianDual</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">9</span><span class="w"> </span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">kirchhoffStress</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">F_</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Tensor33t</span><span class="o">&lt;</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">tau</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// ... compute the Kirchhoff stress from the deformation gradient F_</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">tau</span><span class="p">;</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">tau</span><span class="p">,</span><span class="w"> </span><span class="n">dTau_dF</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dF_dT</span><span class="p">(</span><span class="w"> </span><span class="n">kirchhoffStress</span><span class="p">,</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">// dTau_dF( i, j, k, l )</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="materials">
+<h2>Materials<a class="headerlink" href="#materials" title="Link to this heading"></a></h2>
+<p>Two base classes turn a stress update written with AD numbers into a material with a consistent tangent. A
+derived material implements <code class="docutils literal notranslate"><span class="pre">computeStressAD</span></code>; the base class implements <code class="docutils literal notranslate"><span class="pre">computeStress</span></code>, which evaluates
+<code class="docutils literal notranslate"><span class="pre">computeStressAD</span></code> once and returns the stress together with its derivative.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Base class</strong></p></th>
+<th class="head"><p><strong>Number type</strong></p></th>
+<th class="head"><p><strong>Tangent</strong></p></th>
+<th class="head"><p><strong>Computed with</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MaterialHypoElasticAD</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ADScalar</span></code> = <code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">6</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\partial \sig / \partial \eps\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dF_dX&lt;</span> <span class="pre">6</span> <span class="pre">&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MaterialFiniteStrainAD</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ADScalar&lt;</span> <span class="pre">3</span> <span class="pre">&gt;</span></code> = <code class="docutils literal notranslate"><span class="pre">JacobianDual&lt;</span> <span class="pre">9</span> <span class="pre">&gt;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(\partial \boldsymbol{\tau} / \partial \boldsymbol{F}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dF_dT</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Both classes live in <code class="docutils literal notranslate"><span class="pre">Marmot::Materials</span></code>. The stress and the strain increment of <code class="docutils literal notranslate"><span class="pre">MaterialHypoElasticAD</span></code> are
+vectors in <a class="reference internal" href="voigtnotation.html#voigtnotation"><span class="std std-ref">Voigt notation</span></a>.</p>
+<p>Every quantity that depends on the strain increment (or on the deformation gradient) must be an <code class="docutils literal notranslate"><span class="pre">ADScalar</span></code>.
+Energies and state variables are plain numbers and are assigned from values:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">MyMaterial::computeStressAD</span><span class="p">(</span><span class="w"> </span><span class="n">state3DAD</span><span class="o">&amp;</span><span class="w">       </span><span class="n">state</span><span class="p">,</span>
+<span class="w">                                  </span><span class="k">const</span><span class="w"> </span><span class="n">Vector6AD</span><span class="o">&amp;</span><span class="w"> </span><span class="n">dStrain</span><span class="p">,</span>
+<span class="w">                                  </span><span class="k">const</span><span class="w"> </span><span class="n">timeInfo</span><span class="o">&amp;</span><span class="w">  </span><span class="n">timeInfo</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// C is the elastic stiffness, a Marmot::Math::Matrix6d</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">Vector6AD</span><span class="w"> </span><span class="n">dStress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dStrain</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">ADScalar</span><span class="w">  </span><span class="n">dEnergy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dStrain</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="w"> </span><span class="n">state</span><span class="p">.</span><span class="n">stress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dStress</span><span class="w"> </span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">state</span><span class="p">.</span><span class="n">stress</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">dStress</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">state</span><span class="p">.</span><span class="n">elasticEnergyDensity</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="w"> </span><span class="n">dEnergy</span><span class="w"> </span><span class="p">);</span>
+<span class="w">  </span><span class="n">state</span><span class="p">.</span><span class="n">dissipation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">value</span></code> returns the value of a number; <code class="docutils literal notranslate"><span class="pre">Marmot::Math::Tensors::makeReal</span></code> returns that of a number, and
+converts a whole Eigen matrix or Fastor tensor.</p>
+<p>The materials <a class="reference internal" href="adlinearelastic.html"><span class="doc">Linear Elastic model (Automatic Differentiation)</span></a>, <a class="reference internal" href="advonmises.html"><span class="doc">Von Mises model (Automatic Differentiation)</span></a> and <a class="reference internal" href="adcompressibleneohooke.html"><span class="doc">Compressible Neo Hooke model (Automatic Differentiation)</span></a> demonstrate the two
+base classes; <a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html"><span class="doc">Finite-Strain Isotropic Biot Viscoelasticity</span></a> and
+<a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html"><span class="doc">Finite-Strain Orthotropic Biot Viscoelasticity</span></a> obtain their tangents this way.</p>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading"></a></h2>
+<p><strong>Branches follow the values.</strong> Comparisons compare the values of the numbers, and the derivative is that of the
+branch taken. This is what a stress update needs — the tangent of an elastic step is the elastic one — but it
+also means that the derivative at a kink is the derivative of one side.</p>
+<p><strong>Points where the derivative does not exist.</strong> The value is fine there, the derivative is not:</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Expression</strong></p></th>
+<th class="head"><p><strong>Derivative at</strong> <span class="math notranslate nohighlight">\(x = 0\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sqrt(</span> <span class="pre">x</span> <span class="pre">)</span></code>, <code class="docutils literal notranslate"><span class="pre">cbrt(</span> <span class="pre">x</span> <span class="pre">)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">inf</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sqrt(</span> <span class="pre">x</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nan</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">abs(</span> <span class="pre">x</span> <span class="pre">)</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pow(</span> <span class="pre">x,</span> <span class="pre">1.5</span> <span class="pre">)</span></code></p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The second row is the norm of a tensor that vanishes, such as the equivalent stress of a hydrostatic stress
+state. Branch on the value before such an expression is evaluated.</p>
+<p><strong>Conversions to double drop the derivatives.</strong> They are explicit for this reason (<code class="docutils literal notranslate"><span class="pre">value</span></code>, <code class="docutils literal notranslate"><span class="pre">makeReal</span></code>,
+<code class="docutils literal notranslate"><span class="pre">static_cast&lt;</span> <span class="pre">double</span> <span class="pre">&gt;</span></code>). Use them for state variables, energies and convergence checks, never for a quantity
+on the way from the variables to the result.</p>
+<p><strong>Newton iterations on AD numbers.</strong> If a Newton iteration updates an AD number with a derivative taken as a
+plain number,</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">g</span><span class="p">(</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dg_dx</span><span class="p">;</span><span class="w"> </span><span class="c1">// x, p: AD numbers; dg_dx: double</span>
+</pre></div>
+</div>
+<p>then the derivative <span class="math notranslate nohighlight">\(\partial x / \partial p\)</span> that <code class="docutils literal notranslate"><span class="pre">x</span></code> carries after the update is the exact one,
+<span class="math notranslate nohighlight">\(-(\partial g / \partial p) / (\partial g / \partial x)\)</span>, but evaluated at the iterate before the update. It
+lags one iteration behind the value: for <span class="math notranslate nohighlight">\(g = x^3 + p\,x - 1\)</span> an iteration stopped at a residual of
+<span class="math notranslate nohighlight">\(10^{-14}\)</span> carries a derivative with an error of <span class="math notranslate nohighlight">\(10^{-8}\)</span>. Either do one more update after
+convergence, which makes the derivative as accurate as the value, or iterate with <code class="docutils literal notranslate"><span class="pre">double</span></code> and differentiate the
+converged solution by the implicit function theorem.</p>
+<p><strong>Seed independent variables only.</strong> <code class="docutils literal notranslate"><span class="pre">seed</span></code> overwrites the derivatives a number carries along the level, and
+<code class="docutils literal notranslate"><span class="pre">seedDirection</span></code> expects a number without derivatives.</p>
+</section>
+<section id="elementary-functions">
+<h2>Elementary functions<a class="headerlink" href="#elementary-functions" title="Link to this heading"></a></h2>
+<p>The hyper-dual numbers, <code class="docutils literal notranslate"><span class="pre">JacobianDual</span></code> and <code class="docutils literal notranslate"><span class="pre">HessianDual</span></code> support the arithmetic operators among themselves and
+with <code class="docutils literal notranslate"><span class="pre">double</span></code>, the comparison operators, output with <code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code> and</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sqrt  cbrt  exp  log  log10  pow
+sin  cos  tan  asin  acos  atan  atan2  sinh  cosh  tanh
+abs  fabs  min  max  isnan  isinf  isfinite
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pow</span></code> accepts a number as base, as exponent or as both. <code class="docutils literal notranslate"><span class="pre">Taylor</span></code> supports the same functions except
+<code class="docutils literal notranslate"><span class="pre">atan2</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>. The functions are found by argument-dependent lookup: call them unqualified, as
+<code class="docutils literal notranslate"><span class="pre">sqrt(</span> <span class="pre">x</span> <span class="pre">)</span></code>, not as <code class="docutils literal notranslate"><span class="pre">std::sqrt(</span> <span class="pre">x</span> <span class="pre">)</span></code>, so that the same code works for <code class="docutils literal notranslate"><span class="pre">double</span></code> and for every AD number.
+For <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> this takes a <code class="docutils literal notranslate"><span class="pre">using</span> <span class="pre">std::max;</span></code> in a function template that is also evaluated with
+<code class="docutils literal notranslate"><span class="pre">double</span></code>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The interface is documented in <a class="reference internal" href="../codedocumentation/mathcore.html"><span class="doc">MarmotMathCore</span></a>, the two material base classes in
+<a class="reference internal" href="../codedocumentation/mechanicscore.html"><span class="doc">MarmotMechanicsCore</span></a> and <a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html"><span class="doc">MarmotFiniteStrainMechanicsCore</span></a>. Code outside
+of <code class="docutils literal notranslate"><span class="pre">MarmotAutomaticDifferentiationTypes.h</span></code> uses only the names on this page, never the implementing classes or
+their members.</p>
+<p>The use of hyper-dual numbers for the derivatives of finite strain material models is described in
+A. Dummer, M. Neuner, P. Gamnitzer, G. Hofstetter (2024). Robust and efficient implementation of finite strain
+generalized continuum models for material failure: Analytical, numerical, and automatic differentiation with
+hyper-dual numbers. <em>Computer Methods in Applied Mechanics and Engineering</em> 426:116987.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="voigtnotation.html" class="btn btn-neutral float-left" title="Voigt Notation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solvers.html" class="btn btn-neutral float-right" title="Solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

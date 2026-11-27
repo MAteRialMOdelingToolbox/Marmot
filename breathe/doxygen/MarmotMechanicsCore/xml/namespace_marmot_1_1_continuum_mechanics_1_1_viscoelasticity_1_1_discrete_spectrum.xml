@@ -90,7 +90,7 @@
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a92ca5c272f82c3911db3843ee2c5f104" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a093317a95fbb910ec0e15562cb8d9e44" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>int</type>
@@ -100,11 +100,11 @@
         </templateparamlist>
         <type>double</type>
         <definition>double Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula</definition>
-        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; function, double tau, PostWidderCoefficientSign coefficientSign)</argsstring>
+        <argsstring>(std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt; function, double tau, PostWidderCoefficientSign coefficientSign)</argsstring>
         <name>evaluatePostWidderFormula</name>
         <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula</qualifiedname>
         <param>
-          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <type>std::function&lt; Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;(Marmot::Math::Differentiation::Automatic::Taylor&lt; k &gt;) &gt;</type>
           <declname>function</declname>
         </param>
         <param>
@@ -160,7 +160,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="135" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="135" bodyend="145"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="135" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="135" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a288ca90884213792bf5b9ee8d8638144" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Properties</type>
@@ -216,7 +216,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="157" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="157" declcolumn="16"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="156" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="156" declcolumn="16"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a879d3133826c713bc22bec565f21ae72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -282,7 +282,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="171" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="171" declcolumn="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="170" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="170" declcolumn="10"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

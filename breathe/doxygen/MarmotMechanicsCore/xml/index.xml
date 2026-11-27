@@ -221,7 +221,9 @@
     <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ad5c74cc37accb172fe25e0d437fb9def" kind="function"><name>getDensity</name></member>
   </compound>
   <compound refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d" kind="class"><name>Marmot::Materials::MaterialHypoElasticAD</name>
-    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1a2154ed011df797e6ca2eaf47b51af4ad" kind="function"><name>computeStressAD</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1a6e30f9a867242166244d00b3d66f7ed0" kind="typedef"><name>ADScalar</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1ab263260ef33b52d948fde3744184c0ed" kind="typedef"><name>Vector6AD</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1a99b2aaf694c32d452c9281465d25e7d5" kind="function"><name>computeStressAD</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1aa74b99ef21ed3845df34214952a71641" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1aecc62950e734858fd5a48b2c79f9620c" kind="function"><name>MaterialHypoElastic</name></member>
   </compound>
@@ -402,7 +404,7 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1af3dd17130acdb2cd2f967390e0e929ee" kind="function"><name>state3D</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d" kind="struct"><name>Marmot::Materials::MaterialHypoElasticAD::state3DAD</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a3a9205f8d700d4842c202a7080c45084" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a2a3a23b93985ebc0382a60bd0940783a" kind="variable"><name>stress</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a4c6a55a0a6540fbf81f1ebfd4fa427b6" kind="variable"><name>elasticEnergyDensity</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a3d9592aa4754e19a833477dc9a8b7d9a" kind="variable"><name>dissipation</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1af8017cfdbd138918ee9912a3ce71b836" kind="variable"><name>stateVars</name></member>
@@ -632,7 +634,7 @@
     <member refid="_marmot_viscoelasticity_8h_1a44e738c723040f03137a8b9bab35cf24" kind="typedef"><name>mapProperties</name></member>
     <member refid="_marmot_viscoelasticity_8h_1adecf74d34611f67b1f1770a209a687c9" kind="typedef"><name>StateVarMatrix</name></member>
     <member refid="_marmot_viscoelasticity_8h_1a29cb9fe18c33d998f80fc1a785390f18" kind="typedef"><name>mapStateVarMatrix</name></member>
-    <member refid="_marmot_viscoelasticity_8h_1a92ca5c272f82c3911db3843ee2c5f104" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a093317a95fbb910ec0e15562cb8d9e44" kind="function"><name>evaluatePostWidderFormula</name></member>
     <member refid="_marmot_viscoelasticity_8h_1a288ca90884213792bf5b9ee8d8638144" kind="function"><name>generateLogarithmicTimes</name></member>
     <member refid="_marmot_viscoelasticity_8h_1a879d3133826c713bc22bec565f21ae72" kind="function"><name>computeLambdaAndBeta</name></member>
   </compound>
@@ -641,9 +643,9 @@
     <member refid="_marmot_kelvin_chain_8h_1a794089f2b4817ba2183038c6b829b352" kind="typedef"><name>mapProperties</name></member>
     <member refid="_marmot_kelvin_chain_8h_1ab44cd50562a8d71e3b38ef5527349b1d" kind="typedef"><name>StateVarMatrix</name></member>
     <member refid="_marmot_kelvin_chain_8h_1ab7109dfd6553808e6af27c46429fbb65" kind="typedef"><name>mapStateVarMatrix</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a721ba7e5f9564c4c3cbcadc0512f01c0" kind="function"><name>evaluatePostWidderFormula</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a7f1993c99a33ecb172e5aa5c300d6534" kind="function"><name>approximateZerothCompliance</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1ad99d730bb5bebbbb29b17a4b5e3b5594" kind="function"><name>computeElasticModuli</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1ae18f80c42d0189ba69901ad667dd066a" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1aff5d31272797f9c3eba78f697b13aced" kind="function"><name>approximateZerothCompliance</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a98a572be4317f383fc9a7cf56fd25bb3" kind="function"><name>computeElasticModuli</name></member>
     <member refid="_marmot_kelvin_chain_8h_1a346d4645273cbeca4695f8b94214ff9c" kind="function"><name>generateRetardationTimes</name></member>
     <member refid="_marmot_kelvin_chain_8h_1a2969c1a3f2a3e325717ef4e5962513ba" kind="function"><name>updateStateVarMatrix</name></member>
     <member refid="_marmot_kelvin_chain_8h_1ae3592e2410b7e002f60ecd0c6af5f338" kind="function"><name>evaluateKelvinChain</name></member>
@@ -663,8 +665,8 @@
     <member refid="_marmot_wiechert_8h_1a476fa861d663094d5486fd3bbf920e68" kind="typedef"><name>mapProperties</name></member>
     <member refid="_marmot_wiechert_8h_1a85bb8d29b93776c133601e9456e15031" kind="typedef"><name>StateVarMatrix</name></member>
     <member refid="_marmot_wiechert_8h_1aa4c2b136bba3307fe535cb01d387b324" kind="typedef"><name>mapStateVarMatrix</name></member>
-    <member refid="_marmot_wiechert_8h_1aac135485ad2879bdc4c1da97fba5cd2b" kind="function"><name>evaluatePostWidderFormula</name></member>
-    <member refid="_marmot_wiechert_8h_1a31e07d2c5576be3efa1ed7a4233b4f9c" kind="function"><name>computeElasticModuli</name></member>
+    <member refid="_marmot_wiechert_8h_1a6954c1b289cd8c8ebba55321922e79b8" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_wiechert_8h_1a2aac5893127d1592843e526f5c01d37f" kind="function"><name>computeElasticModuli</name></member>
     <member refid="_marmot_wiechert_8h_1a4b0ac5c4236dcf66bf761a55bd2a2023" kind="function"><name>generateRelaxationTimes</name></member>
     <member refid="_marmot_wiechert_8h_1a4c1b978973063aaa7658911f5dcd7b87" kind="function"><name>updateStateVarMatrix</name></member>
     <member refid="_marmot_wiechert_8h_1a4091dc204de492104c927d30402ea717" kind="function"><name>evaluateWiechert</name></member>
@@ -727,10 +729,10 @@
   </compound>
   <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
     <member refid="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a0787e00e9d44a4b4d289e2d1a748db29" kind="function"><name>checkIfEqual</name></member>
     <member refid="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80" kind="function"><name>checkIfEqual</name></member>
     <member refid="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" kind="function"><name>getString</name></member>
-    <member refid="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" kind="function"><name>getString</name></member>
+    <member refid="_marmot_testing_8h_1a756825e3caae549b38afab4f280511ec" kind="function"><name>getString</name></member>
     <member refid="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" kind="function"><name>checkIfEqual</name></member>
     <member refid="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" kind="function"><name>checkIfEqual</name></member>
     <member refid="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" kind="function"><name>checkIfEqual</name></member>

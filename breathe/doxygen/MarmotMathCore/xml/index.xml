@@ -1,6 +1,108 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ae0401de46b9d3cc94225f4bc474a87d1" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d19708090366ca0a6722abaab56784c" kind="variable"><name>a_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a46a49a7f384c53d9e7f9aeeae41057b0" kind="variable"><name>b_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d31974e40f8a36d3e901411ac51b544" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a8453083b47f39ef86e8833a1a73c4c29" kind="variable"><name>partialA_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ac93174fcc660165a3d22542d549e5a1f" kind="variable"><name>partialB_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2f6f8eab317efbe2fa4fe1182fd8e3e4" kind="function"><name>BinaryOperation</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a787e91c2d11aeedbfdc02824e043648a" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a95ff2aa4299669e1b5d86c412929ad86" kind="function"><name>dx</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual" kind="class"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::Dual</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1af89934f531ac5a3f43ddc94f24e9c5c0" kind="typedef"><name>Inner</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ac735a5640b607f206b8a5ac47f829555" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a551052df3e86adc10bf4cbd516545137" kind="variable"><name>grad_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3bfb9e039d5edb395d83651331f8a30c" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ada470b6811c2d1ca98c2e62bd9f5a326" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a38c95574f8c639c97c2496d8931c50dc" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad863de941d0bc74574cddbf1dbd38a16" kind="function"><name>operator double</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad9ac49c1da2f3a715784f2d60d43409f" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a20dd496483367c539dfa806c1372fbe9" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1c54a0aa6378bdb75091b3d9d7f39f6c" kind="function"><name>grad</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a0eef84079c1579e2f535b96ea79d0f4e" kind="function"><name>grad</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a1b8312976665bef4d9ba1869d8c55539" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ae8ac94789fd965b87f49abc9eb293e21" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a9ebf49bd6a0c51fabd6c0e20a0a269b0" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1ad57abe1e0fd4a62e7e3dc1c7dfee5498" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a774974938d9e352525758194ae894d0d" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1aa2c378b77c3349efaa579b54aa2afe92" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a5fa841d9840f5bcecbf2af0121054859" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_1a3fd2c5bbbeadf57bc27d6a8b9d97c65c" kind="function"><name>operator/=</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Dual</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5e8d34394e19ae5eac899d08e87b751d" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a5ac30b83a9abee614f9f80e19f46d326" kind="variable"><name>dx_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6e51b2b7f74f460dc98c39f52925d72f" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3892794b0456da0691d9286ef1a46077" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab7bfc63dd85ac7eac64b1ef4de0d0916" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ac8743b88ae798e1de28c0dcd3e4e6403" kind="function"><name>Dual</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a71284d5f791ae87b6540c861a30aa7a5" kind="function"><name>operator=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a48a2af1f4bc2d0c72f8631eb369f56db" kind="function"><name>operator=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a9596319c4e05130c026d3aaaf3af82c5" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ab6dc4547a09cb9b79f8ede66851546a3" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8270a784a35896bbc2b69745139f1069" kind="function"><name>dx</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a80409e3725498c742b5519811d4962ad" kind="function"><name>dx</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a0d6e765d884fa511e6cf2aa635ccce00" kind="function"><name>operator double</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1af7e2aa508b2eb77469a3311e2de87fc8" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ad20759ffd5a09b54788d14665f2cd26b" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1ae986dbdd680e1bd98766d1d76ad309b2" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a893efc76c151a6fb016d77a40bb30ffd" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a3fa80771360eb2c1cb77493dae23839e" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a1306e7d6076023a52aecdae837a8860c" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a6d06f3fe57f91c7d8fccb682ba67a0ba" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a8a8653d333c73da0c62dbb3bb110b90d" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual_1a118b73422288a877ea04e1fc0b02d6b6" kind="function"><name>assign</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4f0695f0e699d6b28daeef37c48e2642" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a6756ca851e3fb384918a5db133d06849" kind="variable"><name>nHessian</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0c956fd10066469278f0cef8ffcabb4c" kind="variable"><name>allDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a870ec25c301db436f7fa9a49c9369573" kind="variable"><name>g_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0d7dece3d07ea547a81e3bae278e7da9" kind="variable"><name>h_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af7433bea69939a524e97883abc341a0c" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acf32f505c42e2f3b16b6806573d152f5" kind="variable"><name>mask_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a97c7a425dd41123ecf3e443cc5fa3706" kind="function"><name>hessianIndex</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0e64d6b1a9d9ceef31b6ae90d805943c" kind="function"><name>forEachDirection</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a94bb42be8f52fc66781f4c9f98c0c925" kind="function"><name>rowStart</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aabbd6f4e0bad820d15137a0919599e02" kind="function"><name>forEachRow</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a7d57960b69ce979e8960e218f859f035" kind="function"><name>resultFor</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a69d8670ee1d61b6c1d1e026ec204a240" kind="function"><name>Dual2nd</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a55f64453829ea3cf24aa35e8928be0c6" kind="function"><name>Dual2nd</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a383a64194bf5359b10c07dd9a116dfcf" kind="function"><name>Dual2nd</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1acfb3919e7b5f83d7d00b801840154101" kind="function"><name>seed</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae8656152194f071dbde9f19ebc0c53ac" kind="function"><name>mask</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa0d2797af9e5aaecba6f9415a13b2a62" kind="function"><name>setMask</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a0aa2d4a174ec371238be722cad19307c" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad0f5de2613e35cd0f14f2f77240266a6" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a935e6b0be8ec719c06bdce75803b0d40" kind="function"><name>dx</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae6511494d53274c8841fa5c3e2372432" kind="function"><name>dxx</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a4087166ae8f3cc4ae60c32e790c833f9" kind="function"><name>gradient</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a245abd5118e3f53e4466e7cb70966b2e" kind="function"><name>gradient</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1af5ba1f85b45e7d390887e93d8d89ffd0" kind="function"><name>hessian</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a8a2b3a1bb62d24edb543d97a473eaa13" kind="function"><name>hessian</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ad7283863b28ceeb575ba192e93be14c6" kind="function"><name>operator double</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa219ac2687a29ab3881d1094703aaddf" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a58f90583f2abb290c3b9cdfc0e88abd6" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1ae0cfcb7bb749922eb19cdf6d1b35c9ce" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1aa2bdab607192d1e13c57442c753be132" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a08dcb5c2afbbdb03793de2fde2e34515" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a64c520e98bc7300b57b9c1fb1066d254" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a75ead210a8c956a158dbaeaee634c7dc" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a10ebe79e1938758873fe00591b73f19d" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1a82a9c62b47c90fd6ffc37be1022e8121" kind="function"><name>combine</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_exponential_map_failed" kind="struct"><name>Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed</name>
+  </compound>
+  <compound refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" kind="struct"><name>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</name>
+  </compound>
+  <compound refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order" kind="struct"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder</name>
+    <member refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_1ad5ecd0a47ebaf36b39bb9c0baba07862" kind="typedef"><name>type</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_3_010_01_4" kind="struct"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDualOfOrder&lt; 0 &gt;</name>
+    <member refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_hyper_dual_of_order_3_010_01_4_1ad1a52183e4ddc47ffed17f17d88303af" kind="typedef"><name>type</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor" kind="struct"><name>Marmot::Math::Tensors::IsSquareRank2Tensor</name>
     <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor_1a357ae7cfa81b24936703e73e397d997c" kind="variable"><name>value</name></member>
@@ -20,11 +122,127 @@
     <member refid="class_marmot_1_1_math_1_1_newton_convergence_checker_1a107b5f0f5d5d0cefabe923ce7cad3b1f" kind="function"><name>iterationFinished</name></member>
     <member refid="class_marmot_1_1_math_1_1_newton_convergence_checker_1aa20d2a8e2c0b52fd0d9a06d6b7733a50" kind="function"><name>isConverged</name></member>
   </compound>
+  <compound refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4" kind="struct"><name>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt; &gt;</name>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801b" kind="enum"><name>@366272321336345262144202371003134222132035156156</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801baa7a8abec2073b5beb8beac27ddcae8f1" kind="enumvalue"><name>IsComplex</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801baf05703ce3951e88f29184e674808916a" kind="enumvalue"><name>IsInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801ba3044421784a5b8e57ca6a29c70370113" kind="enumvalue"><name>IsSigned</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801bad56af35a5f73f4bcbc26e5cb437741d0" kind="enumvalue"><name>RequireInitialization</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801ba2b4e7a8009936c8c674a73d201977887" kind="enumvalue"><name>ReadCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801ba38e375a800a3a37845991b8c2cab731a" kind="enumvalue"><name>AddCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1aa6d19572d641426a0224a601c464801ba7018712f95e2d093aad26ef60a4588cc" kind="enumvalue"><name>MulCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1a444c2d143843946950ea50f274626b99" kind="typedef"><name>Real</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1a17bb338d360c4f7903ef99352002da4a" kind="typedef"><name>NonInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1ac9ff10071fa87f8f2edbb9ce8f03c113" kind="typedef"><name>Literal</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4_1ad613cefbd3b81a4b60e9a9cc69c77065" kind="typedef"><name>Nested</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4" kind="struct"><name>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt; &gt;</name>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5c" kind="enum"><name>@177037114147121272336114237215140315177120164137</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5cac12f8dc97ff74b55f23d43de2578a498" kind="enumvalue"><name>IsComplex</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5ca0c5ef49a6a6a7fcba51e0e2d015f1109" kind="enumvalue"><name>IsInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5ca76740a594534740d68c5c360a883aec4" kind="enumvalue"><name>IsSigned</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5ca3a30c5c5a13ad495f45494f795268ab7" kind="enumvalue"><name>RequireInitialization</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5cabf23feea66557cb87cc2cd0490b58b0d" kind="enumvalue"><name>ReadCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5ca2a90d7f7147e16ad52dec6cf6c553410" kind="enumvalue"><name>AddCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a1a06faeb716b7e71e10adf329065dd5cae296b827eecfff8dbf55ac7fe34fe4e3" kind="enumvalue"><name>MulCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1aca92473e3d7311745e2a3a35a4df8978" kind="typedef"><name>Real</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1aa492121aaefb2c1a5eb438900114084c" kind="typedef"><name>NonInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1a7f9c62bf9154d6627b002212294a2453" kind="typedef"><name>Literal</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4_1ad7ca90db8515cf965e34e834c03c93ce" kind="typedef"><name>Nested</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45" kind="struct"><name>Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</name>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5a" kind="enum"><name>@236367275306251067265141200033042377101077304321</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa8f4a81eef40c9c2ae62bdc049bca8324" kind="enumvalue"><name>IsComplex</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aad87ad8de8576bac6ad1f7eec17fcfa61" kind="enumvalue"><name>IsInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5e7c03ef21e17ae004968aa07236dac6" kind="enumvalue"><name>IsSigned</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa0bdb5f793398b931acac65fa6aa93521" kind="enumvalue"><name>RequireInitialization</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa9f63a3306c8a0ca8d985061d51e0c767" kind="enumvalue"><name>ReadCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa76eed35bff7d49f362d28b7de77f1887" kind="enumvalue"><name>AddCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1ad267e6007ad2ddf84d27d6ef8f41da5aa5341b07d3703a316863f8570a53e1ed0" kind="enumvalue"><name>MulCost</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a905e764d559a930e8db9eef67ebf022b" kind="typedef"><name>Real</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1a54b4cf66ce7e734e6bef641463f13064" kind="typedef"><name>NonInteger</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1aec2732d68e22527c09f59d0d3be2ea42" kind="typedef"><name>Literal</name></member>
+    <member refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45_1af93409c32a93c20e2b4684b0789b6404" kind="typedef"><name>Nested</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_ba3c5ed0ba9cc17c31a234a116c52b6f" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_ba3c5ed0ba9cc17c31a234a116c52b6f_1a8025b0057e4ff94b09fd71ec7f006145" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_aff5184bb743133749d10723e2a112c4" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt;, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_aff5184bb743133749d10723e2a112c4_1a23e8303534378e0558e6f6c2fc8bbedb" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_17206c9a02891fac6cb7939d4f2594af" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_17206c9a02891fac6cb7939d4f2594af_1af99329a917441b1964dfeb188d3d7341" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0_1a532b3be953c082a37c8c5e4609476900" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_e65c78ab70de158de47fd6c1ab28e154" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt;, double, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_e65c78ab70de158de47fd6c1ab28e154_1ae39ace93c96d478601ec512f7ec2b672" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_13391072c407ead1fb3c802b689ea48f" kind="struct"><name>Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;, double, BinaryOp &gt;</name>
+    <member refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_13391072c407ead1fb3c802b689ea48f_1ac77267fcef5e4f1850c87c0cbdd4c4bb" kind="typedef"><name>ReturnType</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Shift</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1adc59608c921574a9a1cac729098c80e2" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1ad09bed4e96912918bc2fc9f99edc7954" kind="variable"><name>a_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1af02be931a9421cef3bf61cc9f1cea32d" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1a2f402a3b570222c425ac25224d14d756" kind="function"><name>Shift</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1a08a457b8bf221d2e69dae627735c0746" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_shift_1a4bd77124b48bd034793280c9becd3b6b" kind="function"><name>dx</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Sum</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a418fbddbe4fbc2b14eca96580c33329e" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a2081b344d4f72493ed67abcc419a2aee" kind="variable"><name>a_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1aec378fbc6d9cbb82f9cdcdf856a7dfab" kind="variable"><name>b_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a65d81f22a4aa1788d03b147fb6a384af" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a37ef7f68f7fe41788569a53c18b607b2" kind="function"><name>Sum</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a721bd0de85d24ded1e7e9c90f6271e4b" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_sum_1a1a8b6f5aae25ef20a8e6e0e3a6b53ff0" kind="function"><name>dx</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kind="class"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::Taylor</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add4fa9687980cb0d24120f49bd43522a" kind="variable"><name>c_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad06b251a25c40d410c0d6701c0d5631e" kind="function"><name>Taylor</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8407161a5e9ca820e4f02a3a4a9713c4" kind="function"><name>Taylor</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1add40c0bfa63aca4403c3b5a6041da511" kind="function"><name>operator double</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab333dfde975fa5b13e15b87ddfab83c8" kind="function"><name>operator[]</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aeab775d83060ecac38c4cd5057be0604" kind="function"><name>operator[]</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaab297c088c0d5579728ea9265a0d54b" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ab9e0c35eb9f339e0971508326bd7035f" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ac9761b7fa29dfe8dea9377bc2526fe0d" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1ad9193147bac550212dd5cd420cd7151c" kind="function"><name>operator/=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a44b7f8db81abe5b5f9c50830dee118fe" kind="function"><name>operator+=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1aaafda504abe279499fec82283e85c455" kind="function"><name>operator-=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a438ab5542c9bda11aaf901c1a75a069f" kind="function"><name>operator*=</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_1a8dc7ba284a4fa327b592eab99d77571d" kind="function"><name>operator/=</name></member>
+  </compound>
   <compound refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result" kind="struct"><name>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult</name>
     <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad8f511e3428520f59ef8736c0f483d0b" kind="variable"><name>theExponential</name></member>
     <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad45bf84d0f92cdef9686b99945175bfb" kind="variable"><name>theExponentialDerivative</name></member>
   </compound>
-  <compound refid="namespaceautodiff" kind="namespace"><name>autodiff</name>
+  <compound refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation" kind="class"><name>Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation</name>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1adfa8ff27f84e0cc03095c841d205126b" kind="variable"><name>nDirections</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a5099137b8a3e00f4be00e1ea5d8bd859" kind="variable"><name>a_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a38855b39fa2c35a5e190f46aa4c04698" kind="variable"><name>val_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a719ba341f6f2a10f711b1bea30d9a9e5" kind="variable"><name>partial_</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1a91909ebe12ccbeb35c1b4eb5ac56db25" kind="function"><name>UnaryOperation</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1ab5ad3440f6b2d95df789cbe75c16eafb" kind="function"><name>val</name></member>
+    <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_unary_operation_1afe6a802a5c2d1783025f362b5a88ab5f" kind="function"><name>dx</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1_1_uninitialized" kind="struct"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Uninitialized</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_constant" kind="concept"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::Constant</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_comparable" kind="concept"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::DualComparable</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor_comparable" kind="concept"><name>Marmot::Math::Differentiation::Automatic::ScalarMode::TaylorComparable</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_comparable" kind="concept"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Comparable</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_constant" kind="concept"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Constant</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_comparable" kind="concept"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2ndComparable</name>
+  </compound>
+  <compound refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kind="concept"><name>Marmot::Math::Differentiation::Automatic::VectorMode::Expression</name>
   </compound>
   <compound refid="namespace_eigen" kind="namespace"><name>Eigen</name>
   </compound>
@@ -56,7 +274,7 @@
     <member refid="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" kind="typedef"><name>Matrix9d</name></member>
     <member refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kind="typedef"><name>complexDouble</name></member>
     <member refid="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" kind="typedef"><name>Vector6cd</name></member>
-    <member refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kind="typedef"><name>Vector6dual</name></member>
+    <member refid="_marmot_typedefs_8h_1ad948a3b12f4f12e081d6c14fdb017ab8" kind="typedef"><name>Vector6dual</name></member>
     <member refid="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" kind="typedef"><name>mVector6dual</name></member>
     <member refid="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" kind="typedef"><name>mVector6dualConst</name></member>
     <member refid="_marmot_typedefs_8h_1ae192ab789425faed28e987da5b0387d5" kind="typedef"><name>Vector6t</name></member>
@@ -107,35 +325,276 @@
     <member refid="_marmot_automatic_differentiation_8h_1a245828095f0e5ee2429d48564dd8f705" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a75be42631adeb3731094f799dde28866" kind="typedef"><name>scalar_to_scalar_function_type_2nd</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a7a447d8635245248d44e3e24d80b7491" kind="typedef"><name>vector_to_vector_function_type_dual</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a4431b8a06ce97beb2e2f930cd86f4683" kind="typedef"><name>fixed_size_vector_to_vector_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a4c15d8657165879acd21f35a5461cf39" kind="typedef"><name>vector_to_vector_function_type_dual2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kind="typedef"><name>HyperDual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kind="typedef"><name>dual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kind="typedef"><name>dual2nd</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" kind="typedef"><name>dual3rd</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kind="typedef"><name>Taylor</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kind="typedef"><name>VectorXdual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a53f5b1edc3b819538eb6eefa7885f312" kind="typedef"><name>MatrixXdual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" kind="typedef"><name>VectorXdual2nd</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kind="typedef"><name>JacobianDual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" kind="typedef"><name>HessianDual</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a54e13262a586159d588f8839e984bf97" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af49c5de3a1ac470dc9c7eb242d41d96f" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a31f6537eac02c5087256c716aca242d5" kind="variable"><name>isHyperDual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" kind="variable"><name>isHessianDual</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" kind="variable"><name>isVectorDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a2afdde05e6788d8b8cca4803bb8706d6" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ab58699cec7336eaad3c324323f0e20f9" kind="function"><name>shiftTo2ndOrderDual</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1af462ba5c9fdc269359785fc5869d6bb1" kind="function"><name>valnode</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1a992c5e4cd9c76d119e61f35f77c77aab" kind="function"><name>valnode</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1a567abd7502e7127eb05c20853575a9a4" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1aff7f84af3045ad718d493f56412b017e" kind="function"><name>decreaseDualOrder</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1a2e3729ee205dd0513ea54262f60d67a8" kind="function"><name>decreaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1a0a75c7cb201cabe9298c15dc385641fa" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a82293a6c46a97d187ed8ab82ad300b69" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a5647267270c765fff3a712ec22e8d8d1" kind="function"><name>decreaseDualOrder</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a42cdf83ed2e8bfc5d58f60a9c9c208db" kind="function"><name>decreaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1aac6cd1f061767b2d3f374d817d836520" kind="function"><name>increaseDualOrderWithShift</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad7b4e93605af562c16573101c580fcc1" kind="function"><name>df_dx</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a629ecc6fc9564cc5c84dee59f52c0dca" kind="function"><name>df_dx</name></member>
-    <member refid="_marmot_automatic_differentiation_8h_1ae4311162cf38b03781d4c6d29aa0cb95" kind="function"><name>dF_dX</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1aab9997ae63673c16718dc35b28018d7f" kind="function"><name>dF_dX</name></member>
+    <member refid="_marmot_automatic_differentiation_8h_1a60d3e6f0765c7c5b667d971c5c1a3644" kind="function"><name>dF_dX</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad7e747ac5d288bb95b5340d86d9458e0" kind="function"><name>dF_dX_2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" kind="function"><name>dF_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a775b2a053283c968c1d8782c31296aad" kind="function"><name>seed</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1aafac0e00cb28121c38afbbe54595b138" kind="function"><name>derivative</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" kind="function"><name>value</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a5486499b876a71fea5e83fc7a3025796" kind="function"><name>seedDirection</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a55bb4c695fc82b6d20e229ccdb88d256" kind="function"><name>partialDerivative</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1ac39acc1041b386cf2ed62a632df34240" kind="function"><name>secondPartialDerivative</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" kind="function"><name>coefficients</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a33c85223bb0f81323572db4da22e5cf5" kind="function"><name>coefficients</name></member>
+    <member refid="_marmot_automatic_differentiation_types_8h_1a9b190fa42f4dc3d8006094c9856b0206" kind="function"><name>taylorDerivatives</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ae7f309cc5d813ba23957506a8cda04dd" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a8b2fab431420b39ab14c7c49f73c454b" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a025a66f7df066813a5f0400eb5e371c7" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a19fb5ea9d5a57ec670359c225ddc8890" kind="function"><name>dF_dT</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::ScalarMode</name>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ada8aafc4bdd73e372276dcb99e730594" kind="typedef"><name>HyperDual</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae26a2d3da48d79e938591d1198be9d98" kind="variable"><name>isDual</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1acb40e8cb0354f063547579f6826d3c8f" kind="variable"><name>isDual&lt; Dual&lt; T &gt; &gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7aa029212a1dbc4083e05baf994f9255" kind="variable"><name>orderOf</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a31dd2668393d05f46477f392e18be1e8" kind="variable"><name>orderOf&lt; Dual&lt; T &gt; &gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac7c076c0a266410dea85ba2f312d281e" kind="variable"><name>isTaylor</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a15bbbc77f7fc8151f554a0a9d5aac1bf" kind="variable"><name>isTaylor&lt; Taylor&lt; order &gt; &gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1acce3dca7a86b890d794f0e3426eb702c" kind="function"><name>staticFor</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7e5c22bbe0ce0f4d24be8bb8bf74cb55" kind="function"><name>primalValue</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7dab9ed2838fbe3b5c05d0496c1fbe32" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a4cda77d00f475fcb2349c28be8fa9e9a" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1abb6ef16180cc5918c0cd055fc6c7951a" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac2efa5684c5cab33d35ed755b7741e7e" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a5e460520360fcaacdd5e4e13cf3c58af" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a9c48b7e5fdbcd0c59e1a972837ec4148" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a08608b73d27b34e595d294ceda5a06ce" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a9bbe626e7e64b8c8d7524902ab040c77" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aed4be5e5092b034dbd926ab4f4343ec1" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a1fba37bac5fdf40065004cd2fb31af5c" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a1ad608f8ae189ac3297d23e051faa9bf" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a2d9887a5d6777be7f2de0c0ae242d439" kind="function"><name>reciprocal</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a99f7fe5d19698bfab26b1e2283da53d0" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a635f8b238b12db371eac9493dc92d733" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a68cb679e57ef315c5c7ce67fdffc218e" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a96aed8f50babcbc27cbcd6617f01a80b" kind="function"><name>operator==</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac4eec2ef84e2531b3cadc29ae01892f6" kind="function"><name>operator!=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a92bb66b7b8451388ab9e3e889d5cca91" kind="function"><name>operator&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a128f4b478f88e1c4b76f4776ab12d0d8" kind="function"><name>operator&lt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ad55d15df993e53f906848215d731d018" kind="function"><name>operator&gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a4ac53648976b06dee3585e47abfd6adf" kind="function"><name>operator&gt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a919ebf69bb62c1f89c921450ea4b90ef" kind="function"><name>abs</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1acc0886ca7c0fa946dfd6074aa486b2c5" kind="function"><name>fabs</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ab921396c9ddd3a9b4f23cafaae3cd34b" kind="function"><name>max</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae18dcbb41fb2bf4324d8ba0dcbb485d7" kind="function"><name>max</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae07d2972164224348c3bf14c22150cac" kind="function"><name>max</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac2753ba085d36a9469f2df7acfeedb23" kind="function"><name>min</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1abd5a655666ed0774acd49c1f5a26e3a4" kind="function"><name>min</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aa1208c13af5fdc0401735b48f7ce83fb" kind="function"><name>min</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a327f20b8262d6b25528fc2ff0413402b" kind="function"><name>isnan</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a3ed8be282d3ae75a54715de2fa48102f" kind="function"><name>isinf</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a59a48091bc229b2f5456fcb646a930ea" kind="function"><name>isfinite</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1abea545ea9a8f7d04442ad8503130c16f" kind="function"><name>operator&lt;&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac59d658af843765806ecc5dcd70665f2" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a98060b50a36ab6895ee2e3292add3df3" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a26b5a1522fa1446320fb06f79b52bb26" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a4a9e77b75bb4d3ecd7870e1a252de21f" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a63eec578803d1b39424b8780e693627e" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ab442c7337248a7ff7932fa63a923881c" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae66e05018ed452890983d9a5e2ca96a7" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ad2da16c06de8a26f6b16bc77e201ece2" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ab6028330005c48c07443dbf802d68cf7" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae3ef7399d1752c07799310aaab454ca9" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a8bef5fdc7ac613cb322622bf72a633a3" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1add6b3d8e41b37a54d110c295f8bc1fb7" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a73d6de786f6c16b9ee351c0978899d79" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a70465a02a0e390473a57c52861bdda0b" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a492d18d7912b91110e864c11b6def455" kind="function"><name>taylorValue</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aedf8de1dbc298a8bceeb6e8200f5b4b3" kind="function"><name>operator==</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a58093da5e8b9edd920a652c3d3d97c12" kind="function"><name>operator!=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a3b0c9f92cf00add4f25908aaa57dc87f" kind="function"><name>operator&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ad4bb18d2772c2cccd196e61717ef57c6" kind="function"><name>operator&lt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a90e91d18ee760f33ea34ecb815f8adc5" kind="function"><name>operator&gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a674332834872a214375d410d4430c3e7" kind="function"><name>operator&gt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a8eeab93d79a890443fd7c0bb1882144d" kind="function"><name>compose</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7615fcefedf4d62ad1d0d558b1609353" kind="function"><name>integrate</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7ae62bb378695e36f8fd10be1253b7c5" kind="function"><name>exp</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aca7ceef74a09c210ce3044bad509e04f" kind="function"><name>log</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a8c2ae8585c1c4d8934b1e236c1e0f020" kind="function"><name>log10</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a6fd5ba48b6f73ef77a5f71150afdca2c" kind="function"><name>powerSeries</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac73c4d5a12bbc05af804111a194fbd75" kind="function"><name>power</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a20e5ebb3028b6cbfe905bc4d613f4710" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac92b5f8db1fd1c6c50620d19d5ece1a4" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ad262a0dd1779bb9779bff3acf042e4e9" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae199ade93ec046bcd5beefa5fbd107fd" kind="function"><name>sqrt</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a6df461a062b07ce5d153cf940775cb02" kind="function"><name>cbrt</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a561e369f8c97fd8955feddddb7f42c15" kind="function"><name>sineCosine</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a4e54162130ddb04aae148c6127cc5200" kind="function"><name>sin</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a4bb1b9e43c67418a88f1aae8589ef0ee" kind="function"><name>cos</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac678ae081c9c195979302c5a08e4c33b" kind="function"><name>sinh</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a0b23714e5d3d4039c7513948072f4006" kind="function"><name>cosh</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1adc9e096548205bb2370580b1663b5166" kind="function"><name>tangent</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a931ebe8eec890e338648b01a3dafca18" kind="function"><name>tan</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a615d86742880ac541585ef2d0b3b5fb1" kind="function"><name>tanh</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a1cd959dd6ff5a028a3301698a09d7ca4" kind="function"><name>asin</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ad704c1d16100de1bb76304a18b546777" kind="function"><name>acos</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a2cd521867a684a40f18e7f5dc81edfda" kind="function"><name>atan</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a243aa1e4e263ec10e27cbc0131501766" kind="function"><name>abs</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a8ddd87be97316d78fbc5d5a1ae7b927b" kind="function"><name>fabs</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a647e8230887864845c43071e3a987dca" kind="function"><name>operator&lt;&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1af678e4ea5888b8d11ff054d19a17684f" kind="function"><name>sqrt</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aa64b4c19d0f0e7957ae2482397b21d6d" kind="function"><name>cbrt</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a9c60f2775e1c0c2a36ca5abb8f08ff1c" kind="function"><name>exp</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1abc43a3b9ae443aadca110709eb80cac2" kind="function"><name>log</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a2ea1db8072ceb7dfdc80da5bb1fdc531" kind="function"><name>log10</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a5ef4822fbc8142bf518af642303a85d5" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a5cb7395872629123e708ae653f173dc4" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1aef703f23116dfe42c244133a9e300e4f" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a704f7f04adbaeab062a5d2378be06ffe" kind="function"><name>sineCosine</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac18c6387315c996c15c1bdaf128dcf12" kind="function"><name>sin</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ac4b6c9633ae695bf4e9b25530d6b36f3" kind="function"><name>cos</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a8915cd14f1302e2ec5e49d10de967c56" kind="function"><name>tan</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ab61e393db6699e774d5e1753ff1f0a94" kind="function"><name>asin</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a514eb8cce33cfbcc7c29be1b0c221b51" kind="function"><name>acos</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a91c35896618be9baf19b86d0c4533fd3" kind="function"><name>atan</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a462e65ea4c556ebc96607ab15d0575ee" kind="function"><name>atan2</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a25cf97ed3d09d986ccf997546d860e03" kind="function"><name>atan2</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a6ef788d3c9a9982a17c18b6498282373" kind="function"><name>atan2</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1a1c52bc1c3f25a965023b3b1b78dafd84" kind="function"><name>sinh</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1af39d350a47c3cd389840a906a3927a4a" kind="function"><name>cosh</name></member>
+    <member refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae32b5a49000a4363da8c52286fecacb4" kind="function"><name>tanh</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_second_order" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::SecondOrder</name>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a8ceb3ccbc5c389be12b6481ac5735d18" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a33a7ed231d39ced48216fe3560c5ff05" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ac2394d944d58c0005d02a7e67c22c43b" kind="typedef"><name>tensor_and_scalar_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a0ef20b0bd7157f94f87376407c467f9e" kind="function"><name>d2f_dT2</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a2256c294365d3e41f4ba17aa6076b264" kind="function"><name>d2f_dT2</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a3f4a8564055a975200c22ddd95d849a5" kind="function"><name>d2f_dTensor_dScalar</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_third_order" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::ThirdOrder</name>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1aebd604ca3b14478fb3bcff96f1c22aeb" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a5a12504a607ab86dcb1dceec100b5309" kind="function"><name>d3f_dT3</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::VectorMode</name>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kind="typedef"><name>Operand</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kind="variable"><name>isDual2nd</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a6b30079c9ad3423645ea2e871de7e82a" kind="variable"><name>isDual2nd&lt; Dual2nd&lt; nDirections_ &gt; &gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1acf63c733897392ed6d8083e2123157f7" kind="variable"><name>isDual</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a3bcfb2d62f29012cc2a672cc7f42acbc" kind="variable"><name>isDual&lt; Dual&lt; nDirections_ &gt; &gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a41d1f93636490b32311846e260105bc4" kind="variable"><name>directionsOf</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1aa8e0c545cdb02e5bec6ed0654aceaa3b" kind="function"><name>chain</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1aac2ebeabcd5236023240a72779e16f34" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ac2aede4df28615f5bd559b0cb355a086" kind="function"><name>reciprocal</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1afc7cf9dd38c6e19fc5ab6aed97f2d9be" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1aff8d35917c623abe5519d1137fe618c4" kind="function"><name>linearCombination</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a2cc47e0fca3524f00e07ddfc5646ae95" kind="function"><name>scaled</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ade8c6b615648474d0ad98762dd4dccfd" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a0213bd83b06479a9bddb24b665e2b7f7" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1acca473ef34083b431f22daa240680bc0" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a2aed67dd9ce19150835dec929bb7b570" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a6dcbbdd726438e12345313aa60b4cc46" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ac5445ba07c56f244f8405bfb51b81b68" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a631d23dafcc052f652e6edcf549b4b3a" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a8d5d0babfa6cc7cfd68b16f557077e34" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a8bf6f19fa2c1c61a8694bcf6c11917cc" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ac3423f79b88d72f4f803ee19df570191" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1af855300a9f01c3308de87bdd127ba889" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ae8998190d4a4c5de9f532e6084786b61" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a26aaf583916ddbe9cd285e42b37e40e5" kind="function"><name>operator==</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ab252f8881c8b71850f48d10f645f231a" kind="function"><name>operator!=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1abc3d2bf3c80231b8d506556802452c5e" kind="function"><name>operator&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1abed3519fafd3cbce8d2daf3ee3423c61" kind="function"><name>operator&lt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ada0f05d84a16e24861811833ccb1aafb" kind="function"><name>operator&gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ab935c83091bfa35a8f67143c095eb9a7" kind="function"><name>operator&gt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a3d16b2205b035e807a591f3e1e55348a" kind="function"><name>sqrt</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a7293b1d430ba6c366f5f22f1ff1bc639" kind="function"><name>cbrt</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a153a8149be5ec3834f4b2256f8e754bb" kind="function"><name>exp</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1aabcd5bd5e435086193f9c37c90fac677" kind="function"><name>log</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a13c44045c5ae732d0612b114a483424d" kind="function"><name>log10</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a3152f2cd2297ebb722c05a0573414583" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ae3919cea355b2d650adc727fc6744f77" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a9c1cbbd1eb79320098705979c759fd66" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ae13434da1204ddc8268f5c8fc464be28" kind="function"><name>sin</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a608dbb9efc9dae6d08d3df0bb8e2efe1" kind="function"><name>cos</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ac3ccc7f6b1c6d772c2e565ace11bbd0e" kind="function"><name>tan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1afd4342874b68df86f89dc8a3caeea246" kind="function"><name>asin</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ae7132f82753f5143c17b0eadb5904c40" kind="function"><name>acos</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a09055d55dfb04e7d0f5b3ebd7b14f0a5" kind="function"><name>atan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a2563d459970dc6539207bce9d185c080" kind="function"><name>atan2</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a3050c7ec4e72a8ff6f5a57b3b8cabfcf" kind="function"><name>sinh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a517e2ca57f45116c0348402ff976faff" kind="function"><name>cosh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1abab15b3ae2dd3c0fe085b480e49f6fb6" kind="function"><name>tanh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a26ded970b42a4008189a0fa0ef2142f1" kind="function"><name>abs</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1afbb8794705d5a0c01433912d22197dc7" kind="function"><name>fabs</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1acd423a5fb45fb9f7dca6877de4d61ad8" kind="function"><name>max</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a675c4a77cfa789b2058dee79bbe954a8" kind="function"><name>min</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a42de37c514c005a0d85c67608dab0e9e" kind="function"><name>isnan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1a7156ff670a5c5da22bfd6690f903b822" kind="function"><name>isinf</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1af2539d0f0196ce24e715d4a0fc404ea8" kind="function"><name>isfinite</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1aa59a49a74de961696f51acc9db6d07e5" kind="function"><name>operator&lt;&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ad56dd930f928359551eeefff9bfed5a3" kind="function"><name>unaryOperation</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1adc06242a07f8a5fc7b12c0cea8b3397f" kind="function"><name>binaryOperation</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a6a577075a4149f6c85747d68470c2836" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a7f9674b86bf9e8ace0bc2da2562def69" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ac54c29035c85b5fc90a748952c70587f" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1adf30a35626cbff216987f7ca434439ca" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a373a99cb307fe2eaf8d5ac065873a5f3" kind="function"><name>operator+</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a3e0e2e37c6d1ba5b7589e5230da27018" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ab822a293a55d88319415e4c22fddebdf" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a00eb319095f59d84b4c18be48a2d557b" kind="function"><name>operator-</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a4f10578fc9bd22f9a15ae6456667bf2e" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a562e6ce8700b8e660d2755979fb448f8" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ace427cf62a421a0d9249d3c207396c17" kind="function"><name>operator*</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a72538415cf86d03865169e7394b4d6ef" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a72c4623481df3b3323f34a670ad03444" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a526668686efe114d742bac23d30318b8" kind="function"><name>operator/</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a094329b2e91127ebee78b8471e9d0934" kind="function"><name>valueOf</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a084a7e117d210e4c98dd57baf97acdf2" kind="function"><name>operator==</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1acdf138cda4f7948b029f243b441f084f" kind="function"><name>operator!=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1af92f49c91a7622d3a6642afed66e8512" kind="function"><name>operator&lt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a179adc7fb1597267a4cdd1af87c60fe5" kind="function"><name>operator&lt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ac75de0224ab1a8b617424f7ddf0ed3c2" kind="function"><name>operator&gt;</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a236c3c9daa81c77b7c08486eebda6028" kind="function"><name>operator&gt;=</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a30d2dc53563ee8b7b75dae3903b869a2" kind="function"><name>sqrt</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ae39ed19d794ec8e82bd9befc5c61237f" kind="function"><name>cbrt</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a687b25487774fe85155d7167464c0dd6" kind="function"><name>exp</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1aa6447f4c862fb9c128cc5b1c42e88ec2" kind="function"><name>log</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a8bc93ab1475c7c7a0a61293e94c1dc4f" kind="function"><name>log10</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ae1cb9c9dfd5866470e99eb0ec5c023f0" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a126cca66aa7899fb96d5d9e02923d27b" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a56b1de770d7bdbd615b59b2b106722a1" kind="function"><name>pow</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a74bd42afa3d05d706f4a7b627858aecd" kind="function"><name>sin</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a7fab9a94093ac8cab68c9fbdef767b0d" kind="function"><name>cos</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a9bd9de97b377b55aa4ef7365d52da839" kind="function"><name>tan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a742b537ecbc2ba2626b72dadcde8eb0d" kind="function"><name>asin</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a368e52e963a0dcd396dc4eec5d0ebfd1" kind="function"><name>acos</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a082a88454ddfdb6317675e5318e559ce" kind="function"><name>atan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a1cd6505f0448a3142a94befa71ae1265" kind="function"><name>atan2</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a9d2d74c41f546a9ebedce1cef2c5ea73" kind="function"><name>sinh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a74e606e53290842538accdaedab4485b" kind="function"><name>cosh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1acd5df910374cf042b733c2a0a9fa85b0" kind="function"><name>tanh</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1afb71689d34ee7e4c5d5656ee5071f849" kind="function"><name>abs</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a36876d73f15653611df169bf34965b5f" kind="function"><name>fabs</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1ab8331e44e9cceeaa3d73edffc934c552" kind="function"><name>max</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a82139014f86bb1d2e91e425aace7438f" kind="function"><name>min</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a98a46662aaac8e4d066e215c7f66dfbb" kind="function"><name>isnan</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1aebb011efd2783e5147c842f63f4e19d2" kind="function"><name>isinf</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a99c6c949059bca7479aa2f2d2ea7cee0" kind="function"><name>isfinite</name></member>
+    <member refid="_marmot_automatic_differentiation_vector_mode_8h_1a3f765eb418506df53a6593ad0b0a1780" kind="function"><name>operator&lt;&lt;</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical" kind="namespace"><name>Marmot::Math::Differentiation::Numerical</name>
     <member refid="_marmot_numerical_differentiation_8h_1a0580e9e3573e6bccff6ca6293d1e8ffd" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
@@ -216,8 +675,8 @@
     <member refid="_marmot_tensor_8h_1add2f9db4d78b6dae8038a7b20efe786c" kind="variable"><name>I2</name></member>
     <member refid="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1abdce1c5528229e7f274d105f11a404ca" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1aa984c158b8e9e6bafa313e5444f170ac" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_tensor_8h_1ac02a8d7d36016510aa285200b45377e2" kind="function"><name>Initialize_I2xI2</name></member>
@@ -259,8 +718,8 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1aeb74b3a80ccf94aa06016178a0a97bdf" kind="function"><name>fastorTensorFromDoubleTensor</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a3b61516fecf79c3871cac43aaa6e31ef" kind="function"><name>fastorTensorFromDoubleTensorMap</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a8e926f1ee161c26d1a0ea4bd5faa69ac" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a85958476c084e4c643ddffcdf9e3fcf8" kind="function"><name>makeDual</name></member>
-    <member refid="_marmot_fastor_tensor_basics_8h_1a71e98104955083f1e33ed600b38a7598" kind="function"><name>makeHigherOrderDual</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a4f68f70e7bc15b6cc898b2974d52ba3a" kind="function"><name>makeDual</name></member>
+    <member refid="_marmot_fastor_tensor_basics_8h_1a148f08b053b9bf6425d13537fb9be9d0" kind="function"><name>makeHigherOrderDual</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a336021d42a2218433f4c54eb7784273b" kind="function"><name>makeOtherScalarType</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1ad481a326ac492a4923c090a871580cff" kind="function"><name>symmetric</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a0b055002ee2240568230db2522117125" kind="function"><name>deviatoric</name></member>
@@ -538,6 +997,14 @@
   <compound refid="_marmot_automatic_differentiation_8h" kind="file"><name>MarmotAutomaticDifferentiation.h</name>
   </compound>
   <compound refid="_marmot_automatic_differentiation_for_fastor_8h" kind="file"><name>MarmotAutomaticDifferentiationForFastor.h</name>
+  </compound>
+  <compound refid="_marmot_automatic_differentiation_scalar_mode_8h" kind="file"><name>MarmotAutomaticDifferentiationScalarMode.h</name>
+  </compound>
+  <compound refid="_marmot_automatic_differentiation_types_8h" kind="file"><name>MarmotAutomaticDifferentiationTypes.h</name>
+  </compound>
+  <compound refid="_marmot_automatic_differentiation_vector_mode_8h" kind="file"><name>MarmotAutomaticDifferentiationVectorMode.h</name>
+  </compound>
+  <compound refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" kind="file"><name>MarmotAutomaticDifferentiationVectorModeSecondOrder.h</name>
   </compound>
   <compound refid="_marmot_constants_8h" kind="file"><name>MarmotConstants.h</name>
   </compound>

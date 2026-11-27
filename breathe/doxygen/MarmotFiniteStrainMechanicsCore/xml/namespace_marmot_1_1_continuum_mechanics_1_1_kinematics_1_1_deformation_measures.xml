@@ -28,7 +28,7 @@
 <parametername>T</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+<para>Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual) </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -75,7 +75,7 @@ The right Cauchy-Green deformation tensor is defined as:   <formula id="46">\[  
 <parametername>T</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+<para>Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual) </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

@@ -29,7 +29,7 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a1ae620374d541851c3b67eefbaf1137c" kind="function"><name>ConstitutiveResponse</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a08d36c326bb2482fc2c78aef6d657222" kind="variable"><name>tau</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a1b69b92af1a03c2b6eb94361388d0621" kind="variable"><name>tau</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93eb875c9edea875ae9d20ef0ca7a9b9" kind="variable"><name>elasticEnergyDensity</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93a557cb161401b9438740132cf90d8d" kind="variable"><name>dissipation</name></member>
     <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ada9bfba397748911f0bce64dd27b61fd" kind="variable"><name>stateVars</name></member>
@@ -44,7 +44,7 @@
     <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1aa2cc00468b8c52d33fbf067352ee1483" kind="variable"><name>N</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</name>
-    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a5c43469893437a5400791ce555f08965" kind="variable"><name>F</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a1ab2809a3f856098e1452528abcd861b" kind="variable"><name>F</name></member>
   </compound>
   <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper" kind="class"><name>Marmot::Materials::GradientEnhancedCorotationalWrapper</name>
     <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_corotational_wrapper_1adda9967146486fc0f42da35be2295343" kind="typedef"><name>Wrapper</name></member>
@@ -183,6 +183,7 @@
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ae4d2733228b5cacd8b39cb26c8914b8f" kind="function"><name>getDensity</name></member>
   </compound>
   <compound refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" kind="class"><name>Marmot::Materials::MaterialFiniteStrainAD</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1ae5dec47e042b5cbc9c0cedf7a5d0bb6c" kind="typedef"><name>ADScalar</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a42e8d9177586bfd4453ab8b3cd8d4fbf" kind="function"><name>MaterialFiniteStrainAD</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a37382eee90c677698043712cdde0aa3b" kind="function"><name>computeStress</name></member>
     <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kind="function"><name>computeStressAD</name></member>

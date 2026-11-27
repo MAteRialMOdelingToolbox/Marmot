@@ -1,0 +1,389 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_automatic_differentiation_types_8h" kind="file" language="C++">
+    <compoundname>MarmotAutomaticDifferentiationTypes.h</compoundname>
+    <includes refid="_marmot_automatic_differentiation_scalar_mode_8h" local="yes">Marmot/MarmotAutomaticDifferentiationScalarMode.h</includes>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="yes">Marmot/MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" local="yes">Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h</includes>
+    <includes local="no">array</includes>
+    <includes local="no">cstddef</includes>
+    <includes local="no">type_traits</includes>
+    <includedby refid="_marmot_automatic_differentiation_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h</includedby>
+    <includedby refid="_marmot_automatic_differentiation_for_fastor_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h</includedby>
+    <includedby refid="_marmot_fastor_tensor_basics_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h</includedby>
+    <includedby refid="_marmot_math_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h</includedby>
+    <includedby refid="_marmot_typedefs_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h</includedby>
+    <incdepgraph>
+      <node id="2">
+        <label>Marmot/MarmotAutomaticDifferentiationScalarMode.h</label>
+        <link refid="_marmot_automatic_differentiation_scalar_mode_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h</label>
+        <link refid="_marmot_automatic_differentiation_types_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorMode.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_8h"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="12">
+        <label>Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h</label>
+        <link refid="_marmot_automatic_differentiation_vector_mode_second_order_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="4">
+        <label>array</label>
+      </node>
+      <node id="13">
+        <label>bit</label>
+      </node>
+      <node id="5">
+        <label>cmath</label>
+      </node>
+      <node id="6">
+        <label>cstddef</label>
+      </node>
+      <node id="14">
+        <label>cstdint</label>
+      </node>
+      <node id="7">
+        <label>numbers</label>
+      </node>
+      <node id="8">
+        <label>ostream</label>
+      </node>
+      <node id="9">
+        <label>type_traits</label>
+      </node>
+      <node id="11">
+        <label>utility</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h</label>
+        <link refid="_marmot_automatic_differentiation_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h</label>
+        <link refid="_marmot_automatic_differentiation_for_fastor_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h</label>
+        <link refid="_marmot_automatic_differentiation_types_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h</label>
+        <link refid="_marmot_eigen_systems_8h_source"/>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h</label>
+        <link refid="_marmot_fastor_tensor_basics_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="7">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h</label>
+        <link refid="_marmot_math_8h_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="8">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h</label>
+        <link refid="_marmot_numerical_differentiation_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h</label>
+        <link refid="_marmot_numerical_differentiation_for_fastor_8h_source"/>
+      </node>
+      <node id="11">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h</label>
+        <link refid="_marmot_tensor_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h</label>
+        <link refid="_marmot_tensor_exponential_8h_source"/>
+      </node>
+      <node id="10">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h</label>
+        <link refid="_marmot_typedefs_8h"/>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math">Marmot::Math</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation">Marmot::Math::Differentiation</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic">Marmot::Math::Differentiation::Automatic</innernamespace>
+    <briefdescription>
+<para>Number types and primitive operations for forward-mode automatic differentiation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>All Marmot code uses the types and functions declared here instead of naming the implementations directly:<itemizedlist>
+<listitem><para>Hyper-dual and Taylor numbers (dual, dual2nd, dual3rd, HyperDual, Taylor): ScalarMode (<ref refid="_marmot_automatic_differentiation_scalar_mode_8h" kindref="compound">MarmotAutomaticDifferentiationScalarMode.h</ref>).</para>
+</listitem><listitem><para>JacobianDual, the number type of the first-derivative drivers (df_dT, dF_dT, fixed-size dF_dX): VectorMode::Dual (<ref refid="_marmot_automatic_differentiation_vector_mode_8h" kindref="compound">MarmotAutomaticDifferentiationVectorMode.h</ref>), which computes all directions in a single evaluation.</para>
+</listitem><listitem><para>HessianDual, the number type of the second-derivative driver d2f_dT2: VectorMode::Dual2nd (<ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" kindref="compound">MarmotAutomaticDifferentiationVectorModeSecondOrder.h</ref>), which computes the gradient and the Hessian in a single evaluation.</para>
+</listitem></itemizedlist>
+</para>
+<para>Vocabulary:<itemizedlist>
+<listitem><para>HyperDual&lt;order&gt;: nested dual number with one independent direction per nesting level; level 1 is the outermost level. dual, dual2nd and dual3rd are the orders 1, 2 and 3.</para>
+</listitem><listitem><para>Taylor&lt;order&gt;: univariate truncated Taylor number carrying the derivatives 0..order of one variable.</para>
+</listitem><listitem><para>JacobianDual&lt;nDirections&gt;: number type of the first-derivative drivers df_dT, dF_dT and dF_dX&lt; n &gt;, with nDirections independent variables. Code differentiated by these drivers must use this type, not dual.</para>
+</listitem><listitem><para>seed&lt;level&gt;( x, v ) sets the derivative of x along nesting level <computeroutput>level</computeroutput> to v, derivative&lt;level&gt;( y ) reads the mixed derivative of y along the levels 1..level, value( y ) reads the primal value.</para>
+</listitem><listitem><para>HessianDual&lt;nDirections&gt;: number type of the second-derivative driver d2f_dT2, with nDirections independent variables. Code differentiated by d2f_dT2 must use this type, not dual2nd.</para>
+</listitem><listitem><para>For vector-mode numbers (isVectorDual, isHessianDual), seedDirection( x, i ) makes x the independent variable i and partialDerivative( y, i ) reads the partial derivative of y with respect to variable i; secondPartialDerivative( y, i, j ) reads a second partial derivative of a HessianDual. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_automatic_differentiation_scalar_mode_8h" kindref="compound">Marmot/MarmotAutomaticDifferentiationScalarMode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_automatic_differentiation_vector_mode_8h" kindref="compound">Marmot/MarmotAutomaticDifferentiationVectorMode.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" kindref="compound">Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;array&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cstddef&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Math::Differentiation::Automatic<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="71" refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ada8aafc4bdd73e372276dcb99e730594" kindref="member">ScalarMode::HyperDual&lt; order &gt;</ref>;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; 1 &gt;</ref>;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; 2 &gt;</ref>;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="80" refid="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" kindref="member">dual3rd</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; 3 &gt;</ref>;</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="86" refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor</ref><sp/>=<sp/><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">ScalarMode::Taylor&lt; order &gt;</ref>;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="89" refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref><sp/>=<sp/>Eigen::Matrix&lt;<sp/>dual,<sp/>Eigen::Dynamic,<sp/>1<sp/>&gt;;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="92" refid="_marmot_automatic_differentiation_types_8h_1a53f5b1edc3b819538eb6eefa7885f312" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a53f5b1edc3b819538eb6eefa7885f312" kindref="member">MatrixXdual</ref><sp/>=<sp/>Eigen::Matrix&lt;<sp/>dual,<sp/>Eigen::Dynamic,<sp/>Eigen::Dynamic<sp/>&gt;;</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" kindref="member">VectorXdual2nd</ref><sp/>=<sp/>Eigen::Matrix&lt;<sp/>dual2nd,<sp/>Eigen::Dynamic,<sp/>1<sp/>&gt;;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="101" refid="_marmot_automatic_differentiation_types_8h_1a31f6537eac02c5087256c716aca242d5" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a31f6537eac02c5087256c716aca242d5" kindref="member">isHyperDual</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae26a2d3da48d79e938591d1198be9d98" kindref="member">ScalarMode::isDual&lt; Scalar &gt;</ref>;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Value<sp/>&gt;</highlight></codeline>
+<codeline lineno="113" refid="_marmot_automatic_differentiation_types_8h_1a775b2a053283c968c1d8782c31296aad" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a775b2a053283c968c1d8782c31296aad" kindref="member">seed</ref>(<sp/>Scalar&amp;<sp/>x,<sp/>Value&amp;&amp;<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" kindref="member">value</ref><sp/>)</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(<sp/>level<sp/>&gt;=<sp/>1<sp/>&amp;&amp;<sp/>level<sp/>&lt;=<sp/>ScalarMode::orderOf&lt;<sp/>Scalar<sp/>&gt;,<sp/></highlight><highlight class="stringliteral">&quot;invalid<sp/>nesting<sp/>level&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<sp/>level<sp/>==<sp/>1<sp/>)</highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x.grad()<sp/>=<sp/></highlight><highlight class="keyword">static_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" kindref="member">value</ref><sp/>);</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a775b2a053283c968c1d8782c31296aad" kindref="member">seed</ref>&lt;<sp/>level<sp/>-<sp/>1<sp/>&gt;(<sp/>x.val(),<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" kindref="member">value</ref><sp/>);</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>level,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="129" refid="_marmot_automatic_differentiation_types_8h_1aafac0e00cb28121c38afbbe54595b138" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1aafac0e00cb28121c38afbbe54595b138" kindref="member">derivative</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Scalar&amp;<sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<sp/>level<sp/>==<sp/>0<sp/>)</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7e5c22bbe0ce0f4d24be8bb8bf74cb55" kindref="member">ScalarMode::primalValue</ref>(<sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1aafac0e00cb28121c38afbbe54595b138" kindref="member">derivative</ref>&lt;<sp/>level<sp/>-<sp/>1<sp/>&gt;(<sp/>x.grad()<sp/>);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"></highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>value(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Scalar&amp;<sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nDirections<sp/>&gt;</highlight></codeline>
+<codeline lineno="151" refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref><sp/>=<sp/><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">VectorMode::Dual&lt; nDirections &gt;</ref>;</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"></highlight></codeline>
+<codeline lineno="158"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>nDirections<sp/>&gt;</highlight></codeline>
+<codeline lineno="159" refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" kindref="member">HessianDual</ref><sp/>=<sp/><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kindref="compound">VectorMode::Dual2nd&lt; nDirections &gt;</ref>;</highlight></codeline>
+<codeline lineno="160"><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="165" refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" kindref="member">isHessianDual</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kindref="member">VectorMode::isDual2nd&lt; Scalar &gt;</ref>;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="171" refid="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">inline</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" kindref="member">isVectorDual</ref><sp/>=<sp/><ref refid="_marmot_automatic_differentiation_vector_mode_8h_1acf63c733897392ed6d8083e2123157f7" kindref="member">VectorMode::isDual&lt; Scalar &gt;</ref>;</highlight></codeline>
+<codeline lineno="172"><highlight class="normal"></highlight></codeline>
+<codeline lineno="173"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="174" refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" kindref="member">value</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Scalar&amp;<sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" kindref="member">isVectorDual&lt; Scalar &gt;</ref><sp/>||<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" kindref="member">isHessianDual&lt; Scalar &gt;</ref><sp/>)</highlight></codeline>
+<codeline lineno="177"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x.val();</highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1a7e5c22bbe0ce0f4d24be8bb8bf74cb55" kindref="member">ScalarMode::primalValue</ref>(<sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="181"><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="188" refid="_marmot_automatic_differentiation_types_8h_1a5486499b876a71fea5e83fc7a3025796" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a5486499b876a71fea5e83fc7a3025796" kindref="member">seedDirection</ref>(<sp/>Scalar&amp;<sp/>x,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>direction<sp/>)</highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" kindref="member">isHessianDual&lt; Scalar &gt;</ref><sp/>)</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x.seed(<sp/>direction<sp/>);</highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x.dx(<sp/>direction<sp/>)<sp/>=<sp/>1.0;</highlight></codeline>
+<codeline lineno="194"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="195"><highlight class="normal"></highlight></codeline>
+<codeline lineno="202"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="203" refid="_marmot_automatic_differentiation_types_8h_1a55bb4c695fc82b6d20e229ccdb88d256" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a55bb4c695fc82b6d20e229ccdb88d256" kindref="member">partialDerivative</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Scalar&amp;<sp/>x,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i<sp/>)</highlight></codeline>
+<codeline lineno="204"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="205"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x.dx(<sp/>i<sp/>);</highlight></codeline>
+<codeline lineno="206"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="207"><highlight class="normal"></highlight></codeline>
+<codeline lineno="215"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Scalar<sp/>&gt;</highlight></codeline>
+<codeline lineno="216" refid="_marmot_automatic_differentiation_types_8h_1ac39acc1041b386cf2ed62a632df34240" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ac39acc1041b386cf2ed62a632df34240" kindref="member">secondPartialDerivative</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Scalar&amp;<sp/>x,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>i,<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>j<sp/>)</highlight></codeline>
+<codeline lineno="217"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="218"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>x.dxx(<sp/>i,<sp/>j<sp/>);</highlight></codeline>
+<codeline lineno="219"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="220"><highlight class="normal"></highlight></codeline>
+<codeline lineno="231"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="232" refid="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" kindref="member">coefficients</ref>(<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; order &gt;</ref>&amp;<sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="233"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="234"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">static_assert</highlight><highlight class="normal">(<sp/>std::is_standard_layout_v&lt;<sp/>HyperDual&lt;<sp/>order<sp/>&gt;<sp/>&gt;<sp/>&amp;&amp;</highlight></codeline>
+<codeline lineno="235"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; order &gt;</ref><sp/>)<sp/>==<sp/>(<sp/>size_t(<sp/>1<sp/>)<sp/>&lt;&lt;<sp/>order<sp/>)<sp/>*<sp/></highlight><highlight class="keyword">sizeof</highlight><highlight class="normal">(<sp/>double<sp/>),</highlight></codeline>
+<codeline lineno="236"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="stringliteral">&quot;HyperDual<sp/>must<sp/>be<sp/>a<sp/>dense<sp/>array<sp/>of<sp/>2^order<sp/>doubles&quot;</highlight><highlight class="normal"><sp/>);</highlight></codeline>
+<codeline lineno="237"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">reinterpret_cast&lt;</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>&amp;x<sp/>);</highlight></codeline>
+<codeline lineno="238"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="239"><highlight class="normal"></highlight></codeline>
+<codeline lineno="245"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="246" refid="_marmot_automatic_differentiation_types_8h_1a33c85223bb0f81323572db4da22e5cf5" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" kindref="member">coefficients</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; order &gt;</ref>&amp;<sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="247"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="248"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" kindref="member">coefficients&lt; order &gt;</ref>(<sp/></highlight><highlight class="keyword">const_cast&lt;</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual&lt; order &gt;</ref>&amp;<sp/></highlight><highlight class="keyword">&gt;</highlight><highlight class="normal">(<sp/>x<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="249"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="250"><highlight class="normal"></highlight></codeline>
+<codeline lineno="258"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>order,<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>Function<sp/>&gt;</highlight></codeline>
+<codeline lineno="259" refid="_marmot_automatic_differentiation_types_8h_1a9b190fa42f4dc3d8006094c9856b0206" refkind="member"><highlight class="normal"><sp/><sp/>std::array&lt;<sp/>double,<sp/>order<sp/>+<sp/>1<sp/>&gt;<sp/><ref refid="_marmot_automatic_differentiation_types_8h_1a9b190fa42f4dc3d8006094c9856b0206" kindref="member">taylorDerivatives</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Function&amp;<sp/>f,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="260"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="261"><highlight class="normal"><sp/><sp/><sp/><sp/>std::array&lt;<sp/>double,<sp/>order<sp/>+<sp/>1<sp/>&gt;<sp/>out{};</highlight></codeline>
+<codeline lineno="262"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor&lt; order &gt;</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>x_(<sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="263"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(<sp/>order<sp/>&gt;=<sp/>1<sp/>)</highlight></codeline>
+<codeline lineno="264"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>x_[1]<sp/>=<sp/>1.0;</highlight></codeline>
+<codeline lineno="265"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor&lt; order &gt;</ref><sp/>y<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>f(<sp/>x_<sp/>);</highlight></codeline>
+<codeline lineno="266"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>factorial<sp/>=<sp/>1.0;</highlight></codeline>
+<codeline lineno="267"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keywordtype">size_t</highlight><highlight class="normal"><sp/>k<sp/>=<sp/>0;<sp/>k<sp/>&lt;=<sp/>order;<sp/>++k<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="268"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>factorial<sp/>*=<sp/>k<sp/>?<sp/>double(<sp/>k<sp/>)<sp/>:<sp/>1.0;</highlight></codeline>
+<codeline lineno="269"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>out[k]<sp/>=<sp/>y[k]<sp/>*<sp/>factorial;</highlight></codeline>
+<codeline lineno="270"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="271"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>out;</highlight></codeline>
+<codeline lineno="272"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="273"><highlight class="normal"></highlight></codeline>
+<codeline lineno="274"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Math::Differentiation::Automatic</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h"/>
+  </compounddef>
+</doxygen>

@@ -11,7 +11,7 @@
             <defname>dim</defname>
           </param>
         </templateparamlist>
-        <type>std::function&lt; dual3rd(const Fastor::Tensor&lt; dual3rd, dim, dim &gt; &amp;T) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" kindref="member">dual3rd</ref>(const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" kindref="member">dual3rd</ref>, dim, dim &gt; &amp;T) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::ThirdOrder::tensor_to_scalar_function_type = std::function&lt; dual3rd( const Fastor::Tensor&lt; dual3rd, dim, dim &gt;&amp; T ) &gt;</definition>
         <argsstring></argsstring>
         <name>tensor_to_scalar_function_type</name>
@@ -35,7 +35,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="422" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="422" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="349" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="349" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
@@ -97,14 +97,14 @@
 </parameterlist>
 <simplesect kind="return"><para>tuple of function value, first derivative, second derivative and third derivative of F with respect to T first derivative has shape (dim, dim) second derivative has shape (dim, dim, dim, dim) third derivative has shape (dim, dim, dim, dim, dim, dim)</para>
 </simplesect>
-<simplesect kind="note"><para>The implementation is currently limited to second rank (dim x dim) tensors </para>
+<simplesect kind="note"><para>The implementation is currently limited to second rank (dim x dim) tensors</para>
 </simplesect>
-<parameterlist kind="param"><parameteritem>
+F is evaluated once per unordered triple of the dim^2 directions (165 for dim = 3 instead of 729), since mixed partial derivatives do not depend on the order of differentiation. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>isSymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by exploiting the identity  <formula id="82">$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
+<para>if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built from tensor invariants). This further skips the triples whose transpose is evaluated anyway, exploiting the identity  <formula id="81">$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
  F/\partial T_{ji}\partial T_{lk}\partial T_{nm} $</formula>, which holds at a symmetric T for such functions (note: this mirrors all three index pairs simultaneously; mirroring any pair independently is in general NOT valid) </para>
 </parameterdescription>
 </parameteritem>
@@ -113,13 +113,13 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="448" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="448" bodyend="500"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="377" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="377" bodyend="438"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="413" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="340" column="3"/>
   </compounddef>
 </doxygen>

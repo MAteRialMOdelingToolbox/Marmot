@@ -11,9 +11,9 @@
       </param>
     </templateparamlist>
     <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a08d36c326bb2482fc2c78aef6d657222" prot="public" static="no" mutable="no">
-        <type>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt;</type>
-        <definition>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD&lt; nDim &gt;::tau</definition>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a1b69b92af1a03c2b6eb94361388d0621" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1ae5dec47e042b5cbc9c0cedf7a5d0bb6c" kindref="member">ADScalar</ref>&lt; nDim &gt;, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; ADScalar&lt; nDim &gt;, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD&lt; nDim &gt;::tau</definition>
         <argsstring></argsstring>
         <name>tau</name>
         <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD::tau</qualifiedname>
@@ -24,7 +24,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="65" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="65" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="77" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="77" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93eb875c9edea875ae9d20ef0ca7a9b9" prot="public" static="no" mutable="no">
         <type>double</type>
@@ -39,7 +39,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="66" column="52" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="66" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="78" column="54" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="78" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93a557cb161401b9438740132cf90d8d" prot="public" static="no" mutable="no">
         <type>double</type>
@@ -54,7 +54,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="67" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="67" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="79" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="79" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ada9bfba397748911f0bce64dd27b61fd" prot="public" static="no" mutable="no">
         <type>double *</type>
@@ -69,7 +69,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="68" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="68" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="80" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="80" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="public-func">
@@ -86,7 +86,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="74" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="74" bodyend="80"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="86" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="86" bodyend="92"/>
       </memberdef>
       <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a38da0fd7020bbfe5859a77aa8f340db7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type></type>
@@ -115,7 +115,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="86" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="86" bodyend="92"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="98" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="98" bodyend="104"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -133,14 +133,14 @@
 </parameterlist>
 Contains the stress, the elastic energy density and the dissipation. Both densities are per unit <bold>reference</bold> volume, as in <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">MaterialFiniteStrain::ConstitutiveResponse</ref>. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="64" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="64" bodyend="93"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="76" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="76" bodyend="105"/>
     <listofallmembers>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a1109f1d80d5f03eb4d279d3cebc34212" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>ConstitutiveResponseAD</name></member>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a38da0fd7020bbfe5859a77aa8f340db7" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>ConstitutiveResponseAD</name></member>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93a557cb161401b9438740132cf90d8d" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>dissipation</name></member>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93eb875c9edea875ae9d20ef0ca7a9b9" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>elasticEnergyDensity</name></member>
       <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ada9bfba397748911f0bce64dd27b61fd" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>stateVars</name></member>
-      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a08d36c326bb2482fc2c78aef6d657222" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>tau</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a1b69b92af1a03c2b6eb94361388d0621" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</scope><name>tau</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

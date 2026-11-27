@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_1_1_uninitialized" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd::Uninitialized</compoundname>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_second_order_8h" local="no">MarmotAutomaticDifferentiationVectorModeSecondOrder.h</includes>
+    <briefdescription>
+<para>Tag of the constructor that leaves the gradient and the Hessian uninitialized. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" line="149" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h" bodystart="149" bodyend="149"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

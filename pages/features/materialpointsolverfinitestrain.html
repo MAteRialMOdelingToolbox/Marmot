@@ -53,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automaticdifferentiation.html">Automatic Differentiation</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="solvers.html">Solvers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="materialpointsolverhypoelastic.html">Material Point Solver for Hypo-Elastic Materials</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Material Point Solver for Finite Strain Materials</a><ul>
@@ -235,7 +236,7 @@ It can be found in the <cite>examples/finite-strain-mp-solver/CompressibleNeoHoo
 <span class="linenos"> 5</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
 <span class="linenos"> 6</span><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_EXTENSIONS</span><span class="w"> </span><span class="s">OFF</span><span class="p">)</span>
 <span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="c"># Marmot and its dependencies (Eigen, autodiff, Fastor) are resolved through</span>
+<span class="linenos"> 8</span><span class="c"># Marmot and its dependencies (Eigen, Fastor) are resolved through</span>
 <span class="linenos"> 9</span><span class="c"># find_package. If Marmot is installed into a non-default prefix, point</span>
 <span class="linenos">10</span><span class="c"># CMAKE_PREFIX_PATH at it; an activated conda environment is searched</span>
 <span class="linenos">11</span><span class="c"># automatically (CMake derives search prefixes from PATH).</span>

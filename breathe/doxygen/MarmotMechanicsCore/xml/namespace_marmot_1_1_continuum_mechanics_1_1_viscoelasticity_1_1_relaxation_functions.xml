@@ -37,7 +37,7 @@
 <parametername>T_</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar or autodiff type of the argument. </para>
+<para>Scalar or automatic differentiation type of the argument. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_constant" kind="concept">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::Constant</compoundname>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename S</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename S&gt;
+concept <ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_constant" kindref="compound">Marmot::Math::Differentiation::Automatic::VectorMode::Constant</ref> =  std::is_arithmetic_v&lt; std::remove_cvref_t&lt; S &gt; &gt;</initializer>
+    <conceptparts>
+      <codepart line="77">    <programlisting>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>S<sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">Constant<sp/>=<sp/>std::is_arithmetic_v&lt;<sp/>std::remove_cvref_t&lt;<sp/>S<sp/>&gt;<sp/>&gt;</highlight></codeline>
+    </programlisting>
+</codepart>
+    </conceptparts>
+    <briefdescription>
+<para>An arithmetic constant (e.g. double or int), which carries no derivatives. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type to check; references and cv-qualifiers are ignored </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="77" column="3"/>
+  </compounddef>
+</doxygen>

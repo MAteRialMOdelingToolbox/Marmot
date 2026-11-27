@@ -382,8 +382,8 @@ s_{ij}}{\partial\sigma_{kl}} =
 This function converts input values of different numeric types, including:<itemizedlist>
 <listitem><para>double</para>
 </listitem><listitem><para>std::complex&lt;double&gt;</para>
-</listitem><listitem><para>autodiff::real</para>
-</listitem><listitem><para>autodiff::dual</para>
+</listitem><listitem><para><ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Marmot::Math::Differentiation::Automatic::Taylor&lt; 1 &gt;</ref></para>
+</listitem><listitem><para><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">Marmot::Math::Differentiation::Automatic::HyperDual</ref> numbers of any order</para>
 </listitem><listitem><para>Eigen::Matrix with elements of any type convertible to double</para>
 </listitem></itemizedlist>
 </para>
@@ -411,14 +411,14 @@ This function converts input values of different numeric types, including:<itemi
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_math_8h_1abdce1c5528229e7f274d105f11a404ca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
         <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const autodiff::real &amp;value)</argsstring>
+        <argsstring>(const Marmot::Math::Differentiation::Automatic::Taylor&lt; 1 &gt; &amp;value)</argsstring>
         <name>makeReal</name>
         <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
         <param>
-          <type>const autodiff::real &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Marmot::Math::Differentiation::Automatic::Taylor</ref>&lt; 1 &gt; &amp;</type>
           <declname>value</declname>
         </param>
         <briefdescription>
@@ -429,42 +429,35 @@ This function converts input values of different numeric types, including:<itemi
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="201" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="201" declcolumn="12"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_math_8h_1aa984c158b8e9e6bafa313e5444f170ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
-            <type>typename T</type>
+            <type>typename Scalar</type>
           </param>
           <param>
-            <type>typename G</type>
+            <type>std::enable_if_t&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a31f6537eac02c5087256c716aca242d5" kindref="member">Marmot::Math::Differentiation::Automatic::isHyperDual</ref>&lt; Scalar &gt;||<ref refid="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" kindref="member">Marmot::Math::Differentiation::Automatic::isVectorDual</ref>&lt; Scalar &gt;||<ref refid="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" kindref="member">Marmot::Math::Differentiation::Automatic::isHessianDual</ref>&lt; Scalar &gt;, bool &gt;</type>
+            <defval>true</defval>
           </param>
         </templateparamlist>
         <type>double</type>
         <definition>double Marmot::Math::Tensors::makeReal</definition>
-        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
+        <argsstring>(const Scalar &amp;number)</argsstring>
         <name>makeReal</name>
         <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
         <param>
-          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
+          <type>const Scalar &amp;</type>
           <declname>number</declname>
         </param>
         <briefdescription>
-<para>Converts autodiff::dual numbers to double precision floating point numbers. </para>
+<para>Converts hyper-dual numbers of any order, JacobianDual and HessianDual numbers to double precision floating point numbers. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
-<parametername>T</parametername>
+<parametername>Scalar</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Underlying type of the autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>G</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Gradient type of the autodiff::dual number </para>
+<para>hyper-dual, JacobianDual or HessianDual number type </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -473,17 +466,17 @@ This function converts input values of different numeric types, including:<itemi
 <parametername>number</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Input autodiff::dual number </para>
+<para>Input number </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Converted value as double</para>
+<simplesect kind="return"><para>Primal value of the number </para>
 </simplesect>
-This function converts an autodiff::dual number to a double precision floating point number. It is templated to handle dual numbers with different underlying types. </para>
+</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="213" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="213" bodyend="216"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="214" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="214" bodyend="217"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -541,7 +534,7 @@ This function converts an autodiff::dual number to a double precision floating p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="225" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="225" bodyend="237"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="226" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="226" bodyend="238"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -586,7 +579,7 @@ This function converts an autodiff::dual number to a double precision floating p
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="245" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="245" bodyend="254"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="246" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="246" bodyend="255"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_tensor_8h_1ac02a8d7d36016510aa285200b45377e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
         <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
@@ -2435,7 +2428,7 @@ This function is used to expand a displacement and/or rotation tensor in 2D to a
 <simplesect kind="return"><para>the resulting scalar</para>
 </simplesect>
 This function computes the Einstein summation for two second order tensors A and B: <formula id="63">$ C = A_{ij} B_{ij} $</formula></para>
-<para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is autodiff::dual. </para>
+<para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">Marmot::Math::Differentiation::Automatic::dual</ref>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -2493,15 +2486,13 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>a Fastor tensor of type T</para>
-</simplesect>
-<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+<simplesect kind="return"><para>a Fastor tensor of type T </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="666" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="666" bodyend="676"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="663" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="663" bodyend="666"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a3b61516fecf79c3871cac43aaa6e31ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -2555,13 +2546,13 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterlist>
 <simplesect kind="return"><para>a Fastor tensor of type T</para>
 </simplesect>
-<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+<simplesect kind="note"><para>Not Fastor&apos;s TensorMap::cast, which calls a get_mem_index that TensorMap does not have (Fastor 0.6). </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="689" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="689" bodyend="699"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="678" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="678" bodyend="686"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a8e926f1ee161c26d1a0ea4bd5faa69ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -2619,9 +2610,9 @@ This function computes the Einstein summation for two second order tensors A and
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="710" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="710" bodyend="721"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="697" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="697" bodyend="700"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a85958476c084e4c643ddffcdf9e3fcf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a4f68f70e7bc15b6cc898b2974d52ba3a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename T</type>
@@ -2632,8 +2623,8 @@ This function computes the Einstein summation for two second order tensors A and
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>Fastor::Tensor&lt; autodiff::dual, Rest... &gt;</type>
-        <definition>Fastor::Tensor&lt; autodiff::dual, Rest... &gt; Marmot::Math::Tensors::makeDual</definition>
+        <type>Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">Marmot::Math::Differentiation::Automatic::dual</ref>, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; Marmot::Math::Differentiation::Automatic::dual, Rest... &gt; Marmot::Math::Tensors::makeDual</definition>
         <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</argsstring>
         <name>makeDual</name>
         <qualifiedname>Marmot::Math::Tensors::makeDual</qualifiedname>
@@ -2642,7 +2633,7 @@ This function computes the Einstein summation for two second order tensors A and
           <declname>in</declname>
         </param>
         <briefdescription>
-<para>Construct a Fastor tensor of autodiff::dual from a Fastor tensor of arbitrary type. </para>
+<para>Construct a Fastor tensor of <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">Marmot::Math::Differentiation::Automatic::dual</ref> from a Fastor tensor of arbitrary type. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -2671,15 +2662,15 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>a Fastor tensor of type autodiff::dual </para>
+<simplesect kind="return"><para>a Fastor tensor of type <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">Marmot::Math::Differentiation::Automatic::dual</ref> </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="732" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="732" bodyend="743"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="712" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="712" bodyend="716"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a71e98104955083f1e33ed600b38a7598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a148f08b053b9bf6425d13537fb9be9d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -2692,8 +2683,8 @@ This function computes the Einstein summation for two second order tensors A and
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt;</type>
-        <definition>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt; Marmot::Math::Tensors::makeHigherOrderDual</definition>
+        <type>Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">Marmot::Math::Differentiation::Automatic::HyperDual</ref>&lt; order &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; Marmot::Math::Differentiation::Automatic::HyperDual&lt; order &gt;, Rest... &gt; Marmot::Math::Tensors::makeHigherOrderDual</definition>
         <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
         <name>makeHigherOrderDual</name>
         <qualifiedname>Marmot::Math::Tensors::makeHigherOrderDual</qualifiedname>
@@ -2702,7 +2693,7 @@ This function computes the Einstein summation for two second order tensors A and
           <declname>in</declname>
         </param>
         <briefdescription>
-<para>Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor. </para>
+<para>Construct a Fastor tensor of hyper-dual numbers (HyperDual) from a Fastor double tensor. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -2710,7 +2701,7 @@ This function computes the Einstein summation for two second order tensors A and
 <parametername>order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>order of the HigherOrderDual </para>
+<para>order of the hyper-dual numbers </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -2731,13 +2722,13 @@ This function computes the Einstein summation for two second order tensors A and
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>a Fastor tensor of type autodiff::HigherOrderDual </para>
+<simplesect kind="return"><para>a Fastor tensor of hyper-dual numbers </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="754" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="754" bodyend="766"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="727" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="727" bodyend="731"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a336021d42a2218433f4c54eb7784273b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -2795,7 +2786,7 @@ This function computes the Einstein summation for two second order tensors A and
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="776" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="776" bodyend="786"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="741" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="741" bodyend="744"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad481a326ac492a4923c090a871580cff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -2840,7 +2831,7 @@ It actually computes <formula id="64">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="797" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="797" bodyend="801"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="755" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="755" bodyend="759"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a0b055002ee2240568230db2522117125" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -2885,7 +2876,7 @@ It actually computes <formula id="65">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="812" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="812" bodyend="818"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="770" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="770" bodyend="776"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1aa48706fff547530cdd813bf00af43821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>FastorTensors::Tensor3333d</type>
@@ -2927,7 +2918,7 @@ It actually computes <formula id="65">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="830" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" declline="830" declcolumn="30"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="788" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" declline="788" declcolumn="30"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

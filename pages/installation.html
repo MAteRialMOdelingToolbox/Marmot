@@ -94,17 +94,15 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
-<p>Marmot itself requires the <a class="reference external" href="https://eigen.tuxfamily.org/">Eigen</a> library,
-<a class="reference external" href="https://github.com/autodiff/autodiff">autodiff</a>,
+<p>Marmot itself requires the <a class="reference external" href="https://eigen.tuxfamily.org/">Eigen</a> library
 and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
-<p>These are header-only libraries, so no compilation is required.</p>
-<p>Marmot requires Eigen 5. Two of the dependencies need patches that are not released upstream:
-autodiff 1.1.2 does not compile against Eigen 5 without
-<a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>, and Fastor needs a patch on arm64 (Apple Silicon).
+<p>These are header-only libraries, so no compilation is required.
+Automatic differentiation uses Marmot’s own number types and needs no further library.</p>
+<p>Marmot requires Eigen 5. Fastor needs a patch on arm64 (Apple Silicon) that is not released upstream.
 The conda channel <code class="docutils literal notranslate"><span class="pre">https://repo.prefix.dev/matthiasneuner/edelweiss</span></code>
 (recipes: <a class="reference external" href="https://github.com/matthiasneuner/edelweiss-conda-channel">edelweiss-conda-channel</a>)
-provides all three with these patches; install them from there, together with conda-forge:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen&gt;=5" autodiff=1.1.2 fastor</span>
+provides both, Fastor with this patch; install them from there, together with conda-forge:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge "eigen&gt;=5" fastor</span>
 </pre></div>
 </div>
 <p>Since they are headers only, they can also serve a build with another compiler, e.g., the system compiler of an
@@ -163,7 +161,7 @@ environment:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> export MARMOTROOT=$PWD</span>
 <span class="go"> conda activate</span>
 <span class="go"> mamba install -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge \</span>
-<span class="go">     cmake make compilers "eigen&gt;=5" autodiff=1.1.2 fastor</span>
+<span class="go">     cmake make compilers "eigen&gt;=5" fastor</span>
 </pre></div>
 </div>
 </div>
@@ -222,8 +220,8 @@ Other CMake projects use the installed library through <code class="docutils lit
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">&lt;target&gt;</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Marmot::Marmot</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">Marmot::Marmot</span></code> brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
-CMake packages or, if they were installed as plain headers, through a header search.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Marmot::Marmot</span></code> brings along Eigen and Fastor; Fastor is found either through its CMake package or, if it was
+installed as plain headers, through a header search.</p>
 </section>
 <section id="building-on-windows">
 <h2>Building on Windows<a class="headerlink" href="#building-on-windows" title="Link to this heading"></a></h2>
@@ -248,7 +246,7 @@ marked at the smallest granularity that links (a single member rather than its c
 reached through virtual functions only).
 Everything else is used through the virtual functions of the objects the factories create.
 Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
-since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+since that would include every Eigen, Fastor and automatic differentiation template instantiated in Marmot.
 Code that needs more of Marmot must mark it <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code>, following the rule above.
 To check this without Windows, configure with <code class="docutils literal notranslate"><span class="pre">-DMARMOT_EXPORT_API_ONLY=ON</span></code>,
 which exports only the <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code> symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.

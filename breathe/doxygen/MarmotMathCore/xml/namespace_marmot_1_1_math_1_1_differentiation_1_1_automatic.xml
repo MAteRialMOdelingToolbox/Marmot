@@ -2,11 +2,13 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic" kind="namespace" language="C++">
     <compoundname>Marmot::Math::Differentiation::Automatic</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode">Marmot::Math::Differentiation::Automatic::ScalarMode</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_second_order">Marmot::Math::Differentiation::Automatic::SecondOrder</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_third_order">Marmot::Math::Differentiation::Automatic::ThirdOrder</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode">Marmot::Math::Differentiation::Automatic::VectorMode</innernamespace>
     <sectiondef kind="typedef">
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a245828095f0e5ee2429d48564dd8f705" prot="public" static="no">
-        <type>std::function&lt; dual(const dual &amp;) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref>(const <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref> &amp;) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::scalar_to_scalar_function_type = std::function&lt; dual( const dual&amp; ) &gt;</definition>
         <argsstring></argsstring>
         <name>scalar_to_scalar_function_type</name>
@@ -18,10 +20,10 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="200" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="200" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="149" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="149" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a75be42631adeb3731094f799dde28866" prot="public" static="no">
-        <type>std::function&lt; dual2nd(const dual2nd &amp;) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref>(const <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref> &amp;) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::scalar_to_scalar_function_type_2nd = std::function&lt; dual2nd( const dual2nd&amp; ) &gt;</definition>
         <argsstring></argsstring>
         <name>scalar_to_scalar_function_type_2nd</name>
@@ -33,10 +35,10 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="215" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="215" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="164" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="164" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a7a447d8635245248d44e3e24d80b7491" prot="public" static="no">
-        <type>std::function&lt; VectorXdual(const VectorXdual &amp;X) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref>(const <ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref> &amp;X) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::vector_to_vector_function_type_dual = std::function&lt; VectorXdual( const VectorXdual&amp; X ) &gt;</definition>
         <argsstring></argsstring>
         <name>vector_to_vector_function_type_dual</name>
@@ -48,10 +50,43 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="232" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="232" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="181" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="181" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a4431b8a06ce97beb2e2f930cd86f4683" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>n</declname>
+            <defname>n</defname>
+          </param>
+        </templateparamlist>
+        <type>std::function&lt; Eigen::Vector&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref>&lt; n &gt;, n &gt;( const Eigen::Vector&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref>&lt; n &gt;, n &gt; &amp;X) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::fixed_size_vector_to_vector_function_type = std::function&lt; Eigen::Vector&lt; JacobianDual&lt; n &gt;, n &gt;(
+   const Eigen::Vector&lt; JacobianDual&lt; n &gt;, n &gt;&amp; X ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>fixed_size_vector_to_vector_function_type</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::fixed_size_vector_to_vector_function_type</qualifiedname>
+        <briefdescription>
+<para>A type alias for a function mapping a fixed-size vector to a vector of the same size, with <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref> numbers (one direction per vector component). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the vectors </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="201" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="201" bodyend="-1"/>
       </memberdef>
       <memberdef kind="typedef" id="_marmot_automatic_differentiation_8h_1a4c15d8657165879acd21f35a5461cf39" prot="public" static="no">
-        <type>std::function&lt; VectorXdual2nd(const VectorXdual2nd &amp;X) &gt;</type>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" kindref="member">VectorXdual2nd</ref>(const <ref refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" kindref="member">VectorXdual2nd</ref> &amp;X) &gt;</type>
         <definition>using Marmot::Math::Differentiation::Automatic::vector_to_vector_function_type_dual2nd = std::function&lt; VectorXdual2nd( const VectorXdual2nd&amp; X ) &gt;</definition>
         <argsstring></argsstring>
         <name>vector_to_vector_function_type_dual2nd</name>
@@ -63,9 +98,227 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="248" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="248" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="239" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="239" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" prot="public" static="no">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ada8aafc4bdd73e372276dcb99e730594" kindref="member">ScalarMode::HyperDual</ref>&lt; order &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::HyperDual = ScalarMode::HyperDual&lt; order &gt;</definition>
+        <argsstring></argsstring>
+        <name>HyperDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::HyperDual</qualifiedname>
+        <briefdescription>
+<para>Hyper-dual number of the given order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of nesting levels, i.e., the highest derivative order it carries</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+A hyper-dual number of order N holds 2^N coefficients: the primal value, the first derivatives along each of the N nesting levels and all mixed derivatives. Seeding different variables on different levels yields mixed higher-order derivatives in one evaluation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="71" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" prot="public" static="no">
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; 1 &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::dual = HyperDual&lt; 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>dual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::dual</qualifiedname>
+        <briefdescription>
+<para>First order dual number. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="74" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" prot="public" static="no">
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; 2 &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::dual2nd = HyperDual&lt; 2 &gt;</definition>
+        <argsstring></argsstring>
+        <name>dual2nd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::dual2nd</qualifiedname>
+        <briefdescription>
+<para>Second order hyper-dual number. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="77" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1af975590f53a2388f886578dbf75ee737" prot="public" static="no">
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; 3 &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::dual3rd = HyperDual&lt; 3 &gt;</definition>
+        <argsstring></argsstring>
+        <name>dual3rd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::dual3rd</qualifiedname>
+        <briefdescription>
+<para>Third order hyper-dual number. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="80" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_taylor" kindref="compound">ScalarMode::Taylor</ref>&lt; order &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::Taylor = ScalarMode::Taylor&lt; order &gt;</definition>
+        <argsstring></argsstring>
+        <name>Taylor</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::Taylor</qualifiedname>
+        <briefdescription>
+<para>Univariate truncated <ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor</ref> number carrying the derivatives 0..order of one variable. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>highest derivative order </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="86" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref>, Eigen::Dynamic, 1 &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::VectorXdual = Eigen::Matrix&lt; dual, Eigen::Dynamic, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorXdual</qualifiedname>
+        <briefdescription>
+<para>Dynamic-size Eigen column vector of first order dual numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="89" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a53f5b1edc3b819538eb6eefa7885f312" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref>, Eigen::Dynamic, Eigen::Dynamic &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::MatrixXdual = Eigen::Matrix&lt; dual, Eigen::Dynamic, Eigen::Dynamic &gt;</definition>
+        <argsstring></argsstring>
+        <name>MatrixXdual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::MatrixXdual</qualifiedname>
+        <briefdescription>
+<para>Dynamic-size Eigen matrix of first order dual numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="92" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref>, Eigen::Dynamic, 1 &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::VectorXdual2nd = Eigen::Matrix&lt; dual2nd, Eigen::Dynamic, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXdual2nd</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorXdual2nd</qualifiedname>
+        <briefdescription>
+<para>Dynamic-size Eigen column vector of second order hyper-dual numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="95" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="95" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>nDirections</declname>
+            <defname>nDirections</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">VectorMode::Dual</ref>&lt; nDirections &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::JacobianDual = VectorMode::Dual&lt; nDirections &gt;</definition>
+        <argsstring></argsstring>
+        <name>JacobianDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::JacobianDual</qualifiedname>
+        <briefdescription>
+<para>Number type of the first-derivative drivers (df_dT, dF_dT, dF_dX&lt; n &gt;). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDirections</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of independent variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+A <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">VectorMode::Dual&lt; nDirections &gt;</ref>, which carries all partial derivatives after a single evaluation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="151" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_types_8h_1aa8b4e6c72434e65090ade67ed1ff2616" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>nDirections</declname>
+            <defname>nDirections</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kindref="compound">VectorMode::Dual2nd</ref>&lt; nDirections &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::HessianDual = VectorMode::Dual2nd&lt; nDirections &gt;</definition>
+        <argsstring></argsstring>
+        <name>HessianDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::HessianDual</qualifiedname>
+        <briefdescription>
+<para>Number type of the second-derivative driver d2f_dT2. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDirections</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of independent variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+A <ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kindref="compound">VectorMode::Dual2nd&lt; nDirections &gt;</ref>, which carries the gradient and the Hessian after a single evaluation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="159" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1a54e13262a586159d588f8839e984bf97" prot="public" static="no">
         <templateparamlist>
           <param>
             <type>size_t...</type>
@@ -73,13 +326,14 @@
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>std::function&lt; dual(const Fastor::Tensor&lt; dual, Rest... &gt; &amp;T) &gt;</type>
-        <definition>using Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type = std::function&lt; dual( const Fastor::Tensor&lt; dual, Rest... &gt;&amp; T ) &gt;</definition>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref>&lt;(Rest *...) &gt;( const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref>&lt;(Rest *...) &gt;, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type = std::function&lt; JacobianDual&lt; ( Rest * ... ) &gt;(
+   const Fastor::Tensor&lt; JacobianDual&lt; ( Rest * ... ) &gt;, Rest... &gt;&amp; T ) &gt;</definition>
         <argsstring></argsstring>
         <name>tensor_to_scalar_function_type</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type</qualifiedname>
         <briefdescription>
-<para>Alias for a function mapping a tensor to a scalar with dual numbers. </para>
+<para>Alias for a function mapping a tensor to a scalar with <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref> numbers, one direction per tensor component. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -95,9 +349,9 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="75" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="75" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="74" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="74" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" prot="public" static="no">
+      <memberdef kind="typedef" id="_marmot_automatic_differentiation_for_fastor_8h_1af49c5de3a1ac470dc9c7eb242d41d96f" prot="public" static="no">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -110,9 +364,9 @@
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>std::function&lt; HigherOrderDual&lt; order, double &gt;( const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T) &gt;</type>
-        <definition>using Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type_arbitrary_dual_order = std::function&lt; HigherOrderDual&lt; order, double &gt;(
-   const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt;&amp; T ) &gt;</definition>
+        <type>std::function&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;( const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, Rest... &gt; &amp;T) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type_arbitrary_dual_order = std::function&lt; HyperDual&lt; order &gt;(
+   const Fastor::Tensor&lt; HyperDual&lt; order &gt;, Rest... &gt;&amp; T ) &gt;</definition>
         <argsstring></argsstring>
         <name>tensor_to_scalar_function_type_arbitrary_dual_order</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::tensor_to_scalar_function_type_arbitrary_dual_order</qualifiedname>
@@ -141,18 +395,113 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="140" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="140" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="117" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_automatic_differentiation_types_8h_1a31f6537eac02c5087256c716aca242d5" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Math::Differentiation::Automatic::isHyperDual</definition>
+        <argsstring></argsstring>
+        <name>isHyperDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::isHyperDual</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_scalar_mode_8h_1ae26a2d3da48d79e938591d1198be9d98" kindref="member">ScalarMode::isDual</ref>&lt; Scalar &gt;</initializer>
+        <briefdescription>
+<para>True if Scalar is a hyper-dual number of any order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="101" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="101" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_automatic_differentiation_types_8h_1af377268d4eda9f24b41a30e1cf584a15" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Math::Differentiation::Automatic::isHessianDual</definition>
+        <argsstring></argsstring>
+        <name>isHessianDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::isHessianDual</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_vector_mode_second_order_8h_1ad07827f6271cce6aec3e58feb8198a03" kindref="member">VectorMode::isDual2nd</ref>&lt; Scalar &gt;</initializer>
+        <briefdescription>
+<para>True if Scalar is a second-order vector-mode number (<ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd" kindref="compound">VectorMode::Dual2nd</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="165" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="165" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_automatic_differentiation_types_8h_1a04a8303cd67259921a12069b3d996fea" prot="public" static="no" constexpr="yes" mutable="no">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool Marmot::Math::Differentiation::Automatic::isVectorDual</definition>
+        <argsstring></argsstring>
+        <name>isVectorDual</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::isVectorDual</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1acf63c733897392ed6d8083e2123157f7" kindref="member">VectorMode::isDual</ref>&lt; Scalar &gt;</initializer>
+        <briefdescription>
+<para>True if Scalar is a first-order vector-mode number (<ref refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual" kindref="compound">VectorMode::Dual</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type to check </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="171" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="171" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <sectiondef kind="func">
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a2afdde05e6788d8b8cca4803bb8706d6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>dual2nd</type>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1aef03392987e4b70229336525201020b7" kindref="member">dual2nd</ref></type>
         <definition>dual2nd Marmot::Math::Differentiation::Automatic::shiftTo2ndOrderDual</definition>
         <argsstring>(const dual &amp;x)</argsstring>
         <name>shiftTo2ndOrderDual</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::shiftTo2ndOrderDual</qualifiedname>
         <param>
-          <type>const dual &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref> &amp;</type>
           <declname>x</declname>
         </param>
         <briefdescription>
@@ -174,16 +523,16 @@ This function takes a dual number as input and returns a 2nd order hyper-dual nu
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="43" column="11" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="43" declcolumn="11"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="40" column="11" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="40" declcolumn="11"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ab58699cec7336eaad3c324323f0e20f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>VectorXdual2nd</type>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a0b5abae2485655ca91be94b8dc1619af" kindref="member">VectorXdual2nd</ref></type>
         <definition>VectorXdual2nd Marmot::Math::Differentiation::Automatic::shiftTo2ndOrderDual</definition>
         <argsstring>(const VectorXdual &amp;X)</argsstring>
         <name>shiftTo2ndOrderDual</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::shiftTo2ndOrderDual</qualifiedname>
         <param>
-          <type>const VectorXdual &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref> &amp;</type>
           <declname>X</declname>
         </param>
         <briefdescription>
@@ -205,109 +554,9 @@ This function takes a vector of dual numbers as input and returns a vector of 2n
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="53" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="53" declcolumn="18"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="50" column="18" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="50" declcolumn="18"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1af462ba5c9fdc269359785fc5869d6bb1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>order</declname>
-            <defname>order</defname>
-          </param>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>typename G</type>
-          </param>
-        </templateparamlist>
-        <type>const auto &amp;</type>
-        <definition>const auto &amp; Marmot::Math::Differentiation::Automatic::valnode</definition>
-        <argsstring>(const Dual&lt; T, G &gt; &amp;dual)</argsstring>
-        <name>valnode</name>
-        <qualifiedname>Marmot::Math::Differentiation::Automatic::valnode</qualifiedname>
-        <param>
-          <type>const Dual&lt; T, G &gt; &amp;</type>
-          <declname>dual</declname>
-        </param>
-        <briefdescription>
-<para>Access the value node of a dual number at a specific order. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>order</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>The order of the dual number to access </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>The type of the value stored in the dual number </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>G</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>The type of the gradient stored in the dual number </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>dual</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>The dual number to access </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>A reference to the value node at the specified order</para>
-</simplesect>
-This function recursively accesses the value node of a dual number at a specific order. It uses template metaprogramming to ensure that the order is valid for the given dual number type. If the order is 0, it returns the value of the dual number. If the order is greater than 0, it recursively calls itself on the value of the dual number until it reaches the desired order. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="68" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="68" bodyend="78"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a992c5e4cd9c76d119e61f35f77c77aab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>size_t</type>
-            <declname>order</declname>
-            <defname>order</defname>
-          </param>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>typename G</type>
-          </param>
-        </templateparamlist>
-        <type>auto &amp;</type>
-        <definition>auto &amp; Marmot::Math::Differentiation::Automatic::valnode</definition>
-        <argsstring>(Dual&lt; T, G &gt; &amp;dual)</argsstring>
-        <name>valnode</name>
-        <qualifiedname>Marmot::Math::Differentiation::Automatic::valnode</qualifiedname>
-        <param>
-          <type>Dual&lt; T, G &gt; &amp;</type>
-          <declname>dual</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="81" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="81" bodyend="91"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a567abd7502e7127eb05c20853575a9a4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a82293a6c46a97d187ed8ab82ad300b69" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -315,13 +564,13 @@ This function recursively accesses the value node of a dual number at a specific
             <defname>order</defname>
           </param>
         </templateparamlist>
-        <type>autodiff::HigherOrderDual&lt; order+1, double &gt;</type>
-        <definition>autodiff::HigherOrderDual&lt; order+1, double &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
-        <argsstring>(const autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order+1 &gt;</type>
+        <definition>HyperDual&lt; order+1 &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
+        <argsstring>(const HyperDual&lt; order &gt; &amp;in)</argsstring>
         <name>increaseDualOrderWithShift</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</qualifiedname>
         <param>
-          <type>const autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt; &amp;</type>
           <declname>in</declname>
         </param>
         <briefdescription>
@@ -352,9 +601,9 @@ This function takes a dual number of a given order and creates a new dual number
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="102" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="102" bodyend="117"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="61" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="61" bodyend="72"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1aff7f84af3045ad718d493f56412b017e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a5647267270c765fff3a712ec22e8d8d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -362,13 +611,13 @@ This function takes a dual number of a given order and creates a new dual number
             <defname>order</defname>
           </param>
         </templateparamlist>
-        <type>autodiff::HigherOrderDual&lt; order - 1, double &gt;</type>
-        <definition>autodiff::HigherOrderDual&lt; order - 1, double &gt; Marmot::Math::Differentiation::Automatic::decreaseDualOrder</definition>
-        <argsstring>(autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order - 1 &gt;</type>
+        <definition>HyperDual&lt; order - 1 &gt; Marmot::Math::Differentiation::Automatic::decreaseDualOrder</definition>
+        <argsstring>(HyperDual&lt; order &gt; &amp;in)</argsstring>
         <name>decreaseDualOrder</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::decreaseDualOrder</qualifiedname>
         <param>
-          <type>autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt; &amp;</type>
           <declname>in</declname>
         </param>
         <briefdescription>
@@ -399,9 +648,9 @@ This function takes a dual number of a given order and creates a new dual number
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="129" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="129" bodyend="143"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="84" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="84" bodyend="95"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a2e3729ee205dd0513ea54262f60d67a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a42cdf83ed2e8bfc5d58f60a9c9c208db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -409,13 +658,13 @@ This function takes a dual number of a given order and creates a new dual number
             <defname>order</defname>
           </param>
         </templateparamlist>
-        <type>autodiff::HigherOrderDual&lt; order - 1, double &gt;</type>
-        <definition>autodiff::HigherOrderDual&lt; order - 1, double &gt; Marmot::Math::Differentiation::Automatic::decreaseDualOrderWithShift</definition>
-        <argsstring>(autodiff::HigherOrderDual&lt; order, double &gt; &amp;in)</argsstring>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order - 1 &gt;</type>
+        <definition>HyperDual&lt; order - 1 &gt; Marmot::Math::Differentiation::Automatic::decreaseDualOrderWithShift</definition>
+        <argsstring>(HyperDual&lt; order &gt; &amp;in)</argsstring>
         <name>decreaseDualOrderWithShift</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::decreaseDualOrderWithShift</qualifiedname>
         <param>
-          <type>autodiff::HigherOrderDual&lt; order, double &gt; &amp;</type>
+          <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt; &amp;</type>
           <declname>in</declname>
         </param>
         <briefdescription>
@@ -446,9 +695,9 @@ This function takes a dual number of a given order and creates a new dual number
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="155" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="155" bodyend="170"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="107" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="107" bodyend="119"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a0a75c7cb201cabe9298c15dc385641fa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1aac6cd1f061767b2d3f374d817d836520" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -456,13 +705,13 @@ This function takes a dual number of a given order and creates a new dual number
             <defname>order</defname>
           </param>
         </templateparamlist>
-        <type>Vector&lt; HigherOrderDual&lt; order+1, double &gt;, -1 &gt;</type>
-        <definition>Vector&lt; HigherOrderDual&lt; order+1, double &gt;, -1 &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
-        <argsstring>(const Vector&lt; HigherOrderDual&lt; order, double &gt;, -1 &gt; &amp;in)</argsstring>
+        <type>Eigen::Vector&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order+1 &gt;, -1 &gt;</type>
+        <definition>Eigen::Vector&lt; HyperDual&lt; order+1 &gt;, -1 &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
+        <argsstring>(const Eigen::Vector&lt; HyperDual&lt; order &gt;, -1 &gt; &amp;in)</argsstring>
         <name>increaseDualOrderWithShift</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</qualifiedname>
         <param>
-          <type>const Vector&lt; HigherOrderDual&lt; order, double &gt;, -1 &gt; &amp;</type>
+          <type>const Eigen::Vector&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, -1 &gt; &amp;</type>
           <declname>in</declname>
         </param>
         <briefdescription>
@@ -493,7 +742,7 @@ This function takes a vector of dual numbers of a given order and creates a new 
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="181" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="181" bodyend="195"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="130" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="130" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ad7b4e93605af562c16573101c580fcc1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -536,10 +785,10 @@ This function takes a scalar-to-scalar function and a point as input, and return
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="210" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="210" declcolumn="10"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="159" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="159" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a629ecc6fc9564cc5c84dee59f52c0dca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>dual</type>
+        <type><ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref></type>
         <definition>dual Marmot::Math::Differentiation::Automatic::df_dx</definition>
         <argsstring>(const scalar_to_scalar_function_type_2nd &amp;f, const dual &amp;x)</argsstring>
         <name>df_dx</name>
@@ -549,7 +798,7 @@ This function takes a scalar-to-scalar function and a point as input, and return
           <declname>f</declname>
         </param>
         <param>
-          <type>const dual &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a37ea4e88d613408c6747a75c74ac2a87" kindref="member">dual</ref> &amp;</type>
           <declname>x</declname>
         </param>
         <briefdescription>
@@ -579,12 +828,12 @@ This function takes a 2nd order dual-valued scalar-to-scalar function and a poin
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="227" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="227" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="176" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="176" declcolumn="8"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ae4311162cf38b03781d4c6d29aa0cb95" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>std::pair&lt; VectorXd, MatrixXd &gt;</type>
-        <definition>std::pair&lt; VectorXd, MatrixXd &gt; Marmot::Math::Differentiation::Automatic::dF_dX</definition>
-        <argsstring>(const vector_to_vector_function_type_dual &amp;F, const VectorXd &amp;X)</argsstring>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1aab9997ae63673c16718dc35b28018d7f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; Eigen::VectorXd, Eigen::MatrixXd &gt;</type>
+        <definition>std::pair&lt; Eigen::VectorXd, Eigen::MatrixXd &gt; Marmot::Math::Differentiation::Automatic::dF_dX</definition>
+        <argsstring>(const vector_to_vector_function_type_dual &amp;F, const Eigen::VectorXd &amp;X)</argsstring>
         <name>dF_dX</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::dF_dX</qualifiedname>
         <param>
@@ -592,7 +841,7 @@ This function takes a 2nd order dual-valued scalar-to-scalar function and a poin
           <declname>F</declname>
         </param>
         <param>
-          <type>const VectorXd &amp;</type>
+          <type>const Eigen::VectorXd &amp;</type>
           <declname>X</declname>
         </param>
         <briefdescription>
@@ -622,10 +871,69 @@ This function takes a vector-to-vector function and a point as input, and return
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="243" column="13" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="243" declcolumn="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="192" column="13" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="192" declcolumn="13"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1a60d3e6f0765c7c5b667d971c5c1a3644" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>n</declname>
+            <defname>n</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Eigen::Vector&lt; double, n &gt;, Eigen::Matrix&lt; double, n, n &gt; &gt;</type>
+        <definition>std::pair&lt; Eigen::Vector&lt; double, n &gt;, Eigen::Matrix&lt; double, n, n &gt; &gt; Marmot::Math::Differentiation::Automatic::dF_dX</definition>
+        <argsstring>(const fixed_size_vector_to_vector_function_type&lt; n &gt; &amp;F, const Eigen::Vector&lt; double, n &gt; &amp;X)</argsstring>
+        <name>dF_dX</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::dF_dX</qualifiedname>
+        <param>
+          <type>const fixed_size_vector_to_vector_function_type&lt; n &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector&lt; double, n &gt; &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+<para>Computes the Jacobian of a fixed-size vector-to-vector function using automatic differentiation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the vectors; not deduced from a lambda, so it must be given explicitly, e.g. dF_dX&lt; 6 &gt;( ... ) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector-to-vector function to differentiate </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which to evaluate the Jacobian </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the function value and the Jacobian matrix at the given point</para>
+</simplesect>
+F is evaluated once. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="213" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" bodystart="213" bodyend="234"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_automatic_differentiation_8h_1ad7e747ac5d288bb95b5340d86d9458e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>std::pair&lt; VectorXdual, MatrixXdual &gt;</type>
+        <type>std::pair&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref>, <ref refid="_marmot_automatic_differentiation_types_8h_1a53f5b1edc3b819538eb6eefa7885f312" kindref="member">MatrixXdual</ref> &gt;</type>
         <definition>std::pair&lt; VectorXdual, MatrixXdual &gt; Marmot::Math::Differentiation::Automatic::dF_dX_2nd</definition>
         <argsstring>(const vector_to_vector_function_type_dual2nd &amp;F, const VectorXdual &amp;X)</argsstring>
         <name>dF_dX_2nd</name>
@@ -635,7 +943,7 @@ This function takes a vector-to-vector function and a point as input, and return
           <declname>F</declname>
         </param>
         <param>
-          <type>const VectorXdual &amp;</type>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a2c92d8528e81203e9912d57146069baa" kindref="member">VectorXdual</ref> &amp;</type>
           <declname>X</declname>
         </param>
         <briefdescription>
@@ -661,13 +969,540 @@ This function takes a vector-to-vector function and a point as input, and return
 </parameterlist>
 <simplesect kind="return"><para>A pair containing the function value and the Jacobian matrix at the given point</para>
 </simplesect>
-This function takes a 2nd order dual-valued vector-to-vector function and a point as input, and returns a dual-valued pair containing the function value and the Jacobian matrix at that point. Note that the function is 2nd order dual-valued, but the input is only 1st order dual-valued. </para>
+This function takes a 2nd order dual-valued vector-to-vector function and a point as input, and returns a dual-valued pair containing the function value and the Jacobian matrix at that point. Note that the function is 2nd order dual-valued, but the input is only 1st order dual-valued: its derivative is that with respect to an outer variable t, and the returned F and dF/dX carry their derivatives with respect to t. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="260" column="13" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="260" declcolumn="13"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="252" column="13" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" declline="252" declcolumn="13"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a775b2a053283c968c1d8782c31296aad" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>level</declname>
+            <defname>level</defname>
+          </param>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+          <param>
+            <type>typename Value</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::seed</definition>
+        <argsstring>(Scalar &amp;x, Value &amp;&amp;value)</argsstring>
+        <name>seed</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::seed</qualifiedname>
+        <param>
+          <type>Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Value &amp;&amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets the derivative of a hyper-dual number along one nesting level. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>nesting level (1 = outermost) to seed </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>type of the seed value </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number to seed </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>seed value, usually 1.0 to make x the independent variable of this level, or 0.0 to unseed it</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Seeding overwrites the whole derivative node of the level, i.e., also the mixed derivatives it contains. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="113" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="113" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1aafac0e00cb28121c38afbbe54595b138" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>level</declname>
+            <defname>level</defname>
+          </param>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::derivative</definition>
+        <argsstring>(const Scalar &amp;x)</argsstring>
+        <name>derivative</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::derivative</qualifiedname>
+        <param>
+          <type>const Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Reads the mixed derivative of a hyper-dual number along the nesting levels 1..level. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>level</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>highest nesting level of the mixed derivative </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>derivative of x along the levels 1, ..., level </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="129" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="129" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1ac54c0fd1517d36fbda416cdf441fc6ea" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::value</definition>
+        <argsstring>(const Scalar &amp;x)</argsstring>
+        <name>value</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::value</qualifiedname>
+        <param>
+          <type>const Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Reads the primal value of a hyper-dual or vector-mode number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number type or <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>primal (zeroth order) value of x </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="174" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="174" bodyend="180" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" declline="143" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a5486499b876a71fea5e83fc7a3025796" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Math::Differentiation::Automatic::seedDirection</definition>
+        <argsstring>(Scalar &amp;x, size_t direction)</argsstring>
+        <name>seedDirection</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::seedDirection</qualifiedname>
+        <param>
+          <type>Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>direction</declname>
+        </param>
+        <briefdescription>
+<para>Makes a vector-mode number the independent variable <computeroutput>direction</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector-mode number type (isVectorDual or isHessianDual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number to seed; its derivatives must be zero </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>direction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of the independent variable, less than the number of directions of Scalar </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="188" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="188" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a55bb4c695fc82b6d20e229ccdb88d256" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::partialDerivative</definition>
+        <argsstring>(const Scalar &amp;x, size_t i)</argsstring>
+        <name>partialDerivative</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::partialDerivative</qualifiedname>
+        <param>
+          <type>const Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Reads a partial derivative of a vector-mode number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector-mode number type (isVectorDual or isHessianDual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of the independent variable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative of x with respect to variable i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="203" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="203" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1ac39acc1041b386cf2ed62a632df34240" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Scalar</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::secondPartialDerivative</definition>
+        <argsstring>(const Scalar &amp;x, size_t i, size_t j)</argsstring>
+        <name>secondPartialDerivative</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::secondPartialDerivative</qualifiedname>
+        <param>
+          <type>const Scalar &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+<para>Reads a second partial derivative of a second-order vector-mode number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second-order vector-mode number type (isHessianDual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of the first independent variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>j</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>index of the second independent variable </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>second partial derivative of x with respect to variables i and j </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="216" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="216" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a58d6ce0546c9924bfc7c5f2af54afa36" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>double *</type>
+        <definition>double * Marmot::Math::Differentiation::Automatic::coefficients</definition>
+        <argsstring>(HyperDual&lt; order &gt; &amp;x)</argsstring>
+        <name>coefficients</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::coefficients</qualifiedname>
+        <param>
+          <type><ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt; &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Contiguous coefficient storage of a hyper-dual number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the hyper-dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to the 2^order coefficients of x</para>
+</simplesect>
+The coefficients are stored level by level: the first half holds the hyper-dual number of order - 1 that is the value node of the outermost level, the second half the one that is its derivative node. Hence the primal value is at index 0 and the first derivative along level k at index 2^(order - k). This layout is what the order-shifting functions in <ref refid="_marmot_automatic_differentiation_8h_source" kindref="compound">MarmotAutomaticDifferentiation.h</ref> rely on. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="232" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="232" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a33c85223bb0f81323572db4da22e5cf5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>const double *</type>
+        <definition>const double * Marmot::Math::Differentiation::Automatic::coefficients</definition>
+        <argsstring>(const HyperDual&lt; order &gt; &amp;x)</argsstring>
+        <name>coefficients</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::coefficients</qualifiedname>
+        <param>
+          <type>const <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt; &amp;</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Contiguous coefficient storage of a hyper-dual number (read-only). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the hyper-dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>hyper-dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>pointer to the 2^order coefficients of x </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="246" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="246" bodyend="249"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_types_8h_1a9b190fa42f4dc3d8006094c9856b0206" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>typename Function</type>
+          </param>
+        </templateparamlist>
+        <type>std::array&lt; double, order+1 &gt;</type>
+        <definition>std::array&lt; double, order+1 &gt; Marmot::Math::Differentiation::Automatic::taylorDerivatives</definition>
+        <argsstring>(const Function &amp;f, double x)</argsstring>
+        <name>taylorDerivatives</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::taylorDerivatives</qualifiedname>
+        <param>
+          <type>const Function &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Computes the derivatives 0..order of a univariate function with Taylor-mode automatic differentiation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>highest derivative order </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Function</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>callable mapping a <ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor&lt;order&gt;</ref> to a <ref refid="_marmot_automatic_differentiation_types_8h_1ada1f2c560f90ae6b6a8c43418644e183" kindref="member">Taylor&lt;order&gt;</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function to differentiate </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>point at which the derivatives are evaluated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the value and the derivatives of f at x; entry k holds the k-th derivative </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" line="259" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationTypes.h" bodystart="259" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1ae7f309cc5d813ba23957506a8cda04dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -680,13 +1515,13 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt;</type>
-        <definition>Fastor::Tensor&lt; HigherOrderDual&lt; order+1, double &gt;, Rest... &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
-        <argsstring>(const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;in)</argsstring>
+        <type>Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order+1 &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; HyperDual&lt; order+1 &gt;, Rest... &gt; Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</definition>
+        <argsstring>(const Fastor::Tensor&lt; HyperDual&lt; order &gt;, Rest... &gt; &amp;in)</argsstring>
         <name>increaseDualOrderWithShift</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::increaseDualOrderWithShift</qualifiedname>
         <param>
-          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <type>const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, Rest... &gt; &amp;</type>
           <declname>in</declname>
         </param>
         <briefdescription>
@@ -725,9 +1560,9 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="54" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="54" bodyend="68"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="52" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="52" bodyend="66"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a8b2fab431420b39ab14c7c49f73c454b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t...</type>
@@ -737,11 +1572,11 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
         </templateparamlist>
         <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
         <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::Math::Differentiation::Automatic::df_dT</definition>
-        <argsstring>(const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T, bool isSymmetric=false)</argsstring>
+        <argsstring>(const std::type_identity_t&lt; tensor_to_scalar_function_type&lt; Rest... &gt; &gt; &amp;f, const Fastor::Tensor&lt; double, Rest... &gt; &amp;T, bool isSymmetric=false)</argsstring>
         <name>df_dT</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::df_dT</qualifiedname>
         <param>
-          <type>const tensor_to_scalar_function_type&lt; Rest... &gt; &amp;</type>
+          <type>const std::type_identity_t&lt; tensor_to_scalar_function_type&lt; Rest... &gt; &gt; &amp;</type>
           <declname>f</declname>
         </param>
         <param>
@@ -787,19 +1622,19 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
 <parametername>isSymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if true and T is a square rank-2 tensor, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are seeded, and the result is mirrored to the lower triangle, instead of all dim^2 entries <ndash/> a ~1.5x reduction in function evaluations for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim grows, so this never fully halves the evaluation count. Ignored for tensors that are not square rank-2. </para>
+<para>has no effect: all partial derivatives are computed in one evaluation of f; kept for source compatibility </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>gradient of f with respect to T, same shape as T </para>
+<simplesect kind="return"><para>gradient of f with respect to T, same shape as T</para>
 </simplesect>
-</para>
+The dimensions are deduced from T only: f is a non-deduced parameter, since MSVC 19.44 crashes (C1001) when it deduces Rest through the fold expression in the number type of f. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="90" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="90" bodyend="132"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="89" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="89" bodyend="109"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a025a66f7df066813a5f0400eb5e371c7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>size_t</type>
@@ -812,9 +1647,9 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
             <defname>Rest</defname>
           </param>
         </templateparamlist>
-        <type>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt;</type>
-        <definition>std::pair&lt; HigherOrderDual&lt; order, double &gt;, Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &gt; Marmot::Math::Differentiation::Automatic::df_dT</definition>
-        <argsstring>(const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;T, bool isSymmetric=false)</argsstring>
+        <type>std::pair&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, Rest... &gt; &gt;</type>
+        <definition>std::pair&lt; HyperDual&lt; order &gt;, Fastor::Tensor&lt; HyperDual&lt; order &gt;, Rest... &gt; &gt; Marmot::Math::Differentiation::Automatic::df_dT</definition>
+        <argsstring>(const tensor_to_scalar_function_type_arbitrary_dual_order&lt; order+1, Rest... &gt; &amp;f, const Fastor::Tensor&lt; HyperDual&lt; order &gt;, Rest... &gt; &amp;T, bool isSymmetric=false)</argsstring>
         <name>df_dT</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::df_dT</qualifiedname>
         <param>
@@ -822,7 +1657,7 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
           <declname>f</declname>
         </param>
         <param>
-          <type>const Fastor::Tensor&lt; HigherOrderDual&lt; order, double &gt;, Rest... &gt; &amp;</type>
+          <type>const Fastor::Tensor&lt; <ref refid="_marmot_automatic_differentiation_types_8h_1a552c578729e90e5fbe101dbd0b13c175" kindref="member">HyperDual</ref>&lt; order &gt;, Rest... &gt; &amp;</type>
           <declname>T</declname>
         </param>
         <param>
@@ -882,10 +1717,13 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="157" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="157" bodyend="206"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="134" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="134" bodyend="183"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_automatic_differentiation_for_fastor_8h_1a19fb5ea9d5a57ec670359c225ddc8890" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
+          <param>
+            <type>typename scalar</type>
+          </param>
           <param>
             <type>size_t...</type>
             <declname>RestF</declname>
@@ -899,11 +1737,11 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
         </templateparamlist>
         <type>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt;</type>
         <definition>std::pair&lt; Fastor::Tensor&lt; double, RestF... &gt;, Fastor::Tensor&lt; double, RestF..., RestT... &gt; &gt; Marmot::Math::Differentiation::Automatic::dF_dT</definition>
-        <argsstring>(std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T, bool isSymmetric=false)</argsstring>
+        <argsstring>(std::function&lt; Fastor::Tensor&lt; scalar, RestF... &gt;(const Fastor::Tensor&lt; scalar, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T, bool isSymmetric=false)</argsstring>
         <name>dF_dT</name>
         <qualifiedname>Marmot::Math::Differentiation::Automatic::dF_dT</qualifiedname>
         <param>
-          <type>std::function&lt; Fastor::Tensor&lt; dual, RestF... &gt;(const Fastor::Tensor&lt; dual, RestT... &gt; &amp;) &gt; &amp;</type>
+          <type>std::function&lt; Fastor::Tensor&lt; scalar, RestF... &gt;(const Fastor::Tensor&lt; scalar, RestT... &gt; &amp;) &gt; &amp;</type>
           <declname>F</declname>
         </param>
         <param>
@@ -957,17 +1795,17 @@ This function takes a 2nd order dual-valued vector-to-vector function and a poin
 <parametername>isSymmetric</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>if true, T is a square rank-2 tensor and F&apos;s output is also a square rank-2 tensor of the same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by only seeding the upper triangle of T and, for each evaluation, filling both the direct entry and its transpose-mirrored counterpart <formula id="43">$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} $</formula>. Ignored otherwise. </para>
+<para>has no effect: all partial derivatives are computed in one evaluation of F; kept for source compatibility </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>pair of function value and gradient of F with respect to T, gradient has shape (RestF..., RestT...) </para>
+<simplesect kind="return"><para>pair of function value and gradient of F with respect to T, gradient has shape (RestF..., RestT...)</para>
 </simplesect>
-</para>
+The number type is a template parameter of its own, scalar, which must be <ref refid="_marmot_automatic_differentiation_types_8h_1a872d31826e4e16322d1445046cb3b2d4" kindref="member">JacobianDual&lt; ( RestT * ... ) &gt;</ref>: MSVC 19.44 crashes (C1001) when it deduces RestT through that fold expression in the type of F. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="224" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="224" bodyend="288"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" line="198" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationForFastor.h" bodystart="198" bodyend="228"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

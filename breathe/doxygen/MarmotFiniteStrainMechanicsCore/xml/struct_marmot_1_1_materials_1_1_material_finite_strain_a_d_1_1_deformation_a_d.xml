@@ -11,9 +11,9 @@
       </param>
     </templateparamlist>
     <sectiondef kind="public-attrib">
-      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a5c43469893437a5400791ce555f08965" prot="public" static="no" mutable="no">
-        <type>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt;</type>
-        <definition>Fastor::Tensor&lt; autodiff::dual, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrainAD::DeformationAD&lt; nDim &gt;::F</definition>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a1ab2809a3f856098e1452528abcd861b" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1ae5dec47e042b5cbc9c0cedf7a5d0bb6c" kindref="member">ADScalar</ref>&lt; nDim &gt;, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; ADScalar&lt; nDim &gt;, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrainAD::DeformationAD&lt; nDim &gt;::F</definition>
         <argsstring></argsstring>
         <name>F</name>
         <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD::F</qualifiedname>
@@ -24,7 +24,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="104" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="104" bodyend="-1"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="116" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="116" bodyend="-1"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
@@ -33,9 +33,9 @@
     <detaileddescription>
 <para>This struct holds the deformation gradient <formula id="33">$\boldsymbol{F}$</formula> which describes the local deformation of a material. </para>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="103" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="103" bodyend="105"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="115" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="115" bodyend="117"/>
     <listofallmembers>
-      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a5c43469893437a5400791ce555f08965" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</scope><name>F</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a1ab2809a3f856098e1452528abcd861b" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</scope><name>F</name></member>
     </listofallmembers>
   </compounddef>
 </doxygen>

@@ -2,10 +2,19 @@
 <doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_eigen" kind="namespace" language="C++">
     <compoundname>Eigen</compoundname>
+    <innerclass refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_scalar_mode_1_1_dual_3_01_t_01_4_01_4" prot="public">Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt; &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_dual2nd_3_01_n_01_4_01_4" prot="public">Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt; &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_num_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mocc4787f04434f9f8f59ad70398acba45" prot="public">Eigen::NumTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt; &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_ba3c5ed0ba9cc17c31a234a116c52b6f" prot="public">Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, BinaryOp &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_aff5184bb743133749d10723e2a112c4" prot="public">Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt;, BinaryOp &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01double_00_01_marmot_1_1_math_1_1_differentiation_1_17206c9a02891fac6cb7939d4f2594af" prot="public">Eigen::ScalarBinaryOpTraits&lt; double, Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;, BinaryOp &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_f1d84768f8a1fa5a2b07a0fc163cbad0" prot="public">Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::ScalarMode::Dual&lt; T &gt;, double, BinaryOp &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_e65c78ab70de158de47fd6c1ab28e154" prot="public">Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual2nd&lt; N &gt;, double, BinaryOp &gt;</innerclass>
+    <innerclass refid="struct_eigen_1_1_scalar_binary_op_traits_3_01_marmot_1_1_math_1_1_differentiation_1_1_automatic_13391072c407ead1fb3c802b689ea48f" prot="public">Eigen::ScalarBinaryOpTraits&lt; Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;, double, BinaryOp &gt;</innerclass>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="34" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationScalarMode.h" line="1908" column="1"/>
   </compounddef>
 </doxygen>

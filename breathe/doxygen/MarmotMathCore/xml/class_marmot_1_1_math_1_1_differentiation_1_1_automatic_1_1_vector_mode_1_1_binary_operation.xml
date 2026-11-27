@@ -1,0 +1,323 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</compoundname>
+    <basecompoundref refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base" prot="public" virt="non-virtual">Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</basecompoundref>
+    <includes refid="_marmot_automatic_differentiation_vector_mode_8h" local="no">MarmotAutomaticDifferentiationVectorMode.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename A</type>
+      </param>
+      <param>
+        <type>typename B</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ae0401de46b9d3cc94225f4bc474a87d1" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::nDirections</definition>
+        <argsstring></argsstring>
+        <name>nDirections</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::nDirections</qualifiedname>
+        <initializer>= <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a41d1f93636490b32311846e260105bc4" kindref="member">directionsOf</ref>&lt; A &gt;</initializer>
+        <briefdescription>
+<para>Number of directions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="164" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d19708090366ca0a6722abaab56784c" prot="private" static="no" mutable="no">
+        <type>A</type>
+        <definition>A Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::a_</definition>
+        <argsstring></argsstring>
+        <name>a_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::a_</qualifiedname>
+        <briefdescription>
+<para>First operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="199" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a46a49a7f384c53d9e7f9aeeae41057b0" prot="private" static="no" mutable="no">
+        <type>B</type>
+        <definition>B Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::b_</definition>
+        <argsstring></argsstring>
+        <name>b_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::b_</qualifiedname>
+        <briefdescription>
+<para>Second operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="201" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="201" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d31974e40f8a36d3e901411ac51b544" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::val_</definition>
+        <argsstring></argsstring>
+        <name>val_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::val_</qualifiedname>
+        <briefdescription>
+<para>Value. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="203" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="203" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a8453083b47f39ef86e8833a1a73c4c29" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::partialA_</definition>
+        <argsstring></argsstring>
+        <name>partialA_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::partialA_</qualifiedname>
+        <briefdescription>
+<para>Derivative with respect to the first operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="205" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="205" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ac93174fcc660165a3d22542d549e5a1f" prot="private" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::partialB_</definition>
+        <argsstring></argsstring>
+        <name>partialB_</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::partialB_</qualifiedname>
+        <briefdescription>
+<para>Derivative with respect to the second operand. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="207" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="207" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2f6f8eab317efbe2fa4fe1182fd8e3e4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename EA</type>
+          </param>
+          <param>
+            <type>typename EB</type>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::BinaryOperation</definition>
+        <argsstring>(EA &amp;&amp;a, EB &amp;&amp;b, double value, double partialA, double partialB)</argsstring>
+        <name>BinaryOperation</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::BinaryOperation</qualifiedname>
+        <param>
+          <type>EA &amp;&amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>EB &amp;&amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>value</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>partialA</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>partialB</declname>
+        </param>
+        <briefdescription>
+<para>Creates the node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>EA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand type, as deduced by the creating function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>EB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand type, as deduced by the creating function </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>a</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first operand </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>b</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second operand </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>value of the operation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>partialA</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derivative of the operation with respect to a </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>partialB</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derivative of the operation with respect to b </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="177" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="177" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a787e91c2d11aeedbfdc02824e043648a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::val</definition>
+        <argsstring>() const</argsstring>
+        <name>val</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::val</qualifiedname>
+        <briefdescription>
+<para>Value of the expression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>value </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="189" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="189" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a95ff2aa4299669e1b5d86c412929ad86" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;::dx</definition>
+        <argsstring>(std::size_t i) const</argsstring>
+        <name>dx</name>
+        <qualifiedname>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation::dx</qualifiedname>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Derivative of the expression in one direction. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>direction </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>partial derivative with respect to independent variable i </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="195" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="195" bodyend="195"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="concept_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression" kindref="compound">Expression</ref> node of a binary operation f( a, b ) with two non-constant operands. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stored type of the first operand (see <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stored type of the second operand (see <ref refid="_marmot_automatic_differentiation_vector_mode_8h_1a23ecfd9081c6547128d6f35e4787a7f2" kindref="member">Operand</ref>)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The derivatives are partialA * a.dx( i ) + partialB * b.dx( i ), with the partial derivatives evaluated once at construction. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;</label>
+        <link refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase</label>
+        <link refid="struct_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_expression_base"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" line="161" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiationVectorMode.h" bodystart="161" bodyend="208"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d19708090366ca0a6722abaab56784c" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>a_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a46a49a7f384c53d9e7f9aeeae41057b0" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>b_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2f6f8eab317efbe2fa4fe1182fd8e3e4" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>BinaryOperation</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a95ff2aa4299669e1b5d86c412929ad86" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>dx</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ae0401de46b9d3cc94225f4bc474a87d1" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>nDirections</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a8453083b47f39ef86e8833a1a73c4c29" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>partialA_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1ac93174fcc660165a3d22542d549e5a1f" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>partialB_</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a787e91c2d11aeedbfdc02824e043648a" prot="public" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>val</name></member>
+      <member refid="class_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_vector_mode_1_1_binary_operation_1a2d31974e40f8a36d3e901411ac51b544" prot="private" virt="non-virtual"><scope>Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation</scope><name>val_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

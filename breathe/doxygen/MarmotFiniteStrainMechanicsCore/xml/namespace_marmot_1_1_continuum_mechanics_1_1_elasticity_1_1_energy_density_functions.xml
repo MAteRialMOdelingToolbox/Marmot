@@ -350,7 +350,7 @@
 <parametername>T</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar type, e.g. double, float, autodiff scalar. </para>
+<para>Scalar type, e.g. double, float or an automatic differentiation number. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -435,7 +435,7 @@
 <parametername>T</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Scalar type, e.g. double, float, autodiff scalar. </para>
+<para>Scalar type, e.g. double, float or an automatic differentiation number. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

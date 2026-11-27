@@ -59,18 +59,18 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="62" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="62" declcolumn="8"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_testing_8h_1a0787e00e9d44a4b4d289e2d1a748db29" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
         <definition>bool Marmot::Testing::checkIfEqual</definition>
-        <argsstring>(const autodiff::dual a, const autodiff::dual b, const double tol=1e-15)</argsstring>
+        <argsstring>(const Marmot::Math::Differentiation::Automatic::dual a, const Marmot::Math::Differentiation::Automatic::dual b, const double tol=1e-15)</argsstring>
         <name>checkIfEqual</name>
         <qualifiedname>Marmot::Testing::checkIfEqual</qualifiedname>
         <param>
-          <type>const autodiff::dual</type>
+          <type>const Marmot::Math::Differentiation::Automatic::dual</type>
           <declname>a</declname>
         </param>
         <param>
-          <type>const autodiff::dual</type>
+          <type>const Marmot::Math::Differentiation::Automatic::dual</type>
           <declname>b</declname>
         </param>
         <param>
@@ -79,7 +79,7 @@
           <defval>1e-15</defval>
         </param>
         <briefdescription>
-<para>Check whether two <computeroutput>autodiff::dual</computeroutput> values are equal within a tolerance. </para>
+<para>Check whether two <computeroutput>Marmot::Math::Differentiation::Automatic::dual</computeroutput> values are equal within a tolerance. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -169,7 +169,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="80" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="80" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="82" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="82" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::string</type>
@@ -200,20 +200,20 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="87" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="87" declcolumn="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="89" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="89" declcolumn="15"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_testing_8h_1a756825e3caae549b38afab4f280511ec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>std::string</type>
         <definition>std::string Marmot::Testing::getString</definition>
-        <argsstring>(const autodiff::dual a)</argsstring>
+        <argsstring>(const Marmot::Math::Differentiation::Automatic::dual a)</argsstring>
         <name>getString</name>
         <qualifiedname>Marmot::Testing::getString</qualifiedname>
         <param>
-          <type>const autodiff::dual</type>
+          <type>const Marmot::Math::Differentiation::Automatic::dual</type>
           <declname>a</declname>
         </param>
         <briefdescription>
-<para>Convert an <computeroutput>autodiff::dual</computeroutput> to its string representation. </para>
+<para>Convert a <computeroutput>Marmot::Math::Differentiation::Automatic::dual</computeroutput> to its string representation. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -231,7 +231,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="94" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="94" declcolumn="15"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="96" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="96" declcolumn="15"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -302,7 +302,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="108" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="108" bodyend="126"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="110" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="110" bodyend="128"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -386,7 +386,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="141" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="141" bodyend="157"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="143" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="143" bodyend="159"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -470,7 +470,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="172" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="172" bodyend="188"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="174" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="174" bodyend="190"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -512,7 +512,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="194" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="194" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="196" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="196" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void</type>
@@ -542,7 +542,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="205" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="205" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="207" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="207" declcolumn="8"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -577,7 +577,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="217" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="217" bodyend="232"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="219" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" bodystart="219" bodyend="234"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_testing_8h_1a3b07c3d6f6c8bc0015eb72b04978595c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>bool</type>
@@ -635,7 +635,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="246" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="246" declcolumn="8"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" line="248" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotTesting.h" declline="248" declcolumn="8"/>
       </memberdef>
     </sectiondef>
     <briefdescription>

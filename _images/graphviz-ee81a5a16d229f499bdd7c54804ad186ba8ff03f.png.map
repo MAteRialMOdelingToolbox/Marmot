@@ -1,0 +1,15 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Math::Differentiation::Automatic::VectorMode::BinaryOperation&lt; A, B &gt;" alt="" coords="5,5,804,53"/>
+<area shape="rect" id="node4" title="Marmot::Math::Differentiation::Automatic::VectorMode::ExpressionBase" alt="" coords="2032,101,2742,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="804,50,815,51,2018,106,2016,111,815,56,804,55"/>
+<area shape="rect" id="node2" title="Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections_ &gt;" alt="" coords="828,5,1592,53"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="1504,51,2081,99,2076,100,1504,57"/>
+<area shape="rect" id="node3" title="Marmot::Math::Differentiation::Automatic::VectorMode::Dual&lt; nDirections &gt;" alt="" coords="1616,5,2372,53"/>
+<area shape="poly" id="edge3" title="public&#45;inheritance" alt="" coords="2092,51,2277,97,2272,97,2092,57"/>
+<area shape="rect" id="node5" title="Marmot::Math::Differentiation::Automatic::VectorMode::Shift&lt; A, isNegated &gt;" alt="" coords="2396,5,3165,53"/>
+<area shape="poly" id="edge4" title="public&#45;inheritance" alt="" coords="2685,54,2500,100,2500,95,2680,54"/>
+<area shape="rect" id="node6" title="Marmot::Math::Differentiation::Automatic::VectorMode::Sum&lt; A, B, isDifference &gt;" alt="" coords="3189,5,3998,53"/>
+<area shape="poly" id="edge5" title="public&#45;inheritance" alt="" coords="3295,54,2704,102,2703,97,3290,54"/>
+<area shape="rect" id="node7" title="Marmot::Math::Differentiation::Automatic::VectorMode::UnaryOperation&lt; A &gt;" alt="" coords="4023,5,4791,53"/>
+<area shape="poly" id="edge6" title="public&#45;inheritance" alt="" coords="4025,53,4011,56,2758,112,2757,107,4011,51,4020,53"/>
+</map>
