@@ -253,6 +253,14 @@ All notable changes to Marmot are documented in this file. The format follows
   unchanged.
 
 ### Changed
+- **Breaking**: `EnergyDensityFunctions::ThirdOrder::standardNeoHooke` (and with it the namespace
+  `EnergyDensityFunctions::ThirdOrder`) is removed. `standardNeoHooke` and `SecondOrder::standardNeoHooke` are now a
+  scalar function of the principal invariants (I1, J) evaluated with `Invariants::RightCauchyGreen`, like the other
+  potentials; `SecondOrder::standardNeoHooke` returns the second derivative w.r.t. the nine independent components
+  of C and no longer its minor-symmetric part (identical when contracted with symmetric increments).
+- **Results**: the `NeoHooke` base of `CompressibleFiniteStrainLinearViscoelasticity` takes its third derivative
+  from first-order dual numbers on the closed-form second derivative, like the other bases; results agree to
+  round-off and a `computeStress` call takes about 4.4 µs instead of about 70 µs.
 - **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
   `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
   whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,
