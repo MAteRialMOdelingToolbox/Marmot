@@ -1,2 +1,2 @@
-marmot_add_module(CompressibleNeoHooke
+marmot_add_module(CompressibleHyperelasticity
     REQUIRES MarmotFiniteStrainMechanicsCore)

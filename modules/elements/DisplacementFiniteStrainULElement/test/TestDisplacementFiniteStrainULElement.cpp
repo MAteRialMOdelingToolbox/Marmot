@@ -1,4 +1,4 @@
-#include "Marmot/CompressibleNeoHooke.h"
+#include "Marmot/CompressibleHyperelasticity.h"
 #include "Marmot/DisplacementFiniteStrainULElement.h"
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
@@ -47,9 +47,10 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< nDim, nNodes > >( elId, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const double                             density  = 1.0;
-  const std::vector< double >              matProps = { 1.0, 1.0, density }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const double                density = 1.0;
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, density }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
 
@@ -101,9 +102,10 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
   auto element = std::make_unique< DisplacementFiniteStrainULElement< nDim, nNodes > >( elId, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const double                               density  = 1.0;
-  const std::vector< double >                matProps = { 1.0, 1.0, density }; // K, G, density
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const double                density = 1.0;
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, density }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
@@ -231,9 +233,10 @@ void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrat
   auto element = std::make_unique< DisplacementFiniteStrainULElement< nDim, nNodes > >( elId, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const double                             density  = 1.0;
-  const std::vector< double >              matProps = { 1.0, 1.0, density }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const double                density = 1.0;
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, density }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
 
@@ -304,8 +307,9 @@ void testBasicAccessorsHexa8()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -355,8 +359,9 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -407,8 +412,9 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >                matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
@@ -461,8 +467,9 @@ void testComputeKernelsPlaneStressThrowsNotImplemented()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >                matProps = { 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
@@ -499,11 +506,12 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
   const std::vector< double > nodeCoordsVecImplicit = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                         0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
   const std::vector< double > nodeCoordsVecExplicit = nodeCoordsVecImplicit;
-  const std::vector< double > matProps              = { 1.0, 1.0, 1.0 }; // K, G, density
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
 
   auto elementImplicit = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVecImplicit.data() );
-  Marmot::Discretizations::MaterialSection materialSectionImplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
@@ -514,7 +522,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVecExplicit.data() );
-  Marmot::Discretizations::MaterialSection materialSectionExplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
@@ -550,12 +558,13 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
   const auto secType = DisplacementFiniteStrainULElement< 2, 4 >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
-  const std::vector< double > matProps      = { 1.0, 1.0, 1.0 }; // K, G, density
-  const std::vector< double > elPropsVec    = { 1.0 };           // thickness
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 };          // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  const std::vector< double > elPropsVec = { 1.0 }; // thickness
 
   auto elementImplicit = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(),
@@ -569,7 +578,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(),
@@ -617,8 +626,9 @@ void testSetInitialConditionsMaterialInitializationSetsUnitEigenDeformation()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -653,8 +663,9 @@ void testSetInitialConditionsGeostaticStressMatchesPrescribedStress()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >                matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
@@ -721,8 +732,9 @@ void testComputeKernelsPlaneStrainWithEigenDeformationTangentMatchesNumericalDif
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >                matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
@@ -792,8 +804,9 @@ void testComputeConsistentInertiaConservesTotalMassPerDirection()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -853,8 +866,9 @@ Eigen::MatrixXd consistentMassOfHexa20UL( Marmot::Discretizations::Elements::Qua
   auto       element = std::make_unique< DisplacementFiniteStrainULElement< 3, 20 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 2.5 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 2.5 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -897,8 +911,9 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -961,8 +976,9 @@ void testCriticalTimeStepBoundsTheStableIncrementOfTheElement()
                                   underTest( c.type,
                    Marmot::Testing::unitElementCoordinates( c.nDim, c.nNodes, lengthOfLastAxis ),
                    c.properties,
-                   "COMPRESSIBLENEOHOOKE",
-                                             { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1.0 } );
+                   "COMPRESSIBLEHYPERELASTICITY",
+                   // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+                                             { 0.0, 6.0, 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1.0, 3.0, 1.0 } );
       const std::vector< double > QTotal( underTest.element->getNDofPerElement(), 0.0 );
       double                      criticalTimeStep = 0.0;
       underTest.element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
@@ -996,8 +1012,9 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -1045,8 +1062,9 @@ void testGetStateViewReturnsQuadraturePointManagedState()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 3, 8 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -1097,8 +1115,9 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   auto element = std::make_unique< DisplacementFiniteStrainULElement< 2, 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >                matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection   materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
@@ -1156,8 +1175,9 @@ void testAxiSymmetricComputeKernelsTangentMatchesNumericalDifferentiation()
     element = std::make_unique< AxiSymmetricDisplacementFiniteStrainULElement< 4 > >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double >              matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                             matProps.data(),
                                                             static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
@@ -1203,12 +1223,13 @@ void testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual()
   const auto secType = DisplacementFiniteStrainULElement< 2, 4 >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0 };
-  const std::vector< double > matProps      = { 1.0, 1.0, 1.0 }; // K, G, density
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
 
   std::unique_ptr< Marmot::Discretizations::Elements::Element >
     elementImplicit = std::make_unique< AxiSymmetricDisplacementFiniteStrainULElement< 4 > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionImplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
@@ -1220,7 +1241,7 @@ void testAxiSymmetricComputeKernelsExplicitMatchesImplicitResidual()
   std::unique_ptr< Marmot::Discretizations::Elements::Element >
     elementExplicit = std::make_unique< AxiSymmetricDisplacementFiniteStrainULElement< 4 > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionExplicit( "COMPRESSIBLENEOHOOKE",
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "COMPRESSIBLEHYPERELASTICITY",
                                                                     matProps.data(),
                                                                     static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
@@ -1260,8 +1281,9 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
   const auto intType = Marmot::Discretizations::Elements::Quadrature::gaussExactToDegree( 2 );
   const auto secType = DisplacementFiniteStrainULElement< 2, 4 >::SectionType::PlaneStrain;
 
-  const std::vector< double > matProps = { 1.0, 1.0, 1.0 }; // K, G, density
-  const double                a        = 0.01;
+  const std::vector< double > matProps =
+    { 0.0, 6.0, 1.0, 1.0, 1.0, 3.0, 1.0 }; // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+  const double a = 0.01;
 
   // element 0: r in [1, 1.5], element 1: r in [1.5, 2]; z in [0, 1]
   const std::vector< std::vector< double > > nodeCoords = { { 1.0, 0.0, 1.5, 0.0, 1.5, 1.0, 1.0, 1.0 },
@@ -1274,7 +1296,7 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
     std::unique_ptr< Marmot::Discretizations::Elements::Element >
       element = std::make_unique< AxiSymmetricDisplacementFiniteStrainULElement< 4 > >( e + 1, intType, secType );
     element->assignNodeCoordinates( nodeCoords[e].data() );
-    Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+    Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                               matProps.data(),
                                                               static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
@@ -1342,10 +1364,13 @@ namespace {
   const std::vector< double > ringSectionCoordinates =
     { 1.0, 0.0, 2.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.5, 0.0, 2.0, 0.5, 1.5, 1.0, 1.0, 0.5 };
 
-  /// K, G, density of a compressible Neo-Hooke material with E = 1000, nu = 0.3.
-  const std::vector< double > neoHookeProperties = { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ),
-                                                     1000.0 / ( 2 * ( 1 + 0.3 ) ),
-                                                     2.0 };
+  /// The density of the compressible Neo-Hooke material.
+  constexpr double neoHookeDensity = 2.0;
+
+  /// A compressible Neo-Hooke material with E = 1000, nu = 0.3, as COMPRESSIBLEHYPERELASTICITY:
+  /// NeoHooke, DollSchweizerhof: G, K, alpha, beta, density.
+  const std::vector< double > neoHookeProperties =
+    { 0.0, 6.0, 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1.0, 3.0, neoHookeDensity };
 
   Marmot::Testing::ElementUnderTest ringSection( const std::string& type )
   {
@@ -1353,7 +1378,7 @@ namespace {
     return Marmot::Testing::ElementUnderTest( type,
                                               ringSectionCoordinates,
                                               { 7.0 },
-                                              "COMPRESSIBLENEOHOOKE",
+                                              "COMPRESSIBLEHYPERELASTICITY",
                                               neoHookeProperties );
   }
 
@@ -1365,27 +1390,27 @@ namespace {
 
   constexpr double notANumber = std::numeric_limits< double >::quiet_NaN();
 
-  struct NeoHookeWithoutAWaveSpeed : Marmot::Materials::CompressibleNeoHooke {
-    using CompressibleNeoHooke::CompressibleNeoHooke;
+  struct NeoHookeWithoutAWaveSpeed : Marmot::Materials::CompressibleHyperelasticity {
+    using CompressibleHyperelasticity::CompressibleHyperelasticity;
     double getMaximumWaveSpeed( const double*, const Fastor::Tensor< double, 3, 3 >& ) const override
     {
       return notANumber;
     }
   };
 
-  struct NeoHookeWithoutADensity : Marmot::Materials::CompressibleNeoHooke {
-    using CompressibleNeoHooke::CompressibleNeoHooke;
+  struct NeoHookeWithoutADensity : Marmot::Materials::CompressibleHyperelasticity {
+    using CompressibleHyperelasticity::CompressibleHyperelasticity;
     double getDensity( const double* ) const override { return notANumber; }
   };
 
   /// The default wave speed, from finite differences of a stress whose 22 component is not a number.
-  struct NeoHookeWithoutAStressIn22 : Marmot::Materials::CompressibleNeoHooke {
-    using CompressibleNeoHooke::CompressibleNeoHooke;
+  struct NeoHookeWithoutAStressIn22 : Marmot::Materials::CompressibleHyperelasticity {
+    using CompressibleHyperelasticity::CompressibleHyperelasticity;
     void computeStressExplicit( ConstitutiveResponse< 3 >& response,
                                 const Deformation< 3 >&    deformation,
                                 const TimeIncrement&       timeIncrement ) const override
     {
-      CompressibleNeoHooke::computeStressExplicit( response, deformation, timeIncrement );
+      CompressibleHyperelasticity::computeStressExplicit( response, deformation, timeIncrement );
       response.tau( 1, 1 ) = notANumber;
     }
   };
@@ -1413,7 +1438,7 @@ void testAxiSymmetricMassAndBodyForceAreThoseOfTheRing()
 {
   // the volume of the ring r in [1, 2], z in [0, 1]
   const double volume = Marmot::Math::Constants::Pi * ( 2.0 * 2.0 - 1.0 * 1.0 ) * 1.0;
-  const double rho    = neoHookeProperties[2];
+  const double rho    = neoHookeDensity;
 
   for ( const std::string type : { "CX8UL", "CX8RUL" } ) {
     auto      underTest = ringSection( type );
@@ -1622,16 +1647,16 @@ void testAxiSymmetricWaveSpeedIsTakenAtTheHoopStretch()
   for ( int A = 0; A < 8; A++ )
     QTotal[2 * A] = epsilon * ringSectionCoordinates[2 * A];
 
-  const Marmot::Materials::CompressibleNeoHooke material( neoHookeProperties.data(),
-                                                          static_cast< int >( neoHookeProperties.size() ),
-                                                          1 );
-  const auto                                    pWaveModulusAt = [&]( double F33 ) {
+  const Marmot::Materials::CompressibleHyperelasticity material( neoHookeProperties.data(),
+                                                                 static_cast< int >( neoHookeProperties.size() ),
+                                                                 1 );
+  const auto                                           pWaveModulusAt = [&]( double F33 ) {
     Fastor::Tensor< double, 3, 3 > F( 0.0 );
     F( 0, 0 )      = 1.0 + epsilon;
     F( 1, 1 )      = 1.0;
     F( 2, 2 )      = F33;
     const double c = material.getMaximumWaveSpeed( nullptr, F );
-    return neoHookeProperties[2] * c * c;
+    return neoHookeDensity * c * c;
   };
 
   const double ofTheRing  = pWaveModulusAt( 1.0 + epsilon );

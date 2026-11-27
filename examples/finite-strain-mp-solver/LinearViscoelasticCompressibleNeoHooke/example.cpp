@@ -1,12 +1,8 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 
-int main( int argc, char** argv )
+int main()
 {
-
-  // get applied strain from command line
-  // double appliedStrain = argv[1] ? atof( argv[1] ) : 0.5;
-  // int    nMaxwell      = argv[2] ? atoi( argv[2] ) : 2;
 
   double appliedStrain = 0.1;
 
@@ -16,11 +12,10 @@ int main( int argc, char** argv )
   // 1) Define the material model
   // std::string materialName = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY_SUBSTEPPED";
   std::string materialName = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
-  // double      properties[] = { 2, 750, 75, 2./3500,  double( nMaxwell ), 0.5, 1, 0.25, 10 };
-  // double properties[] = { 1, 0, 3500,1500, 1, 0.5, 1, 0.25, 10 };
-  double properties[] = { 0, 3500, 1500, 2, 0.5, 10000000, 0.25, 10 };
-  // double      properties[] = { 0, 3500, 1500,  double( nMaxwell ), 0.5, 1, 0.25, 10 };
-  int nProps = 8;
+  // layout: [hyperelasticBase, onlyShearCreep, <elastic params of the base>, nMaxwell, (gamma_i, tau_i)...]
+  // here: NeoHooke (0) with K=3500, G=1500, full creep (0), two Maxwell elements
+  double properties[] = { 0, 0, 3500, 1500, 2, 0.5, 10000000, 0.25, 10 };
+  int    nProps       = 9;
 
   // 2) Configure solver options
   MaterialPointSolverFiniteStrain::SolverOptions options;

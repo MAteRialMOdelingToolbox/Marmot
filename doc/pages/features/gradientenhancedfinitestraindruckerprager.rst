@@ -20,7 +20,7 @@ map,
    \boldsymbol{F}^{\rm e,trial} = \boldsymbol{F}\,(\boldsymbol{F}^{\rm p}_n)^{-1}
    = \boldsymbol{F}^{\rm e}\exp\!\left(\Delta\lambda\,\frac{\partial g}{\partial\boldsymbol{M}}\right) .
 
-**Elasticity** is that of :doc:`compressibleneohooke` (Pence-Gou, variant B) in the elastic stretch,
+**Elasticity** is that of the compressible Neo-Hooke model of Pence-Gou (variant B, see :doc:`compressiblehyperelasticity`) in the elastic stretch,
 
 .. math::
 

@@ -176,7 +176,11 @@ void testSmallStrainVonMises()
 void testFiniteStrainRigidRotationAndStretch()
 {
   const double K = 3000., G = 1000.;
-  Truss        truss( "T3D2CR", { 0., 0., 0., 1., 0., 0. }, 2.0, "COMPRESSIBLENEOHOOKE", { K, G, 1e-9 } );
+  Truss        truss( "T3D2CR",
+                      { 0., 0., 0., 1., 0., 0. },
+               2.0,
+               "COMPRESSIBLEHYPERELASTICITY",
+                      { 0., 6., G, K, 1., 3., 1e-9 } );
 
   // rotate by 90 degrees about z: node 2 goes from (1,0,0) to (0,1,0)
   Eigen::VectorXd U   = Eigen::VectorXd::Zero( 6 );
@@ -205,7 +209,11 @@ void testFiniteStrainRigidRotationAndStretch()
 void testFiniteStrainTangents()
 {
   {
-    Truss           truss( "T2D2CR", { 0., 0., 2., 1. }, 3.0, "COMPRESSIBLENEOHOOKE", { 3000., 1000., 1e-9 } );
+    Truss           truss( "T2D2CR",
+                           { 0., 0., 2., 1. },
+                 3.0,
+                 "COMPRESSIBLEHYPERELASTICITY",
+                           { 0., 6., 1000., 3000., 1., 3., 1e-9 } );
     Eigen::VectorXd U( 4 );
     U << 0.1, -0.2, -0.5, 0.9;
     checkTangent( truss, U, Eigen::VectorXd::Zero( 4 ), 1e-6, "T2D2CR Neo-Hooke" );
@@ -214,8 +222,8 @@ void testFiniteStrainTangents()
     Truss           truss( "T3D3CR",
                            { 0., 0., 0., 2., 0., 0., 1., 0.2, 0. },
                  3.0,
-                 "COMPRESSIBLENEOHOOKE",
-                           { 3000., 1000., 1e-9 } );
+                 "COMPRESSIBLEHYPERELASTICITY",
+                           { 0., 6., 1000., 3000., 1., 3., 1e-9 } );
     Eigen::VectorXd U( 9 );
     U << 0.1, -0.2, 0.05, 0.3, 0.6, -0.4, 0.2, 0.1, 0.3;
     checkTangent( truss, U, Eigen::VectorXd::Zero( 9 ), 1e-6, "T3D3CR Neo-Hooke" );
@@ -283,7 +291,11 @@ void testCriticalTimeStep()
   // comes from finite differences of its tangent, hence the tolerance)
   const double          K = 3000., G = 1000., rhoNH = 1e-9;
   const double          cNH = std::sqrt( ( K + 4. * G / 3. ) / rhoNH );
-  Truss                 cr( "T2D2CR", { 0., 0., 0.6 * L, 0.8 * L }, 2.0, "COMPRESSIBLENEOHOOKE", { K, G, rhoNH } );
+  Truss                 cr( "T2D2CR",
+                            { 0., 0., 0.6 * L, 0.8 * L },
+            2.0,
+            "COMPRESSIBLEHYPERELASTICITY",
+                            { 0., 6., G, K, 1., 3., rhoNH } );
   double                dt = 0;
   const Eigen::VectorXd U  = Eigen::VectorXd::Zero( cr.nDof );
   cr.element->computeCriticalTimeStepForExplicitDynamics( dt, U.data() );
