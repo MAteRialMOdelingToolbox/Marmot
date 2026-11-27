@@ -628,7 +628,10 @@ void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
 
   using Potential = std::function< autodiff::dual3rd( const Dual3rdTensor& ) >;
   const std::vector< std::pair< std::vector< double >, Potential > > cases = {
-    { { 0., 0., K, G, 0. }, [=]( const Dual3rdTensor& C_ ) { return EDF::standardNeoHooke( C_, K, G ); } },
+    { { 0., 0., K, G, 0. },
+      [=]( const Dual3rdTensor& C_ ) {
+        return EDF::CoupledPotential( C_, EDF::Coupled::StandardNeoHooke{ K, G } );
+      } },
     { { 1., 0., C1, C2, C3, D1, 0. },
       [=]( const Dual3rdTensor& C_ ) { return EDF::YeohPotential( C_, C1, C2, C3, D1 ); } },
     { { 2., 0., C1, C2MooneyRivlin, D1, 0. },

@@ -12,6 +12,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Tensors::FastorTensors;
+namespace Coupled = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Coupled;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {
@@ -507,7 +508,7 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
                                          1e-14 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " U3 != (U1 + U2)/2." );
 
-  // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of standardNeoHooke
+  // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of Coupled::StandardNeoHooke
   const double J = std::sqrt( Fastor::determinant( C ) );
   throwExceptionOnFailure( checkIfEqual( Volumetric::OgdenPotential( C, k, -2.0 ),
                                          k / 4. * ( J * J - 1. - 2. * std::log( J ) ),
@@ -744,7 +745,16 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
   const double detC     = Fastor::determinant( C );
   const double expected = G / 2. * ( trC - 3.0 - log( detC ) ) + lambda / 4. * ( detC - 1.0 - log( detC ) );
 
-  auto [psi, dPsi_dC, d2Psi_dC2] = standardNeoHooke( C, K, G );
+  auto [psi, dPsi_dC, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
+
+  // the plain and the FirstOrder overloads evaluate the same scalar function
+  namespace EDF                        = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const double psiPlain                = EDF::CoupledPotential( C, EDF::Coupled::StandardNeoHooke{ K, G } );
+  const auto [psiFirst, dPsi_dC_First] = EDF::FirstOrder::CoupledPotential( C, EDF::Coupled::StandardNeoHooke{ K, G } );
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psi, 1e-12 ) && checkIfEqual( psiFirst, psi, 1e-12 ) &&
+                             checkIfEqual( dPsi_dC_First, dPsi_dC, 1e-12 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " plain, FirstOrder and SecondOrder overloads differ" );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected, 1e-10 ),
                            Marmot::Utilities::MakeString()
@@ -759,7 +769,7 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
   const double                                                       K      = get< 2 >( params );
   const double                                                       G      = get< 3 >( params );
 
-  auto [psi0, dPsi_dC, d2Psi_dC2] = standardNeoHooke( C, K, G );
+  auto [psi0, dPsi_dC, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
 
   const double h = 1e-6;
   for ( int i = 0; i < 3; i++ )
@@ -768,8 +778,8 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
       Tensor33d Cm = C;
       Cp( i, j ) += h;
       Cm( i, j ) -= h;
-      const double psiPlus  = std::get< 0 >( standardNeoHooke( Cp, K, G ) );
-      const double psiMinus = std::get< 0 >( standardNeoHooke( Cm, K, G ) );
+      const double psiPlus  = std::get< 0 >( CoupledPotential( Cp, Coupled::StandardNeoHooke{ K, G } ) );
+      const double psiMinus = std::get< 0 >( CoupledPotential( Cm, Coupled::StandardNeoHooke{ K, G } ) );
       const double numDeriv = ( psiPlus - psiMinus ) / ( 2. * h );
       throwExceptionOnFailure( checkIfEqual( dPsi_dC( i, j ), numDeriv, 1e-6 ),
                                Marmot::Utilities::MakeString()
@@ -804,15 +814,15 @@ auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
   const double                                                       K      = get< 2 >( params );
   const double                                                       G      = get< 3 >( params );
 
-  auto [psi0, dPsi_dC0, d2Psi_dC2] = standardNeoHooke( C, K, G );
+  auto [psi0, dPsi_dC0, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
 
   const double h = 1e-5;
   for ( const Tensor33d& dC : symmetricUnitDirections() ) {
     Tensor33d Cp = C + h * dC;
     Tensor33d Cm = C - h * dC;
 
-    const Tensor33d dPsi_dC_plus  = std::get< 1 >( standardNeoHooke( Cp, K, G ) );
-    const Tensor33d dPsi_dC_minus = std::get< 1 >( standardNeoHooke( Cm, K, G ) );
+    const Tensor33d dPsi_dC_plus  = std::get< 1 >( CoupledPotential( Cp, Coupled::StandardNeoHooke{ K, G } ) );
+    const Tensor33d dPsi_dC_minus = std::get< 1 >( CoupledPotential( Cm, Coupled::StandardNeoHooke{ K, G } ) );
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ ) {
