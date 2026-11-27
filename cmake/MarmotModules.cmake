@@ -312,7 +312,7 @@ function(marmot_build_modules discovered_modules existing_modules explicit_modul
     # targets, so consumers never see MARMOT_BUILDING_LIBRARY or the coverage flags.
     add_library(MarmotModuleSettings INTERFACE)
     target_compile_definitions(MarmotModuleSettings INTERFACE MARMOT_BUILDING_LIBRARY)
-    target_link_libraries(MarmotModuleSettings INTERFACE Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+    target_link_libraries(MarmotModuleSettings INTERFACE Eigen3::Eigen Fastor::Fastor)
     if(MARMOT_ENABLE_COVERAGE)
         target_compile_options(MarmotModuleSettings INTERFACE --coverage -O0)
     endif()

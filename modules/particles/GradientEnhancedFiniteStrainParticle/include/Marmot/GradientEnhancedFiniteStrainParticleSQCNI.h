@@ -27,6 +27,7 @@
 #include "Marmot/GradientEnhancedFiniteStrainParticle.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMeshfreeQuadHexCell.h"
+#include "Marmot/MarmotParticleSectionIntegrals.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 /* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
@@ -38,6 +39,7 @@
 #ifdef _MSC_VER
 #  pragma warning( pop )
 #endif
+#include <array>
 #include <cmath>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -62,8 +64,10 @@ namespace Marmot::Discretizations::Meshfree {
    * - **Faces.** The particle has vertices and faces and therefore supports the distributed loads `PRESSURE` and
    *   `CWFCORRECTION` (computeDistributedLoad()); the point particle has none.
    *
-   * The smoothing domain is stored by the displacements of its vertices (appended to the state variables as
-   * `vertex displacements`) and is updated at each accepted increment from the deformation gradient
+   * The particle geometry and the smoothing domain are stored by the displacements of their vertices (appended to the
+   * state variables as `vertex displacements` and `smoothing vertex displacements`). The geometry follows
+   * @f$ \boldsymbol{F}_n @f$; its vertices are getVertexCoordinates(). The smoothing domain is updated at each accepted
+   * increment from the deformation gradient
    * @f$ \boldsymbol{F}_n @f$ of the material point, according to SmoothingDomainUpdateType:
    * `DeformationGradient` (SQCNI: the domain follows @f$ \boldsymbol{F}_n @f$), `None` (SNNI: the domain is only
    * translated with the particle), `RotationOnly` (the rotation @f$ \boldsymbol{R} @f$ of the polar decomposition)
@@ -71,11 +75,21 @@ namespace Marmot::Discretizations::Meshfree {
    * @f$ \boldsymbol{R}^\mathsf{T}\boldsymbol{F}_n @f$). Only for `DeformationGradient` does the smoothing domain
    * coincide with the physical domain of the particle.
    *
-   * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
+   * The volume, the smoothed gradients and the face loads are those of the section (ParticleSectionIntegrals): for
+   * Section::Axisymmetric, the ring volume, the ring-weighted smoothed gradient with its area term, and two Gauss
+   * points per face, both for the smoothing and for a load on the face. An axisymmetric particle needs the update type
+   * `DeformationGradient` (smoothing domains that tile the body, for the integration constraint), refuses a vertex at
+   * @f$ r < 0 @f$ (ParticleSectionIntegrals::checkParticle()), and supports the distributed load `PRESSURE` only. See
+   * the page "Axisymmetric Particles" of the documentation.
+   *
+   * @tparam nDim      Spatial dimension (2: plane strain or axisymmetric, 3: 3D).
    * @tparam nVertices Number of vertices of the smoothing domain (4: Quad, 8: Hexa).
+   * @tparam nNonlocal Number of nonlocal variables (1: a scalar nonlocal damage driver, 6: a nonlocal strain).
+   * @tparam section   The section (Section::Cartesian: plane strain or 3D; Section::Axisymmetric: nDim = 2).
    */
-  template < int nDim, int nVertices >
-  class GradientEnhancedFiniteStrainParticleSQCNI : public GradientEnhancedFiniteStrainParticle< nDim > {
+  template < int nDim, int nVertices, int nNonlocal, Section section = Section::Cartesian >
+  class GradientEnhancedFiniteStrainParticleSQCNI
+    : public GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section > {
 
     using TensorD          = Fastor::Tensor< double, nDim >;   ///< vector of size nDim
     using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >; ///< coordinate vector
@@ -91,7 +105,9 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
   protected:
-    using LagrangeCellType = LagrangeCell< nDim, nVertices >;   ///< geometry of the smoothing domain
+    using LagrangeCellType = LagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
+    /// the integrals over the smoothing domain
+    using SectionIntegrals = ParticleSectionIntegrals< section, nDim, nVertices >;
 
     const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
 
@@ -100,11 +116,27 @@ namespace Marmot::Discretizations::Meshfree {
     double*
       _vertexDisplacements_SmoothingDomain; ///< vertex displacements of the smoothing domain (in the state vector)
 
-    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >; ///< the point particle base
+    double* _vertexDisplacements_Geometry;  ///< vertex displacements of the particle geometry (in the state vector)
 
-    /// \brief Build a Lagrange cell from the current (deformed) smoothing domain vertex coordinates
-    /// \return The smoothing domain in the intermediate reference configuration.
-    LagrangeCellType _makeSmoothingDomainCell() const
+    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >; ///< the point
+                                                                                                  ///< particle base
+
+    /// \brief The smoothing domain of the particle, built from its current vertex coordinates
+    /// \return The cell of the smoothing domain in the intermediate configuration.
+    LagrangeCellType smoothingDomain() const
+    {
+      Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
+      getSmoothingDomainVertexCoordinates( vertexCoordinates.data() );
+      return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices );
+    }
+
+    /**
+     * @brief The deformed geometry of the particle, built from its current vertex coordinates (getVertexCoordinates()),
+     * as ParticleDomain::geometryDeformed() of the displacement family.
+     * @return The cell of the particle in the intermediate configuration; for the update type DeformationGradient it
+     * coincides with the smoothing domain.
+     */
+    LagrangeCellType geometryDeformed() const
     {
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
       getVertexCoordinates( vertexCoordinates.data() );
@@ -118,20 +150,44 @@ namespace Marmot::Discretizations::Meshfree {
       return LagrangeCellType( _vertexCoordinates_Undeformed.data(), nDim * nVertices );
     }
 
+    /**
+     * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `smoothing vertex
+     * displacements`.
+     * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
+     */
+    void getSmoothingDomainVertexCoordinates( double* coordinates ) const;
+
+    /**
+     * @brief The undeformed vertices mapped with a deformation tensor about the undeformed centroid and moved with the
+     * displacement of the center: @f$ \boldsymbol{X}_c + \boldsymbol{A}\,(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+     * \boldsymbol{u}_c @f$.
+     * @param[in] A The deformation tensor (@f$ \boldsymbol{F}_n @f$ for the geometry, see SmoothingDomainUpdateType
+     * for the smoothing domain).
+     * @return The vertex coordinates (nDim x nVertices).
+     */
+    Eigen::Matrix< double, nDim, nVertices > _vertexCoordinatesDeformedWith(
+      const Eigen::Matrix< double, nDim, nDim >& A ) const;
+
   public:
     /**
-     * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `vertex displacements`.
+     * @brief Vertex coordinates of the particle geometry: the undeformed vertices mapped with the deformation gradient
+     * @f$ \boldsymbol{F}_n @f$ of the last accepted state about the undeformed centroid, plus the center displacement,
+     * @f$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}_n(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+     * \boldsymbol{u}_c @f$ (the undeformed vertices plus the state `vertex displacements`, updated at each accepted
+     * increment). These are the points the particle moves with getInterpolationVectorLinearizedAboutCenter() (its own
+     * points), the vertices supports and contacts act on. They coincide with the smoothing domain only for
+     * `DeformationGradient`.
      * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
      */
     void getVertexCoordinates( double* coordinates ) const override;
 
     /**
-     * @brief Vertex coordinates for visualization, identical to getVertexCoordinates().
+     * @brief Vertex coordinates for visualization: the smoothing domain (getSmoothingDomainVertexCoordinates()).
      * @param[out] coordinates Coordinates, vertex by vertex.
      */
     void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
-      getVertexCoordinates( coordinates );
+      getSmoothingDomainVertexCoordinates( coordinates );
     };
 
     /**
@@ -161,6 +217,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] sizeMaterialProperties    Number of material properties.
      * @param[in] approximation             Meshfree approximation used for the shape functions.
      * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
+     * @throws std::invalid_argument for an axisymmetric particle the section cannot integrate
+     * (ParticleSectionIntegrals::checkParticle()).
      */
     GradientEnhancedFiniteStrainParticleSQCNI( int                             elementID,
                                                const double*                   nodeCoordinates,
@@ -173,23 +231,21 @@ namespace Marmot::Discretizations::Meshfree {
                                                const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
-     * @brief Assign the kernel functions and compute the smoothed shape function gradients.
+     * @brief Evaluate the shape functions with the assigned kernel functions, with smoothed gradients.
      *
      * @f$ N_B @f$ is evaluated at the material point position, @f$ \partial N_B/\partial\boldsymbol{Y} @f$ as the
      * boundary integral over the current smoothing domain with one point per face (see the class description); the
      * test functions are set equal to the trial functions (before any VCI correction).
-     *
-     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override;
+    void updateShapeFunctions() override;
 
-    /// \brief Get the smoothing volume of the particle
+    /// \brief Get the smoothing volume of the particle (in its section)
     /// \return The smoothing volume of the particle
     /// \details The smoothing volume is computed as the volume of the element in an updated configuration
     ///         that is obtained by applying (parts of) the deformation gradient to the element in the undeformed
     ///         configuration. In general, this is not consistent with the actual deformation of the particle.
     ///
-    virtual double getSmoothingVolume() const { return _makeSmoothingDomainCell().volume(); }
+    virtual double getSmoothingVolume() const { return SectionIntegrals::volume( smoothingDomain() ); }
 
     /**
      * @brief Center coordinates: the material point position of the last accepted state.
@@ -209,83 +265,97 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     /**
-     * @brief Volume of a cell spanned by given vertices.
+     * @brief Volume of a cell spanned by given vertices, in the section (the ring volume of an axisymmetric particle).
      * @param[in] vertexCoordinates Vertex coordinates.
      * @return The volume.
      */
     virtual double getVolumeFromVertices( const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
-      return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices ).volume();
+      return SectionIntegrals::volume( LagrangeCellType( vertexCoordinates.data(), nDim * nVertices ) );
     }
 
     /**
      * @brief Supported distributed loads, on the faces of the particle domain.
-     * @return `PRESSURE` and `CWFCORRECTION`.
+     * @return `PRESSURE` and `CWFCORRECTION`; `PRESSURE` only for an axisymmetric particle.
      */
     const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
     {
-      using Parent = GradientEnhancedFiniteStrainParticle< nDim >;
-      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes =
-        { { "PRESSURE", Parent::Pressure }, { "CWFCORRECTION", Parent::CWFCorrection } };
-      return _supportedDistributedLoadTypes;
+      return SectionIntegrals::template supportedFaceLoads< ParentPointParticle::Pressure,
+                                                            ParentPointParticle::CWFCorrection >();
     };
 
     /**
-     * @brief Volume of the last accepted state, @f$ V_0\det\boldsymbol{F}_n @f$.
+     * @brief Volume of the last accepted state, @f$ V_0\det\boldsymbol{F}_n @f$; for an axisymmetric particle the ring
+     * volume of its geometry (geometryDeformed()).
      * @return The volume in the intermediate reference configuration (the current increment is not included).
      */
     virtual double getVolumeDeformed() const
     {
-      return this->getVolumeUndeformed() * Fastor::determinant( this->_mp.dY_dX() );
+      if constexpr ( SectionIntegrals::isAxisymmetric )
+        return SectionIntegrals::volume( geometryDeformed() );
+      else
+        return this->getVolumeUndeformed() * Fastor::determinant( this->_mp.dY_dX() );
     }
 
     /**
-     * @brief Number of state variables: those of the point particle plus the vertex displacements.
+     * @brief Number of state variables: those of the point particle plus the vertex displacements of the geometry
+     * and of the smoothing domain.
      * @return Required size of the state variable vector.
      */
     int getNumberOfRequiredStateVars() const override
     {
-      return GradientEnhancedFiniteStrainParticle< nDim >::getNumberOfRequiredStateVars() + nDim * nVertices;
+      return GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::getNumberOfRequiredStateVars() +
+             2 * nDim * nVertices;
     };
 
     /**
-     * @brief Assign the state variable vector; the last nDim x nVertices entries hold the vertex displacements.
+     * @brief Assign the state variable vector; the last 2 x nDim x nVertices entries hold the vertex displacements of
+     * the geometry, then those of the smoothing domain. Both are zero (the undeformed vertices) until the first
+     * accepted increment, also before initializeYourself().
      * @param[in,out] stateVars  State variable vector.
      * @param[in]     nStateVars Its size.
      */
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
-      GradientEnhancedFiniteStrainParticle< nDim >::assignStateVars( stateVars, nStateVars - nDim * nVertices );
+      GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::assignStateVars( stateVars,
+                                                                                         nStateVars -
+                                                                                           2 * nDim * nVertices );
+      _vertexDisplacements_Geometry        = stateVars + nStateVars - 2 * nDim * nVertices;
       _vertexDisplacements_SmoothingDomain = stateVars + nStateVars - nDim * nVertices;
     }
 
     /**
-     * @brief Access a state variable; `vertex displacements` are those of the smoothing domain.
+     * @brief Access a state variable; `vertex displacements` are those of the particle geometry,
+     * `smoothing vertex displacements` those of the smoothing domain (as for the displacement particles).
      * @param[in] stateName Name of the state variable.
      * @param[in] qp        Evaluation point (unused).
      * @return View on the state variable.
      */
     Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      if ( stateName == "vertex displacements" ) {
+      if ( stateName == "vertex displacements" )
+        return { _vertexDisplacements_Geometry, nDim * nVertices };
+      if ( stateName == "smoothing vertex displacements" )
         return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
-      }
-      return GradientEnhancedFiniteStrainParticle< nDim >::getStateView( stateName, qp );
+      return GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::getStateView( stateName, qp );
     }
 
     /**
      * @brief Distributed loads on a face of the particle.
      *
-     * Both loads use the surface vector @f$ \boldsymbol{N}\,dA_Y @f$ and center @f$ \boldsymbol{Y}_f @f$ of the face
-     * in the intermediate reference configuration (getIntermediateConfBoundaryVector()), test functions
-     * @f$ T_A(\boldsymbol{Y}_f) @f$ evaluated by the meshfree approximation at the face center, and are subtracted
-     * from @p fExt (sign convention of the internal force), with the consistent tangent with respect to the
-     * displacement increment:
+     * Both loads use the face quadrature in the intermediate reference configuration
+     * (faceQuadratureIntermediate()): on each of its points @f$ \boldsymbol{Y}_f @f$, with its area vector
+     * @f$ \boldsymbol{N}\,dA_Y @f$, the test functions @f$ T_A(\boldsymbol{Y}_f) @f$ evaluated by the meshfree
+     * approximation. The loads are subtracted from @p fExt (sign convention of the internal force), with the consistent
+     * tangent with respect to the displacement increment:
      *
      * - `PRESSURE` (follower pressure @f$ p @f$ = `load[0]`):
      *   @f$ \boldsymbol{f} = -\Delta J\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,p\,\boldsymbol{N}\,dA_Y @f$,
      *   @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,f_i @f$; as for the elements, a positive pressure pushes on
-     *   the face (against the outward normal).
+     *   the face (against the outward normal); see ParticleSectionIntegrals::addPressure(). For an axisymmetric
+     *   particle, the face carries two Gauss points, the rule of the smoothing, and the pressure force of each is that
+     *   of the half plane times the ring of the point after the increment (Hoop::ringOfFacePoint()), with its
+     *   derivative in the tangent.
      * - `CWFCORRECTION` (consistent weak form correction): the boundary term of the momentum weak
      *   form, @f$ \boldsymbol{t} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,\boldsymbol{N}\,dA_Y / J_Y
      *   @f$ with @f$ J_Y = \det\boldsymbol{F}_n @f$, @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,t_i @f$; its
@@ -303,7 +373,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in,out] dExt_dQ   Load tangent, column-major.
      * @param[in]     timeNew   Time at the end of the increment (unused).
      * @param[in]     dT        Time increment (unused).
-     * @throws std::invalid_argument for an unknown load type.
+     * @throws std::invalid_argument for an unknown load type, and for `CWFCORRECTION` of an axisymmetric particle.
      */
     void computeDistributedLoad( int           type,
                                  int           surfaceID,
@@ -314,24 +384,27 @@ namespace Marmot::Discretizations::Meshfree {
                                  double        dT ) const override;
 
     /**
-     * @brief Surface vector and center of a face in the intermediate reference configuration.
+     * @brief The quadrature of a face in the intermediate reference configuration, for the loads on it.
      *
-     * For `DeformationGradient` they are taken from the current smoothing domain, which coincides with the
-     * particle. For the other update types the undeformed surface vector is mapped by Nanson's formula,
-     * @f$ \boldsymbol{N}\,dA_Y = J_n\,\boldsymbol{F}_n^{-\mathsf{T}}\,\boldsymbol{N}\,dA_0 @f$, and the undeformed
-     * face center is translated by the particle displacement.
+     * For `DeformationGradient` (the only update of an axisymmetric particle) it is the rule of the section on the
+     * face of the current smoothing domain, which coincides with the particle
+     * (ParticleSectionIntegrals::faceQuadrature()): a face load is integrated with the rule of the smoothing. For the
+     * other update types (plane strain and 3D) it is one point: the undeformed surface vector mapped by Nanson's
+     * formula,
+     * @f$ \boldsymbol{N}\,dA_Y = J_n\,\boldsymbol{F}_n^{-\mathsf{T}}\,\boldsymbol{N}\,dA_0 @f$, at the undeformed
+     * face center translated by the particle displacement.
      *
      * @param[in] boundaryFaceID Face id (1-based).
-     * @return Tuple of the surface vector @f$ \boldsymbol{N}\,dA_Y @f$ and the face center @f$ \boldsymbol{Y}_f @f$.
+     * @return The points and their share in the area vector of the face.
      */
-    std::tuple< TensorD, TensorD > getIntermediateConfBoundaryVector( int boundaryFaceID ) const;
+    typename SectionIntegrals::FaceQuadrature faceQuadratureIntermediate( int boundaryFaceID ) const;
 
     /**
      * @brief Add the boundary term @f$ T_A(\boldsymbol{Y}_f)\,P_C(\boldsymbol{Y}_f)\,N_i\,dA_Y @f$ of the VCI
      * integration constraint for a face of the particle.
      *
-     * Overrides the point version: the surface vector and the location come from getIntermediateConfBoundaryVector(),
-     * and @f$ T_A @f$ and @f$ P_C @f$ are evaluated at the face center.
+     * Overrides the point version: the points and their surface vectors come from faceQuadratureIntermediate(), and
+     * @f$ T_A @f$ and @f$ P_C @f$ are evaluated at the points.
      *
      * @param[in,out] R_AiC_RowMajor        Constraint residual @f$ R_{AiC} @f$, row-major.
      * @param[in]     boundarySurfaceVector Unused.
@@ -341,65 +414,71 @@ namespace Marmot::Discretizations::Meshfree {
                                               const double* boundarySurfaceVector,
                                               int           boundaryFaceID ) override
     {
-      using namespace Fastor;
+      const auto face = faceQuadratureIntermediate( boundaryFaceID );
+      for ( int g = 0; g < SectionIntegrals::nPointsPerFace; g++ ) {
+        const CoordinatesSized Y_N       = face.points.col( g );
+        const CoordinatesSized N_dAY     = SectionIntegrals::weight( Y_N ) * face.n_dA;
+        Eigen::MatrixXd        TBoundary = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
-      const auto [N_dAY, Y_N]   = getIntermediateConfBoundaryVector( boundaryFaceID );
-      Eigen::MatrixXd TBoundary = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
+        ParentPointParticle::_meshfreeApproximation
+          .computeShapeFunctions( Y_N.data(), ParentPointParticle::_assignedKernelFunctions, TBoundary.data() );
 
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
-                                                                         ParentPointParticle::_assignedKernelFunctions,
-                                                                         TBoundary.data() );
+        // get P for the exact integration location at the boundary
+        auto PBoundary = ParentPointParticle::_P;
+        Math::computeMonomialBasis( ParentPointParticle::_vciOrder, Y_N, PBoundary );
 
-      // get P for the exact integration location at the boundary
-      auto PBoundary = ParentPointParticle::_P;
-      Math::computeMonomialBasis( ParentPointParticle::_vciOrder, CoordinatesSized( Y_N.data() ), PBoundary );
-
-      for ( int A = 0; A < ParentPointParticle::_nNodes; A++ )
-        for ( int i = 0; i < nDim; i++ )
-          for ( int C = 0; C < ParentPointParticle::_nVCIConstraints; C++ )
-            R_AiC_RowMajor[A * ( nDim * ParentPointParticle::_nVCIConstraints ) +
-                           i * ParentPointParticle::_nVCIConstraints + C] += TBoundary( A ) * PBoundary( C ) * N_dAY[i];
+        for ( int A = 0; A < ParentPointParticle::_nNodes; A++ )
+          for ( int i = 0; i < nDim; i++ )
+            for ( int C = 0; C < ParentPointParticle::_nVCIConstraints; C++ )
+              R_AiC_RowMajor[A * ( nDim * ParentPointParticle::_nVCIConstraints ) +
+                             i * ParentPointParticle::_nVCIConstraints + C] += TBoundary( A ) * PBoundary( C ) *
+                                                                               N_dAY[i];
+      }
     };
 
     /**
-     * @brief Coordinates of the evaluation points: the face centers of the smoothing domain.
-     * @param[out] coordinates Coordinates, face by face (nDim x number of faces).
+     * @brief Coordinates of the evaluation points: the quadrature points of the faces of the smoothing domain (the face
+     * centers, or two Gauss points per face of an axisymmetric particle,
+     * ParticleSectionIntegrals::faceQuadraturePoints()).
+     * @param[out] coordinates Coordinates, face by face (nDim x number of evaluation points).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
     {
-      const auto cell = _makeSmoothingDomainCell();
-
-      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > faceCenters( coordinates,
-                                                                               nDim,
-                                                                               cell.getNumberOfFaces() );
-
-      for ( int i = 0; i < cell.getNumberOfFaces(); i++ )
-        faceCenters.col( i ) = cell.getFaceCenterCoordinates( i + 1 );
+      Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > points( coordinates,
+                                                                          nDim,
+                                                                          getNumberOfEvaluationPoints() );
+      points = SectionIntegrals::faceQuadraturePoints( smoothingDomain() );
     }
 
     /**
-     * @brief Center of a face of the current smoothing domain.
+     * @brief Center of a face of the particle geometry (geometryDeformed()).
      * @param[in]  faceID      Face id (1-based).
      * @param[out] coordinates Face center (nDim values).
      */
     void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
-      faceCenter = _makeSmoothingDomainCell().getFaceCenterCoordinates( faceID );
+      faceCenter = geometryDeformed().getFaceCenterCoordinates( faceID );
     }
 
     /**
      * @brief Number of evaluation points.
-     * @return Number of faces of the smoothing domain.
+     * @return The number of face quadrature points of the smoothing domain (whose faces are those of the undeformed
+     * cell).
      */
-    int getNumberOfEvaluationPoints() const override { return _makeUndeformedCell().getNumberOfFaces(); };
+    int getNumberOfEvaluationPoints() const override
+    {
+      return SectionIntegrals::numberOfFaceQuadraturePoints( _makeUndeformedCell() );
+    };
 
   private:
     /// @brief Update the vertex displacements of the smoothing domain from @f$ \boldsymbol{F}_n @f$ and the particle
-    /// displacement, according to the SmoothingDomainUpdateType.
+    /// displacement, according to the SmoothingDomainUpdateType, and those of the geometry with @f$ \boldsymbol{F}_n
+    /// @f$.
     void _updateVertexDisplacementsFromMaterialPointDeformation();
 
-    /// @brief Update the smoothing domain, then set the center to the accepted material point position.
+    /// @brief Update the smoothing domain and the geometry, then set the center to the accepted material point
+    /// position.
     void updateParticlePositionToReferenceIntermediate() override
     {
       _updateVertexDisplacementsFromMaterialPointDeformation();
@@ -408,128 +487,84 @@ namespace Marmot::Discretizations::Meshfree {
     };
   };
 
-  template < int nDim, int nVertices >
-  GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::GradientEnhancedFiniteStrainParticleSQCNI(
-    int                                                     elementID,
-    const double*                                           vertexCoordinates,
-    int                                                     nVertexCoordinates,
-    double                                                  volume,
-    const std::string&                                      materialName,
-    const double*                                           materialProperties,
-    int                                                     sizeMaterialProperties,
-    const Marmot::Discretizations::Meshfree::Approximation& approximation,
-    const SmoothingDomainUpdateType                         smoothingVolumeUpdateType )
-    : GradientEnhancedFiniteStrainParticle< nDim >( elementID,
-                                                    getCenterFromVertices(
-                                                      Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
-                                                        vertexCoordinates ) )
-                                                      .data(),
-                                                    CoordinatesSized::RowsAtCompileTime,
-                                                    getVolumeFromVertices(
-                                                      Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
-                                                        vertexCoordinates ) ),
-                                                    materialName,
-                                                    materialProperties,
-                                                    sizeMaterialProperties,
-                                                    approximation ),
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::
+    GradientEnhancedFiniteStrainParticleSQCNI( int                elementID,
+                                               const double*      vertexCoordinates,
+                                               int                nVertexCoordinates,
+                                               double             volume,
+                                               const std::string& materialName,
+                                               const double*      materialProperties,
+                                               int                sizeMaterialProperties,
+                                               const Marmot::Discretizations::Meshfree::Approximation& approximation,
+                                               const SmoothingDomainUpdateType smoothingVolumeUpdateType )
+    : GradientEnhancedFiniteStrainParticle< nDim,
+                                            nNonlocal,
+                                            section >( elementID,
+                                                       getCenterFromVertices(
+                                                         Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
+                                                           vertexCoordinates ) )
+                                                         .data(),
+                                                       CoordinatesSized::RowsAtCompileTime,
+                                                       getVolumeFromVertices(
+                                                         Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
+                                                           vertexCoordinates ) ),
+                                                       materialName,
+                                                       materialProperties,
+                                                       sizeMaterialProperties,
+                                                       approximation ),
       _smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
       _vertexCoordinates_Undeformed( vertexCoordinates )
 
   {
+    SectionIntegrals::checkParticle( _makeUndeformedCell(),
+                                     smoothingVolumeUpdateType == DeformationGradient,
+                                     elementID );
   }
 
-  template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::computeDistributedLoad( int type,
-                                                                                             int boundaryFaceID,
-                                                                                             const double* load_,
-                                                                                             double*       fExt,
-                                                                                             double*       dFExt_ddQ,
-                                                                                             double        timeNew,
-                                                                                             double        dT ) const
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::computeDistributedLoad(
+    int           type,
+    int           boundaryFaceID,
+    const double* load_,
+    double*       fExt,
+    double*       dFExt_ddQ,
+    double        timeNew,
+    double        dT ) const
   {
+
+    SectionIntegrals::
+      checkFaceLoadIsAvailable( type == GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::CWFCorrection,
+                                __PRETTY_FUNCTION__ );
 
     switch ( type ) {
 
-    case GradientEnhancedFiniteStrainParticle< nDim >::Pressure: {
-
-      const auto&   _mp           = GradientEnhancedFiniteStrainParticle< nDim >::_mp;
-      const auto&   _nNodes       = GradientEnhancedFiniteStrainParticle< nDim >::_nNodes;
-      constexpr int nodeBlockSize = nDim + 1;
-
-      const auto [N_dAY, Y_N] = getIntermediateConfBoundaryVector( boundaryFaceID );
-
-      // a positive pressure pushes on the face: the traction acts against the outward normal
-      TensorD fY = -load_[0] * N_dAY;
-
-      Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
-      Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
-
-      using namespace Fastor;
-      using namespace Math::Tensors::FastorIndices;
-
-      Tensor< double, nDim, nDim > Eye;
-      Eye.eye();
-
-      // apply Nanson's formula
-      const auto deltaF = _mp.dx_dY();
-
-      const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-      const double                       deltaJ    = determinant( deltaF );
-
-      const TensorD f = deltaJ * transpose( deltaFInv ) % fY;
-
-      const Tensor< double, nDim, nDim, nDim, nDim > dFInv_dF = -einsum< Ik, Ki, to_IikK >( deltaFInv, deltaFInv );
-
-      const Tensor< double, nDim, nDim, nDim > df_dDeltaF = outer( f, transpose( deltaFInv ) ) +
-                                                            deltaJ * einsum< IikK, Index< I_ > >( dFInv_dF, fY );
-
-      TensorD r_U( 0.0 );
-
-      Eigen::MatrixXd testBoundary = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
-                                                                         ParentPointParticle::_assignedKernelFunctions,
-                                                                         testBoundary.data() );
-
-      for ( int A = 0; A < _nNodes; A++ ) {
-        const int idxA_u = nodeBlockSize * A;
-
-        /* const double T_A = GradientEnhancedFiniteStrainParticle< nDim >::_T( A ); */
-        r_U = testBoundary( A ) * f;
-
-        {
-          using namespace Eigen;
-          P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
-        }
-
-        for ( int B = 0; B < _nNodes; B++ ) {
-          const int  idxB_u  = nodeBlockSize * B;
-          const auto dN_B_dY = TensorMap< const double, nDim >(
-            GradientEnhancedFiniteStrainParticle< nDim >::_dN_dY.col( B ).data() );
-
-          const Tensor< double, nDim, nDim > df_ddQU_B = testBoundary( A ) * einsum< ijk, k >( df_dDeltaF, dN_B_dY );
-
-          {
-            using namespace Eigen;
-            K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
-              torowmajor( df_ddQU_B ).data() );
-          }
-        }
-      }
-
+    case GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::Pressure: {
+      SectionIntegrals::template addPressure< nDim + nNonlocal >( faceQuadratureIntermediate( boundaryFaceID ),
+                                                                  load_[0],
+                                                                  ParentPointParticle::_mp,
+                                                                  ParentPointParticle::_N,
+                                                                  ParentPointParticle::_dN_dY,
+                                                                  ParentPointParticle::_meshfreeApproximation,
+                                                                  ParentPointParticle::_assignedKernelFunctions,
+                                                                  fExt,
+                                                                  dFExt_ddQ );
       break;
     }
-    case GradientEnhancedFiniteStrainParticle< nDim >::CWFCorrection: {
-      const auto&   _mp           = GradientEnhancedFiniteStrainParticle< nDim >::_mp;
-      const auto&   _nNodes       = GradientEnhancedFiniteStrainParticle< nDim >::_nNodes;
-      constexpr int nodeBlockSize = nDim + 1;
-
-      const auto [N_dAY, Y_N] = getIntermediateConfBoundaryVector( boundaryFaceID );
+    case GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::CWFCorrection: {
+      const auto&   _mp           = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp;
+      const auto&   _nNodes       = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_nNodes;
+      constexpr int nodeBlockSize = nDim + nNonlocal;
 
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
+
+      // one point with the weight 1, the Cartesian rule of the face: an axisymmetric particle has no CWF correction
+      const auto             face = faceQuadratureIntermediate( boundaryFaceID );
+      const CoordinatesSized Y_N  = face.points.col( 0 );
+      const TensorD          N_dAY( face.n_dA.data() );
 
       const auto& S = _mp.response.S;
       const auto& t = _mp.tangents;
@@ -552,7 +587,9 @@ namespace Marmot::Discretizations::Meshfree {
               dTraction_dDeltaF( i, m, M ) += -S( i, j ) * v( m ) * deltaFInv( M, j ) +
                                               t.dS_dDeltaF( i, j, m, M ) * v( j );
 
-      TensorD dTraction_dN = t.dS_dN % v;
+      std::array< TensorD, nNonlocal > dTraction_dN;
+      for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+        dTraction_dN[kNl] = t.dS_dN[kNl] % v;
 
       // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
       // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
@@ -563,7 +600,8 @@ namespace Marmot::Discretizations::Meshfree {
         sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
       for ( int i = 0; i < nDim; ++i ) {
         traction( i ) *= sel( i );
-        dTraction_dN( i ) *= sel( i );
+        for ( int kNl = 0; kNl < nNonlocal; kNl++ )
+          dTraction_dN[kNl]( i ) *= sel( i );
         for ( int m = 0; m < nDim; ++m )
           for ( int M = 0; M < nDim; ++M )
             dTraction_dDeltaF( i, m, M ) *= sel( i );
@@ -588,8 +626,8 @@ namespace Marmot::Discretizations::Meshfree {
           const int  idxB_u  = nodeBlockSize * B;
           const int  idxB_n  = nodeBlockSize * B + nDim;
           const auto dN_B_dY = TensorMap< const double, nDim >(
-            GradientEnhancedFiniteStrainParticle< nDim >::_dN_dY.col( B ).data() );
-          const double N_B = GradientEnhancedFiniteStrainParticle< nDim >::_N( B );
+            GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_dN_dY.col( B ).data() );
+          const double N_B = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_N( B );
 
           Tensor< double, nDim, nDim > k_UU( 0.0 );
           for ( int i = 0; i < nDim; ++i )
@@ -597,13 +635,15 @@ namespace Marmot::Discretizations::Meshfree {
               for ( int M = 0; M < nDim; ++M )
                 k_UU( i, m ) += testBoundary( A ) * dTraction_dDeltaF( i, m, M ) * dN_B_dY( M );
 
-          const TensorD k_UN = testBoundary( A ) * N_B * dTraction_dN;
-
           {
             using namespace Eigen;
             K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< const Matrix< double, nDim, nDim > >(
               torowmajor( k_UU ).data() );
-            K.template block< nDim, 1 >( idxA_u, idxB_n ) -= Map< const Matrix< double, nDim, 1 > >( k_UN.data() );
+            for ( int kNl = 0; kNl < nNonlocal; kNl++ ) {
+              const TensorD k_UN = testBoundary( A ) * N_B * dTraction_dN[kNl];
+              K.template block< nDim, 1 >( idxA_u,
+                                           idxB_n + kNl ) -= Map< const Matrix< double, nDim, 1 > >( k_UN.data() );
+            }
           }
         }
       }
@@ -616,57 +656,40 @@ namespace Marmot::Discretizations::Meshfree {
     }
   }
 
-  template < int nDim, int nVertices >
-  std::tuple< typename GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::TensorD,
-              typename GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::TensorD >
-  GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::getIntermediateConfBoundaryVector(
-    int boundaryFaceID ) const
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  typename GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::SectionIntegrals::
+    FaceQuadrature
+    GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::faceQuadratureIntermediate(
+      int boundaryFaceID ) const
   {
+    if constexpr ( !SectionIntegrals::isAxisymmetric )
+      if ( _smoothingVolumeUpdateType != DeformationGradient ) {
+        // The deformed smoothing domain is not consistent with the physical domain of the particle, so the face is
+        // not taken from it: the undeformed boundary vector is mapped by Nanson's formula with F_n, and placed at the
+        // undeformed face center translated by the particle displacement.
+        const auto                             cellUndeformed = _makeUndeformedCell();
+        const Eigen::Matrix< double, nDim, 1 > N_dA0_eigen    = cellUndeformed.boundarySurfaceVector( boundaryFaceID );
+        const Eigen::Matrix< double, nDim, 1 > Y0 = cellUndeformed.getFaceCenterCoordinates( boundaryFaceID );
 
-    TensorD N_dAY;
-    TensorD Y;
+        const auto FY = this->_mp.dY_dX();
 
-    if ( _smoothingVolumeUpdateType == DeformationGradient ) {
-      // For the full SQCNI case, we actually operate on the deformed element.
-      // This means, that the deformed smoothing domain is consistent with the physical domain of the particle.
-      const auto cell = _makeSmoothingDomainCell();
+        using namespace Fastor;
+        const TensorD N_dAY = determinant( FY ) * transpose( inverse( FY ) ) % TensorD( N_dA0_eigen.data() );
 
-      const Eigen::Matrix< double, nDim, 1 > n_dA = cell.boundarySurfaceVector( boundaryFaceID );
-      const Eigen::Matrix< double, nDim, 1 > y    = cell.getFaceCenterCoordinates( boundaryFaceID );
+        TensorD Y;
+        this->_mp.getCenterDisplacement( Y.data() );
+        Y += TensorD( Y0.data() );
 
-      for ( int i = 0; i < nDim; i++ ) {
-        N_dAY[i] = n_dA[i];
-        Y[i]     = y[i];
+        return { CoordinatesSized( Y.data() ), CoordinatesSized( N_dAY.data() ) };
       }
-    }
-    else {
-      // In all other cases, the deformed smoothing domain is not consistent with the physical domain of the particle.
-      // Accordingly, it is not reasonable to let the boundary vector be acting on the deformed smoothing domain.
-      // Instead, we compute the boundary vector in the undeformed configuration and apply the deformation gradient
-      // using Nanson's formula. Also, the let the origin of the boundary segment be the center of the particle in the
-      // deformed configuration.
 
-      const auto cellUndeformed = _makeUndeformedCell();
-
-      const Eigen::Matrix< double, nDim, 1 > N_dA0_eigen = cellUndeformed.boundarySurfaceVector( boundaryFaceID );
-      const Eigen::Matrix< double, nDim, 1 > Y0          = cellUndeformed.getFaceCenterCoordinates( boundaryFaceID );
-
-      const auto FY = this->_mp.dY_dX();
-
-      // apply Nanson's formula to shift to Y configuration:
-      using namespace Fastor;
-      N_dAY = determinant( FY ) * transpose( inverse( FY ) ) % TensorD( N_dA0_eigen.data() );
-
-      // and the center of the boundary segment in the deformed configuration
-      this->_mp.getCenterDisplacement( Y.data() );
-      Y += TensorD( Y0.data() );
-    }
-
-    return { N_dAY, Y };
+    // the full SQCNI: the deformed smoothing domain coincides with the physical domain of the particle
+    return SectionIntegrals::faceQuadrature( smoothingDomain(), boundaryFaceID );
   }
 
-  template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::getVertexCoordinates( double* coordinates ) const
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::
+    getSmoothingDomainVertexCoordinates( double* coordinates ) const
   {
 
     Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesDeformed( coordinates );
@@ -676,9 +699,9 @@ namespace Marmot::Discretizations::Meshfree {
     coordinatesDeformed = _vertexCoordinates_Undeformed + vertexDisplacementsSmoothingDomain;
   }
 
-  template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim,
-                                                  nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::
+    _updateVertexDisplacementsFromMaterialPointDeformation()
   {
 
     Eigen::Matrix< double, nDim, nDim > F = Eigen::Matrix< double, nDim, nDim >::Identity();
@@ -689,18 +712,19 @@ namespace Marmot::Discretizations::Meshfree {
 
     case SmoothingDomainUpdateType::DeformationGradient: {
 
-      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim >::_mp.dY_dX();
+      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp
+                                                  .dY_dX();
       F = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F_.data() );
       break;
     }
 
     case SmoothingDomainUpdateType::RotationOnly: {
 
-      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim >::_mp.dY_dX();
+      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp
+                                                  .dY_dX();
       F = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F_.data() );
 
-      Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-      svd.compute( F, Eigen::ComputeFullU | Eigen::ComputeFullV );
+      const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F );
 
       Eigen::Matrix< double, nDim, nDim > R = svd.matrixU() * svd.matrixV().transpose();
 
@@ -709,11 +733,11 @@ namespace Marmot::Discretizations::Meshfree {
     }
 
     case SmoothingDomainUpdateType::RotationAndPrincipalStretch: {
-      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim >::_mp.dY_dX();
+      Fastor::Tensor< double, nDim, nDim > F_ = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp
+                                                  .dY_dX();
       F = Eigen::Map< Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >( F_.data() );
 
-      Eigen::JacobiSVD< Eigen::MatrixXd > svd;
-      svd.compute( F, Eigen::ComputeFullU | Eigen::ComputeFullV );
+      const Eigen::JacobiSVD< Eigen::MatrixXd, Eigen::ComputeFullU | Eigen::ComputeFullV > svd( F );
 
       Eigen::Matrix< double, nDim, nDim > R = svd.matrixU() * svd.matrixV().transpose();
 
@@ -726,61 +750,70 @@ namespace Marmot::Discretizations::Meshfree {
     }
     }
 
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_SmoothingDomain );
+    vertexDisplacements = _vertexCoordinatesDeformedWith( F ) - _vertexCoordinates_Undeformed;
+
+    const Fastor::Tensor< double, nDim, nDim >
+      F_n = GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp.dY_dX();
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacementsGeometry( _vertexDisplacements_Geometry );
+    vertexDisplacementsGeometry = _vertexCoordinatesDeformedWith(
+                                    Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                      F_n.data() ) ) -
+                                  _vertexCoordinates_Undeformed;
+  }
+
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  Eigen::Matrix< double, nDim, nVertices > GradientEnhancedFiniteStrainParticleSQCNI<
+    nDim,
+    nVertices,
+    nNonlocal,
+    section >::_vertexCoordinatesDeformedWith( const Eigen::Matrix< double, nDim, nDim >& A ) const
+  {
     Eigen::Matrix< double, nDim, nVertices > coordinatesRelToCenter0 = _vertexCoordinates_Undeformed;
     for ( int i = 0; i < nDim; i++ ) {
       coordinatesRelToCenter0.row( i ).array() -= this->_centerCoordinatesUndeformed( i );
     }
 
-    Eigen::Matrix< double, nDim, nVertices > vertexCoordinatesDeformed = F * coordinatesRelToCenter0;
+    Eigen::Matrix< double, nDim, nVertices > vertexCoordinatesDeformed = A * coordinatesRelToCenter0;
 
     Eigen::Matrix< double, nDim, 1 > _mp_displacement;
-    GradientEnhancedFiniteStrainParticle< nDim >::_mp.getCenterDisplacement( _mp_displacement.data() );
+    GradientEnhancedFiniteStrainParticle< nDim, nNonlocal, section >::_mp.getCenterDisplacement(
+      _mp_displacement.data() );
 
     for ( int i = 0; i < nDim; i++ ) {
       vertexCoordinatesDeformed.row( i ).array() += this->_centerCoordinatesUndeformed( i ) + _mp_displacement( i );
     }
 
-    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_SmoothingDomain );
-    vertexDisplacements = vertexCoordinatesDeformed - _vertexCoordinates_Undeformed;
+    return vertexCoordinatesDeformed;
   }
 
-  template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::assignMeshfreeKernelFunctions(
-    const std::vector< const KernelFunction* >& kernelFunctions )
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::getVertexCoordinates(
+    double* coordinates ) const
   {
+    Eigen::Map< Eigen::Matrix< double, nDim, nVertices > >       coordinatesDeformed( coordinates );
+    Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > > vertexDisplacements( _vertexDisplacements_Geometry );
+    coordinatesDeformed = _vertexCoordinates_Undeformed + vertexDisplacements;
+  }
 
-    ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
-
-    ParentPointParticle::_nNodes = static_cast< int >(
-      GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size() );
-
+  template < int nDim, int nVertices, int nNonlocal, Section section >
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices, nNonlocal, section >::updateShapeFunctions()
+  {
     Eigen::Matrix< double, nDim, 1 > coords;
     ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
 
-    ParentPointParticle::_N     = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
-    ParentPointParticle::_dN_dY = Eigen::MatrixXd::Zero( nDim, ParentPointParticle::_nNodes );
+    ParentPointParticle::_N = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
 
     ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( coords.data(),
                                                                        ParentPointParticle::_assignedKernelFunctions,
                                                                        ParentPointParticle::_N.data() );
 
-    Eigen::MatrixXd NBoundary( 1, ParentPointParticle::_nNodes );
-
-    const auto cell = _makeSmoothingDomainCell();
-
-    for ( int i = 0; i < cell.getNumberOfFaces(); i++ ) {
-
-      const Eigen::Matrix< double, nDim, 1 > n_dA       = cell.boundarySurfaceVector( i + 1 );
-      const Eigen::Matrix< double, nDim, 1 > faceCenter = cell.getFaceCenterCoordinates( i + 1 );
-
-      ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( faceCenter.data(),
-                                                                         ParentPointParticle::_assignedKernelFunctions,
-                                                                         NBoundary.data() );
-
-      ParentPointParticle::_dN_dY += n_dA * NBoundary;
-    }
-
-    ParentPointParticle::_dN_dY /= cell.volume();
+    SectionIntegrals::smoothShapeFunctionGradients( smoothingDomain(),
+                                                    ParentPointParticle::_meshfreeApproximation,
+                                                    ParentPointParticle::_assignedKernelFunctions,
+                                                    ParentPointParticle::_N,
+                                                    ParentPointParticle::_dN_dY,
+                                                    nullptr ); // no second derivatives (not NSNI)
 
     ParentPointParticle::_T     = ParentPointParticle::_N;
     ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;

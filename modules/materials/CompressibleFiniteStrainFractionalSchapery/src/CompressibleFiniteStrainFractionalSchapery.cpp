@@ -25,6 +25,7 @@
 
 #include "Marmot/CompressibleFiniteStrainFractionalSchapery.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -36,7 +37,6 @@
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
 #include <algorithm>
-#include <autodiff/forward/dual/dual.hpp>
 #include <cmath>
 #include <cstring>
 #include <functional>
@@ -105,40 +105,39 @@ namespace Marmot::Materials {
     computeEnergyDensityAndDerivatives( const Tensor33d& C ) const
   {
     using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+    using Marmot::Math::Differentiation::Automatic::dual3rd;
 
-    std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > energyDensityFunction;
+    // every base is the sum of its isochoric part and the volumetric penalty potential, except PenceGouNeoHooke
+    std::function< dual3rd( const Tensor33t< dual3rd >& ) > energyDensityFunction;
+    const auto&                                             par = elasticProperties;
 
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return NeoHookePotential< autodiff::dual3rd >( C_ad, elasticProperties[0] ) +
-               VolumetricPenaltyPotential< autodiff::dual3rd >( C_ad, elasticProperties[1] );
+      energyDensityFunction = [mu = par[0], kappa = par[1]]( const Tensor33t< dual3rd >& C_ad ) -> dual3rd {
+        return DecoupledPotential( C_ad, Isochoric::NeoHooke{ mu }, Volumetric::Penalty{ kappa } );
       };
       break;
     case Yeoh:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return YeohPotential< autodiff::dual3rd >( C_ad,
-                                                   elasticProperties[0],
-                                                   elasticProperties[1],
-                                                   elasticProperties[2] ) +
-               VolumetricPenaltyPotential< autodiff::dual3rd >( C_ad, elasticProperties[3] );
+      energyDensityFunction =
+        [C10 = par[0], C20 = par[1], C30 = par[2], kappa = par[3]]( const Tensor33t< dual3rd >& C_ad ) -> dual3rd {
+        return DecoupledPotential( C_ad, Isochoric::Yeoh{ C10, C20, C30 }, Volumetric::Penalty{ kappa } );
       };
       break;
     case PenceGouNeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return PenceGouPotentialB< autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
+      energyDensityFunction = [K = par[0], G = par[1]]( const Tensor33t< dual3rd >& C_ad ) -> dual3rd {
+        return PenceGouPotentialB< dual3rd >( C_ad, K, G );
       };
       break;
     case MooneyRivlin:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return MooneyRivlinPotential< autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               VolumetricPenaltyPotential< autodiff::dual3rd >( C_ad, elasticProperties[2] );
+      energyDensityFunction =
+        [C10 = par[0], C01 = par[1], kappa = par[2]]( const Tensor33t< dual3rd >& C_ad ) -> dual3rd {
+        return DecoupledPotential( C_ad, Isochoric::MooneyRivlin{ C10, C01 }, Volumetric::Penalty{ kappa } );
       };
       break;
     case ArrudaBoyce:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ArrudaBoyce8ChainPotential< autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               VolumetricPenaltyPotential< autodiff::dual3rd >( C_ad, elasticProperties[2] );
+      energyDensityFunction =
+        [mu = par[0], lambdaL = par[1], kappa = par[2]]( const Tensor33t< dual3rd >& C_ad ) -> dual3rd {
+        return DecoupledPotential( C_ad, Isochoric::ArrudaBoyce8Chain{ mu, lambdaL }, Volumetric::Penalty{ kappa } );
       };
       break;
     default:

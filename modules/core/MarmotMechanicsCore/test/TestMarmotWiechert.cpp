@@ -19,7 +19,7 @@ namespace {
     const double  spacing = std::sqrt( 10. );
 
     const Properties relaxationTimes    = generateRelaxationTimes( 4, minTau, spacing );
-    auto             relaxationFunction = [&]( autodiff::Real< order, double > time ) {
+    auto             relaxationFunction = [&]( Marmot::Math::Differentiation::Automatic::Taylor< order > time ) {
       return RelaxationFunctions::powerLaw( time, m, n );
     };
 
@@ -46,7 +46,7 @@ namespace {
     const double  spacing = std::sqrt( 10. );
 
     const Properties relaxationTimes    = generateRelaxationTimes( 4, 0.01, spacing );
-    auto             relaxationFunction = [&]( autodiff::Real< order, double > time ) {
+    auto             relaxationFunction = [&]( Marmot::Math::Differentiation::Automatic::Taylor< order > time ) {
       return RelaxationFunctions::powerLaw( time, m, n );
     };
 

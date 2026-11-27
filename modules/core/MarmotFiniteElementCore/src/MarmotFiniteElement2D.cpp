@@ -1,4 +1,5 @@
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <iostream>
 
@@ -6,6 +7,36 @@ using namespace Eigen;
 
 namespace Marmot::Discretizations::Elements {
   namespace Spatial2D {
+    namespace Axisymmetric {
+
+      void checkNodesAreInTheMeridianHalfPlane( const Ref< const Matrix< double, nDim, Dynamic > >& nodes,
+                                                int                                                 elementLabel )
+      {
+        const double h = ( nodes.rowwise().maxCoeff() - nodes.rowwise().minCoeff() ).norm();
+        Eigen::Index i = 0;
+        const double r = nodes.row( 0 ).minCoeff( &i );
+        if ( r < -axisTolerance * h )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << "axisymmetric element " << elementLabel << ": node " << i + 1
+                                       << " (local) lies at r = x_1 = " << r
+                                       << " < 0; axisymmetric elements are meshed in r >= 0." );
+      }
+
+      void checkRadiusOfQuadraturePoint( double r, int elementLabel )
+      {
+        if ( r <= 0.0 )
+          throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                       << "axisymmetric element " << elementLabel << ": a quadrature point lies at r = "
+                                       << r << " <= 0; axisymmetric elements are meshed in r >= 0." );
+      }
+
+      Matrix4d sectionTangent( const Marmot::Math::Matrix6d& C )
+      {
+        return C.topLeftCorner< 4, 4 >();
+      }
+
+    } // namespace Axisymmetric
+
     namespace Quad4 {
 
       NSized N( const Vector2d& xi )

@@ -28,6 +28,7 @@
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotParticleLibrary.h"
+#include "Marmot/MarmotParticleTesting.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
@@ -64,15 +65,39 @@ namespace {
                         const TimeIncrement&       timeIncrement ) const override
     {
       GradientEnhancedCompressibleNeoHookeDamage::computeStress( response, tangents, deformation, timeIncrement );
-      response.L += beta * deformation.N;
-      tangents.dL_dN += beta;
+      response.L( 0 ) += beta * deformation.N( 0 );
+      tangents.dL_dN( 0, 0 ) += beta;
     }
   };
 
   const std::string testMaterialName = "TESTLOCALFIELDDEPENDINGONTHENONLOCALFIELD";
 
-  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::registerMaterial<
-    LocalFieldDependingOnTheNonlocalField >( testMaterialName );
+  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+    1 >::registerMaterial< LocalFieldDependingOnTheNonlocalField >( testMaterialName );
+
+  // A nonlocal field with a viscosity and a micro-inertia, for the explicit scheme; eta^2/4 = m would be the best m,
+  // any positive pair will do here.
+  class ViscousNonlocalField : public Materials::GradientEnhancedCompressibleNeoHookeDamage {
+  public:
+    static constexpr double eta = 0.7;
+    static constexpr double m   = 0.05;
+
+    using GradientEnhancedCompressibleNeoHookeDamage::GradientEnhancedCompressibleNeoHookeDamage;
+
+    NonlocalVector getNonlocalViscosity( const double* ) const override { return NonlocalVector::Constant( eta ); }
+
+    NonlocalVector getNonlocalMicroInertia( const double* ) const override { return NonlocalVector::Constant( m ); }
+  };
+
+  const std::string viscousMaterialName = "TESTVISCOUSNONLOCALFIELD";
+
+  const bool viscousMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory<
+    1 >::registerMaterial< ViscousNonlocalField >( viscousMaterialName );
+
+  // GM7/COROTATIONAL: {E, nu, k1, k2, k3, k4, k5, c, m, c3, fc, transitionWidth, transitionExponent, stressUnit,
+  // density, eta, micro-inertia = eta^2/4}
+  const std::vector< double > gm7Props =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 1.0, 2.4e-9, 3e-4, 2.25e-8 };
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >
@@ -98,9 +123,9 @@ namespace {
     }
   };
 
-  template < int nDim >
+  template < int nDim, int nNonlocal = 1 >
   struct Setup {
-    static constexpr int nBlock = nDim + 1; // interleaved particle dof vector [u_1 N_1 u_2 N_2 ...]
+    static constexpr int nBlock = nDim + nNonlocal; // interleaved particle dof vector [u_1 N_1 u_2 N_2 ...]
 
     KernelGrid< nDim >                                                grid;
     Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
@@ -111,17 +136,19 @@ namespace {
     Setup( const std::string&           name,
            const std::vector< double >& vertices,
            double                       volume,
-           const std::string&           materialName = "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" )
+           const std::string&           materialName       = "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+           const std::vector< double >& materialProperties = matProps )
     {
-      particle.reset( Marmot::Registry::ParticleFactory::createParticle( name,
-                                                                         1,
-                                                                         vertices.data(),
-                                                                         static_cast< int >( vertices.size() ),
-                                                                         volume,
-                                                                         materialName,
-                                                                         matProps.data(),
-                                                                         static_cast< int >( matProps.size() ),
-                                                                         approximation ) );
+      particle.reset(
+        Marmot::Registry::ParticleFactory::createParticle( name,
+                                                           1,
+                                                           vertices.data(),
+                                                           static_cast< int >( vertices.size() ),
+                                                           volume,
+                                                           materialName,
+                                                           materialProperties.data(),
+                                                           static_cast< int >( materialProperties.size() ),
+                                                           approximation ) );
       stateVars.assign( particle->getNumberOfRequiredStateVars(), 0.0 );
       particle->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       particle->initializeYourself();
@@ -190,14 +217,16 @@ namespace {
     }
   };
 
-  template < int nDim >
+  template < int nDim, int nNonlocal = 1 >
   Eigen::VectorXd increment( int nNodes, double scaleU, double N0 )
   {
-    Eigen::VectorXd dQ( nNodes * ( nDim + 1 ) );
+    constexpr int   nBlock = nDim + nNonlocal;
+    Eigen::VectorXd dQ( nNodes * nBlock );
     for ( int A = 0; A < nNodes; A++ ) {
       for ( int i = 0; i < nDim; i++ )
-        dQ[A * ( nDim + 1 ) + i] = scaleU * std::sin( 1.7 * ( A * nDim + i + 1 ) );
-      dQ[A * ( nDim + 1 ) + nDim] = N0 * ( 1. + 0.3 * std::cos( 0.9 * ( A + 1 ) ) );
+        dQ[A * nBlock + i] = scaleU * std::sin( 1.7 * ( A * nDim + i + 1 ) );
+      for ( int K = 0; K < nNonlocal; K++ )
+        dQ[A * nBlock + nDim + K] = N0 * ( 1. + 0.3 * std::cos( 0.9 * ( A + 1 ) + K ) );
     }
     return dQ;
   }
@@ -773,6 +802,98 @@ namespace {
     }
   }
 
+  // A point of the particle's own (a vertex, the center) moves with getInterpolationVectorLinearizedAboutCenter():
+  // after an accepted increment dQ from a deformed state, x_new - x = sum_B G_B dQ^u_B to round-off, and G sums to one,
+  // also for the smoothing domains that do not follow F (the vertices are the geometry, not the smoothing domain). The
+  // shape functions at a vertex, getInterpolationVector(), do not move it, the reason a constraint that measures a
+  // vertex must distribute its force with G.
+  template < int nDim >
+  void checkOwnPointsMoveWithTheLinearizedInterpolation( const std::string& name, const std::string& shape )
+  {
+    using Points          = Eigen::Matrix< double, nDim, Eigen::Dynamic >;
+    constexpr int nBlock  = Setup< nDim >::nBlock;
+    const bool    isPoint = numberOfFaces( shape ) == 0;
+
+    // a host may ask for the vertices before it initializes the particle (EdelweissMeshfree creates its constraints
+    // before it prepares the model): on a zero state block they are the undeformed ones
+    {
+      const auto                                                        v = vertices( shape );
+      Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
+      std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >    particle(
+        Marmot::Registry::ParticleFactory::createParticle( name,
+                                                           1,
+                                                           v.data(),
+                                                           static_cast< int >( v.size() ),
+                                                           volume( shape ),
+                                                           "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                           matProps.data(),
+                                                           static_cast< int >( matProps.size() ),
+                                                           approximation ) );
+      std::vector< double > stateVars( particle->getNumberOfRequiredStateVars(), 0.0 );
+      particle->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
+      Eigen::VectorXd vert( v.size() );
+      particle->getVertexCoordinates( vert.data() );
+      throwExceptionOnFailure( ( vert - Eigen::Map< const Eigen::VectorXd >( v.data(), v.size() ) ).norm() < 1e-14,
+                               name + ": the vertices before initializeYourself() are the undeformed ones" );
+    }
+
+    Setup< nDim > s( name, vertices( shape ), volume( shape ) );
+    s.accept( increment< nDim >( s.nNodes(), 0.05, 1e-3 ) ); // a deformed, accepted state
+
+    const int nV = s.particle->getNumberOfVertices();
+    const int nN = s.nNodes();
+    Points    points( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( points.data() );
+    s.particle->getCenterCoordinates( points.col( nV ).data() );
+
+    Eigen::MatrixXd G( nN, nV + 1 ), N( nN, nV + 1 );
+    for ( int k = 0; k <= nV; k++ ) {
+      s.particle->getInterpolationVectorLinearizedAboutCenter( G.col( k ).data(), points.col( k ).data() );
+      s.particle->getInterpolationVector( N.col( k ).data(), points.col( k ).data() );
+    }
+
+    Eigen::VectorXd dQ( s.nDof() );
+    for ( int i = 0; i < s.nDof(); i++ )
+      dQ[i] = 0.03 * std::cos( 2.3 * ( i + 1 ) );
+    const Eigen::Map< const Points, 0, Eigen::OuterStride<> > dq( dQ.data(), nDim, nN, Eigen::OuterStride<>( nBlock ) );
+    s.accept( dQ );
+
+    Points moved( nDim, nV + 1 );
+    s.particle->getVertexCoordinates( moved.data() );
+    s.particle->getCenterCoordinates( moved.col( nV ).data() );
+    const Points motion = moved - points;
+
+    throwExceptionOnFailure( ( motion - dq * G ).norm() < 1e-12 * motion.norm(),
+                             name +
+                               ": a point of the particle moves with getInterpolationVectorLinearizedAboutCenter()" );
+    throwExceptionOnFailure( ( G.colwise().sum().array() - 1.0 ).abs().maxCoeff() < 1e-12,
+                             name + ": the linearized interpolation is a partition of unity" );
+    if ( !isPoint )
+      throwExceptionOnFailure( ( motion.leftCols( nV ) - dq * N.leftCols( nV ) ).norm() > 1e-2 * motion.norm(),
+                               name + ": the shape functions at the vertices do not move them" );
+  }
+
+  // updateShapeFunctions() of a particle that has moved evaluates its shape functions anew, and the same as assigning
+  // its kernel functions again (Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain)
+  template < int nDim >
+  void checkUpdateShapeFunctions( const std::string& name, const std::string& shape )
+  {
+    Setup< nDim > s( name, vertices( shape ), volume( shape ) );
+    s.accept( increment< nDim >( s.nNodes(), 0.02, 3e-3 ) ); // a deformed, accepted state
+
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > kernelFunctions;
+    for ( const int g : s.assignedGridIndices )
+      kernelFunctions.push_back( s.grid.pointers[g] );
+    Marmot::Testing::checkUpdatingTheShapeFunctionsEqualsAssigningTheKernelFunctionsAgain( name,
+                                                                                           *s.particle,
+                                                                                           kernelFunctions,
+                                                                                           s.stateVars,
+                                                                                           increment<
+                                                                                             nDim >( s.nNodes(),
+                                                                                                     0.03,
+                                                                                                     1e-3 ) );
+  }
+
 } // namespace
 
 void testSQCNIxNSNIFirstIncrementIsDeterministic()
@@ -794,6 +915,253 @@ void testSQCNIxNSNIFirstIncrementIsDeterministic()
   throwExceptionOnFailure( Pa.allFinite() && ( Pa - Pb ).norm() == 0.0,
                            "first-increment residual depends on uninitialized memory" );
 }
+
+namespace {
+
+  // The explicit internal force of the first increment from the virgin state equals the implicit residual without
+  // inertia: the nonlocal balance in total form equals the one in increment form when the state it starts from is zero,
+  // and both evaluate the same material point.
+  template < int nDim, int nNonlocal >
+  void checkExplicitAgreesWithImplicit( const std::string&           name,
+                                        const std::string&           shape,
+                                        const std::string&           materialName,
+                                        const std::vector< double >& properties,
+                                        double                       scaleU )
+  {
+    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
+    const Eigen::VectorXd    dQ = increment< nDim, nNonlocal >( s.nNodes(), scaleU, 1e-4 );
+
+    const Eigen::VectorXd PImplicit = s.trial( dQ ).first;
+
+    s.particle->updatePhysicsExplicit( dQ.data(), 1.0, 1.0 );
+    Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( s.nDof() );
+    s.particle->computePhysicsKernelsExplicit( PExplicit.data() );
+
+    throwExceptionOnFailure( ( PExplicit - PImplicit ).cwiseAbs().maxCoeff() <= 1e-12 * PImplicit.cwiseAbs().maxCoeff(),
+                             Marmot::Utilities::MakeString()
+                               << name << ": explicit force differs from the implicit residual by "
+                               << ( PExplicit - PImplicit ).cwiseAbs().maxCoeff() << " of "
+                               << PImplicit.cwiseAbs().maxCoeff() );
+  }
+
+  // Lumped inertia, damping and momentum against hand values: rho0 T_A V0 and m T_A V0, eta T_A V0 on the nonlocal
+  // rows only, and the inertia times the rates of a uniform increment (translation and nonlocal field).
+  template < int nDim, int nNonlocal >
+  void checkLumpedOperators( const std::string&           name,
+                             const std::string&           shape,
+                             const std::string&           materialName,
+                             const std::vector< double >& properties,
+                             double                       density,
+                             double                       eta,
+                             double                       microInertia )
+  {
+    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
+    constexpr int            nBlock = nDim + nNonlocal;
+    const double             V0     = s.particle->getVolumeUndeformed();
+
+    std::array< double, nDim > center;
+    s.particle->getCenterCoordinates( center.data() );
+    Eigen::VectorXd T( s.nNodes() );
+    s.particle->getInterpolationVector( T.data(), center.data() );
+
+    // a uniform increment over dT: v = t / dT, dN/dt = dn / dT, and no gradients
+    const double    dT = 1e-3, dn = 2e-6;
+    Eigen::VectorXd dQ = Eigen::VectorXd::Zero( s.nDof() );
+    for ( int A = 0; A < s.nNodes(); A++ ) {
+      for ( int i = 0; i < nDim; i++ )
+        dQ( A * nBlock + i ) = 1e-6 * ( i + 1 );
+      for ( int K = 0; K < nNonlocal; K++ )
+        dQ( A * nBlock + nDim + K ) = dn;
+    }
+    s.particle->updatePhysicsExplicit( dQ.data(), dT, dT );
+
+    Eigen::VectorXd M = Eigen::VectorXd::Zero( s.nDof() ), C = M, P = M;
+    s.particle->computeLumpedInertia( M.data() );
+    s.particle->computeLumpedDamping( C.data() );
+    s.particle->computeLumpedMomentum( P.data() );
+
+    const auto close = [&]( double a, double b, double scale ) { return std::abs( a - b ) <= 1e-12 * scale; };
+    for ( int A = 0; A < s.nNodes(); A++ ) {
+      for ( int i = 0; i < nDim; i++ ) {
+        const int row = A * nBlock + i;
+        throwExceptionOnFailure( close( M( row ), density * T( A ) * V0, density * V0 ), name + ": lumped mass" );
+        throwExceptionOnFailure( C( row ) == 0.0, name + ": the displacement rows must have no damping" );
+        throwExceptionOnFailure( close( P( row ),
+                                        density * T( A ) * V0 * 1e-6 * ( i + 1 ) / dT,
+                                        density * V0 * 1e-6 * nDim / dT ),
+                                 name + ": lumped momentum, displacement" );
+      }
+      for ( int K = 0; K < nNonlocal; K++ ) {
+        const int row = A * nBlock + nDim + K;
+        throwExceptionOnFailure( close( M( row ), microInertia * T( A ) * V0, microInertia * V0 ),
+                                 name + ": lumped micro-inertia" );
+        throwExceptionOnFailure( close( C( row ), eta * T( A ) * V0, eta * V0 ), name + ": lumped damping" );
+        throwExceptionOnFailure( close( P( row ), microInertia * T( A ) * V0 * dn / dT, microInertia * V0 * dn / dT ),
+                                 name + ": lumped momentum, nonlocal" );
+      }
+    }
+
+    // and the totals: the partition of unity distributes exactly the particle's mass and momentum
+    double totalMass = 0.0;
+    for ( int A = 0; A < s.nNodes(); A++ )
+      totalMass += M( A * nBlock );
+    throwExceptionOnFailure( close( totalMass, density * V0, density * V0 ), name + ": total mass" );
+  }
+
+  // The bound of |K| W of the particle for the critical time step (addBoundOfAbsoluteStiffnessTimes), against
+  // the stiffness itself, the tangent of a zero increment, at a state off the reference: never below |K| W, and its
+  // largest entry of each column (what the Collatz-Wielandt bound takes) at most maxOverestimate times the exact one
+  // (the Cauchy-Schwarz inequality over the nodes overestimates the gradient terms by about 1.2 in 2D, 1.3 in 3D).
+  // The weights are positive and varying on the dofs of one field and zero on the other, as the host's field blocks.
+  template < int nDim, int nNonlocal >
+  void checkBoundOfAbsoluteStiffness( const std::string&           name,
+                                      const std::string&           shape,
+                                      const std::string&           materialName,
+                                      const std::vector< double >& properties,
+                                      double                       scaleU,
+                                      double                       maxOverestimate )
+  {
+    constexpr int            nBlock = nDim + nNonlocal;
+    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
+    s.accept( increment< nDim, nNonlocal >( s.nNodes(), scaleU, 1e-2 * scaleU ) );
+
+    const int             n = s.nDof();
+    const Eigen::MatrixXd K = s.trial( Eigen::VectorXd::Zero( n ) ).second;
+    Eigen::MatrixXd       W = Eigen::MatrixXd::Zero( n, 2 );
+    for ( int a = 0; a < n; a++ )
+      W( a, a % nBlock < nDim ? 0 : 1 ) = 1.0 + 0.5 * std::sin( 0.7 * a );
+
+    Marmot::Testing::checkAbsoluteStiffnessBoundAgainstStiffness( name, *s.particle, K, W, maxOverestimate );
+
+    // the description of the stiffness leaves the particle as it was, also in the middle of an increment
+    const Eigen::VectorXd dQ = increment< nDim, nNonlocal >( s.nNodes(), 0.5 * scaleU, 0.5e-2 * scaleU );
+    Marmot::Testing::checkDescribingTheStiffnessLeavesTheParticleUnchanged( name, *s.particle, s.stateVars, dQ, true );
+  }
+
+  // The explicit force after an accepted increment, where F_n != I and the nonlocal field is no longer zero: the
+  // nonlocal rows against r^N_A = (T_A (N - L) + c grad_X T_A . grad_X N) V0 by hand, with grad_X T_A = F_n^T grad_Y
+  // T_A and the total grad_X N = grad_Y dN_1 + F_n^T grad_Y dN_2 of the two increments, each from the shape functions
+  // of its own configuration. A point particle, whose test functions are the shape functions of the approximation.
+  template < int nDim >
+  void checkExplicitTotalFormAfterAnAcceptedIncrement( const std::string& name, const std::string& shape )
+  {
+    Setup< nDim > s( name, vertices( shape ), volume( shape ) );
+    constexpr int nBlock = nDim + 1;
+    const double  c      = matProps[4] * matProps[4];
+    const double  V0     = s.particle->getVolumeUndeformed();
+
+    // the shape functions and their gradients at the particle center, with the kernels currently assigned
+    const auto shapeFunctions = [&]() {
+      std::array< double, nDim > center;
+      s.particle->getCenterCoordinates( center.data() );
+      std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > kernels;
+      for ( int g : s.assignedGridIndices )
+        kernels.push_back( s.grid.pointers[g] );
+      Eigen::VectorXd N( s.nNodes() );
+      Eigen::MatrixXd dN_dY( nDim, s.nNodes() );
+      s.approximation.computeShapeFunctionsAndGradients( center.data(), kernels, N.data(), dN_dY.data() );
+      return std::make_pair( N, dN_dY );
+    };
+    // grad_Y of the nonlocal increment dQ
+    const auto nonlocalGradient = [&]( const Eigen::MatrixXd& dN_dY, const Eigen::VectorXd& dQ ) {
+      Eigen::Matrix< double, nDim, 1 > g = Eigen::Matrix< double, nDim, 1 >::Zero();
+      for ( int B = 0; B < s.nNodes(); B++ )
+        g += dQ( B * nBlock + nDim ) * dN_dY.col( B );
+      return g;
+    };
+
+    const Eigen::VectorXd            dQ1    = increment< nDim >( s.nNodes(), 0.02, 1e-4 );
+    const auto                       dN_dY1 = shapeFunctions().second;
+    Eigen::Matrix< double, nDim, 1 > dN_dX  = nonlocalGradient( dN_dY1, dQ1 ); // F_0 = I
+    s.particle->updatePhysicsExplicit( dQ1.data(), 1.0, 1.0 );
+    s.particle->acceptStateAndPosition();
+    s.assignKernels();
+
+    Eigen::Matrix< double, nDim, nDim > Fn;
+    const double* F = s.particle->getStateView( "deformation gradient", 0 ).stateLocation; // 3x3, row major
+    for ( int i = 0; i < nDim; i++ )
+      for ( int j = 0; j < nDim; j++ )
+        Fn( i, j ) = F[3 * i + j];
+    throwExceptionOnFailure( ( Fn - Fn.transpose() ).norm() > 1e-4, name + ": the test needs a non-symmetric F_n" );
+
+    const Eigen::VectorXd dQ2 = increment< nDim >( s.nNodes(), 0.01, 5e-5 );
+    const auto [N2, dN_dY2]   = shapeFunctions();
+    dN_dX += Fn.transpose() * nonlocalGradient( dN_dY2, dQ2 );
+    s.particle->updatePhysicsExplicit( dQ2.data(), 2.0, 1.0 );
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( s.nDof() );
+    s.particle->computePhysicsKernelsExplicit( P.data() );
+
+    const double N     = *s.particle->getStateView( "nonlocal damage", 0 ).stateLocation;
+    const double L     = *s.particle->getStateView( "local damage", 0 ).stateLocation;
+    const double scale = ( std::abs( N ) + std::abs( L ) + c * dN_dX.norm() ) * V0;
+    for ( int A = 0; A < s.nNodes(); A++ ) {
+      const double expected = ( N2( A ) * ( N - L ) + c * ( Fn.transpose() * dN_dY2.col( A ) ).dot( dN_dX ) ) * V0;
+      throwExceptionOnFailure( std::abs( P( A * nBlock + nDim ) - expected ) <= 1e-10 * scale,
+                               Marmot::Utilities::MakeString()
+                                 << name << ": nonlocal row " << A << " of the explicit force "
+                                 << P( A * nBlock + nDim ) << " differs from the total form " << expected );
+    }
+  }
+
+  // The lumped momentum of a linear increment dQ_A = G Y_A over dT, i.e. v = G Y / dT: its sum over the nodes is the
+  // momentum rho0 V0 G Y_c / dT of the particle, and its first moment sum_A P_A (x) Y_A adds to rho0 V0 v_c (x) Y_c the
+  // NSNI stabilization rho0 dv/dY M^Y (with sum_A dT_A/dY (x) Y_A = I, and J_Y = 1 before the first accept), with the
+  // second moments M^Y = V0 a^2/12 I of the cube or square of edge a.
+  template < int nDim, int nNonlocal >
+  void checkLumpedMomentumOfALinearIncrement( const std::string&           name,
+                                              const std::string&           shape,
+                                              const std::string&           materialName,
+                                              const std::vector< double >& properties,
+                                              double                       density,
+                                              bool                         withNSNIStabilization )
+  {
+    Setup< nDim, nNonlocal > s( name, vertices( shape ), volume( shape ), materialName, properties );
+    constexpr int            nBlock = nDim + nNonlocal;
+    const double             V0     = s.particle->getVolumeUndeformed();
+    const double             dT     = 1e-3;
+
+    Eigen::Matrix< double, nDim, nDim > G;
+    for ( int i = 0; i < nDim; i++ )
+      for ( int j = 0; j < nDim; j++ )
+        G( i, j ) = 1e-6 * std::sin( 1.1 * ( nDim * i + j + 1 ) );
+
+    Eigen::Matrix< double, nDim, Eigen::Dynamic > Y( nDim, s.nNodes() );
+    Eigen::VectorXd                               dQ = Eigen::VectorXd::Zero( s.nDof() );
+    for ( int A = 0; A < s.nNodes(); A++ ) {
+      for ( int i = 0; i < nDim; i++ )
+        Y( i, A ) = s.grid.centers[s.assignedGridIndices[A]][i];
+      dQ.template segment< nDim >( A * nBlock ) = G * Y.col( A );
+    }
+    Eigen::Matrix< double, nDim, 1 > Yc;
+    s.particle->getCenterCoordinates( Yc.data() );
+
+    s.particle->updatePhysicsExplicit( dQ.data(), dT, dT );
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( s.nDof() );
+    s.particle->computeLumpedMomentum( P.data() );
+
+    Eigen::Matrix< double, nDim, 1 >    momentum    = Eigen::Matrix< double, nDim, 1 >::Zero();
+    Eigen::Matrix< double, nDim, nDim > firstMoment = Eigen::Matrix< double, nDim, nDim >::Zero();
+    for ( int A = 0; A < s.nNodes(); A++ ) {
+      momentum += P.template segment< nDim >( A * nBlock );
+      firstMoment += P.template segment< nDim >( A * nBlock ) * Y.col( A ).transpose();
+    }
+
+    const Eigen::Matrix< double, nDim, 1 > vc                     = G * Yc / dT;
+    const double                           edge                   = 0.6;
+    const double secondMomentOfTheDomain                          = withNSNIStabilization ? V0 * edge * edge / 12 : 0.0;
+    const Eigen::Matrix< double, nDim, nDim > expectedFirstMoment = density * V0 * vc * Yc.transpose() +
+                                                                    density * G / dT * secondMomentOfTheDomain;
+    const double scale = density * V0 * vc.norm() * Yc.norm();
+
+    throwExceptionOnFailure( ( momentum - density * V0 * vc ).norm() <= 1e-10 * density * V0 * vc.norm(),
+                             name + ": the lumped momentum of a linear increment is not the particle's momentum" );
+    throwExceptionOnFailure( ( firstMoment - expectedFirstMoment ).norm() <= 1e-10 * scale,
+                             Marmot::Utilities::MakeString()
+                               << name << ": the first moment of the lumped momentum differs by "
+                               << ( firstMoment - expectedFirstMoment ).norm() << " of " << scale );
+  }
+
+} // namespace
 
 void testUnknownParticleIsRejected()
 {
@@ -856,7 +1224,95 @@ int main()
       testFunctions.push_back( [name = name, shape = shape]() { checkWeakFormCorrection< 3 >( name, shape ); } );
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 3 >( name, shape ); } );
   }
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back(
+      [name = name, shape = shape]() { checkOwnPointsMoveWithTheLinearizedInterpolation< 3 >( name, shape ); } );
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 2 >( name, shape ); } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() { checkUpdateShapeFunctions< 3 >( name, shape ); } );
   testFunctions.push_back( testSQCNIxNSNIFirstIncrementIsDeterministic );
+
+  // the explicit scheme, with one nonlocal variable ...
+  testFunctions.push_back( []() {
+    checkExplicitTotalFormAfterAnAcceptedIncrement< 2 >( "GradientEnhancedFiniteStrain/PlaneStrain/Point", "Point" );
+    checkExplicitTotalFormAfterAnAcceptedIncrement< 3 >( "GradientEnhancedFiniteStrain/3D/Point", "Point3D" );
+  } );
+  for ( const auto& [name, shape] : planeStrain ) {
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkExplicitAgreesWithImplicit< 2, 1 >( name, shape, testMaterialName, matProps, 0.02 );
+      checkLumpedMomentumOfALinearIncrement< 2, 1 >( name,
+                                                     shape,
+                                                     viscousMaterialName,
+                                                     matProps,
+                                                     matProps[5],
+                                                     name.find( "NSNI" ) != std::string::npos );
+      checkLumpedOperators< 2, 1 >( name,
+                                    shape,
+                                    viscousMaterialName,
+                                    matProps,
+                                    matProps[5],
+                                    ViscousNonlocalField::eta,
+                                    ViscousNonlocalField::m );
+    } );
+  }
+  for ( const auto& [name, shape] : solid ) {
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkExplicitAgreesWithImplicit< 3, 1 >( name, shape, testMaterialName, matProps, 0.02 );
+      checkLumpedMomentumOfALinearIncrement< 3, 1 >( name,
+                                                     shape,
+                                                     viscousMaterialName,
+                                                     matProps,
+                                                     matProps[5],
+                                                     name.find( "NSNI" ) != std::string::npos );
+      checkLumpedOperators< 3, 1 >( name,
+                                    shape,
+                                    viscousMaterialName,
+                                    matProps,
+                                    matProps[5],
+                                    ViscousNonlocalField::eta,
+                                    ViscousNonlocalField::m );
+    } );
+  }
+  // ... and with six, GM7 in the frame of the polar rotation
+  for ( const auto& [name, shape] :
+        std::vector< std::pair< std::string, std::string > >{ { "GradientEnhanced6FiniteStrain/3D/Point", "Point3D" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNI/3D/Hexa", "Hexa" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa",
+                                                                "Hexa" } } ) {
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkExplicitAgreesWithImplicit< 3, 6 >( name, shape, "GM7/COROTATIONAL", gm7Props, 2e-5 );
+      checkLumpedOperators< 3, 6 >( name,
+                                    shape,
+                                    "GM7/COROTATIONAL",
+                                    gm7Props,
+                                    gm7Props[14],
+                                    gm7Props[15],
+                                    gm7Props[16] );
+    } );
+  }
+
+  // the bound of the absolute stiffness, for every particle with an own inertia
+  for ( const auto& [name, shape] : planeStrain )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 2, 1 >( name, shape, testMaterialName, matProps, 0.02, 1.5 );
+    } );
+  for ( const auto& [name, shape] : solid )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 3, 1 >( name, shape, testMaterialName, matProps, 0.02, 1.5 );
+    } );
+  for ( const auto& [name, shape] :
+        std::vector< std::pair< std::string, std::string > >{ { "GradientEnhanced6FiniteStrain/3D/Point", "Point3D" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNI/3D/Hexa", "Hexa" },
+                                                              { "GradientEnhanced6FiniteStrainSQCNIxNSNI/3D/Hexa",
+                                                                "Hexa" } } )
+    testFunctions.push_back( [name = name, shape = shape]() {
+      checkBoundOfAbsoluteStiffness< 3, 6 >( name, shape, "GM7/COROTATIONAL", gm7Props, 2e-4, 1.5 );
+    } );
+
   testFunctions.push_back( testUnknownParticleIsRejected );
 
   executeTestsAndCollectExceptions( testFunctions );

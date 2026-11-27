@@ -79,6 +79,33 @@ Kirchhoff stress expected by the consumers,
 
 .. math:: \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)}, \qquad J = \det\boldsymbol{F}^{(n+1)}.
 
+The elastic energy density and the dissipation are converted as well. The finite-strain interface
+reports them per unit reference volume, and its hosts store and reload them so; the wrapped material
+works per unit current volume. The updated values of the wrapped material are multiplied by :math:`J`.
+On the way in, the two differ, because they are different kinds of quantity:
+
+* The **elastic energy** is a function of the state. The wrapped materials update it as
+  :math:`\psi^{(n+1)} = \psi_\mathrm{in} + \psi(\boldsymbol{\sigma}^{(n+1)}) - \psi(\boldsymbol{\sigma}^{(n)})`,
+  so the stored value :math:`\Psi^{(n)}` is handed in as the density of the state the increment starts
+  from, :math:`\Psi^{(n)} / J_n` with :math:`J_n = \det\boldsymbol{F}^{(n)}`. The stored result is
+  :math:`\Psi^{(n+1)} = J\,\psi(\boldsymbol{\sigma}^{(n+1)})`, the energy of the current state per unit
+  reference volume.
+* The **dissipation** is accumulated along the path. Per unit reference volume its rate is :math:`J`
+  times the rate per unit current volume, so with the increment :math:`\Delta d` of the wrapped
+  material
+
+  .. math:: D^{(n+1)} = D^{(n)} + J\,\Delta d .
+
+  The stored value is therefore handed in as :math:`D^{(n)} / J`, divided by the same :math:`J` it is
+  multiplied with on the way out: the round trip leaves the history unchanged and pushes forward only the
+  increment. Dividing by :math:`J_n` instead would rescale the whole history by :math:`J / J_n` in every
+  increment, and a compaction would decrease the dissipation.
+
+Without any conversion on the way in, a wrapped material that adds its increment to the value it is
+given (``VonMises``, ``LinearElastic``, the Rankine models) would see its history multiplied by
+:math:`J` in every increment, compounding. In an inverted configuration (:math:`J \le 0`) the energies
+are as meaningless as the stress; the values are then passed through unconverted.
+
 Superimposed rigid rotation is reproduced *exactly*, in a single increment and for any rotation
 angle below :math:`180^\circ`: for :math:`\boldsymbol{F}^{(n+1)}=\boldsymbol{Q}\boldsymbol{F}^{(n)}`
 the increment :math:`\Delta\boldsymbol{l}` is exactly skew, hence

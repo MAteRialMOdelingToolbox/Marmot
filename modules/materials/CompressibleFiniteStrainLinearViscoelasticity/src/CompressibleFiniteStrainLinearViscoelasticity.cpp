@@ -1,17 +1,20 @@
 #include "Marmot/CompressibleFiniteStrainLinearViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainViscoelasticity.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include <Fastor/expressions/linalg_ops/unary_trans_op.h>
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
-#include <functional>
+#include <stdexcept>
+#include <tuple>
+#include <utility>
 
 namespace Marmot::Materials {
 
@@ -32,6 +35,68 @@ namespace Marmot::Materials {
       return materialProperties[nMaterialProperties - 1];
   }
 
+  namespace {
+
+    /* Minor-symmetric part of a fourth-order tensor, 1/4 ( H_ijkl + H_jikl + H_ijlk + H_jilk ). */
+    template < typename T >
+    Tensor3333t< T > minorSymmetricPart( const Tensor3333t< T >& H )
+    {
+      Tensor3333t< T > HSym;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = i; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = k; l < 3; l++ ) {
+              const T symmetrized = .25 * ( H( i, j, k, l ) + H( j, i, k, l ) + H( i, j, l, k ) + H( j, i, l, k ) );
+              HSym( i, j, k, l )  = symmetrized;
+              HSym( j, i, k, l )  = symmetrized;
+              HSym( i, j, l, k )  = symmetrized;
+              HSym( j, i, l, k )  = symmetrized;
+            }
+      return HSym;
+    }
+
+    /* Energy density and its first three derivatives w.r.t. a symmetric C from a closed-form SecondOrder potential
+     * (energy, dPsi/dC, d2Psi/dCdC; generic in the scalar type). The third derivative is the derivative of the
+     * closed-form second derivative by first-order dual numbers, which takes 6 evaluations (one per independent
+     * entry of C) instead of the 6 x 81 evaluations of third-order dual numbers on the plain potential.
+     *
+     * The potentials are functions of a general (not necessarily symmetric) C, so their derivatives w.r.t. the
+     * independent entries C_ij and C_ji differ (e.g. tr(C C) gives d2/dC01dC01 = 0 but d2/dC01dC10 = 2). Only the
+     * symmetric part acts on symmetric increments of C: all derivatives are those of Psi( sym( C ) ), i.e. projected
+     * onto their minor-symmetric parts. */
+    template < typename SecondOrderPotential >
+    std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > differentiateSecondOrderPotential(
+      const SecondOrderPotential& potential,
+      const Tensor33d&            C )
+    {
+      // the value parts of every dual evaluation are the energy density and its first derivative at C
+      double    psi = 0.;
+      Tensor33d dPsi_dC;
+
+      const auto
+        [d2Psi_dCdC, d3Psi_dCdCdC] =
+          Marmot::
+            Math::
+              Differentiation::
+                Automatic::
+                  dF_dSymmetricT(
+                    [&potential, &psi, &dPsi_dC]( const Tensor33t< Marmot::Math::Differentiation::Automatic::dual >&
+                                                    C_ad ) {
+                      const auto [psi_ad, dPsi_dC_ad, d2Psi_dCdC_ad] = potential( C_ad );
+                      psi = Marmot::Math::Differentiation::Automatic::value( psi_ad );
+                      for ( int i = 0; i < 3; i++ )
+                        for ( int j = 0; j < 3; j++ )
+                          dPsi_dC( i, j ) = .5 *
+                                            ( Marmot::Math::Differentiation::Automatic::value( dPsi_dC_ad( i, j ) ) +
+                                              Marmot::Math::Differentiation::Automatic::value( dPsi_dC_ad( j, i ) ) );
+                      return minorSymmetricPart( d2Psi_dCdC_ad );
+                    },
+                    C );
+
+      return { psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC };
+    }
+  } // namespace
+
   std::tuple< double,
               Marmot::Math::Tensors::FastorTensors::Tensor33d,
               Marmot::Math::Tensors::FastorTensors::Tensor3333d,
@@ -40,59 +105,83 @@ namespace Marmot::Materials {
     const Marmot::Math::Tensors::FastorTensors::Tensor33d& C ) const
   {
 
-    // select hyperelastic base
-    // compute enregy density and derivatives
-    // with autodiff
-    // we need a function mapping from tensor33 with dual3rd to dual3rd
-    std::function< autodiff::dual3rd( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
-      energyDensityFunction;
+    // every base uses its full compressible potential with the parameters in the order of its interface
+    // -- see the class docs.
+    namespace EDF   = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+    const auto& par = elasticProperties;
 
-    // every base composes Psi = Psi_iso(shape params) + Psi_vol(kappa), with
-    // kappa always the LAST elasticProperties entry -- see the class docs.
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::NeoHookePotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[1] );
-      };
-      break;
+      return differentiateSecondOrderPotential(
+        [K = par( 0 ), G = par( 1 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::CoupledPotential( C_ad, EDF::Coupled::StandardNeoHooke{ K, G } );
+        },
+        C );
     case Yeoh:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[3] );
-      };
-      break;
+      return differentiateSecondOrderPotential(
+        [C1 = par( 0 ), C2 = par( 1 ), C3 = par( 2 ), D1 = par( 3 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::YeohPotential( C_ad, C1, C2, C3, D1 );
+        },
+        C );
     case PenceGouNeoHooke:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
-      };
-      break;
+      return differentiateSecondOrderPotential( [K = par( 0 ), G = par( 1 )](
+                                                  const auto&
+                                                    C_ad ) { return EDF::SecondOrder::PenceGouPotentialB( C_ad, K, G ); },
+                                                C );
     case MooneyRivlin:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[2] );
-      };
-      break;
+      return differentiateSecondOrderPotential(
+        [C1 = par( 0 ), C2 = par( 1 ), D1 = par( 2 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::MooneyRivlinPotential( C_ad, C1, C2, D1 );
+        },
+        C );
     case ArrudaBoyce:
-      energyDensityFunction = [this]( const Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] ) +
-               ContinuumMechanics::Elasticity::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[2] );
-      };
-      break;
+      return differentiateSecondOrderPotential(
+        [mu = par( 0 ), lambdaL = par( 1 ), D1 = par( 2 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::ArrudaBoyce8ChainPotential( C_ad, mu, lambdaL, D1 );
+        },
+        C );
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
     }
-    return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction, C, true );
+  }
+
+  double CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus() const
+  {
+    // G0 = 2 ( dPsi/dIbar1 + dPsi/dIbar2 ) at C = I
+    const auto& par = elasticProperties;
+
+    switch ( hyperelasticBase ) {
+    case NeoHooke:
+    case PenceGouNeoHooke: return par( 1 );
+    case Yeoh: return 2. * par( 0 );
+    case MooneyRivlin: return 2. * ( par( 0 ) + par( 1 ) );
+    case ArrudaBoyce: {
+      // tends to mu for lambdaL -> infinity
+      const double lambdaL2 = par( 1 ) * par( 1 );
+      return par( 0 ) * ( 3. * lambdaL2 - 1. ) / ( 3. * ( lambdaL2 - 1. ) );
+    }
+    default:
+      throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::initialShearModulus: "
+                                "Unknown hyperelastic base." );
+    }
+  }
+
+  double CompressibleFiniteStrainLinearViscoelasticity::initialBulkModulus() const
+  {
+    // K0 = d2U/dJ2 at J = 1
+    const auto& par = elasticProperties;
+
+    switch ( hyperelasticBase ) {
+    case NeoHooke:
+    case PenceGouNeoHooke: return par( 0 );
+    case Yeoh: return 2. / par( 3 );
+    case MooneyRivlin:
+    case ArrudaBoyce: return 2. / par( 2 );
+    default:
+      throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::initialBulkModulus: "
+                                "Unknown hyperelastic base." );
+    }
   }
 
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
@@ -110,42 +199,18 @@ namespace Marmot::Materials {
                                    &materialProperties[3 + nElasticPropertiesMap.at( hyperelasticBase )] ) )
   {
 
-    if ( onlyShearCreep == 1.0 ) {
-      double G = 0;
-      switch ( hyperelasticBase ) {
-      case NeoHooke: G = elasticProperties[0]; break;
-      case Yeoh: G = 2 * elasticProperties[0]; break;
-      // reference shear modulus of the isochoric Mooney-Rivlin potential is 2*(C10+C01), not
-      // 2*C10 alone -- C01 also contributes to dPsi/dIbar1 at the reference configuration via
-      // the Ibar2 term (dIbar2/dIbar1|C=I effectively contributes an equal weight to C01 there).
-      case MooneyRivlin: G = 2 * ( elasticProperties[0] + elasticProperties[1] ); break;
-      case PenceGouNeoHooke: G = elasticProperties[1]; break;
-      // mu is NOT the infinitesimal shear modulus at finite lambdaL: G0 = 2*dPsi_iso/dIbar1
-      // evaluated at Ibar1=3 (the reference configuration), which for the closed-form
-      // Arruda-Boyce potential (see detail::arrudaBoyce8ChainEnergyAndDerivative) works out to
-      // mu/3 + 2*mu/(3*(1-1/lambdaL^2)); only in the lambdaL->infinity limit does this reduce to mu.
-      case ArrudaBoyce: {
-        const double lambdaL = elasticProperties[1];
-        const double w0      = 1. - 1. / ( lambdaL * lambdaL );
-        G                    = elasticProperties[0] / 3. + 2. * elasticProperties[0] / ( 3. * w0 );
-        break;
-      }
-      default:
-        throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::"
-                                  "CompressibleFiniteStrainLinearViscoelasticity: Unknown hyperelastic base." );
-      }
+    if ( hyperelasticBase == ArrudaBoyce && !( elasticProperties[1] > 1.0 ) )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": ArrudaBoyce locking stretch lambdaL must be > 1, got "
+                                   << elasticProperties[1] );
 
-      initialCompliance = .5 / G * Spatial3D::I4;
-    }
-
-    else {
-
-      // start from initial stiffness tensor dPK2 / dE,
-      Tensor3333d initialStiffness = 4. *
-                                     std::get< 2 >( computeEnergyDensityAndDerivatives( evaluate( Spatial3D::I ) ) );
-
-      initialCompliance = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( initialStiffness );
-    }
+    // the initial stiffness dPK2/dE at C = I is isotropic: K0 I(x)I + 2 G0 Dev, hence the compliance is
+    // 1/(9 K0) I(x)I + 1/(2 G0) Dev; with shear creep only, the deviatoric part alone is needed
+    if ( onlyShearCreep == 1.0 )
+      initialCompliance = .5 / initialShearModulus() * Spatial3D::I4;
+    else
+      initialCompliance = .5 / initialShearModulus() * Spatial3D::DeviatoricSymmetric +
+                          1. / ( 9. * initialBulkModulus() ) * Spatial3D::IHyd;
 
     initializeStateLayout();
   }

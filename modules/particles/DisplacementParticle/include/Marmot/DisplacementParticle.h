@@ -30,6 +30,8 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
+#include "Marmot/MarmotParticleSectionIntegrals.h" // Hoop, checkVCIIsAvailable
+#include "Marmot/MarmotParticleStiffness.h"
 #include "Marmot/MarmotUtils.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
@@ -78,15 +80,28 @@ namespace Marmot::Discretizations::Meshfree {
    *
    * Properties (in this order): "VCI order" (from GenericParticle), "newmark-beta beta", "newmark-beta gamma".
    *
-   * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
+   * **Axisymmetric section.** With @p section = Section::Axisymmetric, the particle lives in the meridian half plane
+   * @f$ (r, z) @f$: @f$ V_0 @f$ is the undeformed ring volume, the material point sees the hoop stretch increment
+   * @f$ \Delta F_{\theta\theta} = 1 + \Delta u_r / \bar r @f$ as its out-of-plane stretch, and the radial force gains
+   * the hoop term @f$ T_A\, \tau_{\theta\theta} / (\bar r\, \Delta F_{\theta\theta})\, V_0 @f$ (Hoop), with its
+   * tangent. VCI is not available for it. See the page "Axisymmetric Particles" of the documentation.
+   *
+   * @tparam nDim Spatial dimension (2: plane strain or axisymmetric, 3: 3D).
+   * @tparam section The section (Section::Cartesian: plane strain or 3D; Section::Axisymmetric: nDim = 2).
    */
-  template < int nDim >
+  template < int nDim, Section section = Section::Cartesian >
   class DisplacementParticle : public Marmot::Discretizations::Meshfree::GenericParticle< nDim > {
+
+    static_assert( section == Section::Cartesian || nDim == 2,
+                   "an axisymmetric particle lives in the meridian half plane: nDim = 2" );
 
     using TensorD  = Fastor::Tensor< double, nDim >;       ///< vector of size nDim
     using TensorDD = Fastor::Tensor< double, nDim, nDim >; ///< second-order tensor of size nDim
 
   protected:
+    /// the particle is axisymmetric
+    static constexpr bool isAxisymmetric = section == Section::Axisymmetric;
+
     std::unique_ptr< MaterialPointType< nDim > > _mp; ///< the material point at the particle center
 
     double _newmark_beta;  ///< Newmark parameter @f$ \beta @f$ (property "newmark-beta beta", default 0)
@@ -119,6 +134,53 @@ namespace Marmot::Discretizations::Meshfree {
       TensorD u( 0.0 );
       this->_mp->getCenterDisplacement( u.data() );
       return u;
+    }
+
+    /**
+     * @brief The stiffness of node @p A at the current response of the material point: the tangent of
+     * computePhysicsKernels() without the inertia, as derivatives of the force of the node with respect to the
+     * interpolated increment (StiffnessOfNode).
+     * @details The force of node @f$ A @f$ is @f$ f_{Aj} = \partial T_A/\partial x_i\, \tau_{ij} V_0 @f$; it depends on
+     * the gradient of the increment only, @f$ \Delta F_{kl} = \delta_{kl} + \partial \Delta u_k / \partial Y_l @f$:
+     * @f[
+     *   \frac{\partial f_{Aj}}{\partial (\partial \Delta u_k / \partial Y_l)} = V_0 \Big(
+     *   \frac{\partial T_A}{\partial x_i} \frac{\partial \tau_{ij}}{\partial \Delta F_{kl}}
+     *   - \frac{\partial T_A}{\partial x_k}\, \tau_{ij} \frac{\partial Y_l}{\partial x_i} \Big),
+     * @f]
+     * the material part and the geometric part (the spatial gradient of the test function changes with the
+     * deformation). An axisymmetric particle adds the hoop terms (Hoop::addStiffnessOfNode()), which depend on the
+     * radial increment itself, too. Derived particles add their own terms (e.g. a stabilization).
+     * @param[in] A The node.
+     * @param[in] dY_dx The inverse of the gradient of the motion of the particle, @f$ \partial Y / \partial x @f$,
+     * the same for all its nodes: computed once per particle by the caller.
+     * @param[in,out] ofNode The derivatives; the stiffness of the node is added.
+     */
+    virtual void addStiffnessOfNode( int                                         A,
+                                     const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                     StiffnessOfNode< nDim, nDim >&              ofNode ) const;
+
+    /**
+     * @brief The second gradients of the trial shape functions, in the layout of addRowsOfNode().
+     * @return An empty matrix: the point particle has none; a stabilized particle overrides it.
+     */
+    virtual Eigen::MatrixXd secondGradientsOfTrialFunctions() const { return Eigen::MatrixXd(); }
+
+    /**
+     * @brief Evaluate the material point for an interpolated increment: reset it to the accepted state, add the
+     * increment (and, for an axisymmetric particle, the hoop stretch increment @f$ \Delta u_r / \bar r @f$ of the
+     * center, Hoop::addStretchIncrement()), and compute its response and tangents.
+     * @param[in] du @f$ \Delta\boldsymbol{u} @f$ at the center.
+     * @param[in] du_dY @f$ \partial\Delta\boldsymbol{u}/\partial\boldsymbol{Y} @f$.
+     * @param[in] timeNew Time at the end of the increment.
+     * @param[in] dT Time increment.
+     */
+    void evaluateMaterialPoint( const TensorD& du, const TensorDD& du_dY, double timeNew, double dT )
+    {
+      _mp->prepareYourself( timeNew, dT );
+      _mp->incrementDeformation( du, du_dY );
+      if constexpr ( isAxisymmetric )
+        Hoop::addStretchIncrement( *_mp, du( 0 ) );
+      _mp->computeYourself( timeNew, dT );
     }
 
   public:
@@ -193,7 +255,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Sets a single property; unknown names are passed to GenericParticle::setProperty().
      * @param[in] propertyName Name of the property.
      * @param[in] property Its value.
-     * @throws std::runtime_error (from GenericParticle) for an unknown name.
+     * @throws std::runtime_error (from GenericParticle) for an unknown name; std::invalid_argument for a VCI order
+     * other than 0 of an axisymmetric particle.
      */
     void setProperty( const std::string& propertyName, const double* property ) override
     {
@@ -204,6 +267,8 @@ namespace Marmot::Discretizations::Meshfree {
         _newmark_gamma = property[0];
       }
       else {
+        if ( propertyName == "VCI order" && static_cast< int >( property[0] ) != 0 )
+          checkVCIIsAvailable< section >( __PRETTY_FUNCTION__ );
         // If not a DisplacementParticle specific property, try the base class
         Marmot::Discretizations::Meshfree::GenericParticle< nDim >::setProperty( propertyName, property );
       }
@@ -241,6 +306,12 @@ namespace Marmot::Discretizations::Meshfree {
      * @return nDim.
      */
     int getNBaseDof() const override { return nDofPerNodeU; }
+
+    /**
+     * @brief The section of the particle, its template parameter.
+     * @return The section.
+     */
+    Section getSection() const override { return section; }
 
     /**
      * @brief Node fields.
@@ -349,9 +420,19 @@ namespace Marmot::Discretizations::Meshfree {
 
     /**
      * @brief Lumped momentum, @f$ p_{Ai} \mathrel{+}= \rho_0\,T_A\,V_0\,v_i @f$.
-     * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
+     * @param[in,out] pLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* pLumped ) const override;
+
+    /**
+     * @brief Describe the stiffness at the current state to a visitor, see Particle::describeStiffness(): the material
+     * point is evaluated at a zero increment, the stiffness of every node follows from addStiffnessOfNode(), and the
+     * material point is put back as it was (SavedMaterialPoint). Used by all particles derived from this one.
+     * @param[in,out] visitor The visitor.
+     * @param[in] timeNew The time of the zero increment.
+     * @param[in] dT The time increment of the zero increment.
+     */
+    void describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT ) override;
 
     /**
      * @brief State of the material point (see DisplacementMaterialPoint::getStateView()).
@@ -360,6 +441,17 @@ namespace Marmot::Discretizations::Meshfree {
      * @return The view on the state.
      */
     Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override;
+
+    /**
+     * @brief The number of VCI constraints (GenericParticle::vci_getNumberOfConstraints()).
+     * @return The number of constraints.
+     * @throws std::invalid_argument for an axisymmetric particle, which has no VCI: a host that asks for it is refused.
+     */
+    int vci_getNumberOfConstraints() override
+    {
+      checkVCIIsAvailable< section >( __PRETTY_FUNCTION__ );
+      return GenericParticle< nDim >::vci_getNumberOfConstraints();
+    }
 
     // VCI methods are now in GenericParticle, but vci_compute_Test_P_BoundaryIntegral needs override
     // because it depends on dY_dX() which is physics-specific.
@@ -431,14 +523,15 @@ namespace Marmot::Discretizations::Meshfree {
     };
   };
 
-  template < int nDim >
-  Marmot::Utilities::StateView DisplacementParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
+  template < int nDim, Section section >
+  Marmot::Utilities::StateView DisplacementParticle< nDim, section >::getStateView( const std::string& stateName,
+                                                                                    int                qp ) const
   {
     return _mp->getStateView( stateName );
   }
 
-  template < int nDim >
-  DisplacementParticle< nDim >::DisplacementParticle(
+  template < int nDim, Section section >
+  DisplacementParticle< nDim, section >::DisplacementParticle(
     int                                                     elementID,
     const double*                                           centerCoordinates0,
     int                                                     sizeCenterCoordinates0,
@@ -461,25 +554,21 @@ namespace Marmot::Discretizations::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, nMaterialProperties );
+    Marmot::Discretizations::MaterialSection materialSection( materialName, materialProperties, nMaterialProperties );
 
-    _mp->assignMaterial( section );
+    _mp->assignMaterial( materialSection );
   }
 
-  template < int nDim >
-  void DisplacementParticle< nDim >::computePhysicsKernels( const double* dQ,
-                                                            double*       fInt,
-                                                            double*       dFInt_ddQ,
-                                                            double        timeNew,
-                                                            double        dT )
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::computePhysicsKernels( const double* dQ,
+                                                                     double*       fInt,
+                                                                     double*       dFInt_ddQ,
+                                                                     double        timeNew,
+                                                                     double        dT )
   {
 
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
-    using to_jk = Fastor::OIndex< j_, k_ >;
-
-    const static Tensor< double, nDim, nDim > I(
-      ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
 
     constexpr int nodeBlockSize = nDim;
 
@@ -501,9 +590,7 @@ namespace Marmot::Discretizations::Meshfree {
       du_dY += einsum< i, j >( dQU, dN_B_dY );
     }
 
-    _mp->prepareYourself( timeNew, dT );
-    _mp->incrementDeformation( du, du_dY );
-    _mp->computeYourself( timeNew, dT );
+    evaluateMaterialPoint( du, du_dY, timeNew, dT );
 
     const double density0 = _mp->getDensityUndeformed();
 
@@ -523,83 +610,124 @@ namespace Marmot::Discretizations::Meshfree {
 
     Tensor< double, nDim > r_U( 0.0 );
 
-    Tensor< double, nDim, nDim > k_UU( 0.0 );
-
     const auto& S = _mp->response.S;
 
     const double V0 = getVolumeUndeformed();
 
-    const auto& t = _mp->tangents;
+    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize );
+    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ, this->_nNodes * nodeBlockSize, this->_nNodes * nodeBlockSize );
 
-    Eigen::Map< Eigen::VectorXd > P( fInt, this->_nNodes * nodeBlockSize ); // Use base class _nNodes
-    Eigen::Map< Eigen::MatrixXd > K( dFInt_ddQ,
-                                     this->_nNodes * nodeBlockSize,
-                                     this->_nNodes * nodeBlockSize ); // Use base class _nNodes
+    const Tensor< double, nDim, nDim > dY_dx    = inv( _mp->dx_dY() );
+    const Eigen::MatrixXd              d2N_dYdY = secondGradientsOfTrialFunctions();
 
-    // clang-format off
-    for ( int A = 0; A < this->_nNodes; A++ ) { // Use base class _nNodes
+    StiffnessOfNode< nDim, nDim > rowsOfNode;
+    for ( int A = 0; A < this->_nNodes; A++ ) {
 
-      const double T_A = this->_T( A ); // Use base class _T
-      const auto                   dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() ); // Use base class _dT_dY
-      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( inv( _mp->dx_dY() ), dT_A_dY );
+      const double                 T_A     = this->_T( A );
+      const auto                   dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
+      const Tensor< double, nDim > dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
 
-        const int idxA_u = nodeBlockSize * A;
+      r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
 
-        r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
+      if constexpr ( isAxisymmetric )
+        r_U( 0 ) += Hoop::force( T_A,
+                                 Hoop::radiusOfCenter( *_mp ),
+                                 _mp->outOfPlaneStretchIncrement(),
+                                 _mp->response.tau33,
+                                 V0 );
 
-        // add inertia
-        r_U += density0 * a * T_A * V0;
+      // add inertia
+      r_U += density0 * a * T_A * V0;
 
-        {
-          using namespace Eigen;
-          P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
-        }
+      P.template segment< nDim >( nodeBlockSize * A ) += Eigen::Map< Eigen::Matrix< double, nDim, 1 > >( r_U.data() );
 
-        for ( int B = 0; B < this->_nNodes; B++ ) { // Use base class _nNodes
-
-          const int idxB_u = nodeBlockSize * B;
-
-          const double                 N_B     = this->_N( B ); // Use base class _N
-          const auto dN_B_dY = TensorMap< const double, nDim >( this->_dN_dY.col(B).data() ); // Use base class _dN_dY
-          const auto dN_B_dx = evaluate( einsum< ji, j >( inv( _mp->dx_dY() ), dN_B_dY ) );
-
-          // aux stiffness tensors
-          const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY )                                            );
-
-          k_UU  = ( + einsum< i, ijk        >  ( dT_A_dx, dS_dqU_B )   ) * V0;
-          k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
-          k_UU += density0 * da_ddu * T_A * N_B * V0;
-
-          {
-              using namespace Eigen;
-              // TODO: check if we can use transpose instead of torowmajor:
-              K.template block< nDim, nDim >( idxA_u, idxB_u ) += Map< Matrix< double, nDim, nDim > >( torowmajor( k_UU ).data() );
-          }
-      }
+      // the rows of the tangent: the stiffness of the node plus its inertia
+      rowsOfNode.setZero();
+      addStiffnessOfNode( A, dY_dx, rowsOfNode );
+      rowsOfNode.df_dIncrement += density0 * T_A * V0 *
+                                  Eigen::Map< const Eigen::Matrix< double, nDim, nDim, Eigen::RowMajor > >(
+                                    da_ddu.data() );
+      addRowsOfNode( rowsOfNode, A, this->_N, this->_dN_dY, d2N_dYdY, K );
     }
-    // clang-format on
   }
 
-  template < int nDim >
-  void DisplacementParticle< nDim >::computeDistributedLoad( int           type,
-                                                             int           surfaceID,
-                                                             const double* load,
-                                                             double*       fExt,
-                                                             double*       dExt_dQ,
-                                                             double        timeNew,
-                                                             double        dT ) const
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::addStiffnessOfNode( int                                         A,
+                                                                  const Fastor::Tensor< double, nDim, nDim >& dY_dx,
+                                                                  StiffnessOfNode< nDim, nDim >& ofNode ) const
+  {
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Fastor;
+
+    const auto&   S       = _mp->response.S;
+    const auto&   t       = _mp->tangents;
+    const double  V0      = getVolumeUndeformed();
+    const auto    dT_A_dY = TensorMap< const double, nDim >( this->_dT_dY.col( A ).data() );
+    const TensorD dT_A_dx = einsum< ji, j >( dY_dx, dT_A_dY );
+
+    for ( int l = 0; l < nDim; l++ )
+      for ( int j = 0; j < nDim; j++ )
+        for ( int k = 0; k < nDim; k++ ) {
+          double material = 0.0, geometric = 0.0;
+          for ( int i = 0; i < nDim; i++ ) {
+            material += dT_A_dx( i ) * t.dS_dDeltaF( i, j, k, l );
+            geometric += S( i, j ) * dY_dx( l, i );
+          }
+          ofNode.gradientBlock( l )( j, k ) += V0 * ( material - dT_A_dx( k ) * geometric );
+        }
+
+    if constexpr ( isAxisymmetric )
+      Hoop::addStiffnessOfNode( this->_T( A ),
+                                dT_A_dx,
+                                Hoop::radiusOfCenter( *_mp ),
+                                _mp->outOfPlaneStretchIncrement(),
+                                V0,
+                                _mp->response.tau33,
+                                t.outOfPlane.dTau_dDeltaF33,
+                                t.outOfPlane.dTau33_dDeltaF,
+                                t.outOfPlane.dTau33_dDeltaF33,
+                                ofNode );
+  }
+
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::describeStiffness( StiffnessVisitor& visitor, double timeNew, double dT )
+  {
+    // what the evaluation changes is put back on return
+    const SavedMaterialPoint saved( *_mp );
+
+    // the material point at the current state: a zero increment
+    evaluateMaterialPoint( TensorD( 0.0 ), TensorDD( 0.0 ), timeNew, dT );
+
+    const TensorDD dY_dx = inv( _mp->dx_dY() );
+    describeStiffnessNodeByNode< nDim, nDim >( visitor,
+                                               this->_N,
+                                               this->_dN_dY,
+                                               secondGradientsOfTrialFunctions(),
+                                               [&]( int A, StiffnessOfNode< nDim, nDim >& ofNode ) {
+                                                 addStiffnessOfNode( A, dY_dx, ofNode );
+                                               } );
+  }
+
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::computeDistributedLoad( int           type,
+                                                                      int           surfaceID,
+                                                                      const double* load,
+                                                                      double*       fExt,
+                                                                      double*       dExt_dQ,
+                                                                      double        timeNew,
+                                                                      double        dT ) const
   {
     throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
-  template < int nDim >
-  void DisplacementParticle< nDim >::computeBodyLoad( int           type,
-                                                      const double* load,
-                                                      double*       fExt,
-                                                      double*       dExt_dQ,
-                                                      double        timeNew,
-                                                      double        dT ) const
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::computeBodyLoad( int           type,
+                                                               const double* load,
+                                                               double*       fExt,
+                                                               double*       dExt_dQ,
+                                                               double        timeNew,
+                                                               double        dT ) const
   {
     switch ( type ) {
     case BodyForce: {
@@ -615,8 +743,8 @@ namespace Marmot::Discretizations::Meshfree {
     }
   }
 
-  template < int nDim >
-  void DisplacementParticle< nDim >::computeLumpedInertia( double* mLumped ) const
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::computeLumpedInertia( double* mLumped ) const
   {
     const double density0 = _mp->getDensityUndeformed();
     const double V0       = getVolumeUndeformed();
@@ -631,8 +759,8 @@ namespace Marmot::Discretizations::Meshfree {
     }
   }
 
-  template < int nDim >
-  void DisplacementParticle< nDim >::computeLumpedMomentum( double* mLumped ) const
+  template < int nDim, Section section >
+  void DisplacementParticle< nDim, section >::computeLumpedMomentum( double* pLumped ) const
   {
     const double density0 = _mp->getDensityUndeformed();
     const double V0       = getVolumeUndeformed();
@@ -643,7 +771,7 @@ namespace Marmot::Discretizations::Meshfree {
       const int    idxA_u = nDofPerNodeU * A;
 
       for ( int i = 0; i < nDofPerNodeU; i++ ) {
-        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        pLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
       }
     }
   }

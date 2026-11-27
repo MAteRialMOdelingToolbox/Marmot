@@ -27,6 +27,7 @@
 #include <Fastor/tensor/Tensor.h>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 namespace Marmot::Materials {
@@ -71,13 +72,15 @@ namespace Marmot::Materials {
      * @brief Constitutive response of a material at given state.
      * @tparam nDim Number of spatial dimensions (2 or 3).
      *
-     *  Contains stress, density and elastic energy density.
+     *  Contains the stress, the elastic energy density and the dissipation. Both densities are per unit
+     *  **reference** volume, like the Kirchhoff stress: a host integrates them over the reference
+     *  configuration, and stores and hands them back in that way in the next increment.
      */
     template < int nDim >
     struct ConstitutiveResponse {
       Fastor::Tensor< double, nDim, nDim > tau;                  ///< Kirchhoff stress
-      double                               elasticEnergyDensity; ///< elastic energy per unit volume
-      double                               dissipation;          ///< dissipation per unit volume
+      double                               elasticEnergyDensity; ///< elastic energy per unit reference volume
+      double                               dissipation;          ///< dissipation per unit reference volume
       double*                              stateVars;            ///< pointer to state variables
 
       /**
@@ -94,8 +97,8 @@ namespace Marmot::Materials {
       /**
        * @brief Constructor for initializing the constitutive response.
        * @param tau_ Kirchhoff stress tensor.
-       * @param elasticEnergyDensity_ Elastic energy density.
-       * @param dissipation_ Dissipation per unit volume.
+       * @param elasticEnergyDensity_ Elastic energy per unit reference volume.
+       * @param dissipation_ Dissipation per unit reference volume.
        * @param stateVars_ Pointer to state variables.
        */
       ConstitutiveResponse( const Fastor::Tensor< double, nDim, nDim >& tau_,
@@ -285,6 +288,34 @@ namespace Marmot::Materials {
     }
 
     /**
+     * @brief Compute stress under uniaxial stress conditions.
+     * @param[in,out] response ConstitutiveResponse instance; holds the values at the beginning of the increment on
+     * entry and the updated ones on exit
+     * @param[out] dTau11_dF11 condensed algorithmic tangent \f$\frac{\mathrm{d}\tau_{11}}{\mathrm{d}F_{11}}\f$ under
+     * the constraint \f$\tau_{22} = \tau_{33} = 0\f$
+     * @param[in,out] deformation Deformation instance; \f$F_{11}\f$ is the prescribed axial stretch, \f$F_{22}\f$
+     * and \f$F_{33}\f$ are the initial guess of the lateral stretches on entry and the converged ones on exit. All
+     * off-diagonal components must be zero.
+     * @param[in] timeIncrement TimeIncrement instance
+     *
+     * The general 3D computeStress function is called repeatedly, and the lateral stretches are found by a Newton
+     * iteration on \f$\tau_{22} = \tau_{33} = 0\f$. The state variables and the response are reset to their values
+     * at the beginning of the increment before every evaluation, so path dependent materials see one single update.
+     * The axis \f$1\f$ is the axis of the uniaxial stress state, e.g., the axis of a truss. The reduction requires
+     * that the material answers a diagonal deformation gradient with a diagonal stress (e.g., isotropic materials):
+     * only \f$\tau_{22}\f$ and \f$\tau_{33}\f$ are condensed. A material with a closed-form uniaxial response may
+     * override it.
+     *
+     * @throws Marmot::Utilities::StressUpdateFailed if the iteration does not converge, which should trigger a
+     * cutback
+     * @throws std::invalid_argument if the converged stress has shear components (the material is not suitable)
+     */
+    virtual void computeUniaxialStress( ConstitutiveResponse< 3 >& response,
+                                        double&                    dTau11_dF11,
+                                        Deformation< 3 >&          deformation,
+                                        const TimeIncrement&       timeIncrement ) const;
+
+    /**
      * @brief Find the eigen deformation that corresponds to a given eigen stress.
      * @param initialGuess Initial guess for the eigen deformation.
      * @param eigenStress Target eigen stress.
@@ -333,9 +364,11 @@ namespace Marmot::Materials {
      * @brief Get the maximum wave speed of the material for a given deformation gradient.
      * @param[in] stateVars Pointer to the state variable array
      * @param[in] deformationGradient Current deformation gradient used as perturbation reference
-     * @return Maximum wave speed
+     * @return Maximum wave speed; NaN if the stiffness of a direction is NaN.
      * @details The default implementation computes diagonal Voigt tangent entries by centered
-     * finite differences and returns `sqrt(max(C_ii) / rho)`.
+     * finite differences and returns `sqrt(max(C_ii) / rho)`. A NaN entry is returned as NaN, not dropped by the
+     * maximum: the wave speed of the other directions would be too small, and the time increment of an explicit
+     * analysis too large.
      */
     virtual double getMaximumWaveSpeed( const double*                         stateVars,
                                         const Fastor::Tensor< double, 3, 3 >& deformationGradient ) const
@@ -374,7 +407,9 @@ namespace Marmot::Materials {
 
         const double dLogStrain = std::log( 1.0 + dEps ) - std::log( 1.0 - dEps );
         const double Cii        = ( responsePlus.tau( i, i ) - responseMinus.tau( i, i ) ) / dLogStrain;
-        maxStiffnessDiagonal    = std::max( maxStiffnessDiagonal, Cii );
+        if ( std::isnan( Cii ) )
+          return std::numeric_limits< double >::quiet_NaN();
+        maxStiffnessDiagonal = std::max( maxStiffnessDiagonal, Cii );
       }
 
       const double density = getDensity( stateVars );

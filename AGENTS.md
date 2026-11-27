@@ -8,7 +8,7 @@ Marmot is a high-performance C++20 shared library (`libMarmot`) providing finite
 
 Optional Python bindings (`modules/python`, built with [nanobind](https://github.com/wjakob/nanobind)) expose material point solvers (`marmot.solvers.HypoElasticSolver`, `marmot.solvers.FiniteStrainSolver`) for quick material testing and prototyping — see `doc/pages/python_bindings.md`.
 
-Dependencies (located by `cmake/MarmotDependencies.cmake` as imported targets): Eigen (>= 3.3, incl. Eigen 5), autodiff and Fastor (CMake package, or a plain header search; no version enforced — CI pins autodiff v1.1.0 and Fastor V0.6.4).
+Dependencies (located by `cmake/MarmotDependencies.cmake` as imported targets): Eigen (>= 5) and Fastor (CMake package, or a plain header search; CI pins Fastor V0.6.4). Automatic differentiation uses Marmot's own types, with no further dependency: hyper-dual and Taylor numbers (`Marmot/MarmotAutomaticDifferentiationScalarMode.h`), the expression-template vector mode (`Marmot/MarmotAutomaticDifferentiationVectorMode.h`) that computes the Jacobians of the first-derivative AD drivers (and thus the tangents of the AD materials) in one evaluation, and its second-order counterpart (`Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h`) for one-pass Hessians.
 
 ## Build & Test
 
@@ -21,7 +21,7 @@ ctest --output-on-failure                          # run all tests
 ctest -R TestLinearElastic                         # run specific test
 ```
 
-To build and install the optional Python bindings (nanobind is fetched automatically at configure time; requires a Python 3.8+ dev environment):
+To build and install the optional Python bindings (nanobind is fetched automatically at configure time; requires a Python 3.10+ dev environment, free-threaded ones included):
 ```bash
 cmake .. -DMARMOT_BUILD_PYTHON_BINDINGS=ON -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX
 make install                                       # also installs the `marmot` python package
@@ -33,7 +33,7 @@ To measure code coverage locally (GCC/Clang only, requires `lcov`):
 cmake .. -DCMAKE_BUILD_TYPE=Debug -DMARMOT_ENABLE_COVERAGE=ON && make -j$(nproc)
 ctest --output-on-failure
 lcov --directory . --capture --output-file coverage.info
-lcov --remove coverage.info '/usr/*' '*/eigen/*' '*/autodiff/*' '*/Fastor/*' '*/build/*' --output-file coverage.filtered.info
+lcov --remove coverage.info '/usr/*' '*/eigen/*' '*/Fastor/*' '*/build/*' --output-file coverage.filtered.info
 genhtml coverage.filtered.info --output-directory coverage_html      # open coverage_html/index.html
 ```
 CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.yml`) and uploads results to Codecov.
@@ -85,7 +85,8 @@ Rules:
 6. Base classes at the root of their audience namespace; concrete implementations beside their base; factories in `Registry`.
 7. Registration statics go in **unnamed namespaces** in `src/<Name>Registration.cpp`.
 8. C++17 nested namespace syntax only (`namespace Marmot::ContinuumMechanics::Elasticity {`); namespaces are PascalCase.
-9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. (Sanctioned exception: `Marmot::Math::Differentiation::Automatic` imports `autodiff` inside its own leaf namespace.) `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
+9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
+10. The automatic differentiation implementations `ScalarMode` and `VectorMode` are named only in `Marmot/MarmotAutomaticDifferentiationTypes.h` and in their own headers and tests. All other code uses its vocabulary in `Marmot::Math::Differentiation::Automatic`: the types `dual`, `dual2nd`, `dual3rd`, `HyperDual< order >`, `Taylor< order >`, `JacobianDual< nDirections >`, `HessianDual< nDirections >` (and the Eigen aliases `VectorXdual`, …) and the functions `seed< level >`, `derivative< level >`, `value`, `seedDirection`, `partialDerivative`, `secondPartialDerivative` and `taylorDerivatives< order >` — never the implementations' members (`.val`, `.grad`) or functions. Code differentiated by the first-derivative drivers `df_dT`, `dF_dT` and `dF_dX< n >` (including `computeStressAD` of the AD material base classes, via their `ADScalar`) uses `JacobianDual`, not `dual`; code differentiated by the second-derivative driver `d2f_dT2` uses `HessianDual< dim * dim >`, not `dual2nd`. Arithmetic on `JacobianDual` yields expression templates that refer to their operands: never store one in `auto` or return one from a lambda with a deduced return type; name the number type instead.
 
 `scripts/checkNamespaceConventions.sh` greps for violations; CI treats findings as errors.
 
@@ -99,7 +100,7 @@ Rules:
 - **Early Exit on Trivial Increments**: Check `if (dE.isZero(1e-14)) { dS_dE = Cel; return; }` to bypass return mapping.
 - **Exceptions & Cutbacks**: Throw `MarmotExceptions.h` subclasses (`StressUpdateFailed`, `SolverConvergenceFailed`, `SolverTimestepExhausted`, `SolverIncrementsExhausted`) with `Utilities::MakeString() << __PRETTY_FUNCTION__`.
 - **Framework Logging**: Use `Utilities::Journal::warningToMSG(...)` and `notificationToMSG(...)` instead of `std::cout`/`std::cerr`.
-- **Test Every Feature**: Register standalone executables in `test.cmake`. Verify against **analytical solutions** and validate tangents via `MarmotMathCore`'s `numdiff`/`autodiff`.
+- **Test Every Feature**: Register standalone executables in `test.cmake`. Verify against **analytical solutions** and validate tangents via `MarmotMathCore`'s numerical or automatic differentiation.
 - **Zero Warnings**: No new compiler or documentation warnings on GCC, clang, MSVC or Doxygen/Sphinx — see [Warning-Free Builds](#warning-free-builds).
 - **Linting & Commits**: Format with `pre-commit run --all-files`. Commits follow [Conventional Commits](https://www.conventionalcommits.org). PRs target `master`, the development branch.
 
@@ -108,7 +109,7 @@ Rules:
 - **[`marmot-add-module`](.agents/skills/marmot-add-module/SKILL.md)**: Universal lifecycle for adding/extending modules across categories and routing to specialized skills.
 - **[`marmot-add-material`](.agents/skills/marmot-add-material/SKILL.md)**: Implementing small-strain, finite-strain, or nonlocal materials with in-place `stateVars` and factory registration.
 - **[`marmot-add-element`](.agents/skills/marmot-add-element/SKILL.md)**: Implementing templated `<int nDim, int nNodes>` finite elements with `Marmot::Discretizations::Elements::GeometryElement` and `Marmot::Registry::ElementFactory`.
-- **[`marmot-create-test`](.agents/skills/marmot-create-test/SKILL.md)**: Constructing CTest suites validated against analytical solutions and `MarmotMathCore` `numdiff`/`autodiff` tangents.
+- **[`marmot-create-test`](.agents/skills/marmot-create-test/SKILL.md)**: Constructing CTest suites validated against analytical solutions and `MarmotMathCore` numerical or automatic differentiation tangents.
 - **[`marmot-documentation`](.agents/skills/marmot-documentation/SKILL.md)**: Authoring Doxygen API docstrings and Sphinx/Breathe feature pages (`python scripts/buildDocumentation.py`).
 - **[`marmot-code-review`](.agents/skills/marmot-code-review/SKILL.md)**: QA review checklist covering C++20 standards, memory hygiene, factory registrations, and pre-commit checks.
 

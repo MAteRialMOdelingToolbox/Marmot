@@ -41,6 +41,14 @@ The material parameters are provided as a flat vector with the following layout:
 
 .. rubric:: Elastic properties by base model
 
+With ``onlyShearCreep = 1`` the initial compliance of the generalized Maxwell model is
+:math:`\frac{1}{2G_0}\,\mathbb{I}` with the analytical initial shear modulus
+:math:`G_0 = 2\left(\partial\Psi/\partial\bar I_1 + \partial\Psi/\partial\bar I_2\right)` at
+:math:`\mathbf{C}=\mathbf{I}` of the selected base model.
+With full creep (``onlyShearCreep = 0``) it is
+:math:`\frac{1}{2G_0}\,\mathbb{I}^{\mathrm{dev}} + \frac{1}{9K_0}\,\mathbf{I}\otimes\mathbf{I}`, where the initial bulk
+modulus :math:`K_0` is :math:`K` for NeoHooke and PenceGouNeoHooke and :math:`2/D_1` for the other base models.
+
 .. list-table::
    :header-rows: 1
    :align: left
@@ -49,27 +57,33 @@ The material parameters are provided as a flat vector with the following layout:
      - **selector value**
      - **n**\ :sub:`e`
      - **Properties (in order)**
+     - **Initial shear modulus** :math:`G_0`
    * - NeoHooke
      - 0
      - 2
-     - :math:`\mu` (shear-modulus-like parameter), :math:`\kappa` (bulk modulus)
+     - :math:`K` (bulk modulus), :math:`G` (shear modulus)
+     - :math:`G`
    * - Yeoh
      - 1
      - 4
-     - :math:`C_{10}`, :math:`C_{20}`, :math:`C_{30}`, :math:`\kappa`
+     - :math:`C_{1}`, :math:`C_{2}`, :math:`C_{3}`, :math:`D_1` (volumetric compliance)
+     - :math:`2C_1`
    * - MooneyRivlin
      - 2
      - 3
-     - :math:`C_{10}`, :math:`C_{01}`, :math:`\kappa`
+     - :math:`C_{1}`, :math:`C_{2}`, :math:`D_1` (volumetric compliance)
+     - :math:`2(C_1+C_2)`
    * - PenceGouNeoHooke
      - 3
      - 2
      - :math:`K` (bulk modulus), :math:`G` (shear modulus)
+     - :math:`G`
    * - ArrudaBoyce
      - 4
      - 3
      - :math:`\mu` (shear-modulus-like parameter), :math:`\lambda_L` (locking stretch),
-       :math:`\kappa` (bulk modulus)
+       :math:`D_1` (volumetric compliance)
+     - :math:`\mu\,\dfrac{3\lambda_L^2-1}{3(\lambda_L^2-1)}`
 
 .. list-table::
    :header-rows: 1
@@ -85,13 +99,11 @@ The material parameters are provided as a flat vector with the following layout:
 Theory
 ------
 
-The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
-:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` shared with :doc:`bergstromboyce` (see that page
-for the closed-form derivation and its stress-free/reduction properties), and adds the shared
-volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` -- the same
-convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin`` (as opposed to
-``PenceGouNeoHooke``'s own :math:`K,G`-based convention, which bundles its volumetric response
-into a single potential rather than adding this shared term).
+The ``ArrudaBoyce`` base uses the compressible potential ``ArrudaBoyce8ChainPotential`` in
+``MarmotEnergyDensityFunctions.h``: the isochoric 8-chain potential
+:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` (``Isochoric::ArrudaBoyce8ChainPotential``, see its API
+documentation for the closed-form derivation and its stress-free/reduction properties) plus the volumetric term
+:math:`\frac{1}{D_1}\left(\frac{J^2-1}{2}-\ln J\right)` shared with ``Yeoh`` and ``MooneyRivlin``.
 
 The model is a finite-strain generalization of the linear viscoelastic model
 described, e.g., in Liu et al. (2021). A generalized Maxwell model is employed

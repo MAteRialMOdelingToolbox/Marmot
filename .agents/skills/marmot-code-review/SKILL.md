@@ -24,7 +24,7 @@ pre-commit run --all-files
 
 ## 3. Tests & Documentation
 - [ ] **Analytical Validation**: Behavior verified against **analytical solutions** (or high-precision benchmarks).
-- [ ] **Tangent Verification**: Consistent tangent verified using `MarmotMathCore` numerical differentiation (`MarmotNumericalDifferentiation.h`) or automatic differentiation (`autodiff`).
+- [ ] **Tangent Verification**: Consistent tangent verified using `MarmotMathCore` numerical differentiation (`MarmotNumericalDifferentiation.h`) or automatic differentiation (`MarmotAutomaticDifferentiation.h`).
 - [ ] **CTest Registration**: Test executable registered via `add_marmot_test` in `test.cmake` and passes `ctest --output-on-failure`.
 - [ ] **Doxygen & Sphinx**: Public APIs have Doxygen docstrings; feature page added in `doc/pages/features/` and builds with `python scripts/buildDocumentation.py`.
 

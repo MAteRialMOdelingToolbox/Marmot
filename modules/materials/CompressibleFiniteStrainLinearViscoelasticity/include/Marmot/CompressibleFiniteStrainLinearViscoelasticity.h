@@ -41,16 +41,13 @@ namespace Marmot::Materials {
    * - @b baseModel - hyperelastic base identifier (@c NeoHooke, @c Yeoh, @c MooneyRivlin,
    *   @c PenceGouNeoHooke, @c ArrudaBoyce)
    * - @b onlyShearCreep - flag to restrict viscoelastic evolution to the deviatoric part
-   * - @b elasticProperties - isochoric shape coefficients of the selected base model, followed by
-   *   the bulk modulus \f$\kappa\f$ as the last entry (shared volumetric term
-   *   \f$\Psi_{\rm vol}=\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$ for every base except
-   *   @c PenceGouNeoHooke, which uses its own \f$K,G\f$-based convention -- see
-   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential
-   *   and Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB):
-   *   \f$\mu,\kappa\f$ for @c NeoHooke; \f$C_{10},C_{20},C_{30},\kappa\f$ for @c Yeoh;
-   *   \f$C_{10},C_{01},\kappa\f$ for @c MooneyRivlin; \f$K,G\f$ for @c PenceGouNeoHooke;
-   *   \f$\mu,\lambda_L,\kappa\f$ for @c ArrudaBoyce
-   *   (isochoric 8-chain shear-modulus-like parameter and locking stretch)
+   * - @b elasticProperties - parameters of the selected compressible base potential, in the order of its
+   *   interface in Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions:
+   *   \f$K,G\f$ for @c NeoHooke (Coupled::StandardNeoHooke); \f$C_1,C_2,C_3,D_1\f$ for @c Yeoh
+   *   (YeohPotential); \f$C_1,C_2,D_1\f$ for @c MooneyRivlin (MooneyRivlinPotential); \f$K,G\f$ for
+   *   @c PenceGouNeoHooke (PenceGouPotentialB); \f$\mu,\lambda_L,D_1\f$ for @c ArrudaBoyce
+   *   (ArrudaBoyce8ChainPotential). Yeoh, MooneyRivlin and ArrudaBoyce share the volumetric term
+   *   \f$\frac{1}{D_1}\left(\frac{J^2-1}{2}-\ln J\right)\f$, i.e. a bulk modulus \f$2/D_1\f$.
    * - @b n_Maxwell - number of Maxwell elements
    * - @b tau[i], beta[i] (i = 1..n_Maxwell) - Maxwell retardation times and relative weights
    * - @b rho - density (optional; read from the last material property entry)
@@ -137,6 +134,26 @@ namespace Marmot::Materials {
       stateLayout.add( "creepStateVars", maxwellProperties.nMaxwell * 9 ); // plastic deformation gradient
       stateLayout.finalize();
     }
+
+    /**
+     * @brief Initial (infinitesimal) shear modulus of the selected hyperelastic base.
+     * @details @f$G_0 = 2\left(\partial\Psi/\partial\bar I_1 + \partial\Psi/\partial\bar I_2\right)@f$
+     * at @f$\mathbf{C}=\mathbf{I}@f$: @f$G@f$ for @c NeoHooke and @c PenceGouNeoHooke, @f$2C_1@f$ for
+     * @c Yeoh, @f$2(C_1+C_2)@f$ for @c MooneyRivlin and
+     * @f$\mu\,\frac{3\lambda_L^2-1}{3(\lambda_L^2-1)}@f$ for @c ArrudaBoyce. With @c onlyShearCreep the
+     * initial compliance is @f$\frac{1}{2G_0}\mathbb{I}@f$, otherwise
+     * @f$\frac{1}{2G_0}\mathbb{I}^{\mathrm{dev}} + \frac{1}{9K_0}\mathbf{I}\otimes\mathbf{I}@f$.
+     * @return Initial shear modulus @f$G_0@f$.
+     */
+    double initialShearModulus() const;
+
+    /**
+     * @brief Initial (infinitesimal) bulk modulus of the selected hyperelastic base.
+     * @details @f$K_0 = \mathrm{d}^2U/\mathrm{d}J^2@f$ at @f$J=1@f$: @f$K@f$ for @c NeoHooke and
+     * @c PenceGouNeoHooke, @f$2/D_1@f$ for @c Yeoh, @c MooneyRivlin and @c ArrudaBoyce.
+     * @return Initial bulk modulus @f$K_0@f$.
+     */
+    double initialBulkModulus() const;
 
     /**
      * @brief Compute strain energy density and derivatives with respect to @f$\mathbf{C}@f$.

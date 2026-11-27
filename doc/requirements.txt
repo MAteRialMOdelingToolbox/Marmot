@@ -1,5 +1,7 @@
 breathe
 doxygen
+eigen>=5
+fastor
 graphviz
 myst-parser
 pydot

@@ -67,6 +67,15 @@ include(GNUInstallDirs)
 # Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        # False positives of GCC (14, 15) in third-party header code inlined into Marmot; they stay warnings, never
+        # errors:
+        # - -Warray-bounds in Eigen 5's vectorized Householder code (fixed-size matrices with runtime-sized blocks, e.g.
+        #   ColPivHouseholderQR< Matrix6d >::solve): the size checks guarding the packet loads are not visible to it.
+        # - -Wmaybe-uninitialized in Fastor's tocolumnmajor (GCC 15), reached from the column-major constructor
+        #   Tensor( data, ColumnMajor ), which has copied all of data before.
+        add_compile_options(-Wno-error=array-bounds -Wno-error=maybe-uninitialized)
+    endif()
     # No FMA contraction: keeps results bitwise reproducible across -march settings (x86-64-v3 runners,
     # MARMOT_MARCH_NATIVE) and consistent with MSVC's default /fp:precise. Exact-cancellation tests
     # (e.g. dPsi_dC == 0 for F = I) rely on it.
@@ -77,7 +86,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         # Treat them as system headers by name instead.
         add_compile_options(--system-header-prefix=Eigen/ --system-header-prefix=eigen3/
                             --system-header-prefix=unsupported/ --system-header-prefix=Fastor/
-                            --system-header-prefix=autodiff/ --system-header-prefix=nanobind/)
+                            --system-header-prefix=nanobind/)
     endif()
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -85,14 +94,17 @@ elseif(MSVC)
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
-    # /bigobj: the template-heavy (Eigen/Fastor/autodiff) translation units exceed MSVC's default section limit.
+    # /bigobj: the template-heavy (Eigen/Fastor) translation units exceed MSVC's default section limit.
     # /permissive-: standard-conforming two-phase lookup, as GCC/Clang do.
     # /Zc:__cplusplus: report the real language level in __cplusplus, which Eigen and Fastor check.
     add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
     # Like -Wno-unused-parameter above: unused parameters are common in the interface implementations (C4100).
-    # /external:W0 silences warnings from the headers of imported targets (Eigen, autodiff, Fastor), which CMake
+    # /external:W0 silences warnings from the headers of imported targets (Eigen, Fastor), which CMake
     # passes with /external:I.
     add_compile_options(/wd4100 /external:W0)
+    # C5030 (unrecognized attribute): Marmot's AD headers mark their elementary operations [[gnu::always_inline]],
+    # which MSVC does not know and ignores.
+    add_compile_options(/wd5030)
     # C4702 (unreachable code) is a code-generation warning that /external:W0 does not cover; it is reported
     # for every translation unit instantiating Fastor's matmul and SIMD kernels, which we cannot change.
     # C4701 (potentially uninitialized local) is likewise reported inside Fastor's nd tensor views
@@ -135,7 +147,7 @@ endif()
 # Marmot target below.
 add_compile_definitions(FASTOR_DONT_ALIGN)
 
-## find Eigen, autodiff and Fastor as imported targets (Eigen3::Eigen, autodiff::autodiff, Fastor::Fastor).
+## find Eigen and Fastor as imported targets (Eigen3::Eigen, Fastor::Fastor).
 ## The same file is installed and used by MarmotConfig.cmake, so consumers resolve them alike.
 include(cmake/MarmotDependencies.cmake)
 if(NOT MARMOT_DEPENDENCIES_FOUND)
@@ -146,7 +158,7 @@ message("--> found Eigen ${Eigen3_VERSION}")
 # MSVC: hand the dependencies' header directories to the compiler as external includes explicitly, so that
 # /external:W0 (above) silences their warnings (e.g. C4702 in Fastor) whatever the generator does with SYSTEM.
 if(MSVC)
-    foreach(_dep_target Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+    foreach(_dep_target Eigen3::Eigen Fastor::Fastor)
         get_target_property(_dep_include_dirs ${_dep_target} INTERFACE_INCLUDE_DIRECTORIES)
         foreach(_dep_include_dir IN LISTS _dep_include_dirs)
             if(_dep_include_dir AND NOT _dep_include_dir MATCHES "\\$<")
@@ -302,8 +314,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 # Marmot's headers need these MSVC options in every translation unit that includes them (Eigen and Fastor check
-# __cplusplus, which MSVC only reports correctly with /Zc:__cplusplus), so consumers of Marmot::Marmot get them too.
-target_compile_options(${PROJECT_NAME} INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/bigobj;/permissive-;/Zc:__cplusplus>")
+# __cplusplus, which MSVC only reports correctly with /Zc:__cplusplus; /wd5030 see above), so consumers of
+# Marmot::Marmot get them too.
+target_compile_options(${PROJECT_NAME} INTERFACE
+    "$<$<CXX_COMPILER_ID:MSVC>:/bigobj;/permissive-;/Zc:__cplusplus;/wd5030>")
 
 # FASTOR_DONT_ALIGN (see above) changes Fastor::Tensor's alignment, so consumers of Marmot::Marmot must
 # compile with it as well.
@@ -319,9 +333,9 @@ foreach(_inc_dir IN LISTS MARMOT_INCLUDE_DIRS)
     target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
 endforeach()
 
-# PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
+# PUBLIC: Marmot's headers include Eigen and Fastor, so consumers need them too
 # (MarmotConfig.cmake recreates these targets on the consumer side).
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen Fastor::Fastor)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES})
 
 if(MARMOT_ENABLE_COVERAGE)

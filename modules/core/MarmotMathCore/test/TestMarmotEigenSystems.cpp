@@ -184,9 +184,10 @@ void testJacobi_automatic_differentiation()
   A_double( 1, 1 ) = 2.0;
   A_double( 2, 2 ) = 1.0;
 
-  std::function< dual( const Tensor33t< dual >& ) > f0 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemJacobi< dual >( A_d ).first( 0 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f0 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemJacobi< JacobianDual< 9 > >( A_d ).first( 0 );
+    };
   Tensor33d dlambda0_dA = df_dT( f0, A_double );
 
   Tensor33d expected0( 0.0 );
@@ -195,9 +196,10 @@ void testJacobi_automatic_differentiation()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
 
-  std::function< dual( const Tensor33t< dual >& ) > f1 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemJacobi< dual >( A_d ).first( 1 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f1 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemJacobi< JacobianDual< 9 > >( A_d ).first( 1 );
+    };
   Tensor33d dlambda1_dA = df_dT( f1, A_double );
 
   Tensor33d expected1( 0.0 );
@@ -206,9 +208,10 @@ void testJacobi_automatic_differentiation()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " gradient of λ₁ w.r.t. A failed" );
 
-  std::function< dual( const Tensor33t< dual >& ) > f2 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemJacobi< dual >( A_d ).first( 2 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f2 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemJacobi< JacobianDual< 9 > >( A_d ).first( 2 );
+    };
   Tensor33d dlambda2_dA = df_dT( f2, A_double );
 
   Tensor33d expected2( 0.0 );
@@ -418,9 +421,10 @@ void testCardano_automatic_differentiation()
   A_double( 1, 1 ) = 2.0;
   A_double( 2, 2 ) = 1.0;
 
-  std::function< dual( const Tensor33t< dual >& ) > f0 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemWithCardano< dual >( A_d ).first( 0 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f0 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemWithCardano< JacobianDual< 9 > >( A_d ).first( 0 );
+    };
   Tensor33d dlambda0_dA = df_dT( f0, A_double );
 
   Tensor33d expected0( 0.0 );
@@ -429,9 +433,10 @@ void testCardano_automatic_differentiation()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
 
-  std::function< dual( const Tensor33t< dual >& ) > f2 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemWithCardano< dual >( A_d ).first( 2 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f2 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemWithCardano< JacobianDual< 9 > >( A_d ).first( 2 );
+    };
   Tensor33d dlambda2_dA = df_dT( f2, A_double );
 
   Tensor33d expected2( 0.0 );
@@ -440,9 +445,10 @@ void testCardano_automatic_differentiation()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << " gradient of λ₂ w.r.t. A failed" );
 
-  std::function< dual( const Tensor33t< dual >& ) > f1 = []( const Tensor33t< dual >& A_d ) {
-    return computeEigenSystemWithCardano< dual >( A_d ).first( 1 );
-  };
+  std::function< JacobianDual< 9 >( const Tensor33t< JacobianDual< 9 > >& ) > f1 =
+    []( const Tensor33t< JacobianDual< 9 > >& A_d ) {
+      return computeEigenSystemWithCardano< JacobianDual< 9 > >( A_d ).first( 1 );
+    };
   Tensor33d dlambda1_dA = df_dT( f1, A_double );
 
   Tensor33d expected1( 0.0 );

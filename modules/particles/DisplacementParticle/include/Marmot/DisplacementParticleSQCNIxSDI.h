@@ -70,6 +70,8 @@ namespace Marmot::Discretizations::Meshfree {
 
     using TensorD  = GenericSDIParticle< nDim, nVertices >::TensorD;  ///< vector of size nDim
     using TensorDD = GenericSDIParticle< nDim, nVertices >::TensorDD; ///< second-order tensor of size nDim
+    /// the integrals over the smoothing domain of a subdomain
+    using SectionIntegrals = GenericSDIParticle< nDim, nVertices >::SectionIntegrals;
     /// the material points, one per subdomain (in the order of the subdomains)
     std::vector< std::unique_ptr< MaterialPointType< nDim > > > _subdomainMaterialPoints;
 
@@ -410,13 +412,15 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
     /**
-     * @brief Evaluation points: for each face of the particle, the corresponding face centers of the smoothing
-     * domains of the subdomains adjacent to that face.
+     * @brief Evaluation points: for each face of the particle, the quadrature points of the corresponding faces of the
+     * smoothing domains of the subdomains adjacent to that face (the face centers,
+     * ParticleSectionIntegrals::faceQuadraturePoints()).
      * @param[out] coordinates The coordinates (nDim x getNumberOfEvaluationPoints(), column major).
      */
     void getEvaluationCoordinates( double* coordinates ) const override
     {
-      const int nEvalPoints = this->getNumberOfEvaluationPoints();
+      const int     nEvalPoints    = this->getNumberOfEvaluationPoints();
+      constexpr int nPointsPerFace = SectionIntegrals::nPointsPerFace;
 
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > coordinatesMap( coordinates, nDim, nEvalPoints );
 
@@ -424,9 +428,10 @@ namespace Marmot::Discretizations::Meshfree {
       for ( int f = 0; f < this->_particleDomainMain.getNumberOfFaces(); f++ ) {
         const auto subcellsAttachedToFace = this->_particleDomainMain.getSubCellIndicesOnParentFace( f + 1 );
         for ( size_t sc = 0; sc < subcellsAttachedToFace.size(); sc++ ) {
-          const int subcellIndex  = subcellsAttachedToFace[sc];
-          coordinatesMap.col( i ) = this->_subDomains[subcellIndex].getSmoothingDomainFaceCenterCoordinates( f + 1 );
-          i++;
+          const auto& subdomain = this->_subDomains[subcellsAttachedToFace[sc]];
+          const auto  points    = SectionIntegrals::faceQuadraturePoints( subdomain.smoothingDomain(), f + 1 );
+          coordinatesMap.middleCols( i, nPointsPerFace ) = points;
+          i += nPointsPerFace;
         }
       }
     }
@@ -441,7 +446,7 @@ namespace Marmot::Discretizations::Meshfree {
       int nEvalPoints = 0;
       for ( int i = 0; i < this->_particleDomainMain.getNumberOfFaces(); i++ ) {
         const auto subcellsAttachedToFace = this->_particleDomainMain.getSubCellIndicesOnParentFace( i + 1 );
-        nEvalPoints += static_cast< int >( subcellsAttachedToFace.size() );
+        nEvalPoints += static_cast< int >( subcellsAttachedToFace.size() ) * SectionIntegrals::nPointsPerFace;
       }
       return nEvalPoints;
     };

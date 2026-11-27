@@ -7,8 +7,9 @@ These bindings expose Marmot's material point solvers directly in Python, enabli
 
 ## Installation & Setup
 
-Building the Python bindings is optional and requires a Python 3.8+ development environment.
+Building the Python bindings is optional and requires a Python 3.10+ development environment.
 Nanobind is automatically fetched at CMake configuration time.
+A free-threaded Python (e.g. the Python 3.14 of the EdelweissFE environment) is supported with CMake 3.30 or newer: the module then runs without the GIL. A solver object is not meant to be shared between threads, so every call of a solver method locks that solver; different solvers run concurrently.
 
 To build and install Marmot with Python bindings:
 
@@ -88,11 +89,12 @@ In finite-strain problems, deformation measures (displacement gradient $\nabla \
 import numpy as np
 import marmot
 
-# 1. Material properties (e.g. Compressible Neo-Hooke: mu=1.0, nu=0.3)
-properties = np.array([1.0, 0.3], dtype=np.float64)
+# 1. Material properties (compressible hyperelasticity: isochoric base 0 (NeoHooke), volumetric base 6
+#    (DollSchweizerhof), mu=0.3, kappa=1.0, alpha=1.0, beta=3.0)
+properties = np.array([0.0, 6.0, 0.3, 1.0, 1.0, 3.0], dtype=np.float64)
 
 # 2. Instantiate FiniteStrainSolver
-solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLENEOHOOKE", properties)
+solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEHYPERELASTICITY", properties)
 
 # 3. Define loading step
 step = marmot.solvers.FiniteStrainSolver.Step()

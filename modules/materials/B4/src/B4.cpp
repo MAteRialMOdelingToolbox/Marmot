@@ -51,9 +51,10 @@ namespace Marmot::Materials {
     solidificationKelvinProperties.retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::
       generateRetardationTimes( static_cast< int >( nKelvinBasic ), minTauBasic, 10. );
 
-    auto phiBasic = [&]( autodiff::Real< basicCreepComplianceApproximationOrder, double > tau ) {
-      return ContinuumMechanics::Viscoelasticity::SolidificationTheory::phi( tau, solidificationParameters );
-    };
+    auto phiBasic =
+      [&]( Marmot::Math::Differentiation::Automatic::Taylor< basicCreepComplianceApproximationOrder > tau ) {
+        return ContinuumMechanics::Viscoelasticity::SolidificationTheory::phi( tau, solidificationParameters );
+      };
 
     solidificationKelvinProperties
       .elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli<
@@ -117,9 +118,10 @@ namespace Marmot::Materials {
     double b      = 8. * ( 1. - hEnv );
     double xiZero = std::min( -1e-16, ( dryingStart - tStartDays - dTimeDays / 2. ) / dryingShrinkageHalfTime );
 
-    auto phiDrying = [&]( autodiff::Real< dryingCreepComplianceApproximationOrder, double > tau ) {
-      return phi( tau, b, xiZero );
-    };
+    auto phiDrying =
+      [&]( Marmot::Math::Differentiation::Automatic::Taylor< dryingCreepComplianceApproximationOrder > tau ) {
+        return phi( tau, b, xiZero );
+      };
 
     ContinuumMechanics::Viscoelasticity::KelvinChain::Properties
       dryingCreepElasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli<

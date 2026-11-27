@@ -136,10 +136,9 @@ namespace Marmot::Materials {
      */
     Tensor33d rotationOf( const Tensor33d& F )
     {
-      const Eigen::JacobiSVD< Eigen::Matrix3d > svd( Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >(
-                                                       F.data() ),
-                                                     Eigen::ComputeFullU | Eigen::ComputeFullV );
-      Tensor33d                                 R;
+      const Eigen::JacobiSVD< Eigen::Matrix3d, Eigen::ComputeFullU | Eigen::ComputeFullV > svd(
+        Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >( F.data() ) );
+      Tensor33d R;
       Eigen::Map< Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >( R.data() ) = svd.matrixU() *
                                                                                  svd.matrixV().transpose();
       return R;
@@ -161,9 +160,9 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
-    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties,
-                                                               nMaterialProperties,
-                                                               materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain< 1 >( materialProperties,
+                                                                    nMaterialProperties,
+                                                                    materialNumber ),
       K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       c0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
@@ -596,7 +595,7 @@ namespace Marmot::Materials {
     double&      omega  = stateLayout.getAs< double& >( sv, "omega" );
 
     const Tensor33d F( deformation.F );
-    const double    N = deformation.N;
+    const double    N = deformation.N( 0 );
 
     const ReturnMapping r = returnMapping( F, Fp, alphaP );
 
@@ -633,8 +632,8 @@ namespace Marmot::Materials {
     const Tensor3333d dTauEff_dFe = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;
 
     response.tau                  = ( 1.0 - omega ) * tauEff;
-    response.L                    = alphaD;
-    response.nonLocalRadius       = nonLocalRadius;
+    response.L( 0 )               = alphaD;
+    response.nonLocalRadius( 0 )  = nonLocalRadius;
     response.elasticEnergyDensity = ( 1.0 - omega ) * psiEff;
     // cumulative: the host carries the dissipation of the previous increments in
     response.dissipation += ( 1.0 - omega ) * r.plasticWork + psiEff * ( omega - omegaOld );
@@ -646,9 +645,9 @@ namespace Marmot::Materials {
 
     tangents.dTau_dF = ( 1.0 - omega ) * Tensor3333d( einsum< ijKL, KLMN >( dTauEff_dFe, r.dFe_dF ) ) -
                        Tensor3333d( outer( tauEff, dOmega_dF ) );
-    tangents.dTau_dN = -dOmega_dN * tauEff;
-    tangents.dL_dF   = dL_dF;
-    tangents.dL_dN   = 0.0;
+    tangents.dTau_dN[0]    = -dOmega_dN * tauEff;
+    tangents.dL_dF[0]      = dL_dF;
+    tangents.dL_dN( 0, 0 ) = 0.0;
   }
 
 } // namespace Marmot::Materials

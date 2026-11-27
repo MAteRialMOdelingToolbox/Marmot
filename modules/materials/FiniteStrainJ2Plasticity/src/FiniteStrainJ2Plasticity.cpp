@@ -1,4 +1,5 @@
 #include "Marmot/FiniteStrainJ2Plasticity.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotExceptions.h"
@@ -7,7 +8,6 @@
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
 #include "Marmot/MarmotStressMeasures.h"
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Materials {
 
@@ -74,7 +74,7 @@ namespace Marmot::Materials {
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace autodiff;
+    using namespace Marmot::Math::Differentiation::Automatic;
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Marmot::Math::Tensors::FastorTensors;
 
@@ -210,7 +210,7 @@ namespace Marmot::Materials {
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace autodiff;
+    using namespace Marmot::Math::Differentiation::Automatic;
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Marmot::Math::Tensors::FastorTensors;
 
@@ -386,7 +386,7 @@ namespace Marmot::Materials {
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace autodiff;
+    using namespace Marmot::Math::Differentiation::Automatic;
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Marmot::Math::Tensors::FastorTensors;
 
@@ -565,7 +565,7 @@ namespace Marmot::Materials {
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace autodiff;
+    using namespace Marmot::Math::Differentiation::Automatic;
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Marmot::Math::Tensors::FastorTensors;
 

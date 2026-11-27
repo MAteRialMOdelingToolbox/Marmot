@@ -8,12 +8,12 @@ of the AD (Automatic Differentiation) material framework.
 Theory
 ------
 
-See :ref:`compressibleneohooke` for the underlying theory.
+See :ref:`compressiblehyperelasticity` (compressible Neo-Hooke model of Pence & Gou) for the underlying theory.
 
 Implementation
 --------------
 
-The implementation follows :ref:`compressibleneohooke`; however,
+The implementation follows :ref:`compressiblehyperelasticity`; however,
 automatic differentiation is used to compute the consistent algorithmic tangent operator.
 
 .. list-table::

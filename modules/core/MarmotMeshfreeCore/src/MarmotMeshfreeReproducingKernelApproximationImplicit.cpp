@@ -30,95 +30,88 @@
 #include <cmath>
 
 namespace Marmot::Discretizations::Meshfree {
-  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int dim, int completenessOrder )
-    : ReproducingKernelApproximation( dim, completenessOrder )
+  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int    dim,
+                                                                                  int    completenessOrder,
+                                                                                  double momentMatrixConditionLimit )
+    : ReproducingKernelApproximation( dim, completenessOrder, momentMatrixConditionLimit )
   {
-  }
-
-  void ReproducingKernelApproximationImplicit::computeShapeFunctionGradients(
-    const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctions,
-    double*                                     shapeFunctionValueGradients ) const
-  {
-    throw std::runtime_error( "Not implemented" );
   }
 
   void ReproducingKernelApproximationImplicit::computeShapeFunctionsAndGradients(
     const double*                               coord,
-    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
+    const std::vector< const KernelFunction* >& kernelFunctions,
     double*                                     shapeFunctionValues_,
     double*                                     shapeFunctionValueGradients_ ) const
   {
+    // the kernel values are kept in the output array until the shape functions overwrite them; the implicit gradients
+    // need no kernel gradients
+    double*   phi       = shapeFunctionValues_;
+    const int nCovering = evaluateKernelFunctions( coord, kernelFunctions, phi, nullptr );
 
-    const auto coveringKernelFunctionIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
+    Eigen::MatrixXd H;
+    MomentMatrix    M;
+    const int       completenessOrder = chooseCompletenessOrderAndAssembleMomentMatrix( coord,
+                                                                                  kernelFunctions,
+                                                                                  phi,
+                                                                                  nullptr,
+                                                                                  nCovering,
+                                                                                  H,
+                                                                                  nullptr,
+                                                                                  M,
+                                                                                  nullptr );
+    const int       sizeH             = _basisOfOrder[completenessOrder].size();
 
-    std::vector< const KernelFunction* > coveringKernelFunctions;
-    for ( const auto& idx : coveringKernelFunctionIndices )
-      coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
-
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
-      static_cast< int >( coveringKernelFunctionIndices.size() ) );
-
-    const auto sizeH = Math::computeSizeOfMonomialBasisVector( correctedCompletenessOrder, _dim );
-
-    if ( sizeH < 1 ) {
-      throw std::runtime_error( "Size of H vector is less than 1" );
+    // first column for the values, the other columns for the gradients: they reproduce -d(x - x_I)^alpha/dx_i at
+    // x_I, which is -1 for the linear monomial x_i and 0 otherwise; the linear monomials are the rows whose gradient
+    // at the origin is nonzero
+    using RightHandSides = Eigen::
+      Matrix< double, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor, maxSizeOfBasis, 1 + maxDim >;
+    RightHandSides H0 = RightHandSides::Zero( sizeH, 1 + _dim );
+    H0( 0, 0 )        = 1.0;
+    if ( completenessOrder > 0 ) {
+      const Coordinates origin = Coordinates::Zero( _dim );
+      BasisGradient     dHOrigin( sizeH, _dim );
+      _basisOfOrder[completenessOrder].evaluateGradient( origin, dHOrigin );
+      for ( int k = 0; k < sizeH; k++ )
+        for ( int i = 0; i < _dim; i++ )
+          if ( dHOrigin( k, i ) != 0.0 )
+            H0( k, 1 + i ) = -1.0;
     }
 
-    const Eigen::Map< const Eigen::VectorXd > coordVec( coord, _dim );
-
-    Eigen::Map< Eigen::VectorXd > shapeFunctionValues( shapeFunctionValues_, kernelFunctionCandidates.size() );
-    shapeFunctionValues.setZero();
+    const RightHandSides bMat = factorizeMomentMatrix( M, coord, nCovering ).solve( H0 );
 
     Eigen::Map< Eigen::MatrixXd > shapeFunctionValueGradients( shapeFunctionValueGradients_,
                                                                _dim,
-                                                               kernelFunctionCandidates.size() );
+                                                               kernelFunctions.size() );
     shapeFunctionValueGradients.setZero();
 
-    const auto M = computeMMatrix( coordVec, kernelFunctionCandidates, correctedCompletenessOrder );
-
-    // solve for b(x)
-    // b = M^-1 * H0
-    const auto H0 = H0Vector( static_cast< int >( M.rows() ) );
-
-    using namespace Eigen;
-
-    // first column is for the base function
-    // the rest of the columns are for the gradients
-    MatrixXd H0Mat( M.rows(), 1 + _dim );
-    H0Mat.setZero();
-
-    H0Mat.col( 0 ) = H0;
-    // the gradient columns reproduce -d(x - x_I)^alpha/dx_i at x_I, which is -1 for the linear monomial x_i and 0
-    // otherwise; the linear monomials are the rows whose gradient at the origin is nonzero
-    if ( correctedCompletenessOrder > 0 ) {
-      Eigen::MatrixXd dHOrigin( M.rows(), _dim );
-      Math::computeMonomialBasisGradient( correctedCompletenessOrder, Eigen::VectorXd::Zero( _dim ), dHOrigin );
-      for ( int k = 0; k < M.rows(); k++ )
-        for ( int i = 0; i < _dim; i++ )
-          if ( dHOrigin( k, i ) != 0.0 )
-            H0Mat( k, 1 + i ) = -1.0;
+    if ( completenessOrder == 0 ) {
+      // The implicit gradients of order 0 reproduce only the derivative of a constant: they vanish identically, and a
+      // point evaluated with them would carry no strain. The point gets the Shepard gradients instead, the derivatives
+      // of its values, as with explicit gradients: with b = 1 / sum_B phi_B, Psi_A,i = b phi_A,i + b_,i phi_A and
+      // b_,i = -b^2 sum_B phi_B,i. Only here are the kernel gradients needed.
+      const double b                    = bMat( 0, 0 );
+      Coordinates  sumOfKernelGradients = Coordinates::Zero( _dim );
+      for ( size_t A = 0; A < kernelFunctions.size(); A++ )
+        if ( phi[A] != 0.0 ) {
+          kernelFunctions[A]->computeKernelFunctionAndGradient( coord, shapeFunctionValueGradients.col( A ).data() );
+          sumOfKernelGradients += shapeFunctionValueGradients.col( A );
+        }
+      const Coordinates db_dx = -b * b * sumOfKernelGradients;
+      for ( size_t A = 0; A < kernelFunctions.size(); A++ )
+        if ( phi[A] != 0.0 )
+          shapeFunctionValueGradients.col( A ) = b * shapeFunctionValueGradients.col( A ) + phi[A] * db_dx;
     }
 
-    const Eigen::MatrixXd bMat = factorizeMomentMatrix( M,
-                                                        coord,
-                                                        static_cast< int >( coveringKernelFunctionIndices.size() ) )
-                                   .solve( H0Mat );
+    for ( size_t A = 0; A < kernelFunctions.size(); A++ ) {
+      const double phi_A = phi[A];
+      if ( phi_A == 0.0 )
+        continue; // not covering: zero value, already written, and zero gradient
+      const auto H_A = H.col( A );
 
-    const VectorXd b0    = bMat.col( 0 );
-    const MatrixXd bGrad = bMat.block( 0, 1, M.rows(), _dim );
-
-    for ( const auto& A : coveringKernelFunctionIndices ) {
-      const auto H = computeHVector( coordVec - Eigen::Map< const Eigen::VectorXd >( kernelFunctionCandidates[A]
-                                                                                       ->getCenterCoordinates(),
-                                                                                     _dim ),
-                                     coveringKernelFunctions,
-                                     correctedCompletenessOrder );
-
-      const auto phi_A = kernelFunctionCandidates[A]->computeKernelFunction( coord );
-
-      shapeFunctionValues[A]               = b0.dot( H ) * phi_A;
-      shapeFunctionValueGradients.col( A ) = bGrad.transpose() * H * phi_A;
+      shapeFunctionValues_[A] = bMat.col( 0 ).dot( H_A ) * phi_A;
+      if ( completenessOrder > 0 )
+        shapeFunctionValueGradients.col( A ) = bMat.rightCols( _dim ).transpose() * H_A * phi_A;
     }
   }
 
