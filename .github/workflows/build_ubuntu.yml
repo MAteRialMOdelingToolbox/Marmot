@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # The default build, with the Python bindings.
+          # The default build, with the Python bindings (their tests are the Python_* tests of ctest).
           - name: default
             cmake_options: -DMARMOT_BUILD_PYTHON_BINDINGS=ON
           # Exports only the MARMOT_API-marked API, as the Windows DLL does; the Python bindings are not supported
@@ -21,60 +21,21 @@ jobs:
           - name: export-api-only
             cmake_options: -DMARMOT_EXPORT_API_ONLY=ON
     name: build (${{ matrix.name }})
-    env:
-      CC:   gcc-14
-      CXX:  g++-14
     steps:
-      - name: Install Python dependencies
-        shell: bash -leo pipefail {0}
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y python3-dev python3-numpy
-
-      - name: Install Eigen
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
-          cd eigen
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF  ..
-          sudo make install
-          cd ../..
-
-      - name: Install Autodiff
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
-          cd autodiff
-          mkdir build
-          cd build
-          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
-          sudo make install
-          cd ../..
-
-      - name: Install Fastor
-        shell: bash -leo pipefail {0}
-        run: |
-          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
-          cd Fastor
-          mkdir build
-          cd build
-          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5  ..
-          sudo make install
-          cd ../..
-
       - name: Check out Marmot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Install Marmot
+      # The compilers, CMake, Eigen, Fastor and Python of the stack: see .github/actions/setup-stack.
+      - uses: ./.github/actions/setup-stack
+
+      - name: Build, install and test Marmot
         shell: bash -leo pipefail {0}
         run: |
-          mkdir build
-          cd build
           # Fail on compiler warnings (-Werror, /WX); local builds keep warnings non-fatal.
-          cmake -DCMAKE_COMPILE_WARNING_AS_ERROR=ON ${{ matrix.cmake_options }} ..
-          sudo make install
+          cmake -S . -B build -DCMAKE_INSTALL_PREFIX="$CONDA_PREFIX" -DCMAKE_PREFIX_PATH="$CONDA_PREFIX" \
+            -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_COMPILE_WARNING_AS_ERROR=ON ${{ matrix.cmake_options }}
+          cmake --build build --parallel 4
+          cmake --install build
           # --no-tests=error: ctest exits 0 on an empty test set, which would
           # report success for a build that produced no tests at all.
-          ctest --output-on-failure --no-tests=error
+          ctest --test-dir build --output-on-failure --no-tests=error

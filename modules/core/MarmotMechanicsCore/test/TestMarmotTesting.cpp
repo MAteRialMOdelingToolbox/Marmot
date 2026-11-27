@@ -20,12 +20,13 @@ void testGetStringFormatsDoubleAndDual()
   throwExceptionOnFailure( getString( 1.5 ) == std::to_string( 1.5 ),
                            "getString(double) failed in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  autodiff::dual d    = 2.0;
-  d.grad              = 3.0;
+  Marmot::Math::Differentiation::Automatic::dual d = 2.0;
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( d, 3.0 );
   const std::string s = getString( d );
   throwExceptionOnFailure( s.find( std::to_string( 2.0 ) ) != std::string::npos &&
                              s.find( std::to_string( 3.0 ) ) != std::string::npos,
-                           "getString(autodiff::dual) failed in " + std::string( __PRETTY_FUNCTION__ ) );
+                           "getString(Marmot::Math::Differentiation::Automatic::dual) failed in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
 }
 
 void testCheckIfEqualReturnsFalseForNaNAndInf()
@@ -53,12 +54,14 @@ void testCheckIfEqualReturnsFalseForMismatchedScalars()
                            "checkIfEqual(double) must return false for clearly different values in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  const autodiff::dual a = 1.0, b = 2.0;
+  const Marmot::Math::Differentiation::Automatic::dual a = 1.0, b = 2.0;
   throwExceptionOnFailure( checkIfEqual( a, b, 1e-10 ) == false,
-                           "checkIfEqual(autodiff::dual) must return false for different values in " +
+                           "checkIfEqual(Marmot::Math::Differentiation::Automatic::dual) must return false for "
+                           "different values in " +
                              std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( checkIfEqual( a, a, 1e-10 ) == true,
-                           "checkIfEqual(autodiff::dual) must return true for identical values in " +
+                           "checkIfEqual(Marmot::Math::Differentiation::Automatic::dual) must return true for "
+                           "identical values in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   const std::complex< double > c1( 1.0, 0.0 ), c2( 1.0, 1.0 );

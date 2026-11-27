@@ -13,7 +13,6 @@ using namespace Eigen;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 using namespace Marmot::ContinuumMechanics::PlaneStrain;
 using namespace Marmot::ContinuumMechanics::PlaneStress;
-using namespace Marmot::ContinuumMechanics::UniaxialStress;
 using namespace Marmot::Testing;
 
 Marmot::Math::Matrix6d create_C_Matrix()
@@ -23,20 +22,6 @@ Marmot::Math::Matrix6d create_C_Matrix()
   double                 nu = 0.25;
   Marmot::Math::Matrix6d C  = stiffnessTensor( E, nu );
   return C;
-}
-
-void test_getUniaxialStressTangent()
-{
-  Marmot::Math::Matrix6d C = create_C_Matrix();
-
-  // Compute the result using the getUniaxialStressTangent function
-  double computedResult = getUniaxialStressTangent( C );
-
-  // Expected uniaxial stress tangent for isotropic material = E
-  double expectedResult = 1000.0;
-
-  throwExceptionOnFailure( checkIfEqual( computedResult, expectedResult, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_reduce3D_dStress_dDeformationGradient()
@@ -213,132 +198,13 @@ void test_compute_dStress_dDeformationGradient()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
-void test_dStressPlaneStressDStress()
-{
-  // Compute the result using the dStressPlaneStressDStress function
-  Matrix< double, 3, 6 > computedResult = dStressPlaneStressDStress();
-
-  // Expected results
-  Matrix< double, 3, 6 > expectedResult;
-  // clang-format off
-  expectedResult << 1, 0, 0, 0, 0, 0,
-                    0, 1, 0, 0, 0, 0,
-                    0, 0, 0, 1, 0, 0;
-  // clang-format on
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
-void test_getPlaneStressTangent()
-{
-  Marmot::Math::Matrix6d C = create_C_Matrix();
-
-  // Compute the result using the getPlaneStressTangent function
-  Marmot::Math::Matrix3d computedResult = getPlaneStressTangent( C );
-
-  // Expected results
-  Matrix< double, 3, 6 > dStressPlaneStressDStress;
-  // clang-format off
-  dStressPlaneStressDStress <<
-    1, 0, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0,
-    0, 0, 0, 1, 0, 0;
-  // clang-format on
-
-  Matrix< double, 6, 3 > dStrainDStrainPlaneStress;
-  // clang-format off
-  dStrainDStrainPlaneStress <<
-    1,        0,        0,
-    0,        1,        0,
-    -1.0/3.0, -1.0/3.0, 0,
-    0,        0,        1,
-    0,        0,        0,
-    0,        0,        0;
-  // clang-format on
-
-  Marmot::Math::Matrix3d expectedResult = dStressPlaneStressDStress * C * dStrainDStrainPlaneStress;
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
-void test_planeStressCompensationStrain()
-{
-  Marmot::Math::Vector6d strain;
-  strain << 0.04, 0.06, 0.0, 0.08, 0.0, 0.0;
-  double nu = 0.2;
-
-  // Compute the result using the planeStressCompensationStrain function
-  Marmot::Math::Vector6d computedResult = planeStressCompensationStrain( strain, nu );
-
-  // Expected results
-  Marmot::Math::Vector6d expectedResult;
-  expectedResult << 0, 0, -0.025, 0, 0, 0;
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
-void test_planeStressTangentTransformationMatrix()
-{
-  Marmot::Math::Matrix6d tangent = create_C_Matrix();
-
-  // Compute the result using the planeStressTangentTransformationMatrix function
-  Marmot::Math::Matrix6d computedResult = planeStressTangentTransformationMatrix( tangent );
-
-  // Expected results
-  Marmot::Math::Matrix6d expectedResult;
-  // clang-format off
-  expectedResult <<
-    1,        0,        0,  0,  0,  0,
-    0,        1,        0,  0,  0,  0,
-    -1.0/3.0, -1.0/3.0, 0,  0,  0,  0,
-    0,        0,        0,  1,  0,  0,
-    0,        0,        0,  0,  1,  0,
-    0,        0,        0,  0,  0,  1;
-  // clang-format on
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
-void test_dStrainDStrainPlaneStress()
-{
-  Marmot::Math::Matrix6d tangent = create_C_Matrix();
-
-  // Compute the result using the dStrainDStrainPlaneStress function
-  Matrix< double, 6, 3 > computedResult = dStrainDStrainPlaneStress( tangent );
-
-  // Expected results
-  Matrix< double, 6, 3 > expectedResult;
-  // clang-format off
-  expectedResult <<
-    1,        0,        0,
-    0,        1,        0,
-    -1.0/3.0, -1.0/3.0, 0,
-    0,        0,        1,
-    0,        0,        0,
-    0,        0,        0;
-  // clang-format on
-
-  throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
-}
-
 int main()
 {
 
-  auto tests = std::vector< std::function< void() > >{ test_getUniaxialStressTangent,
-                                                       test_reduce3D_dStress_dDeformationGradient,
+  auto tests = std::vector< std::function< void() > >{ test_reduce3D_dStress_dDeformationGradient,
                                                        test_getPlaneStrainTangent,
                                                        test_dStrainDStrainPlaneStrain,
-                                                       test_compute_dStress_dDeformationGradient,
-                                                       test_dStressPlaneStressDStress,
-                                                       test_getPlaneStressTangent,
-                                                       test_planeStressCompensationStrain,
-                                                       test_planeStressTangentTransformationMatrix,
-                                                       test_dStrainDStrainPlaneStress };
+                                                       test_compute_dStress_dDeformationGradient };
 
   executeTestsAndCollectExceptions( tests );
 

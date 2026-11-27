@@ -179,7 +179,7 @@ namespace Marmot::ContinuumMechanics {
        *     + \sigma_M^{(m)} M_{ij}^{(m)} + \sigma_L^{(m)} L_{ij}^{(m)} \right)
        * \f]
        * @tparam T Scalar type of the per-microplane stresses, e.g. `double` or
-       * `autodiff::dual`; the projection tensors #pTensors stay `double` (they are
+       * `Marmot::Math::Differentiation::Automatic::dual`; the projection tensors #pTensors stay `double` (they are
        * geometric constants, never differentiated), so `T` may differ from `double`.
        * @param stressN Per-microplane normal stress \f$ \sigma_N^{(m)} \f$, size \f$ 1 \times n_{qp} \f$.
        * @param stressM Per-microplane shear stress \f$ \sigma_M^{(m)} \f$ (direction \f$ M \f$), size \f$ 1 \times

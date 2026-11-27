@@ -1,5 +1,6 @@
 #include "Marmot/FiniteStrainIsotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
@@ -11,7 +12,6 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
 
 namespace Marmot::Materials {
 
@@ -37,8 +37,8 @@ namespace Marmot::Materials {
         ContinuumMechanics::Viscoelasticity::createMaxwellProperties( static_cast< int >( materialProperties[2] ),
                                                                       &materialProperties[3] ) ),
 
-      initialCompliance(
-        Marmot::Math::Tensors::makeDual( Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( std::get< 2 >(
+      initialCompliance( Marmot::Math::Tensors::makeOtherScalarType< ADScalar< 3 > >(
+        Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( std::get< 2 >(
           ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder::BiotNeoHooke( evaluate( Spatial3D::I ),
                                                                                              K,
                                                                                              G ) ) ) ) )
@@ -52,7 +52,7 @@ namespace Marmot::Materials {
                                                                   const TimeIncrement&         timeIncrement ) const
   {
 
-    using scalar  = autodiff::dual;
+    using scalar  = ADScalar< 3 >;
     const auto& F = deformation.F;
 
     using namespace ContinuumMechanics;
@@ -81,7 +81,7 @@ namespace Marmot::Materials {
     Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute the increment in Biot stress
-    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::Tensors::makeDual( S_biot_old );
+    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::Tensors::makeOtherScalarType< scalar >( S_biot_old );
     memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ),
             Marmot::Math::Tensors::makeReal( S_biot ).data(),
             9 * sizeof( double ) );

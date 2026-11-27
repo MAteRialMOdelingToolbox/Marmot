@@ -53,17 +53,30 @@ namespace Marmot::Materials {
     {
     }
     /**
+     * @brief Number type of computeStressAD(), carrying the derivatives with respect to the nDim x nDim components of
+     * the deformation gradient.
+     *
+     * Derived classes must use this type, not Marmot::Math::Differentiation::Automatic::dual, for all quantities that
+     * depend on the deformation gradient: computeStress() evaluates computeStressAD() once with numbers of this type,
+     * which carry all nDim x nDim derivatives (see MarmotAutomaticDifferentiationTypes.h).
+     * @tparam nDim Number of spatial dimensions (2 or 3).
+     */
+    template < int nDim >
+    using ADScalar = Marmot::Math::Differentiation::Automatic::JacobianDual< nDim * nDim >;
+
+    /**
      * @struct ConstitutiveResponseAD
      * @brief Constitutive response of a material at given state.
      * @tparam nDim Number of spatial dimensions (2 or 3).
      *
-     *  Contains stress, density and elastic energy density.
+     *  Contains the stress, the elastic energy density and the dissipation. Both densities are per unit
+     *  **reference** volume, as in MaterialFiniteStrain::ConstitutiveResponse.
      */
     template < int nDim >
     struct ConstitutiveResponseAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > tau;                  ///< Kirchhoff stress
-      double                                       elasticEnergyDensity; ///< elastic energy per unit volume
-      double  dissipation; ///< dissipation per unit volume (for inelastic materials)
+      Fastor::Tensor< ADScalar< nDim >, nDim, nDim > tau;                  ///< Kirchhoff stress
+      double                                         elasticEnergyDensity; ///< elastic energy per unit reference volume
+      double  dissipation; ///< dissipation per unit reference volume (for inelastic materials)
       double* stateVars;   ///< pointer to state variables
 
       /**
@@ -71,7 +84,7 @@ namespace Marmot::Materials {
        * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
        */
       ConstitutiveResponseAD()
-        : tau( Fastor::Tensor< autodiff::dual, nDim, nDim >( 0.0 ) ),
+        : tau( Fastor::Tensor< ADScalar< nDim >, nDim, nDim >( 0.0 ) ),
           elasticEnergyDensity( 0.0 ),
           dissipation( 0.0 ),
           stateVars( nullptr )
@@ -83,7 +96,7 @@ namespace Marmot::Materials {
        * @param response ConstitutiveResponse instance to initialize from.
        */
       ConstitutiveResponseAD( const ConstitutiveResponse< nDim >& response )
-        : tau( Marmot::Math::Tensors::makeDual( response.tau ) ),
+        : tau( Marmot::Math::Tensors::makeOtherScalarType< ADScalar< nDim > >( response.tau ) ),
           elasticEnergyDensity( response.elasticEnergyDensity ),
           dissipation( response.dissipation ),
           stateVars( response.stateVars )
@@ -100,7 +113,7 @@ namespace Marmot::Materials {
      */
     template < int nDim >
     struct DeformationAD {
-      Fastor::Tensor< autodiff::dual, nDim, nDim > F; ///< deformation gradient
+      Fastor::Tensor< ADScalar< nDim >, nDim, nDim > F; ///< deformation gradient
     };
 
     /**
@@ -115,8 +128,8 @@ namespace Marmot::Materials {
      *  - compute the Kirchhoff stress \f$\boldsymbol{\tau}\f$ for the given deformation, and
      *  - compute the consistent algorithmic tangent \f$\partial \boldsymbol{\tau} / \partial \boldsymbol{F}\f$.
      *
-     * @note Automatic differentiation requires multiple seeded evaluations of computeStressAD().
-     *       Therefore, the state variables are reset to their "old" values before each seeded call.
+     * @note computeStressAD() is evaluated once, with numbers that carry the derivatives with respect to
+     *       all components of the deformation gradient, starting from the "old" values of the state variables.
      *       Implementations of computeStressAD() must update state based only on primal values of
      *       the dual inputs and must not branch or accumulate history based on derivative components.
      *
@@ -132,11 +145,11 @@ namespace Marmot::Materials {
     {
       using namespace Marmot;
       using namespace Marmot::Math::Tensors::FastorTensors;
-      using scalar = autodiff::dual;
+      using scalar = ADScalar< 3 >;
 
       Eigen::Map< Eigen::VectorXd > stateVars( response.stateVars, this->getNumberOfRequiredStateVars() );
 
-      // Remember old state to reset during potential multiple AD evaluations
+      // Remember the old state, from which computeStressAD() starts
       const Eigen::VectorXd stateVarsOld = stateVars;
       const Tensor33d       tauOld       = response.tau;
 
@@ -151,7 +164,8 @@ namespace Marmot::Materials {
           DeformationAD< 3 > deformationAD;
           deformationAD.F = F_;
 
-          responseAD.tau = Marmot::Math::Tensors::makeDual( tauOld ); // Initialize tau with old value for consistency
+          responseAD.tau = Marmot::Math::Tensors::makeOtherScalarType< scalar >(
+            tauOld ); // Initialize tau with old value for consistency
           responseAD.elasticEnergyDensity = response.elasticEnergyDensity; // Initialize energy density
           responseAD.dissipation          = response.dissipation;          // Initialize dissipation
 
@@ -164,7 +178,7 @@ namespace Marmot::Materials {
           return res;
         };
 
-      // Compute Kirchhoff stress (tau) and algorithmic tangent (dTau_dF) with autodiff
+      // Compute Kirchhoff stress (tau) and algorithmic tangent (dTau_dF) with automatic differentiation
       std::tie( response.tau, tangents.dTau_dF ) = Marmot::Math::Differentiation::Automatic::dF_dT( computeTauAD,
                                                                                                     deformation.F );
       response.elasticEnergyDensity              = responseAD.elasticEnergyDensity;

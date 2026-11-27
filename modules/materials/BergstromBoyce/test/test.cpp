@@ -230,8 +230,8 @@ void testArrudaBoyceReducesToNeoHooke()
     const double psiTargetNH = mu / 2. * ( I1 - 3. );
 
     auto errorAtLambdaL = [&]( double lambdaL ) {
-      double psiAB = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential<
-        double >( C, mu, lambdaL );
+      double psiAB = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::
+        ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
       return std::abs( psiAB - psiTargetNH );
     };
 

@@ -24,11 +24,13 @@
  */
 #pragma once
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include <cmath>
 #include <iostream>
 #include <map>
+#include <stdexcept>
 
 namespace Marmot::Discretizations::Elements {
 
@@ -157,13 +159,67 @@ namespace Marmot::Discretizations::Elements {
       return XiSized::Constant( getReferenceCentroidCoordinate( referenceDomain ) );
     }
 
+    /**
+     * @brief The inverse isoparametric mapping: the natural coordinates \f$\boldsymbol{\xi}\f$ of a point
+     * \f$\boldsymbol{X}\f$, \f$\sum_a N_a(\boldsymbol{\xi}) \boldsymbol{X}_a = \boldsymbol{X}\f$.
+     *
+     * @details Newton's method, \f$\Delta\boldsymbol{\xi} = \mathbf{J}^{-1} (\boldsymbol{X} - \sum_a N_a
+     * \boldsymbol{X}_a)\f$ with \f$\mathbf{J} = \partial \boldsymbol{X} / \partial \boldsymbol{\xi}\f$, on coordinates
+     * relative to the first node: the round-off of the residual is then about \f$\varepsilon h\f$ (element size
+     * \f$h\f$) instead of \f$\varepsilon |\boldsymbol{X}|\f$, which for an element far from the origin exceeds any
+     * absolute tolerance. It stops when the residual is below \f$10^{-12} h\f$ or the correction below
+     * \f$10^{-10}\f$ (dimensionless).
+     * @param[in] X       The point.
+     * @param[in] xiStart The start, e.g., the centroid of the reference domain (inside it; for a convex element the
+     * unique solution is reached from there).
+     * @return The natural coordinates (also for a point outside of the element: see isInsideParentDomain()).
+     * @throws std::runtime_error if the iteration does not converge (e.g., a point far outside of a distorted element).
+     */
+    XiSized parentCoordinates( const Eigen::Matrix< double, nDim, 1 >& X,
+                               const XiSized&                          xiStart = referenceCentroid() ) const
+    {
+      const auto                             nodes  = coordinates.reshaped( nDim, nNodes );
+      const Eigen::Matrix< double, nDim, 1 > origin = nodes.col( 0 );
+      const double                           h      = ( nodes.colwise() - origin ).cwiseAbs().maxCoeff();
+      const Eigen::Matrix< double, nDim, 1 > XLocal = X - origin;
+
+      XiSized xi = xiStart;
+      for ( int iteration = 0; iteration < 50; iteration++ ) {
+        const Eigen::Matrix< double, nDim, 1 > residual = XLocal - ( nodes.colwise() - origin ) * N( xi ).transpose();
+        if ( residual.norm() <= 1e-12 * h )
+          return xi;
+        const XiSized dXi = Jacobian( dNdXi( xi ) ).partialPivLu().solve( residual );
+        xi += dXi;
+        if ( dXi.norm() < 1e-10 )
+          return xi;
+      }
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": the inverse mapping did not converge for the point "
+                                << X.transpose() );
+    }
+
+    /**
+     * @brief Whether natural coordinates lie in the reference domain, with a tolerance: the cube \f$[-1, 1]^{n}\f$
+     * or the unit simplex \f$\xi_i \geq 0, \sum_i \xi_i \leq 1\f$.
+     * @param[in] xi        Natural coordinates.
+     * @param[in] tolerance Tolerance in natural coordinates (a point on a face is inside of both neighbours).
+     * @return Whether the point is inside.
+     */
+    static bool isInsideParentDomain( const XiSized& xi, double tolerance )
+    {
+      if constexpr ( isSimplex( referenceDomain ) )
+        return xi.minCoeff() >= -tolerance && xi.sum() <= 1.0 + tolerance;
+      else
+        return xi.cwiseAbs().maxCoeff() <= 1.0 + tolerance;
+    }
+
     /// @brief The physical coordinates of the element center, the image of the centroid of the reference domain.
     Eigen::Matrix< double, nDim, 1 > center() const { return NB( N( referenceCentroid() ) ) * coordinates; }
 
     /**
-     * @brief The characteristic element length \f$L_e\f$ at the natural coordinates @p xi, for the stable time
-     * increment \f$\Delta t = f\, L_e / c\f$ of explicit dynamics, with the wave speed \f$c\f$ and a factor \f$f\f$
-     * for the lumped mass distribution (see MassLumping::timeStepFactorFromMassDistribution).
+     * @brief The smallest extent \f$L_e\f$ of the element at the natural coordinates @p xi, the length the artificial
+     * bulk viscosity of explicit dynamics scales with (see BulkViscosity). The critical time step does not use it:
+     * it is the element's own eigenvalue bound, see CriticalTimeStep.
      *
      * @details
      * - Quadrilateral, hexahedron and line: \f$L_e = 2\,\sigma_\mathrm{min}(\mathbf{J})\f$, twice the smallest
@@ -177,7 +233,7 @@ namespace Marmot::Discretizations::Elements {
      *
      * @param[in] xi Natural coordinates; irrelevant for a linear simplex, whose gradients are constant.
      */
-    double characteristicLengthForCriticalTimeStepAt( const XiSized& xi ) const
+    double smallestElementExtentAt( const XiSized& xi ) const
     {
       static_assert( !isSimplex( referenceDomain ) || interpolationOrder == 1,
                      "The characteristic element length of a quadratic simplex is not derived." );
@@ -194,9 +250,8 @@ namespace Marmot::Discretizations::Elements {
         // (InvalidInput), so they are read only after a successful decomposition.
         const Eigen::JacobiSVD< JacobianSized > svd( J );
         if ( svd.info() != Eigen::Success )
-          throw std::invalid_argument(
-            "GeometryElement::characteristicLengthForCriticalTimeStepAt(): the Jacobian is not finite; "
-            "check the nodal coordinates." );
+          throw std::invalid_argument( "GeometryElement::smallestElementExtentAt(): the Jacobian is not finite; "
+                                       "check the nodal coordinates." );
         return 2.0 * svd.singularValues().minCoeff();
       }
     }

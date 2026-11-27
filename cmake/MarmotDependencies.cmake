@@ -3,7 +3,6 @@
 # * Locates Marmot's header-only dependencies and provides them as imported targets:
 # *
 # *   Eigen3::Eigen        (Eigen's CMake package)
-# *   autodiff::autodiff   (autodiff's CMake package, or a plain header search)
 # *   Fastor::Fastor       (Fastor's CMake package, or a plain header search)
 # *
 # * Shared by Marmot's top-level CMakeLists.txt and the installed MarmotConfig.cmake, so that
@@ -21,15 +20,15 @@
 set(MARMOT_DEPENDENCIES_FOUND TRUE)
 set(MARMOT_DEPENDENCIES_MESSAGE "")
 
-# Eigen: no version is passed to find_package(): Eigen 3.4 and Eigen 5 both install SameMajorVersion
-# config files, so neither a minimum of 3.3 nor a 3.3...5 range accepts both. Check the minimum here.
+# Eigen: no version is passed to find_package(), so that an Eigen 3 found instead is reported with its
+# version below rather than as "not found". Marmot requires Eigen 5.
 find_package(Eigen3 QUIET NO_MODULE)
 if(NOT TARGET Eigen3::Eigen)
     set(MARMOT_DEPENDENCIES_FOUND FALSE)
     string(APPEND MARMOT_DEPENDENCIES_MESSAGE "Eigen3 (CMake package) not found. ")
-elseif(Eigen3_VERSION VERSION_LESS 3.3)
+elseif(Eigen3_VERSION VERSION_LESS 5.0)
     set(MARMOT_DEPENDENCIES_FOUND FALSE)
-    string(APPEND MARMOT_DEPENDENCIES_MESSAGE "Marmot requires Eigen >= 3.3, found ${Eigen3_VERSION}. ")
+    string(APPEND MARMOT_DEPENDENCIES_MESSAGE "Marmot requires Eigen >= 5.0, found ${Eigen3_VERSION}. ")
 endif()
 
 # marmot_find_header_only_dependency: provide <target> from <package>'s CMake package if it has
@@ -52,5 +51,4 @@ macro(marmot_find_header_only_dependency package target header)
     endif()
 endmacro()
 
-marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
 marmot_find_header_only_dependency(Fastor Fastor::Fastor Fastor)

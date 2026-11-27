@@ -83,7 +83,7 @@ namespace Marmot::Math::Tensors::TensorExponential {
       const TensorNN series = 1. / facN * tensorPower;
       theExponential += series;
 
-      // workaround for autodiff::dual
+      // workaround for Marmot::Math::Differentiation::Automatic::dual
       Fastor::Tensor< double, tensorSize, tensorSize > series_real;
       for ( size_t i = 0; i < tensorSize; i++ ) {
         for ( size_t j = 0; j < tensorSize; j++ ) {

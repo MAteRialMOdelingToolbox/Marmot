@@ -6,19 +6,6 @@ using namespace Eigen;
 
 namespace Marmot::ContinuumMechanics {
 
-  namespace UniaxialStress {
-    double getUniaxialStressTangent( const Ref< const Marmot::Math::Matrix6d >& C )
-    {
-      Marmot::Math::Vector6d b;
-      b << 1, 0, 0, 0, 0, 0;
-      Marmot::Math::Matrix6d A = C;
-      A.row( 0 ) << 1, 0, 0, 0, 0, 0;
-      Marmot::Math::Vector6d dEdEUniaxial = A.colPivHouseholderQr().solve( b );
-      return C.row( 0 ) * dEdEUniaxial;
-    }
-
-  } // namespace UniaxialStress
-
   namespace PlaneStrain {
 
     Marmot::Math::Tensors::Tensor322d reduce3D_dStress_dDeformationGradient(
@@ -94,54 +81,5 @@ namespace Marmot::ContinuumMechanics {
       // clang-format on
       return dS_dF;
     }
-
-    Matrix< double, 3, 6 > dStressPlaneStressDStress()
-    {
-      Matrix< double, 3, 6 > T = Matrix< double, 3, 6 >::Zero();
-      T( 0, 0 )                = 1;
-      T( 1, 1 )                = 1;
-      T( 2, 3 )                = 1;
-      return T;
-    }
-
-    Marmot::Math::Matrix3d getPlaneStressTangent( const Marmot::Math::Matrix6d& C )
-    {
-      return dStressPlaneStressDStress() * C * dStrainDStrainPlaneStress( C );
-    }
-
-    Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& strain, double nu )
-    {
-      const Marmot::Math::Vector6d& e                = strain;
-      const double                  strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
-      Marmot::Math::Vector6d        result;
-      result << 0, 0, strainCorrComp33, 0, 0, 0;
-      return result;
-    }
-
-    Marmot::Math::Matrix6d planeStressTangentTransformationMatrix( const Marmot::Math::Matrix6d& tangent )
-    {
-      /* Returns the transformation Matrix T which fullfills
-       * planeStressIncrement = C : T * strainIncrement
-       * for isotropic material behavior only!
-       * */
-      Marmot::Math::Matrix6d T   = Marmot::Math::Matrix6d::Identity();
-      const double           t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
-      const double           t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
-      T.row( 2 ).head( 3 ) << t31, t32, 0.0;
-      return T;
-    }
-
-    Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Marmot::Math::Matrix6d& tangent )
-    {
-      Matrix< double, 6, 3 > T = Matrix< double, 6, 3 >::Zero();
-      T( 0, 0 )                = 1;
-      T( 1, 1 )                = 1;
-      T( 3, 2 )                = 1;
-      T( 2, 0 )                = -tangent( 2, 0 ) / tangent( 2, 2 );
-      T( 2, 1 )                = -tangent( 2, 1 ) / tangent( 2, 2 );
-      T( 2, 2 )                = -tangent( 2, 3 ) / tangent( 2, 2 );
-      return T;
-    }
-
   } // namespace PlaneStress
 } // namespace Marmot::ContinuumMechanics

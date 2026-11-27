@@ -30,7 +30,7 @@
 namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures {
 
   /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$.
-   * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+   * @tparam T Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual)
    * @param F Deformation gradient tensor
    * @return The right Cauchy-Green tensor
    *
@@ -53,7 +53,7 @@ namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures {
   }
 
   /** @brief Computes the left Cauchy-Green tensor \f$\boldsymbol{b}\f$.
-   * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+   * @tparam T Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual)
    * @param F Deformation gradient tensor
    * @return The left Cauchy-Green tensor b
    *
@@ -79,7 +79,7 @@ namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures {
 
     /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$ and its derivative with respect to
      * \f$\boldsymbol{F}\f$.
-     * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+     * @tparam T Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual)
      * @param F Deformation gradient tensor
      * @returns A pair containing the right Cauchy-Green tensor C and its derivative with respect to F
      *
@@ -114,7 +114,7 @@ namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures {
 
     /** @brief Computes the left Cauchy-Green tensor \f$\boldsymbol{b}\f$ and its derivative with respect to
      * \f$\boldsymbol{F}\f$.
-     * @tparam T Scalar type (e.g., float, double, autodiff::dual)
+     * @tparam T Scalar type (e.g., float, double, Marmot::Math::Differentiation::Automatic::dual)
      * @param F Deformation gradient tensor
      * @return A pair containing the left Cauchy-Green tensor b and its derivative with respect to F
      *

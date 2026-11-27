@@ -72,14 +72,14 @@ namespace Marmot::Materials {
    *   \f$\Psi_{\rm iso}=C_{10}(\bar I_1-3)+C_{01}(\bar I_2-3)\f$
    * - @b ArrudaBoyce (coefficients 1,2 = \f$\mu,\lambda_L\f$, coefficient 3 unused):
    *   isochoric 8-chain potential from
-   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::ArrudaBoyce8ChainPotential
+   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder::ArrudaBoyce8ChainPotential
    *   (shared with CompressibleFiniteStrainLinearViscoelasticity); reduces exactly
    *   to #NeoHooke's isochoric part as \f$\lambda_L\to\infty\f$ (both being
    *   functions of the same isochoric \f$\bar I_1\f$ now).
    *
    * All four isochoric parts and the shared volumetric term are themselves shared
    * with CompressibleFiniteStrainLinearViscoelasticity via
-   * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder.
+   * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder.
    *
    * @par Material parameters
    * - @b #hyperelasticBase -- 0 = NeoHooke, 1 = Yeoh, 2 = MooneyRivlin, 3 = ArrudaBoyce
@@ -230,22 +230,19 @@ namespace Marmot::Materials {
      *   \qquad \bar I_1 = I_1 (\det\boldsymbol C)^{-1/3}
      * \f]
      * (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::NeoHookePotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder::NeoHookePotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Volumetric::FirstOrder::PenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > neoHookePotential( const Tensor33t< T >& C,
                                                        const double          mu,
                                                        const double          kappa ) const
     {
-      using namespace Fastor;
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::NeoHookePotential<
-        T >( C, mu );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        VolumetricPenaltyPotential< T >( C, kappa );
-
-      return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
+      namespace EDF = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+      return EDF::FirstOrder::DecoupledPotential( C,
+                                                  EDF::Isochoric::NeoHooke{ mu },
+                                                  EDF::Volumetric::Penalty{ kappa } );
     }
 
     /**
@@ -263,9 +260,9 @@ namespace Marmot::Materials {
      *   \Psi(\boldsymbol C) = C_{10}(\bar I_1-3) + C_{20}(\bar I_1-3)^2 + C_{30}(\bar I_1-3)^3
      *                       + \frac{\kappa}{8}(\ln\det\boldsymbol C)^2, \qquad \bar I_1 = I_1 (\det\boldsymbol
      * C)^{-1/3} \f] (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::YeohPotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder::YeohPotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Volumetric::FirstOrder::PenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > yeohPotential( const Tensor33t< T >& C,
@@ -274,16 +271,10 @@ namespace Marmot::Materials {
                                                    const double          C30,
                                                    const double          kappa ) const
     {
-      using namespace Fastor;
-      auto [psiIso,
-            dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::YeohPotential< T >( C,
-                                                                                                                  C10,
-                                                                                                                  C20,
-                                                                                                                  C30 );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        VolumetricPenaltyPotential< T >( C, kappa );
-
-      return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
+      namespace EDF = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+      return EDF::FirstOrder::DecoupledPotential( C,
+                                                  EDF::Isochoric::Yeoh{ C10, C20, C30 },
+                                                  EDF::Volumetric::Penalty{ kappa } );
     }
 
     /**
@@ -303,9 +294,9 @@ namespace Marmot::Materials {
      *   I_2 = \frac{1}{2}\left(I_1^2 - {\rm tr}(\boldsymbol C^2)\right)
      * \f]
      * (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::MooneyRivlinPotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder::MooneyRivlinPotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Volumetric::FirstOrder::PenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > mooneyRivlinPotential( const Tensor33t< T >& C,
@@ -313,19 +304,16 @@ namespace Marmot::Materials {
                                                            const double          C01,
                                                            const double          kappa ) const
     {
-      using namespace Fastor;
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        MooneyRivlinPotential< T >( C, C10, C01 );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        VolumetricPenaltyPotential< T >( C, kappa );
-
-      return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
+      namespace EDF = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+      return EDF::FirstOrder::DecoupledPotential( C,
+                                                  EDF::Isochoric::MooneyRivlin{ C10, C01 },
+                                                  EDF::Volumetric::Penalty{ kappa } );
     }
 
     /**
      * @brief Arruda-Boyce 8-chain potential (isochoric part, shared with
      * CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::ArrudaBoyce8ChainPotential)
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Isochoric::FirstOrder::ArrudaBoyce8ChainPotential)
      * plus this material's own \f$\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$
      * volumetric term.
      * @tparam T Scalar type (double, complex).
@@ -354,13 +342,10 @@ namespace Marmot::Materials {
                                                           const double          lambdaL,
                                                           const double          kappa ) const
     {
-      using namespace Fastor;
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        ArrudaBoyce8ChainPotential< T >( C, mu, lambdaL );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
-        VolumetricPenaltyPotential< T >( C, kappa );
-
-      return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
+      namespace EDF = ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+      return EDF::FirstOrder::DecoupledPotential( C,
+                                                  EDF::Isochoric::ArrudaBoyce8Chain{ mu, lambdaL },
+                                                  EDF::Volumetric::Penalty{ kappa } );
     }
 
     /**

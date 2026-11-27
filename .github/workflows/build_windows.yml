@@ -9,73 +9,39 @@ on:
 jobs:
   build:
     runs-on: windows-2022
-    env:
-      # All dependencies are header-only; they are installed into this prefix, and Marmot is found through it.
-      DEPS_PREFIX: ${{ github.workspace }}/deps
+    # cmd.exe, because only its activation runs the environment's MSVC setup (vs2022_compiler_vars.bat); conda installs
+    # the dependencies' headers under %CONDA_PREFIX%\Library.
     defaults:
       run:
-        shell: pwsh
+        shell: cmd /C CALL {0}
     steps:
-      - name: Show toolchain
-        run: |
-          cmake --version
-
-      # The dependencies are pinned to tags, so their install prefix is cached, keyed on those tags.
-      - name: Cache dependencies
-        id: deps-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.DEPS_PREFIX }}
-          key: deps-windows-2022-eigen-3.4.0-autodiff-v1.1.0-fastor-V0.6.4
-
-      # Build directories are named _build: autodiff ships a BUILD file, and Windows paths are case-insensitive.
-      - name: Install Eigen
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: |
-          git clone --depth 1 --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
-          cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
-          cmake --install eigen/_build
-
-      - name: Install Autodiff
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: |
-          git clone --depth 1 --branch v1.1.0 https://github.com/autodiff/autodiff.git
-          cmake -S autodiff -B autodiff/_build -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX" `
-            -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF
-          cmake --install autodiff/_build
-
-      - name: Install Fastor
-        if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: |
-          git clone --depth 1 --branch V0.6.4 https://github.com/romeric/Fastor.git
-          cmake -S Fastor -B Fastor/_build -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
-          cmake --install Fastor/_build
-
       - name: Check out Marmot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+
+      # The compilers, CMake, Eigen and Fastor of the stack: see .github/actions/setup-stack.
+      - uses: ./.github/actions/setup-stack
         with:
-          path: Marmot
+          init-shell: cmd.exe bash
 
       - name: Build Marmot
         run: |
-          # Fail on compiler warnings (/WX); local builds keep warnings non-fatal.
-          cmake -S Marmot -B Marmot/_build -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_PREFIX_PATH="$env:DEPS_PREFIX" `
-            -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/marmot-install"
-          cmake --build Marmot/_build --config Release --parallel
+          cmake --version
+          rem Fail on compiler warnings (/WX); local builds keep warnings non-fatal.
+          cmake -S . -B build -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_PREFIX_PATH="%CONDA_PREFIX%\Library" -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_INSTALL_PREFIX="%GITHUB_WORKSPACE%\marmot-install" || exit /b 1
+          cmake --build build --config Release --parallel || exit /b 1
 
       - name: Run tests
-        working-directory: Marmot/_build
         run: |
-          # --no-tests=error: ctest exits 0 on an empty test set, which would
-          # report success for a build that produced no tests at all.
-          ctest -C Release --output-on-failure --no-tests=error
+          rem --no-tests=error: ctest exits 0 on an empty test set, which would
+          rem report success for a build that produced no tests at all.
+          ctest --test-dir build -C Release --output-on-failure --no-tests=error || exit /b 1
 
       - name: Install Marmot
         run: |
-          cmake --install Marmot/_build --config Release
+          cmake --install build --config Release || exit /b 1
 
       - name: Upload Marmot
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Marmot-windows-x64-Release
           path: marmot-install

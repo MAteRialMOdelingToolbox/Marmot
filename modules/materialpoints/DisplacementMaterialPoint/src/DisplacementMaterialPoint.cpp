@@ -66,8 +66,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
     // clang-format off
-    this->response = { .S = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >( response3D.tau ),
-    };
+    this->response.S = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >( response3D.tau );
 
     state->stress = response3D.tau;
 
@@ -79,14 +78,14 @@ namespace Marmot::Discretizations::MaterialPoints {
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
     const TensorDDDD dF_dDeltaF = Marmot::Math::Tensors::reduceTo2D<Marmot::Math::Tensors::U,Marmot::Math::Tensors::U,Marmot::Math::Tensors::U,Marmot::Math::Tensors::U>(dF_dDeltaF_3D);
 
-    this->tangents = {
-        Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >    ( algorithmicModuli3D.dTau_dF),
-    };
+    this->tangents.dS_dDeltaF = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >    ( algorithmicModuli3D.dTau_dF);
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
 
-    _density = material->getDensity( state->materialState.data() );
+    // the out-of-plane parts, for the hoop terms of an axisymmetric particle
+    response.tau33      = response3D.tau( 2, 2 );
+    tangents.outOfPlane = computeOutOfPlaneTangents( algorithmicModuli3D.dTau_dF, state->dY_dX );
   }
 
   void DisplacementMaterialPoint3D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
@@ -123,8 +122,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     material->computeStress( response3D, algorithmicModuli3D, deformationIncrement3D, timeIncrement );
 
     // clang-format off
-    this->response = { .S = ( response3D.tau ),
-    };
+    this->response.S = response3D.tau;
 
     state->stress = response3D.tau;
 
@@ -136,12 +134,10 @@ namespace Marmot::Discretizations::MaterialPoints {
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
     const TensorDDDD dF_dDeltaF = (dF_dDeltaF_3D);
 
-    this->tangents = { ( algorithmicModuli3D.dTau_dF ) };
+    this->tangents.dS_dDeltaF = algorithmicModuli3D.dTau_dF;
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
     // clang-format on
-
-    _density = material->getDensity( state->materialState.data() );
   }
 
 } // namespace Marmot::Discretizations::MaterialPoints

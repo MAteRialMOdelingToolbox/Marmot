@@ -33,7 +33,7 @@ namespace Marmot::Math {
       return value.real();
     }
 
-    double makeReal( const autodiff::real& value )
+    double makeReal( const Marmot::Math::Differentiation::Automatic::Taylor< 1 >& value )
     {
       return double( value );
     }

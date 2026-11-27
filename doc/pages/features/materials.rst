@@ -8,8 +8,8 @@ This section contains the ready to use available material models.
 
   at2phasefield
   b4
+  compressiblehyperelasticity
   bergstromboyce
-  compressibleneohooke
   adcompressibleneohooke
   compressiblefinitestrainlinearviscoelasticity
   finitestrainisotropicbiotviscoelasticity
@@ -25,7 +25,13 @@ This section contains the ready to use available material models.
   gm7
   vonmises
   advonmises
+  rankinesofteningplasticity
+  rankinedamageplasticity
+  rankinegradientdamageplasticity
+  rankinegradientsofteningplasticity
   hugheswinget
   gradientenhancedhugheswinget
+  gradientenhancedcorotational
   gradientenhancedcompressibleneohookedamage
   gradientenhancedfinitestraindruckerprager
+  bondsliplaws

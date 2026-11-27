@@ -84,6 +84,8 @@ void bind_finite_strain_solver( nb::module_& m )
              ">";
     } );
 
+  // nb::lock_self(): with a free-threaded Python, the methods run without the GIL. A solver is not safe to use from
+  // several threads at once, so each call locks its object; different solvers run concurrently. Ignored otherwise.
   solver
     .def(
       "__init__",
@@ -96,15 +98,19 @@ void bind_finite_strain_solver( nb::module_& m )
       nb::arg( "name" ),
       nb::arg( "props" ),
       nb::arg( "opts" ) = Solver::SolverOptions{} )
-    .def( "addStep", &Solver::addStep, nb::arg( "step" ) )
-    .def( "getSteps", &Solver::getSteps )
-    .def( "clearSteps", &Solver::clearSteps )
-    .def( "setInitialState", &Solver::setInitialState, nb::arg( "initialStress" ), nb::arg( "initialStateVars" ) )
-    .def( "getNumberOfStateVariables", &Solver::getNumberOfStateVariables )
-    .def( "resetToInitialState", &Solver::resetToInitialState )
-    .def( "solve", &Solver::solve )
-    .def( "getHistory", &Solver::getHistory )
-    .def( "clearHistory", &Solver::clearHistory )
-    .def( "printHistory", &Solver::printHistory )
+    .def( "addStep", &Solver::addStep, nb::arg( "step" ), nb::lock_self() )
+    .def( "getSteps", &Solver::getSteps, nb::lock_self() )
+    .def( "clearSteps", &Solver::clearSteps, nb::lock_self() )
+    .def( "setInitialState",
+          &Solver::setInitialState,
+          nb::arg( "initialStress" ),
+          nb::arg( "initialStateVars" ),
+          nb::lock_self() )
+    .def( "getNumberOfStateVariables", &Solver::getNumberOfStateVariables, nb::lock_self() )
+    .def( "resetToInitialState", &Solver::resetToInitialState, nb::lock_self() )
+    .def( "solve", &Solver::solve, nb::lock_self() )
+    .def( "getHistory", &Solver::getHistory, nb::lock_self() )
+    .def( "clearHistory", &Solver::clearHistory, nb::lock_self() )
+    .def( "printHistory", &Solver::printHistory, nb::lock_self() )
     .def( "exportHistoryToCSV", &Solver::exportHistoryToCSV, nb::arg( "filename" ) );
 }

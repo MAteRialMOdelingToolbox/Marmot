@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialPoint.h"
+#include "Marmot/MarmotOutOfPlaneTangents.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
 
@@ -84,12 +85,13 @@ namespace Marmot::Discretizations::MaterialPoints {
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor of size nDim
     using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >; ///< fourth-order tensor of size nDim
 
-    int _mpNumber;   ///< label of the material point, also passed to the material
+    int _mpNumber; ///< label of the material point, also passed to the material
 
-    TensorD _x0;     ///< coordinates in the undeformed configuration @f$ \boldsymbol{X} @f$
+    TensorD _x0;   ///< coordinates in the undeformed configuration @f$ \boldsymbol{X} @f$
 
-    double _vol0;    ///< volume in the undeformed configuration @f$ V_0 @f$
-    double _density; ///< mass density in the undeformed configuration, as provided by the material
+    double _vol0;  ///< volume in the undeformed configuration @f$ V_0 @f$
+    double
+      _density; ///< mass density in the undeformed configuration, as provided by the material at initializeYourself()
 
     using Material = Marmot::Materials::MaterialFiniteStrain; ///< material interface consumed by the material point
 
@@ -286,7 +288,8 @@ namespace Marmot::Discretizations::MaterialPoints {
     };
 
     /**
-     * @brief Mass density in the undeformed configuration, as provided by the material.
+     * @brief Mass density in the undeformed configuration, as provided by the material at initializeYourself(): an
+     * evaluation does not change it.
      * @return The density.
      */
     double getDensityUndeformed() const override { return _density; };
@@ -356,12 +359,14 @@ namespace Marmot::Discretizations::MaterialPoints {
     /// response of the last computeYourself()
     struct Response {
       Fastor::Tensor< double, nDim, nDim > S; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (in-plane part in 2D)
+      double tau33 = 0.0;                     ///< 2D: the out-of-plane (hoop) Kirchhoff stress @f$ \tau_{33} @f$
     } response;
 
     /// algorithmic tangents of the last computeYourself()
     struct Tangents {
       /// @f$ \partial \tau_{ij} / \partial \Delta F_{kL} @f$ (in-plane part in 2D)
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF;
+      OutOfPlaneTangents outOfPlane; ///< 2D: the out-of-plane parts with respect to @f$ \Delta\boldsymbol{F} @f$
     } tangents;
 
     /**
@@ -426,7 +431,8 @@ namespace Marmot::Discretizations::MaterialPoints {
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignStateVars( double* stateVars, int nStateVars )
   {
-    state = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    state                    = std::make_unique< MPStateVarManager >( stateVars, nStateVars );
+    this->_assignedStateVars = { stateVars, nStateVars };
   }
 
   template < int nDim >
@@ -478,7 +484,10 @@ namespace Marmot::Discretizations::MaterialPoints {
    * @details The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is
    * evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and
    * the in-plane parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$
-   * are kept. The full 3D Kirchhoff stress is also written to the state "stress".
+   * are kept. The full 3D Kirchhoff stress is also written to the state "stress". The out-of-plane stretch
+   * @f$ \Delta F_{33} @f$ of the increment is 1 in plane strain; an axisymmetric particle sets it to the hoop stretch
+   * increment (addToOutOfPlaneStretchIncrement()), as for the axisymmetric elements, and uses the out-of-plane parts of
+   * the response and the tangents (Response::tau33, Tangents::outOfPlane).
    */
   class DisplacementMaterialPoint2D : public DisplacementMaterialPoint< 2 > {
 
@@ -498,6 +507,21 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @param[in] displacementGradientIncrement Its in-plane gradient with respect to @f$ \boldsymbol{Y} @f$.
      */
     void incrementDeformation( const TensorD& displacementIncrement, const TensorDD& displacementGradientIncrement );
+
+    /**
+     * @brief Add to the out-of-plane stretch increment, @f$ \Delta F_{33} \mathrel{+}= \delta @f$ (@f$ \Delta F_{33}
+     * @f$ is 1 after prepareYourself(), and stays 1 in plane strain): the hoop stretch increment of an axisymmetric
+     * particle.
+     * @param[in] delta @f$ \delta @f$, e.g. @f$ \Delta u_r / \bar r @f$.
+     */
+    void addToOutOfPlaneStretchIncrement( double delta ) { state->dx_dY( 2, 2 ) += delta; }
+
+    /**
+     * @brief The out-of-plane stretch increment, the 33 component of @f$ \Delta\boldsymbol{F} @f$ (not of
+     * @f$ \boldsymbol{F} @f$).
+     * @return @f$ \Delta F_{33} @f$ (1 in plane strain, the hoop stretch increment of an axisymmetric particle).
+     */
+    double outOfPlaneStretchIncrement() const { return state->dx_dY( 2, 2 ); }
   };
 
   /**

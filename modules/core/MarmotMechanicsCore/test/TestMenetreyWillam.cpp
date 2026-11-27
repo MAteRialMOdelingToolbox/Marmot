@@ -1,8 +1,8 @@
 #include "Marmot/HaighWestergaard.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MenetreyWillam.h"
-#include "autodiff/forward/dual.hpp"
 #include <iomanip>
 
 using namespace Marmot;
@@ -90,18 +90,18 @@ void testDerivatives()
   auto mwMC  = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::MohrCoulomb, fc );
   auto dYdHW = mwMC.dYieldFunction_dHaighWestergaard( hw );
 
-  autodiff::dual                                xi( hw.xi ), rho( hw.rho ), theta( hw.theta );
-  HaighWestergaardCoordinates< autodiff::dual > hw_dual = { xi, rho, theta };
-  hw_dual.xi.grad                                       = 1.0;
-  const double dYddXi                                   = mwMC.yieldFunction( hw_dual ).grad;
+  Marmot::Math::Differentiation::Automatic::dual xi( hw.xi ), rho( hw.rho ), theta( hw.theta );
+  HaighWestergaardCoordinates< Marmot::Math::Differentiation::Automatic::dual > hw_dual = { xi, rho, theta };
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( hw_dual.xi, 1.0 );
+  const double dYddXi = Marmot::Math::Differentiation::Automatic::derivative< 1 >( mwMC.yieldFunction( hw_dual ) );
 
-  hw_dual.xi.grad      = 0.0;
-  hw_dual.rho.grad     = 1.0;
-  const double dYddRho = mwMC.yieldFunction( hw_dual ).grad;
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( hw_dual.xi, 0.0 );
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( hw_dual.rho, 1.0 );
+  const double dYddRho = Marmot::Math::Differentiation::Automatic::derivative< 1 >( mwMC.yieldFunction( hw_dual ) );
 
-  hw_dual.rho.grad       = 0.0;
-  hw_dual.theta.grad     = 1.0;
-  const double dYddTheta = mwMC.yieldFunction( hw_dual ).grad;
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( hw_dual.rho, 0.0 );
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( hw_dual.theta, 1.0 );
+  const double dYddTheta = Marmot::Math::Differentiation::Automatic::derivative< 1 >( mwMC.yieldFunction( hw_dual ) );
 
   throwExceptionOnFailure( checkIfEqual( std::get< 0 >( dYdHW ), dYddXi ),
                            Marmot::Utilities::MakeString()
@@ -134,10 +134,11 @@ void testdPolarRadius_dTheta()
 
   const auto [r_Shear, drdThetaShear] = MenetreyWillam::dPolarRadius_dTheta( thetaShearMeridian, e );
 
-  autodiff::dual thetaShearDual( thetaShearMeridian );
-  thetaShearDual.grad                    = 1.0;
-  const autodiff::dual rDualShear        = MenetreyWillam::dPolarRadius_dTheta( thetaShearDual, e ).first;
-  const double         drdThetaDualShear = rDualShear.grad;
+  Marmot::Math::Differentiation::Automatic::dual thetaShearDual( thetaShearMeridian );
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( thetaShearDual, 1.0 );
+  const Marmot::Math::Differentiation::Automatic::dual
+               rDualShear        = MenetreyWillam::dPolarRadius_dTheta( thetaShearDual, e ).first;
+  const double drdThetaDualShear = Marmot::Math::Differentiation::Automatic::derivative< 1 >( rDualShear );
 
   throwExceptionOnFailure( checkIfEqual( r_Ext, r_ExtTarget ),
                            Marmot::Utilities::MakeString()
@@ -157,11 +158,11 @@ void testdPolarRadius_dTheta()
                              << __PRETTY_FUNCTION__
                              << " failed: Derivative of polar radius for compression meridian is wrong" );
 
-  throwExceptionOnFailure( checkIfEqual( r_Shear, val( rDualShear ) ),
+  throwExceptionOnFailure( checkIfEqual( r_Shear, Marmot::Math::Differentiation::Automatic::value( rDualShear ) ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__
                              << " failed: Polar radius for shear meridian doesn't yield the same result for "
-                                "autodiff::dual" );
+                                "Marmot::Math::Differentiation::Automatic::dual" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaShear, drdThetaDualShear ),
                            Marmot::Utilities::MakeString()
@@ -187,14 +188,18 @@ void testd2PolarRadius_dTheta2()
 
   const auto [r_Shear, drdThetaShear, d2rdTheta2Shear] = MenetreyWillam::d2PolarRadius_dTheta2( thetaShearMeridian, e );
 
-  autodiff::dual2nd thetaShearDual( thetaShearMeridian );
-  auto              polarRadiusOnly = []( const autodiff::dual2nd& theta, const double& e ) {
+  Marmot::Math::Differentiation::Automatic::dual2nd thetaShearDual( thetaShearMeridian );
+  auto polarRadiusOnly = []( const Marmot::Math::Differentiation::Automatic::dual2nd& theta, const double& e ) {
     auto [r, dr, d2r] = MenetreyWillam::d2PolarRadius_dTheta2( theta, e );
     return r;
   };
-  auto [rvalDual, drDual, d2rDual] = autodiff::derivatives( polarRadiusOnly,
-                                                            autodiff::wrt( thetaShearDual ),
-                                                            autodiff::at( thetaShearDual, e ) );
+  // seed both nesting levels with the same variable: derivative< 1 > and derivative< 2 > are dr/dtheta, d2r/dtheta2
+  Marmot::Math::Differentiation::Automatic::seed< 1 >( thetaShearDual, 1.0 );
+  Marmot::Math::Differentiation::Automatic::seed< 2 >( thetaShearDual, 1.0 );
+  const auto   rDual    = polarRadiusOnly( thetaShearDual, e );
+  const double rvalDual = Marmot::Math::Differentiation::Automatic::value( rDual );
+  const double drDual   = Marmot::Math::Differentiation::Automatic::derivative< 1 >( rDual );
+  const double d2rDual  = Marmot::Math::Differentiation::Automatic::derivative< 2 >( rDual );
 
   throwExceptionOnFailure( checkIfEqual( r_Ext, r_ExtTarget ),
                            Marmot::Utilities::MakeString()
@@ -218,7 +223,7 @@ void testd2PolarRadius_dTheta2()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__
                              << " failed: Polar radius for shear meridian doesn't yield the same result for "
-                                "autodiff::dual" );
+                                "Marmot::Math::Differentiation::Automatic::dual" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaShear, drDual ),
                            Marmot::Utilities::MakeString()

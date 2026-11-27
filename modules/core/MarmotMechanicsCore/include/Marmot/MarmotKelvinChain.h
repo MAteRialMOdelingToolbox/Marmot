@@ -83,8 +83,9 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain {
    * @return val the value of the \f$L_k(\tau)\f$ approximation.
    */
   template < int k >
-  double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-                                    double                                                                      tau )
+  double evaluatePostWidderFormula( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                      Marmot::Math::Differentiation::Automatic::Taylor< k > ) > phi,
+                                    double                                                      tau )
   {
     using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::PostWidderCoefficientSign;
     return Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula<
@@ -115,14 +116,14 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain {
    * future.
    */
   template < int k >
-  double approximateZerothCompliance( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-                                      double tauMin,
-                                      double spacing = 10. )
+  double approximateZerothCompliance( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                        Marmot::Math::Differentiation::Automatic::Taylor< k > ) > phi,
+                                      double                                                      tauMin,
+                                      double                                                      spacing = 10. )
   {
     Marmot::Math::Integration::scalar_to_scalar_function_type f = [&]( double tau ) {
       double val_ = -pow( -k, k ) * pow( tau, k - 1 ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
-      autodiff::Real< k, double > tau_( tau * k );
-      val_ *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
+      val_ *= Marmot::Math::Differentiation::Automatic::taylorDerivatives< k >( phi, tau * k )[k];
       return val_;
     };
 
@@ -149,9 +150,10 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain {
    */
 
   template < int k >
-  Properties computeElasticModuli( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
-                                   Properties retardationTimes,
-                                   bool       gaussQuadrature = false )
+  Properties computeElasticModuli( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                     Marmot::Math::Differentiation::Automatic::Taylor< k > ) > phi,
+                                   Properties                                                  retardationTimes,
+                                   bool                                                        gaussQuadrature = false )
   {
     Properties elasticModuli( retardationTimes.size() );
     double     spacing = retardationTimes( 1 ) / retardationTimes( 0 );

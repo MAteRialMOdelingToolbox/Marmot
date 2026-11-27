@@ -17,9 +17,14 @@ namespace Marmot::Discretizations::Elements {
   BoundaryElement::BoundaryElement( ElementShapes   parentShape,
                                     int             parentFaceNumber,
                                     int             nDim,
-                                    const VectorXd& parentCoordinates )
-    : nDim( nDim )
+                                    const VectorXd& parentCoordinates,
+                                    bool            axisymmetric )
+    : nDim( nDim ), axisymmetric( axisymmetric )
   {
+    if ( axisymmetric && nDim != 2 )
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": axisymmetric boundary elements are two-dimensional." );
+
     // get boundary shape dependent on parental shape
     switch ( parentShape ) {
       /*
@@ -74,15 +79,24 @@ namespace Marmot::Discretizations::Elements {
     mapBoundaryToParentVectorial = expandNodeIndicesToCoordinateIndices( mapBoundaryToParentScalar, nDim );
     coordinates                  = condenseParentToBoundaryVectorial( parentCoordinates );
 
-    // get the proper gausspoints for the boundary element
+    // Gauss rule of the face, exact for degree 3p - 1, p being the order of the face shape functions: the pressure
+    // integrand N * a (and its load stiffness) has at most this degree, also on a distorted face. On a
+    // quadrilateral face, N has degree p and the area vector a = dx/dxi_1 x dx/dxi_2 degree 2p - 1 in each
+    // coordinate, since dx/dxi_1 has degree p - 1 in xi_1 and p in xi_2, and dx/dxi_2 vice versa. On a triangular
+    // face both factors have total degree p - 1, so N * a has total degree 3p - 2 only, and the request is one
+    // higher than needed: for Tri3 faces a single point would be exact, but gaussExactToDegree( 2 ) keeps the 3-point
+    // rule the faces have always used. In 2D, a is dx/dxi_1 rotated (degree p - 1), so N * a has degree 2p - 1;
+    // axisymmetric elements multiply by the radius r = N * x (degree p), which gives 3p - 1 again.
+    namespace Quadrature = Marmot::Discretizations::Elements::Quadrature;
+    const auto& faceRule = Quadrature::getQuadraturePoints( boundaryShape,
+                                                            Quadrature::gaussExactToDegree(
+                                                              3 * getInterpolationOrder( boundaryShape ) - 1 ) );
 
     // compute for each quadraturePoint the
     // - dNdXi
     // - Jacobian pp(x,xi)
     // - areaVector
-    for ( const auto& quadraturePointInfo : Marmot::Discretizations::Elements::Quadrature::
-            getGaussPointInfo( boundaryShape,
-                               Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration ) ) {
+    for ( const auto& quadraturePointInfo : faceRule ) {
 
       BoundaryElementQuadraturePoint qp;
       qp.xi     = quadraturePointInfo.xi;
@@ -141,7 +155,9 @@ namespace Marmot::Discretizations::Elements {
         qp.areaVector            = n;
       }
 
-      qp.JxW = qp.areaVector.norm() * qp.weight;
+      // 2 pi r at the face point folds the ring into every load vector
+      qp.ringFactor = axisymmetric ? 2. * Marmot::Math::Constants::Pi * ( NB( qp.N, nDim ) * coordinates )( 0 ) : 1.0;
+      qp.JxW        = qp.areaVector.norm() * qp.weight * qp.ringFactor;
 
       quadraturePoints.push_back( std::move( qp ) );
     }
@@ -183,7 +199,7 @@ namespace Marmot::Discretizations::Elements {
     VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
     for ( const auto& qp : quadraturePoints )
-      Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
+      Pk += qp.weight * qp.ringFactor * qp.areaVector.transpose() * NB( qp.N, nDim );
 
     return Pk;
   }
@@ -196,10 +212,12 @@ namespace Marmot::Discretizations::Elements {
      *  -> use expandBoundaryToParentVector to obtain the parent-element-sized load vector
      * */
 
+    if ( axisymmetric )
+      return computeSurfaceNormalVectorialLoadVector();
+
     VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
     for ( const auto& qp : quadraturePoints ) {
-      // Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
       Eigen::VectorXd coordAtGauss = NB( qp.N, nDim ) * coordinates;
       Pk += qp.weight * 2. * coordAtGauss( 0 ) * Marmot::Math::Constants::Pi * qp.areaVector.transpose() *
             NB( qp.N, nDim );
@@ -220,10 +238,16 @@ namespace Marmot::Discretizations::Elements {
                     -1, 0;
       // clang-format on
 
+      // the area vector a = R dx/dXi, times the ring 2 pi r of an axisymmetric face, whose radius r = N_J x_J1
+      // moves with the radial coordinates
       for ( const auto& qp : quadraturePoints )
         for ( int I = 0; I < nNodes; I++ )
-          for ( int J = 0; J < nNodes; J++ )
-            K.block< 2, 2 >( I * 2, J * 2 ) += qp.N( I ) * qp.dNdXi( J ) * R * qp.weight;
+          for ( int J = 0; J < nNodes; J++ ) {
+            K.block< 2, 2 >( I * 2, J * 2 ) += qp.N( I ) * qp.dNdXi( J ) * R * qp.weight * qp.ringFactor;
+            if ( axisymmetric )
+              K.block< 2, 1 >( I * 2, J * 2 ) += qp.N( I ) * qp.N( J ) * qp.areaVector * qp.weight * 2. *
+                                                 Marmot::Math::Constants::Pi;
+          }
     }
 
     else if ( nDim == 3 ) {
