@@ -130,39 +130,36 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     return res;
   }
 
-  /** @brief Standard compressible Neo-Hooke energy density function in terms of \f$\boldsymbol{C}\f$.
-   *
-   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
-   * @param C Right Cauchy-Green tensor.
-   * @param K Bulk modulus.
-   * @param G Shear modulus.
-   * @return Energy density.
-   */
-  template < typename T >
-  T standardNeoHooke( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double K, const double G )
-  {
-    using namespace Fastor;
-    using namespace Marmot::Math::Tensors::FastorIndices;
-    const double lambda = K - 2.0 / 3.0 * G;
+  /** @cond */
+  namespace Detail {
+    /* Coupled::StandardNeoHooke as a function of (I1, J), with its scalar derivatives w.r.t. (I1, I2, J):
+     * G/2 ( I1 - 3 ) - ( G + lambda/2 ) ln J + lambda/4 ( J^2 - 1 ), lambda = K - 2/3 G. */
+    template < int Order, typename T >
+    Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > standardNeoHookeOfInvariants(
+      const std::array< T, 3 >& x,
+      const double              K,
+      const double              G )
+    {
+      [[maybe_unused]] constexpr std::size_t iI1 = Invariants::RightCauchyGreen::indexI1;
+      [[maybe_unused]] constexpr std::size_t iJ  = Invariants::RightCauchyGreen::indexJ;
 
-    /*
-     * we use the potential in terms of C
-     * Psi = G/2 ( tr(C) - 3 - 2 ln(J) ) + lambda/2 ( 0.5 ( J^2 - 1 ) - ln(J) )
-     * where J = sqrt( det(C) ) and ln(J) = 0.5 ln( det(C) )
-     *
-     * we can the rewrite as
-     * Psi = G/2 ( tr(C) - 3 - ln(det(C)) ) + lambda/2 ( 0.5 ( det(C) - 1 ) - 0.5 ln(det(C)) )
-     *
-     */
+      const double lambda = K - 2.0 / 3.0 * G;
+      const double cLnJ   = G + lambda / 2.;
+      const T&     I1     = x[Invariants::RightCauchyGreen::indexI1];
+      const T&     J      = x[Invariants::RightCauchyGreen::indexJ];
 
-    const T trC    = trace( C );
-    const T detC   = determinant( C );
-    const T lnDetC = log( detC );
-    // energy density
-    const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
-
-    return psi;
-  }
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > f;
+      f.f = G / 2. * ( I1 - 3. ) - cLnJ * log( J ) + lambda / 4. * ( J * J - 1. );
+      if constexpr ( Order >= 1 ) {
+        f.df[iI1] = T( G / 2. );
+        f.df[iJ]  = lambda / 2. * J - cLnJ / J;
+      }
+      if constexpr ( Order >= 2 )
+        f.d2f[iJ][iJ] = lambda / 2. + cLnJ / ( J * J );
+      return f;
+    }
+  } // namespace Detail
+  /** @endcond */
 
   /** @cond */
   namespace Detail {
@@ -678,6 +675,62 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     };
   } // namespace Volumetric
 
+  /** @brief Scalar function of the principal invariants \f$(I_1, I_2, J)\f$ with its scalar derivatives, e.g.
+   * Coupled::StandardNeoHooke: a potential that is not the sum of an isochoric and a volumetric part, for
+   * @c CoupledPotential. A user-defined type qualifies with a static member @c usesI2 and a member template
+   * @c scalarDerivatives<Order>( x ) returning Invariants::RightCauchyGreen::ScalarDerivatives. */
+  template < typename Potential >
+  concept PrincipalInvariantScalarFunction = requires( const Potential& potential, const std::array< double, 3 >& x ) {
+    {
+      Potential::usesI2
+    } -> std::convertible_to< bool >;
+    {
+      potential.template scalarDerivatives< 0 >( x )
+    } -> std::same_as< Invariants::RightCauchyGreen::ScalarDerivatives< double, 0 > >;
+  };
+
+  /** @brief Hyperelastic potentials as scalar functions of the principal invariants \f$(I_1, I_2, J)\f$ of
+   * \f$\boldsymbol C\f$, which do not split into an isochoric and a volumetric part; evaluate them with
+   * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::CoupledPotential. */
+  namespace Coupled {
+    /** @brief Standard compressible Neo-Hooke potential
+     *  \f[
+     *    \Psi = \frac{G}{2} \left(I_1 - 3 - 2 \ln J\right) + \frac{\lambda}{2} \left(\frac{J^2 - 1}{2} - \ln J\right),
+     *    \qquad \lambda = K - \frac{2}{3} G,
+     *  \f]
+     *  with \f$ I_1 = \text{tr}(\boldsymbol{C}) \f$ and \f$ J = \sqrt{\det(\boldsymbol{C})} \f$. It depends on
+     *  \f$I_1\f$ and not on the isochoric invariant \f$\bar I_1\f$. */
+    struct StandardNeoHooke {
+      double K; ///< Bulk modulus.
+      double G; ///< Shear modulus.
+
+      /// Whether the function depends on the second invariant.
+      static constexpr bool usesI2 = false;
+
+      /** @brief Value and derivatives up to @c Order w.r.t. \f$(I_1, I_2, J)\f$.
+       * @param x Principal invariants \f$(I_1, I_2, J)\f$.
+       * @return Value and scalar derivatives. */
+      template < int Order, typename T >
+      Invariants::RightCauchyGreen::ScalarDerivatives< T, Order > scalarDerivatives( const std::array< T, 3 >& x ) const
+      {
+        return Detail::standardNeoHookeOfInvariants< Order >( x, K, G );
+      }
+    };
+  } // namespace Coupled
+
+  /** @cond */
+  namespace Detail {
+    /* Psi( I1, I2, J ) and its derivatives w.r.t. C up to Order. */
+    template < int Order, typename T, PrincipalInvariantScalarFunction Potential >
+    auto coupledPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const Potential& potential )
+    {
+      const auto inv = Invariants::RightCauchyGreen::computeInvariants< Order >( C, Potential::usesI2 );
+      const ScalarDerivatives< T, Order > f = potential.template scalarDerivatives< Order >( inv.x );
+      return Invariants::RightCauchyGreen::composeWithInvariants( f, inv );
+    }
+  } // namespace Detail
+  /** @endcond */
+
   /** @cond */
   namespace Detail {
     /* Psi_iso + U and its derivatives w.r.t. C up to Order: the scalar derivatives of both parts are added
@@ -806,7 +859,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * where \f$\bar I_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol C)\f$,
      * \f$J=\sqrt{\det\boldsymbol C}\f$, \f$\mu\f$ is the shear-modulus-like parameter,
      * and \f$\lambda_L\f$ is the locking stretch. Reduces exactly to the isochoric
-     * part of #standardNeoHooke as \f$\lambda_L\to\infty\f$, and is exactly
+     * part of Coupled::StandardNeoHooke as \f$\lambda_L\to\infty\f$, and is exactly
      * stress-free (zero energy and zero gradient) at \f$\boldsymbol C=\boldsymbol I\f$
      * for any finite \f$\lambda_L\f$, since \f$\bar I_1\f$ is invariant under
      * \f$\boldsymbol C \to \lambda\boldsymbol C\f$ for any scalar \f$\lambda\f$.
@@ -1817,6 +1870,27 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                                             Volumetric::Ogden{ 2. / D1, -2. } );
   }
 
+  /** @brief Hyperelastic potential given as a scalar function of the principal invariants
+   * \f$(I_1, I_2, J)\f$ of \f$\boldsymbol C\f$ (PrincipalInvariantScalarFunction, e.g. Coupled::StandardNeoHooke),
+   * for potentials that are not the sum of an isochoric and a volumetric part (see #DecoupledPotential for those).
+   * The invariants are computed once; FirstOrder::CoupledPotential and SecondOrder::CoupledPotential also return
+   * the derivatives w.r.t. the nine independent components of \f$\boldsymbol C\f$:
+   * @code
+   * const double psi = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
+   * const auto [psi_, dPsi_dC, d2Psi_dCdC] = SecondOrder::CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
+   * @endcode
+   *
+   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
+   * @return Energy density.
+   */
+  template < typename T, PrincipalInvariantScalarFunction Potential >
+  T CoupledPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const Potential& potential )
+  {
+    return Detail::coupledPotential< 0 >( C, potential );
+  }
+
   /** @cond */
   namespace Detail {
     /* PenceGouPotentialB as a function of (I1, J), with its scalar derivatives w.r.t. (I1, I2, J). */
@@ -1849,6 +1923,23 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   /** @endcond */
 
   namespace FirstOrder {
+    /** @brief Potential of the principal invariants (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::CoupledPotential) and its first derivative
+     * w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
+     * @return Tuple of energy density and its first derivative.
+     */
+    template < typename T, PrincipalInvariantScalarFunction Potential >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > CoupledPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const Potential&                                    potential )
+    {
+      return Detail::coupledPotential< 1 >( C, potential );
+    }
+
     /** @brief Single-pass decoupled potential of two scalar functions (see the plain
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first derivative
      * w.r.t. C.
@@ -1976,6 +2067,23 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
   } // namespace FirstOrder
 
   namespace SecondOrder {
+    /** @brief Potential of the principal invariants (see the plain
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::CoupledPotential) and its first and second
+     * derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @param C Right Cauchy-Green tensor.
+     * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
+     * @return Tuple of energy density and its first and second derivative.
+     */
+    template < typename T, PrincipalInvariantScalarFunction Potential >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > CoupledPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const Potential&                                    potential )
+    {
+      return Detail::coupledPotential< 2 >( C, potential );
+    }
+
     /** @brief Single-pass decoupled potential of two scalar functions (see the plain
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first and second
      * derivative w.r.t. C.
@@ -2099,70 +2207,6 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       return Invariants::RightCauchyGreen::composeWithInvariants( Detail::penceGouB< 2 >( inv.x, K, G ), inv );
     }
 
-    /** @brief Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t.
-     * \f$\boldsymbol{C}\f$.
-     *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
-     * @param C Right Cauchy-Green tensor.
-     * @param K Bulk modulus.
-     * @param G Shear modulus.
-     * @return Tuple of energy density, first derivative and second derivative w.r.t. \f$\boldsymbol{C}\f$.
-     */
-    template < typename T >
-    std::tuple< T, Marmot::Math::Tensors::FastorTensors::Tensor33t< T >, Marmot::Math::Tensors::FastorTensors::Tensor3333t< T > > standardNeoHooke(
-      const Marmot::Math::Tensors::FastorTensors::Tensor33t< T >& C,
-      const double&                                               K,
-      const double&                                               G )
-    {
-      using namespace Fastor;
-      using namespace Marmot::Math::Tensors::FastorIndices;
-      const double lambda = K - 2.0 / 3.0 * G;
-
-      /*
-       * we use the potential in terms of C
-       * Psi = G/2 ( tr(C) - 3 - 2 ln(J) ) + lambda/2 ( 0.5 ( J^2 - 1 ) - ln(J) )
-       * where J = sqrt( det(C) ) and ln(J) = 0.5 ln( det(C) )
-       *
-       * we can the rewrite as
-       * Psi = G/2 ( tr(C) - 3 - ln(det(C)) ) + lambda/2 ( 0.5 ( det(C) - 1 ) - 0.5 ln(det(C)) )
-       *
-       */
-
-      const T trC    = trace( C );
-      const T detC   = determinant( C );
-      const T lnDetC = log( detC );
-      // energy density
-      const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
-
-      // first derivative quantities
-      const Math::Tensors::FastorTensors::Tensor33t< T >& dTrC_dC = Marmot::Math::Tensors::makeOtherScalarType< T >(
-        Math::Tensors::FastorTensors::Spatial3D::I );
-      const Math::Tensors::FastorTensors::Tensor33t< T > invCt = transpose( inverse( C ) );
-      const Math::Tensors::FastorTensors::Tensor33t< T >
-        dDetC_dC = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( invCt, detC );
-      const Math::Tensors::FastorTensors::Tensor33t< T >& dLnDetC_dC = invCt;
-
-      // first derivative with respect to C
-      const Math::Tensors::FastorTensors::Tensor33t< T > dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) +
-                                                                   lambda / 4 * ( dDetC_dC - dLnDetC_dC );
-
-      // second derivative quantities
-      using lj                                                       = Index< l_, j_ >;
-      using li                                                       = Index< l_, i_ >;
-      const Math::Tensors::FastorTensors::Tensor3333t< T > dInvCt_dC = -0.5 *
-                                                                       ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
-                                                                         einsum< jk, li, to_ijkl >( invCt, invCt ) );
-      const Math::Tensors::FastorTensors::Tensor3333t< T >
-        d2DetC_dC2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
-                     einsum< ij, kl, to_ijkl >( invCt, dDetC_dC );
-      const Math::Tensors::FastorTensors::Tensor3333t< T >& d2LnDetC_dC2 = dInvCt_dC;
-
-      // second derivative with respect to C
-      const Math::Tensors::FastorTensors::Tensor3333t< T > d2Psi_dC2 = lambda / 4.0 * d2DetC_dC2 -
-                                                                       ( G / 2.0 + lambda / 4.0 ) * d2LnDetC_dC2;
-      return { psi, dPsi_dC, d2Psi_dC2 };
-    }
-
     /** @brief Isotropic Biot-Neo-Hooke energy density and derivatives w.r.t. right stretch \f$\boldsymbol{U}\f$.
      *
      * @details Internally evaluates the standard Neo-Hooke potential in terms of
@@ -2188,7 +2232,17 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
       Math::Tensors::FastorTensors::Tensor3333t< T > dC_dU    = 2 * einsum< iL, ijkl >( U, I4 );
       Math::Tensors::FastorTensors::Tensor3333t< T > d2C_dUdU = 2 * I4;
 
-      auto [psi, dPsi_dC, d2Psi_dCdC] = standardNeoHooke< T >( C, K, G );
+      const auto [psi, dPsi_dC, d2Psi_dCdCGeneral] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
+
+      // U and C are symmetric: the chain rule below needs the derivative w.r.t. a symmetric C, i.e. the
+      // minor-symmetric part of the derivative w.r.t. the nine independent components of C
+      Math::Tensors::FastorTensors::Tensor3333t< T > d2Psi_dCdC;
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ )
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ )
+              d2Psi_dCdC( i, j, k, l ) = .25 * ( d2Psi_dCdCGeneral( i, j, k, l ) + d2Psi_dCdCGeneral( j, i, k, l ) +
+                                                 d2Psi_dCdCGeneral( i, j, l, k ) + d2Psi_dCdCGeneral( j, i, l, k ) );
 
       Math::Tensors::FastorTensors::Tensor33t< T > dPsi_dU = einsum< kl, klmn >( dPsi_dC, dC_dU );
       Math::Tensors::FastorTensors::Tensor3333t< T >
@@ -2199,20 +2253,4 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     }
 
   } // namespace SecondOrder
-
-  namespace ThirdOrder {
-    /** @brief Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t.
-     * \f$\boldsymbol{C}\f$.
-     *
-     * @param C Right Cauchy-Green tensor.
-     * @param K Bulk modulus.
-     * @param G Shear modulus.
-     * @return Tuple of energy density, first derivative, second derivative and third derivative.
-     */
-    std::tuple< double,
-                Marmot::Math::Tensors::FastorTensors::Tensor33d,
-                Marmot::Math::Tensors::FastorTensors::Tensor3333d,
-                Marmot::Math::Tensors::FastorTensors::Tensor333333d >
-    standardNeoHooke( const Marmot::Math::Tensors::FastorTensors::Tensor33d& C, const double& K, const double& G );
-  } // namespace ThirdOrder
 } // namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions

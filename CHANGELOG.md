@@ -261,6 +261,17 @@ All notable changes to Marmot are documented in this file. The format follows
   375 ns for NeoHooke + DollSchweizerhof) and one of `GradientEnhancedCompressibleNeoHookeDamage` about 1.9 times
   (about 740 ns to 390 ns); for `CompressibleFiniteStrainLinearViscoelasticity` the third derivative of the
   potential dominates, so the gain is below 10 %. Results agree to round-off.
+- **Breaking**: the functions `standardNeoHooke`, `SecondOrder::standardNeoHooke` and
+  `ThirdOrder::standardNeoHooke` (and with it the namespace `EnergyDensityFunctions::ThirdOrder`) are removed. The
+  potential is the scalar function type `Coupled::StandardNeoHooke{ K, G }` of the principal invariants (I1, J),
+  evaluated with the new `CoupledPotential( C, potential )`, `FirstOrder::CoupledPotential` and
+  `SecondOrder::CoupledPotential` (concept `PrincipalInvariantScalarFunction`), the counterpart of
+  `DecoupledPotential` for potentials that are not the sum of an isochoric and a volumetric part. The second
+  derivative is the one w.r.t. the nine independent components of C and no longer its minor-symmetric part
+  (identical when contracted with symmetric increments).
+- **Results**: the `NeoHooke` base of `CompressibleFiniteStrainLinearViscoelasticity` takes its third derivative
+  from first-order dual numbers on the closed-form second derivative, like the other bases; results agree to
+  round-off and a `computeStress` call takes about 4.4 µs instead of about 70 µs.
 - **Breaking:** the material `CompressibleNeoHooke` (`COMPRESSIBLENEOHOOKE`) is replaced by
   `CompressibleHyperelasticity` (`COMPRESSIBLEHYPERELASTICITY`), a hyperelastic material with a decoupled potential
   whose first two material properties select the isochoric part (0 `NeoHooke`, 1 `Yeoh`, 2 `MooneyRivlin`,

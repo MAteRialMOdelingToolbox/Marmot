@@ -628,7 +628,10 @@ void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
 
   using Potential = std::function< autodiff::dual3rd( const Dual3rdTensor& ) >;
   const std::vector< std::pair< std::vector< double >, Potential > > cases = {
-    { { 0., 0., K, G, 0. }, [=]( const Dual3rdTensor& C_ ) { return EDF::standardNeoHooke( C_, K, G ); } },
+    { { 0., 0., K, G, 0. },
+      [=]( const Dual3rdTensor& C_ ) {
+        return EDF::CoupledPotential( C_, EDF::Coupled::StandardNeoHooke{ K, G } );
+      } },
     { { 1., 0., C1, C2, C3, D1, 0. },
       [=]( const Dual3rdTensor& C_ ) { return EDF::YeohPotential( C_, C1, C2, C3, D1 ); } },
     { { 2., 0., C1, C2MooneyRivlin, D1, 0. },
@@ -652,22 +655,8 @@ void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
     const auto [psiRef, dPsiRef, d2PsiRef, d3PsiRef] = d3f_dT3< 3 >( potentialOfSymmetricPart, C );
 
     // The reference holds the derivatives of Psi( sym( C ) ), i.e. the minor-symmetric parts, which is what the
-    // material returns. The exception is NeoHooke: the third derivative of the closed form
-    // ThirdOrder::standardNeoHooke is the one w.r.t. a general C and is projected here before comparing.
-    Tensor333333d d3Psi = d3Psi_dCdCdC;
-    if ( matProps[0] == 0. )
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ )
-          for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ )
-              for ( int m = 0; m < 3; m++ )
-                for ( int n = 0; n < 3; n++ ) {
-                  const auto& d3            = d3Psi_dCdCdC;
-                  d3Psi( i, j, k, l, m, n ) = .125 * ( d3( i, j, k, l, m, n ) + d3( j, i, k, l, m, n ) +
-                                                       d3( i, j, l, k, m, n ) + d3( j, i, l, k, m, n ) +
-                                                       d3( i, j, k, l, n, m ) + d3( j, i, k, l, n, m ) +
-                                                       d3( i, j, l, k, n, m ) + d3( j, i, l, k, n, m ) );
-                }
+    // material returns.
+    const Tensor333333d& d3Psi = d3Psi_dCdCdC;
 
     const Tensor33d     difference1 = dPsi_dC - dPsiRef;
     const Tensor3333d   difference2 = d2Psi_dCdC - d2PsiRef;

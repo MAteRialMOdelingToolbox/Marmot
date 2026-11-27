@@ -102,7 +102,12 @@ namespace Marmot::Materials {
     const auto& par = elasticProperties;
 
     switch ( hyperelasticBase ) {
-    case NeoHooke: return EDF::ThirdOrder::standardNeoHooke( C, par( 0 ), par( 1 ) );
+    case NeoHooke:
+      return differentiateSecondOrderPotential(
+        [K = par( 0 ), G = par( 1 )]( const auto& C_ad ) {
+          return EDF::SecondOrder::CoupledPotential( C_ad, EDF::Coupled::StandardNeoHooke{ K, G } );
+        },
+        C );
     case Yeoh:
       return differentiateSecondOrderPotential(
         [C1 = par( 0 ), C2 = par( 1 ), C3 = par( 2 ), D1 = par( 3 )]( const auto& C_ad ) {

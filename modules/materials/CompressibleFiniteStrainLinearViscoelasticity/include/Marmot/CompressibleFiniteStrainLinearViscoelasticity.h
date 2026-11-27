@@ -43,7 +43,7 @@ namespace Marmot::Materials {
    * - @b onlyShearCreep - flag to restrict viscoelastic evolution to the deviatoric part
    * - @b elasticProperties - parameters of the selected compressible base potential, in the order of its
    *   interface in Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions:
-   *   \f$K,G\f$ for @c NeoHooke (ThirdOrder::standardNeoHooke); \f$C_1,C_2,C_3,D_1\f$ for @c Yeoh
+   *   \f$K,G\f$ for @c NeoHooke (Coupled::StandardNeoHooke); \f$C_1,C_2,C_3,D_1\f$ for @c Yeoh
    *   (YeohPotential); \f$C_1,C_2,D_1\f$ for @c MooneyRivlin (MooneyRivlinPotential); \f$K,G\f$ for
    *   @c PenceGouNeoHooke (PenceGouPotentialB); \f$\mu,\lambda_L,D_1\f$ for @c ArrudaBoyce
    *   (ArrudaBoyce8ChainPotential). Yeoh, MooneyRivlin and ArrudaBoyce share the volumetric term

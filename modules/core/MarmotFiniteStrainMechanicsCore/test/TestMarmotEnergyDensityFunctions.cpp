@@ -12,6 +12,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Tensors::FastorTensors;
+namespace Coupled = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::Coupled;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {
@@ -507,7 +508,7 @@ auto testVolumetricPotentialRelationsDollSchweizerhof()
                                          1e-14 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " U3 != (U1 + U2)/2." );
 
-  // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of standardNeoHooke
+  // U_4 with theta = -2 equals kappa/4 (J^2 - 1 - 2 ln J), the volumetric part of Coupled::StandardNeoHooke
   const double J = std::sqrt( Fastor::determinant( C ) );
   throwExceptionOnFailure( checkIfEqual( Volumetric::OgdenPotential( C, k, -2.0 ),
                                          k / 4. * ( J * J - 1. - 2. * std::log( J ) ),
@@ -733,7 +734,7 @@ auto testFirstOrderPotentialsWithAutodiffScalars()
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
 {
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -744,7 +745,16 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
   const double detC     = Fastor::determinant( C );
   const double expected = G / 2. * ( trC - 3.0 - log( detC ) ) + lambda / 4. * ( detC - 1.0 - log( detC ) );
 
-  auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+  auto [psi, dPsi_dC, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
+
+  // the plain and the FirstOrder overloads evaluate the same scalar function
+  namespace EDF                        = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const double psiPlain                = EDF::CoupledPotential( C, EDF::Coupled::StandardNeoHooke{ K, G } );
+  const auto [psiFirst, dPsi_dC_First] = EDF::FirstOrder::CoupledPotential( C, EDF::Coupled::StandardNeoHooke{ K, G } );
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psi, 1e-12 ) && checkIfEqual( psiFirst, psi, 1e-12 ) &&
+                             checkIfEqual( dPsi_dC_First, dPsi_dC, 1e-12 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " plain, FirstOrder and SecondOrder overloads differ" );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected, 1e-10 ),
                            Marmot::Utilities::MakeString()
@@ -753,13 +763,13 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
 
 auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
   const double                                                       G      = get< 3 >( params );
 
-  auto [psi0, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+  auto [psi0, dPsi_dC, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
 
   const double h = 1e-6;
   for ( int i = 0; i < 3; i++ )
@@ -768,8 +778,8 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
       Tensor33d Cm = C;
       Cp( i, j ) += h;
       Cm( i, j ) -= h;
-      const double psiPlus  = std::get< 0 >( standardNeoHooke( Cp, K, G ) );
-      const double psiMinus = std::get< 0 >( standardNeoHooke( Cm, K, G ) );
+      const double psiPlus  = std::get< 0 >( CoupledPotential( Cp, Coupled::StandardNeoHooke{ K, G } ) );
+      const double psiMinus = std::get< 0 >( CoupledPotential( Cm, Coupled::StandardNeoHooke{ K, G } ) );
       const double numDeriv = ( psiPlus - psiMinus ) / ( 2. * h );
       throwExceptionOnFailure( checkIfEqual( dPsi_dC( i, j ), numDeriv, 1e-6 ),
                                Marmot::Utilities::MakeString()
@@ -779,12 +789,10 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
 }
 
 // The 6 independent symmetric "unit" directions of a symmetric 3x3 tensor (00, 11, 22, and the
-// 3 off-diagonal directions with both (a,b) and (b,a) set to 1). d2Psi_dC2/d3Psi_dC3 are only
-// meaningful when contracted against directions like these -- C is always the (symmetric) right
-// Cauchy-Green tensor, and the returned tensors internally symmetrize over each differentiated
-// index pair to match that (e.g. d2Psi_dC2(i,j,k,l) == d2Psi_dC2(i,j,l,k) by construction), so
-// isolating a single (k,l) component via an asymmetric single-entry perturbation does not recover
-// it. Verifying directional bilinear/trilinear forms instead sidesteps that convention entirely.
+// 3 off-diagonal directions with both (a,b) and (b,a) set to 1). C is always the (symmetric) right
+// Cauchy-Green tensor, while d2Psi_dC2 is the derivative w.r.t. the nine independent components of C, so
+// d2Psi_dC2(i,j,k,l) and d2Psi_dC2(i,j,l,k) may differ and only their sum acts on a symmetric increment.
+// Verifying directional forms with symmetric directions is independent of that convention.
 std::vector< Tensor33d > symmetricUnitDirections()
 {
   std::vector< Tensor33d > directions;
@@ -800,21 +808,21 @@ std::vector< Tensor33d > symmetricUnitDirections()
 
 auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
   const double                                                       G      = get< 3 >( params );
 
-  auto [psi0, dPsi_dC0, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+  auto [psi0, dPsi_dC0, d2Psi_dC2] = CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
 
   const double h = 1e-5;
   for ( const Tensor33d& dC : symmetricUnitDirections() ) {
     Tensor33d Cp = C + h * dC;
     Tensor33d Cm = C - h * dC;
 
-    const Tensor33d dPsi_dC_plus  = std::get< 1 >( standardNeoHooke( Cp, K, G ) );
-    const Tensor33d dPsi_dC_minus = std::get< 1 >( standardNeoHooke( Cm, K, G ) );
+    const Tensor33d dPsi_dC_plus  = std::get< 1 >( CoupledPotential( Cp, Coupled::StandardNeoHooke{ K, G } ) );
+    const Tensor33d dPsi_dC_minus = std::get< 1 >( CoupledPotential( Cm, Coupled::StandardNeoHooke{ K, G } ) );
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ ) {
@@ -831,53 +839,6 @@ auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
                                    << "direction does not match numerical differentiation at (" << i << "," << j
                                    << ")" );
       }
-  }
-}
-
-auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
-{
-  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
-  std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
-  Tensor33d                                                          C      = get< 0 >( params );
-  const double                                                       K      = get< 2 >( params );
-  const double                                                       G      = get< 3 >( params );
-
-  auto [psi0, dPsi_dC0, d2Psi_dC2_0, d3Psi_dC3] = standardNeoHooke( C, K, G );
-
-  const std::vector< Tensor33d > directions = symmetricUnitDirections();
-
-  const double h = 1e-4;
-  for ( const Tensor33d& dCOuter : directions ) {
-    Tensor33d Cp = C + h * dCOuter;
-    Tensor33d Cm = C - h * dCOuter;
-
-    const Tensor3333d d2Psi_dC2_plus  = std::get< 2 >( standardNeoHooke( Cp, K, G ) );
-    const Tensor3333d d2Psi_dC2_minus = std::get< 2 >( standardNeoHooke( Cm, K, G ) );
-
-    for ( const Tensor33d& dCInner : directions )
-      for ( int i = 0; i < 3; i++ )
-        for ( int j = 0; j < 3; j++ ) {
-          double d2Plus = 0.0, d2Minus = 0.0;
-          for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ ) {
-              d2Plus += d2Psi_dC2_plus( i, j, k, l ) * dCInner( k, l );
-              d2Minus += d2Psi_dC2_minus( i, j, k, l ) * dCInner( k, l );
-            }
-          const double numDirectional = ( d2Plus - d2Minus ) / ( 2. * h );
-
-          double analyticalDirectional = 0.0;
-          for ( int k = 0; k < 3; k++ )
-            for ( int l = 0; l < 3; l++ )
-              for ( int m = 0; m < 3; m++ )
-                for ( int n = 0; n < 3; n++ )
-                  analyticalDirectional += d3Psi_dC3( i, j, k, l, m, n ) * dCInner( k, l ) * dCOuter( m, n );
-
-          throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-2 ),
-                                   Marmot::Utilities::MakeString()
-                                     << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
-                                     << "directions does not match numerical differentiation at (" << i << "," << j
-                                     << ")" );
-        }
   }
 }
 
@@ -1316,37 +1277,78 @@ auto testCompressiblePotentialsEqualDecoupledParts()
          []( const auto& C_ ) { return Isochoric::SecondOrder::ArrudaBoyce8ChainPotential( C_, 500., 2.5 ); } );
 }
 
+// BiotNeoHooke: derivatives w.r.t. a symmetric right stretch U, checked by central differences along the
+// symmetric unit directions. The second derivative is compared in its part symmetric in the first index pair:
+// d2Psi_dUdU( i, j, k, l ) is not symmetric in ( i, j ), only that part is the derivative of the (symmetric)
+// dPsi_dU.
+auto testBiotNeoHookeDerivativesMatchNumericalDifferentiation()
+{
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
+  const double    K = 3500., G = 1500.;
+  const Tensor33d U = { { 1.2, 0.1, -0.03 }, { 0.1, 0.9, 0.07 }, { -0.03, 0.07, 1.05 } };
+
+  const auto [psi0, dPsi_dU, d2Psi_dUdU] = BiotNeoHooke( U, K, G );
+
+  const double h = 1e-5;
+  for ( const Tensor33d& dU : symmetricUnitDirections() ) {
+    const Tensor33d Up                           = U + h * dU;
+    const Tensor33d Um                           = U - h * dU;
+    const auto [psiPlus, dPsiPlus, d2PsiPlus]    = BiotNeoHooke( Up, K, G );
+    const auto [psiMinus, dPsiMinus, d2PsiMinus] = BiotNeoHooke( Um, K, G );
+
+    double analyticalFirst = 0.0;
+    for ( int k = 0; k < 3; k++ )
+      for ( int l = 0; l < 3; l++ )
+        analyticalFirst += dPsi_dU( k, l ) * dU( k, l );
+    throwExceptionOnFailure( checkIfEqual( analyticalFirst, ( psiPlus - psiMinus ) / ( 2. * h ), 1e-5 ),
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " dPsi_dU does not match central differences" );
+
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ ) {
+        double analyticalSecond = 0.0;
+        for ( int k = 0; k < 3; k++ )
+          for ( int l = 0; l < 3; l++ )
+            analyticalSecond += .5 * ( d2Psi_dUdU( i, j, k, l ) + d2Psi_dUdU( j, i, k, l ) ) * dU( k, l );
+        const double numericalSecond = ( dPsiPlus( i, j ) - dPsiMinus( i, j ) ) / ( 2. * h );
+        throwExceptionOnFailure( checkIfEqual( analyticalSecond, numericalSecond, 1e-4 ),
+                                 Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " d2Psi_dUdU does not match central differences" );
+      }
+  }
+}
+
 int main()
 {
-  auto tests = std::vector<
-    std::function< void() > >{ testPenceGouPotentialA,
-                               testPenceGouPotentialB,
-                               testPenceGouPotentialC,
-                               testFirstOrderDerivedB,
-                               testSecondOrderDerivedB,
-                               testArrudaBoycePlainMatchesFirstOrder,
-                               testArrudaBoyceRegularizedEnergyMatchesGradient,
-                               testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
-                               testNeoHookePlainMatchesFirstOrder,
-                               testYeohPlainMatchesFirstOrder,
-                               testMooneyRivlinPlainMatchesFirstOrder,
-                               testVolumetricPenaltyPlainMatchesFirstOrder,
-                               testVolumetricPotentialsDollSchweizerhof,
-                               testVolumetricPotentialRelationsDollSchweizerhof,
-                               testYeohMooneyRivlinReduceToNeoHooke,
-                               testDecoupledPotentialCombinesParts,
-                               testCompressiblePotentialsMatchClosedForm,
-                               testFirstOrderPotentialsWithAutodiffScalars,
-                               testRightCauchyGreenInvariantsAndDerivatives,
-                               testPenceGouPotentialBOverloadsAgree,
-                               testSecondOrderPotentialsMatchFirstOrder,
-                               testVolumetricSecondOrderBulkModulus,
-                               testSinglePassDecoupledPotential,
-                               testCompressiblePotentialsEqualDecoupledParts,
-                               testStandardNeoHookeEnergyMatchesClosedForm,
-                               testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
-                               testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,
-                               testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation };
+  auto
+    tests = std::vector< std::function< void() > >{ testPenceGouPotentialA,
+                                                    testPenceGouPotentialB,
+                                                    testPenceGouPotentialC,
+                                                    testFirstOrderDerivedB,
+                                                    testSecondOrderDerivedB,
+                                                    testArrudaBoycePlainMatchesFirstOrder,
+                                                    testArrudaBoyceRegularizedEnergyMatchesGradient,
+                                                    testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
+                                                    testNeoHookePlainMatchesFirstOrder,
+                                                    testYeohPlainMatchesFirstOrder,
+                                                    testMooneyRivlinPlainMatchesFirstOrder,
+                                                    testVolumetricPenaltyPlainMatchesFirstOrder,
+                                                    testVolumetricPotentialsDollSchweizerhof,
+                                                    testVolumetricPotentialRelationsDollSchweizerhof,
+                                                    testYeohMooneyRivlinReduceToNeoHooke,
+                                                    testDecoupledPotentialCombinesParts,
+                                                    testCompressiblePotentialsMatchClosedForm,
+                                                    testFirstOrderPotentialsWithAutodiffScalars,
+                                                    testRightCauchyGreenInvariantsAndDerivatives,
+                                                    testPenceGouPotentialBOverloadsAgree,
+                                                    testSecondOrderPotentialsMatchFirstOrder,
+                                                    testVolumetricSecondOrderBulkModulus,
+                                                    testSinglePassDecoupledPotential,
+                                                    testCompressiblePotentialsEqualDecoupledParts,
+                                                    testStandardNeoHookeEnergyMatchesClosedForm,
+                                                    testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
+                                                    testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,
+                                                    testBiotNeoHookeDerivativesMatchNumericalDifferentiation };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
