@@ -44,13 +44,14 @@ Eigen::Vector< double, 23 > getMaterialPropertiesIsotropic()
   return Eigen::Vector< double, 23 >( &materialProperties[0] );
 }
 
-void testLinearViscoelasticOrthotropicPowerLawIsotropic()
+// stress after loading at 28 days and holding for 100 days, with the given approximation order of the power law
+Marmot::Math::Vector6d computeStressAfterRelaxation( int powerLawApproximationOrder )
 {
-
-  auto        materialProperties = getMaterialPropertiesIsotropic();
-  auto        solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
-  std::string matName            = "LINEARVISCOELASTICORTHOTROPICPOWERLAW";
-  auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+  auto materialProperties = getMaterialPropertiesIsotropic();
+  materialProperties[12]  = powerLawApproximationOrder;
+  auto        solveropts  = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+  std::string matName     = "LINEARVISCOELASTICORTHOTROPICPOWERLAW";
+  auto        solver      = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    &materialProperties[0],
                                                                    static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
@@ -95,8 +96,12 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
 
   // read history
   auto history = solver.getHistory();
-  // get computed stress
-  Marmot::Math::Vector6d stress = history.back().stress;
+  return history.back().stress;
+}
+
+void testLinearViscoelasticOrthotropicPowerLawIsotropic()
+{
+  const Marmot::Math::Vector6d stress = computeStressAfterRelaxation( 2 );
 
   Marmot::Math::Vector6d stressTarget;
   stressTarget << 2.41296e-05, 2.41296e-05, 9.65182e-06, 0., 0., 0.;
@@ -106,8 +111,28 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
                                             "Stress computation failed in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+void testApproximationOrders()
+{
+  // the approximations of order 3, 4 and 7 of the same power law (regression values; order 2 gives 2.41296e-05)
+  const std::vector< std::pair< int, std::array< double, 3 > > > targets = {
+    { 3, { 2.43902733e-05, 2.43902733e-05, 9.75610934e-06 } },
+    { 4, { 2.45157978e-05, 2.45157978e-05, 9.80631913e-06 } },
+    { 7, { 2.46723632e-05, 2.46723632e-05, 9.86894528e-06 } },
+  };
+  for ( const auto& [order, target] : targets ) {
+    const Marmot::Math::Vector6d stress = computeStressAfterRelaxation( order );
+    Marmot::Math::Vector6d       stressTarget;
+    stressTarget << target[0], target[1], target[2], 0., 0., 0.;
+    Marmot::Testing::throwExceptionOnFailure( ( stress - stressTarget ).norm() <= 1e-7 * stressTarget.norm(),
+                                              "Stress computation with approximation order " + std::to_string( order ) +
+                                                " failed in " + std::string( __PRETTY_FUNCTION__ ) );
+  }
+}
+
 int main()
 {
-  testLinearViscoelasticOrthotropicPowerLawIsotropic();
+  auto tests = std::vector< std::function< void() > >{ testLinearViscoelasticOrthotropicPowerLawIsotropic,
+                                                       testApproximationOrders };
+  executeTestsAndCollectExceptions( tests );
   return 0;
 }

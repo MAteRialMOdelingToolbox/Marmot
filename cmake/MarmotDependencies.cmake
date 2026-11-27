@@ -3,7 +3,6 @@
 # * Locates Marmot's header-only dependencies and provides them as imported targets:
 # *
 # *   Eigen3::Eigen        (Eigen's CMake package)
-# *   autodiff::autodiff   (autodiff's CMake package, or a plain header search)
 # *   Fastor::Fastor       (Fastor's CMake package, or a plain header search)
 # *
 # * Shared by Marmot's top-level CMakeLists.txt and the installed MarmotConfig.cmake, so that
@@ -52,5 +51,4 @@ macro(marmot_find_header_only_dependency package target header)
     endif()
 endmacro()
 
-marmot_find_header_only_dependency(autodiff autodiff::autodiff autodiff)
 marmot_find_header_only_dependency(Fastor Fastor::Fastor Fastor)

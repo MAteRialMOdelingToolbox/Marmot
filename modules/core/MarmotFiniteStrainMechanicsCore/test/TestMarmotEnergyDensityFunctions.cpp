@@ -1,8 +1,8 @@
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
-#include "autodiff/forward/dual.hpp"
 #include <array>
 #include <cmath>
 #include <complex>
@@ -694,12 +694,13 @@ auto testCompressiblePotentialsMatchClosedForm()
     D1 );
 }
 
-// The FirstOrder isochoric and volumetric potentials must instantiate with autodiff scalars (as documented) and
+// The FirstOrder isochoric and volumetric potentials must instantiate with dual numbers (as documented) and
 // give the same energy and gradient as with double.
 auto testFirstOrderPotentialsWithAutodiffScalars()
 {
   using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
-  using autodiff::dual;
+  using Marmot::Math::Differentiation::Automatic::dual;
+  using Marmot::Math::Differentiation::Automatic::value;
   const Tensor33d         C   = get< 0 >( computationParameters() );
   const Tensor33t< dual > CAD = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< dual >( C );
 
@@ -709,11 +710,11 @@ auto testFirstOrderPotentialsWithAutodiffScalars()
     Tensor33d dPsiAD_dC_values( 0.0 );
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
-        dPsiAD_dC_values( i, j ) = autodiff::val( dPsiAD_dC( i, j ) );
-    throwExceptionOnFailure( checkIfEqual( autodiff::val( psiAD ), psi, 1e-12 ) &&
+        dPsiAD_dC_values( i, j ) = value( dPsiAD_dC( i, j ) );
+    throwExceptionOnFailure( checkIfEqual( value( psiAD ), psi, 1e-12 ) &&
                                checkIfEqual( dPsiAD_dC_values, dPsi_dC, 1e-12 ),
                              Marmot::Utilities::MakeString()
-                               << __PRETTY_FUNCTION__ << " " << name << " differs between double and autodiff::dual." );
+                               << __PRETTY_FUNCTION__ << " " << name << " differs between double and dual." );
   };
 
   check( "Isochoric::FirstOrder::NeoHookePotential",

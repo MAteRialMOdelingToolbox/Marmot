@@ -138,20 +138,20 @@ void test_makeReal()
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
-  // Testcase 2: Input is an autodiff::real
+  // Testcase 2: Input is an Marmot::Math::Differentiation::Automatic::Taylor< 1 >
   {
-    autodiff::real realInput = 5.5;
-    double         computed  = Marmot::Math::Tensors::makeReal( realInput );
-    double         expected  = 5.5;
+    Marmot::Math::Differentiation::Automatic::Taylor< 1 > realInput = 5.5;
+    double                                                computed  = Marmot::Math::Tensors::makeReal( realInput );
+    double                                                expected  = 5.5;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
-  // Testcase 3: Input is an autodiff::dual
+  // Testcase 3: Input is an Marmot::Math::Differentiation::Automatic::dual
   {
-    autodiff::dual dualInput = 7.7;
-    double         computed  = Marmot::Math::Tensors::makeReal( dualInput );
-    double         expected  = 7.7;
+    Marmot::Math::Differentiation::Automatic::dual dualInput = 7.7;
+    double                                         computed  = Marmot::Math::Tensors::makeReal( dualInput );
+    double                                         expected  = 7.7;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
@@ -165,10 +165,12 @@ void test_makeReal()
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
   }
 
-  // Testcase 5: Input is an Eigen::Matrix with autodiff::dual elements
+  // Testcase 5: Input is an Eigen::Matrix with Marmot::Math::Differentiation::Automatic::dual elements
   {
-    Eigen::Matrix< autodiff::dual, 2, 2 > matrixInput;
-    matrixInput << autodiff::dual( 1.1 ), autodiff::dual( 2.2 ), autodiff::dual( 3.3 ), autodiff::dual( 4.4 );
+    Eigen::Matrix< Marmot::Math::Differentiation::Automatic::dual, 2, 2 > matrixInput;
+    matrixInput << Marmot::Math::Differentiation::Automatic::dual( 1.1 ),
+      Marmot::Math::Differentiation::Automatic::dual( 2.2 ), Marmot::Math::Differentiation::Automatic::dual( 3.3 ),
+      Marmot::Math::Differentiation::Automatic::dual( 4.4 );
 
     Eigen::Matrix< double, 2, 2 > computed = Marmot::Math::Tensors::makeReal( matrixInput );
 
@@ -182,10 +184,12 @@ void test_makeReal()
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
   }
 
-  // Testcase 6: Input is an Eigen::Vector with autodiff::real elements
+  // Testcase 6: Input is an Eigen::Vector with Marmot::Math::Differentiation::Automatic::Taylor< 1 > elements
   {
-    Eigen::Vector< autodiff::real, Eigen::Dynamic > vectorInput( 3 );
-    vectorInput << autodiff::real( 1.5 ), autodiff::real( 2.5 ), autodiff::real( 3.5 );
+    Eigen::Vector< Marmot::Math::Differentiation::Automatic::Taylor< 1 >, Eigen::Dynamic > vectorInput( 3 );
+    vectorInput << Marmot::Math::Differentiation::Automatic::Taylor< 1 >( 1.5 ),
+      Marmot::Math::Differentiation::Automatic::Taylor< 1 >( 2.5 ),
+      Marmot::Math::Differentiation::Automatic::Taylor< 1 >( 3.5 );
 
     Eigen::VectorXd computed = Marmot::Math::Tensors::makeReal( vectorInput );
 

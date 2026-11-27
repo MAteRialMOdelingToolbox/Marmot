@@ -1,10 +1,10 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotAutomaticDifferentiation.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <autodiff/forward/dual/eigen.hpp>
 
 using namespace Eigen;
-using namespace autodiff;
+using namespace Marmot::Math::Differentiation::Automatic;
 
 void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&                      state,
                                                               Marmot::Math::Matrix6d&       dStressDDStrain,
@@ -20,23 +20,20 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
   Map< VectorXd >              stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
 
   // remember old state
-  const VectorXd               stateVarsOld = stateVars;
-  const Marmot::Math::Vector6d SOld         = S;
+  const VectorXd stateVarsOld = stateVars;
 
   double elasticEnergyDensity;
   double dissipation;
 
   Marmot::Math::mMatrix6d C( dStressDDStrain.data() );
   // ----------------------------------------
-  // autodiff part
+  // automatic differentiation part
   // ----------------------------------------
-  // compute stress and tangent with autodiff
-  std::tie( S, C ) = Marmot::Math::Differentiation::Automatic::dF_dX(
-    [&]( const Marmot::Math::Vector6dual dE_ ) {
+  // compute stress and tangent with automatic differentiation
+  std::tie( S, C ) = dF_dX< 6 >(
+    [&]( const Vector6AD& dE_ ) {
       // reset stateVars to old state
       stateVars = stateVarsOld;
-
-      Marmot::Math::Vector6dual s( SOld );
 
       // construct AD state
       state3DAD stateAD = state3DAD( state );
@@ -46,7 +43,7 @@ void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&          
       elasticEnergyDensity = stateAD.elasticEnergyDensity;
       dissipation          = stateAD.dissipation;
 
-      Marmot::Math::Vector6dual res = stateAD.stress;
+      Vector6AD res = stateAD.stress;
       return res;
     },
     dEps );
