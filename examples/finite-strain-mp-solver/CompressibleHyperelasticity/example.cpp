@@ -7,9 +7,10 @@ int main()
   using namespace Marmot::Math::Tensors::FastorTensors;
 
   // 1) Define the material model
-  std::string materialName = "COMPRESSIBLENEOHOOKE";
-  double      properties[] = { 3500, 1500 }; // Example: Bulk and Shear moduli
-  int         nProps       = 2;
+  std::string materialName = "COMPRESSIBLEHYPERELASTICITY";
+  // isochoric base 0 (NeoHooke), volumetric base 6 (DollSchweizerhof), shear modulus, bulk modulus, alpha, beta
+  double properties[] = { 0, 6, 1500, 3500, 1, 3 };
+  int    nProps       = 6;
 
   // 2) Configure solver options
   MaterialPointSolverFiniteStrain::SolverOptions options;

@@ -20,16 +20,16 @@ add_marmot_test("TestMarmotFiniteStrainViscoelasticity" "${CURR_TEST_SOURCE_DIR}
 add_marmot_test("TestMarmotMaterialHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHughesWinget.cpp")
 
 # Tests for MarmotMaterialFiniteStrainFactory
-add_marmot_test("TestMarmotMaterialFiniteStrainFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrainFactory.cpp" REQUIRES CompressibleNeoHooke)
+add_marmot_test("TestMarmotMaterialFiniteStrainFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrainFactory.cpp" REQUIRES CompressibleHyperelasticity)
 
 # Tests for MarmotMaterialFiniteStrain
 add_marmot_test("TestMarmotMaterialFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrain.cpp")
 
 # Tests for MarmotMaterialPointSolverFiniteStrain
-add_marmot_test("TestMarmotMaterialPointSolverFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverFiniteStrain.cpp" REQUIRES CompressibleNeoHooke FiniteStrainJ2Plasticity)
+add_marmot_test("TestMarmotMaterialPointSolverFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverFiniteStrain.cpp" REQUIRES CompressibleHyperelasticity FiniteStrainJ2Plasticity)
 
 # Tests for the gradient-enhanced Hughes-Winget small-strain wrapper
 add_marmot_test("TestMarmotMaterialGradientEnhancedHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGradientEnhancedHughesWinget.cpp")
 
 # Tests for the uniaxial stress reduction of MaterialFiniteStrain
-add_marmot_test("TestMarmotMaterialFiniteStrainUniaxialStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrainUniaxialStress.cpp" REQUIRES CompressibleNeoHooke FiniteStrainJ2Plasticity)
+add_marmot_test("TestMarmotMaterialFiniteStrainUniaxialStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrainUniaxialStress.cpp" REQUIRES CompressibleHyperelasticity FiniteStrainJ2Plasticity)

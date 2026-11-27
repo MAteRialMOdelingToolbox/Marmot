@@ -8,9 +8,10 @@ This section contains the ready to use available material models.
 
   at2phasefield
   b4
-  compressibleneohooke
+  compressiblehyperelasticity
   adcompressibleneohooke
   compressiblefinitestrainlinearviscoelasticity
+  compressiblefinitestrainfractionalschapery
   finitestrainisotropicbiotviscoelasticity
   finitestrainj2plasticity
   finitestrainorthotropicbiotviscoelasticity

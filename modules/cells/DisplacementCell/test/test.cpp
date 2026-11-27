@@ -22,7 +22,7 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
-#include "Marmot/CompressibleNeoHooke.h"
+#include "Marmot/CompressibleHyperelasticity.h"
 #include "Marmot/DisplacementCell.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotMPMLibrary.h"
@@ -43,8 +43,10 @@ using namespace Marmot::Testing;
 
 namespace {
 
-  // COMPRESSIBLENEOHOOKE: K, G, rho
-  const std::vector< double > matProps = { 3500., 1500., 2.0 };
+  // COMPRESSIBLEHYPERELASTICITY: isochoric NeoHooke (0), volumetric DollSchweizerhof (6), mu = G, kappa = K,
+  // alpha = 1, beta = 3, rho -- the compressible Neo-Hooke model of Pence & Gou (variant B) with K, G
+  const double                density  = 2.0;
+  const std::vector< double > matProps = { 0., 6., 1500., 3500., 1., 3., density };
 
   bool throws( const std::function< void() >& f )
   {
@@ -127,7 +129,9 @@ namespace {
     std::unique_ptr< Marmot::Discretizations::Cells::Cell >                                  cell;
     std::vector< std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > > mps;
     std::vector< std::vector< double > >                                                     stateVars;
-    Marmot::Discretizations::MaterialSection section{ "COMPRESSIBLENEOHOOKE", matProps.data(), (int)matProps.size() };
+    Marmot::Discretizations::MaterialSection section{ "COMPRESSIBLEHYPERELASTICITY",
+                                                      matProps.data(),
+                                                      (int)matProps.size() };
     int                                      nDof;
     double                                   mpVolume;
 
@@ -397,7 +401,7 @@ namespace {
       s.trial( increment( s.nDof, 0.0 ) ); // the points learn their density on the first computation
       Eigen::VectorXd I = Eigen::VectorXd::Zero( s.nDof );
       s.cell->computeLumpedInertia( I.data() );
-      throwExceptionOnFailure( checkIfEqual( I.sum(), nDim * matProps[2] * V, 1e-12 ),
+      throwExceptionOnFailure( checkIfEqual( I.sum(), nDim * density * V, 1e-12 ),
                                g.name + ": lumped mass must add up to nDim rho V" );
     }
 
@@ -438,7 +442,7 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
   s.kernels( increment( s.nDof, 1e-2 ) );
 
   using Marmot::Math::Tensors::FastorTensors::Tensor33d;
-  Marmot::Materials::CompressibleNeoHooke reference( matProps.data(), static_cast< int >( matProps.size() ), 1 );
+  Marmot::Materials::CompressibleHyperelasticity reference( matProps.data(), static_cast< int >( matProps.size() ), 1 );
   for ( auto& mp : s.mps ) {
     const Tensor33d dF( mp->getStateView( "delta deformation gradient" ).stateLocation );
     const Tensor33d Fn( mp->getStateView( "deformation gradient" ).stateLocation );
