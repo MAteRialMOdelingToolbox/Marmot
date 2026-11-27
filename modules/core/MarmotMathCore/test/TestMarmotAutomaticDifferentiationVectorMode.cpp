@@ -1,6 +1,7 @@
 #include "Marmot/MarmotAutomaticDifferentiationScalarMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h"
+#include "Marmot/MarmotAutomaticDifferentiationVectorModeThirdOrder.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTesting.h"
@@ -230,7 +231,7 @@ namespace {
                                << __PRETTY_FUNCTION__ << " " << what << ": got " << a << ", expected " << b );
   }
 
-  /** a function of three variables, for second-order vector mode and nested hyper-dual numbers alike */
+  /** a function of three variables, for second- and third-order vector mode and nested hyper-dual numbers alike */
   template < typename T >
   T composite( const T& x, const T& y, const T& z )
   {
@@ -374,6 +375,11 @@ void testSecondOrderSpecialCases()
   checkClose( p.dx( 1 ), 0.0, "d x^2.5/dx at 0" );
   checkClose( p.dxx( 1, 1 ), 0.0, "d2 x^2.5/dx2 at 0" );
 
+  // the exponent 1 at a vanishing base: the second derivative vanishes
+  const H3 linear = pow( variable( 0.0, 1 ), 1 );
+  checkClose( linear.dx( 1 ), 1.0, "d x^1/dx at 0" );
+  checkClose( linear.dxx( 1, 1 ), 0.0, "d2 x^1/dx2 at 0" );
+
   // seeding a number again makes it the new variable alone
   H3 x = variable( 0.7, 0 ) * variable( 1.3, 1 );
   x.seed( 2 );
@@ -402,6 +408,255 @@ void testSecondOrderAgainstHyperDual()
     }
 }
 
+namespace {
+
+  using T3 = Marmot::Math::Differentiation::Automatic::VectorMode::Dual3rd< 3 >;
+
+  T3 thirdOrderVariable( double value, std::size_t direction )
+  {
+    T3 x = value;
+    x.seed( direction );
+    return x;
+  }
+
+} // namespace
+
+void testThirdOrderLayout()
+{
+  // the sorted triples are stored in the order i, then j, then k, and every permutation of a triple is the same entry
+  using T5      = Marmot::Math::Differentiation::Automatic::VectorMode::Dual3rd< 5 >;
+  std::size_t q = 0;
+  for ( std::size_t i = 0; i < 5; i++ )
+    for ( std::size_t j = i; j < 5; j++ ) {
+      throwExceptionOnFailure( T5::thirdRowStart( i, j ) == q,
+                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " row start" );
+      for ( std::size_t k = j; k < 5; k++, q++ )
+        throwExceptionOnFailure( T5::thirdIndex( i, j, k ) == q && T5::thirdIndex( i, k, j ) == q &&
+                                   T5::thirdIndex( j, i, k ) == q && T5::thirdIndex( j, k, i ) == q &&
+                                   T5::thirdIndex( k, i, j ) == q && T5::thirdIndex( k, j, i ) == q,
+                                 Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " index of a triple" );
+    }
+  throwExceptionOnFailure( q == T5::nThird && q == 35,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " number of triples" );
+}
+
+void testThirdOrderElementaryFunctions()
+{
+  // f( x ) with x the variable 1 of 3: value, f', f'' in ( 1, 1 ), f''' in ( 1, 1, 1 ), everything else zero
+  const double x = 0.6;
+  struct Case {
+    std::string                      name;
+    std::function< T3( const T3& ) > f;
+    double                           f0, f1, f2, f3;
+  };
+  const double              t = std::tan( x ), th = std::tanh( x ), ln2 = std::log( 2 );
+  const std::vector< Case > cases = {
+    { "sqrt",
+      []( const T3& a ) { return sqrt( a ); },
+      std::sqrt( x ),
+      0.5 / std::sqrt( x ),
+      -0.25 * std::pow( x, -1.5 ),
+      0.375 * std::pow( x, -2.5 ) },
+    { "cbrt",
+      []( const T3& a ) { return cbrt( a ); },
+      std::cbrt( x ),
+      std::pow( x, -2. / 3 ) / 3,
+      -2. / 9 * std::pow( x, -5. / 3 ),
+      10. / 27 * std::pow( x, -8. / 3 ) },
+    { "exp", []( const T3& a ) { return exp( a ); }, std::exp( x ), std::exp( x ), std::exp( x ), std::exp( x ) },
+    { "log", []( const T3& a ) { return log( a ); }, std::log( x ), 1 / x, -1 / ( x * x ), 2 / ( x * x * x ) },
+    { "log10",
+      []( const T3& a ) { return log10( a ); },
+      std::log10( x ),
+      1 / ( x * std::numbers::ln10 ),
+      -1 / ( x * x * std::numbers::ln10 ),
+      2 / ( x * x * x * std::numbers::ln10 ) },
+    { "pow( x, 2.5 )",
+      []( const T3& a ) { return pow( a, 2.5 ); },
+      std::pow( x, 2.5 ),
+      2.5 * std::pow( x, 1.5 ),
+      3.75 * std::pow( x, 0.5 ),
+      1.875 * std::pow( x, -0.5 ) },
+    { "pow( x, 3 )", []( const T3& a ) { return pow( a, 3 ); }, x * x * x, 3 * x * x, 6 * x, 6 },
+    { "pow( x, 2 )", []( const T3& a ) { return pow( a, 2 ); }, x * x, 2 * x, 2, 0 },
+    { "pow( x, 0 )", []( const T3& a ) { return pow( a, 0 ); }, 1, 0, 0, 0 },
+    { "pow( 2, x )",
+      []( const T3& a ) { return pow( 2., a ); },
+      std::pow( 2, x ),
+      std::pow( 2, x ) * ln2,
+      std::pow( 2, x ) * ln2 * ln2,
+      std::pow( 2, x ) * ln2 * ln2 * ln2 },
+    { "sin", []( const T3& a ) { return sin( a ); }, std::sin( x ), std::cos( x ), -std::sin( x ), -std::cos( x ) },
+    { "cos", []( const T3& a ) { return cos( a ); }, std::cos( x ), -std::sin( x ), -std::cos( x ), std::sin( x ) },
+    { "tan",
+      []( const T3& a ) { return tan( a ); },
+      t,
+      1 + t * t,
+      2 * t * ( 1 + t * t ),
+      ( 2 + 4 * std::pow( std::sin( x ), 2 ) ) / std::pow( std::cos( x ), 4 ) },
+    { "asin",
+      []( const T3& a ) { return asin( a ); },
+      std::asin( x ),
+      std::pow( 1 - x * x, -0.5 ),
+      x * std::pow( 1 - x * x, -1.5 ),
+      ( 1 + 2 * x * x ) * std::pow( 1 - x * x, -2.5 ) },
+    { "acos",
+      []( const T3& a ) { return acos( a ); },
+      std::acos( x ),
+      -std::pow( 1 - x * x, -0.5 ),
+      -x * std::pow( 1 - x * x, -1.5 ),
+      -( 1 + 2 * x * x ) * std::pow( 1 - x * x, -2.5 ) },
+    { "atan",
+      []( const T3& a ) { return atan( a ); },
+      std::atan( x ),
+      1 / ( 1 + x * x ),
+      -2 * x / std::pow( 1 + x * x, 2 ),
+      ( 6 * x * x - 2 ) / std::pow( 1 + x * x, 3 ) },
+    { "sinh", []( const T3& a ) { return sinh( a ); }, std::sinh( x ), std::cosh( x ), std::sinh( x ), std::cosh( x ) },
+    { "cosh", []( const T3& a ) { return cosh( a ); }, std::cosh( x ), std::sinh( x ), std::cosh( x ), std::sinh( x ) },
+    { "tanh",
+      []( const T3& a ) { return tanh( a ); },
+      th,
+      1 - th * th,
+      -2 * th * ( 1 - th * th ),
+      ( 4 * std::pow( std::sinh( x ), 2 ) - 2 ) / std::pow( std::cosh( x ), 4 ) },
+    { "abs( -x )", []( const T3& a ) { return abs( -a ); }, x, 1, 0, 0 },
+    { "1 / x", []( const T3& a ) { return 1. / a; }, 1 / x, -1 / ( x * x ), 2 / ( x * x * x ), -6 / ( x * x * x * x ) },
+    { "2 - 3 x", []( const T3& a ) { return 2. - a * 3.; }, 2 - 3 * x, -3, 0, 0 },
+  };
+  for ( const auto& c : cases ) {
+    const T3 y = c.f( thirdOrderVariable( x, 1 ) );
+    checkClose( y.val(), c.f0, c.name + " value" );
+    checkClose( y.dx( 1 ), c.f1, c.name + " first derivative" );
+    checkClose( y.dxx( 1, 1 ), c.f2, c.name + " second derivative" );
+    checkClose( y.dxxx( 1, 1, 1 ), c.f3, c.name + " third derivative" );
+    for ( std::size_t i = 0; i < 3; i++ )
+      for ( std::size_t j = 0; j < 3; j++ ) {
+        if ( i != 1 || j != 1 )
+          checkClose( y.dxx( i, j ), 0.0, c.name + " other second derivatives" );
+        for ( std::size_t k = 0; k < 3; k++ )
+          if ( i != 1 || j != 1 || k != 1 )
+            checkClose( y.dxxx( i, j, k ), 0.0, c.name + " other third derivatives" );
+      }
+    throwExceptionOnFailure( y.dx( 0 ) == 0.0 && y.dx( 2 ) == 0.0,
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << c.name << " other derivatives" );
+  }
+}
+
+void testThirdOrderBinaryOperations()
+{
+  // x and y are the variables 0 and 2 of 3, so the operands depend on different directions
+  const double x = 0.7, y = 1.3;
+  const T3     x_ = thirdOrderVariable( x, 0 ), y_ = thirdOrderVariable( y, 2 );
+
+  const T3 p = x_ * y_;
+  checkClose( p.val(), x * y, "x y" );
+  checkClose( p.dx( 0 ), y, "d( x y )/dx" );
+  checkClose( p.dx( 2 ), x, "d( x y )/dy" );
+  checkClose( p.dxx( 0, 2 ), 1, "d2( x y )/dxdy" );
+  checkClose( p.dxx( 2, 0 ), 1, "d2( x y )/dydx" );
+  for ( std::size_t i = 0; i < 3; i++ )
+    for ( std::size_t j = 0; j < 3; j++ )
+      for ( std::size_t k = 0; k < 3; k++ )
+        checkClose( p.dxxx( i, j, k ), 0, "d3( x y )" );
+
+  const T3 xxy = x_ * x_ * y_;
+  checkClose( xxy.dxxx( 0, 0, 2 ), 2, "d3( x x y )/dx2dy" );
+  checkClose( xxy.dxxx( 0, 0, 0 ) + xxy.dxxx( 0, 2, 2 ) + xxy.dxxx( 2, 2, 2 ), 0, "d3( x x y ), other" );
+
+  const T3 q = x_ / y_;
+  checkClose( q.dx( 2 ), -x / ( y * y ), "d( x / y )/dy" );
+  checkClose( q.dxx( 0, 2 ), -1 / ( y * y ), "d2( x / y )/dxdy" );
+  checkClose( q.dxx( 2, 2 ), 2 * x / ( y * y * y ), "d2( x / y )/dy2" );
+  checkClose( q.dxxx( 0, 2, 2 ), 2 / ( y * y * y ), "d3( x / y )/dxdy2" );
+  checkClose( q.dxxx( 2, 0, 2 ), 2 / ( y * y * y ), "d3( x / y )/dydxdy" );
+  checkClose( q.dxxx( 2, 2, 0 ), 2 / ( y * y * y ), "d3( x / y )/dy2dx" );
+  checkClose( q.dxxx( 2, 2, 2 ), -6 * x / ( y * y * y * y ), "d3( x / y )/dy3" );
+  checkClose( q.dxxx( 0, 0, 2 ), 0, "d3( x / y )/dx2dy" );
+
+  const T3 w = pow( x_, y_ );
+  checkClose( w.dxx( 0, 2 ), std::pow( x, y - 1 ) * ( 1 + y * std::log( x ) ), "d2 x^y/dxdy" );
+  checkClose( w.dxxx( 0, 0, 2 ), std::pow( x, y - 2 ) * ( 2 * y - 1 + y * ( y - 1 ) * std::log( x ) ), "d3 x^y/dx2dy" );
+  checkClose( w.dxxx( 2, 2, 2 ), std::pow( x, y ) * std::pow( std::log( x ), 3 ), "d3 x^y/dy3" );
+
+  const T3     a  = atan2( y_, x_ );
+  const double r2 = x * x + y * y;
+  checkClose( a.val(), std::atan2( y, x ), "atan2" );
+  checkClose( a.dx( 0 ), -y / r2, "d atan2/dx" );
+  checkClose( a.dxx( 0, 2 ), ( y * y - x * x ) / ( r2 * r2 ), "d2 atan2/dxdy" );
+  checkClose( a.dxxx( 0, 2, 2 ), ( 6 * x * x * y - 2 * y * y * y ) / ( r2 * r2 * r2 ), "d3 atan2/dxdy2" );
+
+  T3 s = x_;
+  s += y_;
+  s -= 2. * x_;
+  s *= y_;
+  s /= x_;
+  // ( y - x ) y / x
+  checkClose( s.val(), ( y - x ) * y / x, "compound assignment" );
+  checkClose( s.dxx( 0, 2 ), -2 * y / ( x * x ), "compound assignment d2/dxdy" );
+  checkClose( s.dxxx( 0, 2, 2 ), -2 / ( x * x ), "compound assignment d3/dxdy2" );
+  checkClose( s.dxxx( 0, 0, 2 ), 4 * y / ( x * x * x ), "compound assignment d3/dx2dy" );
+  checkClose( s.dxxx( 0, 0, 0 ), -6 * y * y / ( x * x * x * x ), "compound assignment d3/dx3" );
+  s *= 2.;
+  s /= 4.;
+  checkClose( s.dxxx( 0, 0, 2 ), 2 * y / ( x * x * x ), "compound assignment with constants d3/dx2dy" );
+  throwExceptionOnFailure( x_ < y_ && x_ == x && 0 < x_ && s != x_,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " comparisons" );
+}
+
+void testThirdOrderSpecialCases()
+{
+  // a vanishing base: pow without dividing by the base
+  const T3 p = pow( thirdOrderVariable( 0.0, 1 ), 3.5 );
+  checkClose( p.val(), 0.0, "0^3.5" );
+  checkClose( p.dx( 1 ), 0.0, "d x^3.5/dx at 0" );
+  checkClose( p.dxx( 1, 1 ), 0.0, "d2 x^3.5/dx2 at 0" );
+  checkClose( p.dxxx( 1, 1, 1 ), 0.0, "d3 x^3.5/dx3 at 0" );
+
+  // integer exponents at a vanishing base: the derivatives of an order above the exponent vanish
+  const T3 linear = pow( thirdOrderVariable( 0.0, 1 ), 1 );
+  checkClose( linear.dx( 1 ), 1.0, "d x^1/dx at 0" );
+  checkClose( linear.dxx( 1, 1 ), 0.0, "d2 x^1/dx2 at 0" );
+  checkClose( linear.dxxx( 1, 1, 1 ), 0.0, "d3 x^1/dx3 at 0" );
+  const T3 cubic = pow( thirdOrderVariable( 0.0, 1 ), 3 );
+  checkClose( cubic.dx( 1 ) + cubic.dxx( 1, 1 ), 0.0, "d x^3/dx, d2 x^3/dx2 at 0" );
+  checkClose( cubic.dxxx( 1, 1, 1 ), 6.0, "d3 x^3/dx3 at 0" );
+
+  // seeding a number again makes it the new variable alone
+  T3 x = thirdOrderVariable( 0.7, 0 ) * thirdOrderVariable( 1.3, 1 ) * thirdOrderVariable( 1.3, 1 );
+  checkClose( x.dxxx( 0, 1, 1 ), 2.0, "before reseeding" );
+  x.seed( 2 );
+  checkClose( x.dx( 0 ) + x.dx( 1 ) + x.dxx( 0, 1 ) + x.dxx( 1, 0 ) + x.dxxx( 0, 1, 1 ),
+              0.0,
+              "reseeded: old derivatives" );
+  checkClose( x.dx( 2 ), 1.0, "reseeded: new derivative" );
+  throwExceptionOnFailure( x.mask() == 4u, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " reseeded mask" );
+}
+
+void testThirdOrderAgainstHyperDual()
+{
+  // all third derivatives of a composite function of 3 variables against nested hyper-dual numbers, one triple at a
+  // time
+  using Marmot::Math::Differentiation::Automatic::ScalarMode::HyperDual;
+  const std::array< double, 3 > v = { 0.7, 1.3, 0.4 };
+  const T3 f = composite( thirdOrderVariable( v[0], 0 ), thirdOrderVariable( v[1], 1 ), thirdOrderVariable( v[2], 2 ) );
+  for ( std::size_t i = 0; i < 3; i++ )
+    for ( std::size_t j = 0; j < 3; j++ )
+      for ( std::size_t k = 0; k < 3; k++ ) {
+        std::array< HyperDual< 3 >, 3 > x;
+        for ( std::size_t l = 0; l < 3; l++ )
+          x[l] = v[l];
+        x[i].grad()             = 1.0;
+        x[j].val().grad()       = 1.0;
+        x[k].val().val().grad() = 1.0;
+        const HyperDual< 3 > g  = composite( x[0], x[1], x[2] );
+        checkClose( f.val(), g.val().val().val(), "composite value" );
+        checkClose( f.dx( i ), g.grad().val().val(), "composite gradient" );
+        checkClose( f.dxx( i, j ), g.grad().grad().val(), "composite Hessian" );
+        checkClose( f.dxxx( i, j, k ), g.grad().grad().grad(), "composite third derivatives" );
+      }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testArithmetic,
@@ -412,7 +667,12 @@ int main()
                                                        testSecondOrderElementaryFunctions,
                                                        testSecondOrderBinaryOperations,
                                                        testSecondOrderSpecialCases,
-                                                       testSecondOrderAgainstHyperDual };
+                                                       testSecondOrderAgainstHyperDual,
+                                                       testThirdOrderLayout,
+                                                       testThirdOrderElementaryFunctions,
+                                                       testThirdOrderBinaryOperations,
+                                                       testThirdOrderSpecialCases,
+                                                       testThirdOrderAgainstHyperDual };
 
   executeTestsAndCollectExceptions( tests );
 

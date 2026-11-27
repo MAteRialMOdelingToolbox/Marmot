@@ -50,8 +50,8 @@ are two units, :math:`\varepsilon_1^2 = \varepsilon_2^2 = 0` and :math:`\varepsi
 
 so that the second derivative is exact as well. Each nesting level is one direction of differentiation. A
 hyper-dual number therefore gives one directional derivative per evaluation of the function. The vector mode
-numbers carry the partial derivatives with respect to all :math:`n` variables instead, and give a whole gradient
-or Hessian in one evaluation.
+numbers carry the partial derivatives with respect to all :math:`n` variables instead, and give a whole gradient,
+Hessian or third derivative in one evaluation.
 
 .. list-table::
    :header-rows: 1
@@ -67,13 +67,17 @@ or Hessian in one evaluation.
      - value and :math:`n` partial derivatives
    * - ``HessianDual< n >``
      - value, :math:`n` first and :math:`n(n+1)/2` second partial derivatives
+   * - ``ThirdDerivativeDual< n >``
+     - value, :math:`n` first, :math:`n(n+1)/2` second and :math:`n(n+1)(n+2)/6` third partial derivatives
 
 - ``HyperDual< order >`` is a hyper-dual number with ``order`` nesting levels, :math:`2^\mathrm{order}` numbers
   in total; ``dual``, ``dual2nd`` and ``dual3rd`` are the orders 1, 2 and 3. Use it for a derivative with respect
   to one variable, for mixed and higher derivatives, and for functions whose arguments carry derivatives already.
 - ``Taylor< order >`` is a truncated Taylor polynomial of a function of one variable. Use it for derivatives of
   high order, for which a hyper-dual number becomes expensive.
-- ``JacobianDual< n >`` gives gradients and Jacobians, ``HessianDual< n >`` Hessians, in one evaluation.
+- ``JacobianDual< n >`` gives gradients and Jacobians, ``HessianDual< n >`` Hessians and
+  ``ThirdDerivativeDual< n >`` third derivatives, in one evaluation. The two last store each mixed derivative
+  once, since it does not depend on the order of differentiation.
 
 ``VectorXdual``, ``MatrixXdual`` and ``VectorXdual2nd`` are the Eigen vectors and matrices of ``dual`` and
 ``dual2nd``. All types except ``Taylor`` can be used as the scalar type of Eigen and Fastor objects, also in
@@ -142,8 +146,9 @@ other.
 Vector mode numbers
 ...................
 
-``seedDirection( x, i )`` makes ``x`` the variable number ``i``; ``partialDerivative( f, i )`` and, for
-``HessianDual``, ``secondPartialDerivative( f, i, j )`` read the derivatives of a result.
+``seedDirection( x, i )`` makes ``x`` the variable number ``i``; ``partialDerivative( f, i )``, for
+``HessianDual`` and ``ThirdDerivativeDual`` ``secondPartialDerivative( f, i, j )``, and for ``ThirdDerivativeDual``
+``thirdPartialDerivative( f, i, j, k )`` read the derivatives of a result.
 
 .. code-block:: cpp
 
@@ -170,6 +175,20 @@ Vector mode numbers
 
    const double df_dx    = partialDerivative( f, 0 );          // 2 x sin( y )
    const double d2f_dxdy = secondPartialDerivative( f, 0, 1 ); // 2 x cos( y )
+
+.. code-block:: cpp
+
+   using scalar = ThirdDerivativeDual< 2 >;
+
+   scalar x( 1.5 ), y( 0.5 );
+   seedDirection( x, 0 );
+   seedDirection( y, 1 );
+
+   const auto f = x * x * sin( y );
+
+   const double d2f_dx2   = secondPartialDerivative( f, 0, 0 );   // 2 sin( y )
+   const double d3f_dx2dy = thirdPartialDerivative( f, 0, 0, 1 ); // 2 cos( y )
+   const double d3f_dxdy2 = thirdPartialDerivative( f, 1, 0, 1 ); // -2 x sin( y ), in any order of the indices
 
 The three-dimensional co-rotational beam element (:ref:`beamelement`) differentiates its local map this way,
 with ``JacobianDual< 12 >`` and ``HessianDual< 12 >``.
@@ -249,16 +268,15 @@ function chosen.
    * - ``ThirdOrder::d3f_dT3< dim >``
      - :math:`f,\ \partial f/\partial\boldsymbol{T},\ \partial^2 f/\partial\boldsymbol{T}^2,\
        \partial^3 f/\partial\boldsymbol{T}^3`
-     - ``dual3rd``
-     - 165
+     - ``ThirdDerivativeDual< dim * dim >``
+     - 1
 
 Lower case :math:`f` is a scalar function, :math:`x` and :math:`s` are scalars, :math:`\boldsymbol{X}` is an Eigen
 vector with :math:`n` entries and :math:`\boldsymbol{T}` a Fastor tensor with ``nComponents`` components, e.g. 9 for
 a :math:`3\times3` tensor. ``dF_dX< n >`` takes vectors of fixed size, ``dF_dX`` vectors of dynamic size. The three
-last functions are limited to tensors of second order, of size ``dim`` :math:`\times` ``dim``; the 165 evaluations
-of ``d3f_dT3`` are those for ``dim`` = 3. A derivative with respect to a tensor carries the indices of the tensor
-last: ``dF_dT`` of two second order tensors returns :math:`\partial F_{ij} / \partial T_{kl}` as component
-``( i, j, k, l )``.
+last functions are limited to tensors of second order, of size ``dim`` :math:`\times` ``dim``. A derivative with
+respect to a tensor carries the indices of the tensor last: ``dF_dT`` of two second order tensors returns
+:math:`\partial F_{ij} / \partial T_{kl}` as component ``( i, j, k, l )``.
 
 Three more functions differentiate a function at a point that carries derivatives itself, so that the result
 can be differentiated further, e.g. with respect to time or to the variables of an enclosing computation:
@@ -339,17 +357,17 @@ Up to the third derivative, which
 
 .. code-block:: cpp
 
-   const auto [psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = ThirdOrder::d3f_dT3< 3 >(
-     [&]( const Tensor33t< dual3rd >& C_ ) { return strainEnergyDensity( C_, K, G ); },
-     C,
-     true );
+   using scalar = ThirdDerivativeDual< 9 >;
 
-``d3f_dT3`` evaluates the function once for every unordered triple of tensor components, since mixed partial
-derivatives do not depend on the order of differentiation: 165 times for a :math:`3\times3` tensor. The last
-argument, ``isSymmetric``, reduces this to 92. It may only be set if the tensor is symmetric and the function does
-not change when its argument is transposed, as is the case for every function of the invariants of the right
-Cauchy-Green tensor. ``df_dT< order >`` and ``d2f_dTensor_dScalar`` accept the flag under the same condition; it has
-no effect in the functions that evaluate once.
+   const auto [psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = ThirdOrder::d3f_dT3< 3 >(
+     [&]( const Tensor33t< scalar >& C_ ) { return strainEnergyDensity( C_, K, G ); },
+     C );
+
+The functions that evaluate once per tensor component, ``df_dT< order >`` and ``d2f_dTensor_dScalar``, take a
+last argument ``isSymmetric``, which lets them skip the components below the diagonal. It may only be set if the
+tensor is symmetric and the function does not change when its argument is transposed, as is the case for every
+function of the invariants of the right Cauchy-Green tensor. The functions that evaluate once accept the flag as
+well; it has no effect there.
 
 ``dF_dT`` differentiates a tensor valued function. In contrast to the other functions, which accept a lambda
 directly, it needs the function as a named ``std::function``:
@@ -471,8 +489,8 @@ converged solution by the implicit function theorem.
 Elementary functions
 --------------------
 
-The hyper-dual numbers, ``JacobianDual`` and ``HessianDual`` support the arithmetic operators among themselves and
-with ``double``, the comparison operators, output with ``operator<<`` and
+The hyper-dual numbers, ``JacobianDual``, ``HessianDual`` and ``ThirdDerivativeDual`` support the arithmetic
+operators among themselves and with ``double``, the comparison operators, output with ``operator<<`` and
 
 .. code-block:: text
 

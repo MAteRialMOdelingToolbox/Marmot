@@ -43,9 +43,10 @@ namespace Marmot::Materials {
     // select hyperelastic base
     // compute enregy density and derivatives
     // with autodiff
-    // we need a function mapping from tensor33 with dual3rd to dual3rd
-    std::function< Marmot::Math::Differentiation::Automatic::dual3rd(
-      const Marmot::Math::Tensors::FastorTensors::Tensor33t< Marmot::Math::Differentiation::Automatic::dual3rd >& ) >
+    // we need a function mapping from tensor33 with ThirdDerivativeDual< 9 > to ThirdDerivativeDual< 9 >
+    std::function< Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 >(
+      const Marmot::Math::Tensors::FastorTensors::Tensor33t<
+        Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >& ) >
       energyDensityFunction;
 
     switch ( hyperelasticBase ) {
@@ -53,36 +54,38 @@ namespace Marmot::Materials {
       return ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder::
         standardNeoHooke( C, elasticProperties[0], elasticProperties[1] );
     case PenceGouNeoHooke:
-      energyDensityFunction =
-        [this](
-          const Marmot::Math::Tensors::FastorTensors::Tensor33t< Marmot::Math::Differentiation::Automatic::dual3rd >&
-            C_ad ) {
-          Marmot::Math::Differentiation::Automatic::dual3rd
-            res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB<
-              Marmot::Math::Differentiation::Automatic::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
-          return res;
-        };
+      energyDensityFunction = [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t<
+                                      Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >& C_ad ) {
+        Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 >
+          res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB<
+            Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >( C_ad,
+                                                                                  elasticProperties[0],
+                                                                                  elasticProperties[1] );
+        return res;
+      };
       break;
     case Yeoh:
       energyDensityFunction = [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t<
-                                      Marmot::Math::Differentiation::Automatic::dual3rd >& C_ad ) {
-        Marmot::Math::Differentiation::Automatic::dual3rd res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::
-          YeohPotential< Marmot::Math::Differentiation::Automatic::dual3rd >( C_ad,
-                                                                              elasticProperties[0],
-                                                                              elasticProperties[1],
-                                                                              elasticProperties[2],
-                                                                              elasticProperties[3] );
+                                      Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >& C_ad ) {
+        Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 >
+          res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential<
+            Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >( C_ad,
+                                                                                  elasticProperties[0],
+                                                                                  elasticProperties[1],
+                                                                                  elasticProperties[2],
+                                                                                  elasticProperties[3] );
         return res;
       };
       break;
     case MooneyRivlin:
       energyDensityFunction = [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t<
-                                      Marmot::Math::Differentiation::Automatic::dual3rd >& C_ad ) {
-        Marmot::Math::Differentiation::Automatic::dual3rd res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::
-          MooneyRivlinPotential< Marmot::Math::Differentiation::Automatic::dual3rd >( C_ad,
-                                                                                      elasticProperties[0],
-                                                                                      elasticProperties[1],
-                                                                                      elasticProperties[2] );
+                                      Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >& C_ad ) {
+        Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 >
+          res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential<
+            Marmot::Math::Differentiation::Automatic::ThirdDerivativeDual< 9 > >( C_ad,
+                                                                                  elasticProperties[0],
+                                                                                  elasticProperties[1],
+                                                                                  elasticProperties[2] );
         return res;
       };
       break;

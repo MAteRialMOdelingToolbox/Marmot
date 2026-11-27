@@ -79,7 +79,7 @@ report "namespace deeper than 6 levels" \
 #    skipped.
 report "AD implementation named outside the AD headers, or autodiff used" \
   "$(grep -nE "(ScalarMode|VectorMode|autodiff)::|#include *[<\"]autodiff/" $ALL 2>/dev/null \
-    | grep -vE "MarmotAutomaticDifferentiation(Types|ScalarMode|VectorMode|VectorModeSecondOrder)\.h:" \
+    | grep -vE "MarmotAutomaticDifferentiation(Types|ScalarMode|VectorMode|VectorModeSecondOrder|VectorModeThirdOrder)\.h:" \
     | grep -vE "TestMarmotAutomaticDifferentiation(ScalarMode|VectorMode)\.cpp:" \
     | grep -vE "^[^:]+:[0-9]+: *(//|/?\*)")"
 

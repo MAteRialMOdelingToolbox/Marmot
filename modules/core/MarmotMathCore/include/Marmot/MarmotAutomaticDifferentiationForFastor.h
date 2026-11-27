@@ -24,7 +24,6 @@
  */
 
 #pragma once
-#include <algorithm>
 /* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
  * flags nor leaks into consumers. */
 #ifdef _MSC_VER
@@ -340,100 +339,70 @@ namespace Marmot::Math::Differentiation::Automatic {
   namespace ThirdOrder {
 
     /** @typedef tensor_to_scalar_function_type
-     *  @brief Alias for a function mapping a tensor to a scalar with third order dual numbers
+     *  @brief Alias for a function mapping a tensor to a scalar with ThirdDerivativeDual numbers, whose dim * dim
+     *  directions are the components of the tensor
      *  @tparam dim dimension of the input tensor (dim x dim)
      *
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
      */
     template < size_t dim >
-    using tensor_to_scalar_function_type = std::function< dual3rd( const Fastor::Tensor< dual3rd, dim, dim >& T ) >;
+    using tensor_to_scalar_function_type = std::function< ThirdDerivativeDual< dim * dim >(
+      const Fastor::Tensor< ThirdDerivativeDual< dim * dim >, dim, dim >& T ) >;
 
     /** @brief Computes the third derivative of a function that maps a tensor to a scalar
      *  @tparam dim dimension of the input tensor (dim x dim)
      *  @param F function mapping a (dim x dim) tensor to a scalar
      *  @param T input tensor at which the derivative is evaluated
      *  @return tuple of function value, first derivative, second derivative and third derivative of F with respect to
-     * T first derivative has shape (dim, dim) second derivative has shape (dim, dim, dim, dim) third derivative has
-     * shape (dim, dim, dim, dim, dim, dim)
+     *          T
+     *          first derivative has shape (dim, dim)
+     *          second derivative has shape (dim, dim, dim, dim)
+     *          third derivative has shape (dim, dim, dim, dim, dim, dim)
      *
      *  @note The implementation is currently limited to second rank (dim x dim) tensors
+     *  @param isSymmetric has no effect: all derivatives are computed in one evaluation of F; kept for source
+     *  compatibility
      *
-     *  F is evaluated once per unordered triple of the dim^2 directions (165 for dim = 3 instead of 729), since mixed
-     *  partial derivatives do not depend on the order of differentiation.
-     *  @param isSymmetric if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is
-     *  assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built
-     *  from tensor invariants). This further skips the triples whose transpose is evaluated anyway, exploiting the
-     *  identity
-     *  \f$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
-     *  F/\partial T_{ji}\partial T_{lk}\partial T_{nm} \f$, which holds at a symmetric T for such functions (note:
-     *  this mirrors all three index pairs simultaneously; mirroring any pair independently is in general NOT
-     *  valid)
+     *  dim is deduced from T only: F is a non-deduced parameter, like in df_dT.
      */
     template < size_t dim >
     std::tuple< double,
                 Fastor::Tensor< double, dim, dim >,
                 Fastor::Tensor< double, dim, dim, dim, dim >,
                 Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > >
-    d3f_dT3( const tensor_to_scalar_function_type< dim >& F,
-             const Fastor::Tensor< double, dim, dim >&    T,
-             bool                                         isSymmetric = false )
+    d3f_dT3( const std::type_identity_t< tensor_to_scalar_function_type< dim > >& F,
+             const Fastor::Tensor< double, dim, dim >&                            T,
+             [[maybe_unused]] bool                                                isSymmetric = false )
     {
-      // Mixed partial derivatives do not depend on the order of differentiation: F is evaluated only for the sorted
-      // triples a <= b <= c of directions (a = dim * i + j for T_ij), seeded on the levels 1, 2 and 3, and the third
-      // derivative is copied to all permutations. With isSymmetric, a triple is skipped if its transpose (all three
-      // directions T_ij -> T_ji) sorts lower, and its derivatives are copied from the transpose. The first and second
-      // derivatives come out of the same evaluations: every pair and every single direction is the leading part of an
-      // evaluated triple or of the transpose of one.
-      constexpr size_t n          = dim * dim;
-      auto             transposed = []( size_t a ) { return ( a % dim ) * dim + a / dim; };
+      using scalar = ThirdDerivativeDual< dim * dim >;
 
-      double                                                 F_ = 0.0;
+      double                                                 F_;
       Fastor::Tensor< double, dim, dim >                     dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim >           d2F_dT2;
       Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > d3F_dT3;
-      Fastor::Tensor< dual3rd, dim, dim >                    T_right = Tensors::makeHigherOrderDual< 3 >( T );
-      dual3rd*                                               t       = T_right.data();
 
-      auto setD3 = [&]( size_t a, size_t b, size_t c, double v ) {
-        const std::array< size_t, 3 >                   d     = { a, b, c };
-        constexpr std::array< std::array< int, 3 >, 6 > perms = {
-          { { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 }, { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 } } };
-        for ( const auto& p : perms )
-          d3F_dT3( d[p[0]] / dim, d[p[0]] % dim, d[p[1]] / dim, d[p[1]] % dim, d[p[2]] / dim, d[p[2]] % dim ) = v;
-      };
-      auto setD2 = [&]( size_t a, size_t b, double v ) {
-        d2F_dT2( a / dim, a % dim, b / dim, b % dim ) = v;
-        d2F_dT2( b / dim, b % dim, a / dim, a % dim ) = v;
-      };
-      auto setD1 = [&]( size_t a, double v ) { dF_dT_( a / dim, a % dim ) = v; };
-
-      for ( size_t a = 0; a < n; a++ )
-        for ( size_t b = a; b < n; b++ )
-          for ( size_t c = b; c < n; c++ ) {
-            std::array< size_t, 3 > dT = { transposed( a ), transposed( b ), transposed( c ) };
-            std::sort( dT.begin(), dT.end() );
-            if ( isSymmetric && dT < std::array< size_t, 3 >{ a, b, c } )
-              continue;
-
-            seed< 1 >( t[a], 1.0 );
-            seed< 2 >( t[b], 1.0 );
-            seed< 3 >( t[c], 1.0 );
-            const dual3rd F_right = F( T_right );
-            seed< 3 >( t[c], 0.0 );
-            seed< 2 >( t[b], 0.0 );
-            seed< 1 >( t[a], 0.0 );
-
-            F_ = value( F_right );
-            setD3( a, b, c, derivative< 3 >( F_right ) );
-            setD2( a, b, derivative< 2 >( F_right ) );
-            setD1( a, derivative< 1 >( F_right ) );
-            if ( isSymmetric ) {
-              setD3( transposed( a ), transposed( b ), transposed( c ), derivative< 3 >( F_right ) );
-              setD2( transposed( a ), transposed( b ), derivative< 2 >( F_right ) );
-              setD1( transposed( a ), derivative< 1 >( F_right ) );
+      Fastor::Tensor< scalar, dim, dim > T_right;
+      for ( size_t i = 0; i < dim; i++ )
+        for ( size_t j = 0; j < dim; j++ ) {
+          T_right( i, j ).val() = T( i, j );
+          seedDirection( T_right( i, j ), dim * i + j );
+        }
+      const scalar F_right = F( T_right );
+      F_                   = value( F_right );
+      for ( size_t i = 0; i < dim; i++ )
+        for ( size_t j = 0; j < dim; j++ ) {
+          dF_dT_( i, j ) = partialDerivative( F_right, dim * i + j );
+          for ( size_t k = 0; k < dim; k++ )
+            for ( size_t l = 0; l < dim; l++ ) {
+              d2F_dT2( i, j, k, l ) = secondPartialDerivative( F_right, dim * i + j, dim * k + l );
+              for ( size_t m = 0; m < dim; m++ )
+                for ( size_t n = 0; n < dim; n++ )
+                  d3F_dT3( i, j, k, l, m, n ) = thirdPartialDerivative( F_right,
+                                                                        dim * i + j,
+                                                                        dim * k + l,
+                                                                        dim * m + n );
             }
-          }
-
+        }
       return { F_, dF_dT_, d2F_dT2, d3F_dT3 };
     }
 

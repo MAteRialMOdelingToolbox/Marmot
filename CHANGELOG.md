@@ -24,11 +24,12 @@ All notable changes to Marmot are documented in this file. The format follows
   operations on the seeded inputs only update their Hessian rows. It is the new `HessianDual` of
   `SecondOrder::d2f_dT2`, which therefore evaluates the function once instead of once per pair of directions: the
   Pence-Gou energy Hessian takes 0.65 us instead of 2.4 us (symmetric) or 3.6 us (full), 4x the analytical one.
-- `ThirdOrder::d3f_dT3` evaluates the function once per unordered triple of directions (165 instead of 729 for a
-  3x3 tensor; with `isSymmetric`, transposed triples are skipped as well), since mixed partial derivatives do not
-  depend on the order of differentiation: the Yeoh energy's third derivative, which
-  `CompressibleFiniteStrainLinearViscoelasticity` computes in every stress update, takes 11.7 us instead of 55 us.
-  Results are unchanged.
+- `VectorMode::Dual3rd< nDirections >` (`MarmotAutomaticDifferentiationVectorModeThirdOrder.h`): third-order
+  vector-mode numbers carrying value, gradient, Hessian and the third derivatives for the sorted triples of
+  directions, with the direction tracking of `Dual2nd`. It is the new `ThirdDerivativeDual` of
+  `ThirdOrder::d3f_dT3`, which therefore evaluates the function once instead of once per triple of directions (729
+  for a 3x3 tensor): the Yeoh energy's third derivative, which `CompressibleFiniteStrainLinearViscoelasticity`
+  computes in every stress update, takes 5.7 us instead of 55 us. Results are unchanged.
 - Documentation: the page "Automatic Differentiation" (Features) on the number types, the functions for derivatives
   with respect to scalars, Eigen vectors and Fastor tensors, the AD material base classes and the pitfalls.
 - `elements/TrussElement`: truss (bar) elements `T2D2`, `T2D3`, `T3D2`, `T3D3` (geometrically linear, hypoelastic
@@ -249,9 +250,10 @@ All notable changes to Marmot are documented in this file. The format follows
   along( 1. ), at( x ) )`). `Math::Differentiation::Automatic` no longer re-exports the `autodiff` and `Eigen`
   namespaces, `valnode` is removed (`coefficients< order >` gives the coefficient storage), and
   `Math::Tensors::makeReal` accepts hyper-dual numbers of any order through `isHyperDual`. Results are unchanged.
-- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers instead of `dual2nd`.
-  `isSymmetric` of `d2f_dT2`, `df_dT` and `dF_dT` has no effect any more, since all directions are computed in one
-  evaluation.
+- **Breaking:** `SecondOrder::d2f_dT2` takes functions of `HessianDual< dim * dim >` numbers instead of `dual2nd`,
+  and `ThirdOrder::d3f_dT3` functions of `ThirdDerivativeDual< dim * dim >` numbers instead of `dual3rd`.
+  `isSymmetric` of `d3f_dT3`, `d2f_dT2`, `df_dT` and `dF_dT` has no effect any more, since all directions are
+  computed in one evaluation.
 - **Breaking:** autodiff is no longer a dependency: all automatic differentiation uses Marmot's own types (see
   Added), and the conda package no longer depends on autodiff. Results agree with autodiff to about 1e-15
   (relative).

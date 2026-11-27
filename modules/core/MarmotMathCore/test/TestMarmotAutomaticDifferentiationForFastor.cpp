@@ -380,8 +380,8 @@ void testTensorToScalarThirdOrder()
   Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // Use a simpler test function: f(C) = sum(C^2)
-  std::function< dual3rd( const Tensor33t< dual3rd >& ) > f = [&]( const Fastor::Tensor< dual3rd, 3, 3 >& C_ ) {
-    dual3rd result = 0.0;
+  ThirdOrder::tensor_to_scalar_function_type< 3 > f = [&]( const Tensor33t< ThirdDerivativeDual< 9 > >& C_ ) {
+    ThirdDerivativeDual< 9 > result = 0.0;
     for ( size_t i = 0; i < 3; i++ ) {
       for ( size_t j = 0; j < 3; j++ ) {
         result += C_( i, j ) * C_( i, j );
@@ -415,8 +415,8 @@ void testTensorToScalarThirdOrder()
 namespace {
   /** All derivatives up to third order of F at T, one evaluation per ordered triple of directions (729 for 3x3) */
   std::tuple< double, Tensor33d, Tensor3333d, Tensor333333d > thirdOrderReference(
-    const ThirdOrder::tensor_to_scalar_function_type< 3 >& F,
-    const Tensor33d&                                       T )
+    const std::function< dual3rd( const Tensor33t< dual3rd >& ) >& F,
+    const Tensor33d&                                               T )
   {
     double               f = 0;
     Tensor33d            d1;
@@ -445,10 +445,11 @@ namespace {
 
 void testTensorToScalarThirdOrderAgainstReference()
 {
-  // a function that is not transpose-invariant, at a non-symmetric point: the full driver must match the reference
+  // a function that is not transpose-invariant, at a non-symmetric point: the driver must match the reference. The
+  // functions are generic: the driver evaluates them with ThirdDerivativeDual numbers, the reference with dual3rd
   Tensor33d T;
-  T                                                 = { { 1.1, 0.2, -0.3 }, { 0.15, 0.9, 0.25 }, { -0.1, 0.35, 1.2 } };
-  ThirdOrder::tensor_to_scalar_function_type< 3 > f = []( const Tensor33t< dual3rd >& C_ ) {
+  T      = { { 1.1, 0.2, -0.3 }, { 0.15, 0.9, 0.25 }, { -0.1, 0.35, 1.2 } };
+  auto f = []( const auto& C_ ) {
     return C_( 0, 0 ) * C_( 0, 1 ) * C_( 1, 2 ) + exp( C_( 1, 0 ) ) * C_( 0, 2 ) * C_( 0, 2 ) +
            C_( 2, 1 ) * pow( C_( 1, 1 ), 3.5 ) + log( C_( 2, 2 ) ) * C_( 2, 0 ) * C_( 1, 0 );
   };
@@ -459,19 +460,15 @@ void testTensorToScalarThirdOrderAgainstReference()
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << "d3f_dT3 doesn't match the reference (general function)" );
 
-  // a transpose-invariant energy at a symmetric point: the full and the symmetric driver must match the reference
+  // an energy at a symmetric point: the driver must match the reference, whatever isSymmetric
   Tensor33d F;
   F.eye();
   F( 0, 0 ) += 0.02;
   F( 0, 1 ) += 0.01;
   F( 1, 2 ) -= 0.015;
-  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
-  ThirdOrder::tensor_to_scalar_function_type< 3 > psi = []( const Tensor33t< dual3rd >& C_ ) {
-    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential< dual3rd >( C_,
-                                                                                                     3500.,
-                                                                                                     500.,
-                                                                                                     -10.,
-                                                                                                     1. );
+  const Tensor33d C   = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+  auto            psi = []( const auto& C_ ) {
+    return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential( C_, 3500., 500., -10., 1. );
   };
   auto [r0, r1, r2, r3] = thirdOrderReference( psi, C );
   for ( bool isSymmetric : { false, true } ) {
@@ -493,9 +490,8 @@ void testTensorToScalarThirdOrderSymmetric()
   F( 1, 2 ) += 2e-3;
   Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
-  // det(C): a transpose-invariant scalar function with genuinely nonzero third derivatives, unlike the trivial
-  // sum(C^2) used above, so the symmetry-exploiting mirroring is actually exercised
-  std::function< dual3rd( const Tensor33t< dual3rd >& ) > f = []( const Fastor::Tensor< dual3rd, 3, 3 >& C_ ) {
+  // det(C): a scalar function with genuinely nonzero third derivatives, unlike the trivial sum(C^2) used above
+  ThirdOrder::tensor_to_scalar_function_type< 3 > f = []( const Tensor33t< ThirdDerivativeDual< 9 > >& C_ ) {
     return C_( 0, 0 ) * ( C_( 1, 1 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 1 ) ) -
            C_( 0, 1 ) * ( C_( 1, 0 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 0 ) ) +
            C_( 0, 2 ) * ( C_( 1, 0 ) * C_( 2, 1 ) - C_( 1, 1 ) * C_( 2, 0 ) );
@@ -513,6 +509,20 @@ void testTensorToScalarThirdOrderSymmetric()
   throwExceptionOnFailure( checkIfEqual< double >( d3Psi_dC3_sym, d3Psi_dC3_full, 1e-10 ),
                            Marmot::Utilities::MakeString()
                              << __PRETTY_FUNCTION__ << "symmetric d3f_dT3 doesn't match the dense computation" );
+
+  // d3 det( C ) / dC_ij dC_kl dC_mn = e_ikm e_jln, with the permutation symbol e
+  auto          permutationSymbol = []( int i, int j, int k ) { return ( i - j ) * ( j - k ) * ( k - i ) / 2; };
+  Tensor333333d d3DetC_dC3_analytical;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ )
+      for ( int k = 0; k < 3; k++ )
+        for ( int l = 0; l < 3; l++ )
+          for ( int m = 0; m < 3; m++ )
+            for ( int n = 0; n < 3; n++ )
+              d3DetC_dC3_analytical( i, j, k, l, m, n ) = permutationSymbol( i, k, m ) * permutationSymbol( j, l, n );
+  throwExceptionOnFailure( checkIfEqual< double >( d3Psi_dC3_full, d3DetC_dC3_analytical, 1e-12 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "d3f_dT3 doesn't match the analytical third derivative" );
 }
 
 void testNonSquareRank2Shapes()

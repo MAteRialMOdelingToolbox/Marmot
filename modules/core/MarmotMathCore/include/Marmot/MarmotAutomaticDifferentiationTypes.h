@@ -34,6 +34,9 @@
  *  - HessianDual, the number type of the second-derivative driver d2f_dT2: VectorMode::Dual2nd
  *    (MarmotAutomaticDifferentiationVectorModeSecondOrder.h), which computes the gradient and the Hessian in a single
  *    evaluation.
+ *  - ThirdDerivativeDual, the number type of the third-derivative driver d3f_dT3: VectorMode::Dual3rd
+ *    (MarmotAutomaticDifferentiationVectorModeThirdOrder.h), which computes the gradient, the Hessian and the third
+ *    derivatives in a single evaluation.
  *
  *  Vocabulary:
  *  - HyperDual<order>: nested dual number with one independent direction per nesting level; level 1 is the
@@ -45,15 +48,19 @@
  *    mixed derivative of y along the levels 1..level, value( y ) reads the primal value.
  *  - HessianDual<nDirections>: number type of the second-derivative driver d2f_dT2, with nDirections independent
  *    variables. Code differentiated by d2f_dT2 must use this type, not dual2nd.
- *  - For vector-mode numbers (isVectorDual, isHessianDual), seedDirection( x, i ) makes x the independent variable i
- *    and partialDerivative( y, i ) reads the partial derivative of y with respect to variable i;
- *    secondPartialDerivative( y, i, j ) reads a second partial derivative of a HessianDual.
+ *  - ThirdDerivativeDual<nDirections>: number type of the third-derivative driver d3f_dT3, with nDirections
+ *    independent variables. Code differentiated by d3f_dT3 must use this type, not dual3rd.
+ *  - For vector-mode numbers (isVectorDual, isHessianDual, isThirdDerivativeDual), seedDirection( x, i ) makes x the
+ *    independent variable i and partialDerivative( y, i ) reads the partial derivative of y with respect to variable
+ *    i; secondPartialDerivative( y, i, j ) reads a second partial derivative of a HessianDual or a
+ *    ThirdDerivativeDual, thirdPartialDerivative( y, i, j, k ) a third partial derivative of a ThirdDerivativeDual.
  */
 
 #pragma once
 #include "Marmot/MarmotAutomaticDifferentiationScalarMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorMode.h"
 #include "Marmot/MarmotAutomaticDifferentiationVectorModeSecondOrder.h"
+#include "Marmot/MarmotAutomaticDifferentiationVectorModeThirdOrder.h"
 #include <array>
 #include <cstddef>
 #include <type_traits>
@@ -135,7 +142,7 @@ namespace Marmot::Math::Differentiation::Automatic {
   }
 
   /** @brief Reads the primal value of a hyper-dual or vector-mode number
-   *  @tparam Scalar hyper-dual number type or JacobianDual
+   *  @tparam Scalar hyper-dual or vector-mode number type
    *  @param x number
    *  @return primal (zeroth order) value of x
    */
@@ -164,6 +171,21 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   inline constexpr bool isHessianDual = VectorMode::isDual2nd< Scalar >;
 
+  /** @brief Number type of the third-derivative driver d3f_dT3
+   *  @tparam nDirections number of independent variables
+   *
+   *  A VectorMode::Dual3rd< nDirections >, which carries the gradient, the Hessian and the third derivatives after a
+   *  single evaluation.
+   */
+  template < size_t nDirections >
+  using ThirdDerivativeDual = VectorMode::Dual3rd< nDirections >;
+
+  /** @brief True if Scalar is a third-order vector-mode number (VectorMode::Dual3rd)
+   *  @tparam Scalar type to check
+   */
+  template < typename Scalar >
+  inline constexpr bool isThirdDerivativeDual = VectorMode::isDual3rd< Scalar >;
+
   /** @brief True if Scalar is a first-order vector-mode number (VectorMode::Dual)
    *  @tparam Scalar type to check
    */
@@ -173,28 +195,28 @@ namespace Marmot::Math::Differentiation::Automatic {
   template < typename Scalar >
   double value( const Scalar& x )
   {
-    if constexpr ( isVectorDual< Scalar > || isHessianDual< Scalar > )
+    if constexpr ( isVectorDual< Scalar > || isHessianDual< Scalar > || isThirdDerivativeDual< Scalar > )
       return x.val();
     else
       return ScalarMode::primalValue( x );
   }
 
   /** @brief Makes a vector-mode number the independent variable `direction`
-   *  @tparam Scalar vector-mode number type (isVectorDual or isHessianDual)
+   *  @tparam Scalar vector-mode number type (isVectorDual, isHessianDual or isThirdDerivativeDual)
    *  @param x number to seed; its derivatives must be zero
    *  @param direction index of the independent variable, less than the number of directions of Scalar
    */
   template < typename Scalar >
   void seedDirection( Scalar& x, size_t direction )
   {
-    if constexpr ( isHessianDual< Scalar > )
+    if constexpr ( isHessianDual< Scalar > || isThirdDerivativeDual< Scalar > )
       x.seed( direction );
     else
       x.dx( direction ) = 1.0;
   }
 
   /** @brief Reads a partial derivative of a vector-mode number
-   *  @tparam Scalar vector-mode number type (isVectorDual or isHessianDual)
+   *  @tparam Scalar vector-mode number type (isVectorDual, isHessianDual or isThirdDerivativeDual)
    *  @param x number
    *  @param i index of the independent variable
    *  @return partial derivative of x with respect to variable i
@@ -205,8 +227,8 @@ namespace Marmot::Math::Differentiation::Automatic {
     return x.dx( i );
   }
 
-  /** @brief Reads a second partial derivative of a second-order vector-mode number
-   *  @tparam Scalar second-order vector-mode number type (isHessianDual)
+  /** @brief Reads a second partial derivative of a second- or third-order vector-mode number
+   *  @tparam Scalar second- or third-order vector-mode number type (isHessianDual or isThirdDerivativeDual)
    *  @param x number
    *  @param i index of the first independent variable
    *  @param j index of the second independent variable
@@ -216,6 +238,20 @@ namespace Marmot::Math::Differentiation::Automatic {
   double secondPartialDerivative( const Scalar& x, size_t i, size_t j )
   {
     return x.dxx( i, j );
+  }
+
+  /** @brief Reads a third partial derivative of a third-order vector-mode number
+   *  @tparam Scalar third-order vector-mode number type (isThirdDerivativeDual)
+   *  @param x number
+   *  @param i index of the first independent variable
+   *  @param j index of the second independent variable
+   *  @param k index of the third independent variable
+   *  @return third partial derivative of x with respect to variables i, j and k
+   */
+  template < typename Scalar >
+  double thirdPartialDerivative( const Scalar& x, size_t i, size_t j, size_t k )
+  {
+    return x.dxxx( i, j, k );
   }
 
   /** @brief Contiguous coefficient storage of a hyper-dual number

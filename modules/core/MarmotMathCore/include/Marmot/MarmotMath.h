@@ -200,16 +200,17 @@ namespace Marmot::Math {
     double makeReal( const std::complex< double >& value );
     double makeReal( const Marmot::Math::Differentiation::Automatic::Taylor< 1 >& value );
 
-    /** @brief Converts hyper-dual numbers of any order, JacobianDual and HessianDual numbers to double precision
-     * floating point numbers
-     *  @tparam Scalar hyper-dual, JacobianDual or HessianDual number type
+    /** @brief Converts hyper-dual numbers of any order, JacobianDual, HessianDual and ThirdDerivativeDual numbers to
+     * double precision floating point numbers
+     *  @tparam Scalar hyper-dual, JacobianDual, HessianDual or ThirdDerivativeDual number type
      *  @param number Input number
      *  @return Primal value of the number
      */
     template < typename Scalar,
                std::enable_if_t< Marmot::Math::Differentiation::Automatic::isHyperDual< Scalar > ||
                                    Marmot::Math::Differentiation::Automatic::isVectorDual< Scalar > ||
-                                   Marmot::Math::Differentiation::Automatic::isHessianDual< Scalar >,
+                                   Marmot::Math::Differentiation::Automatic::isHessianDual< Scalar > ||
+                                   Marmot::Math::Differentiation::Automatic::isThirdDerivativeDual< Scalar >,
                                  bool > = true >
     double makeReal( const Scalar& number )
     {
