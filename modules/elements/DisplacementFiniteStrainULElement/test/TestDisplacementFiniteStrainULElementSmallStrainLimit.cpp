@@ -46,11 +46,13 @@ void testAxiSymmetricSurfaceLoadsAreThoseOfTheSmallStrainElement()
 {
   for ( const auto& [finiteStrainType, smallStrainType] :
         { std::make_pair( "CX8UL", "CAX8" ), std::make_pair( "CX8RUL", "CAX8R" ) } ) {
-    ElementUnderTest finiteStrain( finiteStrainType,
-                                   ringSectionCoordinates,
+    ElementUnderTest
+                     finiteStrain( finiteStrainType,
+                    ringSectionCoordinates,
                                    { 7.0 },
-                                   "COMPRESSIBLENEOHOOKE",
-                                   { 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1.0 } );
+                    "COMPRESSIBLEHYPERELASTICITY",
+                    // NeoHooke, DollSchweizerhof: G, K, alpha, beta, density
+                                   { 0.0, 6.0, 1000.0 / ( 2 * ( 1 + 0.3 ) ), 1000.0 / ( 3 * ( 1 - 2 * 0.3 ) ), 1.0, 3.0, 1.0 } );
     ElementUnderTest smallStrain( smallStrainType, ringSectionCoordinates, {}, "LINEARELASTIC", { 1000.0, 0.3, 1.0 } );
 
     for ( int face = 1; face <= 4; face++ ) {

@@ -89,11 +89,12 @@ In finite-strain problems, deformation measures (displacement gradient $\nabla \
 import numpy as np
 import marmot
 
-# 1. Material properties (e.g. Compressible Neo-Hooke: mu=1.0, nu=0.3)
-properties = np.array([1.0, 0.3], dtype=np.float64)
+# 1. Material properties (compressible hyperelasticity: isochoric base 0 (NeoHooke), volumetric base 6
+#    (DollSchweizerhof), mu=0.3, kappa=1.0, alpha=1.0, beta=3.0)
+properties = np.array([0.0, 6.0, 0.3, 1.0, 1.0, 3.0], dtype=np.float64)
 
 # 2. Instantiate FiniteStrainSolver
-solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLENEOHOOKE", properties)
+solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEHYPERELASTICITY", properties)
 
 # 3. Define loading step
 step = marmot.solvers.FiniteStrainSolver.Step()

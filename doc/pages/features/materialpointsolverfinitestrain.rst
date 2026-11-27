@@ -57,16 +57,16 @@ Example Usage
 -------------
 
 Here is a simple example demonstrating how to set up and run the finite strain material point solver using a compressible Neo-Hookean material model.
-It can be found in the `examples/finite-strain-mp-solver/CompressibleNeoHooke` directory of the Marmot repository together with the appropriate ``CMakeLists.txt``.
+It can be found in the `examples/finite-strain-mp-solver/CompressibleHyperelasticity` directory of the Marmot repository together with the appropriate ``CMakeLists.txt``.
 
-.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleNeoHooke/example.cpp
+.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleHyperelasticity/example.cpp
    :language: c++
    :linenos:
    :caption: Finite Strain Solver Example
 
 To compile and run the example, you can use ``cmake`` with the configuration ``CMakeLists.txt``. Ensure that the paths to Marmot, Eigen, and Fastor match your system configuration.
 
-.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleNeoHooke/CMakeLists.txt
+.. literalinclude:: ../../../examples/finite-strain-mp-solver/CompressibleHyperelasticity/CMakeLists.txt
    :language: cmake
    :linenos:
    :caption: cmake configuration for Finite Strain Material Point Solver Example
@@ -122,8 +122,9 @@ When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven 
    import numpy as np
 
    # Define material and properties
-   properties = np.array([20000.0, 0.25])
-   solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLENEOHOOKE", properties)
+   # isochoric base 0 (NeoHooke), volumetric base 6 (DollSchweizerhof), mu, kappa, alpha, beta
+   properties = np.array([0.0, 6.0, 0.25, 20000.0, 1.0, 3.0])
+   solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEHYPERELASTICITY", properties)
 
    # Define loading step
    step = marmot.solvers.FiniteStrainSolver.Step()

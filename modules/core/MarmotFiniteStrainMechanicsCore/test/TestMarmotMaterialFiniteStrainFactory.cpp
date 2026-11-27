@@ -8,9 +8,9 @@
 using namespace Marmot::Testing;
 
 // ---------------------------------------------------------------------------------------------
-// createMaterial(): the success path is exercised elsewhere (e.g. CompressibleNeoHooke's own
-// tests), but the throw branch for an unregistered material name is not. "COMPRESSIBLENEOHOOKE"
-// is genuinely registered (by CompressibleNeoHookeRegistration.cpp, linked into every test
+// createMaterial(): the success path is exercised elsewhere (e.g. CompressibleHyperelasticity's own
+// tests), but the throw branch for an unregistered material name is not. "COMPRESSIBLEHYPERELASTICITY"
+// is genuinely registered (by CompressibleHyperelasticityRegistration.cpp, linked into every test
 // executable via libMarmot), so a name not currently expected to collide with it proves the throw
 // path specifically, not just "any unknown name".
 // ---------------------------------------------------------------------------------------------
@@ -31,9 +31,9 @@ void testCreateMaterialThrowsForUnregisteredName()
 
 void testCreateMaterialSucceedsForRegisteredName()
 {
-  const double                                               properties[2] = { 3500., 1500. };
+  const double                                               properties[6] = { 0., 6., 1500., 3500., 1., 3. };
   std::unique_ptr< Marmot::Materials::MaterialFiniteStrain > mat(
-    Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( "COMPRESSIBLENEOHOOKE", properties, 2, 7 ) );
+    Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( "COMPRESSIBLEHYPERELASTICITY", properties, 6, 7 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 7,
                            "createMaterial() did not return a correctly constructed instance in " +

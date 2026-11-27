@@ -56,8 +56,10 @@ namespace {
 
   constexpr double Pi = Marmot::Math::Constants::Pi;
 
-  // COMPRESSIBLENEOHOOKE: K, G, rho
-  const std::vector< double > neoHookeProperties = { 3500., 1500., 2.0 };
+  // bulk modulus, shear modulus and density of the compressible Neo-Hooke material
+  constexpr double neoHookeK = 3500., neoHookeG = 1500., neoHookeDensity = 2.0;
+  // COMPRESSIBLEHYPERELASTICITY: NeoHooke, DollSchweizerhof: G, K, alpha, beta, rho
+  const std::vector< double > neoHookeProperties = { 0., 6., neoHookeG, neoHookeK, 1., 3., neoHookeDensity };
   // GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE: K, G, kappa0, kappaF, l, rho
   const std::vector< double > damageProperties = { 3500., 1500., 1e-3, 1e-2, 0.3, 2.0 };
 
@@ -71,10 +73,10 @@ namespace {
   };
 
   const ParticleType displacement = { "DisplacementSQCNI/Axisymmetric/Quad",
-                                      "COMPRESSIBLENEOHOOKE",
+                                      "COMPRESSIBLEHYPERELASTICITY",
                                       neoHookeProperties,
                                       2,
-                                      neoHookeProperties[2] };
+                                      neoHookeDensity };
 
   const ParticleType gradientEnhanced = { "GradientEnhancedFiniteStrainSQCNIxNSNI/Axisymmetric/Quad",
                                           "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
@@ -662,7 +664,7 @@ namespace {
   // u_r = (1 + nu) p a^2 / (E (b^2 - a^2)) ((1 - 2 nu) r + b^2 / r).
   double lame( double r, double a, double b, double p )
   {
-    const double K = neoHookeProperties[0], G = neoHookeProperties[1];
+    const double K = neoHookeK, G = neoHookeG;
     const double E = 9 * K * G / ( 3 * K + G ), nu = ( 3 * K - 2 * G ) / ( 2 * ( 3 * K + G ) );
     return ( 1 + nu ) * p * a * a / ( E * ( b * b - a * a ) ) * ( ( 1 - 2 * nu ) * r + b * b / r );
   }
@@ -755,7 +757,7 @@ namespace {
     std::vector< std::vector< double > >                                         elementStateVars;
     // an element keeps pointers to its coordinates and its section: they live as long as it
     std::vector< std::vector< double > >           elementCoordinates( nElements );
-    const Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+    const Marmot::Discretizations::MaterialSection materialSection( "COMPRESSIBLEHYPERELASTICITY",
                                                                     neoHookeProperties.data(),
                                                                     static_cast< int >( neoHookeProperties.size() ) );
     std::vector< std::array< int, 8 > >            connectivity;

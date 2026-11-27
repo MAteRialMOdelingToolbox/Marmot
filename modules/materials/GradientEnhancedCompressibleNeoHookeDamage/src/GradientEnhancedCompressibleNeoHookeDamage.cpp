@@ -81,7 +81,7 @@ namespace Marmot::Materials {
 
     const auto& F = deformation.F;
 
-    // undamaged neo-Hookean response, as in CompressibleNeoHooke
+    // undamaged neo-Hookean response, as in CompressibleHyperelasticity (NeoHooke, DollSchweizerhof)
     const auto [C,
                 dC_dF] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
     const auto [psi0, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::

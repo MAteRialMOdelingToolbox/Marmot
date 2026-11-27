@@ -26,7 +26,7 @@ suffix ``CR`` marks the finite strain variants.
    * - ``T2D2CR``, ``T2D3CR``, ``T3D2CR``, ``T3D3CR``
      - finite strain
      - finite strain materials whose response to a diagonal deformation gradient is diagonal, e.g., the isotropic
-       ``COMPRESSIBLENEOHOOKE``, ``FINITESTRAINJ2PLASTICITY``, ``VONMISES/HUGHES-WINGET``
+       ``COMPRESSIBLEHYPERELASTICITY``, ``FINITESTRAINJ2PLASTICITY``, ``VONMISES/HUGHES-WINGET``
 
 A material of the other kind is rejected with a hint to the matching element (``VONMISES`` is a hypoelastic material;
 its finite strain counterpart is ``VONMISES/HUGHES-WINGET``). The uniaxial reduction of finite strain materials
