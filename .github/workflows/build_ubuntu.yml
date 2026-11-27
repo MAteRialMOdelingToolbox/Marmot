@@ -28,6 +28,10 @@ jobs:
       # The compilers, CMake, Eigen, Fastor and Python of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
 
+      - uses: ./.github/actions/compiler-cache
+        with:
+          key: ubuntu-${{ matrix.name }}
+
       - name: Build, install and test Marmot
         shell: bash -leo pipefail {0}
         run: |
