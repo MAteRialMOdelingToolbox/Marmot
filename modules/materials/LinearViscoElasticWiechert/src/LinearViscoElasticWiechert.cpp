@@ -47,9 +47,10 @@ namespace Marmot::Materials {
                                                                                               spacing );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    auto relaxationFunction = [&]( autodiff::Real< powerLawApproximationOrder, double > time ) {
-      return RelaxationFunctions::powerLaw( time, m, n );
-    };
+    auto relaxationFunction =
+      [&]( Marmot::Math::Differentiation::Automatic::Taylor< powerLawApproximationOrder > time ) {
+        return RelaxationFunctions::powerLaw( time, m, n );
+      };
 
     elasticModuli = ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli<
       powerLawApproximationOrder >( relaxationFunction, relaxationTimes, spacing );

@@ -248,7 +248,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * and exactly zero-energy even for locking stretches arbitrarily close to 1.
      *
      * @tparam Order Highest scalar derivative to compute.
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff::dual3rd.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or dual3rd.
      * @param xBar Isochoric invariants \f$(\bar I_1, \bar I_2, J)\f$.
      * @param mu Shear-modulus-like parameter (small-strain limit -> standard
      * neo-Hookean shear modulus).
@@ -802,7 +802,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      *  where \f$\bar{I}_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol{C})\f$, and
      *  \f$J = \sqrt{\det(\boldsymbol{C})}\f$.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param C10 Yeoh material parameter.
      * @param C20 Yeoh material parameter.
@@ -832,7 +832,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * where \f$\bar I_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol C)\f$, and
      * \f$J = \sqrt{\det\boldsymbol C}\f$.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param mu Shear modulus.
      * @return Energy density (isochoric part only).
@@ -864,7 +864,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * for any finite \f$\lambda_L\f$, since \f$\bar I_1\f$ is invariant under
      * \f$\boldsymbol C \to \lambda\boldsymbol C\f$ for any scalar \f$\lambda\f$.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param mu Shear-modulus-like parameter.
      * @param lambdaL Locking stretch (must be > 1; the model has a genuine
@@ -1087,7 +1087,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * \f$J\to\infty\f$; for large volumetric expansions consider e.g. #OgdenPotential or
      * #DollSchweizerhofPotential instead.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1108,7 +1108,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Note that \f$U_1\f$ stays bounded as \f$J\to 0\f$ (violating condition (9) of the paper), so it should not be
      * used for large compression.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1128,7 +1128,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      *   U_3(J) = \frac{\kappa}{4}\left[(J-1)^2 + (\ln J)^2\right], \qquad J = \sqrt{\det\boldsymbol C}.
      * \f]
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1149,7 +1149,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * gives \f$\frac{\kappa}{4}(J^2 - 1 - 2\ln J)\f$ (Simo & Taylor 1991), and Ogden's rubber fit \f$\theta=9\f$ is
      * admissible for nearly incompressible applications. \f$\theta\neq0\f$ is required.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @param theta Shape parameter \f$\theta\f$ (\f$\neq 0\f$).
@@ -1171,7 +1171,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Note that \f$U_5\f$ stays bounded as \f$J\to 0\f$ (violating condition (9) of the paper), so it should not be
      * used for large compression.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1196,7 +1196,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * \f$U_6(J)=U_6(J^{-1})\f$; \f$\alpha=1,\ \beta\to1\f$ approaches \f$U_4\f$ with \f$\theta=-2\f$, and
      * \f$\alpha\to0\f$ recovers Murnaghan's pressure formula.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @param alpha Shape parameter \f$\alpha > 0\f$.
@@ -1227,7 +1227,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * \f]
      * with \f$\alpha_i > 0\f$ and \f$\beta_i > 1\f$.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @param alphas Shape parameters \f$\alpha_i > 0\f$.
@@ -1251,7 +1251,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      *   U_7(J) = \frac{\kappa}{2}\left(e^{J-1} - \ln J - 1\right), \qquad J = \sqrt{\det\boldsymbol C}.
      * \f]
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1270,7 +1270,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      *   U_8(J) = \frac{\kappa}{2}(J-1)\ln J, \qquad J = \sqrt{\det\boldsymbol C}.
      * \f]
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param kappa Bulk modulus.
      * @return Energy density (volumetric part only).
@@ -1725,7 +1725,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    *                                                                           Volumetric::SimoTaylor{ kappa } );
    * @endcode
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @tparam IsochoricPart Callable \f$\boldsymbol C \mapsto \Psi_{\rm iso}\f$ (and derivatives).
    * @tparam VolumetricPart Callable \f$\boldsymbol C \mapsto U\f$ (and derivatives).
    * @param C Right Cauchy-Green tensor.
@@ -1824,7 +1824,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    * It is the #DecoupledPotential of Isochoric::YeohPotential and Volumetric::OgdenPotential with
    * \f$\kappa = 2/D_1\f$ and \f$\theta = -2\f$.
    *
-   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param C1 Yeoh material parameter.
    * @param C2 Yeoh material parameter.
@@ -1852,7 +1852,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    * It is the #DecoupledPotential of Isochoric::ArrudaBoyce8ChainPotential and Volumetric::OgdenPotential with
    * \f$\kappa = 2/D_1\f$ and \f$\theta = -2\f$.
    *
-   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param mu Shear-modulus-like parameter.
    * @param lambdaL Locking stretch (must be > 1).
@@ -1880,7 +1880,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
    * const auto [psi_, dPsi_dC, d2Psi_dCdC] = SecondOrder::CoupledPotential( C, Coupled::StandardNeoHooke{ K, G } );
    * @endcode
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
    * @return Energy density.
@@ -1927,7 +1927,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::CoupledPotential) and its first derivative
      * w.r.t. C.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
      * @return Tuple of energy density and its first derivative.
@@ -1944,7 +1944,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first derivative
      * w.r.t. C.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param isochoricPart Isochoric part, e.g. Isochoric::Yeoh.
      * @param volumetricPart Volumetric part, e.g. Volumetric::SimoTaylor.
@@ -2071,7 +2071,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::CoupledPotential) and its first and second
      * derivative w.r.t. C.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param potential Scalar function of the principal invariants, e.g. Coupled::StandardNeoHooke.
      * @return Tuple of energy density and its first and second derivative.
@@ -2088,7 +2088,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::DecoupledPotential) and its first and second
      * derivative w.r.t. C.
      *
-     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
      * @param C Right Cauchy-Green tensor.
      * @param isochoricPart Isochoric part, e.g. Isochoric::Yeoh.
      * @param volumetricPart Volumetric part, e.g. Volumetric::SimoTaylor.
@@ -2212,7 +2212,7 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
      * @details Internally evaluates the standard Neo-Hooke potential in terms of
      * \f$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}\f$ and applies chain-rule transformations.
      *
-     * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+     * @tparam T Scalar type, e.g. double, float or an automatic differentiation number.
      * @param U Right stretch tensor.
      * @param K Bulk modulus.
      * @param G Shear modulus.

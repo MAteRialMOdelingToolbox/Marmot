@@ -24,11 +24,9 @@
  */
 #pragma once
 #include "Marmot/BeamElement.h"
-#include "autodiff/forward/dual/eigen.hpp"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include <Eigen/Dense>
-#include <autodiff/forward/dual/dual.hpp>
 #include <cmath>
-#include <type_traits>
 
 namespace Marmot::Discretizations::Elements {
 
@@ -134,10 +132,7 @@ namespace Marmot::Discretizations::Elements {
     template < typename T >
     static double value( const T& x )
     {
-      if constexpr ( std::is_arithmetic_v< T > )
-        return x;
-      else
-        return static_cast< double >( autodiff::val( x ) );
+      return static_cast< double >( x );
     }
 
     /// The rotation matrix exp(skew(w)) (Rodrigues), with Taylor series near zero: below |w|^2 = 1e-8 the truncation
@@ -311,45 +306,46 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
-    /// d q_l / d Q (7 x 12), exact by forward automatic differentiation of localDeformations()
+    /// d q_l / d Q (7 x 12), exact by forward automatic differentiation of localDeformations(), all 12 directions
+    /// in one evaluation
     /// @param[in] QTotal The global dofs.
     /// @return The Jacobian of the local deformations.
     Eigen::MatrixXd dLocalDeformations_dQ( const Vector12d& QTotal ) const
     {
-      using autodiff::at;
-      using autodiff::wrt;
-      autodiff::VectorXdual Qd = QTotal.cast< autodiff::dual >();
-      autodiff::VectorXdual F;
-      return autodiff::jacobian( [this]( const autodiff::VectorXdual& x )
-                                   -> autodiff::VectorXdual { return localDeformations< autodiff::dual >( x ); },
-                                 wrt( Qd ),
-                                 at( Qd ),
-                                 F );
+      using namespace Marmot::Math::Differentiation::Automatic;
+      using scalar                                  = JacobianDual< 12 >;
+      Eigen::Matrix< scalar, Eigen::Dynamic, 1 > Qd = QTotal.cast< scalar >();
+      for ( int j = 0; j < 12; j++ )
+        seedDirection( Qd( j ), j );
+      const Eigen::Matrix< scalar, Eigen::Dynamic, 1 > ql = localDeformations< scalar >( Qd );
+      Eigen::MatrixXd                                  J( ql.size(), 12 );
+      for ( int i = 0; i < ql.size(); i++ )
+        for ( int j = 0; j < 12; j++ )
+          J( i, j ) = partialDerivative( ql( i ), j );
+      return J;
     }
 
-    /// The geometric stiffness d^2 (f_l . q_l) / d Q^2 at fixed local forces, exact by automatic differentiation
+    /// The geometric stiffness d^2 (f_l . q_l) / d Q^2 at fixed local forces, exact by automatic differentiation,
+    /// the whole Hessian in one evaluation
     /// @param[in] QTotal The global dofs.
     /// @param[in] fl     The local forces.
     /// @return The geometric stiffness (12 x 12).
     Eigen::MatrixXd geometricStiffness( const Vector12d& QTotal, const Vector7d& fl ) const
     {
-      using autodiff::at;
-      using autodiff::wrt;
-      autodiff::VectorXdual2nd Qh = QTotal.cast< autodiff::dual2nd >();
-      autodiff::dual2nd        workOfLocalForces;
-      Eigen::VectorXd          gradient;
-      return autodiff::hessian(
-        [this, &fl]( const autodiff::VectorXdual2nd& x ) -> autodiff::dual2nd {
-          const autodiff::VectorXdual2nd ql = localDeformations< autodiff::dual2nd >( x );
-          autodiff::dual2nd              r  = 0.;
-          for ( int k = 0; k < 7; k++ )
-            r += fl( k ) * ql( k );
-          return r;
-        },
-        wrt( Qh ),
-        at( Qh ),
-        workOfLocalForces,
-        gradient );
+      using namespace Marmot::Math::Differentiation::Automatic;
+      using scalar                                  = HessianDual< 12 >;
+      Eigen::Matrix< scalar, Eigen::Dynamic, 1 > Qh = QTotal.cast< scalar >();
+      for ( int j = 0; j < 12; j++ )
+        seedDirection( Qh( j ), j );
+      const Eigen::Matrix< scalar, Eigen::Dynamic, 1 > ql                = localDeformations< scalar >( Qh );
+      scalar                                           workOfLocalForces = 0.;
+      for ( int k = 0; k < 7; k++ )
+        workOfLocalForces += fl( k ) * ql( k );
+      Eigen::MatrixXd H( 12, 12 );
+      for ( int i = 0; i < 12; i++ )
+        for ( int j = 0; j < 12; j++ )
+          H( i, j ) = secondPartialDerivative( workOfLocalForces, i, j );
+      return H;
     }
 
     void computeKernels( const double* QTotal_, const double* dQ_, double* Pe_, double* Ke_, double time, double dT )

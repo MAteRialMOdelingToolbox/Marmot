@@ -73,7 +73,9 @@ namespace Marmot::Materials {
     switch ( powerLawApproximationOrder ) {
     case 2: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-      auto phi_2nd  = [&]( autodiff::Real< 2, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      auto phi_2nd = [&]( Marmot::Math::Differentiation::Automatic::Taylor< 2 > tau ) {
+        return ComplianceFunctions::powerLaw( tau, m, n );
+      };
       elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 2 >( phi_2nd,
                                                                                                    retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 2, minTau / sqrt( spacing ) );
@@ -81,7 +83,9 @@ namespace Marmot::Materials {
     }
     case 3: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-      auto phi_3rd  = [&]( autodiff::Real< 3, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      auto phi_3rd = [&]( Marmot::Math::Differentiation::Automatic::Taylor< 3 > tau ) {
+        return ComplianceFunctions::powerLaw( tau, m, n );
+      };
       elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 3 >( phi_3rd,
                                                                                                    retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 3, minTau / sqrt( spacing ) );
@@ -89,7 +93,9 @@ namespace Marmot::Materials {
     }
     case 4: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-      auto phi_4th  = [&]( autodiff::Real< 4, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      auto phi_4th = [&]( Marmot::Math::Differentiation::Automatic::Taylor< 4 > tau ) {
+        return ComplianceFunctions::powerLaw( tau, m, n );
+      };
       elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 4 >( phi_4th,
                                                                                                    retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 4, minTau / sqrt( spacing ) );
@@ -97,7 +103,9 @@ namespace Marmot::Materials {
     }
     case 7: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-      auto phi_7th  = [&]( autodiff::Real< 7, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
+      auto phi_7th = [&]( Marmot::Math::Differentiation::Automatic::Taylor< 7 > tau ) {
+        return ComplianceFunctions::powerLaw( tau, m, n );
+      };
       elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 7 >( phi_7th,
                                                                                                    retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 7, minTau / sqrt( spacing ) );

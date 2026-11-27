@@ -37,16 +37,13 @@ requirements:
     - ninja
     - ${{ compiler('cxx') }}
   host:
-    # Eigen 5 only: the autodiff 1.1.2 of the matthiasneuner/edelweiss channel carries the Eigen 5 patch
-    # (autodiff#397).
+    # Eigen 5 only.
     - eigen >=5
-    - autodiff ==1.1.2
     - fastor
   run:
-    # Marmot's installed headers include Eigen, autodiff and Fastor, whose types are part of its C++ ABI: consumers
-    # must compile against exactly the versions libMarmot was built with.
+    # Marmot's installed headers include Eigen and Fastor, whose types are part of its C++ ABI: consumers must
+    # compile against exactly the versions libMarmot was built with.
     - ${{ pin_compatible('eigen', upper_bound='x.x.x') }}
-    - autodiff ==1.1.2
     - ${{ pin_compatible('fastor', upper_bound='x.x.x') }}
   run_exports:
     # C++ has no stable ABI across Marmot revisions: anything compiled against this build (EdelweissFE's Cython

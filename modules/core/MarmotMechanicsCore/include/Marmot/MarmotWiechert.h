@@ -50,8 +50,9 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert {
    * @return the relaxation spectrum at @f$\tau@f$
    */
   template < int k >
-  double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > psi,
-                                    double                                                                      tau )
+  double evaluatePostWidderFormula( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                      Marmot::Math::Differentiation::Automatic::Taylor< k > ) > psi,
+                                    double                                                      tau )
   {
     using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::PostWidderCoefficientSign;
     return Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula<
@@ -74,10 +75,11 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert {
    * @return the elastic moduli, one per Maxwell unit
    */
   template < int k >
-  Properties computeElasticModuli( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > psi,
-                                   const Properties& relaxationTimes,
-                                   double            spacing,
-                                   bool              gaussQuadrature = false )
+  Properties computeElasticModuli( std::function< Marmot::Math::Differentiation::Automatic::Taylor< k >(
+                                     Marmot::Math::Differentiation::Automatic::Taylor< k > ) > psi,
+                                   const Properties&                                           relaxationTimes,
+                                   double                                                      spacing,
+                                   bool                                                        gaussQuadrature = false )
   {
     Properties elasticModuli( relaxationTimes.size() );
     for ( int i = 0; i < relaxationTimes.size(); ++i ) {

@@ -75,7 +75,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * @c f is available for every order, @c df for @p Order >= 1 and @c d2f for @p Order >= 2. Entries that are
    * not set are zero.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @tparam Order Highest derivative that is available (0, 1 or 2).
    */
   template < typename T, int Order >
@@ -102,7 +102,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * assembles \f$\partial^2\Psi/\partial\boldsymbol C\partial\boldsymbol C\f$ from them in one pass;
    * #secondDerivative returns the full tensor of one invariant.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    */
   template < typename T >
   struct SecondDerivativeCoefficients {
@@ -117,7 +117,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
   /** @brief Three invariants \f$\boldsymbol x\f$ of \f$\boldsymbol C\f$ and their derivatives w.r.t.
    * \f$\boldsymbol C\f$ up to @p Order.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @tparam Order Highest derivative that is available (0, 1 or 2).
    */
   template < typename T, int Order >
@@ -203,7 +203,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
   /** @brief Second principal invariant \f$I_2 = \tfrac{1}{2}\left(I_1^2 - \mathrm{tr}\,\boldsymbol C^2\right)\f$,
    * evaluated as the sum of the principal 2x2 minors of \f$\boldsymbol C\f$.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @return \f$I_2\f$.
    */
@@ -228,7 +228,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * \f]
    *
    * @tparam Order Highest derivative to compute (0, 1 or 2).
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param withI2 Pass @c false for a function that does not depend on \f$I_2\f$, to skip its evaluation;
    * \f$I_2\f$ and its first derivative are then zero and its second derivative is not meaningful.
@@ -283,7 +283,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * \f$(I_1, I_2, J)\f$ would leave the round-off of two large cancelling terms.
    *
    * @tparam Order Highest derivative to compute (0, 1 or 2).
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @param C Right Cauchy-Green tensor.
    * @param withI2 Pass @c false for a function that does not depend on \f$\bar I_2\f$, to skip its
    * evaluation; \f$\bar I_2\f$ and its first derivative are then zero and its second derivative is not
@@ -402,7 +402,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
   /** @brief Full second derivative \f$\partial^2 x_a/\partial\boldsymbol C\partial\boldsymbol C\f$ of one
    * invariant, from the compact form in @p inv.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @param inv Invariants of \f$\boldsymbol C\f$ and their derivatives, from #computeInvariants or
    * #computeIsochoricInvariants.
    * @param a Index of the invariant (#indexI1, #indexI2 or #indexJ).
@@ -435,7 +435,7 @@ namespace Marmot::ContinuumMechanics::Invariants::RightCauchyGreen {
    * The second derivatives of the invariants enter in their compact form (#SecondDerivativeCoefficients), so
    * the fourth-order tensor is assembled in one pass.
    *
-   * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff scalar.
+   * @tparam T Scalar type, e.g. double, std::complex<double> or an automatic differentiation number.
    * @tparam Order Highest derivative to compute (0, 1 or 2).
    * @param f \f$f\f$ and its derivatives w.r.t. the invariants in @p inv.
    * @param inv Invariants of \f$\boldsymbol C\f$ and their derivatives, from #computeInvariants or

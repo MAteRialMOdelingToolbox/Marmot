@@ -18,7 +18,7 @@ jobs:
       - name: Check out Marmot
         uses: actions/checkout@v7
 
-      # The compilers, CMake, Eigen, autodiff and Fastor of the stack: see .github/actions/setup-stack.
+      # The compilers, CMake, Eigen and Fastor of the stack: see .github/actions/setup-stack.
       - uses: ./.github/actions/setup-stack
         with:
           init-shell: cmd.exe bash

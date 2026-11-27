@@ -45,7 +45,7 @@ namespace Marmot::Materials {
                                                                                                    sqrt( 10. ) );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
-    auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {
+    auto phi_ = [&]( Marmot::Math::Differentiation::Automatic::Taylor< powerLawApproximationOrder > tau ) {
       return ComplianceFunctions::powerLaw( tau, m, n );
     };
 

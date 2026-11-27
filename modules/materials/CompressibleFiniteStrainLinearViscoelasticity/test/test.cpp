@@ -320,7 +320,7 @@ void testArrudaBoyceUndeformedResponse()
 }
 
 // Test I-9: ArrudaBoyce response matches the shared core-header potential directly,
-// end-to-end through this material's autodiff::dual3rd-based
+// end-to-end through this material's dual3rd-based
 // computeEnergyDensityAndDerivatives wiring and its shared
 // D1-based volumetric term (shared with Yeoh and MooneyRivlin) -- NOT a check of the potential
 // formula itself (that is covered by
@@ -608,7 +608,7 @@ void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
 {
   namespace EDF = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   using Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3;
-  using Dual3rdTensor = Tensor33t< autodiff::dual3rd >;
+  using Dual3rdTensor = Tensor33t< Marmot::Math::Differentiation::Automatic::dual3rd >;
 
   struct Exposed : CompressibleFiniteStrainLinearViscoelasticity {
     using CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity;
@@ -626,7 +626,7 @@ void testEnergyDensityDerivativesMatchThirdOrderAutodiff()
   const double K = 3500., G = 1500., C1 = 700., C2 = -50., C3 = 20., C2MooneyRivlin = 200., mu = 1500., lambdaL = 3.;
   const double D1 = 2. / K;
 
-  using Potential = std::function< autodiff::dual3rd( const Dual3rdTensor& ) >;
+  using Potential = std::function< Marmot::Math::Differentiation::Automatic::dual3rd( const Dual3rdTensor& ) >;
   const std::vector< std::pair< std::vector< double >, Potential > > cases = {
     { { 0., 0., K, G, 0. },
       [=]( const Dual3rdTensor& C_ ) {

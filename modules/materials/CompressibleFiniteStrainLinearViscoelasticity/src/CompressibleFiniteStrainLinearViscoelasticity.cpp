@@ -1,5 +1,6 @@
 #include "Marmot/CompressibleFiniteStrainLinearViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
+#include "Marmot/MarmotAutomaticDifferentiationTypes.h"
 #include "Marmot/MarmotDeformationMeasures.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
@@ -11,7 +12,6 @@
 #include <Fastor/tensor/Tensor.h>
 #include <Fastor/tensor_algebra/einsum_explicit.h>
 #include <Fastor/tensor_algebra/indicial.h>
-#include <autodiff/forward/dual/dual.hpp>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
@@ -73,16 +73,25 @@ namespace Marmot::Materials {
       double    psi = 0.;
       Tensor33d dPsi_dC;
 
-      const auto [d2Psi_dCdC, d3Psi_dCdCdC] = Marmot::Math::Differentiation::Automatic::dF_dSymmetricT(
-        [&potential, &psi, &dPsi_dC]( const Tensor33t< autodiff::dual >& C_ad ) {
-          const auto [psi_ad, dPsi_dC_ad, d2Psi_dCdC_ad] = potential( C_ad );
-          psi                                            = autodiff::val( psi_ad );
-          for ( int i = 0; i < 3; i++ )
-            for ( int j = 0; j < 3; j++ )
-              dPsi_dC( i, j ) = .5 * ( autodiff::val( dPsi_dC_ad( i, j ) ) + autodiff::val( dPsi_dC_ad( j, i ) ) );
-          return minorSymmetricPart( d2Psi_dCdC_ad );
-        },
-        C );
+      const auto
+        [d2Psi_dCdC, d3Psi_dCdCdC] =
+          Marmot::
+            Math::
+              Differentiation::
+                Automatic::
+                  dF_dSymmetricT(
+                    [&potential, &psi, &dPsi_dC]( const Tensor33t< Marmot::Math::Differentiation::Automatic::dual >&
+                                                    C_ad ) {
+                      const auto [psi_ad, dPsi_dC_ad, d2Psi_dCdC_ad] = potential( C_ad );
+                      psi = Marmot::Math::Differentiation::Automatic::value( psi_ad );
+                      for ( int i = 0; i < 3; i++ )
+                        for ( int j = 0; j < 3; j++ )
+                          dPsi_dC( i, j ) = .5 *
+                                            ( Marmot::Math::Differentiation::Automatic::value( dPsi_dC_ad( i, j ) ) +
+                                              Marmot::Math::Differentiation::Automatic::value( dPsi_dC_ad( j, i ) ) );
+                      return minorSymmetricPart( d2Psi_dCdC_ad );
+                    },
+                    C );
 
       return { psi, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC };
     }
